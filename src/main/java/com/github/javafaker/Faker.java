@@ -107,6 +107,7 @@ public class Faker {
     private final Barcode barcode;
     private final Sip sip;
     private final EnglandFootBall englandfootball;
+    private final Babylon5 babylon5;
 
     public Faker() {
         this(Locale.ENGLISH);
@@ -223,6 +224,7 @@ public class Faker {
         this.barcode = new Barcode(this);
         this.sip = new Sip(this);
         this.englandfootball = new EnglandFootBall(this);
+        this.babylon5 = new Babylon5(this);
     }
 
     /**
@@ -675,6 +677,11 @@ public class Faker {
     public Sip sip() { return sip; }
 
     public EnglandFootBall englandfootball() { return englandfootball; }
+
+
+    public Babylon5 babylon5() {
+        return babylon5;
+    }
 
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this);
