@@ -108,6 +108,7 @@ public class Faker {
     private final EnglandFootBall englandfootball;
     private final Babylon5 babylon5;
     private final Science science;
+    private final Vehicle vehicle;
 
     public Faker() {
         this(Locale.ENGLISH);
@@ -226,6 +227,7 @@ public class Faker {
         this.englandfootball = new EnglandFootBall(this);
         this.babylon5 = new Babylon5(this);
         this.science = new Science(this);
+        this.vehicle = new Vehicle(this);
     }
 
     /**
@@ -688,6 +690,8 @@ public class Faker {
     public Science science() {
         return science;
     }
+
+    public Vehicle vehicle() { return vehicle; }
 
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this);
