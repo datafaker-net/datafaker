@@ -115,7 +115,7 @@ public class Faker {
     }
 
     public Faker(Locale locale) {
-        this(locale, (Random)null);
+        this(locale, (Random) null);
     }
 
     public Faker(Random random) {
@@ -270,10 +270,17 @@ public class Faker {
         return new Faker(locale, random);
     }
 
+    Locale getLocale() {
+        return fakeValuesService.getLocalesChain().get(0);
+    }
+
     /**
      * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive.
      * <p>
      * For example, the string "ABC##EFG" could be replaced with a string like "ABC99EFG".
+     *
+     * @param numberString Template for string generation
+     * @return Generated string
      */
     public String numerify(String numberString) {
         return fakeValuesService.numerify(numberString);
@@ -284,6 +291,9 @@ public class Faker {
      * characters.
      * <p>
      * For example, the string "12??34" could be replaced with a string like "12AB34".
+     *
+     * @param letterString Template for string generation
+     * @return Generated string.
      */
     public String letterify(String letterString) {
         return fakeValuesService.letterify(letterString);
