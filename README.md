@@ -153,6 +153,7 @@ Supported Locales
 * bg
 * ca
 * ca-CAT
+* cs
 * da-DK
 * de
 * de-AT
