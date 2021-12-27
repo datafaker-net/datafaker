@@ -269,9 +269,6 @@ public class Faker {
      * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive.
      * <p>
      * For example, the string "ABC##EFG" could be replaced with a string like "ABC99EFG".
-     *
-     * @param numberString
-     * @return
      */
     public String numerify(String numberString) {
         return fakeValuesService.numerify(numberString);
@@ -282,9 +279,6 @@ public class Faker {
      * characters.
      * <p>
      * For example, the string "12??34" could be replaced with a string like "12AB34".
-     *
-     * @param letterString
-     * @return
      */
     public String letterify(String letterString) {
         return fakeValuesService.letterify(letterString);
@@ -295,10 +289,6 @@ public class Faker {
      * characters.
      * <p>
      * For example, the string "12??34" could be replaced with a string like "12AB34".
-     *
-     * @param letterString
-     * @param isUpper
-     * @return
      */
     public String letterify(String letterString, boolean isUpper) {
         return fakeValuesService.letterify(letterString, isUpper);
@@ -307,9 +297,6 @@ public class Faker {
     /**
      * Applies both a {@link #numerify(String)} and a {@link #letterify(String)}
      * over the incoming string.
-     *
-     * @param string
-     * @return
      */
     public String bothify(String string) {
         return fakeValuesService.bothify(string);
@@ -318,10 +305,6 @@ public class Faker {
     /**
      * Applies both a {@link #numerify(String)} and a {@link #letterify(String)}
      * over the incoming string.
-     *
-     * @param string
-     * @param isUpper
-     * @return
      */
     public String bothify(String string, boolean isUpper) {
         return fakeValuesService.bothify(string, isUpper);
@@ -584,7 +567,7 @@ public class Faker {
     public CPF cpf() {
         return cpf;
     }
-  
+
     public DragonBall dragonBall() {
         return dragonBall;
     }
