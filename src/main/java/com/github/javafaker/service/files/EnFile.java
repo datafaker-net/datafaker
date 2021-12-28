@@ -68,6 +68,7 @@ public class EnFile {
             "dessert.yml",
             "device.yml",
             "disease.yml",
+            "domain.yml",
             "dota.yml",
             "dr_who.yml",
             "dragon_ball.yml",

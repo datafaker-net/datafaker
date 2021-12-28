@@ -112,6 +112,7 @@ public class Faker {
     private final Dessert dessert;
     private final Touhou touhou;
     private final Minecraft minecraft;
+    private final Domain domain;
 
 	public Faker() {
 		this(Locale.ENGLISH);
@@ -234,6 +235,7 @@ public class Faker {
         this.dessert = new Dessert(this);
         this.touhou = new Touhou(this);
         this.minecraft = new Minecraft(this);
+        this.domain = new Domain(this);
     }
 
 	/**
@@ -731,6 +733,8 @@ public class Faker {
     public Vehicle vehicle() { return vehicle; }
 
     public Dessert dessert() { return dessert; }
+
+    public Domain domain() { return domain; }
 
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this);
