@@ -19,7 +19,7 @@ public class HearthstoneTest extends AbstractFakerTest {
     @Test
     public void mainCharacterTest() {
         String character = faker.hearthstone().mainCharacter();
-        assertThat(character, matchesRegularExpression("[ A-Za-z]+"));
+        assertThat(character, matchesRegularExpression("[ A-Za-z']+"));
     }
 
     @Test
