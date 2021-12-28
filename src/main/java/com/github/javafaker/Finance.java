@@ -113,7 +113,7 @@ public class Finance {
         ibanFormats.put("BR", "\\d{8}\\d{5}\\d{10}[A-Z]{1}[0-9A-Za-z]{1}");
         ibanFormats.put("BY", "[0-9A-Za-z]{4}\\d{4}[0-9A-Za-z]{16}");
         ibanFormats.put("CH", "\\d{5}[0-9A-Za-z]{12}");
-        ibanFormats.put("CR", "\\d{3}\\d{14}");
+        ibanFormats.put("CR", "0\\d{3}\\d{14}");
         ibanFormats.put("CY", "\\d{3}\\d{5}[0-9A-Za-z]{16}");
         ibanFormats.put("CZ", "\\d{4}\\d{6}\\d{10}");
         ibanFormats.put("DE", "\\d{8}\\d{10}");
