@@ -179,6 +179,7 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.babylon5());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.vehicle());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dessert());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.touhou());
     }
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {

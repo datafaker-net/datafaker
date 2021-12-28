@@ -112,6 +112,7 @@ Fakers
 * LordOfTheRings
 * Lorem
 * Matz
+* Minecraft
 * Music
 * Name
 * Nation
@@ -135,6 +136,7 @@ Fakers
 * Stock
 * Superhero
 * Team
+* Touhou
 * TwinPeaks
 * University
 * Vehicle

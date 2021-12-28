@@ -12,8 +12,8 @@ import com.github.javafaker.service.RandomService;
  * @author ren
  */
 public class Faker {
-    private final RandomService randomService;
-    private final FakeValuesService fakeValuesService;
+	private final RandomService randomService;
+	private final FakeValuesService fakeValuesService;
 
     private final Ancient ancient;
     private final App app;
@@ -110,30 +110,32 @@ public class Faker {
     private final Science science;
     private final Vehicle vehicle;
     private final Dessert dessert;
+    private final Touhou touhou;
+    private final Minecraft minecraft;
 
-    public Faker() {
-        this(Locale.ENGLISH);
-    }
+	public Faker() {
+		this(Locale.ENGLISH);
+	}
 
     public Faker(Locale locale) {
         this(locale, (Random) null);
     }
 
-    public Faker(Random random) {
-        this(Locale.ENGLISH, random);
-    }
+	public Faker(Random random) {
+		this(Locale.ENGLISH, random);
+	}
 
-    public Faker(Locale locale, Random random) {
-        this(locale, new RandomService(random));
-    }
+	public Faker(Locale locale, Random random) {
+		this(locale, new RandomService(random));
+	}
 
-    public Faker(Locale locale, RandomService randomService) {
-        this(new FakeValuesService(locale, randomService), randomService);
-    }
+	public Faker(Locale locale, RandomService randomService) {
+		this(new FakeValuesService(locale, randomService), randomService);
+	}
 
-    public Faker(FakeValuesService fakeValuesService, RandomService random) {
-        this.randomService = random;
-        this.fakeValuesService = fakeValuesService;
+	public Faker(FakeValuesService fakeValuesService, RandomService random) {
+		this.randomService = random;
+		this.fakeValuesService = fakeValuesService;
 
         this.ancient = new Ancient(this);
         this.app = new App(this);
@@ -230,47 +232,49 @@ public class Faker {
         this.science = new Science(this);
         this.vehicle = new Vehicle(this);
         this.dessert = new Dessert(this);
+        this.touhou = new Touhou(this);
+        this.minecraft = new Minecraft(this);
     }
 
-    /**
-     * Constructs Faker instance with default argument.
-     *
-     * @return {@link Faker#Faker()}
-     */
-    public static Faker instance() {
-        return new Faker();
-    }
+	/**
+	 * Constructs Faker instance with default argument.
+	 *
+	 * @return {@link Faker#Faker()}
+	 */
+	public static Faker instance() {
+		return new Faker();
+	}
 
-    /**
-     * Constructs Faker instance with provided {@link Locale}.
-     *
-     * @param locale - {@link Locale}
-     * @return {@link Faker#Faker(Locale)}
-     */
-    public static Faker instance(Locale locale) {
-        return new Faker(locale);
-    }
+	/**
+	 * Constructs Faker instance with provided {@link Locale}.
+	 *
+	 * @param locale - {@link Locale}
+	 * @return {@link Faker#Faker(Locale)}
+	 */
+	public static Faker instance(Locale locale) {
+		return new Faker(locale);
+	}
 
-    /**
-     * Constructs Faker instance with provided {@link Random}.
-     *
-     * @param random - {@link Random}
-     * @return {@link Faker#Faker(Random)}
-     */
-    public static Faker instance(Random random) {
-        return new Faker(random);
-    }
+	/**
+	 * Constructs Faker instance with provided {@link Random}.
+	 *
+	 * @param random - {@link Random}
+	 * @return {@link Faker#Faker(Random)}
+	 */
+	public static Faker instance(Random random) {
+		return new Faker(random);
+	}
 
-    /**
-     * Constructs Faker instance with provided {@link Locale} and {@link Random}.
-     *
-     * @param locale - {@link Locale}
-     * @param random - {@link Random}
-     * @return {@link Faker#Faker(Locale, Random)}
-     */
-    public static Faker instance(Locale locale, Random random) {
-        return new Faker(locale, random);
-    }
+	/**
+	 * Constructs Faker instance with provided {@link Locale} and {@link Random}.
+	 *
+	 * @param locale - {@link Locale}
+	 * @param random - {@link Random}
+	 * @return {@link Faker#Faker(Locale, Random)}
+	 */
+	public static Faker instance(Locale locale, Random random) {
+		return new Faker(locale, random);
+	}
 
     Locale getLocale() {
         return fakeValuesService.getLocalesChain().get(0);
@@ -327,259 +331,261 @@ public class Faker {
         return fakeValuesService.bothify(string, isUpper);
     }
 
-    /**
-     * Generates a String that matches the given regular expression.
-     */
-    public String regexify(String regex) {
-        return fakeValuesService.regexify(regex);
-    }
+	/**
+	 * Generates a String that matches the given regular expression.
+	 */
+	public String regexify(String regex) {
+		return fakeValuesService.regexify(regex);
+	}
 
-    public RandomService random() {
-        return this.randomService;
-    }
+	public RandomService random() {
+		return this.randomService;
+	}
 
-    public Currency currency() {
-        return currency;
+	public Currency currency() {
+		return currency;
 
-    }
+	}
 
-    FakeValuesService fakeValuesService() {
-        return this.fakeValuesService;
-    }
+	FakeValuesService fakeValuesService() {
+		return this.fakeValuesService;
+	}
 
-    public Ancient ancient() {
-        return ancient;
-    }
+	public Ancient ancient() {
+		return ancient;
+	}
 
-    public App app() {
-        return app;
-    }
+	public App app() {
+		return app;
+	}
 
-    public Artist artist() {
-        return artist;
-    }
+	public Artist artist() {
+		return artist;
+	}
 
-    public Avatar avatar() {
-        return avatar;
-    }
+	public Avatar avatar() {
+		return avatar;
+	}
 
-    public Aviation aviation() {
-        return aviation;
-    }
+	public Aviation aviation() {
+		return aviation;
+	}
 
-    public Music music() {
-        return music;
-    }
+	public Music music() {
+		return music;
+	}
 
-    public Name name() {
-        return name;
-    }
+	public Name name() {
+		return name;
+	}
 
-    public Number number() {
-        return number;
-    }
+	public Number number() {
+		return number;
+	}
 
-    public Internet internet() {
-        return internet;
-    }
+	public Internet internet() {
+		return internet;
+	}
 
-    public PhoneNumber phoneNumber() {
-        return phoneNumber;
-    }
+	public PhoneNumber phoneNumber() {
+		return phoneNumber;
+	}
 
-    public Pokemon pokemon() {
-        return pokemon;
-    }
+	public Pokemon pokemon() {
+		return pokemon;
+	}
 
-    public Lorem lorem() {
-        return lorem;
-    }
+	public Lorem lorem() {
+		return lorem;
+	}
 
-    public Address address() {
-        return address;
-    }
+	public Address address() {
+		return address;
+	}
 
-    public Book book() {
-        return book;
-    }
+	public Book book() {
+		return book;
+	}
 
-    public Buffy buffy() {
-        return buffy;
-    }
+	public Buffy buffy() {
+		return buffy;
+	}
 
-    public Business business() {
-        return business;
-    }
+	public Business business() {
+		return business;
+	}
 
-    public ChuckNorris chuckNorris() {
-        return chuckNorris;
-    }
+	public ChuckNorris chuckNorris() {
+		return chuckNorris;
+	}
 
-    public Color color() {
-        return color;
-    }
+	public Color color() {
+		return color;
+	}
 
-    public Commerce commerce() {
-        return commerce;
-    }
+	public Commerce commerce() {
+		return commerce;
+	}
 
-    public Company company() {
-        return company;
-    }
+	public Company company() {
+		return company;
+	}
 
-    public Crypto crypto() {
-        return crypto;
-    }
+	public Crypto crypto() {
+		return crypto;
+	}
 
-    public Hacker hacker() {
-        return hacker;
-    }
+	public Hacker hacker() {
+		return hacker;
+	}
 
-    public IdNumber idNumber() {
-        return idNumber;
-    }
+	public IdNumber idNumber() {
+		return idNumber;
+	}
 
-    public Options options() {
-        return options;
-    }
+	public Options options() {
+		return options;
+	}
 
-    public Code code() {
-        return code;
-    }
+	public Code code() {
+		return code;
+	}
 
-    public Coin coin() {
-        return coin;
-    }
+	public Coin coin() {
+		return coin;
+	}
 
-    public File file() {
-        return file;
-    }
+	public File file() {
+		return file;
+	}
 
-    public Finance finance() {
-        return finance;
-    }
+	public Finance finance() {
+		return finance;
+	}
 
-    public Food food() {
-        return food;
-    }
+	public Food food() {
+		return food;
+	}
 
-    public ElderScrolls elderScrolls() {
-        return elderScrolls;
-    }
+	public ElderScrolls elderScrolls() {
+		return elderScrolls;
+	}
 
-    public GameOfThrones gameOfThrones() {
-        return gameOfThrones;
-    }
+	public GameOfThrones gameOfThrones() {
+		return gameOfThrones;
+	}
 
-    public Gender gender() {
-        return gender;
-    }
+	public Gender gender() {
+		return gender;
+	}
 
-    public DateAndTime date() {
-        return dateAndTime;
-    }
+	public DateAndTime date() {
+		return dateAndTime;
+	}
 
-    public Demographic demographic() {
-        return demographic;
-    }
+	public Demographic demographic() {
+		return demographic;
+	}
 
-    public Dog dog() {
-        return dog;
-    }
+	public Dog dog() {
+		return dog;
+	}
 
-    public Educator educator() {
-        return educator;
-    }
+	public Educator educator() {
+		return educator;
+	}
 
-    public SlackEmoji slackEmoji() {
-        return slackEmoji;
-    }
+	public SlackEmoji slackEmoji() {
+		return slackEmoji;
+	}
 
-    public Shakespeare shakespeare() {
-        return shakespeare;
-    }
+	public Shakespeare shakespeare() {
+		return shakespeare;
+	}
 
-    public Space space() {
-        return space;
-    }
+	public Space space() {
+		return space;
+	}
 
-    public Superhero superhero() {
-        return superhero;
-    }
+	public Superhero superhero() {
+		return superhero;
+	}
 
-    public Bool bool() {
-        return bool;
-    }
+	public Bool bool() {
+		return bool;
+	}
 
-    public Team team() {
-        return team;
-    }
+	public Team team() {
+		return team;
+	}
 
-    public Beer beer() { return beer; }
+	public Beer beer() {
+		return beer;
+	}
 
-    public University university() {
-        return university;
-    }
+	public University university() {
+		return university;
+	}
 
-    public Cat cat() {
-        return cat;
-    }
+	public Cat cat() {
+		return cat;
+	}
 
-    public Stock stock() {
-        return stock;
-    }
+	public Stock stock() {
+		return stock;
+	}
 
-    public LordOfTheRings lordOfTheRings() {
-        return lordOfTheRings;
-    }
+	public LordOfTheRings lordOfTheRings() {
+		return lordOfTheRings;
+	}
 
-    public Zelda zelda() {
-        return zelda;
-    }
+	public Zelda zelda() {
+		return zelda;
+	}
 
-    public HarryPotter harryPotter() {
-        return harryPotter;
-    }
+	public HarryPotter harryPotter() {
+		return harryPotter;
+	}
 
-    public RockBand rockBand() {
-        return rockBand;
-    }
+	public RockBand rockBand() {
+		return rockBand;
+	}
 
-    public Esports esports() {
-        return esports;
-    }
+	public Esports esports() {
+		return esports;
+	}
 
-    public Friends friends() {
-        return friends;
-    }
+	public Friends friends() {
+		return friends;
+	}
 
-    public Hipster hipster() {
-        return hipster;
-    }
+	public Hipster hipster() {
+		return hipster;
+	}
 
-    public Job job() {
-        return job;
-    }
+	public Job job() {
+		return job;
+	}
 
-    public TwinPeaks twinPeaks() {
-        return twinPeaks;
-    }
+	public TwinPeaks twinPeaks() {
+		return twinPeaks;
+	}
 
-    public RickAndMorty rickAndMorty() {
-        return rickAndMorty;
-    }
+	public RickAndMorty rickAndMorty() {
+		return rickAndMorty;
+	}
 
-    public Yoda yoda() {
-        return yoda;
-    }
+	public Yoda yoda() {
+		return yoda;
+	}
 
-    public Matz matz() {
-        return matz;
-    }
+	public Matz matz() {
+		return matz;
+	}
 
-    public Witcher witcher() {
-        return witcher;
-    }
+	public Witcher witcher() {
+		return witcher;
+	}
 
     public CPF cpf() {
         return cpf;
@@ -589,115 +595,134 @@ public class Faker {
         return dragonBall;
     }
 
-    public FunnyName funnyName() {
-        return funnyName;
-    }
+	public FunnyName funnyName() {
+		return funnyName;
+	}
 
-    public HitchhikersGuideToTheGalaxy hitchhikersGuideToTheGalaxy() {
-        return hitchhikersGuideToTheGalaxy;
-    }
+	public HitchhikersGuideToTheGalaxy hitchhikersGuideToTheGalaxy() {
+		return hitchhikersGuideToTheGalaxy;
+	}
 
-    public Hobbit hobbit() {
-        return hobbit;
-    }
+	public Hobbit hobbit() {
+		return hobbit;
+	}
 
-    public HowIMetYourMother howIMetYourMother() {
-        return howIMetYourMother;
-    }
+	public HowIMetYourMother howIMetYourMother() {
+		return howIMetYourMother;
+	}
 
-    public LeagueOfLegends leagueOfLegends() {
-        return leagueOfLegends;
-    }
+	public LeagueOfLegends leagueOfLegends() {
+		return leagueOfLegends;
+	}
 
-    public Overwatch overwatch() {
-        return overwatch;
-    }
+	public Overwatch overwatch() {
+		return overwatch;
+	}
 
-    public Robin robin() {
-        return robin;
-    }
+	public Robin robin() {
+		return robin;
+	}
 
-    public StarTrek starTrek() {
-        return starTrek;
-    }
+	public StarTrek starTrek() {
+		return starTrek;
+	}
 
-    public Weather weather() {
-        return weather;
-    }
+	public Weather weather() {
+		return weather;
+	}
 
-    public Lebowski lebowski() {
-        return lebowski;
-    }
+	public Lebowski lebowski() {
+		return lebowski;
+	}
 
-    public Medical medical() {
-        return medical;
-    }
+	public Medical medical() {
+		return medical;
+	}
 
-    public Country country() {
-        return country;
-    }
+	public Country country() {
+		return country;
+	}
 
-    public Animal animal() {
-        return animal;
-    }
+	public Animal animal() {
+		return animal;
+	}
 
-    public BackToTheFuture backToTheFuture() {
-        return backToTheFuture;
-    }
+	public BackToTheFuture backToTheFuture() {
+		return backToTheFuture;
+	}
 
-    public PrincessBride princessBride() {
-        return princessBride;
-    }
+	public PrincessBride princessBride() {
+		return princessBride;
+	}
 
-    public Relationships relationships() {
-        return relationships;
-    }
+	public Relationships relationships() {
+		return relationships;
+	}
 
-    public Nation nation() {
-        return nation;
-    }
+	public Nation nation() {
+		return nation;
+	}
 
-    public Dune dune() {
-        return dune;
-    }
+	public Dune dune() {
+		return dune;
+	}
 
-    public AquaTeenHungerForce aquaTeenHungerForce() {
-        return aquaTeenHungerForce;
-    }
+	public AquaTeenHungerForce aquaTeenHungerForce() {
+		return aquaTeenHungerForce;
+	}
 
-    public ProgrammingLanguage programmingLanguage() {
-        return programmingLanguage;
-    }
+	public ProgrammingLanguage programmingLanguage() {
+		return programmingLanguage;
+	}
 
-    public Kaamelott kaamelott() {
-        return kaamelott;
-    }
+	public Kaamelott kaamelott() {
+		return kaamelott;
+	}
 
-    public Photography photography() {
-        return  photography;
-    }
+	public Photography photography() {
+		return photography;
+	}
 
-    public StarCraft starCraft() {
-        return starCraft;
-    }
+	public StarCraft starCraft() {
+		return starCraft;
+	}
 
-    public BojackHorseman bojackHorseman() { return bojackHorseman; }
+	public Touhou touhou() {
+		return touhou;
+	}
 
-    public Disease disease() {return disease; }
+	public Minecraft minecraft() {
+		return minecraft;
+	}
 
-    public Basketball basketball() { return basketball; }
+	public BojackHorseman bojackHorseman() {
+		return bojackHorseman;
+	}
 
-    public Barcode barcode() { return barcode; }
+	public Disease disease() {
+		return disease;
+	}
 
-    public Sip sip() { return sip; }
+	public Basketball basketball() {
+		return basketball;
+	}
 
-    public EnglandFootBall englandfootball() { return englandfootball; }
+	public Barcode barcode() {
+		return barcode;
+	}
+
+	public Sip sip() {
+		return sip;
+	}
+
+	public EnglandFootBall englandfootball() {
+		return englandfootball;
+	}
 
 
     public Babylon5 babylon5() {
         return babylon5;
     }
-
 
     public Science science() {
         return science;
@@ -711,23 +736,24 @@ public class Faker {
         return this.fakeValuesService.resolve(key, this, this);
     }
 
-    /**
-     * Allows the evaluation of native YML expressions to allow you to build your own.
-     * <p>
-     * The following are valid expressions:
-     * <ul>
-     * <li>#{regexify '(a|b){2,3}'}</li>
-     * <li>#{regexify '\\.\\*\\?\\+'}</li>
-     * <li>#{bothify '????','false'}</li>
-     * <li>#{Name.first_name} #{Name.first_name} #{Name.last_name}</li>
-     * <li>#{number.number_between '1','10'}</li>
-     * </ul>
-     *
-     * @param expression (see examples above)
-     * @return the evaluated string expression
-     * @throws RuntimeException if unable to evaluate the expression
-     */
-    public String expression(String expression) {
-        return this.fakeValuesService.expression(expression, this);
-    }
+	/**
+	 * Allows the evaluation of native YML expressions to allow you to build your
+	 * own.
+	 * <p>
+	 * The following are valid expressions:
+	 * <ul>
+	 * <li>#{regexify '(a|b){2,3}'}</li>
+	 * <li>#{regexify '\\.\\*\\?\\+'}</li>
+	 * <li>#{bothify '????','false'}</li>
+	 * <li>#{Name.first_name} #{Name.first_name} #{Name.last_name}</li>
+	 * <li>#{number.number_between '1','10'}</li>
+	 * </ul>
+	 *
+	 * @param expression (see examples above)
+	 * @return the evaluated string expression
+	 * @throws RuntimeException if unable to evaluate the expression
+	 */
+	public String expression(String expression) {
+		return this.fakeValuesService.expression(expression, this);
+	}
 }
