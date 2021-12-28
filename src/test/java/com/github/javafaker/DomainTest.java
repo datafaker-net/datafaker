@@ -11,8 +11,8 @@ public class DomainTest extends AbstractFakerTest {
      * CS304 Issue link: https://github.com/DiUS/java-faker/issues/391
      */
     @Test
-    public void testFirstLvlDomainNotNull() {
-        String ret = faker.domain().firstLvlDomain("example");
+    public void testFirstLevelDomainNotNull() {
+        String ret = faker.domain().firstLevelDomain("example");
         assert (ret != null);
     }
 
@@ -20,8 +20,8 @@ public class DomainTest extends AbstractFakerTest {
      * CS304 Issue link: https://github.com/DiUS/java-faker/issues/391
      */
     @Test
-    public void testFirstLvlDomain() {
-        String[] components = faker.domain().firstLvlDomain("example").split("\\.");
+    public void testFirstLevelDomain() {
+        String[] components = faker.domain().firstLevelDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);
         }
@@ -31,8 +31,8 @@ public class DomainTest extends AbstractFakerTest {
      * CS304 Issue link: https://github.com/DiUS/java-faker/issues/391
      */
     @Test
-    public void testSecondLvlDomainNotNull() {
-        String ret = faker.domain().secondLvlDomain("example");
+    public void testSecondLevelDomainNotNull() {
+        String ret = faker.domain().secondLevelDomain("example");
         assert (ret != null);
     }
 
@@ -40,8 +40,8 @@ public class DomainTest extends AbstractFakerTest {
      * CS304 Issue link: https://github.com/DiUS/java-faker/issues/391
      */
     @Test
-    public void testSecondLvlDomain() {
-        String[] components = faker.domain().secondLvlDomain("example").split("\\.");
+    public void testSecondLevelDomain() {
+        String[] components = faker.domain().secondLevelDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);
         }

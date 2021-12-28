@@ -1,7 +1,7 @@
 package com.github.javafaker;
 
 
-import java.util.Random;
+import com.github.javafaker.service.RandomService;
 
 import static org.apache.commons.lang3.StringUtils.join;
 
@@ -27,35 +27,31 @@ public class Domain {
      * @param name the company name
      * @return the
      */
-    public String firstLvlDomain(String name) {
-        String ret;
+    public String firstLevelDomain(String name) {
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
-        ret = join(
+        return join(
                 name,
                 ".",
                 top
         );
-        return ret;
     }
 
     /**
-     * Second lvl domain string. Such as example.com.uk
+     * Second level domain string. Such as example.com.uk
      *
      * @param name the company name
      * @return the second level domain with company name
      */
-    public String secondLvlDomain(String name) {
-        String ret;
+    public String secondLevelDomain(String name) {
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
         String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
-        ret = join(
+        return join(
                 name,
                 ".",
                 top,
                 ".",
                 suffix
         );
-        return ret;
     }
 
     /**
@@ -65,11 +61,10 @@ public class Domain {
      * @return the full domain name
      */
     public String fullDomain(String name) {
-        String ret;
         String prefix = faker.fakeValuesService().resolve("domain.prefix", this, faker);
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
         String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
-        ret = join(
+        return join(
                 prefix,
                 ".",
                 name,
@@ -78,59 +73,47 @@ public class Domain {
                 ".",
                 suffix
         );
-        return ret;
     }
 
 
     /**
      * Return a random valid domain.
      *
-     * @param name the name
-     * @return the string
+     * @param name the company name
+     * @return A valid domain
      */
     public String validDomain(String name) {
-        String ret, prefix, top, suffix;
-        boolean has_prefix, has_suffix;
-        Random random = new Random();
+        final RandomService random = faker.random();
 
-        if (random.nextInt(3) == 1) {
-            has_prefix = true;
-        } else {
-            has_prefix = false;
-        }
+        boolean has_prefix = random.nextInt(3) == 1;
+        boolean has_suffix = random.nextInt(2) == 1;
 
-        if (random.nextInt(2) == 1) {
-            has_suffix = true;
-        } else {
-            has_suffix = false;
-        }
+        String top = faker.fakeValuesService().resolve("domain.top", this, faker);
 
-        top = faker.fakeValuesService().resolve("domain.top", this, faker);
-
-        ret = join(
+        String result = join(
                 name,
                 ".",
                 top
         );
 
         if (has_prefix) {
-            prefix = faker.fakeValuesService().resolve("domain.prefix", this, faker);
-            ret = join(
+            String prefix = faker.fakeValuesService().resolve("domain.prefix", this, faker);
+            result = join(
                     prefix,
                     ".",
-                    ret
+                    result
             );
         }
 
         if (has_suffix) {
-            suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
-            ret = join(
-                    ret,
+            String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
+            result = join(
+                    result,
                     ".",
                     suffix
             );
         }
 
-        return ret;
+        return result;
     }
 }
