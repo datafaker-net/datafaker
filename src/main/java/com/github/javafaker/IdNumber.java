@@ -4,6 +4,7 @@ import com.github.javafaker.idnumbers.EnIdNumber;
 import com.github.javafaker.idnumbers.NricNumber;
 import com.github.javafaker.idnumbers.NricNumber.Type;
 import com.github.javafaker.idnumbers.PtNifIdNumber;
+import com.github.javafaker.idnumbers.EnZAIdNumber;
 import com.github.javafaker.idnumbers.SvSEIdNumber;
 import com.github.javafaker.idnumbers.ZhCnIdNumber;
 
@@ -26,13 +27,29 @@ public class IdNumber {
         EnIdNumber enIdNumber = new EnIdNumber();
         return enIdNumber.getValidSsn(faker);
     }
-
     /**
      * Specified as #{IDNumber.valid_sv_se_ssn} in sv-SE.yml
      */
     public String validSvSeSsn() {
         SvSEIdNumber svSEIdNumber = new SvSEIdNumber();
+
         return svSEIdNumber.getValidSsn(faker);
+    }
+
+    /**
+     * Specified as #{IDNumber.valid_en_za_ssn} in en-ZA.yml
+     */
+    public String validEnZaSsn() {
+        EnZAIdNumber enZAIdNumber = new EnZAIdNumber();
+        return enZAIdNumber.getValidSsn(faker);
+    }
+
+    /**
+     * Specified as #{IDNumber.invalid_en_za_ssn} in en-ZA.yml
+     */
+    public String inValidEnZaSsn() {
+        EnZAIdNumber enZAIdNumber = new EnZAIdNumber();
+        return enZAIdNumber.getInValidSsn(faker);
     }
 
     /**
@@ -77,4 +94,5 @@ public class IdNumber {
         PtNifIdNumber idNumber = new PtNifIdNumber();
         return idNumber.getInvalid(faker);
     }
+
 }
