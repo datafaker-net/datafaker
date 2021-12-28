@@ -9,8 +9,8 @@ de-CH:
       time_zone: [MEZ, Europe/Berlin, Central European Time, CET]
       street_name:
         - "#{street_root}"
-      - street_address:
-          - "#{street_name} #{building_number}"
+      street_address:
+        - "#{street_name} #{building_number}"
       country_by_code:
         AF: "Afghanistan"
         AL: "Albanien"
