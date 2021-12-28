@@ -82,6 +82,7 @@ Fakers
 * Crypto
 * DateAndTime
 * Demographic
+* Dessert
 * Disease
 * Dog
 * DragonBall

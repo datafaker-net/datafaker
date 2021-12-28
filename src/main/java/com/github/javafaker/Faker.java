@@ -109,6 +109,7 @@ public class Faker {
     private final Babylon5 babylon5;
     private final Science science;
     private final Vehicle vehicle;
+    private final Dessert dessert;
 
     public Faker() {
         this(Locale.ENGLISH);
@@ -228,6 +229,7 @@ public class Faker {
         this.babylon5 = new Babylon5(this);
         this.science = new Science(this);
         this.vehicle = new Vehicle(this);
+        this.dessert = new Dessert(this);
     }
 
     /**
@@ -702,6 +704,8 @@ public class Faker {
     }
 
     public Vehicle vehicle() { return vehicle; }
+
+    public Dessert dessert() { return dessert; }
 
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this);
