@@ -115,8 +115,8 @@ public class Faker {
     private final Domain domain;
     private final ResidentEvil residentEvil;
     private final Hearthstone hearthstone;
-    // CS304 Issue link: https://github.com/DiUS/java-faker/issues/450
     private final Passport passport;
+    private final Twitter twitter;
 
 	public Faker() {
 		this(Locale.ENGLISH);
@@ -243,6 +243,7 @@ public class Faker {
         this.residentEvil = new ResidentEvil(this);
         this.hearthstone = new Hearthstone(this);
         this.passport = new Passport(this);
+        this.twitter = new Twitter(this);
     }
 
 	/**
@@ -754,6 +755,10 @@ public class Faker {
      */
     // CS304 Issue link: https://github.com/DiUS/java-faker/issues/450
     public Passport passport() {return passport;}
+
+    public Twitter twitter(){
+        return twitter;
+    }
 
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this);
