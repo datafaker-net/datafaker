@@ -14,19 +14,17 @@ public class Number {
      * Returns a random number from 0-9 (both inclusive)
      */
     public int randomDigit() {
-        return decimalBetween(0,10).intValue();
+        return decimalBetween(0, 10).intValue();
     }
 
     /**
      * Returns a random number from 1-9 (both inclusive)
      */
     public int randomDigitNotZero() {
-        return decimalBetween(1,10).intValue();
+        return decimalBetween(1, 10).intValue();
     }
 
     /**
-     * @see Number#numberBetween(int, int)
-     * Generate a invalid social security number on faker
      * @param min the lower bound (include min)
      * @param max the lower bound (not include max)
      * @return a random number on faker.number() between min and max
@@ -39,8 +37,6 @@ public class Number {
     }
 
     /**
-     * @see Number#numberBetween(long, long)
-     * Generate a invalid social security number on faker
      * @param min the lower bound (include min)
      * @param max the lower bound (not include max)
      * @return a random number on faker.number() between min and max
@@ -51,7 +47,7 @@ public class Number {
         if (min == max) return min;
         return decimalBetween(min, max).longValue();
     }
-    
+
     /**
      * @param numberOfDigits the number of digits the generated value should have
      * @param strict         whether or not the generated value should have exactly <code>numberOfDigits</code>
@@ -70,13 +66,14 @@ public class Number {
      * Returns a random number
      */
     public long randomNumber() {
-        int numberOfDigits = decimalBetween(1,10).intValue();
+        int numberOfDigits = decimalBetween(1, 10).intValue();
         return randomNumber(numberOfDigits, false);
     }
 
     public double randomDouble(int maxNumberOfDecimals, int min, int max) {
-        return randomDouble(maxNumberOfDecimals,(long) min, (long) max);
+        return randomDouble(maxNumberOfDecimals, (long) min, (long) max);
     }
+
     /**
      * Returns a random double
      *
@@ -85,14 +82,12 @@ public class Number {
      * @param max                 maximum value
      */
     public double randomDouble(int maxNumberOfDecimals, long min, long max) {
-        return decimalBetween(min,max)
+        return decimalBetween(min, max)
                 .setScale(maxNumberOfDecimals, RoundingMode.HALF_DOWN)
                 .doubleValue();
     }
 
     /**
-     * @see Number#decimalBetween(long, long)
-     * Generate a invalid social security number on faker
      * @param min the lower bound (include min)
      * @param max the lower bound (not include max)
      * @return decimalBetween on faker.number() between min and max
@@ -104,9 +99,9 @@ public class Number {
             return new BigDecimal(min);
         }
 
-        final BigDecimal trueMin = new BigDecimal(""+min);
-        final BigDecimal trueMax = new BigDecimal(""+max);
-        final BigDecimal random = BigDecimal.valueOf(Math.random());
+        final BigDecimal trueMin = new BigDecimal("" + min);
+        final BigDecimal trueMax = new BigDecimal("" + max);
+        final BigDecimal random = BigDecimal.valueOf(faker.random().nextDouble());
 
         BigDecimal r = trueMax.subtract(trueMin);
         r = trueMin.add(r.multiply(random));

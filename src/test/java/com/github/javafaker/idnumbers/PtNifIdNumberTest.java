@@ -21,19 +21,19 @@ public class PtNifIdNumberTest {
 	@Test
 	public void testInValid() {
 		PtNifIdNumber idNumber = new PtNifIdNumber();
-		Assert.assertEquals("304867688", idNumber.getInvalid(faker));
+		Assert.assertEquals("7202838711", idNumber.getInvalid(faker));
 	}
 
 	@Test
 	public void testValid() {
 	    PtNifIdNumber idNumber = new PtNifIdNumber();
-		Assert.assertEquals("275700623", idNumber.getValid(faker));
+		Assert.assertEquals("346336848", idNumber.getValid(faker));
 	}
 
 	@Test
 	public void testValidWithFaker() {
 		PtNifIdNumber idNumber = new PtNifIdNumber();
-		Assert.assertEquals("275700623", faker.idNumber().valid());
+		Assert.assertEquals("346336848", faker.idNumber().valid());
 	}
 
 }
