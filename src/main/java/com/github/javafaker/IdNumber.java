@@ -3,6 +3,7 @@ package com.github.javafaker;
 import com.github.javafaker.idnumbers.EnIdNumber;
 import com.github.javafaker.idnumbers.NricNumber;
 import com.github.javafaker.idnumbers.NricNumber.Type;
+import com.github.javafaker.idnumbers.PtNifIdNumber;
 import com.github.javafaker.idnumbers.SvSEIdNumber;
 import com.github.javafaker.idnumbers.ZhCnIdNumber;
 
@@ -58,7 +59,6 @@ public class IdNumber {
         return NricNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTIETH_CENTURY);
     }
 
-
     /**
      * Generate a valid Zh-CN id number.
      * @return A Zh-CN id number
@@ -66,5 +66,15 @@ public class IdNumber {
     public String validZhCNSsn ()  {
         ZhCnIdNumber zhCnIdNumber = new ZhCnIdNumber();
         return zhCnIdNumber.getValidSsn(faker);
+    }
+
+    public String validPtNif() {
+        PtNifIdNumber idNumber = new PtNifIdNumber();
+        return idNumber.getValid(faker);
+    }
+
+    public String invalidPtNif() {
+        PtNifIdNumber idNumber = new PtNifIdNumber();
+        return idNumber.getInvalid(faker);
     }
 }
