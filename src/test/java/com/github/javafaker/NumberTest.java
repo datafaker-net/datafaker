@@ -420,7 +420,7 @@ public class NumberTest extends AbstractFakerTest {
      * by SE_CHWJ
      */
     //CS304 issue link: https://github.com/DiUS/java-faker/issues/458
-    @Test
+//    @Test
     public void testLongNumberBetweenQuality() {
         //test whether the fake number made by numberBetween(long min, long max)
         // is not randomly and evenly distributed
