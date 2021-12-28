@@ -3,7 +3,7 @@ package com.github.javafaker;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.isOneOf;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class BoolTest extends AbstractFakerTest {
 

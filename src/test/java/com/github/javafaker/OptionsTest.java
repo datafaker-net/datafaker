@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.isIn;
 import static org.hamcrest.Matchers.isOneOf;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class OptionsTest extends AbstractFakerTest {
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * The purpose of these tests is to ensure that the Locales have been properly configured

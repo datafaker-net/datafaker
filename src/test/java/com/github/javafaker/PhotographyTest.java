@@ -4,7 +4,10 @@ import com.github.javafaker.repeating.Repeat;
 import org.junit.Test;
 
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class PhotographyTest extends AbstractFakerTest{
 

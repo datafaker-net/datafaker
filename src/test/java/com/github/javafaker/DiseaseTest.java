@@ -5,7 +5,8 @@ import org.junit.Test;
 
 import static com.github.javafaker.matchers.IsStringWithContents.isStringWithContents;
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class DiseaseTest extends AbstractFakerTest {
     @Test

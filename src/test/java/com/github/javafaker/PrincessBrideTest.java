@@ -5,7 +5,7 @@ import org.junit.Test;
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PrincessBrideTest extends AbstractFakerTest {
     @Test

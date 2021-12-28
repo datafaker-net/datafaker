@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Luka Obradovic (luka@vast.com)

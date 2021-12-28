@@ -1,6 +1,6 @@
 package com.github.javafaker;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Test;
 

@@ -3,7 +3,7 @@ package com.github.javafaker;
 import org.junit.Test;
 import java.time.Duration;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 // Issue Link: https://github.com/DiUS/java-faker/issues/677

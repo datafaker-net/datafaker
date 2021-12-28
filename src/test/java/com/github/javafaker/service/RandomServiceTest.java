@@ -13,7 +13,7 @@ import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegu
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.CombinableMatcher.both;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author pmiklos

@@ -1,13 +1,14 @@
 package com.github.javafaker;
 
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 import java.util.Random;
 
@@ -30,7 +31,7 @@ public class LoremTest extends AbstractFakerTest {
 
     @Test
     public void wordShouldNotBeNullOrEmpty() {
-        assertThat(faker.lorem().word(), not(isEmptyOrNullString()));
+        assertThat(faker.lorem().word(), not(is(emptyOrNullString())));
     }
 
     @Test
@@ -73,8 +74,8 @@ public class LoremTest extends AbstractFakerTest {
     public void testCharactersWithLength() {
         assertThat(faker.lorem().characters(2), matchesRegularExpression("[a-z\\d]{2}"));
         assertThat(faker.lorem().characters(500), matchesRegularExpression("[a-z\\d]{500}"));
-        assertThat(faker.lorem().characters(0), isEmptyString());
-        assertThat(faker.lorem().characters(-1), isEmptyString());
+        assertThat(faker.lorem().characters(0), is(emptyString()));
+        assertThat(faker.lorem().characters(-1), is(emptyString()));
     }
 
     @Test
@@ -83,8 +84,8 @@ public class LoremTest extends AbstractFakerTest {
         assertThat(faker.lorem().characters(500, false), matchesRegularExpression("[a-z\\d]{500}"));
         assertThat(faker.lorem().characters(2, true), matchesRegularExpression("[a-zA-Z\\d]{2}"));
         assertThat(faker.lorem().characters(500, true), matchesRegularExpression("[a-zA-Z\\d]{500}"));
-        assertThat(faker.lorem().characters(0, false), isEmptyString());
-        assertThat(faker.lorem().characters(-1, true), isEmptyString());
+        assertThat(faker.lorem().characters(0, false), is(emptyString()));
+        assertThat(faker.lorem().characters(-1, true), is(emptyString()));
     }
 
     @Test

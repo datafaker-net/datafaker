@@ -5,7 +5,10 @@ import org.junit.Test;
 import java.util.Date;
 
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 //CS304 issue link: https://github.com/DiUS/java-faker/issues/414
 public class TwitterTest extends AbstractFakerTest {
@@ -38,7 +41,7 @@ public class TwitterTest extends AbstractFakerTest {
     public void testTwitterIDLength() {
         int expectedLength = 15;
         String generatedID = faker.twitter().twitter_id(expectedLength);
-        assertTrue(generatedID.length() == expectedLength);
+        assertEquals(generatedID.length(), expectedLength);
     }
     /**
      * Test for faking twitter id unique
@@ -48,7 +51,7 @@ public class TwitterTest extends AbstractFakerTest {
         int expectedLength = 15;
         String generatedIDOne = faker.twitter().twitter_id(expectedLength);
         String generatedIDTwo = faker.twitter().twitter_id(expectedLength);
-        assertFalse(generatedIDOne.equals(generatedIDTwo));
+        assertNotEquals(generatedIDOne, generatedIDTwo);
     }
     /**
      * Test for faking twitter text length
@@ -72,15 +75,16 @@ public class TwitterTest extends AbstractFakerTest {
         String text =  faker.twitter().text(keywords, sentenceMaxLength, wordMaxLength);
         String[] textwords = text.split(" ");
         boolean flag = true;
-        for(int i=0; i<keywords.length; i++){
+        for (String keyword : keywords) {
             boolean tmpFlag = false;
-            for(int j=0; j<textwords.length; j++){
-                if(keywords[i].equals(textwords[j])){
+            for (String textword : textwords) {
+                if (keyword.equals(textword)) {
                     tmpFlag = true;
+                    break;
                 }
             }
-            flag = flag && tmpFlag;
-            if(flag == false){
+            flag = tmpFlag;
+            if (!flag) {
                 break;
             }
         }

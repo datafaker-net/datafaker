@@ -10,7 +10,7 @@ import java.util.Locale;
 
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CodeTest extends AbstractFakerTest {
 
