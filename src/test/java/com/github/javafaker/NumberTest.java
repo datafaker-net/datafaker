@@ -1,7 +1,6 @@
 package com.github.javafaker;
 
 import com.github.javafaker.repeating.Repeat;
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.tuple.Pair;
@@ -10,13 +9,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class NumberTest extends AbstractFakerTest {
 
@@ -200,19 +212,16 @@ public class NumberTest extends AbstractFakerTest {
      */
     @Test
     public void randomDoubleRandomizationQuality() {
-        Function<Pair<Long, Long>, Double> minMaxRangeToUniquePercentageFunction = new Function<Pair<Long, Long>, Double>() {
-            @Override
-            public Double apply(Pair<Long, Long> minMax) {
-                final int min = minMax.getLeft().intValue(), max = minMax.getRight().intValue();
-                long numbersToGet = calculateNumbersToGet(min, max);
+        Function<Pair<Long, Long>, Double> minMaxRangeToUniquePercentageFunction = minMax -> {
+            final int min = minMax.getLeft().intValue(), max = minMax.getRight().intValue();
+            long numbersToGet = calculateNumbersToGet(min, max);
 
-                return uniquePercentageOfResults(numbersToGet, new Callable<Double>() {
-                    @Override
-                    public Double call() throws Exception {
-                        return faker.number().randomDouble(0, min, max);
-                    }
-                });
-            }
+            return uniquePercentageOfResults(numbersToGet, new Callable<Double>() {
+                @Override
+                public Double call() throws Exception {
+                    return faker.number().randomDouble(0, min, max);
+                }
+            });
         };
 
         final double percentGreaterThan80Percent = randomizationQualityTest(individualRunGtPercentUnique, minMaxRangeToUniquePercentageFunction);
@@ -237,20 +246,17 @@ public class NumberTest extends AbstractFakerTest {
      */
     @Test
     public void numberBetweenIntIntRandomizationQuality() {
-        Function<Pair<Long, Long>, Double> minMaxRangeToUniquePercentageFunction = new Function<Pair<Long, Long>, Double>() {
-            @Override
-            public Double apply(Pair<Long, Long> minMax) {
-                final int min = minMax.getLeft().intValue();
-                final int max = minMax.getRight().intValue();
-                long numbersToGet = calculateNumbersToGet(min, max);
+        Function<Pair<Long, Long>, Double> minMaxRangeToUniquePercentageFunction = minMax -> {
+            final int min = minMax.getLeft().intValue();
+            final int max = minMax.getRight().intValue();
+            long numbersToGet = calculateNumbersToGet(min, max);
 
-                return uniquePercentageOfResults(numbersToGet, new Callable<Integer>() {
-                    @Override
-                    public Integer call() throws Exception {
-                        return faker.number().numberBetween(min, max);
-                    }
-                });
-            }
+            return uniquePercentageOfResults(numbersToGet, new Callable<Integer>() {
+                @Override
+                public Integer call() throws Exception {
+                    return faker.number().numberBetween(min, max);
+                }
+            });
         };
 
         final double percentGreaterThan80Percent = randomizationQualityTest(individualRunGtPercentUnique, minMaxRangeToUniquePercentageFunction);
@@ -275,19 +281,11 @@ public class NumberTest extends AbstractFakerTest {
      */
     @Test
     public void numberBetweenLongLongRandomizationQuality() {
-        Function<Pair<Long, Long>, Double> minMaxRangeToUniquePercentageFunction = new Function<Pair<Long, Long>, Double>() {
-            @Override
-            public Double apply(Pair<Long, Long> minMax) {
-                final long min = minMax.getLeft(), max = minMax.getRight();
-                long numbersToGet = calculateNumbersToGet(min, max);
+        Function<Pair<Long, Long>, Double> minMaxRangeToUniquePercentageFunction = minMax -> {
+            final long min = minMax.getLeft(), max = minMax.getRight();
+            long numbersToGet = calculateNumbersToGet(min, max);
 
-                return uniquePercentageOfResults(numbersToGet, new Callable<Long>() {
-                    @Override
-                    public Long call() throws Exception {
-                        return faker.number().numberBetween(min, max);
-                    }
-                });
-            }
+            return uniquePercentageOfResults(numbersToGet, () -> faker.number().numberBetween(min, max));
         };
         
         final double percentGreaterThan80Percent = randomizationQualityTest(individualRunGtPercentUnique, minMaxRangeToUniquePercentageFunction);
@@ -336,7 +334,7 @@ public class NumberTest extends AbstractFakerTest {
      * @return percent of percentUniqueRunner's results greater than the threshold
      */
     private double randomizationQualityTest(final double threshold, 
-                                            final Function<Pair<Long,Long>,Double> percentUniqueRunner) {
+                                            final Function<Pair<Long, Long>, Double> percentUniqueRunner) {
         final int rangeEnd = RANDOMIZATION_QUALITY_RANGE_END;
         final int rangeStep = RANDOMIZATION_QUALITY_RANGE_STEP;
         final int rangeStart = RANDOMIZATION_QUALITY_RANGE_START;
@@ -345,7 +343,7 @@ public class NumberTest extends AbstractFakerTest {
         final AtomicLong total = new AtomicLong();
 
         for (long l = rangeStart; l < rangeEnd; l += rangeStep) {
-            final double percentUnique = percentUniqueRunner.apply(Pair.of(-l,l));
+            final double percentUnique = percentUniqueRunner.apply(Pair.of(-l, l));
             logger.info("Range {} to {} is {} percent unique.", -l, l, percentUnique);
             if (percentUnique > threshold) {
                 greaterThanThreshold.incrementAndGet();
@@ -394,7 +392,7 @@ public class NumberTest extends AbstractFakerTest {
         //test whether the fake number made by numberBetween(int min, int max)
         // is not randomly and evenly distributed
         // (The difference between the average is less than 10%)
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> map = new HashMap<>();
         Random random = new Random();
         int testCase = 100000;
 
@@ -425,7 +423,7 @@ public class NumberTest extends AbstractFakerTest {
         //test whether the fake number made by numberBetween(long min, long max)
         // is not randomly and evenly distributed
         // (The difference between the average is less than 10%)
-        Map<Long, Integer> map = new HashMap<Long, Integer>();
+        Map<Long, Integer> map = new HashMap<>();
         Random random = new Random();
         int testCase = 100000;
 
