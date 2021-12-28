@@ -117,6 +117,7 @@ public class Faker {
     private final Hearthstone hearthstone;
     private final Passport passport;
     private final Twitter twitter;
+    private final FakeDuration duration;
 
 	public Faker() {
 		this(Locale.ENGLISH);
@@ -244,6 +245,7 @@ public class Faker {
         this.hearthstone = new Hearthstone(this);
         this.passport = new Passport(this);
         this.twitter = new Twitter(this);
+        this.duration = new FakeDuration(this);
     }
 
 	/**
@@ -680,6 +682,9 @@ public class Faker {
 	public AquaTeenHungerForce aquaTeenHungerForce() {
 		return aquaTeenHungerForce;
 	}
+    public FakeDuration duration() {
+        return duration;
+    }
 
 	public ProgrammingLanguage programmingLanguage() {
 		return programmingLanguage;
