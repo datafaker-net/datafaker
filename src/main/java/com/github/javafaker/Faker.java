@@ -52,6 +52,7 @@ public class Faker {
     private final Educator educator;
     private final ElderScrolls elderScrolls;
     private final Shakespeare shakespeare;
+    private final Size size;
     private final SlackEmoji slackEmoji;
     private final Space space;
     private final Superhero superhero;
@@ -73,6 +74,7 @@ public class Faker {
     private final TwinPeaks twinPeaks;
     private final RickAndMorty rickAndMorty;
     private final Yoda yoda;
+    private final Mood mood;
     private final Matz matz;
     private final Witcher witcher;
     private final CPF cpf;
@@ -179,6 +181,7 @@ public class Faker {
         this.dog = new Dog(this);
         this.educator = new Educator(this);
         this.shakespeare = new Shakespeare(this);
+        this.size = new Size(this);
         this.slackEmoji = new SlackEmoji(this);
         this.space = new Space(this);
         this.coin = new Coin(this);
@@ -201,6 +204,7 @@ public class Faker {
         this.rickAndMorty = new RickAndMorty(this);
         this.yoda = new Yoda(this);
         this.matz = new Matz(this);
+        this.mood = new Mood(this);
         this.witcher = new Witcher(this);
         this.cpf = new CPF(this);
         this.dragonBall = new DragonBall(this);
@@ -518,6 +522,9 @@ public class Faker {
 	public Space space() {
 		return space;
 	}
+    public Size size() {
+        return size;
+    }
 
 	public Superhero superhero() {
 		return superhero;
@@ -595,9 +602,13 @@ public class Faker {
 		return matz;
 	}
 
-	public Witcher witcher() {
-		return witcher;
-	}
+    public Mood mood(){
+        return mood;
+    }
+
+    public Witcher witcher() {
+        return witcher;
+    }
 
     public CPF cpf() {
         return cpf;
