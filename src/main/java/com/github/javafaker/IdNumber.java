@@ -5,6 +5,7 @@ import com.github.javafaker.idnumbers.NricNumber;
 import com.github.javafaker.idnumbers.NricNumber.Type;
 import com.github.javafaker.idnumbers.PtNifIdNumber;
 import com.github.javafaker.idnumbers.EnZAIdNumber;
+import com.github.javafaker.idnumbers.EsMXIdNumber;
 import com.github.javafaker.idnumbers.SvSEIdNumber;
 import com.github.javafaker.idnumbers.ZhCnIdNumber;
 
@@ -27,6 +28,7 @@ public class IdNumber {
         EnIdNumber enIdNumber = new EnIdNumber();
         return enIdNumber.getValidSsn(faker);
     }
+
     /**
      * Specified as #{IDNumber.valid_sv_se_ssn} in sv-SE.yml
      */
@@ -93,6 +95,27 @@ public class IdNumber {
     public String invalidPtNif() {
         PtNifIdNumber idNumber = new PtNifIdNumber();
         return idNumber.getInvalid(faker);
+    }
+
+
+    /**
+     * Specified as #{IDNumber.valid_es_mx_ssn} in es-MX.yml
+     * @return A valid MEX CURP.
+     */
+    //CS304 Issue link: https://github.com/DiUS/java-faker/issues/571
+    public String validEsMXSsn() {
+        EsMXIdNumber esMXIdNumber = new EsMXIdNumber();
+        return esMXIdNumber.get(faker);
+    }
+
+    /**
+     * Specified as #{IDNumber.invalid_es_mx_ssn} in es-MX.yml
+     * @return A valid MEX CURP.
+     */
+    //CS304 Issue link: https://github.com/DiUS/java-faker/issues/571
+    public String invalidEsMXSsn() {
+        EsMXIdNumber esMXIdNumber = new EsMXIdNumber();
+        return esMXIdNumber.getWrong(faker);
     }
 
 }
