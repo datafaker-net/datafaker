@@ -19,6 +19,6 @@ public class DessertTest extends AbstractFakerTest {
 
     @Test
     public void flavor() {
-        assertThat(faker.dessert().flavor(), matchesRegularExpression("[A-Za-z ]+"));
+        assertThat(faker.dessert().flavor(), matchesRegularExpression("[A-Za-z ']+"));
     }
 }
