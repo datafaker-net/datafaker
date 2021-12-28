@@ -8,9 +8,14 @@ import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LoremTest extends AbstractFakerTest {
 
@@ -36,6 +41,20 @@ public class LoremTest extends AbstractFakerTest {
     public void testCharacterIncludeUpperCase() {
         assertThat(String.valueOf(faker.lorem().character(false)), matchesRegularExpression("[a-z\\d]{1}"));
         assertThat(String.valueOf(faker.lorem().character(true)), matchesRegularExpression("[a-zA-Z\\d]{1}"));
+    }
+
+    @Test
+    public void testCharactersShouldIncludeMinAndMaxLenght() {
+        List<String> results = new ArrayList<>();
+        for(int i = 0 ; i< 300; i++) {
+            results.add(faker.lorem().characters(1, 10));
+        }
+
+        final List<String> min = results.stream().filter(x -> x.length() == 1).collect(Collectors.toList());
+        final List<String> max = results.stream().filter(x -> x.length() == 10).collect(Collectors.toList());
+
+        assertTrue(min.size() > 0);
+        assertTrue(max.size() > 0);
     }
 
     @Test

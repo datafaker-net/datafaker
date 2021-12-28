@@ -7,14 +7,17 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static com.github.javafaker.matchers.CountOfCharactersMatcher.countOf;
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static java.lang.Integer.parseInt;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class InternetTest extends AbstractFakerTest {
     @Test
@@ -141,6 +144,20 @@ public class InternetTest extends AbstractFakerTest {
         assertThat(faker.internet().password(10, 25, false, false), matchesRegularExpression("[a-z\\d]{10,25}"));
         assertThat(faker.internet().password(10, 25, false, true), matchesRegularExpression("[a-z\\d!@#$%^&*]{10,25}"));
         assertThat(faker.internet().password(10, 25, true, true), matchesRegularExpression("[a-zA-Z\\d!@#$%^&*]{10,25}"));
+    }
+
+    @Test
+    public void shouldGenerateAPasswordWithMinAndMaxLength() {
+        List<String> results = new ArrayList<>();
+        for(int i = 0 ; i< 300; i++) {
+            results.add(faker.internet().password(1, 10));
+        }
+
+        final List<String> min = results.stream().filter(x -> x.length() == 1).collect(Collectors.toList());
+        final List<String> max = results.stream().filter(x -> x.length() == 10).collect(Collectors.toList());
+
+        assertTrue(min.size() > 0);
+        assertTrue(max.size() > 0);
     }
 
     @Test

@@ -32,14 +32,14 @@ public class Lorem {
     }
 
     public String characters(int minimumLength, int maximumLength) {
-        return characters(faker.random().nextInt(maximumLength - minimumLength) + minimumLength, false);
+        return characters(faker.random().nextInt(minimumLength, maximumLength), false);
     }
 
     public String characters(int minimumLength, int maximumLength, boolean includeUppercase) {
         if (minimumLength == maximumLength) {
             return characters(minimumLength, includeUppercase);
         } else {
-            return characters(faker.random().nextInt(maximumLength - minimumLength) + minimumLength, includeUppercase);
+            return characters(faker.random().nextInt(minimumLength, maximumLength), includeUppercase);
         }
     }
 
@@ -47,7 +47,7 @@ public class Lorem {
         if (minimumLength == maximumLength) {
             return characters(minimumLength, includeUppercase, includeDigit);
         } else {
-            return characters(faker.random().nextInt(maximumLength - minimumLength) + minimumLength, includeUppercase, includeDigit);
+            return characters(faker.random().nextInt(minimumLength, maximumLength), includeUppercase, includeDigit);
         }
     }
 
