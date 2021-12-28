@@ -28,7 +28,7 @@ public class Finance {
         final String template = faker.numerify(value);
 
         String[] split = EMPTY_STRING.split(NUMBERS.matcher(template).replaceAll(""));
-        List<Integer> reversedAsInt = new ArrayList<Integer>();
+        List<Integer> reversedAsInt = new ArrayList<>();
         for (int i = 0; i < split.length; i++) {
             final String current = split[split.length - 1 - i];
             if (!current.isEmpty()) {
@@ -58,7 +58,7 @@ public class Finance {
     }
 
     public String iban() {
-        List<String> countryCodes = new ArrayList<String>(countryCodeToBasicBankAccountNumberPattern.keySet());
+        List<String> countryCodes = new ArrayList<>(countryCodeToBasicBankAccountNumberPattern.keySet());
         String randomCountryCode = countryCodes.get(faker.random().nextInt(countryCodes.size()));
         return iban(randomCountryCode);
     }
@@ -77,7 +77,7 @@ public class Finance {
         int sum = 0;
         for (String s : string) {
             if (!s.isEmpty()) {
-                sum += Integer.valueOf(s);
+                sum += Integer.parseInt(s);
             }
         }
         return sum;
@@ -90,7 +90,7 @@ public class Finance {
         char[] characters = basis.toLowerCase().toCharArray();
         for (char c : characters) {
             if (Character.isLetter(c)) {
-                sb.append(String.valueOf((c - 'a') + 10));
+                sb.append((c - 'a') + 10);
             } else {
                 sb.append(c);
             }
@@ -103,7 +103,7 @@ public class Finance {
     private static Map<String, String> createCountryCodeToBasicBankAccountNumberPatternMap() {
         // source: https://www.swift.com/standards/data-standards/iban
         // version 87
-        Map<String, String> ibanFormats = new HashMap<String, String>();
+        Map<String, String> ibanFormats = new HashMap<>();
         ibanFormats.put("AD", "\\d{4}\\d{4}[0-9A-Za-z]{12}");
         ibanFormats.put("AE", "\\d{3}\\d{16}");
         ibanFormats.put("AL", "\\d{8}[0-9A-Za-z]{16}");
@@ -138,7 +138,7 @@ public class Finance {
         ibanFormats.put("HU", "\\d{3}\\d{4}\\d{1}\\d{15}\\d{1}");
         ibanFormats.put("IE", "[A-Z]{4}\\d{6}\\d{8}");
         ibanFormats.put("IL", "\\d{3}\\d{3}\\d{13}");
-        ibanFormats.put("IQ", "\\[A-Z]{4}\\d{3}\\d{12}");
+        ibanFormats.put("IQ", "[A-Z]{4}\\d{3}\\d{12}");
         ibanFormats.put("IS", "\\d{4}\\d{2}\\d{6}\\d{10}");
         ibanFormats.put("IT", "[A-Z]{1}\\d{5}\\d{5}[0-9A-Za-z]{12}");
         ibanFormats.put("JO", "[A-Z]{4}\\d{4}[0-9A-Za-z]{18}");
@@ -167,13 +167,13 @@ public class Finance {
         ibanFormats.put("RO", "[A-Z]{4}[0-9A-Za-z]{16}");
         ibanFormats.put("RS", "\\d{3}\\d{13}\\d{2}");
         ibanFormats.put("SA", "\\d{2}[0-9A-Za-z]{18}");
-        ibanFormats.put("SC", "\\[A-Z]{4}d{2}\\d{2}\\d{16}[A-Z]{3}");
+        ibanFormats.put("SC", "[A-Z]{4}d{2}\\d{2}\\d{16}[A-Z]{3}");
         ibanFormats.put("SE", "\\d{3}\\d{16}\\d{1}");
         ibanFormats.put("SI", "\\d{5}\\d{8}\\d{2}");
         ibanFormats.put("SK", "\\d{4}\\d{6}\\d{10}");
         ibanFormats.put("SM", "[A-Z]{1}\\d{5}\\d{5}[0-9A-Za-z]{12}");
         ibanFormats.put("ST", "\\d{8}\\d{11}\\d{2}");
-        ibanFormats.put("SV", "\\[A-Z]{4}\\d{20}");
+        ibanFormats.put("SV", "[A-Z]{4}\\d{20}");
         ibanFormats.put("TL", "\\d{3}\\d{14}\\d{2}");
         ibanFormats.put("TN", "\\d{2}\\d{3}\\d{13}\\d{2}");
         ibanFormats.put("TR", "\\d{5}\\d{1}[0-9A-Za-z]{16}");

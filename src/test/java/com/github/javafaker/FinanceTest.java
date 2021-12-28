@@ -29,7 +29,9 @@ public class FinanceTest extends AbstractFakerTest {
 
     @Test
     public void iban() {
-        assertThat(faker.finance().iban(), matchesRegularExpression("[A-Z]{2}\\p{Alnum}{13,30}"));
+        for(int i = 0; i< 100; i ++) {
+            assertThat(faker.finance().iban(), matchesRegularExpression("[A-Z]{2}\\p{Alnum}{13,30}"));
+        }
     }
 
     @Test
