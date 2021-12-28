@@ -1,7 +1,6 @@
 package com.github.javafaker;
 
 /**
- * CS304 Issue link: https://github.com/alibaba/easyexcel/issues/634
  * A class for generating random value of ResidentEvil series.
  */
 public class ResidentEvil {
@@ -12,7 +11,6 @@ public class ResidentEvil {
     }
 
     /**
-     *
      * @return A random character string (like leon kennedy) of ResidentEvil series.
      */
     public String character() {
@@ -20,16 +18,13 @@ public class ResidentEvil {
     }
 
     /**
-     *
-     * @return A random biologicalAgent string of ResidentEvil series. This string
-     * may contains special characters.
+     * @return A random biologicalAgent string of ResidentEvil series. This string may contains special characters.
      */
     public String biologicalAgent() {
         return faker.fakeValuesService().resolve("games.resident_evil.biological-agents", this, faker);
     }
 
     /**
-     *
      * @return A random equipment string of ResidentEvil series, which includes weapons and other items.
      */
     public String equipment() {
@@ -37,7 +32,6 @@ public class ResidentEvil {
     }
 
     /**
-     *
      * @return A random location string of ResidentEvil series.
      */
     public String location() {
@@ -45,7 +39,6 @@ public class ResidentEvil {
     }
 
     /**
-     *
      * @return A random creature string of ResidentEvil series. You can get "Hunter", "Cerberus",
      * "Wasps" & "Giant Spider" from the function.
      */

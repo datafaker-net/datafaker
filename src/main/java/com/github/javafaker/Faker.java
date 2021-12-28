@@ -114,6 +114,7 @@ public class Faker {
     private final Minecraft minecraft;
     private final Domain domain;
     private final ResidentEvil residentEvil;
+    private final Hearthstone hearthstone;
 
 	public Faker() {
 		this(Locale.ENGLISH);
@@ -238,6 +239,7 @@ public class Faker {
         this.minecraft = new Minecraft(this);
         this.domain = new Domain(this);
         this.residentEvil = new ResidentEvil(this);
+        this.hearthstone = new Hearthstone(this);
     }
 
 	/**
@@ -723,7 +725,6 @@ public class Faker {
 		return englandfootball;
 	}
 
-
     public Babylon5 babylon5() {
         return babylon5;
     }
@@ -738,11 +739,9 @@ public class Faker {
 
     public Domain domain() { return domain; }
 
-    /**
-     * CS304 Issue link: https://github.com/alibaba/easyexcel/issues/634
-     * @return class residentEvil.
-     */
     public ResidentEvil residentEvil() { return residentEvil; }
+
+    public Hearthstone hearthstone() { return hearthstone;}
 
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this);
