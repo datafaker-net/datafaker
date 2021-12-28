@@ -68,7 +68,8 @@ public class ZhCNIdNumberTest {
     }
 
     @Test(expected = ParseException.class)
-    public void testParseException() throws Throwable {
+    public void testParseException() throws Exception {
+        Faker faker = new Faker();
         ZhCnIdNumber idNumber = new ZhCnIdNumber();
         Class<?> cls = ZhCnIdNumber.class;
         Field startTime = cls.getDeclaredField("startTime");
@@ -79,15 +80,16 @@ public class ZhCNIdNumberTest {
         endTime.set(idNumber, "abcde");
         startTime.setAccessible(false);
         endTime.setAccessible(false);
-        System.out.println(idNumber.getValidSsn());
+        idNumber.getValidSsn(faker);
         fail("Should throw ParseExpection");
     }
 
     @Test
     public void testValidZhCnIdNumber() {
         for (int i = 0; i < 100; i++) {
+            Faker faker = new Faker();
             ZhCnIdNumber id = new ZhCnIdNumber();
-            String idNumber = id.getValidSsn();
+            String idNumber = id.getValidSsn(faker);
             boolean isSatisfied = idNumber.length() == 18;
             for (int j = 0; j < idNumber.length(); j++) {
                 char ch = idNumber.charAt(j);
@@ -106,5 +108,4 @@ public class ZhCNIdNumberTest {
             assertTrue(isSatisfied);
         }
     }
-
 }
