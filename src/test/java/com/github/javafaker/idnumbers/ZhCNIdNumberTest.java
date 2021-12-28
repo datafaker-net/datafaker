@@ -3,12 +3,9 @@ package com.github.javafaker.idnumbers;
 import com.github.javafaker.Faker;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.util.Locale;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class ZhCNIdNumberTest {
     @Test
@@ -65,23 +62,6 @@ public class ZhCNIdNumberTest {
             } else if ((s.charAt(17) - '0') != count) isSatisfied = false;
             assertTrue(isSatisfied);
         }
-    }
-
-    @Test(expected = ParseException.class)
-    public void testParseException() throws Exception {
-        Faker faker = new Faker();
-        ZhCnIdNumber idNumber = new ZhCnIdNumber();
-        Class<?> cls = ZhCnIdNumber.class;
-        Field startTime = cls.getDeclaredField("startTime");
-        Field endTime = cls.getDeclaredField("endTime");
-        startTime.setAccessible(true);
-        endTime.setAccessible(true);
-        startTime.set(idNumber, "abcde");
-        endTime.set(idNumber, "abcde");
-        startTime.setAccessible(false);
-        endTime.setAccessible(false);
-        idNumber.getValidSsn(faker);
-        fail("Should throw ParseExpection");
     }
 
     @Test
