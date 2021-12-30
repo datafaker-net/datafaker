@@ -3,6 +3,12 @@ package com.github.javafaker;
 import com.github.javafaker.shared.CPFUtils;
 
 /**
+ * A CPF number is the Tax ID generated once you have been registered into the Brazilian Revenue.
+ * CPF stands for "Cadastro de Pessoas Físicas" (Natural Persons Register).
+ *
+ * The CPF has 11 digits and it may be issued by the Brazilian revenue service
+ * in Brazil or Brazilian consulates and embassies abroad.
+ *
  * Partial code copy from https://github.com/jrjuniorsp/GeradorValidadorCPFCNPJ/blob/master/src/com/jrmobile/service/GeradorCPF.java
  */
 public class CPF {

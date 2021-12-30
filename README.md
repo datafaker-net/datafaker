@@ -66,8 +66,7 @@ Contributions
 -------------
 See [CONTRIBUTING.md](https://github.com/datafaker-net/datafaker/blob/master/CONTRIBUTING.md)
 
-
-Fakers
+Providers
 -----
 * Address
 * Ancient
@@ -86,15 +85,16 @@ Fakers
 * Bojack Horseman
 * Book
 * Bool
+* Bossa Nova (:sparkles:)
 * Business
-* ChuckNorris
+* CPF [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number)
 * Cat
+* ChuckNorris
 * Code
 * Coin
 * Color
 * Commerce
 * Company
-* CPF [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number)
 * Crypto
 * DateAndTime
 * Demographic
@@ -106,8 +106,8 @@ Fakers
 * Dune
 * Durations (:sparkles:)
 * Educator
-* Esports
 * EnglandFootBall (:sparkles:)
+* Esports
 * File
 * Finance
 * Food
@@ -131,8 +131,8 @@ Fakers
 * LordOfTheRings
 * Lorem
 * Matz
-* Mood (:sparkles:)
 * Minecraft (:sparkles:)
+* Mood (:sparkles:)
 * Music
 * Name
 * Nation
