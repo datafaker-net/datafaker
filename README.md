@@ -1,3 +1,4 @@
+
 Data Faker
 ==========
 
@@ -17,7 +18,7 @@ In pom.xml, add the following xml stanza between `<dependencies> ... </dependenc
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.9.1-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -76,9 +77,9 @@ Fakers
 * Artist
 * Avatar
 * Aviation
-* Babylon5 (new!)
+* Babylon5 (:sparkles:)
 * Back To The Future
-* Barcode (new!)
+* Barcode (:sparkles:)
 * Basketball
 * Beer
 * Bojack Horseman
@@ -96,16 +97,16 @@ Fakers
 * Crypto
 * DateAndTime
 * Demographic
-* Dessert (new!)
+* Dessert (:sparkles:)
 * Disease
 * Dog
-* Domain (new!)
+* Domain (:sparkles:)
 * DragonBall
 * Dune
-* Durations (new!)
+* Durations (:sparkles:)
 * Educator
 * Esports
-* EnglandFootBall (new!)
+* EnglandFootBall (:sparkles:)
 * File
 * Finance
 * Food
@@ -115,7 +116,7 @@ Fakers
 * Gender
 * Hacker
 * HarryPotter
-* Heartstone (new!)
+* Heartstone (:sparkles:)
 * Hipster
 * HitchhikersGuideToTheGalaxy
 * Hobbit
@@ -129,24 +130,25 @@ Fakers
 * LordOfTheRings
 * Lorem
 * Matz
-* Mood (new!)
-* Minecraft (new!)
+* Mood (:sparkles:)
+* Minecraft (:sparkles:)
 * Music
 * Name
 * Nation
 * Number
 * Options
 * Overwatch
-* Passport (new!)
+* Passport (:sparkles:)
 * PhoneNumber
 * Photography
 * Pokemon
 * Princess Bride
 * Relationship Terms
-* Resident Evil (new!)
+* Resident Evil (:sparkles:)
 * RickAndMorty
 * Robin
 * RockBand
+* RuPaul's Drag Race (:sparkles:)
 * Shakespeare
 * Sip
 * SlackEmoji
@@ -156,11 +158,11 @@ Fakers
 * Stock
 * Superhero
 * Team
-* Touhou (new!)
+* Touhou (:sparkles:)
 * TwinPeaks
-* Twitter (new!)
+* Twitter (:sparkles:)
 * University
-* Vehicle (new!)
+* Vehicle (:sparkles:)
 * Weather
 * Witcher
 * Yoda

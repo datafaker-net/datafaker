@@ -67,6 +67,7 @@ public class Faker {
     private final Zelda zelda;
     private final HarryPotter harryPotter;
     private final RockBand rockBand;
+    private final RuPaulDragRace ruPaulDragRace;
     private final Esports esports;
     private final Friends friends;
     private final Hipster hipster;
@@ -196,6 +197,7 @@ public class Faker {
         this.zelda = new Zelda(this);
         this.harryPotter = new HarryPotter(this);
         this.rockBand = new RockBand(this);
+        this.ruPaulDragRace = new RuPaulDragRace(this);
         this.esports = new Esports(this);
         this.friends = new Friends(this);
         this.hipster = new Hipster(this);
@@ -569,6 +571,10 @@ public class Faker {
 	public RockBand rockBand() {
 		return rockBand;
 	}
+
+    public RuPaulDragRace ruPaulDragRace() {
+        return ruPaulDragRace;
+    }
 
 	public Esports esports() {
 		return esports;
