@@ -8,14 +8,17 @@ import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 
-public class PrincessBrideTest extends AbstractFakerTest {
+public class ApplianceTest extends AbstractFakerTest {
+
     @Test
-    public void character() {
-        assertThat(faker.princessBride().character(), matchesRegularExpression("[A-Za-z .-]+"));
+    public void brand() {
+        assertThat(faker.appliance().brand(), matchesRegularExpression("[A-Za-z .-]+"));
     }
 
     @Test
-    public void quote() {
-        assertThat(faker.princessBride().quote(), not(is(emptyOrNullString())));
+    public void equipment() {
+        assertThat(faker.appliance().equipment(), not(is(emptyOrNullString())));
     }
+
+
 }

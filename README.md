@@ -73,6 +73,7 @@ Fakers
 * Ancient
 * Animal
 * App
+* Appliance (:sparkles:)
 * Aqua Teen Hunger Force
 * Artist
 * Avatar

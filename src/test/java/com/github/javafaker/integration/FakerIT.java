@@ -98,6 +98,7 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.ancient());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.address());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.app());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.appliance());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.artist());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.aviation());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.backToTheFuture());
@@ -199,7 +200,7 @@ public class FakerIT {
             String failureReason = method + " on " + object;
             assertThat(failureReason, returnValue, is(instanceOf(String.class)));
             final String returnValueAsString = (String) returnValue;
-            assertThat(failureReason, returnValueAsString, not(isEmptyOrNullString()));
+            assertThat(failureReason, returnValueAsString, not(is(emptyOrNullString())));
             assertThat(failureReason + " is a slash encoded regex", returnValueAsString,
                        not(allOf(startsWith("/"), endsWith("/"))));
         }

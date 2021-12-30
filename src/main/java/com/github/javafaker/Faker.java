@@ -17,6 +17,7 @@ public class Faker {
 
     private final Ancient ancient;
     private final App app;
+    private final Appliance appliance;
     private final Artist artist;
     private final Avatar avatar;
     private final Aviation aviation;
@@ -148,6 +149,7 @@ public class Faker {
 
         this.ancient = new Ancient(this);
         this.app = new App(this);
+        this.appliance = new Appliance(this);
         this.artist = new Artist(this);
         this.avatar = new Avatar(this);
         this.aviation = new Aviation(this);
@@ -375,6 +377,10 @@ public class Faker {
 
 	public App app() {
 		return app;
+	}
+
+	public Appliance appliance() {
+		return appliance;
 	}
 
 	public Artist artist() {
