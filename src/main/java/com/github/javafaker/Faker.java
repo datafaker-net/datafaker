@@ -32,6 +32,7 @@ public class Faker {
     private final Beer beer;
     private final BojackHorseman bojackHorseman;
     private final BossaNova bossaNova;
+    private final BreakingBad breakingBad;
     private final Book book;
     private final Bool bool;
     private final Buffy buffy;
@@ -167,6 +168,7 @@ public class Faker {
         this.book = new Book(this);
         this.bool = new Bool(this);
         this.bossaNova = new BossaNova(this);
+        this.breakingBad = new BreakingBad(this);
         this.buffy = new Buffy(this);
         this.business = new Business(this);
         this.cat = new Cat(this);
@@ -440,6 +442,10 @@ public class Faker {
 
     public BossaNova bossaNova() {
         return bossaNova;
+    }
+
+    public BreakingBad breakingBad() {
+        return breakingBad;
     }
 
     public Business business() {

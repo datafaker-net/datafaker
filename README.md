@@ -86,6 +86,7 @@ Providers
 * Book
 * Bool
 * Bossa Nova (:sparkles:)
+* Breaking Bad (:sparkles:)
 * Business
 * CPF [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number)
 * Cat
