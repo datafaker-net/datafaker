@@ -87,7 +87,7 @@ public class InternetTest extends AbstractFakerTest {
     @Test
     public void testImage() {
         String imageUrl = faker.internet().image();
-        assertThat(imageUrl, matchesRegularExpression("^http:\\/\\/lorempixel\\.com(/g)?/\\d{1,4}/\\d{1,4}/\\w+/$"));
+        assertThat(imageUrl, matchesRegularExpression("^https:\\/\\/lorempixel\\.com(/g)?/\\d{1,4}/\\d{1,4}/\\w+/$"));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class InternetTest extends AbstractFakerTest {
     @Test
     public void testImageWithExplicitParams() {
         String imageUrl = faker.internet().image(800, 600, false, "bugs");
-        assertThat(imageUrl, matchesRegularExpression("^http:\\/\\/lorempixel\\.com/800/600/\\w+/bugs$"));
+        assertThat(imageUrl, matchesRegularExpression("^https:\\/\\/lorempixel\\.com/800/600/\\w+/bugs$"));
     }
 
     @Test

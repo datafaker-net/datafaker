@@ -56,7 +56,7 @@ public class CPFTest extends AbstractFakerTest {
     /**
      * Return true if the CPF is valid
      * A valid CPF is unique and have a algorithm to validate it
-     *
+     * <p>
      * CPF generator could generate a valid or invalid because, somentimes, we need to test a
      * registration with invalid number
      *
@@ -68,7 +68,8 @@ public class CPFTest extends AbstractFakerTest {
         if (unformatCPF.length() != 11) {
             return false;
         }
-        String numDig = cpf.substring(0, 9);
-        return CPFUtils.calculateVerificationDigit(numDig).equals(cpf.substring(9, 11));
+        String numDig = unformatCPF.substring(0, 9);
+        String verification = unformatCPF.substring(9, 11);
+        return CPFUtils.calculateVerificationDigit(numDig).equals(verification);
     }
 }
