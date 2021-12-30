@@ -18,7 +18,7 @@ In pom.xml, add the following xml stanza between `<dependencies> ... </dependenc
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.9.0</version>
 </dependency>
 ```
 
