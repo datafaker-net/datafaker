@@ -1,11 +1,13 @@
 package com.github.javafaker.idnumbers;
 
 import com.github.javafaker.Faker;
-import java.util.Locale;
-import java.util.Random;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Locale;
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
 
 public class PtNifIdNumberTest {
 
@@ -21,19 +23,18 @@ public class PtNifIdNumberTest {
 	@Test
 	public void testInValid() {
 		PtNifIdNumber idNumber = new PtNifIdNumber();
-		Assert.assertEquals("7202838711", idNumber.getInvalid(faker));
+		assertEquals("7202838711", idNumber.getInvalid(faker));
 	}
 
 	@Test
 	public void testValid() {
 	    PtNifIdNumber idNumber = new PtNifIdNumber();
-		Assert.assertEquals("346336848", idNumber.getValid(faker));
+		assertEquals("346336848", idNumber.getValid(faker));
 	}
 
 	@Test
 	public void testValidWithFaker() {
-		PtNifIdNumber idNumber = new PtNifIdNumber();
-		Assert.assertEquals("346336848", faker.idNumber().valid());
+		assertEquals("346336848", faker.idNumber().valid());
 	}
 
 }

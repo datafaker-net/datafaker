@@ -319,16 +319,18 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         assertThat(actual, is("1 2"));
         verifyNoMoreInteractions(faker);
     }
+
     @Test
-    public void FakeValuesServiceWithNullLocaleTest(){
-        try{
-            RandomService r=new RandomService();
-            FakeValuesService f=new FakeValuesService(null,r);
+    public void FakeValuesServiceWithNullLocaleTest() {
+        try {
+            RandomService r = new RandomService();
+            FakeValuesService f = new FakeValuesService(null, r);
             fail("Should catch IllegalArgumentException");
-        }catch (IllegalArgumentException e){
-            assertThat(e.getMessage(),is("locale is required"));
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), is("locale is required"));
         }
     }
+
     public static class DummyService {
         public String firstName() {
             return "John";

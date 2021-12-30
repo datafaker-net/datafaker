@@ -3,13 +3,14 @@ package com.github.javafaker;
 import com.github.javafaker.matchers.MatchesRegularExpression;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class VehicleTest extends AbstractFakerTest {
 
@@ -76,29 +77,29 @@ public class VehicleTest extends AbstractFakerTest {
 
     @Test
     public void testCarOptions() {
-        ArrayList carOptions = faker.vehicle().carOptions();
+        List<String> carOptions = faker.vehicle().carOptions();
         assertThat(carOptions.size(), greaterThanOrEqualTo(5));
         assertThat(carOptions.size(), lessThanOrEqualTo(10));
     }
 
     @Test
     public void testCarOptionsMinMax() {
-        ArrayList carOptions = faker.vehicle().carOptions(11, 12);
+        List<String> carOptions = faker.vehicle().carOptions(11, 12);
         assertThat(carOptions.size(), greaterThanOrEqualTo(11));
         assertThat(carOptions.size(), lessThanOrEqualTo(12));
-        assertThat(carOptions.get(0).toString(), notNullValue());
+        assertThat(carOptions.get(0), notNullValue());
     }
 
     @Test
     public void testStandardSpecsMinMax() {
-        ArrayList standardSpecs = faker.vehicle().standardSpecs(13, 14);
+        List<String> standardSpecs = faker.vehicle().standardSpecs(13, 14);
         assertThat(standardSpecs.size(), greaterThanOrEqualTo(13));
         assertThat(standardSpecs.size(), lessThanOrEqualTo(14));
     }
 
     @Test
     public void testStandardSpecs() {
-        ArrayList standardSpecs = faker.vehicle().standardSpecs();
+        List<String> standardSpecs = faker.vehicle().standardSpecs();
         assertThat(standardSpecs.size(), greaterThanOrEqualTo(5));
         assertThat(standardSpecs.size(), lessThanOrEqualTo(10));
     }

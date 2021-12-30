@@ -13,7 +13,7 @@ public class CountryTest extends AbstractFakerTest {
     @Repeat(times = 10)
     public void testFlag() {
         String flag = faker.country().flag();
-        assertThat(flag, matchesRegularExpression("^http:\\/\\/flags.fmcdn\\.net\\/data\\/flags\\/w580\\/[a-zA-Z0-9_]+\\.png$"));
+        assertThat(flag, matchesRegularExpression("^https:\\/\\/flags.fmcdn\\.net\\/data\\/flags\\/w580\\/[a-zA-Z0-9_]+\\.png$"));
     }
 
 

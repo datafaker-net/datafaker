@@ -14,7 +14,7 @@ public class HebrewFoodTest {
     public static Faker food;
 
     @Before
-    public void before(){
+    public void before() {
         food = new Faker(new Locale("he"));
     }
 

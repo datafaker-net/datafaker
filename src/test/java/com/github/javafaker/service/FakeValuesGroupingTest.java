@@ -42,5 +42,5 @@ public class FakeValuesGroupingTest {
         assertThat(Maps.difference(fakeValuesGrouping.get("creature"), catValues.get("creature")).areEqual(), equalTo(true));
         assertThat(fakeValuesGrouping.get("creature"), is(notNullValue()));
     }
-    
+
 }

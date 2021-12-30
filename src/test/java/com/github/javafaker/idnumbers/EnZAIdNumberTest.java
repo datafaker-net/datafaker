@@ -1,7 +1,6 @@
 package com.github.javafaker.idnumbers;
 
 import com.github.javafaker.Faker;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Locale;
@@ -18,7 +17,7 @@ import static org.hamcrest.core.Is.is;
 public class EnZAIdNumberTest {
 
     //Test the method of judging ssn is right
-    @Test(timeout = 4000)
+    @Test
     public void testExistSsn() {
         EnZAIdNumber idNumber = new EnZAIdNumber();
 
@@ -30,7 +29,7 @@ public class EnZAIdNumberTest {
         assertThat(idNumber.validSsn("8801235111088"), is(true));
     }
 
-    @Test(timeout = 4000)
+    @Test
     public void testFakerSsn() {
         EnZAIdNumber idNumber = new EnZAIdNumber();
         final Faker f = new Faker(new Locale("en-ZA"));
@@ -42,14 +41,14 @@ public class EnZAIdNumberTest {
         }
     }
 
-    @Test(timeout = 4000)
+    @Test
     public void testSsnFormat() {
         final Faker f = new Faker(new Locale("en-ZA"));
         for (int i = 0; i < 100; i++) {
-            Assert.assertThat(f.idNumber().valid(), matchesRegularExpression("\\d{10}[01][8]\\d{1}"));
+            assertThat(f.idNumber().valid(), matchesRegularExpression("\\d{10}[01][8]\\d{1}"));
         }
         for (int i = 0; i < 100; i++) {
-            Assert.assertThat(f.idNumber().invalid(), matchesRegularExpression("\\d{10}[01][8]\\d{1}"));
+            assertThat(f.idNumber().invalid(), matchesRegularExpression("\\d{10}[01][8]\\d{1}"));
         }
     }
 
