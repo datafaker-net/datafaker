@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CountryTest extends AbstractFakerTest {
 
     @Test
-    @Repeat(times=10)
+    @Repeat(times = 10)
     public void testFlag() {
         String flag = faker.country().flag();
         assertThat(flag, matchesRegularExpression("^http:\\/\\/flags.fmcdn\\.net\\/data\\/flags\\/w580\\/[a-zA-Z0-9_]+\\.png$"));
@@ -29,7 +29,7 @@ public class CountryTest extends AbstractFakerTest {
 
     @Test
     public void testCapital() {
-        assertThat(faker.country().capital(), matchesRegularExpression("([\\w'-]+ ?)+"));
+        assertThat(faker.country().capital(), matchesRegularExpression("([\\p{L}0-9+,. '-])+"));
     }
 
     @Test
