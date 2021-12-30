@@ -34,7 +34,6 @@ public class FakeValuesService {
     private final List<Locale> localesChain;
 
     /**
-     * <p>
      * Resolves YAML file using the most specific path first based on language and country code.
      * 'en_US' would resolve in the following order:
      * <ol>
@@ -49,10 +48,6 @@ public class FakeValuesService {
      * <li>En-Us</li>
      * <li>eN_uS</li>
      * </ul>
-     * </p>
-     *
-     * @param locale
-     * @param randomService
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public FakeValuesService(Locale locale, RandomService randomService) {
@@ -83,7 +78,7 @@ public class FakeValuesService {
 
     /**
      * Convert the specified locale into a chain of locales used for message resolution. For example:
-     * <p>
+     *
      * {@link Locale#FRANCE} (fr_FR) -> [ fr_FR, anotherTest, en ]
      *
      * @return a list of {@link Locale} instances
@@ -95,7 +90,7 @@ public class FakeValuesService {
 
         final Locale normalized = normalizeLocale(from);
 
-        final List<Locale> chain = new ArrayList<Locale>(3);
+        final List<Locale> chain = new ArrayList<>(3);
         chain.add(normalized);
         if (!"".equals(normalized.getCountry()) && !Locale.ENGLISH.getLanguage().equals(normalized.getLanguage())) {
             chain.add(new Locale(normalized.getLanguage()));
@@ -125,12 +120,9 @@ public class FakeValuesService {
 
     /**
      * Fetch a random value from an array item specified by the key
-     *
-     * @param key
-     * @return
      */
     public Object fetch(String key) {
-        List<?> valuesArray = new ArrayList<Object>(); 
+        List<?> valuesArray = new ArrayList<>();
         if (fetchObject(key) instanceof ArrayList)
             valuesArray = (ArrayList<?>)fetchObject(key);
         return valuesArray == null ? null : valuesArray.get(randomService.nextInt(valuesArray.size()));
@@ -138,9 +130,6 @@ public class FakeValuesService {
 
     /**
      * Same as {@link #fetch(String)} except this casts the result into a String.
-     *
-     * @param key
-     * @return
      */
     public String fetchString(String key) {
         return (String) fetch(key);
@@ -148,14 +137,14 @@ public class FakeValuesService {
 
     /**
      * Safely fetches a key.
-     * <p>
+     *
      * If the value is null, it will return an empty string.
-     * <p>
+     *
      * If it is a list, it will assume it is a list of strings and select a random value from it.
-     * <p>
+     *
      * If the retrieved value is an slash encoded regular expression such as {@code /[a-b]/} then
      * the regex will be converted to a regexify expression and returned (ex. {@code #regexify '[a-b]'})
-     * <p>
+     *
      * Otherwise it will just return the value as a string.
      *
      * @param key           the key to fetch from the YML structure.
@@ -184,7 +173,6 @@ public class FakeValuesService {
      *
      * @param key key contains path to an object. Path segment is separated by
      *            dot. E.g. name.first_name
-     * @return
      */
     public Object fetchObject(String key) {
         String[] path = DOT.split(key);
@@ -210,11 +198,8 @@ public class FakeValuesService {
 
     /**
      * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive.
-     * <p/>
+     * 
      * For example, the string "ABC##EFG" could be replaced with a string like "ABC99EFG".
-     *
-     * @param numberString
-     * @return
      */
     public String numerify(String numberString) {
         StringBuilder sb = new StringBuilder();
@@ -232,9 +217,6 @@ public class FakeValuesService {
     /**
      * Applies both a {@link #numerify(String)} and a {@link #letterify(String)}
      * over the incoming string.
-     *
-     * @param string
-     * @return
      */
     public String bothify(String string) {
         return letterify(numerify(string));
@@ -243,10 +225,6 @@ public class FakeValuesService {
     /**
      * Applies both a {@link #numerify(String)} and a {@link #letterify(String, boolean)}
      * over the incoming string.
-     *
-     * @param string
-     * @param isUpper
-     * @return
      */
     public String bothify(String string, boolean isUpper) {
         return letterify(numerify(string), isUpper);
@@ -264,11 +242,8 @@ public class FakeValuesService {
     /**
      * Returns a string with the '?' characters in the parameter replaced with random alphabetic
      * characters.
-     * <p/>
+     * 
      * For example, the string "12??34" could be replaced with a string like "12AB34".
-     *
-     * @param letterString
-     * @return
      */
     public String letterify(String letterString) {
         return this.letterify(letterString, false);
@@ -277,12 +252,8 @@ public class FakeValuesService {
     /**
      * Returns a string with the '?' characters in the parameter replaced with random alphabetic
      * characters.
-     * <p/>
+     * 
      * For example, the string "12??34" could be replaced with a string like "12AB34".
-     *
-     * @param letterString
-     * @param isUpper      specifies whether or not letters should be upper case
-     * @return
      */
     public String letterify(String letterString, boolean isUpper) {
         return letterHelper((isUpper) ? 65 : 97, letterString); // from ascii table
@@ -303,9 +274,9 @@ public class FakeValuesService {
 
     /**
      * Resolves a key to a method on an object.
-     * <p>
+     *
      * #{hello} with result in a method call to current.hello();
-     * <p>
+     *
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
     public String resolve(String key, Object current, Faker root) {
@@ -320,32 +291,21 @@ public class FakeValuesService {
 
     /**
      * resolves an expression using the current faker.
-     *
-     * @param expression
-     * @param faker
-     * @return
      */
     public String expression(String expression, Faker faker) {
         return resolveExpression(expression, null, faker);
     }
 
     /**
-     * <p>processes a expression in the style #{X.y} using the current objects as the 'current' location
+     * processes a expression in the style #{X.y} using the current objects as the 'current' location
      * within the yml file (or the {@link Faker} object hierarchy as it were).
-     * </p>
-     * <p>
+     *
      * #{Address.streetName} would get resolved to {@link Faker#address()}'s {@link Address#streetName()}
-     * </p>
-     * <p>
      * #{address.street} would get resolved to the YAML > locale: faker: address: street:
-     * </p>
-     * <p>
      * Combinations are supported as well: "#{x} #{y}"
-     * </p>
-     * <p>
+     *
      * Recursive templates are supported.  if "#{x}" resolves to "#{Address.streetName}" then "#{x}" resolves to
      * {@link Faker#address()}'s {@link Address#streetName()}.
-     * </p>
      */
     protected String resolveExpression(String expression, Object current, Faker root) {
         final Matcher matcher = EXPRESSION_PATTERN.matcher(expression);
@@ -356,7 +316,7 @@ public class FakeValuesService {
             final String directive = matcher.group(1);
             final String arguments = matcher.group(2);
             final Matcher argsMatcher = EXPRESSION_ARGUMENTS_PATTERN.matcher(arguments);
-            List<String> args = new ArrayList<String>();
+            List<String> args = new ArrayList<>();
             while (argsMatcher.find()) {
                 args.add(argsMatcher.group(1));
             }
@@ -374,12 +334,12 @@ public class FakeValuesService {
     }
 
     /**
-     * <h1>Search Order</h1>
+     * Search Order
      * <ul>
-     * <li>Search for methods on the current object</li>
-     * <li>local keys in Yaml File</li>
-     * <li>Search for methods on faker child objects</li>
-     * <li>Search for keys in yaml file by transforming object reference to yaml reference</li>
+     *  <li>Search for methods on the current object</li>
+     *  <li>local keys in Yaml File</li>
+     *  <li>Search for methods on faker child objects</li>
+     *   <li>Search for keys in yaml file by transforming object reference to yaml reference</li>
      * </ul>
      *
      * @return null if unable to resolve
@@ -498,7 +458,7 @@ public class FakeValuesService {
 
         try {
             String fakerMethodName = UNDERSCORE.matcher(classAndMethod[0]).replaceAll("");
-            MethodAndCoercedArgs fakerAccessor = accessor(faker, fakerMethodName, Collections.<String>emptyList());
+            MethodAndCoercedArgs fakerAccessor = accessor(faker, fakerMethodName, Collections.emptyList());
             if (fakerAccessor == null) {
                 log.fine("Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
@@ -547,10 +507,9 @@ public class FakeValuesService {
      * to <em>accessor</em>.
      *
      * @return array of coerced values if successful, null otherwise
-     * @throws Exception if unable to coerce
      */
     private List<Object> coerceArguments(Method accessor, List<String> args) {
-        final List<Object> coerced = new ArrayList<Object>();
+        final List<Object> coerced = new ArrayList<>();
         for (int i = 0; i < accessor.getParameterTypes().length; i++) {
 
             Class<?> toType = ClassUtils.primitiveToWrapper(accessor.getParameterTypes()[i]);
