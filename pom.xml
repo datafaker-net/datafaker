@@ -10,6 +10,20 @@
         It's useful when you're developing a new project and need some pretty data for showcase.
     </description>
     <url>https://www.datafaker.net</url>
+    <developers>
+        <developer>
+            <name>Erik Pragt</name>
+            <email>erik.pragt@datafaker.net</email>
+            <organization>Datafaker</organization>
+            <organizationUrl>https://www.datafaker.net</organizationUrl>
+        </developer>
+        <developer>
+            <name>Julie Ann Calulot</name>
+            <email>julie.ann.calulot@datafaker.net</email>
+            <organization>Datafaker</organization>
+            <organizationUrl>https://www.datafaker.net</organizationUrl>
+        </developer>
+    </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
