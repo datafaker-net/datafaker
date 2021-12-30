@@ -37,7 +37,7 @@ public class Aviation {
     /**
      * Returns a flight number (IATA or ICAO format).
      *
-     * @Return A random flight number with IATA or ICAO format in a String.
+     * @return A random flight number with IATA or ICAO format in a String.
      */
     public String flight(String type) {
         String airline;
@@ -54,7 +54,7 @@ public class Aviation {
     /**
      * Returns a flight number without specifying flight number format.
      *
-     * @Return A random flight number with IATA format in a String.
+     * @return A random flight number with IATA format in a String.
      */
     public String flight() {
         return flight("IATA");
@@ -63,7 +63,7 @@ public class Aviation {
     /**
      * Returns an airline name.
      *
-     * @Return A randomly selected airline name in a String.
+     * @return A randomly selected airline name in a String.
      */
     public String airline() { return faker.fakeValuesService().fetchString("aviation.airline");}
 }

@@ -57,7 +57,7 @@ public class Name {
     }
 
     /**
-     * Returns a random 'given' name such as Aaliyah, Aaron, Abagail or Abbey<
+     * Returns a random 'given' name such as Aaliyah, Aaron, Abagail or Abbey
      *
      * @return a 'given' name such as Aaliyah, Aaron, Abagail or Abbey
      */
@@ -66,7 +66,7 @@ public class Name {
     }
 
     /**
-     * Returns a random last name such as Smith, Jones or Baldwin<
+     * Returns a random last name such as Smith, Jones or Baldwin
      *
      * @return a random last name such as Smith, Jones or Baldwin
      */

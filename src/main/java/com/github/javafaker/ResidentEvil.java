@@ -39,8 +39,7 @@ public class ResidentEvil {
     }
 
     /**
-     * @return A random creature string of ResidentEvil series. You can get "Hunter", "Cerberus",
-     * "Wasps" & "Giant Spider" from the function.
+     * @return A random creature string of ResidentEvil series.
      */
     public String creature() {
         return faker.fakeValuesService().resolve("games.resident_evil.creatures", this, faker);

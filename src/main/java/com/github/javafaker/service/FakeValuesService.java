@@ -79,7 +79,7 @@ public class FakeValuesService {
     /**
      * Convert the specified locale into a chain of locales used for message resolution. For example:
      *
-     * {@link Locale#FRANCE} (fr_FR) -> [ fr_FR, anotherTest, en ]
+     * {@link Locale#FRANCE} (fr_FR) to [ fr_FR, anotherTest, en ]
      *
      * @return a list of {@link Locale} instances
      */
@@ -301,7 +301,7 @@ public class FakeValuesService {
      * within the yml file (or the {@link Faker} object hierarchy as it were).
      *
      * #{Address.streetName} would get resolved to {@link Faker#address()}'s {@link Address#streetName()}
-     * #{address.street} would get resolved to the YAML > locale: faker: address: street:
+     * #{address.street} would get resolved to the YAML like locale: faker: address: street:
      * Combinations are supported as well: "#{x} #{y}"
      *
      * Recursive templates are supported.  if "#{x}" resolves to "#{Address.streetName}" then "#{x}" resolves to

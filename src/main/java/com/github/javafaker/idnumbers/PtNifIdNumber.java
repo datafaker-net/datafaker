@@ -8,8 +8,8 @@ import com.github.javafaker.Faker;
  * The number is 9 digits, with modulus 11 checksum digit.
  * There is fixed list of valid first digits to signify different types of NIF numbers
  *
- * @see <a href="https://pt.wikipedia.org/wiki/N%C3%BAmero_de_identifica%C3%A7%C3%A3o_fiscal">Número de identificação fiscal</a>
- * @see <a href="https://en.wikipedia.org/wiki/VAT_identification_number>VAT identification number</a>
+ * See <a href="https://pt.wikipedia.org/wiki/N%C3%BAmero_de_identifica%C3%A7%C3%A3o_fiscal">Número de identificação fiscal</a>
+ * and <a href="https://en.wikipedia.org/wiki/VAT_identification_number">VAT identification number</a>
  */
 public class PtNifIdNumber {
 
