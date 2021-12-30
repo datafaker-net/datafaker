@@ -80,7 +80,7 @@ public class Barcode {
         int rounded = roundToHighestMultiplyOfTen((var));
         int checkDigit = rounded - var;
 
-        return Long.parseLong(String.valueOf(first) + String.valueOf(checkDigit));
+        return Long.parseLong(first + String.valueOf(checkDigit));
     }
 
     public String type() {

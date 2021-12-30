@@ -51,7 +51,7 @@ public class Vehicle {
 
     public ArrayList carOptions(int min, int max) {
         int optionSize =faker.number().numberBetween(min, max);
-        ArrayList<String> arr = new ArrayList<String>(optionSize);
+        ArrayList<String> arr = new ArrayList<>(optionSize);
         while (optionSize > 0) {
             arr.add(faker.resolve("vehicle.car_options"));
             optionSize -= 1;
@@ -63,7 +63,7 @@ public class Vehicle {
 
     public ArrayList standardSpecs(int min, int max) {
         int standardSpecsSize =faker.number().numberBetween(min, max);
-        ArrayList<String> arr = new ArrayList<String>(standardSpecsSize);
+        ArrayList<String> arr = new ArrayList<>(standardSpecsSize);
         while (standardSpecsSize > 0) {
             arr.add(faker.resolve("vehicle.standard_specs"));
             standardSpecsSize -= 1;

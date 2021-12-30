@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class BarcodeTest extends AbstractFakerTest {
 
@@ -62,19 +63,19 @@ public class BarcodeTest extends AbstractFakerTest {
     @Test
     public void testGtin12CheckSum() {
         long barcode = faker.barcode().gtin12();
-        assertThat(BarcodeTest.isBarcodeValid(barcode), Matchers.equalTo(true));
+        assertThat(BarcodeTest.isBarcodeValid(barcode), equalTo(true));
     }
 
     @Test
     public void testGtin14CheckSum() {
         long barcode = faker.barcode().gtin14();
-        assertThat(BarcodeTest.isBarcodeValid(barcode), Matchers.equalTo(true));
+        assertThat(BarcodeTest.isBarcodeValid(barcode), equalTo(true));
     }
 
     @Test
     public void testEan8CheckSum() {
         long barcode = faker.barcode().ean8();
-        assertThat(BarcodeTest.isBarcodeValid(barcode), Matchers.equalTo(true));
+        assertThat(BarcodeTest.isBarcodeValid(barcode), equalTo(true));
     }
 
     @Test
@@ -90,6 +91,6 @@ public class BarcodeTest extends AbstractFakerTest {
                 sum = sum + digit;
         }
 
-        assertThat(String.valueOf(sum).endsWith("0"), Matchers.equalTo(true));
+        assertThat(String.valueOf(sum).endsWith("0"), equalTo(true));
     }
 }

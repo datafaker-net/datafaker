@@ -211,7 +211,7 @@ public class EnFile {
 
 
     public static List<EnFile> getFiles() {
-        List<EnFile> files = new ArrayList<EnFile>();
+        List<EnFile> files = new ArrayList<>();
         for (String file : FILES) {
             files.add(new EnFile(file));
         }

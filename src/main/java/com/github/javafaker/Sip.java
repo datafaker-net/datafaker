@@ -16,7 +16,7 @@ public final class Sip {
     protected Sip(final Faker faker) {
         this.faker = faker;
         int port = 40000;
-        portPool = new ArrayList<Integer>();
+        portPool = new ArrayList<>();
         while (port <= 50000) {
             portPool.add(port);
             port = port + 2;

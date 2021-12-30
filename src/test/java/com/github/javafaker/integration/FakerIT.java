@@ -87,7 +87,7 @@ public class FakerIT {
             dataFromYmlFiles[i][0] = new Locale(StringUtils.substringBefore(ymlFileName, "."));
         }
 
-        List<Object[]> allData = new ArrayList<Object[]>(Arrays.asList(data));
+        List<Object[]> allData = new ArrayList<>(Arrays.asList(data));
         allData.addAll(Arrays.asList(dataFromYmlFiles));
         return allData;
     }

@@ -6,7 +6,7 @@ public class Country {
 
     protected Country(Faker faker) {
         this.faker = faker;
-        this.flagUrl = "http://flags.fmcdn.net/data/flags/w580/";
+        this.flagUrl = "https://flags.fmcdn.net/data/flags/w580/";
     }
 
     public String flag() {

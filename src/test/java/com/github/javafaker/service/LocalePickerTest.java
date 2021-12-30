@@ -91,7 +91,7 @@ public class LocalePickerTest extends AbstractFakerTest {
 
         // loop through all locales supported by Java Faker twice
         for (int i=0; i < 2; i++) {
-            returnedLocales = new ArrayList<String>(numSupportedLocales);
+            returnedLocales = new ArrayList<>(numSupportedLocales);
 
             for (int j=0; j < numSupportedLocales; j++) {
                 returnedLocales.add(localePicker.getLocaleStringWithoutReplacement(random));

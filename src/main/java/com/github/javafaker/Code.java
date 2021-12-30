@@ -121,7 +121,7 @@ public class Code {
         return separator ? isbn13.toString() : stripIsbnSeparator(isbn13);
     }
 
-    private final int isbn10CheckDigit(CharSequence t) {
+    private int isbn10CheckDigit(CharSequence t) {
         String value = stripIsbnSeparator(t);
         int sum = 0;
         for (int i = 0; i < value.length(); i++) {
@@ -130,10 +130,10 @@ public class Code {
         return sum % 11;
     }
 
-    private final int isbn13CheckDigit(CharSequence t) {
+    private int isbn13CheckDigit(CharSequence t) {
         String value = stripIsbnSeparator(t);
         int sum = 0;
-        int multiplier = 0;
+        int multiplier;
         for (int i = 0; i < value.length(); i++) {
             multiplier = i % 2 == 0 ? 1 : 3;
             sum += multiplier * toInt(value.subSequence(i, i + 1).toString());
@@ -142,7 +142,7 @@ public class Code {
         return (10 - sum % 10) % 10;
     }
 
-    private final String stripIsbnSeparator(CharSequence t) {
+    private String stripIsbnSeparator(CharSequence t) {
         return HYPHEN.matcher(t.toString()).replaceAll("");
     }
 
@@ -166,11 +166,10 @@ public class Code {
 
         // Calculate the Luhn checksum of the values thus far
         int lenOffset = (len + 1) % 2;
-        int t = 0;
         int sum = 0;
         for (int i = 0; i < len - 1; i++) {
             if ((i + lenOffset) % 2 != 0) {
-                t = Character.getNumericValue(str[i]) << 1;
+                int t = Character.getNumericValue(str[i]) << 1;
 
                 if (t > 9) {
                     t -= 9;

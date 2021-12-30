@@ -43,7 +43,7 @@ public class NricNumber {
 	private static final int[] CODE = new int[]{0, 2, 7, 6, 5, 4, 3, 2};
 	private static final String FIN_LETTERS = "XWUTRQPNMLK";
 	private static final String UIN_LETTERS = "JZIHGFEDCBA";
-	private static final Map<Type, NricType> INITIALIZER = new HashMap<Type, NricType>();
+	private static final Map<Type, NricType> INITIALIZER = new HashMap<>();
 
 	static {
 		INITIALIZER.put(Type.SINGAPOREAN_TWENTIETH_CENTURY, new NricType('S', UIN_LETTERS, CODE, 0));
