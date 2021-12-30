@@ -1,8 +1,10 @@
 package com.github.javafaker;
+
+import com.github.javafaker.service.RandomService;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,8 +12,6 @@ import java.util.logging.Logger;
 /*
  * This file was used create fake Twitter message using twitter.yml
  */
-//CS304 issue link: https://github.com/DiUS/java-faker/issues/414
-
 public class Twitter {
 
     private final Faker faker;
@@ -32,11 +32,11 @@ public class Twitter {
      * @return a new date later (or before) the base date with respect to the constrain (no later/earlier than the constrain).
      */
     public Date created_time(boolean forward, Date base, Date constrains) {
-        Random randomSeed = new Random();
+        final RandomService random = faker.random();
         if (forward) {
-            return new Date(base.getTime() + (long) (randomSeed.nextDouble() * (constrains.getTime() - base.getTime())));
+            return new Date(base.getTime() + (long) (random.nextDouble() * (constrains.getTime() - base.getTime())));
         } else {
-            return new Date(base.getTime() - (long) (randomSeed.nextDouble() * (base.getTime() - constrains.getTime())));
+            return new Date(base.getTime() - (long) (random.nextDouble() * (base.getTime() - constrains.getTime())));
         }
     }
 
@@ -46,8 +46,7 @@ public class Twitter {
      *                       less than or equals to 25.
      * @return a new Twiiter ID consists of purely numbers.
      */
-
-    public String twitter_id(int expectedLength) {
+    public String twitterId(int expectedLength) {
         if (expectedLength <= 6 || expectedLength >= 25) {
             Logger logger
                     = Logger.getLogger(
@@ -65,7 +64,7 @@ public class Twitter {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String newDate = sdf.format(new Date());
         String result = "";
-        Random random = new Random();
+        RandomService random = faker.random();
         for (int i = 0; i < 3; i++) {
             result = result.concat(String.valueOf(random.nextInt(10)));
         }
@@ -103,13 +102,13 @@ public class Twitter {
             logger.setLevel(Level.WARNING);
             logger.warning("Word length less than 2 is dangerous. Exceptions can be raised.");
         }
-        Random random = new Random();
-        ArrayList<String> text = new ArrayList<String>();
+        ArrayList<String> text = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
-        int sentenceLength = faker.random().nextInt(1, sentenceMaxLength);
+        RandomService random = faker.random();
+        int sentenceLength = random.nextInt(1, sentenceMaxLength);
 
         for(int i=0; i < sentenceLength; i++){
-            int tmpWordLength = faker.random().nextInt(3, wordMaxLength);
+            int tmpWordLength = random.nextInt(3, wordMaxLength);
             for(int j=0; j < tmpWordLength; j++){
                 sb.append(basicstr.charAt(random.nextInt(basicstr.length())));
             }
@@ -117,9 +116,9 @@ public class Twitter {
             sb.setLength(0);
         }
         if(keywords != null && keywords.length > 0){
-            for(int i=0; i < keywords.length; i++){
+            for (String keyword : keywords) {
                 int position = random.nextInt(text.size());
-                text.add(position, keywords[i]);
+                text.add(position, keyword);
             }
         }
         return String.join(" ", text);
@@ -128,14 +127,14 @@ public class Twitter {
     /**
      * @return Return a user name using the twitter.user_name.
      */
-    public String user_name(){
+    public String userName(){
         return faker.fakeValuesService().resolve("twitter.user_name", this, faker);
     }
 
     /**
      * @return Return a user id using the twitter.user_name.
      */
-    public String user_id(){
+    public String userId(){
         return faker.fakeValuesService().resolve("twitter.user_id", this, faker);
     }
 
@@ -145,7 +144,7 @@ public class Twitter {
      * @param extraLength the expected length of the extra link part.
      * @return return a fake link to a Twitter message.
      */
-    public String get_link(String username, int extraLength){
+    public String getLink(String username, int extraLength){
         if (extraLength <= 4) {
             Logger logger
                     = Logger.getLogger(
@@ -153,13 +152,13 @@ public class Twitter {
             logger.setLevel(Level.WARNING);
             logger.warning("Extra length <=4 can cause collision.");
         }
-        Random random = new Random();
-        StringBuffer sb = new StringBuffer();
-        sb.append(username + "/");
+        RandomService random = faker.random();
+        StringBuilder sb = new StringBuilder();
+        sb.append(username).append("/");
 
         for(int i=0; i<extraLength; i++){
             sb.append(basicstr.charAt(random.nextInt(basicstr.length())));
         }
-        return "https://twitter.com/" + sb.toString();
+        return "https://twitter.com/" + sb;
     }
 }

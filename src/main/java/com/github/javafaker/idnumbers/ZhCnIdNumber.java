@@ -6,7 +6,6 @@ import com.github.javafaker.service.RandomService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 /**
  * This class is used for generating Zh_CN Id numbers.
@@ -41,8 +40,8 @@ public class ZhCnIdNumber {
         }
         String pickedDate = new SimpleDateFormat("yyyyMMdd").format(date);
         s += pickedDate;
-        Random rand = new Random();
-        int randnum = rand.nextInt(locations.length);
+        RandomService rand = faker.random();
+        int randnum = faker.random().nextInt(locations.length);
         String pickedLocation = locations[randnum];
         s += pickedLocation;
         int pickedSequence1 = rand.nextInt(10);

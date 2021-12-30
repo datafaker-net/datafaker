@@ -769,7 +769,6 @@ public class Faker {
      *
      * @return passport object.
      */
-    // CS304 Issue link: https://github.com/DiUS/java-faker/issues/450
     public Passport passport() {return passport;}
 
     public Twitter twitter(){

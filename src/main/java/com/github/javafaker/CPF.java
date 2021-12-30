@@ -2,14 +2,12 @@ package com.github.javafaker;
 
 import com.github.javafaker.shared.CPFUtils;
 
-import java.util.Random;
-
 /**
  * Partial code copy from https://github.com/jrjuniorsp/GeradorValidadorCPFCNPJ/blob/master/src/com/jrmobile/service/GeradorCPF.java
  */
 public class CPF {
 
-    private Faker faker;
+    private final Faker faker;
 
     protected CPF(Faker faker) {
         this.faker = faker;
@@ -34,20 +32,19 @@ public class CPF {
     }
 
     public String generateCPF(boolean valid) {
-        String partial = "";
-        String cpf = "";
-        Integer number;
+        StringBuilder partial = new StringBuilder();
+        String cpf;
+        int number;
 
         for (int i = 0; i < 9; i++) {
-            number = new Integer((int) (Math.random() * 10));
-            partial += number.toString();
+            number = faker.random().nextInt(10);
+            partial.append(number);
         }
 
         if(valid) {
-            cpf = partial + CPFUtils.calculateVerificationDigit(partial);
+            cpf = partial + CPFUtils.calculateVerificationDigit(partial.toString());
         } else {
-            Random random = new Random();
-            long elevenDigits = (random.nextInt(1000000000) + (random.nextInt(90) + 10) * 1000000000L);
+            long elevenDigits = (faker.random().nextInt(1000000000) + (faker.random().nextInt(90) + 10) * 1000000000L);
             cpf = String.valueOf(elevenDigits);
         }
 

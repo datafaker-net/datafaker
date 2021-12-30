@@ -7,7 +7,6 @@ import static org.apache.commons.lang3.StringUtils.join;
 
 /**
  * The type Domain.
- * CS304 Issue link: https://github.com/DiUS/java-faker/issues/391
  */
 public class Domain {
     private final Faker faker;

@@ -10,11 +10,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-//CS304 issue link: https://github.com/DiUS/java-faker/issues/414
 public class TwitterTest extends AbstractFakerTest {
-    /**
-     * Test for creating dates (forward)
-     */
+
     @Test
     public void testCreatedDateForward() {
         Date testDate = new Date();
@@ -23,9 +20,7 @@ public class TwitterTest extends AbstractFakerTest {
         boolean test = generated.after(testDate) && generated.before(constrainDate);
         assertTrue(test);
     }
-    /**
-     * Test for creating dates (backward)
-     */
+
     @Test
     public void testCreatedDateBackward() {
         Date testDate = new Date();
@@ -34,45 +29,37 @@ public class TwitterTest extends AbstractFakerTest {
         boolean test = generated.before(testDate) && generated.after(constrainDate);
         assertTrue(test);
     }
-    /**
-     * Test for faking twitter id length
-     */
+
     @Test
-    public void testTwitterIDLength() {
+    public void testTwitterIdLength() {
         int expectedLength = 15;
-        String generatedID = faker.twitter().twitter_id(expectedLength);
+        String generatedID = faker.twitter().twitterId(expectedLength);
         assertEquals(generatedID.length(), expectedLength);
     }
-    /**
-     * Test for faking twitter id unique
-     */
+
     @Test
-    public void testTwitterIDUnique() {
+    public void testTwitterIdUnique() {
         int expectedLength = 15;
-        String generatedIDOne = faker.twitter().twitter_id(expectedLength);
-        String generatedIDTwo = faker.twitter().twitter_id(expectedLength);
+        String generatedIDOne = faker.twitter().twitterId(expectedLength);
+        String generatedIDTwo = faker.twitter().twitterId(expectedLength);
         assertNotEquals(generatedIDOne, generatedIDTwo);
     }
-    /**
-     * Test for faking twitter text length
-     */
+
     @Test
     public void testTextLength() {
         int sentenceMaxLength = 15;
         int wordMaxLength = 5;
-        String text =  faker.twitter().text(null, sentenceMaxLength, wordMaxLength);
+        String text = faker.twitter().text(null, sentenceMaxLength, wordMaxLength);
         String[] textwords = text.split(" ");
         assertTrue(textwords.length <= sentenceMaxLength);
     }
-    /**
-     * Test for faking twitter text containing key words
-     */
+
     @Test
     public void testTextKeyWords() {
         int sentenceMaxLength = 15;
         int wordMaxLength = 5;
         String[] keywords = new String[]{"buy", "see"};
-        String text =  faker.twitter().text(keywords, sentenceMaxLength, wordMaxLength);
+        String text = faker.twitter().text(keywords, sentenceMaxLength, wordMaxLength);
         String[] textwords = text.split(" ");
         boolean flag = true;
         for (String keyword : keywords) {
@@ -90,41 +77,32 @@ public class TwitterTest extends AbstractFakerTest {
         }
         assertTrue(flag);
     }
-    /**
-     * Test for faking twitter user name
-     */
+
     @Test
-    public void user_name_test() {
-        for(int i=0; i<10; i++){
-            assertThat(faker.twitter().user_name(), matchesRegularExpression("[a-zA-Z0-9_\\-\u4e00-\u9fa5]+"));
-        }
-    }
-    /**
-     * Test for faking twitter user id
-     */
-    @Test
-    public void user_id_test() {
-        for(int i=0; i<10; i++){
-            assertThat(faker.twitter().user_id(), matchesRegularExpression("[0-9]+"));
-        }
-    }
-    /**
-     * Test for faking twitter link
-     */
-    @Test
-    public void linkTestRules() {
+    public void username() {
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().get_link("John", 6), matchesRegularExpression("[A-Za-z0-9.:/]+"));
+            assertThat(faker.twitter().userName(), matchesRegularExpression("[a-zA-Z0-9_\\-\u4e00-\u9fa5]+"));
         }
     }
 
-    /**
-     * Test for faking twitter link keywords
-     */
+    @Test
+    public void userId() {
+        for (int i = 0; i < 10; i++) {
+            assertThat(faker.twitter().userId(), matchesRegularExpression("[0-9]+"));
+        }
+    }
+
+    @Test
+    public void linkTestRules() {
+        for (int i = 0; i < 10; i++) {
+            assertThat(faker.twitter().getLink("John", 6), matchesRegularExpression("[A-Za-z0-9.:/]+"));
+        }
+    }
+
     @Test
     public void linkTestKeyWords() {
         for (int i = 0; i < 10; i++) {
-            assertTrue(faker.twitter().get_link("John", 6).contains("John"));
+            assertTrue(faker.twitter().getLink("John", 6).contains("John"));
         }
     }
 }

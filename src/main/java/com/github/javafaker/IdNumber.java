@@ -102,7 +102,6 @@ public class IdNumber {
      * Specified as #{IDNumber.valid_es_mx_ssn} in es-MX.yml
      * @return A valid MEX CURP.
      */
-    //CS304 Issue link: https://github.com/DiUS/java-faker/issues/571
     public String validEsMXSsn() {
         EsMXIdNumber esMXIdNumber = new EsMXIdNumber();
         return esMXIdNumber.get(faker);
@@ -112,7 +111,6 @@ public class IdNumber {
      * Specified as #{IDNumber.invalid_es_mx_ssn} in es-MX.yml
      * @return A valid MEX CURP.
      */
-    //CS304 Issue link: https://github.com/DiUS/java-faker/issues/571
     public String invalidEsMXSsn() {
         EsMXIdNumber esMXIdNumber = new EsMXIdNumber();
         return esMXIdNumber.getWrong(faker);

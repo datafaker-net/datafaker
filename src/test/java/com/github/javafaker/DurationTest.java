@@ -6,7 +6,6 @@ import java.time.Duration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-// Issue Link: https://github.com/DiUS/java-faker/issues/677
 public class DurationTest extends AbstractFakerTest {
     final int DURATION_IS_EQUAL = 0;
     final int DURATION_IS_GREATER = 1;

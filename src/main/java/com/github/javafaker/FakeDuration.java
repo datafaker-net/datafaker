@@ -2,7 +2,6 @@ package com.github.javafaker;
 
 import java.time.Duration;
 
-// Issue link: https://github.com/DiUS/java-faker/issues/677
 public class FakeDuration {
     private final Faker faker;
 

@@ -19,13 +19,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.hasItems;
 
-// CS427 Issue link: https://github.com/DiUS/java-faker/issues/603
 public class LocalePickerTest extends AbstractFakerTest {
 
     private LocalePicker localePicker;
     private List<String> allLocales;
 
-    // CS427 Issue link: https://github.com/DiUS/java-faker/issues/603
     /**
      * Initialize tests by instantiating a LocalePicker object and list of all locales supported in Java Faker
      */
@@ -35,7 +33,6 @@ public class LocalePickerTest extends AbstractFakerTest {
         allLocales = localePicker.getAllSupportedLocales();
     }
 
-    // CS427 Issue link: https://github.com/DiUS/java-faker/issues/603
     /**
      * Test to check that list of all locales support in Java Faker is loaded
      */
@@ -49,7 +46,6 @@ public class LocalePickerTest extends AbstractFakerTest {
         assertThat(allLocales, not(IsEmptyCollection.empty()));
     }
 
-    // CS427 Issue link: https://github.com/DiUS/java-faker/issues/603
     /**
      * Test to check LocalePicker's getLocaleString method is using the random number generator
      *   passed as an argument. This is checked with a Random object that has a fixed seed and
@@ -69,7 +65,6 @@ public class LocalePickerTest extends AbstractFakerTest {
         assertEquals(randomLocale1, randomLocale2);
     }
 
-    // CS427 Issue link: https://github.com/DiUS/java-faker/issues/603
     /**
      * Test to check LocalePicker's getLocaleString method. It verifies that the randomly selected
      *   locale is within the set of all locales supported by Java Faker.
@@ -83,7 +78,6 @@ public class LocalePickerTest extends AbstractFakerTest {
         assertThat(allLocales, hasItems(randomLocale));
     }
 
-    // CS427 Issue link: https://github.com/DiUS/java-faker/issues/603
     /**
      * Test to check LocalePicker's getLocaleStringWithoutReplacement method.
      *   It randomly selects n locales where n is the number of locales supported by Java Faker.
@@ -108,6 +102,4 @@ public class LocalePickerTest extends AbstractFakerTest {
             assertEquals(returnedLocales, allLocales);
         }
     }
-
-
 }

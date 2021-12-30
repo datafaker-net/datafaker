@@ -62,11 +62,12 @@ public class CPFTest extends AbstractFakerTest {
      *
      * @see com.github.javafaker.shared.CPFUtils#calculateVerificationDigit(String)
      */
-    private static Boolean isCPFValid(String cpf) {
-        cpf = CPFUtils.unformatCPF(cpf);
+    private static boolean isCPFValid(String cpf) {
+        String unformatCPF = CPFUtils.unformatCPF(cpf);
 
-        if (cpf.length() != 11)
+        if (unformatCPF.length() != 11) {
             return false;
+        }
         String numDig = cpf.substring(0, 9);
         return CPFUtils.calculateVerificationDigit(numDig).equals(cpf.substring(9, 11));
     }

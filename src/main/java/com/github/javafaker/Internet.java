@@ -104,7 +104,7 @@ public class Internet {
      * @return an url to a random image with the given characteristics.
      */
     public String image(Integer width, Integer height, Boolean gray, String text) {
-        return String.format("http://lorempixel.com/%s%s/%s/%s/%s",
+        return String.format("https://lorempixel.com/%s%s/%s/%s/%s",
                 gray ? "g/" : StringUtils.EMPTY, width, height, faker.fakeValuesService().resolve("internet.image_category", this, faker),
                 StringUtils.isEmpty(text) ? StringUtils.EMPTY : text);
     }
@@ -132,20 +132,21 @@ public class Internet {
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return faker.lorem().characters(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
-    
+
     /**
      * <p>Returns a MAC address in the following format: 6-bytes in MM:MM:MM:SS:SS:SS format.</p>
-     * @return a correctly formatted MAC address
+     *
      * @param prefix a prefix to put on the front of the address
+     * @return a correctly formatted MAC address
      */
     public String macAddress(String prefix) {
         final String tmp = (prefix == null) ? "" : prefix;
-        final int prefixLength = tmp.trim().length() == 0 
-          ? 0 
-          : COLON.split(tmp).length;
-        
+        final int prefixLength = tmp.trim().length() == 0
+                ? 0
+                : COLON.split(tmp).length;
+
         final StringBuilder out = new StringBuilder(tmp);
-        for (int i=0;i < 6 - prefixLength;i++) {
+        for (int i = 0; i < 6 - prefixLength; i++) {
             if (out.length() > 0) {
                 out.append(':');
             }
@@ -156,30 +157,31 @@ public class Internet {
     }
 
     /**
-     * @see Internet#macAddress(String) 
+     * @see Internet#macAddress(String)
      */
     public String macAddress() {
         return macAddress("");
     }
 
     /**
-     * returns an IPv4 address in dot separated octets. 
+     * returns an IPv4 address in dot separated octets.
+     *
      * @return a correctly formatted IPv4 address.
      */
     public String ipV4Address() {
         return String.format("%d.%d.%d.%d",
-          faker.random().nextInt(254) + 2,
-          faker.random().nextInt(254) + 2,
-          faker.random().nextInt(254) + 2,
-          faker.random().nextInt(254) + 2);
+                faker.random().nextInt(254) + 2,
+                faker.random().nextInt(254) + 2,
+                faker.random().nextInt(254) + 2,
+                faker.random().nextInt(254) + 2);
     }
 
     /**
      * @return a valid private IPV4 address in dot notation
      */
     public String privateIpV4Address() {
-        final Integer[] PRIVATE_FIRST_OCTET = {10,127,169,192,172};
-        final Integer[] PRIVATE_SECOND_OCTET_172 = {16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+        final Integer[] PRIVATE_FIRST_OCTET = {10, 127, 169, 192, 172};
+        final Integer[] PRIVATE_SECOND_OCTET_172 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 
         final RandomService r = faker.random();
         int first = random(PRIVATE_FIRST_OCTET),
@@ -206,14 +208,14 @@ public class Internet {
      */
     public String publicIpV4Address() {
         final RandomService r = faker.random();
-        
-        final int[] PRIVATE_FIRST_OCTET = {10,127,169,192,172};
+
+        final int[] PRIVATE_FIRST_OCTET = {10, 127, 169, 192, 172};
 
         int first = r.nextInt(256),
                 second = r.nextInt(256),
                 third = r.nextInt(256),
                 fourth = r.nextInt(256);
-        
+
         while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
             first = r.nextInt(256);
         }
@@ -224,19 +226,19 @@ public class Internet {
      * @return a valid IPV4 CIDR
      */
     public String ipV4Cidr() {
-        return new StringBuilder(ipV4Address())
-          .append('/')
-          .append(faker.random().nextInt(31) + 1)
-          .toString();
+        return ipV4Address() +
+                '/' +
+                (faker.random().nextInt(31) + 1);
     }
 
     /**
      * <p>Returns an IPv6 address in hh:hh:hh:hh:hh:hh:hh:hh format.</p>
+     *
      * @return a correctly formatted IPv6 address.
      */
     public String ipV6Address() {
         final StringBuilder tmp = new StringBuilder();
-        for (int i=0;i < 8;i++) {
+        for (int i = 0; i < 8; i++) {
             if (i > 0) {
                 tmp.append(":");
             }
@@ -252,10 +254,9 @@ public class Internet {
      * @return a valid IPV6 CIDR
      */
     public String ipV6Cidr() {
-        return new StringBuilder(ipV6Address())
-          .append('/')
-          .append(faker.random().nextInt(127) + 1)
-          .toString();
+        return ipV6Address() +
+                '/' +
+                (faker.random().nextInt(127) + 1);
     }
 
     /**
@@ -290,12 +291,13 @@ public class Internet {
 
     /**
      * Returns a UUID (type 4) as String.
+     *
      * @return A UUID as String.
      */
     public String uuid() {
         return UUID.randomUUID().toString();
     }
-          
+
     private <T> T random(T[] src) {
         return src[faker.random().nextInt(src.length)];
     }
@@ -303,8 +305,8 @@ public class Internet {
     public String userAgent(UserAgent userAgent) {
         UserAgent agent = userAgent;
 
-        if(agent == null) {
-            agent = UserAgent.any();
+        if (agent == null) {
+            agent = UserAgent.any(faker);
         }
 
         String userAgentKey = "internet.user_agent." + agent.toString();
@@ -325,15 +327,15 @@ public class Internet {
         SAFARI("safari");
 
         //Browser's name in corresponding yaml (internet.yml) file.
-        private String browserName;
+        private final String browserName;
 
         UserAgent(String browserName) {
             this.browserName = browserName;
         }
 
-        private static UserAgent any() {
+        private static UserAgent any(Faker faker) {
             UserAgent[] agents = UserAgent.values();
-            int randomIndex = (int)(Math.random() * agents.length);
+            int randomIndex = (int) (faker.random().nextDouble() * agents.length);
             return agents[randomIndex];
         }
 

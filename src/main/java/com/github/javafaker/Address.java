@@ -31,7 +31,6 @@ public class Address {
         return faker.numerify(faker.fakeValuesService().resolve("address.secondary_address", this, faker));
     }
 
-    // Issue link: https://github.com/DiUS/java-faker/issues/591
     /**
     * Returns a String representing a standard 5-digit zip code.
     * 
@@ -45,7 +44,6 @@ public class Address {
         return faker.bothify(faker.fakeValuesService().resolve("address.postcode", this,faker));
     }
 
-    // Issue link: https://github.com/DiUS/java-faker/issues/591
     /**
     * Returns a String representing a ZIP+4 code for greater geographic specificity.
     * This is a 9-digit zip code, but the String itself is 10 characters including the hyphen.

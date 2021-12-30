@@ -216,12 +216,7 @@ public class NumberTest extends AbstractFakerTest {
             final int min = minMax.getLeft().intValue(), max = minMax.getRight().intValue();
             long numbersToGet = calculateNumbersToGet(min, max);
 
-            return uniquePercentageOfResults(numbersToGet, new Callable<Double>() {
-                @Override
-                public Double call() throws Exception {
-                    return faker.number().randomDouble(0, min, max);
-                }
-            });
+            return uniquePercentageOfResults(numbersToGet, () -> faker.number().randomDouble(0, min, max));
         };
 
         final double percentGreaterThan80Percent = randomizationQualityTest(individualRunGtPercentUnique, minMaxRangeToUniquePercentageFunction);
@@ -251,12 +246,7 @@ public class NumberTest extends AbstractFakerTest {
             final int max = minMax.getRight().intValue();
             long numbersToGet = calculateNumbersToGet(min, max);
 
-            return uniquePercentageOfResults(numbersToGet, new Callable<Integer>() {
-                @Override
-                public Integer call() throws Exception {
-                    return faker.number().numberBetween(min, max);
-                }
-            });
+            return uniquePercentageOfResults(numbersToGet, () -> faker.number().numberBetween(min, max));
         };
 
         final double percentGreaterThan80Percent = randomizationQualityTest(individualRunGtPercentUnique, minMaxRangeToUniquePercentageFunction);
@@ -381,12 +371,6 @@ public class NumberTest extends AbstractFakerTest {
         if (numbersToGet == 0) numbersToGet = RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET;
         return numbersToGet;
     }
-    /*
-     * This file was used to test the issue #458
-     * Wed May 15 GMT 2021
-     * by SE_CHWJ
-     */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/458
     @Test
     public void testIntNumberBetweenQuality() {
         //test whether the fake number made by numberBetween(int min, int max)
@@ -409,15 +393,8 @@ public class NumberTest extends AbstractFakerTest {
             int count = entry.getValue();
             assertTrue((mean-count)/mean < 0.2);
         }
-
     }
 
-    /*
-     * This file was used to test the issue #458
-     * Wed May 15 GMT 2021
-     * by SE_CHWJ
-     */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/458
     @Test
     public void testLongNumberBetweenQuality() {
         //test whether the fake number made by numberBetween(long min, long max)
@@ -443,12 +420,6 @@ public class NumberTest extends AbstractFakerTest {
 
     }
 
-    /*
-     * This file was used to test the issue #458
-     * Wed May 15 GMT 2021
-     * by SE_CHWJ
-     */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/458
     @Test
     public void testNumberBetweenContain() {
 
@@ -484,12 +455,6 @@ public class NumberTest extends AbstractFakerTest {
         assertEquals(longs.size(), size);
     }
 
-    /*
-     * This file was used to test the issue #458
-     * Wed May 15 GMT 2021
-     * by SE_CHWJ
-     */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/458
     @Test
     public void testNumberBetweenBorder() {
 
@@ -513,5 +478,4 @@ public class NumberTest extends AbstractFakerTest {
             }
         }
     }
-
 }

@@ -2,25 +2,22 @@ package com.github.javafaker.idnumbers;
 
 import com.github.javafaker.Faker;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Implementation based on the definition at
  * https://en.wikipedia.org/wiki/Unique_Population_Registry_Code
  */
-//CS304 Issue link: https://github.com/DiUS/java-faker/issues/571
 public class EsMXIdNumber {
 
-    private String[] consonant = {"B", "C", "C", "D", "F",
+    private final String[] consonant = {"B", "C", "C", "D", "F",
             "G", "H", "J", "K", "L", "L", "M", "N", "N",
             "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"
     };
 
-    private String[] vowel = {"A", "E", "I", "O", "U"};
+    private final String[] vowel = {"A", "E", "I", "O", "U"};
 
-    private String[] states = {"AG", "BC", "BS", "CM", "CS",
+    private final String[] states = {"AG", "BC", "BS", "CM", "CS",
             "CH", "CO", "CL", "DF", "DG", "GT", "GR",
             "HG", "JA", "EM", "MI", "MO", "NA", "NL",
             "OA", "PU", "QT", "QR", "SL", "SI", "SO",
@@ -33,7 +30,6 @@ public class EsMXIdNumber {
      * @param faker faker
      * @return A valid MEX CURP.
      */
-    //CS304 Issue link: https://github.com/DiUS/java-faker/issues/571
     public String get(Faker faker) {
 
         String sex = new String[]{"H", "M"}[faker.random().nextInt(2)];
@@ -64,9 +60,9 @@ public class EsMXIdNumber {
      * @param faker faker
      * @return A invalid MEX CURP.
      */
-    //CS304 Issue link: https://github.com/DiUS/java-faker/issues/571
     public String getWrong(Faker faker) {
-        String[] cha = {"HEFA560427MVZRRL04",
+        String[] cha = {
+                "HEFA560427MVZRRL04",
                 "DKEM193827HDQWEF05",
                 "KAKS142444HNSSFAW6",
                 "KSDF414424HNSDFAW6",

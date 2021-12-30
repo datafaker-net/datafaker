@@ -20,7 +20,6 @@ public class EnZAIdNumber {
      * @param f the java-faker
      * @return a valid social security number on faker
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/566
     public String getValidSsn(Faker f) {
 
         String ssn = "";
@@ -37,7 +36,6 @@ public class EnZAIdNumber {
      * @param f the java-faker
      * @return a invalid social security number on faker
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/566
     public String getInValidSsn(Faker f) {
 
         String ssn = f.numerify(validPattern[f.random().nextInt(2)]);
@@ -50,10 +48,9 @@ public class EnZAIdNumber {
 
     /**
      * Generate a fixed format numeric string
-     * @param f the java-faker
+     * @param faker the java-faker
      * @return a fixed format numeric string
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/566
     private String getPattern(Faker faker) {
         return validPattern[faker.random().nextInt(2)];
     }
@@ -62,7 +59,6 @@ public class EnZAIdNumber {
      * Judge whether a social security number is valid
      * @param ssn social security number
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/566
     boolean validSsn(String ssn) {
         if (ssn.length() != 13) {
             return false;
@@ -85,7 +81,6 @@ public class EnZAIdNumber {
      * Judge whether a numeric string of ssn can represent a legal date
      * @param ssn social security number
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/566
     private boolean parseDate(String ssn) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
         String dateString = ssn.substring(0, 6);
@@ -101,7 +96,6 @@ public class EnZAIdNumber {
      * @param number a social security number not including the last number
      * @return check number of this ssn
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/566
     private int calculateChecksum(String number) {
 
         int totalNumber = 0;
@@ -133,7 +127,6 @@ public class EnZAIdNumber {
      * Calculate the sum of each digit of the number
      * @return sum of each digit of the number
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/566
     private static int calculate(int number){
         String str = String.valueOf(number);
         int total = 0;

@@ -10,11 +10,9 @@ public class ChPassportNumber {
     /**
      * Generates a valid Chinese passport number
      *
-     * @param f
-     *            object faker
+     * @param f object faker
      * @return a valid Chinese passport number
      */
-    // CS304 Issue link: https://github.com/DiUS/java-faker/issues/450
     public String getValidCh(Faker f) {
         String ch = f.regexify("[A-Z][0-9A-Z][0-9]{7}");
 
@@ -38,7 +36,6 @@ public class ChPassportNumber {
      *            object faker
      * @return a invalid Chinese passport number
      */
-    // CS304 Issue link: https://github.com/DiUS/java-faker/issues/450
     public String getInvalidCh(Faker f) {
         String ch = f.regexify("[A-Z0-9]{1,}");
 

@@ -8,13 +8,11 @@ public class AmPassportNumber {
     /**
      * Generates a valid America passport number
      *
-     * @param f
-     *            object faker
+     * @param faker object faker
      * @return a valid Chinese passport number
      */
-    // CS304 Issue link: https://github.com/DiUS/java-faker/issues/450
-    public String getValidAm(Faker f) {
-        String ch = f.regexify("[0-9A-Z]{8}");
+    public String getValidAm(Faker faker) {
+        String ch = faker.regexify("[0-9A-Z]{8}");
 
         boolean isValid = false;
         for (String validCHPattern : validCHPatterns) {
@@ -24,7 +22,7 @@ public class AmPassportNumber {
             }
         }
         if (!isValid) {
-            ch = getValidAm(f);
+            ch = getValidAm(faker);
         }
         return ch;
     }
@@ -32,13 +30,11 @@ public class AmPassportNumber {
     /**
      * Generates a invalid America passport number
      *
-     * @param f
-     *            object faker
+     * @param faker object faker
      * @return a invalid Chinese passport number
      */
-    // CS304 Issue link: https://github.com/DiUS/java-faker/issues/450
-    public String getInvalidAm(Faker f) {
-        String ch = f.regexify("[A-Z0-9]{1,}");
+    public String getInvalidAm(Faker faker) {
+        String ch = faker.regexify("[A-Z0-9]{1,}");
 
         boolean isValid = true;
         for (String validCHPattern : validCHPatterns) {
@@ -48,7 +44,7 @@ public class AmPassportNumber {
             isValid = false;
         }
         if (isValid) {
-            ch = getInvalidAm(f);
+            ch = getInvalidAm(faker);
         }
         return ch;
     }

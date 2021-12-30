@@ -30,7 +30,6 @@ public class Number {
      * @return a random number on faker.number() between min and max
      * if min = max, return min
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/458
     public int numberBetween(int min, int max) {
         if (min == max) return min;
         return decimalBetween(min, max).intValue();
@@ -42,7 +41,6 @@ public class Number {
      * @return a random number on faker.number() between min and max
      * if min = max, return min
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/458
     public long numberBetween(long min, long max) {
         if (min == max) return min;
         return decimalBetween(min, max).longValue();
@@ -93,7 +91,6 @@ public class Number {
      * @return decimalBetween on faker.number() between min and max
      * if min = max, return min
      */
-    //CS304 issue link: https://github.com/DiUS/java-faker/issues/458
     private BigDecimal decimalBetween(long min, long max) {
         if (min == max) {
             return new BigDecimal(min);

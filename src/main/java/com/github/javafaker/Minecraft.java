@@ -1,10 +1,7 @@
 package com.github.javafaker;
 
-import java.util.Random;
-
 public class Minecraft {
 	private final Faker faker;
-	private Random rand = new Random();
 
 	public Minecraft(Faker faker) {
 		this.faker = faker;
@@ -31,6 +28,6 @@ public class Minecraft {
 	}
 
 	public String tileItemName() {
-		return rand.nextBoolean() ? itemName() : tileName();
+		return faker.random().nextBoolean() ? itemName() : tileName();
 	}
 }
