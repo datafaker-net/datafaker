@@ -26,7 +26,7 @@ For gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:1.0.0-SNAPSHOT'
+    implementation 'net.datafaker:datafaker:0.9.0'
 }
 
 ```
