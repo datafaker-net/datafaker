@@ -12,6 +12,7 @@ that generates fake data. It's useful when you're developing a new project and n
 
 Usage
 -----
+
 In pom.xml, add the following xml stanza between `<dependencies> ... </dependencies>`
 
 ```xml
@@ -22,7 +23,7 @@ In pom.xml, add the following xml stanza between `<dependencies> ... </dependenc
 </dependency>
 ```
 
-For gradle users, add the following to your build.gradle file.
+For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
@@ -31,7 +32,7 @@ dependencies {
 
 ```
 
-In your Java code
+In your Java code:
 
 ```java
 Faker faker = new Faker();
