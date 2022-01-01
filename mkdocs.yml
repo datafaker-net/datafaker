@@ -1,0 +1,104 @@
+site_name: Datafaker
+site_url: https://www.datafaker.net
+site_author: Erik Pragt
+site_description: >-
+  Create fake data for your JVM programs within minutes, 
+  using our wide range of more than 100 data providers
+
+repo_name: datafaker-net/datafaker
+repo_url: https://github.com/datafaker-net/datafaker
+edit_url: ""
+
+# Copyright
+copyright: Copyright &copy; 2016 - 2022 Erik Pragt
+
+theme: 
+  name: material
+  custom_dir: material
+  language: en
+  features:
+    - content.code.annotate
+    # - content.tabs.link
+    # - header.autohide
+    # - navigation.expand
+    - navigation.indexes
+    # - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    # - toc.integrate
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - abbr
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: datafaker-net
+      repo: datafaker
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+plugins:
+  - search
+  - macros
+  - minify:
+      minify_html: true
+
+# Customization
+extra:
+  datafaker:
+    version: 0.9.0
+    snapshot: 0.9.1-SNAPSHOT
+
+# Page tree
+nav:
+  - Home: index.md
+  - Getting started:
+    - Installation: getting-started.md
+    - Usage: usage.md
+    - Data providers: providers.md
+    - License: license.md
+  - Documentation:
+    - Data providers: providers.md
+    - Contributing: contributing.md
+#    - Changelog:
+#      - Changes: changelog/index.md
+#      - How to upgrade: upgrade.md
+  - Releases:
+    - 0.9.0: releases/0.9.0.md
