@@ -4,11 +4,17 @@ Data Faker
 
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
-This library is a modern port of [java-faker](https://github.com/DiUS/java-faker), built on Java 11, with up to date libraries
-and more Fake Generators than Java Faker has. 
+This library is a modern port of [java-faker](https://github.com/DiUS/java-faker), built on Java 11, 
+with up to date libraries and several newly added Fake Generators. 
 
-This library is similar to Ruby's [faker](https://github.com/stympy/faker) gem (as well as Perl's Data::Faker library) 
-that generates fake data. It's useful when you're developing a new project and need some pretty data for showcase.
+This library generates fake data, similar to other fake data generators, such as:
+
+* Ruby's [faker](https://github.com/stympy/faker) gem 
+* Perl's [Data::Faker](https://metacpan.org/pod/Data::Faker) library
+* Python [faker](https://faker.readthedocs.io/en/master/) package
+* PHP [faker](https://fakerphp.github.io/) library
+
+It's useful when you're developing a new project and need some pretty data for showcase.
 
 Usage
 -----
