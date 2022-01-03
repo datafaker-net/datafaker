@@ -8,7 +8,7 @@ Datafaker comes with the following list of data providers:
 | Ancient                         |                                                                                                   | 0.8.0 |
 | Animal                          |                                                                                                   | 0.8.0 |
 | App                             |                                                                                                   | 0.8.0 |
-| Appliance                       |                                                                                                   | 0.9.0 |
+| Appliance                       |                                                                                                   | 1.0.0 |
 | Aqua Teen Hunger Force          |                                                                                                   | 0.8.0 |
 | Artist                          |                                                                                                   | 0.8.0 |
 | Avatar                          |                                                                                                   | 0.8.0 |
@@ -21,8 +21,8 @@ Datafaker comes with the following list of data providers:
 | Bojack Horseman                 |                                                                                                   | 0.8.0 |
 | Book                            |                                                                                                   | 0.8.0 |
 | Bool                            |                                                                                                   | 0.8.0 |
-| Bossa Nova                      |                                                                                                   | 0.9.0 |
-| Breaking Bad                    |                                                                                                   | 0.9.0 |
+| Bossa Nova                      |                                                                                                   | 1.0.0 |
+| Breaking Bad                    |                                                                                                   | 1.0.0 |
 | Business                        |                                                                                                   | 0.8.0 |
 | CPF                             | [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number) | 0.8.0 |
 | Cat                             |                                                                                                   | 0.8.0 |
@@ -87,7 +87,7 @@ Datafaker comes with the following list of data providers:
 | Rick And Morty                  |                                                                                                   | 0.8.0 |
 | Robin                           |                                                                                                   | 0.8.0 |
 | RockBand                        |                                                                                                   | 0.8.0 |
-| RuPaul's Drag Race              |                                                                                                   | 0.9.0 |
+| RuPaul's Drag Race              |                                                                                                   | 1.0.0 |
 | Shakespeare                     |                                                                                                   | 0.8.0 |
 | Sip                             |                                                                                                   | 0.8.0 |
 | Slack Emoji                     |                                                                                                   | 0.8.0 |
