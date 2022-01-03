@@ -7,28 +7,28 @@ public class CPFUtils {
 
     public static String calculateVerificationDigit(String num) {
 
-        Integer primDig, segDig;
+        int primDig, segDig;
         int sum = 0, peso = 10;
         for (int i = 0; i < num.length(); i++)
             sum += Integer.parseInt(num.substring(i, i + 1)) * peso--;
 
         if (sum % 11 == 0 | sum % 11 == 1)
-            primDig = new Integer(0);
+            primDig = 0;
         else
-            primDig = new Integer(11 - (sum % 11));
+            primDig = 11 - (sum % 11);
 
         sum = 0;
         peso = 11;
         for (int i = 0; i < num.length(); i++)
             sum += Integer.parseInt(num.substring(i, i + 1)) * peso--;
 
-        sum += primDig.intValue() * 2;
+        sum += primDig * 2;
         if (sum % 11 == 0 | sum % 11 == 1)
-            segDig = new Integer(0);
+            segDig = 0;
         else
-            segDig = new Integer(11 - (sum % 11));
+            segDig = 11 - (sum % 11);
 
-        return primDig.toString() + segDig.toString();
+        return Integer.toString(primDig) + segDig;
     }
 
     /**

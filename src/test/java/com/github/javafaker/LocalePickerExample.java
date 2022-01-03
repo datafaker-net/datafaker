@@ -12,7 +12,7 @@ public class LocalePickerExample {
      *   locales (language and geographical/political/cultural region) when using Faker
      * @param args Command-line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         LocalePicker lp = new LocalePicker();
 
         // EXAMPLE: GET LIST OF ALL LOCALES SUPPORTED BY JAVA FAKER

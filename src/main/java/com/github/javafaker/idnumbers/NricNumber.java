@@ -15,10 +15,10 @@ public class NricNumber {
 	public enum Type {SINGAPOREAN_TWENTIETH_CENTURY, FOREIGNER_TWENTIETH_CENTURY, SINGAPOREAN_TWENTY_FIRST_CENTURY, FOREIGNER_TWENTY_FIRST_CENTURY}
 
 	private static class NricType{
-		private char firstLetter;
-		private String matchLetters;
-		private int[] code;
-		private int initialValue;
+		private final char firstLetter;
+		private final String matchLetters;
+		private final int[] code;
+		private final int initialValue;
 
 		public NricType(char firstLetter, String matchLetters, int[] code, int initialValue) {
 			this.firstLetter = firstLetter;
@@ -32,7 +32,7 @@ public class NricNumber {
 			StringBuilder id = new StringBuilder(firstLetter + "");
 			for (int i = 0; i < digits.length; i++) {
 				value += digits[i] * code[i];
-				id.append(String.valueOf(digits[i]));
+				id.append(digits[i]);
 			}
 			value %= 11;
 			id.append(matchLetters.charAt(value));
