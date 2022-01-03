@@ -1,0 +1,40 @@
+package net.datafaker;
+
+import org.junit.Test;
+
+import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+public class MinecraftTest extends AbstractFakerTest {
+
+	@Test
+	public void testItemName() {
+		assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+	}
+
+	@Test
+	public void testTileName() {
+		assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+	}
+
+	@Test
+	public void testEntityName() {
+		assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+	}
+
+	@Test
+	public void testMonsterName() {
+		assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+	}
+
+	@Test
+	public void testAnimalName() {
+		assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+	}
+
+	@Test
+	public void testTileItemName() {
+		assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+	}
+
+}

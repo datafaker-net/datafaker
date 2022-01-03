@@ -2,7 +2,7 @@ First and foremost thanks to anyone who contributes, very much appreciated.
 
 ## Guidelines
 
-- If you add new faker classes like `Address`, `Country`, and `Number` they should be accompanied by a unit test. Where relevant please add more assertions to the `com.github.javafaker.integration.FakerIT` class.
+- If you add new faker classes like `Address`, `Country`, and `Number` they should be accompanied by a unit test. Where relevant please add more assertions to the `net.datafaker.FakerIT` class.
 - If you add a new faker class, update the `README.md`.
 - Submit a PR with your change and if there are no comments, changes will be merged in
 - If you're not sure about the change, raise an issue and have a discussion before spending time coding it up

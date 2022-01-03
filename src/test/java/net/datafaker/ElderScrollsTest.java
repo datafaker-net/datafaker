@@ -1,0 +1,52 @@
+
+
+package net.datafaker;
+
+import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.not;
+
+public class ElderScrollsTest extends AbstractFakerTest  {
+
+    @Test
+    public void testCity() {
+        assertThat(faker.elderScrolls().city(), not(isEmptyOrNullString()));
+    }
+
+    @Test
+    public void testCreature() {
+        assertThat(faker.elderScrolls().creature(), not(isEmptyOrNullString()));
+    }
+
+    @Test
+    public void testDragon() {
+        assertThat(faker.elderScrolls().dragon(), not(isEmptyOrNullString()));
+    }
+
+    @Test
+    public void testFirstName() {
+        assertThat(faker.elderScrolls().firstName(), not(isEmptyOrNullString()));
+    }
+
+    @Test
+    public void testLastName() {
+        assertThat(faker.elderScrolls().lastName(), not(isEmptyOrNullString()));
+    }
+
+    @Test
+    public void testRace() {
+        assertThat(faker.elderScrolls().race(), not(isEmptyOrNullString()));
+    }
+
+    @Test
+    public void testRegion() {
+        assertThat(faker.elderScrolls().region(), not(isEmptyOrNullString()));
+    }
+
+    @Test
+    public void testQuote() {
+        assertThat(faker.elderScrolls().quote(), not(isEmptyOrNullString()));
+    }
+}
