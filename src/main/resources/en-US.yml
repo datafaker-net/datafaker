@@ -41058,3 +41058,11 @@ en-US:
         - "(#{PhoneNumber.area_code}) #{PhoneNumber.exchange_code}-#{PhoneNumber.subscriber_number}"
         - "1-#{PhoneNumber.area_code}-#{PhoneNumber.exchange_code}-#{PhoneNumber.subscriber_number}"
         - "#{PhoneNumber.area_code}.#{PhoneNumber.exchange_code}.#{PhoneNumber.subscriber_number}"
+
+    medical:
+#      icd9_diagnosis_code:
+#        - "\\d{3}\\.?\\d{0,2}"
+#        - "E\\d{3}\\.?\\d?"
+#        - "V\\d{2}\\.?\\d{0,2}"
+      diagnosis_code:
+        icd10: "[A-TV-Z][0-9][0-9AB](\\.[0-9A-TV-Z]{1,4})?"

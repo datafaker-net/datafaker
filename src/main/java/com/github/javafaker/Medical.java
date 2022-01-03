@@ -23,4 +23,14 @@ public class Medical {
     public String symptoms() {
         return faker.fakeValuesService().resolve("medical.symptoms", this, faker);
     }
+
+    public String diagnosisCode() {
+        String regex = faker.fakeValuesService().resolve("medical.diagnosis_code.icd10", this, faker);
+        return faker.regexify(regex);
+    }
+
+    public String procedureCode() {
+        String regex = faker.fakeValuesService().resolve("medical.procedure_code.icd10", this, faker);
+        return faker.regexify(regex);
+    }
 }
