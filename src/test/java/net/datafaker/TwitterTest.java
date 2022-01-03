@@ -31,6 +31,20 @@ public class TwitterTest extends AbstractFakerTest {
     }
 
     @Test
+    public void testShortTwitterIdLength() {
+        int expectedLength = 6;
+        String generatedID = faker.twitter().twitterId(expectedLength);
+        assertEquals(generatedID.length(), expectedLength);
+    }
+
+    @Test
+    public void testLongTwitterIdLength() {
+        int expectedLength = 25;
+        String generatedID = faker.twitter().twitterId(expectedLength);
+        assertEquals(generatedID.length(), expectedLength);
+    }
+
+    @Test
     public void testTwitterIdLength() {
         int expectedLength = 15;
         String generatedID = faker.twitter().twitterId(expectedLength);

@@ -40,13 +40,23 @@ public class BarcodeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testEan13Length() {
+    public void testEan13() {
         assertThat(String.valueOf(faker.barcode().ean13()), matchesRegularExpression("[0-9]{13}"));
     }
 
     @Test
-    public void testEan8Length() {
+    public void testGtin13() {
+        assertThat(String.valueOf(faker.barcode().gtin13()), matchesRegularExpression("[0-9]{13}"));
+    }
+
+    @Test
+    public void testEan8() {
         assertThat(String.valueOf(faker.barcode().ean8()), matchesRegularExpression("[0-9]{8}"));
+    }
+
+    @Test
+    public void testGtin8() {
+        assertThat(String.valueOf(faker.barcode().gtin8()), matchesRegularExpression("[0-9]{8}"));
     }
 
     @Test

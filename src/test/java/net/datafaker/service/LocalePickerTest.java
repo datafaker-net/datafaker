@@ -24,7 +24,7 @@ public class LocalePickerTest extends AbstractFakerTest {
     private List<String> allLocales;
 
     /**
-     * Initialize tests by instantiating a LocalePicker object and list of all locales supported in Java Faker
+     * Initialize tests by instantiating a LocalePicker object and list of all supported locales
      */
     @Before
     public void init() {
@@ -33,7 +33,7 @@ public class LocalePickerTest extends AbstractFakerTest {
     }
 
     /**
-     * Test to check that list of all locales support in Java Faker is loaded
+     * Test to check that list of all locales support is loaded
      */
     @Test
     public void testGetAllSuppportedLocales() {
@@ -66,7 +66,7 @@ public class LocalePickerTest extends AbstractFakerTest {
 
     /**
      * Test to check LocalePicker's getLocaleString method. It verifies that the randomly selected
-     * locale is within the set of all locales supported by Java Faker.
+     * locale is within the set of all supported locales
      */
     @Test
     @Repeat(times = 1000)
@@ -79,8 +79,8 @@ public class LocalePickerTest extends AbstractFakerTest {
 
     /**
      * Test to check LocalePicker's getLocaleStringWithoutReplacement method.
-     * It randomly selects n locales where n is the number of locales supported by Java Faker.
-     * It ensures that all the locales supported by Java Faker are represented once.
+     * It randomly selects n locales where n is the number of locales.
+     * It ensures that all the locales supported are represented once.
      */
     @Test
     public void testGetLocaleStringWithoutReplacement() {
@@ -88,7 +88,7 @@ public class LocalePickerTest extends AbstractFakerTest {
         List<String> returnedLocales;
         int numSupportedLocales = allLocales.size();
 
-        // loop through all locales supported by Java Faker twice
+        // loop through all supported locales
         for (int i = 0; i < 2; i++) {
             returnedLocales = new ArrayList<>(numSupportedLocales);
 

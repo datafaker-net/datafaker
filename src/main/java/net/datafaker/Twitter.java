@@ -48,11 +48,9 @@ public class Twitter {
      */
     public String twitterId(int expectedLength) {
         if (expectedLength <= 6 || expectedLength >= 25) {
-            Logger logger
-                    = Logger.getLogger(
-                    Twitter.class.getName());
+            Logger logger = Logger.getLogger(Twitter.class.getName());
             logger.setLevel(Level.WARNING);
-            logger.warning("expectedLength <= 6 may easily cause twitter_id collision. And expectedLength >= 25" +
+            logger.warning("expectedLength <= 6 may easily cause twitter id collision. And expectedLength >= 25" +
                     " can be easily out of bound.");
         }
         int hashCodeV = UUID.randomUUID().toString().hashCode();

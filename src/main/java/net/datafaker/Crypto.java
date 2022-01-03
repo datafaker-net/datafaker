@@ -37,5 +37,4 @@ public class Crypto {
             throw new RuntimeException(noSuchAlgorithmException);
         }
     }
-
 }

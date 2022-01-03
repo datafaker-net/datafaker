@@ -16,9 +16,9 @@ public class LocalePickerExample {
     public static void main(String[] args) {
         LocalePicker lp = new LocalePicker();
 
-        // EXAMPLE: GET LIST OF ALL LOCALES SUPPORTED BY JAVA FAKER
+        // EXAMPLE: GET LIST OF ALL SUPPORTED LOCALES
         List<String> allLocales = lp.getAllSupportedLocales();
-        System.out.println("All locales supported in Java Faker: " + Arrays.toString(allLocales.toArray()));
+        System.out.println("All supported locales: " + Arrays.toString(allLocales.toArray()));
 
         // EXAMPLE: GET A FAKER OBJECT WITH A RANDOM LOCALE (SELECTED WITH REPLACEMENT)
         // Instantiate a Faker object with a randomized locale
@@ -36,7 +36,7 @@ public class LocalePickerExample {
         System.out.println ("  Street Address: " + streetAddress);
         System.out.println ("  Phone Number: " + phoneNumber);
 
-        // EXAMPLE: ROTATE THROUGH ALL LOCALES SUPPORTED BY JAVA FAKER TO GENERATE USER DATA
+        // EXAMPLE: ROTATE THROUGH ALL SUPPORTED LOCALES TO GENERATE USER DATA
         //   LOCALES PICKED AT RANDOM (SELECTED WITHOUT REPLACEMENT)
         System.out.println ("EXAMPLE: ROTATE THROUGH ALL LOCALES AT RANDOM (WITHOUT REPLACEMENT)");
         Faker currentFaker;

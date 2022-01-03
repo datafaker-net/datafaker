@@ -84,8 +84,8 @@ public class Domain {
     public String validDomain(String name) {
         final RandomService random = faker.random();
 
-        boolean has_prefix = random.nextInt(3) == 1;
-        boolean has_suffix = random.nextInt(2) == 1;
+        boolean hasPrefix = random.nextInt(3) == 1;
+        boolean hasSuffix = random.nextInt(2) == 1;
 
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
 
@@ -95,7 +95,7 @@ public class Domain {
                 top
         );
 
-        if (has_prefix) {
+        if (hasPrefix) {
             String prefix = faker.fakeValuesService().resolve("domain.prefix", this, faker);
             result = join(
                     prefix,
@@ -104,7 +104,7 @@ public class Domain {
             );
         }
 
-        if (has_suffix) {
+        if (hasSuffix) {
             String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
             result = join(
                     result,
