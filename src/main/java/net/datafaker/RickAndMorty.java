@@ -1,6 +1,6 @@
 package net.datafaker;
 
-public class RickAndMorty  {
+public class RickAndMorty {
     private final Faker faker;
 
     protected RickAndMorty(final Faker faker) {

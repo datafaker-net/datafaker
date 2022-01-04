@@ -30,5 +30,7 @@ public class StarTrekTest extends AbstractFakerTest {
     }
 
     @Test
-    public void klingon() { assertThat(faker.starTrek().klingon(), not(isEmptyOrNullString())); }
+    public void klingon() {
+        assertThat(faker.starTrek().klingon(), not(isEmptyOrNullString()));
+    }
 }

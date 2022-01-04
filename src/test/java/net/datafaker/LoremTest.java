@@ -48,7 +48,7 @@ public class LoremTest extends AbstractFakerTest {
     @Test
     public void testCharactersShouldIncludeMinAndMaxLenght() {
         List<String> results = new ArrayList<>();
-        for(int i = 0 ; i< 300; i++) {
+        for (int i = 0; i < 300; i++) {
             results.add(faker.lorem().characters(1, 10));
         }
 
@@ -130,7 +130,7 @@ public class LoremTest extends AbstractFakerTest {
     }
 
     @Test
-    @Repeat(times=10)
+    @Repeat(times = 10)
     public void testMaxLengthSentence() {
         Random rand = new Random();
         // Test different lengths over 10 runs

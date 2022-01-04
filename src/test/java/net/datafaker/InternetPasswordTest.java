@@ -29,13 +29,13 @@ public class InternetPasswordTest extends AbstractFakerTest {
     }
 
     @Test
-    public void passwordSpecial(){
+    public void passwordSpecial() {
         boolean check = true;
-        for (int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             String password = faker.internet().password(8, 16, true, true, true);
             Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
             Matcher specialCharacterMatcher = specialCharacterPattern.matcher(password);
-            if(!specialCharacterMatcher.find()){
+            if (!specialCharacterMatcher.find()) {
                 check = false;
                 break;
             }
@@ -43,20 +43,21 @@ public class InternetPasswordTest extends AbstractFakerTest {
         }
         assertTrue(check);
     }
+
     @Test
-    public void passwordMix(){
+    public void passwordMix() {
         boolean check = true;
-        for (int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             String password = faker.internet().password(8, 16, true, true, true);
             Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
             Matcher specialCharacterMatcher = specialCharacterPattern.matcher(password);
             Pattern digitPattern = Pattern.compile("[0-9]");
             Matcher digitMatcher = digitPattern.matcher(password);
-            if(!specialCharacterMatcher.find()){
+            if (!specialCharacterMatcher.find()) {
                 check = false;
                 break;
             }
-            if(!digitMatcher.find()){
+            if (!digitMatcher.find()) {
                 check = false;
                 break;
             }

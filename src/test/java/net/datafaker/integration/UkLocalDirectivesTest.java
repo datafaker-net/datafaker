@@ -31,21 +31,21 @@ public class UkLocalDirectivesTest {
 
         final ArrayList<String> masc = Lists.newArrayList("пр.", "проспект", "пров.", "провулок");
         final ArrayList<String> fem = Lists.newArrayList("вул.", "вулиця", "пл.", "площа");
-        
+
         boolean startsWithMascPrefix = false,
                 startsWithFemPrefix = false;
-        
+
         for (String mascPrefix : masc) {
             startsWithMascPrefix |= streetName.startsWith(mascPrefix);
         }
         for (String femPrefix : fem) {
             startsWithFemPrefix |= streetName.startsWith(femPrefix);
         }
-        
-        assertThat("the streetname starts with a fem or masc prefix", 
-                startsWithFemPrefix || startsWithMascPrefix, 
+
+        assertThat("the streetname starts with a fem or masc prefix",
+                startsWithFemPrefix || startsWithMascPrefix,
                 is(true));
     }
-    
-    
+
+
 }

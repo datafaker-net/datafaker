@@ -20,7 +20,7 @@ public class PassportTest extends AbstractFakerTest {
             for (int i = 1; i < passport.length(); i++) {
                 assertTrue(Character.isDigit(passport.charAt(i)));
             }
-        }else {
+        } else {
             assertFalse(passport.charAt(1) == 'I' || passport.charAt(1) == 'O');
             assertTrue(Character.isLetter(passport.charAt(1)) || Character.isDigit(passport.charAt(1)));
             for (int i = 2; i < passport.length(); i++) {

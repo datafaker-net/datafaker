@@ -81,7 +81,7 @@ public class Company {
         );
     }
 
-    private String domainName(){
+    private String domainName() {
         return StringUtils.deleteWhitespace(SINGLE_QUOTE.matcher(COMMA.matcher(name().toLowerCase()).replaceAll("")).replaceAll(""));
     }
 
@@ -92,7 +92,7 @@ public class Company {
     private String joinSampleOfEachList(List<List<String>> listOfLists, String separator) {
         List<String> words = new ArrayList<>();
         for (List<String> list : listOfLists) {
-           words.add(list.get(faker.random().nextInt(list.size())));
+            words.add(list.get(faker.random().nextInt(list.size())));
         }
         return join(words, separator);
     }

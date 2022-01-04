@@ -45,7 +45,7 @@ public class Relationships {
             int indx = faker.random().nextInt(methods.length);
             Method runMethod = methods[indx];
             Relationships relationships = new Relationships(faker);
-            return (String)runMethod.invoke(relationships);
+            return (String) runMethod.invoke(relationships);
         } catch (SecurityException e) {
             throw new RuntimeException("SecurityException: " + e.getMessage());
         } catch (IllegalArgumentException e) {

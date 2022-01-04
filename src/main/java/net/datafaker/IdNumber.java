@@ -62,27 +62,28 @@ public class IdNumber {
         return svSEIdNumber.getInvalidSsn(faker);
     }
 
-    public String singaporeanFin(){
+    public String singaporeanFin() {
         return NricNumber.getValidFIN(faker, Type.FOREIGNER_TWENTY_FIRST_CENTURY);
     }
 
-    public String singaporeanFinBefore2000(){
+    public String singaporeanFinBefore2000() {
         return NricNumber.getValidFIN(faker, Type.FOREIGNER_TWENTIETH_CENTURY);
     }
 
-    public String singaporeanUin(){
+    public String singaporeanUin() {
         return NricNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTY_FIRST_CENTURY);
     }
 
-    public String singaporeanUinBefore2000(){
+    public String singaporeanUinBefore2000() {
         return NricNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTIETH_CENTURY);
     }
 
     /**
      * Generate a valid Zh-CN id number.
+     *
      * @return A Zh-CN id number
      */
-    public String validZhCNSsn ()  {
+    public String validZhCNSsn() {
         ZhCnIdNumber zhCnIdNumber = new ZhCnIdNumber();
         return zhCnIdNumber.getValidSsn(faker);
     }
@@ -100,6 +101,7 @@ public class IdNumber {
 
     /**
      * Specified as #{IDNumber.valid_es_mx_ssn} in es-MX.yml
+     *
      * @return A valid MEX CURP.
      */
     public String validEsMXSsn() {
@@ -109,6 +111,7 @@ public class IdNumber {
 
     /**
      * Specified as #{IDNumber.invalid_es_mx_ssn} in es-MX.yml
+     *
      * @return A valid MEX CURP.
      */
     public String invalidEsMXSsn() {

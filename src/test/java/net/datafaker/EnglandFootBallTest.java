@@ -7,7 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 
-public class EnglandFootBallTest extends AbstractFakerTest{
+public class EnglandFootBallTest extends AbstractFakerTest {
 
     @Test
     public void testLeague() {

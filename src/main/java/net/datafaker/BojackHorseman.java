@@ -2,6 +2,7 @@ package net.datafaker;
 
 /**
  * Generate random parts in BojackHorseman.
+ *
  * @author unknown and irakatz
  */
 
@@ -10,6 +11,7 @@ public class BojackHorseman {
 
     /**
      * Create a constructor for BojackHorseman.
+     *
      * @param faker The Faker instance for generating random parts in BojackHorseman.
      */
     protected BojackHorseman(Faker faker) {
@@ -18,6 +20,7 @@ public class BojackHorseman {
 
     /**
      * Generate random character's name in BojackHorseman.
+     *
      * @return Characters in BojackHorseman
      */
     public String characters() {
@@ -26,6 +29,7 @@ public class BojackHorseman {
 
     /**
      * Generate random quotes in BojackHorseman.
+     *
      * @return Quotes in BojackHorseman
      */
     public String quotes() {
@@ -34,6 +38,7 @@ public class BojackHorseman {
 
     /**
      * Generate random tongue twisters in BojackHorseman.
+     *
      * @return Tongue twisters in BojackHorseman
      */
     public String tongueTwisters() {

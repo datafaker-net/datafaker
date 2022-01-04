@@ -2,6 +2,7 @@ package net.datafaker;
 
 /**
  * Generate random components of basketall game, e.g. teams, coaches, positions and players.
+ *
  * @author unknown and irakatz
  */
 public class Basketball {
@@ -9,6 +10,7 @@ public class Basketball {
 
     /**
      * Create a constructor for Basketball.
+     *
      * @param faker The Faker instance for generating random, different kinds of disease, e.g. the internal disease.
      */
     protected Basketball(Faker faker) {
@@ -17,6 +19,7 @@ public class Basketball {
 
     /**
      * Generate random basketball teams
+     *
      * @return Basketball teams
      */
     public String teams() {
@@ -25,6 +28,7 @@ public class Basketball {
 
     /**
      * Generate random coaches in basketball game
+     *
      * @return Basketball coaches
      */
     public String coaches() {
@@ -33,6 +37,7 @@ public class Basketball {
 
     /**
      * Generate random positions in basketball game
+     *
      * @return Basketball positions
      */
     public String positions() {
@@ -41,6 +46,7 @@ public class Basketball {
 
     /**
      * Generate random basketball players
+     *
      * @return Basketball players
      */
     public String players() {

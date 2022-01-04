@@ -13,7 +13,7 @@ public class Options {
      * Returns a random element from an varargs.
      *
      * @param options The varargs to take a random element from.
-     * @param <E>   The type of the elements in the varargs.
+     * @param <E>     The type of the elements in the varargs.
      * @return A randomly selected element from the varargs.
      */
     public <E> E option(E... options) {

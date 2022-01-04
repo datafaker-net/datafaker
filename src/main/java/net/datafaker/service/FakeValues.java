@@ -78,7 +78,7 @@ public class FakeValues implements FakeValuesInterface {
         }
         try {
             stream.close();
-        } catch (IOException ex){
+        } catch (IOException ex) {
             return null;
         }
         return (Map<String, Object>) localeBased.get("faker");

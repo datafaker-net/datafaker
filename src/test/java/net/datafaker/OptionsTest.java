@@ -31,7 +31,7 @@ public class OptionsTest extends AbstractFakerTest {
 
     @Test
     public void testOptionWithVarargsInteger() {
-        Integer[] integerOptions = new Integer[] { 1, 3, 4, 5};
+        Integer[] integerOptions = new Integer[]{1, 3, 4, 5};
         assertThat(faker.options().option(1, 3, 4, 5), isOneOf(integerOptions));
     }
 
@@ -42,7 +42,7 @@ public class OptionsTest extends AbstractFakerTest {
 
     @Test
     public void testNextArrayElement() {
-        Integer[] array = new Integer[] { 1, 2, 3, 5, 8, 13, 21 };
+        Integer[] array = new Integer[]{1, 2, 3, 5, 8, 13, 21};
 
         for (int i = 1; i < 10; i++) {
             assertThat(faker.options().nextElement(array), isIn(array));

@@ -1,8 +1,6 @@
 package net.datafaker;
 
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,7 +106,7 @@ public class Vehicle {
 
     public String licensePlate(String stateAbbreviation) {
 
-        if (StringUtils.isEmpty(stateAbbreviation)) {
+        if ("".equals(stateAbbreviation)) {
             return null;
         }
 

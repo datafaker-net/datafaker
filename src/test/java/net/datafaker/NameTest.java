@@ -11,7 +11,7 @@ import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.doReturn;
 
 
-public class NameTest  extends AbstractFakerTest{
+public class NameTest extends AbstractFakerTest {
 
     @Test
     public void testName() {
@@ -23,7 +23,8 @@ public class NameTest  extends AbstractFakerTest{
         assertThat(faker.name().nameWithMiddle(), matchesRegularExpression("([\\w']+\\.?( )?){3,4}"));
     }
 
-    @Test @Repeat(times = 10)
+    @Test
+    @Repeat(times = 10)
     public void testNameWithMiddleDoesNotHaveRepeatedName() {
         String nameWithMiddle = faker.name().nameWithMiddle();
         String[] splitNames = nameWithMiddle.split(" ");
@@ -74,7 +75,7 @@ public class NameTest  extends AbstractFakerTest{
         doReturn(name).when(faker).name();
         assertThat(faker.name().username(), matchesRegularExpression("^(\\w+)\\.(\\w+)$"));
     }
-    
+
     @Test
     public void testBloodGroup() {
         assertThat(faker.name().bloodGroup(), matchesRegularExpression("(A|B|AB|O)[+-]"));

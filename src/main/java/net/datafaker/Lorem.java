@@ -14,7 +14,7 @@ public class Lorem {
     protected Lorem(Faker faker) {
         this.faker = faker;
     }
-    
+
     public char character() {
         return character(false);
     }
@@ -62,7 +62,7 @@ public class Lorem {
     public String characters(int minimumLength, int maximumLength,
                              boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return characters(faker.random().nextInt(minimumLength, maximumLength),
-                          includeUppercase, includeSpecial, includeDigit);
+                includeUppercase, includeSpecial, includeDigit);
     }
 
 
@@ -91,7 +91,7 @@ public class Lorem {
     public String characters(int fixedNumberOfCharacters,
                              boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
 
-        if(fixedNumberOfCharacters < 1)
+        if (fixedNumberOfCharacters < 1)
             return "";
 
         char[] buffer = new char[fixedNumberOfCharacters];
@@ -101,22 +101,22 @@ public class Lorem {
         char[] SpecialAndLetter = (new String(special) + new String(letters)).toCharArray();
 
         int cnt = 0;
-        if(includeUppercase){
+        if (includeUppercase) {
             char TheUpper = Character.toUpperCase(letters[faker.random().nextInt(letters.length)]);
-            if(cnt > fixedNumberOfCharacters - 1) return "";
+            if (cnt > fixedNumberOfCharacters - 1) return "";
             buffer[cnt++] = TheUpper;
 
         }
 
-        if(includeSpecial){
-            char TheSpecial =  special[faker.random().nextInt(special.length)];
-            if(cnt > fixedNumberOfCharacters - 1) return "";
+        if (includeSpecial) {
+            char TheSpecial = special[faker.random().nextInt(special.length)];
+            if (cnt > fixedNumberOfCharacters - 1) return "";
             buffer[cnt++] = TheSpecial;
         }
 
-        if(includeDigit) {
-            char TheNum =  number[faker.random().nextInt(number.length)];
-            if(cnt > fixedNumberOfCharacters - 1) return "";
+        if (includeDigit) {
+            char TheNum = number[faker.random().nextInt(number.length)];
+            if (cnt > fixedNumberOfCharacters - 1) return "";
             buffer[cnt++] = TheNum;
         }
 
@@ -124,16 +124,13 @@ public class Lorem {
         for (int i = cnt; i < buffer.length; i++) {
             char randomCharacter;
 
-            if (includeSpecial && !includeDigit){
+            if (includeSpecial && !includeDigit) {
                 randomCharacter = SpecialAndLetter[faker.random().nextInt(SpecialAndLetter.length)];
-            }
-            else if (!includeSpecial && includeDigit ) {
+            } else if (!includeSpecial && includeDigit) {
                 randomCharacter = characters[faker.random().nextInt(characters.length)];
-            }
-            else if (!includeSpecial && !includeDigit) {
+            } else if (!includeSpecial && !includeDigit) {
                 randomCharacter = letters[faker.random().nextInt(letters.length)];
-            }
-            else {                                            //includeSpecial && includeDigit
+            } else {                                            //includeSpecial && includeDigit
                 randomCharacter = All[faker.random().nextInt(All.length)];
             }
 
@@ -147,20 +144,19 @@ public class Lorem {
         return new String(buffer);
     }
 
-    private void shuffle(char[] buffer){
+    private void shuffle(char[] buffer) {
         int length = buffer.length;
-        for ( int i = length; i > 0; i-- ){
+        for (int i = length; i > 0; i--) {
             int randInd = faker.random().nextInt(i);
             swap(buffer, randInd, i - 1);
         }
     }
 
-    private void swap(char[] a, int i, int j){
+    private void swap(char[] a, int i, int j) {
         char temp = a[i];
         a[i] = a[j];
         a[j] = temp;
     }
-
 
 
     public List<String> words(int num) {
@@ -181,6 +177,7 @@ public class Lorem {
 
     /**
      * Create a sentence with a random number of words within the range 4..10.
+     *
      * @return a random sentence
      */
     public String sentence() {
@@ -189,6 +186,7 @@ public class Lorem {
 
     /**
      * Create a sentence with a random number of words within the range (wordCount+1)..(wordCount+6).
+     *
      * @param wordCount
      * @return a random sentence
      */
@@ -198,8 +196,9 @@ public class Lorem {
 
     /**
      * Create a sentence with a random number of words within the range (wordCount+1)..(wordCount+randomWordsToAdd).
-     * 
+     * <p>
      * Set {@code randomWordsToAdd} to 0 to generate sentences with a fixed number of words.
+     *
      * @param wordCount
      * @param randomWordsToAdd
      * @return a random sentence
@@ -247,7 +246,7 @@ public class Lorem {
         }
         return StringUtils.substring(builder.toString(), 0, numberOfLetters);
     }
-    
+
     /**
      * Create a Lorem Ipsum sentence with fixed length.
      *
@@ -262,7 +261,7 @@ public class Lorem {
 
         String sentence = this.sentence(fixedLength);
         String endOfSentence = sentence.substring(fixedLength - 1, fixedLength);
-        while(" ".equals(endOfSentence)) {
+        while (" ".equals(endOfSentence)) {
             sentence = this.sentence(fixedLength);
             endOfSentence = sentence.substring(fixedLength - 1, fixedLength);
         }

@@ -34,6 +34,7 @@ public class CPFUtils {
     /**
      * Unformat CPF <br>
      * E.g: CPF, valid or invalid, return a formatted String: 284.041.598-40
+     *
      * @param cpf formated cpf
      * @return a unformatted CPF: 28404159840
      */

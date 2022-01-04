@@ -31,6 +31,7 @@ public class TeamTest extends AbstractFakerTest {
         Faker zaFaker = new Faker(new Locale("en-ZA"));
         assertThat(zaFaker.team().state(), isStringWithContents());
     }
+
     @Test
     public void testSport() {
         assertThat(faker.team().sport(), matchesRegularExpression("(\\p{L}|\\s)+"));

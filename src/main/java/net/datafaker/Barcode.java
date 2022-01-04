@@ -88,12 +88,12 @@ public class Barcode {
     }
 
     @Deprecated
-    public String data(){
+    public String data() {
         return faker.resolve("barcode.datas");
     }
 
     @Deprecated
-    public String typeAndData(){
+    public String typeAndData() {
         return faker.resolve("barcode.typeAndData");
     }
 }

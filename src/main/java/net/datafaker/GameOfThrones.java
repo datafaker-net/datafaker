@@ -25,6 +25,6 @@ public class GameOfThrones {
     }
 
     public String quote() {
-      return faker.resolve("game_of_thrones.quotes");
+        return faker.resolve("game_of_thrones.quotes");
     }
 }

@@ -18,11 +18,11 @@ public class FakerIDN {
             // let's continue with the character by character encoding hack.
         }
         final StringBuilder sb = new StringBuilder();
-        for (int i=0;i<in.length();i++) {
+        for (int i = 0; i < in.length(); i++) {
             try {
                 sb.append(IDN.toASCII(in.substring(i, i + 1)));
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) {}
         }
         if (sb.length() == 0) {
             throw new RuntimeException("Unable to convert " + in + " to ASCII");

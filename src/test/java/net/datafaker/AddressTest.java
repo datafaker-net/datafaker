@@ -165,7 +165,7 @@ public class AddressTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testZipPlus4IsNineDigits(){
+    public void testZipPlus4IsNineDigits() {
         faker = new Faker(new Locale("en-us"));
         final String[] zipCodeParts = faker.address().zipCodePlus4().split("-");
         assertThat(zipCodeParts[0], matchesRegularExpression("[0-9]{5}"));

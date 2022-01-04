@@ -27,9 +27,9 @@ public class Hearthstone {
     public String standardRank() {
         String rank = faker.resolve("games.hearthstone.rank");
         if (rank.equals("Legend")) {
-            rank = rank +" " + faker.random().nextInt(1, 65000);
-        }else {
-            rank = rank +" " + faker.random().nextInt(1, 10);
+            rank = rank + " " + faker.random().nextInt(1, 65000);
+        } else {
+            rank = rank + " " + faker.random().nextInt(1, 10);
         }
         return rank;
     }
@@ -37,7 +37,6 @@ public class Hearthstone {
     public String wildRank() {
         return standardRank();
     }
-
 
 
 }

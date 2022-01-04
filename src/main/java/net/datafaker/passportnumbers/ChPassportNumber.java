@@ -10,11 +10,11 @@ public class ChPassportNumber {
     /**
      * Generates a valid Chinese passport number
      *
-     * @param f object faker
+     * @param faker object faker
      * @return a valid Chinese passport number
      */
-    public String getValidCh(Faker f) {
-        String ch = f.regexify("[A-Z][0-9A-Z][0-9]{7}");
+    public String getValidCh(Faker faker) {
+        String ch = faker.regexify("[A-Z][0-9A-Z][0-9]{7}");
 
         boolean isValid = false;
         for (String validCHPattern : validCHPatterns) {
@@ -24,7 +24,7 @@ public class ChPassportNumber {
             }
         }
         if (!isValid) {
-            ch = getValidCh(f);
+            ch = getValidCh(faker);
         }
         return ch;
     }
@@ -32,12 +32,11 @@ public class ChPassportNumber {
     /**
      * Generates a invalid Chinese passport number
      *
-     * @param f
-     *            object faker
+     * @param faker object faker
      * @return a invalid Chinese passport number
      */
-    public String getInvalidCh(Faker f) {
-        String ch = f.regexify("[A-Z0-9]{1,}");
+    public String getInvalidCh(Faker faker) {
+        String ch = faker.regexify("[A-Z0-9]{1,}");
 
         boolean isValid = true;
         for (String validCHPattern : validCHPatterns) {
@@ -47,7 +46,7 @@ public class ChPassportNumber {
             isValid = false;
         }
         if (isValid) {
-            ch = getInvalidCh(f);
+            ch = getInvalidCh(faker);
         }
         return ch;
     }

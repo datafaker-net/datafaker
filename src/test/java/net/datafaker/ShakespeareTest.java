@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 
-public class ShakespeareTest  extends AbstractFakerTest{
+public class ShakespeareTest extends AbstractFakerTest {
 
     @Test
     public void testHamletQuote() {

@@ -17,7 +17,7 @@ public class Color {
 
     public String hex(boolean includeHashSign) {
         String hexString = faker.random().hex(6);
-        if(includeHashSign)
+        if (includeHashSign)
             return "#" + hexString;
         return hexString;
     }

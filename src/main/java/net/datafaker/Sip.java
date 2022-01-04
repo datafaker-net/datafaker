@@ -187,12 +187,12 @@ public final class Sip {
      */
     public String bodyString() {
         return "v=0\n" +
-        "o=" + faker.name().firstName() + " " + faker.internet().uuid() + " IN IP4 " + faker.internet().domainName() + "\n" +
-        "s=-\n" +
-        "c=IN IP4 " + faker.internet().ipV4Address() + "\n" +
-        "t=0 0\n" +
-        "m=audio " + rtpPort() + " RTP/AVP 0\n" +
-        "a=rtpmap:0 PCMU/8000";
+                "o=" + faker.name().firstName() + " " + faker.internet().uuid() + " IN IP4 " + faker.internet().domainName() + "\n" +
+                "s=-\n" +
+                "c=IN IP4 " + faker.internet().ipV4Address() + "\n" +
+                "t=0 0\n" +
+                "m=audio " + rtpPort() + " RTP/AVP 0\n" +
+                "a=rtpmap:0 PCMU/8000";
     }
 
     /**

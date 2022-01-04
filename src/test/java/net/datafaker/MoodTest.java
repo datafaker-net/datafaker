@@ -8,17 +8,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class MoodTest extends AbstractFakerTest {
 
     @Test
-    public void feeling(){
+    public void feeling() {
         assertThat(faker.mood().feeling(), matchesRegularExpression("[a-zA-Z]+"));
     }
 
     @Test
-    public void emotion(){
+    public void emotion() {
         assertThat(faker.mood().emotion(), matchesRegularExpression("[a-zA-Z]+"));
     }
 
     @Test
-    public void tone(){
+    public void tone() {
         assertThat(faker.mood().tone(), matchesRegularExpression("[a-zA-Z]+"));
     }
 

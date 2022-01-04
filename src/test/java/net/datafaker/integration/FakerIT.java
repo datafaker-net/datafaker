@@ -54,6 +54,7 @@ public class FakerIT {
      * exceptions like this into this collection.
      */
     private static final Map<Locale, List<String>> exceptions = Maps.newHashMap();
+
     static {
         // 'it' has an empty suffix list so it never returns a value
         exceptions.put(new Locale("it"), Arrays.asList("Name.suffix"));
@@ -65,7 +66,7 @@ public class FakerIT {
         exceptions.put(new Locale("pt-br"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("Pt_br"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("pT_Br"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
-        exceptions.put(new Locale("pt","Br", "x2"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
+        exceptions.put(new Locale("pt", "Br", "x2"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
     }
 
     public FakerIT(Locale locale, Random random) {
@@ -89,7 +90,7 @@ public class FakerIT {
                 {new Locale("pt-br"), null},
                 {new Locale("Pt_br"), null},
                 {new Locale("pT_Br"), null},
-                {new Locale("pt","Br","x2"), null},
+                {new Locale("pt", "Br", "x2"), null},
                 {null, new Random()},
                 {null, null}};
 
@@ -218,13 +219,15 @@ public class FakerIT {
             final String returnValueAsString = (String) returnValue;
             assertThat(failureReason, returnValueAsString, not(is(emptyOrNullString())));
             assertThat(failureReason + " is a slash encoded regex", returnValueAsString,
-                       not(allOf(startsWith("/"), endsWith("/"))));
+                    not(allOf(startsWith("/"), endsWith("/"))));
         }
     }
 
     private boolean isExcepted(Object object, Method method) {
         final List<String> classDotMethod = exceptions.get(this.locale);
-        if (classDotMethod == null) {return false;}
+        if (classDotMethod == null) {
+            return false;
+        }
         return classDotMethod.contains(object.getClass().getSimpleName() + "." + method.getName());
     }
 

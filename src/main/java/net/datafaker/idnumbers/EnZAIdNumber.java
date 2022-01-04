@@ -13,17 +13,18 @@ import java.util.Date;
 
 public class EnZAIdNumber {
 
-    private static final String[] validPattern = {"##########08#","##########18#"};
+    private static final String[] validPattern = {"##########08#", "##########18#"};
 
     /**
      * Generate a valid social security number on faker
+     *
      * @param f the java-faker
      * @return a valid social security number on faker
      */
     public String getValidSsn(Faker f) {
 
         String ssn = "";
-        while (!validSsn(ssn)){
+        while (!validSsn(ssn)) {
             String pattern = getPattern(f);
             ssn = f.numerify(pattern);
         }
@@ -33,6 +34,7 @@ public class EnZAIdNumber {
 
     /**
      * Generate a invalid social security number on faker
+     *
      * @param f the java-faker
      * @return a invalid social security number on faker
      */
@@ -48,6 +50,7 @@ public class EnZAIdNumber {
 
     /**
      * Generate a fixed format numeric string
+     *
      * @param faker the java-faker
      * @return a fixed format numeric string
      */
@@ -57,6 +60,7 @@ public class EnZAIdNumber {
 
     /**
      * Judge whether a social security number is valid
+     *
      * @param ssn social security number
      */
     boolean validSsn(String ssn) {
@@ -72,13 +76,14 @@ public class EnZAIdNumber {
             return false;
         }
 
-        int calculatedChecksum = calculateChecksum(ssn.substring(0,12));
-        int checksum = Integer.parseInt(ssn.substring(12,13));
+        int calculatedChecksum = calculateChecksum(ssn.substring(0, 12));
+        int checksum = Integer.parseInt(ssn.substring(12, 13));
         return (checksum == calculatedChecksum);
     }
 
     /**
      * Judge whether a numeric string of ssn can represent a legal date
+     *
      * @param ssn social security number
      */
     private boolean parseDate(String ssn) throws ParseException {
@@ -93,6 +98,7 @@ public class EnZAIdNumber {
 
     /**
      * Calculate the Check Number in the last number of a ssn
+     *
      * @param number a social security number not including the last number
      * @return check number of this ssn
      */
@@ -125,9 +131,10 @@ public class EnZAIdNumber {
 
     /**
      * Calculate the sum of each digit of the number
+     *
      * @return sum of each digit of the number
      */
-    private static int calculate(int number){
+    private static int calculate(int number) {
         String str = String.valueOf(number);
         int total = 0;
         for (int i = 0; i < str.length(); i++) {

@@ -43,11 +43,10 @@ public class Aviation {
         String airline;
         if (type.equals("ICAO")) {
             airline = faker.fakeValuesService().fetchString("aviation.ICAO_airline");
-        }
-        else {
+        } else {
             airline = faker.fakeValuesService().fetchString("aviation.IATA_airline");
         }
-        int number = faker.number().numberBetween(0,9999);
+        int number = faker.number().numberBetween(0, 9999);
         return airline + number;
     }
 
@@ -65,6 +64,8 @@ public class Aviation {
      *
      * @return A randomly selected airline name in a String.
      */
-    public String airline() { return faker.fakeValuesService().fetchString("aviation.airline");}
+    public String airline() {
+        return faker.fakeValuesService().fetchString("aviation.airline");
+    }
 }
 

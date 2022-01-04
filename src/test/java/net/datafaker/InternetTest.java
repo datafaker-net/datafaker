@@ -46,7 +46,7 @@ public class InternetTest extends AbstractFakerTest {
     @Test
     public void testSafeEmailAddress() {
         List<String> emails = Lists.newArrayList();
-        for (int i=0;i<100;i++) {
+        for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress();
             assertThat(EmailValidator.getInstance().isValid(emailAddress), is(true));
             emails.add(emailAddress);
@@ -60,7 +60,7 @@ public class InternetTest extends AbstractFakerTest {
     @Test
     public void testSafeEmailAddressWithLocalPartParameter() {
         List<String> emails = Lists.newArrayList();
-        for (int i=0;i<100;i++) {
+        for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress("john");
             assertThat(emailAddress, startsWith("john@"));
             assertThat(EmailValidator.getInstance().isValid(emailAddress), is(true));
@@ -112,7 +112,7 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testDomainSuffix() {
-      assertThat(faker.internet().domainSuffix(), matchesRegularExpression("\\w{2,4}"));
+        assertThat(faker.internet().domainSuffix(), matchesRegularExpression("\\w{2,4}"));
     }
 
     @Test
@@ -159,7 +159,7 @@ public class InternetTest extends AbstractFakerTest {
     @Test
     public void shouldGenerateAPasswordWithMinAndMaxLength() {
         List<String> results = new ArrayList<>();
-        for(int i = 0 ; i< 300; i++) {
+        for (int i = 0; i < 300; i++) {
             results.add(faker.internet().password(1, 10));
         }
 
@@ -190,11 +190,11 @@ public class InternetTest extends AbstractFakerTest {
         assertThat(faker.internet().macAddress("01:02"), countOf(':', is(5)));
 
         // loop through 1000 times just to 'run it through the wringer'
-        for (int i=0; i<1000;i++) {
+        for (int i = 0; i < 1000; i++) {
             assertThat(
-              "Is valid mac format",
-              faker.internet().macAddress(),
-              matchesRegularExpression("[0-9a-fA-F]{2}(\\:([0-9a-fA-F]{1,4})){5}"));
+                    "Is valid mac format",
+                    faker.internet().macAddress(),
+                    matchesRegularExpression("[0-9a-fA-F]{2}(\\:([0-9a-fA-F]{1,4})){5}"));
         }
     }
 
@@ -218,7 +218,7 @@ public class InternetTest extends AbstractFakerTest {
     public void testIpV4Cidr() {
         assertThat(faker.internet().ipV4Cidr(), countOf('.', is(3)));
         assertThat(faker.internet().ipV4Cidr(), countOf('/', is(1)));
-        
+
         for (int i = 0; i < 1000; i++) {
             assertThat(parseInt(faker.internet().ipV4Cidr().split("/")[1]),
                     both(greaterThanOrEqualTo(1)).and(lessThan(32)));
@@ -233,7 +233,7 @@ public class InternetTest extends AbstractFakerTest {
         String oneNineTwo = "^192\\.168\\..+";
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..+";
 
-        
+
         for (int i = 0; i < 1000; i++) {
             String addr = faker.internet().privateIpV4Address();
             assertThat(addr, anyOf(matchesRegularExpression(tenDot),
@@ -253,18 +253,18 @@ public class InternetTest extends AbstractFakerTest {
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\.";
         for (int i = 0; i < 1000; i++) {
             String addr = faker.internet().publicIpV4Address();
-            assertThat(addr.matches(tenDot),is(false));
-            assertThat(addr.matches(oneTwoSeven),is(false));
-            assertThat(addr.matches(oneSixNine),is(false));
-            assertThat(addr.matches(oneNineTwo),is(false));
-            assertThat(addr.matches(oneSevenTwo),is(false));
+            assertThat(addr.matches(tenDot), is(false));
+            assertThat(addr.matches(oneTwoSeven), is(false));
+            assertThat(addr.matches(oneSixNine), is(false));
+            assertThat(addr.matches(oneNineTwo), is(false));
+            assertThat(addr.matches(oneSevenTwo), is(false));
         }
     }
 
     @Test
     public void testIpV6() {
         assertThat(faker.internet().ipV6Address(), countOf(':', is(7)));
-        
+
         for (int i = 0; i < 1000; i++) {
             assertThat(
                     "Is valid ipv6 format",
@@ -285,25 +285,25 @@ public class InternetTest extends AbstractFakerTest {
     }
 
     @Test
-    @Repeat(times=10)
+    @Repeat(times = 10)
     public void testSlugWithParams() {
         assertThat(faker.internet().slug(ImmutableList.of("a", "b"), "-"), matchesRegularExpression("[a-zA-Z]+\\-[a-zA-Z]+"));
     }
 
     @Test
-    @Repeat(times=10)
+    @Repeat(times = 10)
     public void testSlug() {
         assertThat(faker.internet().slug(), matchesRegularExpression("[a-zA-Z]+\\_[a-zA-Z]+"));
     }
 
     @Test
-    @Repeat(times=10)
+    @Repeat(times = 10)
     public void testUuid() {
         assertThat(faker.internet().uuid(), matchesRegularExpression("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"));
     }
 
     @Test
-    @Repeat(times=100)
+    @Repeat(times = 100)
     public void testFarsiIDNs() {
         // in this case, we're just making sure Farsi doesn't blow up.
         // there have been issues with Farsi not being produced.
@@ -317,7 +317,7 @@ public class InternetTest extends AbstractFakerTest {
     @Test
     public void testUserAgent() {
         Internet.UserAgent[] agents = Internet.UserAgent.values();
-        for(Internet.UserAgent agent : agents) {
+        for (Internet.UserAgent agent : agents) {
             assertThat(faker.internet().userAgent(agent), not(isEmptyOrNullString()));
         }
 
@@ -326,8 +326,8 @@ public class InternetTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testSlugWithNull(){
-        Faker f=new Faker();
-        assertThat(f.internet().slug(null,"_"),notNullValue());
+    public void testSlugWithNull() {
+        Faker f = new Faker();
+        assertThat(f.internet().slug(null, "_"), notNullValue());
     }
 }

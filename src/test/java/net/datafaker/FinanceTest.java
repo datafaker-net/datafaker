@@ -29,7 +29,7 @@ public class FinanceTest extends AbstractFakerTest {
 
     @Test
     public void iban() {
-        for(int i = 0; i< 100; i ++) {
+        for (int i = 0; i < 100; i++) {
             assertThat(faker.finance().iban(), matchesRegularExpression("[A-Z]{2}\\p{Alnum}{13,30}"));
         }
     }
@@ -41,7 +41,7 @@ public class FinanceTest extends AbstractFakerTest {
 
     @Test
     public void creditCardWithType() {
-        for(CreditCardType type : CreditCardType.values()) {
+        for (CreditCardType type : CreditCardType.values()) {
             final String creditCard = faker.finance().creditCard(type);
             assertCardLuhnDigit(creditCard);
         }

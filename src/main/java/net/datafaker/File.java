@@ -10,7 +10,7 @@ public class File {
     public String extension() {
         return faker.resolve("file.extension");
     }
-    
+
     public String mimeType() {
         return faker.resolve("file.mime_type");
     }

@@ -9,7 +9,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class PhotographyTest extends AbstractFakerTest{
+public class PhotographyTest extends AbstractFakerTest {
 
     @Test
     public void testAperture() {
@@ -54,14 +54,14 @@ public class PhotographyTest extends AbstractFakerTest{
     }
 
     @Test
-    @Repeat(times=7)
+    @Repeat(times = 7)
     public void shutter() {
         final String value = faker.photography().shutter();
         assertThat(value, matchesRegularExpression("\\d{1,}\\/{0,1}\\d*"));
     }
 
     @Test
-    @Repeat(times=7)
+    @Repeat(times = 7)
     public void iso() {
         final String value = faker.photography().iso();
         assertThat(value, matchesRegularExpression("\\d{1,}"));

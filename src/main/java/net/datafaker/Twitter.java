@@ -26,8 +26,9 @@ public class Twitter {
 
     /**
      * Used to fake a new Twitter Date.
-     * @param forward to determined if the returned date is later (or before) the given date.
-     * @param base the base date given as a start point.
+     *
+     * @param forward    to determined if the returned date is later (or before) the given date.
+     * @param base       the base date given as a start point.
      * @param constrains used to constrain the returned date range.
      * @return a new date later (or before) the base date with respect to the constrain (no later/earlier than the constrain).
      */
@@ -42,6 +43,7 @@ public class Twitter {
 
     /**
      * Used to fake a new Twitter ID without collision using both current time and uuid as seeds.
+     *
      * @param expectedLength the expected length of the twitter id. Should be greater or equals to 6 and
      *                       less than or equals to 25.
      * @return a new Twiiter ID consists of purely numbers.
@@ -87,12 +89,13 @@ public class Twitter {
 
     /**
      * To fake a new text context for the Twitter.
-     * @param keywords the keywords that you wish to appear in the text.
+     *
+     * @param keywords          the keywords that you wish to appear in the text.
      * @param sentenceMaxLength the text should be in range of the sentence max length.
-     * @param wordMaxLength each word should be in range of the word max length.
+     * @param wordMaxLength     each word should be in range of the word max length.
      * @return a new fake text for the Twitter.
      */
-    public String text(String[] keywords, int sentenceMaxLength, int wordMaxLength){
+    public String text(String[] keywords, int sentenceMaxLength, int wordMaxLength) {
         if (wordMaxLength <= 2) {
             Logger logger
                     = Logger.getLogger(
@@ -105,15 +108,15 @@ public class Twitter {
         RandomService random = faker.random();
         int sentenceLength = random.nextInt(1, sentenceMaxLength);
 
-        for(int i=0; i < sentenceLength; i++){
+        for (int i = 0; i < sentenceLength; i++) {
             int tmpWordLength = random.nextInt(3, wordMaxLength);
-            for(int j=0; j < tmpWordLength; j++){
+            for (int j = 0; j < tmpWordLength; j++) {
                 sb.append(basicstr.charAt(random.nextInt(basicstr.length())));
             }
             text.add(sb.toString());
             sb.setLength(0);
         }
-        if(keywords != null && keywords.length > 0){
+        if (keywords != null && keywords.length > 0) {
             for (String keyword : keywords) {
                 int position = random.nextInt(text.size());
                 text.add(position, keyword);
@@ -125,24 +128,25 @@ public class Twitter {
     /**
      * @return Return a user name using the twitter.user_name.
      */
-    public String userName(){
+    public String userName() {
         return faker.fakeValuesService().resolve("twitter.user_name", this, faker);
     }
 
     /**
      * @return Return a user id using the twitter.user_name.
      */
-    public String userId(){
+    public String userId() {
         return faker.fakeValuesService().resolve("twitter.user_id", this, faker);
     }
 
     /**
      * return a fake link to a Twitter message. The extra length is expected to be larger than 4.
-     * @param username the username will be used in the link.
+     *
+     * @param username    the username will be used in the link.
      * @param extraLength the expected length of the extra link part.
      * @return return a fake link to a Twitter message.
      */
-    public String getLink(String username, int extraLength){
+    public String getLink(String username, int extraLength) {
         if (extraLength <= 4) {
             Logger logger
                     = Logger.getLogger(
@@ -154,7 +158,7 @@ public class Twitter {
         StringBuilder sb = new StringBuilder();
         sb.append(username).append("/");
 
-        for(int i=0; i<extraLength; i++){
+        for (int i = 0; i < extraLength; i++) {
             sb.append(basicstr.charAt(random.nextInt(basicstr.length())));
         }
         return "https://twitter.com/" + sb;

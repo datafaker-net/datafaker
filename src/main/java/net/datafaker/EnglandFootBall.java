@@ -9,10 +9,10 @@ public class EnglandFootBall {
     }
 
     public String league() {
-        return faker.fakeValuesService().resolve("englandfootball.leagues",this,faker);
+        return faker.fakeValuesService().resolve("englandfootball.leagues", this, faker);
     }
 
     public String team() {
-        return faker.fakeValuesService().resolve("englandfootball.teams",this,faker);
+        return faker.fakeValuesService().resolve("englandfootball.teams", this, faker);
     }
 }

@@ -9,8 +9,8 @@ public class Educator {
 
     // TODO - move these all out to en.yml by default. 
     public String university() {
-        return faker.fakeValuesService().resolve("educator.name", this, faker) 
-                + " " 
+        return faker.fakeValuesService().resolve("educator.name", this, faker)
+                + " "
                 + faker.fakeValuesService().resolve("educator.tertiary.type", this, faker);
     }
 

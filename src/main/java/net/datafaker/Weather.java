@@ -25,6 +25,7 @@ public class Weather {
 
     /**
      * Generates a random temperature celsius between -30 and 38 degrees.
+     *
      * @return String that represents temperature in format 5°C
      */
     public String temperatureCelsius() {
@@ -33,6 +34,7 @@ public class Weather {
 
     /**
      * Generates a random temperature fahrenheit between -22 and 100 degrees.
+     *
      * @return String that represents temperature in format 5°F
      */
     public String temperatureFahrenheit() {
@@ -41,6 +43,7 @@ public class Weather {
 
     /**
      * Generates a random temperature celsius between two temperatures.
+     *
      * @param minTemperature the minimal temperature
      * @param maxTemperature the maximal temperature
      * @return String that represents temperature in format 5°C
@@ -51,6 +54,7 @@ public class Weather {
 
     /**
      * Generates a random temperature fahrenheit between two temperatures.
+     *
      * @param minTemperature the minimal temperature
      * @param maxTemperature the maximal temperature
      * @return String that represents temperature in format 5°F

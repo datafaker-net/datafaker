@@ -2,7 +2,6 @@ package net.datafaker;
 
 /**
  * This class is used to generate gender randomly.
- *
  */
 
 public class Gender {

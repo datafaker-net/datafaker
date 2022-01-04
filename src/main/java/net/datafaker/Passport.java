@@ -5,6 +5,7 @@ import net.datafaker.passportnumbers.ChPassportNumber;
 
 public class Passport {
     private final Faker faker;
+
     protected Passport(Faker faker) {
         this.faker = faker;
     }

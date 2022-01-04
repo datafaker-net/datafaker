@@ -17,19 +17,19 @@ public class BarcodeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void data(){
+    public void data() {
         assertThat(faker.barcode().data(), matchesRegularExpression("\\d+"));
     }
 
     @Test
-    public void typeAndData(){
+    public void typeAndData() {
         assertThat(faker.barcode().typeAndData(), matchesRegularExpression("(\\w|\\W)+\\s\\d+$"));
     }
 
     public static boolean isBarcodeValid(long barcode) {
         char[] array = String.valueOf(barcode).toCharArray();
         int sum = 0;
-        for (int i = 0; i < array.length; i ++){
+        for (int i = 0; i < array.length; i++) {
             int digit = Integer.parseInt(String.valueOf(array[i]));
             if ((i + 1) % 2 == 0)
                 sum += digit;
@@ -92,7 +92,7 @@ public class BarcodeTest extends AbstractFakerTest {
         long barcode = faker.barcode().ean13();
         char[] array = String.valueOf(barcode).toCharArray();
         int sum = 0;
-        for (int i = 0; i < array.length; i ++){
+        for (int i = 0; i < array.length; i++) {
             int digit = Integer.parseInt(String.valueOf(array[i]));
             if ((i + 1) % 2 == 0)
                 sum = sum + digit * 3;

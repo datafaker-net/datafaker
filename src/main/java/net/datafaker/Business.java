@@ -1,7 +1,7 @@
 package net.datafaker;
 
 public class Business {
-    
+
     private final Faker faker;
 
     protected Business(Faker faker) {

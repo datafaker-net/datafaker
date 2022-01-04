@@ -8,6 +8,7 @@ public class Disease {
 
     /**
      * Create a constructor for Disease
+     *
      * @param faker The Faker instance for generating random, different kinds of disease, e.g. the internal disease.
      */
     protected Disease(Faker faker) {
@@ -16,6 +17,7 @@ public class Disease {
 
     /**
      * Generate random internal disease
+     *
      * @return An internal disease
      */
     public String internalDisease() {
@@ -24,6 +26,7 @@ public class Disease {
 
     /**
      * Generate random neurology disease
+     *
      * @return A neurology disease
      */
     public String neurology() {
@@ -32,6 +35,7 @@ public class Disease {
 
     /**
      * Generate random surgery disease
+     *
      * @return A surgery disease
      */
     public String surgery() {
@@ -40,6 +44,7 @@ public class Disease {
 
     /**
      * Generate random paediattics disease
+     *
      * @return A paediatrics disease
      */
     public String paediatrics() {
@@ -48,6 +53,7 @@ public class Disease {
 
     /**
      * Generate random gynecology and obstetrics disease
+     *
      * @return A gynecology and obstetrics disease
      */
     public String gynecologyAndObstetrics() {
@@ -56,6 +62,7 @@ public class Disease {
 
     /**
      * Generate random ophthalmology and otorhinolaryngology disease
+     *
      * @return A ophthalmology and otorhinolaryngology disease
      */
     public String ophthalmologyAndOtorhinolaryngology() {
@@ -64,6 +71,7 @@ public class Disease {
 
     /**
      * Generate random dermatolory disease
+     *
      * @return A dermatolory disease
      */
     public String dermatolory() {

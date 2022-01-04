@@ -8,15 +8,15 @@ public class Mood {
         this.faker = faker;
     }
 
-    public String feeling(){
+    public String feeling() {
         return faker.fakeValuesService().resolve("mood.feeling", this, faker);
     }
 
-    public String emotion(){
+    public String emotion() {
         return faker.fakeValuesService().resolve("mood.emotion", this, faker);
     }
 
-    public String tone(){
+    public String tone() {
         return faker.fakeValuesService().resolve("mood.tone", this, faker);
     }
 

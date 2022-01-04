@@ -38,7 +38,7 @@ public class NumberTest extends AbstractFakerTest {
     private static final int RANDOMIZATION_QUALITY_RANGE_START = RANDOMIZATION_QUALITY_RANGE_STEP;
     public static final int RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET = 1000;
 
-    final double individualRunGtPercentUnique= 0.8;
+    final double individualRunGtPercentUnique = 0.8;
     final double percentRunsGtUniquePercentage = 0.90;
 
     @Test
@@ -196,18 +196,18 @@ public class NumberTest extends AbstractFakerTest {
         assertThat("Calling numberBetween with min==max yields min, with 0",
                 faker.number().numberBetween(0L, 0L),
                 is(0L));
-        assertThat("Calling numberBetween with min==max yields min", 
+        assertThat("Calling numberBetween with min==max yields min",
                 faker.number().numberBetween(2L, 2L),
                 is(2L));
     }
 
     /**
      * Given a number of min/max ranges
-     *  for each min/max range, call {@link Number#randomDouble(int, int, int)} with min/max 'n' times
-     *  calculate the uniqueness for that given min/max range.
+     * for each min/max range, call {@link Number#randomDouble(int, int, int)} with min/max 'n' times
+     * calculate the uniqueness for that given min/max range.
      * For all 'uniqueness' values
-     *  verify the percentage of 'uniqueness' ratios over 80% is 90%.
-     *
+     * verify the percentage of 'uniqueness' ratios over 80% is 90%.
+     * <p>
      * This isn't perfect but it ensures a pretty good degree of uniqueness in the random number generation.
      */
     @Test
@@ -232,11 +232,11 @@ public class NumberTest extends AbstractFakerTest {
 
     /**
      * Given a number of min/max ranges
-     *  for each min/max range, call numberBetween with min/max 'n' times
-     *  calculate the uniqueness for that given min/max range.
+     * for each min/max range, call numberBetween with min/max 'n' times
+     * calculate the uniqueness for that given min/max range.
      * For all 'uniqueness' values
-     *  verify the percentage of 'uniqueness' ratios over 80% is 90%.
-     *  
+     * verify the percentage of 'uniqueness' ratios over 80% is 90%.
+     * <p>
      * This isn't perfect but it ensures a pretty good degree of uniqueness in the random number generation.
      */
     @Test
@@ -262,11 +262,11 @@ public class NumberTest extends AbstractFakerTest {
 
     /**
      * Given a number of min/max ranges
-     *  for each min/max range, call {@link Number#numberBetween(long, long)}  with min/max 'n' times
-     *  calculate the uniqueness for that given min/max range.
+     * for each min/max range, call {@link Number#numberBetween(long, long)}  with min/max 'n' times
+     * calculate the uniqueness for that given min/max range.
      * For all 'uniqueness' values
-     *  verify the percentage of 'uniqueness' ratios over 80% is 90%.
-     *
+     * verify the percentage of 'uniqueness' ratios over 80% is 90%.
+     * <p>
      * This isn't perfect but it ensures a pretty good degree of uniqueness in the random number generation.
      */
     @Test
@@ -277,7 +277,7 @@ public class NumberTest extends AbstractFakerTest {
 
             return uniquePercentageOfResults(numbersToGet, () -> faker.number().numberBetween(min, max));
         };
-        
+
         final double percentGreaterThan80Percent = randomizationQualityTest(individualRunGtPercentUnique, minMaxRangeToUniquePercentageFunction);
         assertThat("Percentage of runs > 80% unique is gte 90%",
                 percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
@@ -316,14 +316,14 @@ public class NumberTest extends AbstractFakerTest {
      * Over the series of numbers identified from RANDOMIZATION_QUALITY_RANGE_START to
      * RANDOMIZATION_QUALITY_RANGE_END, create a min/max range of -value/value and
      * with of those min/max values, call <em>percentUniqueRunner</em>.
-     * 
+     * <p>
      * Collect the number of calls to <em>percentUniqueRunner</em> that were
      * above the threshold and finally return that number divided by the total number of calls to
      * <em>percentUniqueRunner</em>.
-     * 
+     *
      * @return percent of percentUniqueRunner's results greater than the threshold
      */
-    private double randomizationQualityTest(final double threshold, 
+    private double randomizationQualityTest(final double threshold,
                                             final Function<Pair<Long, Long>, Double> percentUniqueRunner) {
         final int rangeEnd = RANDOMIZATION_QUALITY_RANGE_END;
         final int rangeStep = RANDOMIZATION_QUALITY_RANGE_STEP;
@@ -344,7 +344,7 @@ public class NumberTest extends AbstractFakerTest {
         return (double) greaterThanThreshold.get() / (double) total.get();
     }
 
-    
+
     /**
      * Given a number of iterations, calls <em>callable</em> 'iterations' times and collects the results,
      * then calculates the number of results that were unique and returns the percentage that where unique.
@@ -371,6 +371,7 @@ public class NumberTest extends AbstractFakerTest {
         if (numbersToGet == 0) numbersToGet = RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET;
         return numbersToGet;
     }
+
     @Test
     public void testIntNumberBetweenQuality() {
         //test whether the fake number made by numberBetween(int min, int max)
@@ -382,16 +383,16 @@ public class NumberTest extends AbstractFakerTest {
 
         int min = Math.abs(random.nextInt());
         int max = min + Math.abs(random.nextInt(100));
-        double mean = testCase/(double)(max-min);
+        double mean = testCase / (double) (max - min);
         for (int j = 0; j < testCase; j++) {
-            int r = faker.number().numberBetween(min,max);
+            int r = faker.number().numberBetween(min, max);
             Integer count = map.get(r);
             map.put(r, count == null ? 1 : count + 1);
         }
 
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             int count = entry.getValue();
-            assertTrue((mean-count)/mean < 0.2);
+            assertTrue((mean - count) / mean < 0.2);
         }
     }
 
@@ -406,16 +407,16 @@ public class NumberTest extends AbstractFakerTest {
 
         long min = Math.abs(random.nextLong());
         long max = min + Math.abs(random.nextInt(200));
-        double mean = testCase/(double)(max-min);
+        double mean = testCase / (double) (max - min);
         for (int j = 0; j < testCase; j++) {
-            Long r = faker.number().numberBetween(min,max);
+            Long r = faker.number().numberBetween(min, max);
             Integer count = map.get(r);
             map.put(r, count == null ? 1 : count + 1);
         }
 
         for (Map.Entry<Long, Integer> entry : map.entrySet()) {
             int count = entry.getValue();
-            assertTrue((mean-count)/mean < 0.2);
+            assertTrue((mean - count) / mean < 0.2);
         }
 
     }
@@ -465,7 +466,7 @@ public class NumberTest extends AbstractFakerTest {
 
             //create long integer max and min
             long size, min = 0, max = -1;
-            while (max < min){
+            while (max < min) {
                 size = Math.abs(random.nextLong());
                 min = Math.abs(random.nextLong());
                 max = min + size;

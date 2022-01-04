@@ -16,5 +16,5 @@ public class Babylon5Test extends AbstractFakerTest {
     public void quote() {
         assertThat(faker.babylon5().quote(), isStringWithContents());
     }
-    
+
 }
