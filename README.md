@@ -26,7 +26,7 @@ In pom.xml, add the following xml stanza between `<dependencies> ... </dependenc
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>0.9.0</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -34,7 +34,7 @@ For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:0.9.0'
+    implementation 'net.datafaker:datafaker:1.0.0'
 }
 
 ```
