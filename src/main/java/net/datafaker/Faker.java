@@ -99,7 +99,7 @@ public class Faker {
     private final Pokemon pokemon;
     private final PrincessBride princessBride;
     private final ProgrammingLanguage programmingLanguage;
-    private final Relationships relationships;
+    private final Relationship relationship;
     private final ResidentEvil residentEvil;
     private final RickAndMorty rickAndMorty;
     private final Robin robin;
@@ -233,7 +233,7 @@ public class Faker {
         this.pokemon = new Pokemon(this);
         this.princessBride = new PrincessBride(this);
         this.programmingLanguage = new ProgrammingLanguage(this);
-        this.relationships = new Relationships(this);
+        this.relationship = new Relationship(this);
         this.residentEvil = new ResidentEvil(this);
         this.rickAndMorty = new RickAndMorty(this);
         this.robin = new Robin(this);
@@ -369,7 +369,6 @@ public class Faker {
 
     public Currency currency() {
         return currency;
-
     }
 
     FakeValuesService fakeValuesService() {
@@ -704,8 +703,8 @@ public class Faker {
         return princessBride;
     }
 
-    public Relationships relationships() {
-        return relationships;
+    public Relationship relationships() {
+        return relationship;
     }
 
     public Nation nation() {

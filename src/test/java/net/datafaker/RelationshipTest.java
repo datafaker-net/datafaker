@@ -59,25 +59,25 @@ public class RelationshipTest extends AbstractFakerTest {
     @Test(expected = RuntimeException.class)
     public void anyWithIllegalArgumentExceptionThrown() {
         when(mockFaker.random()).thenThrow(new IllegalArgumentException());
-        new Relationships(mockFaker).any();
+        new Relationship(mockFaker).any();
     }
 
     @Test(expected = RuntimeException.class)
     public void anyWithSecurityExceptionThrown() {
         when(mockFaker.random()).thenThrow(new SecurityException());
-        new Relationships(mockFaker).any();
+        new Relationship(mockFaker).any();
     }
 
     @Test(expected = RuntimeException.class)
     public void anyWithIllegalAccessExceptionThrown() {
         when(mockFaker.random()).thenThrow(new IllegalAccessException());
-        new Relationships(mockFaker).any();
+        new Relationship(mockFaker).any();
     }
 
     @Test(expected = RuntimeException.class)
     public void anyWithInvocationTargetExceptionThrown() {
         when(mockFaker.random()).thenThrow(new InvocationTargetException(new Exception()));
-        new Relationships(mockFaker).any();
+        new Relationship(mockFaker).any();
     }
 
 }

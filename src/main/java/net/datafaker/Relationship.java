@@ -2,13 +2,12 @@ package net.datafaker;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
-import org.apache.commons.lang3.ArrayUtils;
-
-public class Relationships {
+public class Relationship {
     private final Faker faker;
 
-    protected Relationships(final Faker faker) {
+    protected Relationship(final Faker faker) {
         this.faker = faker;
     }
 
@@ -40,12 +39,11 @@ public class Relationships {
         Method currentMethod = getClass().getEnclosingMethod();
 
         try {
-            Method[] methods = Relationships.class.getDeclaredMethods();
-            methods = ArrayUtils.removeElement(methods, currentMethod);
+            Method[] methods = Arrays.stream(Relationship.class.getDeclaredMethods()).filter(declaredMethod -> declaredMethod != currentMethod).toArray(Method[]::new);
             int indx = faker.random().nextInt(methods.length);
             Method runMethod = methods[indx];
-            Relationships relationships = new Relationships(faker);
-            return (String) runMethod.invoke(relationships);
+            Relationship relationship = new Relationship(faker);
+            return (String) runMethod.invoke(relationship);
         } catch (SecurityException e) {
             throw new RuntimeException("SecurityException: " + e.getMessage());
         } catch (IllegalArgumentException e) {

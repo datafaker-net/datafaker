@@ -1,7 +1,5 @@
 package net.datafaker;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +95,20 @@ public class Finance {
         }
 
         int mod97 = new BigInteger(sb.toString()).mod(BigInteger.valueOf(97L)).intValue();
-        return StringUtils.leftPad(String.valueOf(98 - mod97), 2, '0');
+        return padLeftZeros(String.valueOf(98 - mod97), 2);
+    }
+
+    private static String padLeftZeros(String inputString, int length) {
+        if (inputString.length() >= length) {
+            return inputString;
+        }
+        StringBuilder sb = new StringBuilder();
+        while (sb.length() < length - inputString.length()) {
+            sb.append('0');
+        }
+        sb.append(inputString);
+
+        return sb.toString();
     }
 
     private static Map<String, String> createCountryCodeToBasicBankAccountNumberPatternMap() {

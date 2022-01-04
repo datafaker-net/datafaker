@@ -5,8 +5,6 @@ import com.google.common.collect.Sets;
 import net.datafaker.repeating.Repeat;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -32,7 +30,6 @@ import static org.junit.Assert.assertTrue;
 
 public class NumberTest extends AbstractFakerTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(NumberTest.class);
     public static final int RANDOMIZATION_QUALITY_RANGE_END = 1000;
     public static final int RANDOMIZATION_QUALITY_RANGE_STEP = 25;
     private static final int RANDOMIZATION_QUALITY_RANGE_START = RANDOMIZATION_QUALITY_RANGE_STEP;
@@ -334,7 +331,6 @@ public class NumberTest extends AbstractFakerTest {
 
         for (long l = rangeStart; l < rangeEnd; l += rangeStep) {
             final double percentUnique = percentUniqueRunner.apply(Pair.of(-l, l));
-            logger.info("Range {} to {} is {} percent unique.", -l, l, percentUnique);
             if (percentUnique > threshold) {
                 greaterThanThreshold.incrementAndGet();
             }
@@ -358,8 +354,7 @@ public class NumberTest extends AbstractFakerTest {
             long setSize = Sets.newHashSet(values).size();
             return (double) setSize / (double) values.size();
         } catch (Exception e) {
-            logger.error("error in uniquePercentageOfResults", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("error in uniquePercentageOfResults", e);
         }
     }
 

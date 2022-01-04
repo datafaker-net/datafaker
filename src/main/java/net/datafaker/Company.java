@@ -1,18 +1,14 @@
 package net.datafaker;
 
 import net.datafaker.service.FakerIDN;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.lang3.StringUtils.join;
-
 public class Company {
 
-    private static final Pattern COMMA = Pattern.compile(",");
-    private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
+    private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[,' ]");
     private final Faker faker;
 
     protected Company(Faker faker) {
@@ -51,7 +47,7 @@ public class Company {
     public String catchPhrase() {
         @SuppressWarnings("unchecked")
         List<List<String>> catchPhraseLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords");
-        return joinSampleOfEachList(catchPhraseLists, " ");
+        return joinSampleOfEachList(catchPhraseLists);
     }
 
     /**
@@ -60,7 +56,7 @@ public class Company {
     public String bs() {
         @SuppressWarnings("unchecked")
         List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.bs");
-        return joinSampleOfEachList(buzzwordLists, " ");
+        return joinSampleOfEachList(buzzwordLists);
     }
 
     /**
@@ -72,28 +68,26 @@ public class Company {
     }
 
     public String url() {
-        return join(
+        return String.join(".",
                 "www",
-                ".",
                 FakerIDN.toASCII(domainName()),
-                ".",
                 domainSuffix()
         );
     }
 
     private String domainName() {
-        return StringUtils.deleteWhitespace(SINGLE_QUOTE.matcher(COMMA.matcher(name().toLowerCase()).replaceAll("")).replaceAll(""));
+        return UNWANTED_CHARACTERS.matcher(name().toLowerCase()).replaceAll("");
     }
 
     private String domainSuffix() {
         return faker.fakeValuesService().resolve("internet.domain_suffix", this, faker);
     }
 
-    private String joinSampleOfEachList(List<List<String>> listOfLists, String separator) {
+    private String joinSampleOfEachList(List<List<String>> listOfLists) {
         List<String> words = new ArrayList<>();
         for (List<String> list : listOfLists) {
             words.add(list.get(faker.random().nextInt(list.size())));
         }
-        return join(words, separator);
+        return String.join(" ", words);
     }
 }

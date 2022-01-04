@@ -1,7 +1,5 @@
 package net.datafaker;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.text.DecimalFormat;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -25,17 +23,19 @@ public class Commerce {
         }
         if (departments.size() > 1) {
             String lastDepartment = departments.last();
-            return StringUtils.join(departments.headSet(lastDepartment), ", ") + " & " + lastDepartment;
+
+            return String.join(", ", departments.headSet(lastDepartment)) + " & " + lastDepartment;
         } else {
             return departments.first();
         }
     }
 
     public String productName() {
-        return StringUtils.join(new String[]{
+        return String.join(" ",
                 faker.fakeValuesService().resolve("commerce.product_name.adjective", this, faker),
                 faker.fakeValuesService().resolve("commerce.product_name.material", this, faker),
-                faker.fakeValuesService().resolve("commerce.product_name.product", this, faker)}, " ");
+                faker.fakeValuesService().resolve("commerce.product_name.product", this, faker)
+        );
     }
 
     public String material() {
@@ -59,7 +59,7 @@ public class Commerce {
     }
 
     public String promotionCode(int digits) {
-        return StringUtils.join(faker.resolve("commerce.promotion_code.adjective"),
+        return String.join(faker.resolve("commerce.promotion_code.adjective"),
                 faker.resolve("commerce.promotion_code.noun"),
                 faker.number().digits(digits));
     }

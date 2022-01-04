@@ -2,15 +2,12 @@ package net.datafaker;
 
 import net.datafaker.service.FakerIDN;
 import net.datafaker.service.RandomService;
-import org.apache.commons.lang3.StringUtils;
 
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
-
-import static org.apache.commons.lang3.StringUtils.join;
-import static org.apache.commons.lang3.StringUtils.stripAccents;
 
 public class Internet {
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
@@ -38,7 +35,17 @@ public class Internet {
     }
 
     private String emailAddress(String localPart, String domain) {
-        return join(stripAccents(localPart), "@", domain);
+        return String.join("", stripAccents(localPart), "@", domain);
+    }
+
+    public static final Pattern DIACRITICS_AND_FRIENDS
+            = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
+
+    private String stripAccents(String input) {
+        // strip accents from input
+        String str = Normalizer.normalize(input, Normalizer.Form.NFD);
+        str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
+        return str;
     }
 
     public String domainName() {
@@ -54,7 +61,7 @@ public class Internet {
     }
 
     public String url() {
-        return join(
+        return String.join("",
                 "www",
                 ".",
                 FakerIDN.toASCII(
@@ -87,11 +94,14 @@ public class Internet {
      * @see <a href="http://lorempixel.com/">lorempixel - Placeholder Images for every case</a>
      */
     public String image() {
-        String[] dimension = StringUtils.split(faker.fakeValuesService().resolve("internet.image_dimension", this, faker), 'x');
-        if (dimension.length == 0) return "";
-        return image(
-                Integer.valueOf(StringUtils.trim(dimension[0])), Integer.valueOf(StringUtils.trim(dimension[1])),
-                faker.bool().bool(), null);
+        String[] dimension = faker.fakeValuesService().resolve("internet.image_dimension", this, faker).split( "x");
+        if (dimension.length == 0) {
+            return "";
+        } else {
+            return image(
+                    Integer.valueOf(dimension[0].trim()), Integer.valueOf(dimension[1].trim()),
+                    faker.bool().bool(), null);
+        }
     }
 
     /**
@@ -105,8 +115,8 @@ public class Internet {
      */
     public String image(Integer width, Integer height, Boolean gray, String text) {
         return String.format("https://lorempixel.com/%s%s/%s/%s/%s",
-                gray ? "g/" : StringUtils.EMPTY, width, height, faker.fakeValuesService().resolve("internet.image_category", this, faker),
-                StringUtils.isEmpty(text) ? StringUtils.EMPTY : text);
+                gray ? "g/" : "", width, height, faker.fakeValuesService().resolve("internet.image_category", this, faker),
+                (text == null || text.length() == 0) ? "" : text);
     }
 
     public String password() {

@@ -5,8 +5,6 @@ import net.datafaker.Faker;
 import net.datafaker.Name;
 import net.datafaker.service.files.EnFile;
 import com.mifmif.common.regex.Generex;
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -328,7 +326,8 @@ public class FakeValuesService {
             }
 
             resolved = resolveExpression(resolved, current, root);
-            result = StringUtils.replaceOnce(result, escapedDirective, resolved);
+            result = result.replaceFirst(Pattern.quote(escapedDirective), Matcher.quoteReplacement(resolved));
+//            result = StringUtils.replaceOnce(result, escapedDirective, resolved);
         }
         return result;
     }
@@ -512,7 +511,7 @@ public class FakeValuesService {
         final List<Object> coerced = new ArrayList<>();
         for (int i = 0; i < accessor.getParameterTypes().length; i++) {
 
-            Class<?> toType = ClassUtils.primitiveToWrapper(accessor.getParameterTypes()[i]);
+            Class<?> toType = primitiveToWrapper(accessor.getParameterTypes()[i]);
             try {
                 if (toType.isEnum()) {
                     Method method = toType.getMethod("valueOf", String.class);
@@ -531,6 +530,28 @@ public class FakeValuesService {
         }
         return coerced;
     }
+
+    private static final Map<Class<?>, Class<?>> primitiveWrapperMap = new HashMap<>();
+    static {
+        primitiveWrapperMap.put(Boolean.TYPE, Boolean.class);
+        primitiveWrapperMap.put(Byte.TYPE, Byte.class);
+        primitiveWrapperMap.put(Character.TYPE, Character.class);
+        primitiveWrapperMap.put(Short.TYPE, Short.class);
+        primitiveWrapperMap.put(Integer.TYPE, Integer.class);
+        primitiveWrapperMap.put(Long.TYPE, Long.class);
+        primitiveWrapperMap.put(Double.TYPE, Double.class);
+        primitiveWrapperMap.put(Float.TYPE, Float.class);
+        primitiveWrapperMap.put(Void.TYPE, Void.TYPE);
+    }
+
+    public static Class<?> primitiveToWrapper(final Class<?> cls) {
+        Class<?> convertedClass = cls;
+        if (cls != null && cls.isPrimitive()) {
+            convertedClass = primitiveWrapperMap.get(cls);
+        }
+        return convertedClass;
+    }
+
 
     private String string(Object obj) {
         return (obj == null) ? null : obj.toString();

@@ -1,12 +1,7 @@
 package net.datafaker;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.apache.commons.lang3.StringUtils.capitalize;
-import static org.apache.commons.lang3.StringUtils.join;
 
 public class Lorem {
     private final Faker faker;
@@ -205,7 +200,12 @@ public class Lorem {
      */
     public String sentence(int wordCount, int randomWordsToAdd) {
         int numberOfWordsToAdd = randomWordsToAdd == 0 ? 0 : faker.random().nextInt(randomWordsToAdd);
-        return capitalize(join(words(wordCount + numberOfWordsToAdd), " ") + ".");
+        return capitalize(String.join(" ", words(wordCount + numberOfWordsToAdd)) + ".");
+    }
+
+    private static String capitalize(String input) {
+        if (input == null) return null;
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
     public List<String> sentences(int sentenceCount) {
@@ -217,7 +217,7 @@ public class Lorem {
     }
 
     public String paragraph(int sentenceCount) {
-        return join(sentences(sentenceCount + faker.random().nextInt(3)), " ");
+        return String.join(" ", sentences(sentenceCount + faker.random().nextInt(3)));
     }
 
     public String paragraph() {
@@ -240,11 +240,15 @@ public class Lorem {
      * @return a string with a fixed size
      */
     public String fixedString(int numberOfLetters) {
+        if(numberOfLetters <= 0) {
+            return "";
+        }
+
         StringBuilder builder = new StringBuilder();
         while (builder.length() < numberOfLetters) {
             builder.append(sentence());
         }
-        return StringUtils.substring(builder.toString(), 0, numberOfLetters);
+        return builder.substring(0, numberOfLetters);
     }
 
     /**

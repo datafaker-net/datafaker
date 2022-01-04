@@ -30,6 +30,7 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertTrue;
 
 public class InternetTest extends AbstractFakerTest {
+
     @Test
     public void testEmailAddress() {
         String emailAddress = faker.internet().emailAddress();

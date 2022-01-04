@@ -6,8 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -43,7 +41,6 @@ import static org.reflections.ReflectionUtils.withReturnType;
 @RunWith(value = Parameterized.class)
 public class FakerIT {
 
-    private static final Logger logger = LoggerFactory.getLogger(FakerIT.class);
     private final Locale locale;
     private final Faker faker;
 
@@ -213,7 +210,6 @@ public class FakerIT {
                 continue;
             }
             final Object returnValue = method.invoke(object);
-            logger.info("{} {}.{} = {}", locale, object.getClass().getSimpleName().toLowerCase(), method.getName(), returnValue);
             String failureReason = method + " on " + object;
             assertThat(failureReason, returnValue, is(instanceOf(String.class)));
             final String returnValueAsString = (String) returnValue;

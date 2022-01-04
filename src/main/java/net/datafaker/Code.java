@@ -210,7 +210,11 @@ public class Code {
     }
 
     private String gtin(String regex, int[] checkDigits) {
-        List<Character> values = faker.regexify(regex).chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+        List<Character> values = faker.regexify(regex)
+                .chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toList());
+
         int sum = 0;
         for (int i = 0; i < values.size(); i++) {
             sum += Character.getNumericValue(values.get(i)) * checkDigits[i];

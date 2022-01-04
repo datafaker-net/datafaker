@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
@@ -48,6 +49,7 @@ public class CompanyTest extends AbstractFakerTest {
     }
 
     @Test
+    @Repeat(times = 100)
     public void testUrl() {
         String regexp = "(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])";
         assertThat(faker.company().url(), matchesRegularExpression(regexp));

@@ -2,8 +2,6 @@ package net.datafaker;
 
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class Name {
 
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
@@ -104,10 +102,11 @@ public class Name {
      * @return a random three part job title
      */
     public String title() {
-        return StringUtils.join(new String[]{
+        return String.join(" ",
                 faker.fakeValuesService().resolve("name.title.descriptor", this, faker),
                 faker.fakeValuesService().resolve("name.title.level", this, faker),
-                faker.fakeValuesService().resolve("name.title.job", this, faker)}, " ");
+                faker.fakeValuesService().resolve("name.title.job", this, faker)
+        );
     }
 
     /**
@@ -125,13 +124,13 @@ public class Name {
      */
     public String username() {
 
-        String username = StringUtils.join(
+        String username = String.join("",
                 SINGLE_QUOTE.matcher(firstName()).replaceAll("").toLowerCase(),
                 ".",
                 SINGLE_QUOTE.matcher(lastName()).replaceAll("").toLowerCase()
         );
 
-        return StringUtils.deleteWhitespace(username);
+        return username.replaceAll("\\s+", "");
     }
 
     /**

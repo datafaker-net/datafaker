@@ -64,6 +64,7 @@ public class NameTest extends AbstractFakerTest {
     }
 
     @Test
+    @Repeat(times = 100)
     public void testUsername() {
         assertThat(faker.name().username(), matchesRegularExpression("^(\\w+)\\.(\\w+)$"));
     }

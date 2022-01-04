@@ -3,8 +3,6 @@ package net.datafaker;
 
 import net.datafaker.service.RandomService;
 
-import static org.apache.commons.lang3.StringUtils.join;
-
 /**
  * The type Domain.
  */
@@ -28,7 +26,7 @@ public class Domain {
      */
     public String firstLevelDomain(String name) {
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
-        return join(
+        return String.join("",
                 name,
                 ".",
                 top
@@ -44,7 +42,7 @@ public class Domain {
     public String secondLevelDomain(String name) {
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
         String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
-        return join(
+        return String.join("",
                 name,
                 ".",
                 top,
@@ -63,7 +61,7 @@ public class Domain {
         String prefix = faker.fakeValuesService().resolve("domain.prefix", this, faker);
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
         String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
-        return join(
+        return String.join("",
                 prefix,
                 ".",
                 name,
@@ -89,7 +87,7 @@ public class Domain {
 
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
 
-        String result = join(
+        String result = String.join("",
                 name,
                 ".",
                 top
@@ -97,7 +95,7 @@ public class Domain {
 
         if (hasPrefix) {
             String prefix = faker.fakeValuesService().resolve("domain.prefix", this, faker);
-            result = join(
+            result = String.join("",
                     prefix,
                     ".",
                     result
@@ -106,7 +104,7 @@ public class Domain {
 
         if (hasSuffix) {
             String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
-            result = join(
+            result = String.join("",
                     result,
                     ".",
                     suffix
