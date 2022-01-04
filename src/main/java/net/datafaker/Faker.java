@@ -87,6 +87,7 @@ public class Faker {
     private final Medical medical;
     private final Minecraft minecraft;
     private final Mood mood;
+    private final Mountain mountain;
     private final Music music;
     private final Name name;
     private final Nation nation;
@@ -221,6 +222,7 @@ public class Faker {
         this.medical = new Medical(this);
         this.minecraft = new Minecraft(this);
         this.mood = new Mood(this);
+        this.mountain = new Mountain(this);
         this.music = new Music(this);
         this.name = new Name(this);
         this.nation = new Nation(this);
@@ -630,6 +632,8 @@ public class Faker {
     public Mood mood() {
         return mood;
     }
+
+    public Mountain mountain() { return mountain; }
 
     public Witcher witcher() {
         return witcher;

@@ -84,7 +84,7 @@ plugins:
 extra:
   datafaker:
     version: 1.0.0
-    snapshot: 0.9.1-SNAPSHOT
+    snapshot: 1.1.0-SNAPSHOT
 
 # Page tree
 nav:
@@ -101,5 +101,6 @@ nav:
 #      - Changes: changelog/index.md
 #      - How to upgrade: upgrade.md
   - Releases:
+    - 1.1.0-SNAPSHOT: releases/1.0.0-snapshot.md
     - 1.0.0: releases/1.0.0.md
     - 0.9.0: releases/0.9.0.md

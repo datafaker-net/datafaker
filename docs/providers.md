@@ -71,6 +71,7 @@ Datafaker comes with the following list of data providers:
 | Medical                         |                                                                                                   | 0.8.0 |
 | Minecraft                       |                                                                                                   | 0.9.0 |
 | Mood                            |                                                                                                   | 0.9.0 |
+| Mountains                       | Support for mountains and mountain ranges                                                         | 1.1.0 |
 | Music                           |                                                                                                   | 0.8.0 |
 | Name                            |                                                                                                   | 0.8.0 |
 | Nation                          |                                                                                                   | 0.8.0 |
