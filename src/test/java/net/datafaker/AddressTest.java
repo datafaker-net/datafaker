@@ -10,10 +10,10 @@ import static net.datafaker.matchers.IsANumber.isANumber;
 import static net.datafaker.matchers.IsStringWithContents.isStringWithContents;
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 
@@ -113,7 +113,7 @@ public class AddressTest extends AbstractFakerTest {
 
     @Test
     public void testStreetAddressIncludeSecondary() {
-        assertThat(faker.address().streetAddress(true), not(isEmptyString()));
+        assertThat(faker.address().streetAddress(true), not(is(emptyString())));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class AddressTest extends AbstractFakerTest {
 
     @Test
     public void testFullAddress() {
-        assertThat(faker.address().fullAddress(), not(isEmptyOrNullString()));
+        assertThat(faker.address().fullAddress(), not(is(emptyOrNullString())));
     }
 
     @Test
@@ -144,12 +144,26 @@ public class AddressTest extends AbstractFakerTest {
     @Test
     public void testCountyByZipCode() {
         faker = new Faker(new Locale("en-US"));
-        assertThat(faker.address().countyByZipCode("47732"), not(isEmptyOrNullString()));
+        assertThat(faker.address().countyByZipCode("47732"), not(is(emptyOrNullString())));
     }
 
     @Test
     public void testStreetPrefix() {
         assertThat(faker.address().streetPrefix(), isStringWithContents());
+    }
+
+    @Test
+    public void testStreetSuffix() {
+        assertThat(faker.address().streetSuffix(), isStringWithContents());
+    }
+
+    @Test
+    public void testCityPrefix() {
+        assertThat(faker.address().cityPrefix(), isStringWithContents());
+    }
+    @Test
+    public void testCitySuffix() {
+        assertThat(faker.address().citySuffix(), isStringWithContents());
     }
 
     @Test

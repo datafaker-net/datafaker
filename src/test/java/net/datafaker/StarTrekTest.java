@@ -4,7 +4,8 @@ import org.junit.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 public class StarTrekTest extends AbstractFakerTest {
@@ -31,6 +32,6 @@ public class StarTrekTest extends AbstractFakerTest {
 
     @Test
     public void klingon() {
-        assertThat(faker.starTrek().klingon(), not(isEmptyOrNullString()));
+        assertThat(faker.starTrek().klingon(), not(is(emptyOrNullString())));
     }
 }

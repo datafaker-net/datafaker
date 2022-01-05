@@ -18,10 +18,10 @@ import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpr
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.both;
+import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
@@ -309,21 +309,21 @@ public class InternetTest extends AbstractFakerTest {
         // in this case, we're just making sure Farsi doesn't blow up.
         // there have been issues with Farsi not being produced.
         final Faker f = new Faker(new Locale("fa"));
-        assertThat(f.internet().domainName(), not(isEmptyOrNullString()));
-        assertThat(f.internet().emailAddress(), not(isEmptyOrNullString()));
-        assertThat(f.internet().safeEmailAddress(), not(isEmptyOrNullString()));
-        assertThat(f.internet().url(), not(isEmptyOrNullString()));
+        assertThat(f.internet().domainName(), not(is(emptyOrNullString())));
+        assertThat(f.internet().emailAddress(), not(is(emptyOrNullString())));
+        assertThat(f.internet().safeEmailAddress(), not(is(emptyOrNullString())));
+        assertThat(f.internet().url(), not(is(emptyOrNullString())));
     }
 
     @Test
     public void testUserAgent() {
         Internet.UserAgent[] agents = Internet.UserAgent.values();
         for (Internet.UserAgent agent : agents) {
-            assertThat(faker.internet().userAgent(agent), not(isEmptyOrNullString()));
+            assertThat(faker.internet().userAgent(agent), not(is(emptyOrNullString())));
         }
 
         //Test faker.internet().userAgentAny() for random user_agent retrieval.
-        assertThat(faker.internet().userAgentAny(), not(isEmptyOrNullString()));
+        assertThat(faker.internet().userAgentAny(), not(is(emptyOrNullString())));
     }
 
     @Test

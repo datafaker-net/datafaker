@@ -5,13 +5,14 @@ import org.junit.Test;
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.is;
 
 public class WeatherTest extends AbstractFakerTest {
 
     @Test
     public void description() {
-        assertThat(faker.weather().description(), not(isEmptyOrNullString()));
+        assertThat(faker.weather().description(), not(is(emptyOrNullString())));
     }
 
     @Test

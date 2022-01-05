@@ -1,15 +1,18 @@
 package net.datafaker.service;
 
-import net.datafaker.Address;
-import net.datafaker.Faker;
-import net.datafaker.Name;
-import net.datafaker.service.files.EnFile;
 import com.mifmif.common.regex.Generex;
+import net.datafaker.Faker;
+import net.datafaker.service.files.EnFile;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -298,12 +301,12 @@ public class FakeValuesService {
      * processes a expression in the style #{X.y} using the current objects as the 'current' location
      * within the yml file (or the {@link Faker} object hierarchy as it were).
      * <p>
-     * #{Address.streetName} would get resolved to {@link Faker#address()}'s {@link Address#streetName()}
+     * #{Address.streetName} would get resolved to {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}
      * #{address.street} would get resolved to the YAML like locale: faker: address: street:
      * Combinations are supported as well: "#{x} #{y}"
      * <p>
      * Recursive templates are supported.  if "#{x}" resolves to "#{Address.streetName}" then "#{x}" resolves to
-     * {@link Faker#address()}'s {@link Address#streetName()}.
+     * {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, Faker root) {
         final Matcher matcher = EXPRESSION_PATTERN.matcher(expression);
@@ -327,7 +330,6 @@ public class FakeValuesService {
 
             resolved = resolveExpression(resolved, current, root);
             result = result.replaceFirst(Pattern.quote(escapedDirective), Matcher.quoteReplacement(resolved));
-//            result = StringUtils.replaceOnce(result, escapedDirective, resolved);
         }
         return result;
     }
@@ -428,7 +430,7 @@ public class FakeValuesService {
 
     /**
      * Given a directive like 'firstName', attempts to resolve it to a method.  For example if obj is an instance of
-     * {@link Name} then this method would return {@link Name#firstName()}.  Returns null if the directive is nested
+     * {@link net.datafaker.Name} then this method would return {@link net.datafaker.Name#firstName()}.  Returns null if the directive is nested
      * (i.e. has a '.') or the method doesn't exist on the <em>obj</em> object.
      */
     private String resolveFromMethodOn(Object obj, String directive, List<String> args) {
@@ -448,7 +450,7 @@ public class FakeValuesService {
 
     /**
      * Accepts a {@link Faker} instance and a name.firstName style 'key' which is resolved to the return value of:
-     * {@link Faker#name()}'s {@link Name#firstName()} method.
+     * {@link Faker#name()}'s {@link net.datafaker.Name#firstName()} method.
      *
      * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
      */
@@ -532,6 +534,7 @@ public class FakeValuesService {
     }
 
     private static final Map<Class<?>, Class<?>> primitiveWrapperMap = new HashMap<>();
+
     static {
         primitiveWrapperMap.put(Boolean.TYPE, Boolean.class);
         primitiveWrapperMap.put(Byte.TYPE, Byte.class);

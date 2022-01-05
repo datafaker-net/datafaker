@@ -4,7 +4,8 @@ import org.junit.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 
 public class TwinPeaksTest extends AbstractFakerTest {
@@ -21,6 +22,6 @@ public class TwinPeaksTest extends AbstractFakerTest {
 
     @Test
     public void quote() {
-        assertThat(faker.twinPeaks().quote(), not(isEmptyOrNullString()));
+        assertThat(faker.twinPeaks().quote(), not(is(emptyOrNullString())));
     }
 }

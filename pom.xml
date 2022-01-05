@@ -131,7 +131,8 @@
                     <version>4.3.0</version>
                     <configuration>
                         <!--suppress MavenModelInspection -->
-                        <repoToken>${env.COVERALLS_TOKEN}</repoToken>
+                        <repoToken>Etw4WhEnQ4RC8uOtey1eRzWnwa18DQFpu</repoToken>
+<!--                        <repoToken>${env.COVERALLS_TOKEN}</repoToken>-->
                     </configuration>
                 </plugin>
                 <plugin>

@@ -8,7 +8,8 @@ import org.mockito.Mockito;
 import java.lang.reflect.InvocationTargetException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.when;
 
@@ -25,37 +26,37 @@ public class RelationshipTest extends AbstractFakerTest {
     @Test
     @Repeat(times = 100)
     public void anyTest() {
-        assertThat(faker.relationships().any(), not(isEmptyOrNullString()));
+        assertThat(faker.relationships().any(), not(is(emptyOrNullString())));
     }
 
     @Test
     public void directTest() {
-        assertThat(faker.relationships().direct(), not(isEmptyOrNullString()));
+        assertThat(faker.relationships().direct(), not(is(emptyOrNullString())));
     }
 
     @Test
     public void extendedTest() {
-        assertThat(faker.relationships().extended(), not(isEmptyOrNullString()));
+        assertThat(faker.relationships().extended(), not(is(emptyOrNullString())));
     }
 
     @Test
     public void inLawTest() {
-        assertThat(faker.relationships().inLaw(), not(isEmptyOrNullString()));
+        assertThat(faker.relationships().inLaw(), not(is(emptyOrNullString())));
     }
 
     @Test
     public void spouseTest() {
-        assertThat(faker.relationships().spouse(), not(isEmptyOrNullString()));
+        assertThat(faker.relationships().spouse(), not(is(emptyOrNullString())));
     }
 
     @Test
     public void parentTest() {
-        assertThat(faker.relationships().parent(), not(isEmptyOrNullString()));
+        assertThat(faker.relationships().parent(), not(is(emptyOrNullString())));
     }
 
     @Test
     public void siblingTest() {
-        assertThat(faker.relationships().sibling(), not(isEmptyOrNullString()));
+        assertThat(faker.relationships().sibling(), not(is(emptyOrNullString())));
     }
 
     @Test(expected = RuntimeException.class)
