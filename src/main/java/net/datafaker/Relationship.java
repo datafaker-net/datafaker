@@ -2,6 +2,7 @@ package net.datafaker;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 public class Relationship {
@@ -36,10 +37,14 @@ public class Relationship {
     }
 
     public String any() {
-        Method currentMethod = getClass().getEnclosingMethod();
+        // Get name of current method
+        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        final String currentMethodName = stackTrace[1].getMethodName();
 
         try {
-            Method[] methods = Arrays.stream(Relationship.class.getDeclaredMethods()).filter(declaredMethod -> declaredMethod != currentMethod).toArray(Method[]::new);
+            Method[] methods = Arrays.stream(Relationship.class.getDeclaredMethods())
+                    .filter(declaredMethod -> !declaredMethod.getName().equals(currentMethodName) && Modifier.isPublic(declaredMethod.getModifiers()))
+                    .toArray(Method[]::new);
             int indx = faker.random().nextInt(methods.length);
             Method runMethod = methods[indx];
             Relationship relationship = new Relationship(faker);

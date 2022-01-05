@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.repeating.Repeat;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -22,6 +23,7 @@ public class RelationshipTest extends AbstractFakerTest {
     }
 
     @Test
+    @Repeat(times = 100)
     public void anyTest() {
         assertThat(faker.relationships().any(), not(isEmptyOrNullString()));
     }
