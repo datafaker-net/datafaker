@@ -96,6 +96,7 @@ nav:
     - License: license.md
   - Documentation:
     - Data providers: providers.md
+    - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.0.0/datafaker-1.0.0-javadoc.jar/!/index.html'
     - Contributing: contributing.md
 #    - Changelog:
 #      - Changes: changelog/index.md
