@@ -241,6 +241,31 @@ public class FakeValuesService {
     }
 
     /**
+     * Generates a String by example. The output string will have the same pattern as the input string.
+     */
+    public String examplify(String example) {
+        StringBuilder sb = new StringBuilder();
+        if(example == null) {
+            return null;
+        }
+
+        char[] chars = example.toCharArray();
+
+        for (char character : chars) {
+            if (Character.isLetter(character)) {
+                sb.append(letterify("?", Character.isUpperCase(character)));
+            } else if(Character.isDigit(character)) {
+                sb.append(randomService.nextInt(10));
+            } else {
+                sb.append(character);
+            }
+        }
+
+        return sb.toString();
+
+    }
+
+    /**
      * Returns a string with the '?' characters in the parameter replaced with random alphabetic
      * characters.
      * <p>

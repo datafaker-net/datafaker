@@ -17,6 +17,31 @@ import static org.hamcrest.Matchers.nullValue;
 public class FakerTest extends AbstractFakerTest {
 
     @Test
+    public void examplifyUppercaseLetters() {
+        assertThat(faker.examplify("ABC"), matchesRegularExpression("[A-Z]{3}"));
+    }
+
+    @Test
+    public void examplifyLowercaseLetters() {
+        assertThat(faker.examplify("abc"), matchesRegularExpression("[a-z]{3}"));
+    }
+
+    @Test
+    public void examplifyNumbers() {
+        assertThat(faker.examplify("489321"), matchesRegularExpression("[0-9]{6}"));
+    }
+
+    @Test
+    public void examplifyMixed() {
+        assertThat(faker.examplify("abc123ABC1zzz"), matchesRegularExpression("[a-z]{3}[0-9]{3}[A-Z]{3}[0-9][a-z]{3}"));
+    }
+
+    @Test
+    public void examplifyWithSpacesAndSpecialCharacters() {
+        assertThat(faker.examplify("The number 4!"), matchesRegularExpression("[A-Z][a-z]{2} [a-z]{6} [0-9]!"));
+    }
+
+    @Test
     public void bothifyShouldGenerateLettersAndNumbers() {
         assertThat(faker.bothify("????##@gmail.com"), matchesRegularExpression("\\w{4}\\d{2}@gmail.com"));
     }
