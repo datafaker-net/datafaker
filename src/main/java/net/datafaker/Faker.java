@@ -365,6 +365,20 @@ public class Faker {
         return fakeValuesService.regexify(regex);
     }
 
+    /**
+     * Generates a String by example. The output string will have the same pattern as the input string.
+     *
+     * For example:
+     *   "AAA" becomes "KRA"
+     *   "abc" becomes "uio"
+     *   "948" becomes "345"
+     *   "A19c" becomes "Z20d"
+     *
+     * @param example The input string
+     * @return The output string based on the input pattern
+     */
+    public String examplify(String example) {return fakeValuesService.examplify(example);}
+
     public RandomService random() {
         return this.randomService;
     }
