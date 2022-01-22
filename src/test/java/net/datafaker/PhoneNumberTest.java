@@ -1,11 +1,16 @@
 package net.datafaker;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 
 import java.util.Locale;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class PhoneNumberTest extends AbstractFakerTest {
 
@@ -13,6 +18,17 @@ public class PhoneNumberTest extends AbstractFakerTest {
     public void testCellPhone_enUS() {
         final Faker f = new Faker(Locale.US);
         assertThat(f.phoneNumber().cellPhone(), matchesRegularExpression("\\(?\\d+\\)?([- .]\\d+){1,3}"));
+    }
+
+    final Faker usfaker = new Faker(new Locale("en_US"));
+
+    @Test
+    @Repeat(times = 1000)
+    public void testAllCellPhone_enUS() throws NumberParseException {
+        String phoneNumber = usfaker.phoneNumber().phoneNumber();
+        PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "US");
+        assertTrue(util.isValidNumberForRegion(proto, "US"));
     }
 
     @Test

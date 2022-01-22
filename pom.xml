@@ -102,6 +102,12 @@
             <version>3.12.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>8.12.41</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <distributionManagement>
         <snapshotRepository>
