@@ -48,7 +48,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
     @Test
     @Repeat(times = 1000)
     public void testAllCellPhone_csCZ() throws NumberParseException {
-        String phoneNumber = sefaker.phoneNumber().phoneNumber();
+        String phoneNumber = czfaker.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "CZ");
         assertTrue(phoneNumber, util.isValidNumberForRegion(proto, "CZ"));
     }
