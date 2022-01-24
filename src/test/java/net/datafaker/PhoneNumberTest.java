@@ -20,17 +20,18 @@ public class PhoneNumberTest extends AbstractFakerTest {
     @Test
     public void testCellPhone_enUS() {
         final Faker f = new Faker(Locale.US);
-        assertThat(f.phoneNumber().cellPhone(), matchesRegularExpression("\\(?\\d+\\)?([- .]\\d+){1,3}"));
+        String cellPhone = f.phoneNumber().cellPhone();
+        assertThat(cellPhone, cellPhone, matchesRegularExpression("\\(?\\d+\\)?([- .]\\d+){1,3}"));
     }
 
     final Faker usfaker = new Faker(new Locale("en_US"));
 
     @Test
-    @Repeat(times = 1000)
+    @Repeat(times = 10000)
     public void testAllCellPhone_enUS() throws NumberParseException {
         String phoneNumber = usfaker.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "US");
-        assertTrue(util.isValidNumberForRegion(proto, "US"));
+        assertTrue(phoneNumber, util.isValidNumberForRegion(proto, "US"));
     }
 
     final Faker sefaker = new Faker(new Locale("sv_SE"));
