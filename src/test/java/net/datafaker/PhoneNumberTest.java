@@ -14,6 +14,9 @@ import static org.junit.Assert.assertTrue;
 
 public class PhoneNumberTest extends AbstractFakerTest {
 
+    private final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+
+
     @Test
     public void testCellPhone_enUS() {
         final Faker f = new Faker(Locale.US);
@@ -26,7 +29,6 @@ public class PhoneNumberTest extends AbstractFakerTest {
     @Repeat(times = 1000)
     public void testAllCellPhone_enUS() throws NumberParseException {
         String phoneNumber = usfaker.phoneNumber().phoneNumber();
-        PhoneNumberUtil util = PhoneNumberUtil.getInstance();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "US");
         assertTrue(util.isValidNumberForRegion(proto, "US"));
     }
@@ -37,9 +39,18 @@ public class PhoneNumberTest extends AbstractFakerTest {
     @Repeat(times = 1000)
     public void testAllCellPhone_svSE() throws NumberParseException {
         String phoneNumber = sefaker.phoneNumber().phoneNumber();
-        PhoneNumberUtil util = PhoneNumberUtil.getInstance();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "SE");
         assertTrue(phoneNumber, util.isValidNumberForRegion(proto, "SE"));
+    }
+
+    final Faker nlfaker = new Faker(new Locale("nl_NL"));
+
+    @Test
+    @Repeat(times = 1000)
+    public void testAllCellPhone_nl() throws NumberParseException {
+        String phoneNumber = nlfaker.phoneNumber().phoneNumber();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "NL");
+        assertTrue(phoneNumber, util.isValidNumberForRegion(proto, "NL"));
     }
 
     @Test
