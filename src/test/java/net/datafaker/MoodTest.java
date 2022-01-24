@@ -1,7 +1,6 @@
 package net.datafaker;
 
 import org.junit.Test;
-
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 

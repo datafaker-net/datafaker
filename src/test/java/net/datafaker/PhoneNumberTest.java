@@ -31,6 +31,17 @@ public class PhoneNumberTest extends AbstractFakerTest {
         assertTrue(util.isValidNumberForRegion(proto, "US"));
     }
 
+    final Faker sefaker = new Faker(new Locale("sv_SE"));
+
+    @Test
+    @Repeat(times = 1000)
+    public void testAllCellPhone_svSE() throws NumberParseException {
+        String phoneNumber = sefaker.phoneNumber().phoneNumber();
+        PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "SE");
+        assertTrue(phoneNumber, util.isValidNumberForRegion(proto, "SE"));
+    }
+
     @Test
     public void testPhone_esMx() {
         final Faker f = new Faker(new Locale("es_MX"));
