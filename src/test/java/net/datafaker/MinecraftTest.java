@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
@@ -9,12 +10,12 @@ public class MinecraftTest extends AbstractFakerTest {
 
     @Test
     public void testItemName() {
-        assertThat(faker.minecraft().itemName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+        assertThat(faker.minecraft().itemName(), matchesRegularExpression("([\\w'()]+\\.?( )?){2,4}"));
     }
 
     @Test
     public void testTileName() {
-        assertThat(faker.minecraft().tileName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+        assertThat(faker.minecraft().tileName(), matchesRegularExpression("([\\w'()]+\\.?( )?){2,5}"));
     }
 
     @Test
@@ -34,7 +35,7 @@ public class MinecraftTest extends AbstractFakerTest {
 
     @Test
     public void testTileItemName() {
-        assertThat(faker.minecraft().tileItemName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+        assertThat(faker.minecraft().tileItemName(), matchesRegularExpression("([\\w()']+\\.?( )?){2,5}"));
     }
 
 }
