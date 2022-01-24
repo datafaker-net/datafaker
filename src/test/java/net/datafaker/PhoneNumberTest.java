@@ -53,6 +53,24 @@ public class PhoneNumberTest extends AbstractFakerTest {
         assertTrue(phoneNumber, util.isValidNumberForRegion(proto, "CZ"));
     }
 
+    final Faker gbfaker = new Faker(new Locale("en_GB"));
+
+    @Test
+    public void testAllCellPhone_enGB() throws NumberParseException {
+
+        int errorCount = 0;
+        for(int i= 0; i < 1000; i++) {
+            String phoneNumber = gbfaker.phoneNumber().phoneNumber();
+            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "GB");
+            if (!util.isValidNumberForRegion(proto, "GB")) {
+                errorCount ++;
+            }
+        }
+
+        // Current score is ~420. Improvements are welcome.
+        assertTrue(errorCount < 500);
+    }
+
     final Faker nofaker = new Faker(new Locale("nb_NO"));
 
     @Test
