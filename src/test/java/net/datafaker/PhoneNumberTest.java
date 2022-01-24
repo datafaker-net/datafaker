@@ -43,6 +43,25 @@ public class PhoneNumberTest extends AbstractFakerTest {
         assertTrue(phoneNumber, util.isValidNumberForRegion(proto, "SE"));
     }
 
+    final Faker nofaker = new Faker(new Locale("nb_NO"));
+
+    @Test
+    public void testAllCellPhone_nbNO() throws NumberParseException {
+        int errorCount = 0;
+
+        for(int i= 0; i < 1000; i++) {
+            String phoneNumber = nofaker.phoneNumber().phoneNumber();
+            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "NO");
+
+            if (!util.isValidNumberForRegion(proto, "NO")) {
+                errorCount ++;
+            }
+        }
+
+        // Not perfect yet, but should be good enough
+        assertTrue(errorCount < 250);
+    }
+
     final Faker nlfaker = new Faker(new Locale("nl_NL"));
 
     @Test
