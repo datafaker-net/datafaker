@@ -7,7 +7,7 @@ First and foremost thanks to anyone who contributes, very much appreciated.
 - Submit a PR with your change and if there are no comments, changes will be merged in
 - If you're not sure about the change, raise an issue and have a discussion before spending time coding it up
 - Try and make one logical change per PR. That is not make many changes in one PR. Submit multiple PRs instead
-- Java 11 is our target version. If you need anything older than that, we recommend using [Java Faker](https://github.com/DiUS/java-faker) instead.
+- Java 8 is our target version. If you need anything older than that, we recommend using [Java Faker](https://github.com/DiUS/java-faker) instead.
 
 ## Building
 
