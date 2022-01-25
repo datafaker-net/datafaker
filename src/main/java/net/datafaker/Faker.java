@@ -37,6 +37,7 @@ public class Faker {
     private final Bool bool;
     private final Buffy buffy;
     private final Business business;
+    private final CNPJ cnpj;
     private final CPF cpf;
     private final Cat cat;
     private final ChuckNorris chuckNorris;
@@ -180,7 +181,8 @@ public class Faker {
         this.commerce = new Commerce(this);
         this.company = new Company(this);
         this.country = new Country(this);
-        this.cpf = new CPF(this);
+        this.cnpj = new CNPJ();
+        this.cpf = new CPF();
         this.crypto = new Crypto(this);
         this.currency = new Currency(this);
         this.dateAndTime = new DateAndTime(this);
@@ -655,6 +657,10 @@ public class Faker {
 
     public CPF cpf() {
         return cpf;
+    }
+
+    public CNPJ cnpj() {
+        return cnpj;
     }
 
     public DragonBall dragonBall() {

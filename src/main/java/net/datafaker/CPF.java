@@ -1,71 +1,60 @@
 package net.datafaker;
 
-import net.datafaker.shared.CPFUtils;
+import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
 
 /**
- * A CPF number is the Tax ID generated once you have been registered into the Brazilian Revenue.
- * CPF stands for "Cadastro de Pessoas Físicas" (Natural Persons Register).
- * <p>
- * The CPF has 11 digits and it may be issued by the Brazilian revenue service
- * in Brazil or Brazilian consulates and embassies abroad.
- * <p>
- * Partial code copy from https://github.com/jrjuniorsp/GeradorValidadorCPFCNPJ/blob/master/src/com/jrmobile/service/GeradorCPF.java
+ * The CPF number (Cadastro de Pessoas Físicas, [sepeˈɛfi]; Portuguese for "Natural Persons Register")
+ * is the Brazilian individual taxpayer registry identification, since its creation in 1965. This
+ * number is attributed by the Brazilian Federal Revenue to Brazilians and resident aliens who,
+ * directly or indirectly, pay taxes in Brazil. It's an 11-digit number in the format 000.000.000-00.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/CPF_number">CPF</a>
  */
 public class CPF {
 
-    private final Faker faker;
-
-    protected CPF(Faker faker) {
-        this.faker = faker;
+    protected CPF() {
     }
 
     /**
      * Return valid and formatted
      *
      * @return a valid CPF
-     * @see CPFUtils#unformatCPF(String) to unformat
+     * @see IdNumberGeneratorPtBrUtil#cpf(boolean, boolean)
      */
     public String valid() {
-        return generateCPF(true);
+        return IdNumberGeneratorPtBrUtil.cpf(true, true);
+    }
+
+    /**
+     * Return valid and formatted
+     *
+     * @param formatted a (un)formatted CPF
+     * @return a valid CPF
+     * @see IdNumberGeneratorPtBrUtil#cpf(boolean, boolean)
+     */
+    public String valid(boolean formatted) {
+        return IdNumberGeneratorPtBrUtil.cpf(formatted, true);
     }
 
     /**
      * Return invalid and formatted
      *
      * @return an invalid CPF
-     * @see CPFUtils#unformatCPF(String) to unformat
+     * @see IdNumberGeneratorPtBrUtil#cpf(boolean, boolean)
      */
     public String invalid() {
-        return generateCPF(false);
+        return IdNumberGeneratorPtBrUtil.cpf(true, false);
     }
 
-    public String generateCPF(boolean valid) {
-        StringBuilder partial = new StringBuilder();
-        String cpf;
-        int number;
-
-        for (int i = 0; i < 9; i++) {
-            number = faker.random().nextInt(10);
-            partial.append(number);
-        }
-
-        if (valid) {
-            cpf = partial + CPFUtils.calculateVerificationDigit(partial.toString());
-        } else {
-            long elevenDigits = (faker.random().nextInt(1000000000) + (faker.random().nextInt(90) + 10) * 1000000000L);
-            cpf = String.valueOf(elevenDigits);
-        }
-
-        return formatCPF(cpf);
-    }
-
-    private String formatCPF(String cpf) {
-        String block1 = cpf.substring(0, 3);
-        String block2 = cpf.substring(3, 6);
-        String block3 = cpf.substring(6, 9);
-        String block4 = cpf.substring(9, 11);
-
-        return String.format("%s.%s.%s-%s", block1, block2, block3, block4);
+    /**
+     * Return invalid and formatted
+     *
+     * @param formatted a (un)formatted CPF
+     * @return an invalid CPF
+     * @see IdNumberGeneratorPtBrUtil#cpf(boolean, boolean)
+     */
+    public String invalid(boolean formatted) {
+        return IdNumberGeneratorPtBrUtil.cpf(formatted, false);
     }
 
 }
