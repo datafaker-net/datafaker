@@ -98,6 +98,7 @@ Providers
 * Bossa Nova (:sparkles:)
 * Breaking Bad (:sparkles:)
 * Business
+* CNPJ [Brazilian National Registry of Legal Entities](https://en.wikipedia.org/wiki/CNPJ)
 * CPF [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number)
 * Cat
 * ChuckNorris
