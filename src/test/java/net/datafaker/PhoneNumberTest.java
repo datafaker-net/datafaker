@@ -27,7 +27,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
     final Faker usfaker = new Faker(new Locale("en_US"));
 
     @Test
-    @Repeat(times = 10000)
+    @Repeat(times = 100)
     public void testAllCellPhone_enUS() throws NumberParseException {
         String phoneNumber = usfaker.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "US");
