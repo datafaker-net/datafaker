@@ -24,6 +24,7 @@ Datafaker comes with the following list of data providers:
 | [Bossa Nova]({{ datafaker.javadoc }}/BossaNova.html)                                        |                                                                                                   | 1.0.0 |
 | [BreakingBad]({{ datafaker.javadoc }}/BreakingBad.html)                                     |                                                                                                   | 1.0.0 |
 | [Business]({{ datafaker.javadoc }}/Business.html)                                           |                                                                                                   | 0.8.0 |
+| [CNPJ]({{ datafaker.javadoc }}/CNPJ.html)                                                    | [Cadastro Nacional da Pessoa Jurídica in Portuguese, or 'National Registry of Legal Entities'](https://en.wikipedia.org/wiki/CNPJ) | 1.1.0 |
 | [CPF]({{ datafaker.javadoc }}/CPF.html)                                                     | [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number) | 0.8.0 |
 | [Cat]({{ datafaker.javadoc }}/Cat.html)                                                     |                                                                                                   | 0.8.0 |
 | [Chuck Norris]({{ datafaker.javadoc }}/ChuckNorris.html)                                    |                                                                                                   | 0.8.0 |

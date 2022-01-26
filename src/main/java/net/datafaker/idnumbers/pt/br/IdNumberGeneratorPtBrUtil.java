@@ -1,10 +1,8 @@
 package net.datafaker.idnumbers.pt.br;
 
-import java.util.Random;
+import net.datafaker.Faker;
 
 public final class IdNumberGeneratorPtBrUtil {
-
-    private static final Random random = new Random();
 
     private IdNumberGeneratorPtBrUtil() {
     }
@@ -15,13 +13,13 @@ public final class IdNumberGeneratorPtBrUtil {
      * @param formatted a cnpj (un)formatted
      * @param valid a cnpj (in)valid
      */
-    public static String cnpj(boolean formatted, boolean valid) {
+    public static String cnpj(Faker faker, boolean formatted, boolean valid) {
         String cnpj;
 
         if (valid) {
             StringBuilder partial = new StringBuilder();
             for (int i = 0; i < 8; i++) {
-                partial.append(random.nextInt(9));
+                partial.append(faker.random().nextInt(9));
             }
 
             cnpj = partial.append("0001").toString();
@@ -31,7 +29,7 @@ public final class IdNumberGeneratorPtBrUtil {
 
             cnpj = (cnpj + d1) + d2;
         } else {
-            cnpj = String.valueOf(random.nextInt(1000000000) + (random.nextInt(90) + 10) * 1000000000000L);
+            cnpj = String.valueOf(faker.random().nextInt(1000000000) + (faker.random().nextInt(90) + 10) * 1000000000000L);
         }
 
         return (formatted) ? DocumentFormatterUtil.cnpj(cnpj) : cnpj;
@@ -43,12 +41,12 @@ public final class IdNumberGeneratorPtBrUtil {
      * @param formatted a CPF (un)formatted
      * @param valid a CPF (in)valid
      */
-    public static String cpf(boolean formatted, boolean valid) {
+    public static String cpf(Faker faker, boolean formatted, boolean valid) {
         String cpf;
         if (valid) {
             StringBuilder partial = new StringBuilder();
             for (int i = 0; i < 9; i++) {
-                partial.append(random.nextInt(9));
+                partial.append(faker.random().nextInt(9));
             }
             cpf = partial.toString();
 
@@ -57,7 +55,7 @@ public final class IdNumberGeneratorPtBrUtil {
 
             cpf = (cpf + d1) + d2;
         } else {
-            cpf = String.valueOf(random.nextInt(1000000000) + (random.nextInt(90) + 10) * 1000000000L);
+            cpf = String.valueOf(faker.random().nextInt(1000000000) + (faker.random().nextInt(90) + 10) * 1000000000L);
         }
         return formatted ? DocumentFormatterUtil.cpf(cpf) : cpf;
     }

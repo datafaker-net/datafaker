@@ -3,28 +3,30 @@ package net.datafaker;
 import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
 
 /**
- * CNPJ: The Federal Government interest in simplifying its registration procedures on companies appears in the mid-90's, but it was only in 1998,
- * through
- * the SRF Normative Instruction No. 27, that the CNPJ (short for Cadastro Nacional da Pessoa Jurídica in Portuguese, or 'National Registry of Legal
- *  Entities')
- *  was created, replacing the former system, CGC (short for Cadastro Geral de Contribuintes in Portuguese, or 'General Taxpayers Registry').
- *  At the end of 2003 it gained a new impulse by sharing and integrating registration data and fiscal information between States and the Union.
- *  In 2009 the MEI (Microempreendedor Individual in Portuguese, or 'Individual Microentrepreneur') was created to supply market demand.
+ * CNPJ: The Federal Government interest in simplifying its registration procedures on companies appears in the mid-90's,
+ * but it was only in 1998, through the SRF Normative Instruction No. 27, that the CNPJ (short for Cadastro Nacional da
+ * Pessoa Jurídica in Portuguese, or 'National Registry of Legal Entities') was created, replacing the former system,
+ * CGC (short for Cadastro Geral de Contribuintes in Portuguese, or 'General Taxpayers Registry').
+ * At the end of 2003 it gained a new impulse by sharing and integrating registration data and fiscal information between States and the Union.
+ * In 2009 the MEI (Microempreendedor Individual in Portuguese, or 'Individual Microentrepreneur') was created to supply market demand.
  * @see  <a href="https://en.wikipedia.org/wiki/CNPJ">CNPJ</a>
  */
 public class CNPJ {
 
-    protected CNPJ() {
+    private final Faker faker;
+
+    protected CNPJ(Faker faker) {
+        this.faker = faker;
     }
 
     /**
      * Return valid and formatted
      *
      * @return a valid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(Faker, boolean, boolean)
      */
     public String valid() {
-        return IdNumberGeneratorPtBrUtil.cnpj(true, true);
+        return IdNumberGeneratorPtBrUtil.cnpj(faker,true, true);
     }
 
     /**
@@ -32,30 +34,30 @@ public class CNPJ {
      *
      * @param formatted a CNPJ (un)formatted
      * @return a valid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(Faker, boolean, boolean)
      */
     public String valid(boolean formatted) {
-        return IdNumberGeneratorPtBrUtil.cnpj(formatted, true);
+        return IdNumberGeneratorPtBrUtil.cnpj(faker, formatted, true);
     }
 
     /**
      * Return invalid and formatted
      *
      * @return an invalid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(Faker, boolean, boolean)
      */
     public String invalid() {
-        return IdNumberGeneratorPtBrUtil.cnpj(true, false);
+        return IdNumberGeneratorPtBrUtil.cnpj(faker,true, false);
     }
 
     /**
      * Return invalid and (un)formatted
      *
      * @return an invalid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(Faker, boolean, boolean)
      */
     public String invalid(boolean formatted) {
-        return IdNumberGeneratorPtBrUtil.cnpj(formatted, false);
+        return IdNumberGeneratorPtBrUtil.cnpj(faker, formatted, false);
     }
 
 }

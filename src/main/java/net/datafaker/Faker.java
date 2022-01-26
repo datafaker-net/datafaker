@@ -181,8 +181,8 @@ public class Faker {
         this.commerce = new Commerce(this);
         this.company = new Company(this);
         this.country = new Country(this);
-        this.cnpj = new CNPJ();
-        this.cpf = new CPF();
+        this.cnpj = new CNPJ(this);
+        this.cpf = new CPF(this);
         this.crypto = new Crypto(this);
         this.currency = new Currency(this);
         this.dateAndTime = new DateAndTime(this);

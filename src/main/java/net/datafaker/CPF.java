@@ -12,17 +12,20 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  */
 public class CPF {
 
-    protected CPF() {
+    private final Faker faker;
+
+    protected CPF(Faker faker) {
+        this.faker = faker;
     }
 
     /**
      * Return valid and formatted
      *
      * @return a valid CPF
-     * @see IdNumberGeneratorPtBrUtil#cpf(boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cpf(Faker, boolean, boolean)
      */
     public String valid() {
-        return IdNumberGeneratorPtBrUtil.cpf(true, true);
+        return IdNumberGeneratorPtBrUtil.cpf(faker, true, true);
     }
 
     /**
@@ -30,20 +33,20 @@ public class CPF {
      *
      * @param formatted a (un)formatted CPF
      * @return a valid CPF
-     * @see IdNumberGeneratorPtBrUtil#cpf(boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cpf(Faker, boolean, boolean)
      */
     public String valid(boolean formatted) {
-        return IdNumberGeneratorPtBrUtil.cpf(formatted, true);
+        return IdNumberGeneratorPtBrUtil.cpf(faker, formatted, true);
     }
 
     /**
      * Return invalid and formatted
      *
      * @return an invalid CPF
-     * @see IdNumberGeneratorPtBrUtil#cpf(boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cpf(Faker, boolean, boolean)
      */
     public String invalid() {
-        return IdNumberGeneratorPtBrUtil.cpf(true, false);
+        return IdNumberGeneratorPtBrUtil.cpf(faker,true, false);
     }
 
     /**
@@ -51,10 +54,10 @@ public class CPF {
      *
      * @param formatted a (un)formatted CPF
      * @return an invalid CPF
-     * @see IdNumberGeneratorPtBrUtil#cpf(boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cpf(Faker, boolean, boolean)
      */
     public String invalid(boolean formatted) {
-        return IdNumberGeneratorPtBrUtil.cpf(formatted, false);
+        return IdNumberGeneratorPtBrUtil.cpf(faker, formatted, false);
     }
 
 }
