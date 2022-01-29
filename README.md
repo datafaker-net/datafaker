@@ -22,7 +22,7 @@ It's useful when you're developing a new project and need some pretty data for s
 Usage
 -----
 
-In pom.xml, add the following xml stanza between `<dependencies> ... </dependencies>`
+In the pom.xml, add the following fragment to the `dependencies` section:
 
 ```xml
 <dependency>
