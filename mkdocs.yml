@@ -83,9 +83,9 @@ plugins:
 # Customization
 extra:
   datafaker:
-    version: 1.0.0
-    snapshot: 1.1.0-SNAPSHOT
-    javadoc: https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.0.0/datafaker-1.0.0-javadoc.jar/!/net/datafaker
+    version: 1.1.0
+    snapshot: 1.2.0-SNAPSHOT
+    javadoc: https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.1.0/datafaker-1.1.0-javadoc.jar/!/net/datafaker
 
 # Page tree
 nav:
@@ -97,12 +97,12 @@ nav:
     - License: license.md
   - Documentation:
     - Data providers: providers.md
-    - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.0.0/datafaker-1.0.0-javadoc.jar/!/index.html'
+    - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.1.0/datafaker-1.1.0-javadoc.jar/!/index.html'
     - Contributing: contributing.md
 #    - Changelog:
 #      - Changes: changelog/index.md
 #      - How to upgrade: upgrade.md
   - Releases:
-    - 1.1.0-SNAPSHOT: releases/1.1.0-snapshot.md
+    - 1.1.0: releases/1.1.0.md
     - 1.0.0: releases/1.0.0.md
     - 0.9.0: releases/0.9.0.md
