@@ -20,9 +20,21 @@ public class RandomService {
         this.random = random != null ? random : SHARED_RANDOM;
     }
 
+    @SuppressWarnings("unused")
+    public int nextInt() {
+        return random.nextInt();
+    }
+
     public int nextInt(int n) {
         return random.nextInt(n);
     }
+
+    public Integer nextInt(int min, int max) {
+        return random.nextInt((max - min) + 1) + min;
+    }
+
+    @SuppressWarnings("unused")
+    public float nextFloat() { return random.nextFloat();}
 
     public long nextLong() {
         return random.nextLong();
@@ -51,10 +63,6 @@ public class RandomService {
         return random.nextBoolean();
     }
 
-    public Integer nextInt(int min, int max) {
-        return random.nextInt((max - min) + 1) + min;
-    }
-
     public String hex() {
         return hex(8);
     }
@@ -73,5 +81,9 @@ public class RandomService {
             }
         }
         return new String(hexChars);
+    }
+
+    public Random getRandom() {
+        return random;
     }
 }
