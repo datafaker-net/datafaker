@@ -3,6 +3,7 @@ package net.datafaker;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.RandomService;
 
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Random;
 
@@ -365,6 +366,28 @@ public class Faker {
      */
     public String regexify(String regex) {
         return fakeValuesService.regexify(regex);
+    }
+
+    /**
+     * Pick a random value from an enum
+     */
+    public <T extends Enum<T>> T random(Class<T> enumType) {
+        T[] constants = enumType.getEnumConstants();
+        return constants[randomService.nextInt(constants.length)];
+    }
+
+    /**
+     * Pick a random item from a collection
+     * @return null if the input is null or empty
+     */
+    public <T> T random(Collection<T> collection) {
+        if (collection == null || collection.isEmpty()) {
+            return null;
+        }
+
+        return collection.stream()
+                .skip((int) (collection.size() * randomService.nextDouble()))
+                .findFirst().orElse(null);
     }
 
     /**

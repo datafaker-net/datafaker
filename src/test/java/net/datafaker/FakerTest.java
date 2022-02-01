@@ -3,14 +3,17 @@ package net.datafaker;
 import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 
@@ -182,7 +185,7 @@ public class FakerTest extends AbstractFakerTest {
 
     @Test
     public void resolveShouldReturnValueThatExists() {
-        assertThat(faker.resolve("address.city_prefix"), not(isEmptyString()));
+        assertThat(faker.resolve("address.city_prefix"), not(is(emptyString())));
     }
 
     @Test(expected = RuntimeException.class)
@@ -198,4 +201,27 @@ public class FakerTest extends AbstractFakerTest {
         assertThat(Faker.instance(new Random(1)), is(instanceOf(Faker.class)));
         assertThat(Faker.instance(Locale.CHINA, new Random(2)), is(instanceOf(Faker.class)));
     }
+
+    @Test
+    public void randomEnum() {
+        assertThat(Faker.instance().random(TestColor.class), not(is(nullValue())));
+    }
+
+    @Test
+    public void randomListItem() {
+        List<String> names = Arrays.asList("John", "Jane", "Joe");
+
+        assertThat(Faker.instance().random(names), not(is(nullValue())));
+    }
+
+    @Test
+    public void randomEmptyListItem() {
+        List<String> names = Collections.emptyList();
+
+        assertThat(Faker.instance().random(names), is(nullValue()));
+    }
+}
+
+enum TestColor {
+    RED, GREEN, BLUE
 }

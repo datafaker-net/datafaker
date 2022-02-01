@@ -83,7 +83,7 @@ public class RandomService {
         return new String(hexChars);
     }
 
-    public Random getRandom() {
+    public Random getRandomInternal() {
         return random;
     }
 }
