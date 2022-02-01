@@ -63,5 +63,5 @@ which can be handy for generating results multiple times.
 === "Kotlin"
 
     ``` kotlin
-    val faker = new Faker(Random(0))
+    val faker = Faker(Random(0))
     ```
