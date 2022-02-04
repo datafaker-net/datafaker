@@ -7,8 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isIn;
-import static org.hamcrest.Matchers.isOneOf;
+import static org.hamcrest.Matchers.oneOf;
 
 public class OptionsTest extends AbstractFakerTest {
 
@@ -21,23 +22,23 @@ public class OptionsTest extends AbstractFakerTest {
 
     @Test
     public void testOptionWithArray() {
-        assertThat(faker.options().option(options), isOneOf(options));
+        assertThat(faker.options().option(options), is(oneOf(options)));
     }
 
     @Test
     public void testOptionWithVarargsString() {
-        assertThat(faker.options().option("A", "B", "C"), isOneOf(options));
+        assertThat(faker.options().option("A", "B", "C"), is(oneOf(options)));
     }
 
     @Test
     public void testOptionWithVarargsInteger() {
         Integer[] integerOptions = new Integer[]{1, 3, 4, 5};
-        assertThat(faker.options().option(1, 3, 4, 5), isOneOf(integerOptions));
+        assertThat(faker.options().option(1, 3, 4, 5), is(oneOf(integerOptions)));
     }
 
     @Test
     public void testOptionWithEnum() {
-        assertThat(faker.options().option(Day.class), isOneOf(Day.values()));
+        assertThat(faker.options().option(Day.class), is(oneOf(Day.values())));
     }
 
     @Test
