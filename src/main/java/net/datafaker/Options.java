@@ -21,6 +21,16 @@ public class Options {
     }
 
     /**
+     * Returns a random String element from an varargs.
+     *
+     * @param options The varargs to take a random element from.
+     * @return A randomly selected element from the varargs.
+     */
+    public String option(String... options) {
+        return options[faker.random().nextInt(options.length)];
+    }
+
+    /**
      * Returns a random element from Enum.
      *
      * @param enumeration The Enum to take a random element from.
