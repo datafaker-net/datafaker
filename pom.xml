@@ -30,6 +30,28 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <additionalparam>-Xdoclint:none</additionalparam>
+
+        <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <commons-validator.version>1.7</commons-validator.version>
+        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+        <generex.version>1.0.2</generex.version>
+        <guava.version>31.0.1-jre</guava.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <junit.version>4.13.2</junit.version>
+        <libphonenumber.version>8.12.41</libphonenumber.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
+        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+        <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
+        <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <mockito-core.version>4.2.0</mockito-core.version>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <reflections.version>0.10.2</reflections.version>
+        <snakeyaml.version>1.30</snakeyaml.version>
     </properties>
     <licenses>
         <license>
@@ -52,60 +74,60 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.30</version>
+            <version>${snakeyaml.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.mifmif</groupId>
             <artifactId>generex</artifactId>
-            <version>1.0.2</version>
+            <version>${generex.version}</version>
         </dependency>
         <!-- Test dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
-            <version>2.2</version>
+            <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.10.2</version>
+            <version>${reflections.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.2.0</version>
+            <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
-            <version>1.7</version>
+            <version>${commons-validator.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.0.1-jre</version>
+            <version>${guava.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
+            <version>${commons-lang3.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.googlecode.libphonenumber</groupId>
             <artifactId>libphonenumber</artifactId>
-            <version>8.12.41</version>
+            <version>${libphonenumber.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -125,16 +147,16 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.eluder.coveralls</groupId>
                     <artifactId>coveralls-maven-plugin</artifactId>
-                    <version>4.3.0</version>
+                    <version>${coveralls-maven-plugin.version}</version>
                     <configuration>
                         <!--suppress MavenModelInspection -->
                         <repoToken>Etw4WhEnQ4RC8uOtey1eRzWnwa18DQFpu</repoToken>
@@ -144,7 +166,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>cobertura-maven-plugin</artifactId>
-                    <version>2.7</version>
+                    <version>${cobertura-maven-plugin.version}</version>
                     <configuration>
                         <format>xml</format>
                         <maxmem>256m</maxmem>
@@ -153,7 +175,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.0.0-M5</version>
+                    <version>${maven-failsafe-plugin.version}</version>
                     <executions>
                         <execution>
                             <goals>
@@ -173,7 +195,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>${maven-shade-plugin.version}</version>
                 <configuration>
                     <artifactSet>
                         <includes>
@@ -207,7 +229,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
+                <version>${nexus-staging-maven-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
@@ -219,7 +241,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>${maven-source-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -233,7 +255,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <detectJavaApiLink>false</detectJavaApiLink>
                 </configuration>
@@ -250,7 +272,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>${maven-gpg-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
