@@ -18,7 +18,9 @@ import java.util.function.Function;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -431,11 +433,11 @@ public class NumberTest extends AbstractFakerTest {
         int maxInt = minInt + size;
         for (int i = 0; i < 100000; ++i) {
             int value = faker.number().numberBetween(minInt, maxInt);
-            assertThat(value, is(lessThan(maxInt)));
+            assertThat(value, either(lessThan(maxInt)).or(equalTo(minInt)));
             assertThat(value, is(greaterThanOrEqualTo(minInt)));
             ints.add(value);
         }
-        assertEquals(ints.size(), size);
+        assertEquals(ints.size(), Math.max(1, size));
 
         //test whether NumberBetween(long, long) can
         // create all number between min and max(not included)
@@ -444,11 +446,11 @@ public class NumberTest extends AbstractFakerTest {
         long maxLong = minLong + size;
         for (int i = 0; i < 100000; ++i) {
             long value = faker.number().numberBetween(minLong, maxLong);
-            assertThat(value, is(lessThan(maxLong)));
+            assertThat(value, either(lessThan(maxLong)).or(equalTo(minLong)));
             assertThat(value, is(greaterThanOrEqualTo(minLong)));
             longs.add(value);
         }
-        assertEquals(longs.size(), size);
+        assertEquals(longs.size(), Math.max(1, size));
     }
 
     @Test
