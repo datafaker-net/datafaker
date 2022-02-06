@@ -19,12 +19,6 @@
             <organization>Datafaker</organization>
             <organizationUrl>https://www.datafaker.net</organizationUrl>
         </developer>
-        <developer>
-            <name>Julie Ann Calulot</name>
-            <email>julie.ann.calulot@datafaker.net</email>
-            <organization>Datafaker</organization>
-            <organizationUrl>https://www.datafaker.net</organizationUrl>
-        </developer>
     </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -159,8 +153,7 @@
                     <version>${coveralls-maven-plugin.version}</version>
                     <configuration>
                         <!--suppress MavenModelInspection -->
-                        <repoToken>Etw4WhEnQ4RC8uOtey1eRzWnwa18DQFpu</repoToken>
-<!--                        <repoToken>${env.COVERALLS_TOKEN}</repoToken>-->
+                        <repoToken>${env.COVERALLS_TOKEN}</repoToken>
                     </configuration>
                 </plugin>
                 <plugin>
