@@ -536,7 +536,7 @@ public class FakeValuesService {
      * @return array of coerced values if successful, null otherwise
      */
     private List<Object> coerceArguments(Method accessor, List<String> args) {
-        final List<Object> coerced = new ArrayList<Object>();
+        final List<Object> coerced = new ArrayList<>();
         for (int i = 0; i < accessor.getParameterTypes().length; i++) {
             final boolean isVarArg = i == accessor.getParameterTypes().length - 1 && accessor.isVarArgs();
             Class<?> toType = primitiveToWrapper(accessor.getParameterTypes()[i]);
