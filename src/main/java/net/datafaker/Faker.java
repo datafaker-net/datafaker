@@ -369,28 +369,6 @@ public class Faker {
     }
 
     /**
-     * Pick a random value from an enum
-     */
-    public <T extends Enum<T>> T random(Class<T> enumType) {
-        T[] constants = enumType.getEnumConstants();
-        return constants[randomService.nextInt(constants.length)];
-    }
-
-    /**
-     * Pick a random item from a collection
-     * @return null if the input is null or empty
-     */
-    public <T> T random(Collection<T> collection) {
-        if (collection == null || collection.isEmpty()) {
-            return null;
-        }
-
-        return collection.stream()
-                .skip((int) (collection.size() * randomService.nextDouble()))
-                .findFirst().orElse(null);
-    }
-
-    /**
      * Generates a String by example. The output string will have the same pattern as the input string.
      *
      * For example:
