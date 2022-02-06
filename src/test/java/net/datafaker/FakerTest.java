@@ -203,27 +203,4 @@ public class FakerTest extends AbstractFakerTest {
         assertThat(Faker.instance(new Random(1)), is(instanceOf(Faker.class)));
         assertThat(Faker.instance(Locale.CHINA, new Random(2)), is(instanceOf(Faker.class)));
     }
-
-    @Test
-    public void randomEnum() {
-        assertThat(Faker.instance().random(TestColor.class), not(is(nullValue())));
-    }
-
-    @Test
-    public void randomListItem() {
-        List<String> names = Arrays.asList("John", "Jane", "Joe");
-
-        assertThat(Faker.instance().random(names), not(is(nullValue())));
-    }
-
-    @Test
-    public void randomEmptyListItem() {
-        List<String> names = Collections.emptyList();
-
-        assertThat(Faker.instance().random(names), is(nullValue()));
-    }
-}
-
-enum TestColor {
-    RED, GREEN, BLUE
 }
