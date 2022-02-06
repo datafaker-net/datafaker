@@ -3,9 +3,6 @@ package net.datafaker;
 import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
