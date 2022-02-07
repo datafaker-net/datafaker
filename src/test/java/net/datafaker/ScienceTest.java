@@ -19,7 +19,7 @@ public class ScienceTest extends AbstractFakerTest {
 
     @Test
     public void scientist() {
-        assertThat(faker.science().scientist(), matchesRegularExpression("[A-Za-z. ]+"));
+        assertThat(faker.science().scientist(), matchesRegularExpression("[A-Za-z. -]+"));
     }
 
     @Test
