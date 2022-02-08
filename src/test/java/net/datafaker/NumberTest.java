@@ -18,7 +18,6 @@ import java.util.function.Function;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.equalTo;
@@ -379,12 +378,11 @@ public class NumberTest extends AbstractFakerTest {
         int testCase = 100000;
 
         int min = Math.abs(random.nextInt());
-        int max = min + Math.abs(random.nextInt(100));
+        int max = min + Math.max(1, Math.abs(random.nextInt(100)));
         double mean = testCase / (double) (max - min);
         for (int j = 0; j < testCase; j++) {
             int r = faker.number().numberBetween(min, max);
-            Integer count = map.get(r);
-            map.put(r, count == null ? 1 : count + 1);
+            map.merge(r, 1, Integer::sum);
         }
 
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
@@ -403,12 +401,11 @@ public class NumberTest extends AbstractFakerTest {
         int testCase = 100000;
 
         long min = Math.abs(random.nextLong());
-        long max = min + Math.abs(random.nextInt(200));
+        long max = min + Math.max(1, Math.abs(random.nextInt(200)));
         double mean = testCase / (double) (max - min);
         for (int j = 0; j < testCase; j++) {
             Long r = faker.number().numberBetween(min, max);
-            Integer count = map.get(r);
-            map.put(r, count == null ? 1 : count + 1);
+            map.merge(r, 1, Integer::sum);
         }
 
         for (Map.Entry<Long, Integer> entry : map.entrySet()) {
