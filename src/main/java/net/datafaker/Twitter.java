@@ -65,7 +65,7 @@ public class Twitter {
         String newDate = sdf.format(new Date());
         String result = "";
         RandomService random = faker.random();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < expectedLength - id1.length() - newDate.length(); i++) {
             result = result.concat(String.valueOf(random.nextInt(10)));
         }
         String id2 = result + newDate;
