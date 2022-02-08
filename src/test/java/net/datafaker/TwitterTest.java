@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 
 import java.util.Date;
@@ -38,6 +39,7 @@ public class TwitterTest extends AbstractFakerTest {
     }
 
     @Test
+    @Repeat(times = 100)
     public void testLongTwitterIdLength() {
         int expectedLength = 25;
         String generatedID = faker.twitter().twitterId(expectedLength);
