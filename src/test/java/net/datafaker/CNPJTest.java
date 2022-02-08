@@ -1,11 +1,10 @@
 package net.datafaker;
 
-import net.datafaker.idnumbers.pt.br.DocumentFormatterUtil;
+import net.datafaker.repeating.Repeat;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
-import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.calculateWeight;
-import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.digit;
+import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCNPJValid;
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
@@ -18,16 +17,19 @@ public class CNPJTest extends AbstractFakerTest {
      * A valid CNPJ is either a real number or a generated valid number.
      */
     @Test
+    @Repeat(times = 1000)
     public void isValidCNPJ() {
         assertTrue(isCNPJValid(faker.cnpj().valid()));
     }
 
     /**
-     * A invalid CNPJ is that dos not meet the requirements of the algorithm
+     * A invalid CNPJ is that does not meet the requirements of the algorithm
      */
     @Test
+    @Repeat(times = 1000)
     public void isInvalidCNPJ() {
-        assertFalse(isCNPJValid(faker.cnpj().invalid()));
+        CNPJ cnpj = faker.cnpj();
+        assertFalse(isCNPJValid(cnpj.invalid()));
     }
 
     /**
@@ -42,24 +44,6 @@ public class CNPJTest extends AbstractFakerTest {
         assertThat(faker.cnpj().valid(true), cnpjMatcher);
         assertThat(faker.cnpj().invalid(), cnpjMatcher);
         assertThat(faker.cnpj().invalid(true), cnpjMatcher);
-    }
-
-    /**
-     * Return true if the CNPJ is valid
-     * A valid CNPJ is unique and have a algorithm to validate it
-     * <p>
-     * CNPJ generator could generate a valid or invalid because, somentimes, we need to test a
-     * registration with invalid number
-     */
-    private Boolean isCNPJValid(final String cnpj) {
-        String cnpjUnmask = DocumentFormatterUtil.unmask(cnpj);
-
-        String cnpjPartial = cnpjUnmask.substring(0, 12);
-
-        int d1 = digit(calculateWeight(cnpjPartial.substring(4, 12), 9) + calculateWeight(cnpjPartial.substring(0, 4), 5));
-        int d2 = digit((d1 * 2) + calculateWeight(cnpjPartial.substring(5, 12), 9) + calculateWeight(cnpjPartial.substring(0, 5), 6));
-
-        return cnpjUnmask.equals((cnpjPartial + d1) + d2);
     }
 
 }

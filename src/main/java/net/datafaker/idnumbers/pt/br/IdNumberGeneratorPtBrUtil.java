@@ -32,7 +32,15 @@ public final class IdNumberGeneratorPtBrUtil {
             cnpj = String.valueOf(faker.random().nextInt(1000000000) + (faker.random().nextInt(90) + 10) * 1000000000000L);
         }
 
-        return (formatted) ? DocumentFormatterUtil.cnpj(cnpj) : cnpj;
+        String result = (formatted) ? DocumentFormatterUtil.cnpj(cnpj) : cnpj;
+
+        // Sometimes the generated number is not what you expected, for example, you expected an invalid number,
+        // but the generated number is valid. This fixes the issue by generating a new number until it matches the expectation.
+        if(isCNPJValid(result) != valid) {
+            result = cnpj(faker, formatted, valid);
+        }
+
+        return result;
     }
 
     /**
@@ -59,6 +67,26 @@ public final class IdNumberGeneratorPtBrUtil {
         }
         return formatted ? DocumentFormatterUtil.cpf(cpf) : cpf;
     }
+
+    /**
+     * Return true if the CNPJ is valid
+     * A valid CNPJ is unique and have a algorithm to validate it
+     * <p>
+     * CNPJ generator could generate a valid or invalid because, somentimes, we need to test a
+     * registration with invalid number
+     */
+    public static Boolean isCNPJValid(final String cnpj) {
+        String cnpjUnmask = DocumentFormatterUtil.unmask(cnpj);
+        String cnpjPartial = cnpjUnmask.substring(0, 12);
+
+        int d1 = digit(calculateWeight(cnpjPartial.substring(4, 12), 9) + calculateWeight(cnpjPartial.substring(0, 4), 5));
+        int d2 = digit((d1 * 2) + calculateWeight(cnpjPartial.substring(5, 12), 9) + calculateWeight(cnpjPartial.substring(0, 5), 6));
+
+        String anObject = (cnpjPartial + d1) + d2;
+
+        return cnpjUnmask.equals(anObject);
+    }
+
 
     public static int calculateWeight(final String num, final int weight) {
         int sum = 0;
