@@ -24,7 +24,7 @@ import static org.hamcrest.core.CombinableMatcher.both;
 @RunWith(Parameterized.class)
 public class RandomServiceTest extends AbstractFakerTest {
 
-    private RandomService randomService;
+    private final RandomService randomService;
 
     public RandomServiceTest(String ignoredTitle, RandomService service) {
         this.randomService = service;
@@ -63,6 +63,20 @@ public class RandomServiceTest extends AbstractFakerTest {
     public void testIntInRange() {
         for (int i = 1; i < 100; i++) {
             assertThat(randomService.nextInt(-5, 5), both(lessThanOrEqualTo(5)).and(greaterThanOrEqualTo(-5)));
+        }
+    }
+
+    @Test
+    public void testDoubleInRange() {
+        for (int i = 1; i < 100; i++) {
+            assertThat(randomService.nextDouble(-5, 5), both(lessThanOrEqualTo(5.0)).and(greaterThanOrEqualTo(-5.0)));
+        }
+    }
+
+    @Test
+    public void testLongInRange() {
+        for (int i = 1; i < 1_000; i++) {
+            assertThat(randomService.nextLong(-5_000_000_000L, 5_000_000_000L), both(lessThanOrEqualTo(5_000_000_000L)).and(greaterThanOrEqualTo(-5_000_000_000L)));
         }
     }
 

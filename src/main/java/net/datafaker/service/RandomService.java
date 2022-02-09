@@ -55,8 +55,16 @@ public class RandomService {
         return val;
     }
 
+    public long nextLong(long min, long max) {
+        return min + (long) (nextDouble() * (max - min));
+    }
+
     public double nextDouble() {
         return random.nextDouble();
+    }
+
+    public double nextDouble(double min, double max) {
+        return min + (nextDouble() * (max - min));
     }
 
     public Boolean nextBoolean() {
