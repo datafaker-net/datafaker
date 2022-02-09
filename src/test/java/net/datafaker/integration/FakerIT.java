@@ -196,6 +196,12 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.witcher());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.yoda());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.zelda());
+
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.theItCrowd());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.restaurant());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.natoPhoneticAlphabet());
     }
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {

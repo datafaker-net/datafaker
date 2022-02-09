@@ -1,5 +1,6 @@
 package net.datafaker.script;
 
+import net.datafaker.Faker;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Test;
@@ -8,21 +9,29 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProviderGenerator {
 
 
-//    @Test
+    @Test
     public void generateProvider() throws FileNotFoundException {
         File dir = new File("/Users/erikp/UserFiles/projects/datafaker/src/main/resources/en");
 
         File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("todo.yml"));
 
+        List<File> fileList = Arrays.asList(files);
+        Collections.shuffle(fileList);
+        List<File> filesToProcess = fileList.stream().limit(5).collect(Collectors.toList());
+
         System.out.println(files.length + " files");
 
-        for (File file : files) {
+        for (File file : filesToProcess) {
             final Map<String, Object> valuesMap = new Yaml().loadAs(new FileReader(file), Map.class);
 
             Map<String, Object> en = (Map<String, Object>) valuesMap.get("en");
@@ -39,7 +48,6 @@ public class ProviderGenerator {
 
         Set<String> strings = subject.keySet();
 
-        System.out.println(strings);
 
         createCreator(file, key, strings);
         createTest(file, key, strings);
@@ -75,7 +83,7 @@ public class ProviderGenerator {
     private void createTest(File file, String key, Set<String> strings) {
         String className = toJavaConvention(file.getName().substring(0, file.getName().indexOf(".")));
         // replace the first letter with a lowercase letter
-        String methodName = StringUtils.uncapitalize(className);
+        String methodName = StringUtils.uncapitalize(toJavaConvention(className));
 
         System.out.println("package net.datafaker;");
         System.out.println();

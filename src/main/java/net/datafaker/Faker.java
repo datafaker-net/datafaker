@@ -860,4 +860,24 @@ public class Faker {
     public String expression(String expression) {
         return this.fakeValuesService.expression(expression, this);
     }
+
+    public NatoPhoneticAlphabet natoPhoneticAlphabet() {
+        return new NatoPhoneticAlphabet(this);
+    }
+
+    public Marketing marketing() {
+        return new Marketing(this);
+    }
+
+    public Restaurant restaurant() {
+        return new Restaurant(this);
+    }
+
+    public Military military() {
+        return new Military(this);
+    }
+
+    public TheItCrowd theItCrowd() {
+        return new TheItCrowd(this);
+    }
 }
