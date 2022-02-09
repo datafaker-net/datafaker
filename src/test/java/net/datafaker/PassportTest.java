@@ -67,14 +67,14 @@ public class PassportTest extends AbstractFakerTest {
 
     @Test
     public void testChValidFrequently() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             testChValid();
         }
     }
 
     @Test
     public void testChInValidFrequently() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             testChInValid();
         }
     }

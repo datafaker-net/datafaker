@@ -3,7 +3,6 @@ package net.datafaker;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.RandomService;
 
-import java.util.Collection;
 import java.util.Locale;
 import java.util.Random;
 

@@ -78,7 +78,7 @@ public class ProviderGenerator {
         String methodName = StringUtils.uncapitalize(className);
 
         System.out.println("package net.datafaker;");
-        System.out.println("");
+        System.out.println();
         System.out.println("import org.junit.Test;");
         System.out.println("import static org.hamcrest.MatcherAssert.assertThat;");
         System.out.println("import static org.hamcrest.Matchers.is;");

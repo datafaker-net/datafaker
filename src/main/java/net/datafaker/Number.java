@@ -69,7 +69,7 @@ public class Number {
     }
 
     public double randomDouble(int maxNumberOfDecimals, int min, int max) {
-        return randomDouble(maxNumberOfDecimals, (long) min, (long) max);
+        return randomDouble(maxNumberOfDecimals, min, (long) max);
     }
 
     /**

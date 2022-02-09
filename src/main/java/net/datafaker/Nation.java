@@ -3,11 +3,12 @@ package net.datafaker;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Nation {
 
-    private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+    private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 
     private final Faker faker;
 

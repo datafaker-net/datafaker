@@ -36,7 +36,7 @@ public class NumberTest extends AbstractFakerTest {
     private static final int RANDOMIZATION_QUALITY_RANGE_START = RANDOMIZATION_QUALITY_RANGE_STEP;
     public static final int RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET = 1000;
 
-    final double individualRunGtPercentUnique = 0.8;
+    private static final double INDIVIDUAL_RUN_GT_PERCENT_UNIQUE = 0.8;
     final double percentRunsGtUniquePercentage = 0.90;
 
     @Test
@@ -217,7 +217,7 @@ public class NumberTest extends AbstractFakerTest {
             return uniquePercentageOfResults(numbersToGet, () -> faker.number().randomDouble(0, min, max));
         };
 
-        final double percentGreaterThan80Percent = randomizationQualityTest(individualRunGtPercentUnique, minMaxRangeToUniquePercentageFunction);
+        final double percentGreaterThan80Percent = randomizationQualityTest(minMaxRangeToUniquePercentageFunction);
         assertThat("Percentage of runs > 80% unique is gte 90%",
                 percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
 
@@ -225,7 +225,7 @@ public class NumberTest extends AbstractFakerTest {
         // is RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET
         final double extremeRunUniquePercent = minMaxRangeToUniquePercentageFunction.apply(Pair.of((long) Integer.MIN_VALUE, (long) Integer.MAX_VALUE));
         assertThat("Percentage of extreme runs > 80%",
-                extremeRunUniquePercent, greaterThanOrEqualTo(individualRunGtPercentUnique));
+                extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
     }
 
     /**
@@ -247,7 +247,7 @@ public class NumberTest extends AbstractFakerTest {
             return uniquePercentageOfResults(numbersToGet, () -> faker.number().numberBetween(min, max));
         };
 
-        final double percentGreaterThan80Percent = randomizationQualityTest(individualRunGtPercentUnique, minMaxRangeToUniquePercentageFunction);
+        final double percentGreaterThan80Percent = randomizationQualityTest(minMaxRangeToUniquePercentageFunction);
         assertThat("Percentage of runs > 80% unique is gte 90%",
                 percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
 
@@ -255,7 +255,7 @@ public class NumberTest extends AbstractFakerTest {
         // is RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET
         final double extremeRunUniquePercent = minMaxRangeToUniquePercentageFunction.apply(Pair.of((long) Integer.MIN_VALUE, (long) Integer.MAX_VALUE));
         assertThat("Percentage of extreme runs > 80%",
-                extremeRunUniquePercent, greaterThanOrEqualTo(individualRunGtPercentUnique));
+                extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
     }
 
     /**
@@ -276,7 +276,7 @@ public class NumberTest extends AbstractFakerTest {
             return uniquePercentageOfResults(numbersToGet, () -> faker.number().numberBetween(min, max));
         };
 
-        final double percentGreaterThan80Percent = randomizationQualityTest(individualRunGtPercentUnique, minMaxRangeToUniquePercentageFunction);
+        final double percentGreaterThan80Percent = randomizationQualityTest(minMaxRangeToUniquePercentageFunction);
         assertThat("Percentage of runs > 80% unique is gte 90%",
                 percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
 
@@ -284,7 +284,7 @@ public class NumberTest extends AbstractFakerTest {
         // is RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET.
         final double extremeRunUniquePercent = minMaxRangeToUniquePercentageFunction.apply(Pair.of(Long.MIN_VALUE, Long.MAX_VALUE));
         assertThat("Percentage of extreme runs > 80%",
-                extremeRunUniquePercent, greaterThanOrEqualTo(individualRunGtPercentUnique));
+                extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
     }
 
     @Test
@@ -321,18 +321,14 @@ public class NumberTest extends AbstractFakerTest {
      *
      * @return percent of percentUniqueRunner's results greater than the threshold
      */
-    private double randomizationQualityTest(final double threshold,
-                                            final Function<Pair<Long, Long>, Double> percentUniqueRunner) {
-        final int rangeEnd = RANDOMIZATION_QUALITY_RANGE_END;
-        final int rangeStep = RANDOMIZATION_QUALITY_RANGE_STEP;
-        final int rangeStart = RANDOMIZATION_QUALITY_RANGE_START;
+    private double randomizationQualityTest(final Function<Pair<Long, Long>, Double> percentUniqueRunner) {
 
         final AtomicLong greaterThanThreshold = new AtomicLong();
         final AtomicLong total = new AtomicLong();
 
-        for (long l = rangeStart; l < rangeEnd; l += rangeStep) {
+        for (long l = RANDOMIZATION_QUALITY_RANGE_START; l < RANDOMIZATION_QUALITY_RANGE_END; l += RANDOMIZATION_QUALITY_RANGE_STEP) {
             final double percentUnique = percentUniqueRunner.apply(Pair.of(-l, l));
-            if (percentUnique > threshold) {
+            if (percentUnique > INDIVIDUAL_RUN_GT_PERCENT_UNIQUE) {
                 greaterThanThreshold.incrementAndGet();
             }
             total.incrementAndGet();
@@ -428,7 +424,7 @@ public class NumberTest extends AbstractFakerTest {
         // and not use crossing the border
         int minInt = Math.abs(random.nextInt());
         int maxInt = minInt + size;
-        for (int i = 0; i < 100000; ++i) {
+        for (int i = 0; i < 10000; ++i) {
             int value = faker.number().numberBetween(minInt, maxInt);
             assertThat(value, either(lessThan(maxInt)).or(equalTo(minInt)));
             assertThat(value, is(greaterThanOrEqualTo(minInt)));
@@ -441,7 +437,7 @@ public class NumberTest extends AbstractFakerTest {
         // and not use crossing the border
         long minLong = Math.abs(random.nextLong());
         long maxLong = minLong + size;
-        for (int i = 0; i < 100000; ++i) {
+        for (int i = 0; i < 10000; ++i) {
             long value = faker.number().numberBetween(minLong, maxLong);
             assertThat(value, either(lessThan(maxLong)).or(equalTo(minLong)));
             assertThat(value, is(greaterThanOrEqualTo(minLong)));

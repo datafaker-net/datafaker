@@ -1,6 +1,5 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;

@@ -13,7 +13,7 @@ public final class Sip {
     private final Faker faker;
     private final ArrayList<Integer> portPool;
 
-    protected Sip(final Faker faker) {
+    public Sip(final Faker faker) {
         this.faker = faker;
         int port = 40000;
         portPool = new ArrayList<>();
