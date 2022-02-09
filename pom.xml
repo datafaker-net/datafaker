@@ -33,7 +33,7 @@
         <guava.version>31.0.1-jre</guava.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
-        <libphonenumber.version>8.12.42</libphonenumber.version>
+        <libphonenumber.version>8.12.43</libphonenumber.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
