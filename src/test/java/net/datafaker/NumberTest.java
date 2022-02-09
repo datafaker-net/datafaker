@@ -466,7 +466,7 @@ public class NumberTest extends AbstractFakerTest {
                 max = min + size;
             }
 
-            for (int j = 0; j < 3000; j++) {
+            for (int j = 0; j < 100; j++) {
                 long value = faker.number().numberBetween(min, max);
                 assertThat(value, is(lessThan(max)));
                 assertThat(value, is(greaterThanOrEqualTo(min)));

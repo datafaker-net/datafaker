@@ -78,25 +78,26 @@ See [CONTRIBUTING.md](https://github.com/datafaker-net/datafaker/blob/master/CON
 
 Providers
 -----
+
 * Address
 * Ancient
 * Animal
 * App
-* Appliance (:sparkles:)
+* Appliance
 * Aqua Teen Hunger Force
 * Artist
 * Avatar
 * Aviation
-* Babylon5 (:sparkles:)
+* Babylon5
 * Back To The Future
-* Barcode (:sparkles:)
+* Barcode
 * Basketball
 * Beer
 * Bojack Horseman
 * Book
 * Bool
-* Bossa Nova (:sparkles:)
-* Breaking Bad (:sparkles:)
+* Bossa Nova
+* Breaking Bad
 * Business
 * CNPJ [Brazilian National Registry of Legal Entities](https://en.wikipedia.org/wiki/CNPJ)
 * CPF [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number)
@@ -110,15 +111,15 @@ Providers
 * Crypto
 * DateAndTime
 * Demographic
-* Dessert (:sparkles:)
+* Dessert
 * Disease
 * Dog
-* Domain (:sparkles:)
+* Domain
 * DragonBall
 * Dune
-* Durations (:sparkles:)
+* Durations
 * Educator
-* EnglandFootBall (:sparkles:)
+* EnglandFootBall
 * Esports
 * File
 * Finance
@@ -129,7 +130,7 @@ Providers
 * Gender
 * Hacker
 * HarryPotter
-* Heartstone (:sparkles:)
+* Heartstone
 * Hipster
 * HitchhikersGuideToTheGalaxy
 * Hobbit
@@ -143,26 +144,26 @@ Providers
 * LordOfTheRings
 * Lorem
 * Matz
-* Minecraft (:sparkles:)
-* Mood (:sparkles:)
-* Mountains (:sparkles:)
+* Minecraft
+* Mood
+* Mountains
 * Music
 * Name
 * Nation
 * Number
 * Options
 * Overwatch
-* Passport (:sparkles:)
+* Passport
 * PhoneNumber
 * Photography
 * Pokemon
 * Princess Bride
 * Relationship Terms
-* Resident Evil (:sparkles:)
+* Resident Evil
 * RickAndMorty
 * Robin
 * RockBand
-* RuPaul's Drag Race (:sparkles:)
+* RuPaul's Drag Race
 * Shakespeare
 * Sip
 * SlackEmoji
@@ -172,11 +173,11 @@ Providers
 * Stock
 * Superhero
 * Team
-* Touhou (:sparkles:)
+* Touhou
 * TwinPeaks
-* Twitter (:sparkles:)
+* Twitter
 * University
-* Vehicle (:sparkles:)
+* Vehicle
 * Weather
 * Witcher
 * Yoda
