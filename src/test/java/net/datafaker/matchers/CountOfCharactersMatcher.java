@@ -16,7 +16,7 @@ public class CountOfCharactersMatcher extends TypeSafeMatcher<String> {
     }
 
     @Factory
-    public static <T> Matcher<String> countOf(char character, Matcher<Integer> matcher) {
+    public static Matcher<String> countOf(char character, Matcher<Integer> matcher) {
         return new CountOfCharactersMatcher(character, matcher);
     }
 

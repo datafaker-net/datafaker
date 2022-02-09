@@ -24,7 +24,7 @@ public class MatchesRegularExpression extends TypeSafeMatcher<String> {
     }
 
     @Factory
-    public static <T> Matcher<String> matchesRegularExpression(String regularExpression) {
+    public static Matcher<String> matchesRegularExpression(String regularExpression) {
         return new MatchesRegularExpression(regularExpression);
     }
 }

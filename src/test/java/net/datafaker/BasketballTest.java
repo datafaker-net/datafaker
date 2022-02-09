@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class BasketballTest extends AbstractFakerTest {
 

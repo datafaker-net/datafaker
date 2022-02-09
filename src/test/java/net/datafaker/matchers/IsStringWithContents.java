@@ -21,7 +21,7 @@ public class IsStringWithContents extends TypeSafeMatcher<String> {
     }
 
     @Factory
-    public static <T> Matcher<String> isStringWithContents() {
+    public static Matcher<String> isStringWithContents() {
         return new IsStringWithContents();
     }
 
