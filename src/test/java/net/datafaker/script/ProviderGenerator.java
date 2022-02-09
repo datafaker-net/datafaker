@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ProviderGenerator {
 
 
-    @Test
+//    @Test
     public void generateProvider() throws FileNotFoundException {
         File dir = new File("/Users/erikp/UserFiles/projects/datafaker/src/main/resources/en");
 
