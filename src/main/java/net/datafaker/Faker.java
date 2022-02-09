@@ -3,7 +3,6 @@ package net.datafaker;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.RandomService;
 
-import java.util.Collection;
 import java.util.Locale;
 import java.util.Random;
 
@@ -866,5 +865,25 @@ public class Faker {
      */
     public String expression(String expression) {
         return this.fakeValuesService.expression(expression, this);
+    }
+
+    public NatoPhoneticAlphabet natoPhoneticAlphabet() {
+        return new NatoPhoneticAlphabet(this);
+    }
+
+    public Marketing marketing() {
+        return new Marketing(this);
+    }
+
+    public Restaurant restaurant() {
+        return new Restaurant(this);
+    }
+
+    public Military military() {
+        return new Military(this);
+    }
+
+    public TheItCrowd theItCrowd() {
+        return new TheItCrowd(this);
     }
 }

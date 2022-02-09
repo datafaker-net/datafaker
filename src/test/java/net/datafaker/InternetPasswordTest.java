@@ -10,7 +10,6 @@ import static org.junit.Assert.assertTrue;
 public class InternetPasswordTest extends AbstractFakerTest {
     @Test
     public void testPassword1000() {
-        Faker faker = new Faker();
         for (int i = 0; i < 1000; i++) {
             String password = faker.internet().password(8, 16, true, true, true);
 

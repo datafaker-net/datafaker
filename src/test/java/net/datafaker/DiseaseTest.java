@@ -11,50 +11,42 @@ import static org.junit.Assert.assertTrue;
 public class DiseaseTest extends AbstractFakerTest {
     @Test
     public void testInternalDisease() {
-        Faker faker = new Faker();
         assertThat(faker.disease().internalDisease(), matchesRegularExpression("[\\p{L}'()\\., 0-9-’’]+"));
     }
 
     @Test
     public void testNeurology() {
-        Faker faker = new Faker();
         assertThat(faker.disease().neurology(), matchesRegularExpression("[\\p{L}'()\\., 0-9-’’]+"));
     }
 
     @Test
     public void testSurgery() {
-        Faker faker = new Faker();
         assertThat(faker.disease().surgery(), matchesRegularExpression("[\\p{L}'()\\., 0-9-’’]+"));
     }
 
     @Test
     public void testPaediatrics() {
-        Faker faker = new Faker();
         assertThat(faker.disease().paediatrics(), matchesRegularExpression("[\\p{L}'()\\., 0-9-’’]+"));
     }
 
     @Test
     public void testGynecologyAndObstetrics() {
-        Faker faker = new Faker();
         assertThat(faker.disease().gynecologyAndObstetrics(), matchesRegularExpression("[\\p{L}'()\\., 0-9-’’]+"));
     }
 
     @Test
     public void testOphthalmologyAndOtorhinolaryngology() {
-        Faker faker = new Faker();
         assertThat(faker.disease().ophthalmologyAndOtorhinolaryngology(), matchesRegularExpression("[\\p{L}'()\\., 0-9-’’]+"));
     }
 
     @Test
     public void testDermatolory() {
-        Faker faker = new Faker();
         assertThat(faker.disease().dermatolory(), matchesRegularExpression("[\\p{L}'()\\., 0-9-’’]+"));
     }
 
 
     @Test
     public void testInternalDiseaseWith10000Times() {
-        Faker faker = new Faker();
         boolean isExist = false;
         for (int i = 0; i < 10000; i++) {
             String generateString = faker.disease().internalDisease();
@@ -66,45 +58,38 @@ public class DiseaseTest extends AbstractFakerTest {
     }
 
     @Test
-    @Repeat(times = 10000)
-    public void testNeurologyWith10000Times() {
-        Faker faker = new Faker();
+    @Repeat(times = 1000)
+    public void testNeurologyWith1000Times() {
         assertThat(faker.disease().neurology(), isStringWithContents());
     }
 
     @Test
-    @Repeat(times = 10000)
-    public void testSurgeryWith10000Times() {
-        Faker faker = new Faker();
+    @Repeat(times = 1000)
+    public void testSurgeryWith1000Times() {
         assertThat(faker.disease().surgery(), isStringWithContents());
     }
 
     @Test
-    @Repeat(times = 10000)
-    public void testPaediatricsWith10000Times() {
-        Faker faker = new Faker();
+    @Repeat(times = 1000)
+    public void testPaediatricsWith1000Times() {
         assertThat(faker.disease().paediatrics(), isStringWithContents());
     }
 
     @Test
-    @Repeat(times = 10000)
-    public void testGynecologyAndObstetricsWith10000Times() {
-        Faker faker = new Faker();
+    @Repeat(times = 1000)
+    public void testGynecologyAndObstetricsWith1000Times() {
         assertThat(faker.disease().gynecologyAndObstetrics(), isStringWithContents());
     }
 
     @Test
-    @Repeat(times = 10000)
-    public void testOphthalmologyAndOtorhinolaryngologyWith10000Times() {
-        Faker faker = new Faker();
+    @Repeat(times = 1000)
+    public void testOphthalmologyAndOtorhinolaryngologyWith1000Times() {
         assertThat(faker.disease().ophthalmologyAndOtorhinolaryngology(), isStringWithContents());
     }
 
     @Test
     @Repeat(times = 10000)
     public void testDermatoloryWith10000Times() {
-        Faker faker = new Faker();
         assertThat(faker.disease().dermatolory(), isStringWithContents());
     }
-
 }

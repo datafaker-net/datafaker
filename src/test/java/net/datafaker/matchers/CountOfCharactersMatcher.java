@@ -8,7 +8,7 @@ import org.hamcrest.TypeSafeMatcher;
 public class CountOfCharactersMatcher extends TypeSafeMatcher<String> {
 
     private final char character;
-    private Matcher<Integer> matcher;
+    private final Matcher<Integer> matcher;
 
     public CountOfCharactersMatcher(char character, Matcher<Integer> matcher) {
         this.character = character;
@@ -16,7 +16,7 @@ public class CountOfCharactersMatcher extends TypeSafeMatcher<String> {
     }
 
     @Factory
-    public static <T> Matcher<String> countOf(char character, Matcher<Integer> matcher) {
+    public static Matcher<String> countOf(char character, Matcher<Integer> matcher) {
         return new CountOfCharactersMatcher(character, matcher);
     }
 

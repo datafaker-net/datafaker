@@ -62,12 +62,12 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     public void fetchShouldReturnValue() {
-        assertThat(fakeValuesService.fetch("property.dummy"), Is.<Object>is("x"));
+        assertThat(fakeValuesService.fetch("property.dummy"), Is.is("x"));
     }
 
     @Test
     public void fetchObjectShouldReturnValue() {
-        assertThat(fakeValuesService.fetchObject("property.dummy"), Is.<Object>is(Arrays.asList("x", "y", "z")));
+        assertThat(fakeValuesService.fetchObject("property.dummy"), Is.is(Arrays.asList("x", "y", "z")));
     }
 
     @Test
@@ -286,7 +286,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
     }
 
     @Test
-    public void expressionWithFourArguments() throws ParseException {
+    public void expressionWithFourArguments() {
 
         assertThat(fakeValuesService.expression("#{Internet.password '5','8','true','true'}", faker),
                 matchesRegularExpression("[\\w\\d\\!%#$@_\\^&\\*]{5,8}"));
@@ -334,7 +334,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
     public void FakeValuesServiceWithNullLocaleTest() {
         try {
             RandomService r = new RandomService();
-            FakeValuesService f = new FakeValuesService(null, r);
+            new FakeValuesService(null, r);
             fail("Should catch IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is("locale is required"));

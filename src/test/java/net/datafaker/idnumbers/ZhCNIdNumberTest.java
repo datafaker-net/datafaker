@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class ZhCNIdNumberTest extends AbstractFakerTest {
 
     @Test
-    @Repeat(times = 100)
+    @Repeat(times = 10)
     public void testValidChineseIdNumber() {
         Faker faker = new Faker(new Locale("zh_CN"));
         String idNumber = faker.idNumber().valid();
@@ -35,7 +35,7 @@ public class ZhCNIdNumberTest extends AbstractFakerTest {
     }
 
     @Test
-    @Repeat(times = 100)
+    @Repeat(times = 10)
     public void testChecksumOfChineseIdNumber() {
         Faker faker = new Faker(new Locale("zh_CN"));
         String s = faker.idNumber().valid();
@@ -68,7 +68,6 @@ public class ZhCNIdNumberTest extends AbstractFakerTest {
     @Test
     @Repeat(times = 100)
     public void testValidZhCnIdNumber() {
-        Faker faker = new Faker();
         ZhCnIdNumber id = new ZhCnIdNumber();
         String idNumber = id.getValidSsn(faker);
         boolean isSatisfied = idNumber.length() == 18;

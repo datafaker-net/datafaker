@@ -328,7 +328,6 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testSlugWithNull() {
-        Faker f = new Faker();
-        assertThat(f.internet().slug(null, "_"), notNullValue());
+        assertThat(faker.internet().slug(null, "_"), notNullValue());
     }
 }

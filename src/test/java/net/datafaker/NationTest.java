@@ -2,6 +2,8 @@ package net.datafaker;
 
 import org.junit.Test;
 
+import java.util.Locale;
+
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -33,4 +35,13 @@ public class NationTest extends AbstractFakerTest {
         assertThat(flag.charAt(0), is('\uD83C'));
     }
 
+    @Test
+    public void isoLanguage() {
+        assertThat(faker.nation().isoLanguage(), matchesRegularExpression("[a-z]{2}"));
+    }
+
+    @Test
+    public void isoCountry() {
+        assertThat(faker.nation().isoCountry(), matchesRegularExpression("[A-Z]{2}"));
+    }
 }
