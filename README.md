@@ -67,9 +67,9 @@ val streetAddress = faker.address().streetAddress() // 60018 Sawayn Brooks Suite
 
 This is a [demo web application](https://java-faker.herokuapp.com/) that uses the library.
 
-Javadoc
+Documentation
 -----
-https://www.datafaker.net/docs
+https://www.datafaker.net/providers/
 
 
 Contributions
