@@ -66,6 +66,7 @@ public class Faker {
     private final File file;
     private final Finance finance;
     private final Food food;
+    private final Formula1 formula1;
     private final Friends friends;
     private final FunnyName funnyName;
     private final GameOfThrones gameOfThrones;
@@ -202,6 +203,7 @@ public class Faker {
         this.file = new File(this);
         this.finance = new Finance(this);
         this.food = new Food(this);
+        this.formula1 = new Formula1(this);
         this.friends = new Friends(this);
         this.funnyName = new FunnyName(this);
         this.gameOfThrones = new GameOfThrones(this);
@@ -520,6 +522,10 @@ public class Faker {
 
     public Food food() {
         return food;
+    }
+
+    public Formula1 formula1() {
+        return formula1;
     }
 
     public ElderScrolls elderScrolls() {

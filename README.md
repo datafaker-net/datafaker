@@ -123,6 +123,7 @@ Providers
 * File
 * Finance
 * Food
+* Formula 1 (:racing_car:)
 * Friends
 * FunnyName
 * GameOfThrones
