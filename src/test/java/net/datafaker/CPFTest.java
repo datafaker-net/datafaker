@@ -1,11 +1,10 @@
 package net.datafaker;
 
-import net.datafaker.idnumbers.pt.br.DocumentFormatterUtil;
+import net.datafaker.repeating.Repeat;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
-import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.calculateWeight;
-import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.digit;
+import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid;
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
@@ -18,6 +17,7 @@ public class CPFTest extends AbstractFakerTest {
      * A valid CPF is either a real number or a generated valid number.
      */
     @Test
+    @Repeat(times = 100)
     public void isValidCPF() {
         assertTrue(isCPFValid(faker.cpf().valid()));
     }
@@ -26,6 +26,7 @@ public class CPFTest extends AbstractFakerTest {
      * A invalid CPF is that dos not meet the requirements of the algorithm
      */
     @Test
+    @Repeat(times = 100)
     public void isInvalidCPF() {
         assertFalse(isCPFValid(faker.cpf().invalid()));
     }
@@ -35,6 +36,7 @@ public class CPFTest extends AbstractFakerTest {
      * Eg: 111.111.111-11
      */
     @Test
+    @Repeat(times = 100)
     public void formattedCPF() {
         final Matcher<String> cpfMatcher = matchesRegularExpression("(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)");
 
@@ -43,23 +45,4 @@ public class CPFTest extends AbstractFakerTest {
         assertThat(faker.cpf().invalid(), cpfMatcher);
         assertThat(faker.cpf().invalid(true), cpfMatcher);
     }
-
-    /**
-     * Return true if the CPF is valid
-     * A valid CPF is unique and have a algorithm to validate it
-     * <p>
-     * CPF generator could generate a valid or invalid because, somentimes, we need to test a
-     * registration with invalid number
-     */
-    private Boolean isCPFValid(final String cpf) {
-        String cpfUnmask = DocumentFormatterUtil.unmask(cpf);
-
-        String cpfPartial = cpfUnmask.substring(0, 9);
-
-        int d1 = digit(calculateWeight(cpfPartial, 10));
-        int d2 = digit((d1 * 2) + calculateWeight(cpfPartial, 11));
-
-        return cpfUnmask.equals((cpfPartial + d1) + d2);
-    }
-
 }

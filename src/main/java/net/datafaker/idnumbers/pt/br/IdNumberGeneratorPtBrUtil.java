@@ -65,7 +65,16 @@ public final class IdNumberGeneratorPtBrUtil {
         } else {
             cpf = String.valueOf(faker.random().nextInt(1000000000) + (faker.random().nextInt(90) + 10) * 1000000000L);
         }
-        return formatted ? DocumentFormatterUtil.cpf(cpf) : cpf;
+
+        String result = formatted ? DocumentFormatterUtil.cpf(cpf) : cpf;
+
+        if(isCPFValid(result) != valid) {
+            // Sometimes the generated number is not what you expected, for example, you expected an invalid number,
+            // but the generated number is valid. This fixes the issue by generating a new number until it matches the expectation.
+            result = cpf(faker, formatted, valid);
+        }
+
+        return result;
     }
 
     /**
@@ -85,6 +94,24 @@ public final class IdNumberGeneratorPtBrUtil {
         String anObject = (cnpjPartial + d1) + d2;
 
         return cnpjUnmask.equals(anObject);
+    }
+
+    /**
+     * Return true if the CPF is valid
+     * A valid CPF is unique and have a algorithm to validate it
+     * <p>
+     * CPF generator could generate a valid or invalid because, somentimes, we need to test a
+     * registration with invalid number
+     */
+    public static Boolean isCPFValid(final String cpf) {
+        String cpfUnmask = DocumentFormatterUtil.unmask(cpf);
+
+        String cpfPartial = cpfUnmask.substring(0, 9);
+
+        int d1 = digit(calculateWeight(cpfPartial, 10));
+        int d2 = digit((d1 * 2) + calculateWeight(cpfPartial, 11));
+
+        return cpfUnmask.equals((cpfPartial + d1) + d2);
     }
 
 
