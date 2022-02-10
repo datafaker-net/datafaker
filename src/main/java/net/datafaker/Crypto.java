@@ -11,12 +11,20 @@ public class Crypto {
         this.faker = faker;
     }
 
+    public String md2() {
+        return generateString("MD2");
+    }
+
     public String md5() {
         return generateString("MD5");
     }
 
     public String sha1() {
         return generateString("SHA-1");
+    }
+
+    public String sha384() {
+        return generateString("SHA-384");
     }
 
     public String sha256() {

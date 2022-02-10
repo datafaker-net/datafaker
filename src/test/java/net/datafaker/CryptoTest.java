@@ -2,11 +2,19 @@ package net.datafaker;
 
 import org.junit.Test;
 
+import java.security.Security;
+import java.util.Arrays;
+
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class CryptoTest extends AbstractFakerTest {
+
+    @Test
+    public void testMd2() {
+        assertThat(faker.crypto().md2(), matchesRegularExpression("[a-z\\d]+"));
+    }
 
     @Test
     public void testMd5() {
@@ -21,6 +29,11 @@ public class CryptoTest extends AbstractFakerTest {
     @Test
     public void testSha256() {
         assertThat(faker.crypto().sha256(), matchesRegularExpression("[a-z\\d]+"));
+    }
+
+    @Test
+    public void testSha384() {
+        assertThat(faker.crypto().sha384(), matchesRegularExpression("[a-z\\d]+"));
     }
 
     @Test
