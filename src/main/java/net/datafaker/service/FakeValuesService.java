@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -286,6 +287,34 @@ public class FakeValuesService {
         return letterHelper((isUpper) ? 65 : 97, letterString); // from ascii table
     }
 
+    /**
+     * Returns a string with the char2replace characters in the parameter replaced with random alphabetic
+     * characters from options
+     * <p>
+     */
+    public String templatify(String letterString, char char2replace, String... options) {
+        return templatify(letterString, Collections.singletonMap(char2replace, options));
+    }
+
+    /**
+     * Returns a string with the optionsMap.getKeys() characters in the parameter replaced with random alphabetic
+     * characters from corresponding optionsMap.values()
+     * <p>
+     */
+    public String templatify(String letterString, Map<Character, String[]> optionsMap) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < letterString.length(); i++) {
+            if (optionsMap.containsKey(letterString.charAt(i))) {
+                final String[] options = optionsMap.get(letterString.charAt(i));
+                Objects.requireNonNull(options, "Array with available options should be non null");
+                sb.append(options[randomService.nextInt(options.length)]);
+            } else{
+                sb.append(letterString.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+
     private String letterHelper(int baseChar, String letterString) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < letterString.length(); i++) {
@@ -514,11 +543,13 @@ public class FakeValuesService {
         log.log(Level.FINE, "Find accessor named " + name + " on " + onObject.getClass().getSimpleName() + " with args " + args);
 
         for (Method m : onObject.getClass().getMethods()) {
-            if (m.getName().equalsIgnoreCase(name)
-                    && (m.getParameterTypes().length == args.size() || m.getParameterTypes().length < args.size() && m.isVarArgs())) {
-                final List<Object> coercedArguments = coerceArguments(m, args);
-                if (coercedArguments != null) {
-                    return new MethodAndCoercedArgs(m, coercedArguments);
+            if (m.getName().equalsIgnoreCase(name)) {
+                if (m.getName().equalsIgnoreCase(name)
+                        && (m.getParameterTypes().length == args.size() || m.getParameterTypes().length < args.size() && m.isVarArgs())) {
+                    final List<Object> coercedArguments = coerceArguments(m, args);
+                    if (coercedArguments != null) {
+                        return new MethodAndCoercedArgs(m, coercedArguments);
+                    }
                 }
             }
         }
@@ -555,6 +586,8 @@ public class FakeValuesService {
                         String enumArg = args.get(i).substring(args.get(i).indexOf(".") + 1);
                         coercedArgument = method.invoke(null, enumArg);
                     }
+                } else if (toType == Character.class) {
+                    coercedArgument = args.get(i) == null ? null : args.get(i).charAt(0);
                 } else {
                     final Constructor<?> ctor = toType.getConstructor(String.class);
                     if (isVarArg) {

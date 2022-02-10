@@ -3,12 +3,14 @@ package net.datafaker;
 import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Random;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -69,6 +71,15 @@ public class FakerTest extends AbstractFakerTest {
     @Test
     public void numerifyShouldLeaveNonSpecialCharactersAlone() {
         assertThat(faker.numerify("####123"), matchesRegularExpression("\\d{4}123"));
+    }
+
+    @Test
+    public void templatify() {
+        assertThat(faker.templatify("12??34", '?', "тест", "test", "测试测试").length(), equalTo(12));
+        assertThat(faker.templatify("12??34",
+                Collections.singletonMap('1', new String[]{"тест", "test", "测试测试"})).length(), equalTo(9));
+        assertThat(faker.templatify("12??34",
+                Collections.singletonMap('1', new String[]{""})).length(), equalTo(5));
     }
 
     @Test
@@ -160,6 +171,7 @@ public class FakerTest extends AbstractFakerTest {
         assertThat(faker.expression("#{bothify '????','true'}"), matchesRegularExpression("[A-Z]{4}"));
         assertThat(faker.expression("#{bothify '????','false'}"), matchesRegularExpression("[a-z]{4}"));
         assertThat(faker.expression("#{letterify '????','true'}"), matchesRegularExpression("[A-Z]{4}"));
+        assertThat(faker.expression("#{templatify '????','?','1','2','q','r'}"), matchesRegularExpression("(1|2|q|r){4}"));
         assertThat(faker.expression("#{Name.first_name} #{Name.first_name} #{Name.last_name}"), matchesRegularExpression("[a-zA-Z']+ [a-zA-Z']+ [a-zA-Z']+"));
         assertThat(faker.expression("#{number.number_between '1','10'}"), matchesRegularExpression("[1-9]"));
         assertThat(faker.expression("#{color.name}"), matchesRegularExpression("[a-z\\s]+"));

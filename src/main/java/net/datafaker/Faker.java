@@ -4,6 +4,7 @@ import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.RandomService;
 
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -382,6 +383,35 @@ public class Faker {
      * @return The output string based on the input pattern
      */
     public String examplify(String example) {return fakeValuesService.examplify(example);}
+
+    /**
+     * Returns a string with the '?' characters in the parameter replaced with random option from available options.
+     * <p>
+     * For example, the string "ABC??EFG" could be replaced with a string like "ABCtestтестEFG"
+     * if passed options are new String[]{"test", "тест"}.
+     *
+     * @param string  Template for string generation
+     * @param options Options to use while filling the template
+     * @return Generated string
+     */
+    public String templatify(String string, char char2replace, String... options) {
+        return fakeValuesService().templatify(string, char2replace, options);
+    }
+
+    /**
+     * Returns a string with the characters in the keys of optionsMap parameter replaced with random option from values.
+     *
+     * <p>
+     * For example, the string "ABC$$EFG" could be replaced with a string like "ABCtestтестEFG"
+     * if passed for key '$' there is value new String[]{"test", "тест"} in optionsMap
+     *
+     * @param string       Template for string generation
+     * @param optionsMap   Map with replacement rules
+     * @return Generated string
+     */
+    public String templatify(String string, Map<Character, String[]> optionsMap) {
+        return fakeValuesService().templatify(string, optionsMap);
+    }
 
     public RandomService random() {
         return this.randomService;
