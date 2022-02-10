@@ -385,13 +385,14 @@ public class Faker {
     public String examplify(String example) {return fakeValuesService.examplify(example);}
 
     /**
-     * Returns a string with the '?' characters in the parameter replaced with random option from available options.
+     * Returns a string with the char2replace characters in the parameter replaced with random option from available options.
      * <p>
      * For example, the string "ABC??EFG" could be replaced with a string like "ABCtestтестEFG"
      * if passed options are new String[]{"test", "тест"}.
      *
-     * @param string  Template for string generation
-     * @param options Options to use while filling the template
+     * @param string        Template for string generation
+     * @param char2replace  Char to replace
+     * @param options       Options to use while filling the template
      * @return Generated string
      */
     public String templatify(String string, char char2replace, String... options) {

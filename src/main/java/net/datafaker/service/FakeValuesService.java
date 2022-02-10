@@ -290,7 +290,6 @@ public class FakeValuesService {
     /**
      * Returns a string with the char2replace characters in the parameter replaced with random alphabetic
      * characters from options
-     * <p>
      */
     public String templatify(String letterString, char char2replace, String... options) {
         return templatify(letterString, Collections.singletonMap(char2replace, options));
@@ -299,7 +298,6 @@ public class FakeValuesService {
     /**
      * Returns a string with the optionsMap.getKeys() characters in the parameter replaced with random alphabetic
      * characters from corresponding optionsMap.values()
-     * <p>
      */
     public String templatify(String letterString, Map<Character, String[]> optionsMap) {
         StringBuilder sb = new StringBuilder();
