@@ -511,7 +511,13 @@ public class FakeValuesService {
      * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
      */
     private String resolveFakerObjectAndMethod(Faker faker, String key, List<String> args) {
-        final String[] classAndMethod = DOT.split(key, 2);
+        int index = key.indexOf('.');
+        final String[] classAndMethod;
+        if (index == -1) {
+            classAndMethod = new String[] {key};
+        } else {
+            classAndMethod = new String[] {key.substring(0, index), index == key.length() - 1 ? "" : key.substring(index + 1)};
+        }
 
         try {
             String fakerMethodName = UNDERSCORE.matcher(classAndMethod[0]).replaceAll("");
@@ -522,7 +528,7 @@ public class FakeValuesService {
             }
             Object objectWithMethodToInvoke = fakerAccessor.invoke(faker);
             String nestedMethodName = UNDERSCORE.matcher(classAndMethod[1]).replaceAll("");
-            final MethodAndCoercedArgs accessor = accessor(objectWithMethodToInvoke, UNDERSCORE.matcher(classAndMethod[1]).replaceAll(""), args);
+            final MethodAndCoercedArgs accessor = accessor(objectWithMethodToInvoke, nestedMethodName, args);
             if (accessor == null) {
                 throw new Exception("Can't find method on "
                         + objectWithMethodToInvoke.getClass().getSimpleName()

@@ -95,4 +95,8 @@ public class FakeValues implements FakeValuesInterface {
     boolean supportsPath(String path) {
         return this.path.equals(path);
     }
+
+    public String getPath() {
+        return path;
+    }
 }
