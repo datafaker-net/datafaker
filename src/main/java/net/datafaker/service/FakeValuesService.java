@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,8 @@ public class FakeValuesService {
     private final RandomService randomService;
 
     private final List<Locale> localesChain;
+
+    private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new HashMap<>();
 
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
@@ -538,16 +541,24 @@ public class FakeValuesService {
      * Find an accessor by name ignoring case.
      */
     private MethodAndCoercedArgs accessor(Object onObject, String name, List<String> args) {
-        log.log(Level.FINE, "Find accessor named " + name + " on " + onObject.getClass().getSimpleName() + " with args " + args);
+        log.log(Level.FINE, () -> "Find accessor named " + name + " on " + onObject.getClass().getSimpleName() + " with args " + args);
 
-        for (Method m : onObject.getClass().getMethods()) {
-            if (m.getName().equalsIgnoreCase(name)) {
-                if (m.getName().equalsIgnoreCase(name)
-                        && (m.getParameterTypes().length == args.size() || m.getParameterTypes().length < args.size() && m.isVarArgs())) {
-                    final List<Object> coercedArguments = coerceArguments(m, args);
-                    if (coercedArguments != null) {
-                        return new MethodAndCoercedArgs(m, coercedArguments);
-                    }
+        final Class clazz = onObject.getClass();
+        if (!class2methodsCache.containsKey(clazz)) {
+            Map<String, Collection<Method>> methodMap = new HashMap<>();
+            for (Method m: clazz.getMethods()) {
+                methodMap.computeIfAbsent(m.getName().toLowerCase(Locale.ROOT), k -> new ArrayList<>());
+                methodMap.get(m.getName().toLowerCase(Locale.ROOT)).add(m);
+            }
+            class2methodsCache.put(clazz, methodMap);
+        }
+        final Collection<Method> methods =
+                class2methodsCache.get(clazz).getOrDefault(name.toLowerCase(Locale.ROOT), Collections.emptyList());
+        for (Method m : methods) {
+            if (m.getParameterTypes().length == args.size() || m.getParameterTypes().length < args.size() && m.isVarArgs()) {
+                final List<Object> coercedArguments = coerceArguments(m, args);
+                if (coercedArguments != null) {
+                    return new MethodAndCoercedArgs(m, coercedArguments);
                 }
             }
         }
