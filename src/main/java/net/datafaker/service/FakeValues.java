@@ -8,8 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FakeValues implements FakeValuesInterface {
+    private static final Logger LOG = Logger.getLogger("faker");
     private final Locale locale;
     private final String filename;
     private final String path;
@@ -59,37 +62,37 @@ public class FakeValues implements FakeValuesInterface {
         String pathWithLocale = "/" + locale.getLanguage() + ".yml";
 
         List<String> paths = Arrays.asList(pathWithLocaleAndFilename, pathWithFilename, pathWithLocale);
-        InputStream stream = null;
+        Map<String, Object> result = null;
         for (String path : paths) {
-            stream = findStream(path);
-            if (stream != null) {
-                break;
+            try (InputStream stream = getClass().getResourceAsStream(path)) {
+                if (stream != null) {
+                   result = readFromStream(stream);
+                } else {
+                    try (InputStream stream2 = getClass().getClassLoader().getResourceAsStream(path)) {
+                        result = readFromStream(stream2);
+                    } catch (Exception e) {
+                        LOG.log(Level.SEVERE, "Exception: ", e);
+                    }
+                }
+
+            } catch (IOException e) {
+                LOG.log(Level.SEVERE, "Exception: ", e);
+            }
+            if (result != null) {
+                return result;
             }
         }
+        return null;
+    }
 
-        if (stream == null) {
-            return null;
-        }
-
+    private Map<String, Object> readFromStream(InputStream stream) {
+        if (stream == null) return null;
         final Map<String, Object> valuesMap = new Yaml().loadAs(stream, Map.class);
         Map<String, Object> localeBased = (Map<String, Object>) valuesMap.get(locale.getLanguage());
         if (localeBased == null) {
             localeBased = (Map<String, Object>) valuesMap.get(filename);
         }
-        try {
-            stream.close();
-        } catch (IOException ex) {
-            return null;
-        }
         return (Map<String, Object>) localeBased.get("faker");
-    }
-
-    private InputStream findStream(String filename) {
-        InputStream streamOnClass = getClass().getResourceAsStream(filename);
-        if (streamOnClass != null) {
-            return streamOnClass;
-        }
-        return getClass().getClassLoader().getResourceAsStream(filename);
     }
 
     boolean supportsPath(String path) {
