@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +39,9 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
 
     private static final Long MILLIS_IN_AN_HOUR = 1000 * 60 * 60L;
     private static final Long MILLIS_IN_A_DAY = MILLIS_IN_AN_HOUR * 24;
+
+    @Spy
+    private Faker mockedFaker;
 
     @Mock
     private RandomService randomService;
@@ -100,27 +104,27 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
     public void regexifyDirective() {
         final DummyService dummy = mock(DummyService.class);
 
-        String value = fakeValuesService.resolve("property.regexify1", dummy, faker);
+        String value = fakeValuesService.resolve("property.regexify1", dummy, mockedFaker);
         assertThat(value, is(oneOf("55", "44", "45", "54")));
-        verify(faker).regexify("[45]{2}");
+        verify(mockedFaker).regexify("[45]{2}");
     }
 
     @Test
     public void regexifySlashFormatDirective() {
         final DummyService dummy = mock(DummyService.class);
 
-        String value = fakeValuesService.resolve("property.regexify_slash_format", dummy, faker);
+        String value = fakeValuesService.resolve("property.regexify_slash_format", dummy, mockedFaker);
         assertThat(value, is(oneOf("55", "44", "45", "54")));
-        verify(faker).regexify("[45]{2}");
+        verify(mockedFaker).regexify("[45]{2}");
     }
 
     @Test
     public void regexifyDirective2() {
         final DummyService dummy = mock(DummyService.class);
 
-        String value = fakeValuesService.resolve("property.regexify_cell", dummy, faker);
+        String value = fakeValuesService.resolve("property.regexify_cell", dummy, mockedFaker);
         assertThat(value, is(oneOf("479", "459")));
-        verify(faker).regexify("4[57]9");
+        verify(mockedFaker).regexify("4[57]9");
     }
 
     @Test
@@ -132,12 +136,12 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         doReturn("Yo!").when(dummy).hello();
 
         // when
-        final String actual = fakeValuesService.resolve("property.simpleResolution", dummy, faker);
+        final String actual = fakeValuesService.resolve("property.simpleResolution", dummy, mockedFaker);
 
         // then
         assertThat(actual, is("Yo!"));
         verify(dummy).hello();
-        verifyNoMoreInteractions(faker);
+        verifyNoMoreInteractions(mockedFaker);
     }
 
     @Test
@@ -145,15 +149,15 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         // given
         final Superhero person = mock(Superhero.class);
         final DummyService dummy = mock(DummyService.class);
-        doReturn(person).when(faker).superhero();
+        doReturn(person).when(mockedFaker).superhero();
         doReturn("Luke Cage").when(person).name();
 
         // when
-        final String actual = fakeValuesService.resolve("property.advancedResolution", dummy, faker);
+        final String actual = fakeValuesService.resolve("property.advancedResolution", dummy, mockedFaker);
 
         // then
         assertThat(actual, is("Luke Cage"));
-        verify(faker).superhero();
+        verify(mockedFaker).superhero();
         verify(person).name();
     }
 
@@ -168,7 +172,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         doReturn("Yo!").when(dummy).hello();
 
         // when
-        final String actual = fakeValuesService.resolve("property.resolutionWithList", dummy, faker);
+        final String actual = fakeValuesService.resolve("property.resolutionWithList", dummy, mockedFaker);
 
         // then
         assertThat(actual, is("Yo!"));
@@ -180,18 +184,18 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         // given
         final Superhero person = mock(Superhero.class);
         final DummyService dummy = mock(DummyService.class);
-        doReturn(person).when(faker).superhero();
+        doReturn(person).when(mockedFaker).superhero();
 
         doReturn("Yo Superman!").when(dummy).hello();
         doReturn("up up and away").when(person).descriptor();
 
         // when
-        String actual = fakeValuesService.resolve("property.multipleResolution", dummy, faker);
+        String actual = fakeValuesService.resolve("property.multipleResolution", dummy, mockedFaker);
 
         // then
         assertThat(actual, is("Yo Superman! up up and away"));
 
-        verify(faker).superhero();
+        verify(mockedFaker).superhero();
         verify(person).descriptor();
         verify(dummy).hello();
     }
@@ -323,11 +327,11 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         when(dummy.hello()).thenReturn("1").thenReturn("2");
 
         // when
-        final String actual = fakeValuesService.resolve("property.sameResolution", dummy, faker);
+        final String actual = fakeValuesService.resolve("property.sameResolution", dummy, mockedFaker);
 
         // then
         assertThat(actual, is("1 2"));
-        verifyNoMoreInteractions(faker);
+        verifyNoMoreInteractions(mockedFaker);
     }
 
     @Test
