@@ -3,6 +3,7 @@ package net.datafaker;
 import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,6 +13,9 @@ import static org.mockito.Mockito.doReturn;
 
 
 public class NameTest extends AbstractFakerTest {
+
+    @Spy
+    private Faker mockedFaker;
 
     @Test
     public void testName() {
@@ -71,10 +75,10 @@ public class NameTest extends AbstractFakerTest {
 
     @Test
     public void testUsernameWithSpaces() {
-        final Name name = Mockito.spy(new Name(faker));
+        final Name name = Mockito.spy(new Name(mockedFaker));
         doReturn("Compound Name").when(name).firstName();
-        doReturn(name).when(faker).name();
-        assertThat(faker.name().username(), matchesRegularExpression("^(\\w+)\\.(\\w+)$"));
+        doReturn(name).when(mockedFaker).name();
+        assertThat(mockedFaker.name().username(), matchesRegularExpression("^(\\w+)\\.(\\w+)$"));
     }
 
     @Test

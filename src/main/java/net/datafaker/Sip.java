@@ -2,8 +2,6 @@ package net.datafaker;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import java.util.ArrayList;
-
 /**
  * Faker class for generating Session Initiation Protocol (SIP) related data.
  *
@@ -11,15 +9,12 @@ import java.util.ArrayList;
  */
 public final class Sip {
     private final Faker faker;
-    private final ArrayList<Integer> portPool;
+    private final int[] portPool = new int[5001];
 
     public Sip(final Faker faker) {
         this.faker = faker;
-        int port = 40000;
-        portPool = new ArrayList<>();
-        while (port <= 50000) {
-            portPool.add(port);
-            port = port + 2;
+        for (int i = 0; i < portPool.length; i++) {
+            portPool[i] = 40000 + 2 * i;
         }
     }
 
@@ -57,7 +52,7 @@ public final class Sip {
      * @return an RTP UDP 5 digit port int, e.g. 40002.
      */
     public int rtpPort() {
-        return portPool.get(faker.random().nextInt(0, portPool.size()));
+        return portPool[faker.random().nextInt(0, portPool.length)];
     }
 
     /**

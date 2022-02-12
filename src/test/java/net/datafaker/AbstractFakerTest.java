@@ -16,7 +16,6 @@ public class AbstractFakerTest {
     @Rule
     public RepeatRule repeatRule = new RepeatRule();
 
-    @Spy
     protected Faker faker;
 
     @Before
@@ -29,5 +28,6 @@ public class AbstractFakerTest {
         for (Handler h : handlers) {
             h.setLevel(Level.INFO);
         }
+        faker = new Faker();
     }
 }
