@@ -26,7 +26,6 @@ public class FakeValuesService {
     private static final Pattern EXPRESSION_PATTERN = Pattern.compile("#\\{([a-z0-9A-Z_.]+)\\s?((?:,?'([^']+)')*)}");
     private static final Pattern EXPRESSION_ARGUMENTS_PATTERN = Pattern.compile("'(.*?)'");
     private static final Pattern LOCALE = Pattern.compile("[-_]");
-    private static final Pattern DOT = Pattern.compile("\\.");
     private static final Pattern A_TO_Z = Pattern.compile("([A-Z])");
     private static final Pattern UNDERSCORE = Pattern.compile("_");
 
@@ -181,7 +180,7 @@ public class FakeValuesService {
      *            dot. E.g. name.first_name
      */
     public Object fetchObject(String key) {
-        String[] path = DOT.split(key);
+        String[] path = split(key, '.');
 
         Object result = null;
         for (FakeValuesInterface fakeValuesInterface : fakeValuesList) {
@@ -198,6 +197,30 @@ public class FakeValuesService {
             if (result != null) {
                 break;
             }
+        }
+        return result;
+    }
+
+    private String[] split(String string, char sep) {
+        int size = 0;
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) == sep) size++;
+        }
+        String[] result = new String[size + 1];
+        StringBuilder sb = new StringBuilder();
+        int j = 0;
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) == sep) {
+                if (sb.length() > 0) {
+                    result[j++] = sb.toString();
+                }
+                sb.setLength(0);
+            } else {
+                sb.append(string.charAt(i));
+            }
+        }
+        if (j == size) {
+            result[j] = sb.toString();
         }
         return result;
     }
@@ -385,7 +408,8 @@ public class FakeValuesService {
             }
 
             resolved = resolveExpression(resolved, current, root);
-            result = result.replaceFirst(Pattern.quote(escapedDirective), Matcher.quoteReplacement(resolved));
+            int index = result.indexOf(escapedDirective);
+            result = (index == 0 ? "" : result.substring(0, index)) + resolved + result.substring(index + escapedDirective.length());
         }
         return result;
     }
