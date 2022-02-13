@@ -29,7 +29,7 @@ public class FakeValuesService {
     private static final Pattern A_TO_Z = Pattern.compile("([A-Z])");
     private static final Pattern UNDERSCORE = Pattern.compile("_");
 
-    private final Logger log = Logger.getLogger("faker");
+    private static final Logger LOG = Logger.getLogger("faker");
 
     private final List<FakeValuesInterface> fakeValuesList;
     private final RandomService randomService;
@@ -459,7 +459,7 @@ public class FakeValuesService {
         // last ditch effort.  Due to Ruby's dynamic nature, something like 'Address.street_title' will resolve
         // because 'street_title' is a dynamic method on the Address object.  We can't do this in Java so we go
         // thru the normal resolution above, but if we will can't resolve it, we once again do a 'safeFetch' as we
-        // did first but FIRST we change the Object reference Class.method_name with a yml style internal refernce ->
+        // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
         if (resolved == null && isDotDirective(directive)) {
             resolved = safeFetch(javaNameToYamlName(simpleDirective), null);
@@ -523,7 +523,7 @@ public class FakeValuesService {
                     ? null
                     : string(accessor.invoke(obj));
         } catch (Exception e) {
-            log.log(Level.FINE, "Can't call " + directive + " on " + obj, e);
+            LOG.log(Level.FINE, "Can't call " + directive + " on " + obj, e);
             return null;
         }
     }
@@ -547,7 +547,7 @@ public class FakeValuesService {
             String fakerMethodName = UNDERSCORE.matcher(classAndMethod[0]).replaceAll("");
             MethodAndCoercedArgs fakerAccessor = accessor(faker, fakerMethodName, Collections.emptyList());
             if (fakerAccessor == null) {
-                log.fine("Can't find top level faker object named " + fakerMethodName + ".");
+                LOG.fine("Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
             }
             Object objectWithMethodToInvoke = fakerAccessor.invoke(faker);
@@ -561,7 +561,7 @@ public class FakeValuesService {
 
             return string(accessor.invoke(objectWithMethodToInvoke));
         } catch (Exception e) {
-            log.fine(e.getMessage());
+            LOG.fine(e.getMessage());
             return null;
         }
     }
@@ -571,7 +571,7 @@ public class FakeValuesService {
      * Find an accessor by name ignoring case.
      */
     private MethodAndCoercedArgs accessor(Object onObject, String name, List<String> args) {
-        log.log(Level.FINE, () -> "Find accessor named " + name + " on " + onObject.getClass().getSimpleName() + " with args " + args);
+        LOG.log(Level.FINE, () -> "Find accessor named " + name + " on " + onObject.getClass().getSimpleName() + " with args " + args);
 
         final Class clazz = onObject.getClass();
         if (!class2methodsCache.containsKey(clazz)) {
@@ -640,31 +640,31 @@ public class FakeValuesService {
                 }
                 coerced.add(coercedArgument);
             } catch (Exception e) {
-                log.fine("Unable to coerce " + args.get(i) + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor.");
+                LOG.fine("Unable to coerce " + args.get(i) + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor.");
                 return null;
             }
         }
         return coerced;
     }
 
-    private static final Map<Class<?>, Class<?>> primitiveWrapperMap = new HashMap<>();
+    private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP = new HashMap<>();
 
     static {
-        primitiveWrapperMap.put(Boolean.TYPE, Boolean.class);
-        primitiveWrapperMap.put(Byte.TYPE, Byte.class);
-        primitiveWrapperMap.put(Character.TYPE, Character.class);
-        primitiveWrapperMap.put(Short.TYPE, Short.class);
-        primitiveWrapperMap.put(Integer.TYPE, Integer.class);
-        primitiveWrapperMap.put(Long.TYPE, Long.class);
-        primitiveWrapperMap.put(Double.TYPE, Double.class);
-        primitiveWrapperMap.put(Float.TYPE, Float.class);
-        primitiveWrapperMap.put(Void.TYPE, Void.TYPE);
+        PRIMITIVE_WRAPPER_MAP.put(Boolean.TYPE, Boolean.class);
+        PRIMITIVE_WRAPPER_MAP.put(Byte.TYPE, Byte.class);
+        PRIMITIVE_WRAPPER_MAP.put(Character.TYPE, Character.class);
+        PRIMITIVE_WRAPPER_MAP.put(Short.TYPE, Short.class);
+        PRIMITIVE_WRAPPER_MAP.put(Integer.TYPE, Integer.class);
+        PRIMITIVE_WRAPPER_MAP.put(Long.TYPE, Long.class);
+        PRIMITIVE_WRAPPER_MAP.put(Double.TYPE, Double.class);
+        PRIMITIVE_WRAPPER_MAP.put(Float.TYPE, Float.class);
+        PRIMITIVE_WRAPPER_MAP.put(Void.TYPE, Void.TYPE);
     }
 
     public static Class<?> primitiveToWrapper(final Class<?> cls) {
         Class<?> convertedClass = cls;
         if (cls != null && cls.isPrimitive()) {
-            convertedClass = primitiveWrapperMap.get(cls);
+            convertedClass = PRIMITIVE_WRAPPER_MAP.get(cls);
         }
         return convertedClass;
     }
@@ -686,22 +686,12 @@ public class FakeValuesService {
         private final List<Object> coerced;
 
         private MethodAndCoercedArgs(Method m, List<Object> coerced) {
-            this.method = requireNonNull(m, "method cannot be null");
-            this.coerced = requireNonNull(coerced, "coerced arguments cannot be null");
+            this.method = Objects.requireNonNull(m, "method cannot be null");
+            this.coerced = Objects.requireNonNull(coerced, "coerced arguments cannot be null");
         }
 
         private Object invoke(Object on) throws InvocationTargetException, IllegalAccessException {
             return method.invoke(on, coerced.toArray());
-        }
-
-        /**
-         * source level precludes me from using Objects.requireNonNull
-         */
-        private <T> T requireNonNull(T instance, String messageIfNull) {
-            if (instance == null) {
-                throw new NullPointerException(messageIfNull);
-            }
-            return instance;
         }
     }
 }

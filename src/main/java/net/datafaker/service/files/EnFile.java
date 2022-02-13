@@ -3,22 +3,22 @@ package net.datafaker.service.files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EnFile {
-    private static final Pattern YAML = Pattern.compile(".yml");
+    public static final String YML = ".yml";
     private final String file;
     private final String path;
 
     private EnFile(String file) {
-        this(file, YAML.matcher(file).replaceFirst(""));
+        this(file, file.endsWith(YML) ? file.substring(0, file.length() - YML.length()) : file);
     }
 
     private EnFile(String file, String path) {
         this.file = file;
         this.path = path;
     }
-
 
     public String getFile() {
         return file;
@@ -28,7 +28,7 @@ public class EnFile {
         return path;
     }
 
-    private static final List<String> FILES = Arrays.asList("address.yml",
+    private static final List<EnFile> FILES = Stream.of("address.yml",
             "ancient.yml",
             "animal.yml",
             "app.yml",
@@ -197,7 +197,7 @@ public class EnFile {
 //            "world_cup.yml",
 //            "world_of_warcraft.yml",
             "yoda.yml",
-            "zelda.yml");
+            "zelda.yml").map(EnFile::new).collect(Collectors.toList());
 
     // files where the search path can't be derived from the filename
     private static final List<EnFile> FILES_WITH_A_DIFFERENT_PATH = Arrays.asList(
@@ -211,18 +211,18 @@ public class EnFile {
             new EnFile("witcher.yml", "games"),
             new EnFile("zelda.yml", "games"),
             new EnFile("elder_scrolls.yml", "games"),
-            new EnFile("phone_number.yml", "cell_phone"), // load phone number again with a differen path
+            new EnFile("phone_number.yml", "cell_phone"), // load phone number again with a different path
             new EnFile("resident_evil.yml", "games"),
             new EnFile("hearthstone.yml", "games"));
 
+    private static final List<EnFile> ALL_FILES;
+
+    static {
+        ALL_FILES = new ArrayList<>(FILES);
+        ALL_FILES.addAll(FILES_WITH_A_DIFFERENT_PATH);
+    }
 
     public static List<EnFile> getFiles() {
-        List<EnFile> files = new ArrayList<>();
-        for (String file : FILES) {
-            files.add(new EnFile(file));
-        }
-        files.addAll(FILES_WITH_A_DIFFERENT_PATH);
-
-        return files;
+        return ALL_FILES;
     }
 }
