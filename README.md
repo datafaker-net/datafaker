@@ -15,7 +15,7 @@ This library generates fake data, similar to other fake data generators, such as
 * Perl's [Data::Faker](https://metacpan.org/pod/Data::Faker) library
 * Python [faker](https://faker.readthedocs.io/en/master/) package
 * PHP [faker](https://fakerphp.github.io/) library
-* Javascript [Faker.js](https://github.com/marak/Faker.js/) library
+* Javascript [Faker.js](https://github.com/faker-js/faker) library
 
 It's useful when you're developing a new project and need some pretty data for showcase.
 
