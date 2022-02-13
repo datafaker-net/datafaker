@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 
+import java.util.Locale;
+
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -40,6 +42,15 @@ public class NameTest extends AbstractFakerTest {
     @Test
     public void testFullName() {
         assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+    }
+
+    @Test
+    public void testFullNameArabic() {
+        faker = new Faker(new Locale("ar"));
+
+        for (int i = 0; i < 25; i++) {
+            assertThat(faker.name().fullName(), matchesRegularExpression("^[\\u0600-\\u06FF\\u0750-\\u077F ]+$"));
+        }
     }
 
     @Test
