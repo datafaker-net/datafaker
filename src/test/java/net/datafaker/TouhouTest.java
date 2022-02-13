@@ -9,27 +9,27 @@ public class TouhouTest extends AbstractFakerTest {
 
     @Test
     public void testCharacterName() {
-        assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+        assertThat(faker.touhou().characterName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
     }
 
     @Test
     public void testCharacterFirstName() {
-        assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+        assertThat(faker.touhou().characterFirstName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
     }
 
     @Test
     public void testCharacterLastName() {
-        assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+        assertThat(faker.touhou().characterLastName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
     }
 
     @Test
     public void testTrackName() {
-        assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+        assertThat(faker.touhou().trackName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
     }
 
     @Test
     public void testGameName() {
-        assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+        assertThat(faker.touhou().gameName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
     }
 
 }
