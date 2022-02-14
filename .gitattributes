@@ -1,0 +1,29 @@
+# Auto detect text files and perform LF normalization
+*        text=auto
+
+*.cs     text diff=csharp
+*.java   text diff=java
+*.html   text diff=html
+*.kt     text diff=kotlin
+*.kts    text diff=kotlin
+*.md     text diff=markdown
+*.py     text diff=python executable
+*.pl     text diff=perl executable
+*.pm     text diff=perl
+*.css    text diff=css
+*.js     text
+*.sql    text
+*.q      text
+*.yml    text
+*.yaml   text
+
+*.sh     text eol=lf executable
+gradlew  text eol=lf executable
+
+#test files, use lf so that size is same on windows as well
+data/files/*.dat    text eol=lf
+
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+*.csproj text merge=union eol=crlf
+*.sln    text merge=union eol=crlf
