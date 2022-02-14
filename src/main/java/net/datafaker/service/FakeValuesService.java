@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -26,7 +27,8 @@ public class FakeValuesService {
 
     private final List<Locale> localesChain;
 
-    private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new HashMap<>();
+    private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
+    private final Map<String, Supplier<String>> expression2function = new WeakHashMap<>();
 
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
@@ -197,21 +199,18 @@ public class FakeValuesService {
             if (string.charAt(i) == sep) size++;
         }
         String[] result = new String[size + 1];
-        StringBuilder sb = new StringBuilder();
+        char[] chars = string.toCharArray();
+        int start = 0;
         int j = 0;
         for (int i = 0; i < string.length(); i++) {
             if (string.charAt(i) == sep) {
-                if (sb.length() > 0) {
-                    result[j++] = sb.toString();
+                if (i - start > 0) {
+                    result[j++] = String.valueOf(chars, start, i - start);
                 }
-                sb.setLength(0);
-            } else {
-                sb.append(string.charAt(i));
+                start = i + 1;
             }
         }
-        if (j == size) {
-            result[j] = sb.toString();
-        }
+        result[j] = String.valueOf(chars, start, chars.length - start);
         return result;
     }
 
@@ -377,18 +376,20 @@ public class FakeValuesService {
             // odd are expressions, even are not expressions, just strings
             if (i % 2 != 0) {
                 String expr = expressions.get(i);
-                int j = 0;
-                while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
-                String directive = expr.substring(0, j);
-                while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
-                String arguments = j == expr.length() ? "" : expr.substring(j);
-                List<String> args = splitArguments(arguments);
-
-                String resolved = resolveExpression(directive, args, current, root);
+                String resolved = expression2function.get(expr) == null ? null : expression2function.get(expr).get();
                 if (resolved == null) {
-                    throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
-                }
+                    int j = 0;
+                    while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
+                    String directive = expr.substring(0, j);
+                    while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
+                    String arguments = j == expr.length() ? "" : expr.substring(j);
+                    List<String> args = splitArguments(arguments);
 
+                    resolved = resolveExpression(expr, directive, args, current, root);
+                    if (resolved == null) {
+                        throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
+                    }
+                }
                 expressions.set(i, resolveExpression(resolved, current, root));
             }
         }
@@ -453,35 +454,53 @@ public class FakeValuesService {
      *
      * @return null if unable to resolve
      */
-    private String resolveExpression(String directive, List<String> args, Object current, Faker root) {
+    private String resolveExpression(String expression, String directive, List<String> args, Object current, Faker root) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
         final String simpleDirective = (isDotDirective(directive) || current == null)
                 ? directive
                 : classNameToYamlName(current) + "." + directive;
 
-        String resolved = null;
+        String resolved;
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
         // #{ssn_valid} on IdNumber
         if (!isDotDirective(directive)) {
-            resolved = resolveFromMethodOn(current, directive, args);
+            Supplier<String> supplier = () -> resolveFromMethodOn(current, directive, args);
+            resolved = supplier.get();
+            if (resolved != null) {
+                expression2function.put(expression, supplier);
+                return resolved;
+            }
         }
 
         // simple fetch of a value from the yaml file. the directive may have been mutated
         // such that if the current yml object is car: and directive is #{wheel} then
         // car.wheel will be looked up in the YAML file.
-        if (resolved == null) {
-            resolved = safeFetch(simpleDirective, null);
+        Supplier<String> supplier = () -> safeFetch(simpleDirective, null);
+        resolved = supplier.get();
+        if (resolved != null) {
+            expression2function.put(expression, supplier);
+            return resolved;
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
-        if (resolved == null && !isDotDirective(directive)) {
-            resolved = resolveFromMethodOn(root, directive, args);
+        if (!isDotDirective(directive)) {
+            supplier = () -> resolveFromMethodOn(root, directive, args);
+            resolved = supplier.get();
+            if (resolved != null) {
+                expression2function.put(expression, supplier);
+                return resolved;
+            }
         }
 
         // Resolve Faker Object method references like #{ClassName.method_name}
-        if (resolved == null && isDotDirective(directive)) {
-            resolved = resolveFakerObjectAndMethod(root, directive, args);
+        if (isDotDirective(directive)) {
+            supplier = () -> resolveFakerObjectAndMethod(root, directive, args);
+            resolved = supplier.get();
+            if (resolved != null) {
+                expression2function.put(expression, supplier);
+                return resolved;
+            }
         }
 
         // last ditch effort.  Due to Ruby's dynamic nature, something like 'Address.street_title' will resolve
@@ -489,8 +508,12 @@ public class FakeValuesService {
         // thru the normal resolution above, but if we will can't resolve it, we once again do a 'safeFetch' as we
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
-        if (resolved == null && isDotDirective(directive)) {
-            resolved = safeFetch(javaNameToYamlName(simpleDirective), null);
+        if (isDotDirective(directive)) {
+            supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), null);
+            resolved = supplier.get();
+            if (resolved != null) {
+                expression2function.put(expression, supplier);
+            }
         }
 
         return resolved;
@@ -712,7 +735,7 @@ public class FakeValuesService {
         return coerced;
     }
 
-    private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP = new HashMap<>();
+    private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP = new IdentityHashMap<>();
 
     static {
         PRIMITIVE_WRAPPER_MAP.put(Boolean.TYPE, Boolean.class);
