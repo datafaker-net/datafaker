@@ -131,20 +131,20 @@ public class AddressTest extends AbstractFakerTest {
 
     @Test
     public void testZipCodeByState() {
-        faker = new Faker(new Locale("en-US"));
-        assertThat(faker.address().zipCodeByState(faker.address().stateAbbr()), matchesRegularExpression("[0-9]{5}"));
+        final Faker localFaker = new Faker(new Locale("en-US"));
+        assertThat(localFaker.address().zipCodeByState(localFaker.address().stateAbbr()), matchesRegularExpression("[0-9]{5}"));
     }
 
     @Test
     public void testHungarianZipCodeByState() {
-        faker = new Faker(new Locale("hu"));
-        assertThat(faker.address().zipCodeByState(faker.address().stateAbbr()), matchesRegularExpression("[0-9]{4}"));
+        final Faker localFaker = new Faker(new Locale("hu"));
+        assertThat(localFaker.address().zipCodeByState(localFaker.address().stateAbbr()), matchesRegularExpression("[0-9]{4}"));
     }
 
     @Test
     public void testCountyByZipCode() {
-        faker = new Faker(new Locale("en-US"));
-        assertThat(faker.address().countyByZipCode("47732"), not(is(emptyOrNullString())));
+        final Faker localFaker = new Faker(new Locale("en-US"));
+        assertThat(localFaker.address().countyByZipCode("47732"), not(is(emptyOrNullString())));
     }
 
     @Test
@@ -168,20 +168,20 @@ public class AddressTest extends AbstractFakerTest {
 
     @Test
     public void testZipIsFiveChars() {
-        faker = new Faker(new Locale("en-us"));
-        assertThat(faker.address().zipCode().length(), is(5));
+        final Faker localFaker = new Faker(new Locale("en-us"));
+        assertThat(localFaker.address().zipCode().length(), is(5));
     }
 
     @Test
     public void testZipPlus4IsTenChars() {
-        faker = new Faker(new Locale("en-us"));
-        assertThat(faker.address().zipCodePlus4().length(), is(10));  // includes dash
+        final Faker localFaker = new Faker(new Locale("en-us"));
+        assertThat(localFaker.address().zipCodePlus4().length(), is(10));  // includes dash
     }
 
     @Test
     public void testZipPlus4IsNineDigits() {
-        faker = new Faker(new Locale("en-us"));
-        final String[] zipCodeParts = faker.address().zipCodePlus4().split("-");
+        final Faker localFaker = new Faker(new Locale("en-us"));
+        final String[] zipCodeParts = localFaker.address().zipCodePlus4().split("-");
         assertThat(zipCodeParts[0], matchesRegularExpression("[0-9]{5}"));
         assertThat(zipCodeParts[1], matchesRegularExpression("[0-9]{4}"));
     }
