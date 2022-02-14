@@ -10,26 +10,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FakeValuesService {
-
-    private static final Pattern EXPRESSION_PATTERN = Pattern.compile("#\\{([a-z0-9A-Z_.]+)\\s?((?:,?'([^']+)')*)}");
-    private static final Pattern EXPRESSION_ARGUMENTS_PATTERN = Pattern.compile("'(.*?)'");
     private static final Pattern LOCALE = Pattern.compile("[-_]");
     private static final Pattern A_TO_Z = Pattern.compile("([A-Z])");
-    private static final Pattern UNDERSCORE = Pattern.compile("_");
     private static final String DIGITS = "0123456789";
     private static final Logger LOG = Logger.getLogger("faker");
 
@@ -384,29 +372,73 @@ public class FakeValuesService {
      * {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, Faker root) {
-        final Matcher matcher = EXPRESSION_PATTERN.matcher(expression);
+        List<String> expressions = splitExpressions(expression);
+        for (int i = 0; i < expressions.size(); i++) {
+            // odd are expressions, even are not expressions, just strings
+            if (i % 2 != 0) {
+                String expr = expressions.get(i);
+                int j = 0;
+                while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
+                String directive = expr.substring(0, j);
+                while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
+                String arguments = j == expr.length() ? "" : expr.substring(j);
+                List<String> args = splitArguments(arguments);
 
-        String result = expression;
-        while (matcher.find()) {
-            final String escapedDirective = matcher.group(0);
-            final String directive = matcher.group(1);
-            final String arguments = matcher.group(2);
-            final Matcher argsMatcher = EXPRESSION_ARGUMENTS_PATTERN.matcher(arguments);
-            List<String> args = new ArrayList<>();
-            while (argsMatcher.find()) {
-                args.add(argsMatcher.group(1));
+                String resolved = resolveExpression(directive, args, current, root);
+                if (resolved == null) {
+                    throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
+                }
+
+                expressions.set(i, resolveExpression(resolved, current, root));
             }
-
-            // resolve the expression and reprocess it to handle recursive templates
-            String resolved = resolveExpression(directive, args, current, root);
-            if (resolved == null) {
-                throw new RuntimeException("Unable to resolve " + escapedDirective + " directive.");
-            }
-
-            resolved = resolveExpression(resolved, current, root);
-            int index = result.indexOf(escapedDirective);
-            result = (index == 0 ? "" : result.substring(0, index)) + resolved + result.substring(index + escapedDirective.length());
         }
+
+        return String.join("", expressions);
+    }
+
+    private static List<String> splitArguments(String arguments) {
+        if (arguments == null || arguments.length() == 0) {
+            return Collections.emptyList();
+        }
+        List<String> result = new ArrayList<>();
+        int start = 0;
+        boolean argsStarted = false;
+        for (int i = 0; i < arguments.length(); i++) {
+            if (argsStarted) {
+                if (arguments.charAt(i) == '\'') {
+                    result.add(arguments.substring(start, i));
+                    argsStarted = false;
+                }
+            } else if (arguments.charAt(i) == '\'') {
+                argsStarted = true;
+                start = i + 1;
+            }
+        }
+        return result;
+    }
+
+    private static List<String> splitExpressions(String expression) {
+        List<String> result = new ArrayList<>();
+        boolean isExpression = false;
+        int start = 0;
+        int quoteCnt = 0;
+        for (int i = 0; i < expression.length(); i++) {
+            if (isExpression) {
+              if (expression.charAt(i) == '}' && quoteCnt % 2 == 0) {
+                  result.add(expression.substring(start, i));
+                  start = i + 1;
+                  isExpression = false;
+              } else if (expression.charAt(i) =='\'') {
+                  quoteCnt++;
+              }
+            } else if (i < expression.length() - 2 && expression.charAt(i) == '#' && expression.charAt(i + 1) == '{') {
+                result.add(expression.substring(start, i));
+                isExpression = true;
+                start = i + 2;
+                i++;
+            }
+        }
+        result.add(start < expression.length() ? expression.substring(start) : "");
         return result;
     }
 
@@ -540,14 +572,14 @@ public class FakeValuesService {
         }
 
         try {
-            String fakerMethodName = UNDERSCORE.matcher(classAndMethod[0]).replaceAll("");
+            String fakerMethodName = removeChars(classAndMethod[0], '_');
             MethodAndCoercedArgs fakerAccessor = accessor(faker, fakerMethodName, Collections.emptyList());
             if (fakerAccessor == null) {
                 LOG.fine("Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
             }
             Object objectWithMethodToInvoke = fakerAccessor.invoke(faker);
-            String nestedMethodName = UNDERSCORE.matcher(classAndMethod[1]).replaceAll("");
+            String nestedMethodName = removeChars(classAndMethod[1], '_');
             final MethodAndCoercedArgs accessor = accessor(objectWithMethodToInvoke, nestedMethodName, args);
             if (accessor == null) {
                 throw new Exception("Can't find method on "
@@ -590,9 +622,25 @@ public class FakeValuesService {
         }
 
         if (name.contains("_")) {
-            return accessor(onObject, UNDERSCORE.matcher(name).replaceAll(""), args);
+            return accessor(onObject, removeChars(name, '_'), args);
         }
         return null;
+    }
+
+    private static String removeChars(String string, char char2remove) {
+        char[] res = string.toCharArray();
+        int offset = 0;
+        int length = 0;
+        for (int i = string.length() - 1; i >= offset; i--) {
+            while (i > offset && string.charAt(i - offset) == char2remove) {
+                offset++;
+            }
+            res[i] = res[i - offset];
+            if (res[i] != char2remove) {
+                length++;
+            }
+        }
+        return String.valueOf(res, string.length() - length, length);
     }
 
     /**

@@ -3,7 +3,7 @@ package net.datafaker;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.RandomService;
 
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public class Faker {
     private final RandomService randomService;
     private final FakeValuesService fakeValuesService;
-    private final Map<Class<?>, Object> providersMap = new HashMap<>();
+    private final Map<Class<?>, Object> providersMap = new IdentityHashMap<>();
 
     public Faker() {
         this(Locale.ENGLISH);
