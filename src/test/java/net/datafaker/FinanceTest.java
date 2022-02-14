@@ -6,6 +6,7 @@ import org.junit.Test;
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
 
 public class FinanceTest extends AbstractFakerTest {
 
@@ -45,5 +46,13 @@ public class FinanceTest extends AbstractFakerTest {
             final String creditCard = faker.finance().creditCard(type);
             assertCardLuhnDigit(creditCard);
         }
+    }
+
+    @Test
+    public void costaRicaIbanMustBeValid() {
+        final String givenCountryCode = "CR";
+        final Faker faker = new Faker();
+        final String ibanFaker = faker.finance().iban(givenCountryCode).toUpperCase();
+        assertTrue(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker));
     }
 }
