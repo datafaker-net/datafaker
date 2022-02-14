@@ -93,19 +93,14 @@ public class Number {
      */
     private BigDecimal decimalBetween(long min, long max) {
         if (min == max) {
-            return new BigDecimal(min);
+            return BigDecimal.valueOf(min);
         }
 
-        final BigDecimal trueMin = new BigDecimal("" + min);
-        final BigDecimal trueMax = new BigDecimal("" + max);
+        final BigDecimal trueMin = BigDecimal.valueOf(min);
+        final BigDecimal trueMax = BigDecimal.valueOf(max);
         final BigDecimal random = BigDecimal.valueOf(faker.random().nextDouble());
 
-        BigDecimal r = trueMax.subtract(trueMin);
-        r = trueMin.add(r.multiply(random));
-
-        if (r.compareTo(trueMax) > -1) return decimalBetween(min, max);
-        return r;
-
+        return trueMin.add(trueMax.subtract(trueMin).multiply(random));
     }
 
     public String digits(int count) {
