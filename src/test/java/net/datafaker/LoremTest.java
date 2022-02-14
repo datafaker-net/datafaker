@@ -1,6 +1,7 @@
 package net.datafaker;
 
 import net.datafaker.repeating.Repeat;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,12 +10,15 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
+import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -94,6 +98,29 @@ public class LoremTest extends AbstractFakerTest {
     }
 
     @Test
+    @Repeat(times = 10)
+    public void testCharactersMinimumMaximumLengthEquals() {
+        assertThat(faker.lorem().characters(5, 5), matchesRegularExpression("[a-z\\d]{5}"));
+    }
+
+    @Test
+    @Repeat(times = 10)
+    public void testCharactersMinimumMaximumLengthEqualsIncludingUppercaseAndIncludingDigit() {
+        assertThat(faker.lorem().characters(8, 8, true, true), matchesRegularExpression("[a-zA-Z\\d]{8}"));
+    }
+
+    @Test
+    public void testFixedNumberOfCharactersEmpty() {
+        assertEquals("", faker.lorem().characters(-1));
+        assertEquals("", faker.lorem().characters(0));
+
+        assertEquals("", faker.lorem().characters(-1, true, true, true));
+        assertEquals("", faker.lorem().characters(0, false, false, false));
+    }
+
+
+
+    @Test
     public void testCharactersMinimumMaximumLengthIncludeUppercase() {
         assertThat(faker.lorem().characters(1, 10, true), matchesRegularExpression("[a-zA-Z\\d]{1,10}"));
     }
@@ -106,12 +133,20 @@ public class LoremTest extends AbstractFakerTest {
 
     @Test
     public void testSentence() {
-        assertThat(faker.lorem().sentence(), matchesRegularExpression("(\\w+\\s?){4,10}\\."));
+        String sentence = faker.lorem().sentence();
+        String[] words = sentence.split(" ");
+
+        assertThat(words.length, is(both(greaterThanOrEqualTo(3)).and(lessThanOrEqualTo(9))));
+        assertThat(sentence, endsWith("."));
     }
 
     @Test
     public void testSentenceWithWordCount() {
-        assertThat(faker.lorem().sentence(10), matchesRegularExpression("(\\w+\\s?){11,17}\\."));
+        String sentence = faker.lorem().sentence(10);
+        String[] words = sentence.split(" ");
+
+        assertThat(words.length, is(both(greaterThanOrEqualTo(9)).and(lessThanOrEqualTo(15))));
+        assertThat(sentence, endsWith("."));
     }
 
     @Test
@@ -149,5 +184,23 @@ public class LoremTest extends AbstractFakerTest {
     public void testMaxLengthWithNegativeLengthSentence() {
         String s = faker.lorem().maxLengthSentence(-1);
         assertEquals(s.length(), 0);
+    }
+
+    @Test
+    @Repeat(times = 10)
+    public void testSentences() {
+        String paragraph = faker.lorem().paragraph();
+
+        int matches = StringUtils.countMatches(paragraph, ".");
+        assertThat(matches, is(both(greaterThanOrEqualTo(3)).and(lessThanOrEqualTo(6))));
+    }
+
+    @Test
+    @Repeat(times = 10)
+    public void testSentencesWithCount() {
+        String paragraph = faker.lorem().paragraph(1);
+        System.out.println(paragraph);
+        int matches = StringUtils.countMatches(paragraph, ".");
+        assertThat(matches, is(both(greaterThanOrEqualTo(1)).and(lessThanOrEqualTo(3))));
     }
 }
