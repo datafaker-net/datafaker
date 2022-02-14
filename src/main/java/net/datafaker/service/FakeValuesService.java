@@ -8,6 +8,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -625,16 +627,37 @@ public class FakeValuesService {
                         String enumArg = args.get(i).substring(args.get(i).indexOf(".") + 1);
                         coercedArgument = method.invoke(null, enumArg);
                     }
-                } else if (toType == Character.class) {
-                    coercedArgument = args.get(i) == null ? null : args.get(i).charAt(0);
                 } else {
-                    final Constructor<?> ctor = toType.getConstructor(String.class);
                     if (isVarArg) {
+                        final Constructor<?> ctor = toType.getConstructor(String.class);
                         coercedArgument = Array.newInstance(toType, args.size() - i);
                         for (int j = i; j < args.size(); j++) {
                             Array.set(coercedArgument, j - i, ctor.newInstance(args.get(j)));
                         }
+                    } else if (toType == Character.class) {
+                        coercedArgument = args.get(i) == null ? null : args.get(i).charAt(0);
+                    } else if (CharSequence.class.isAssignableFrom(toType)) {
+                        coercedArgument = args.get(i);
+                    } else if (Boolean.class.isAssignableFrom(toType)) {
+                        coercedArgument = Boolean.valueOf(args.get(i));
+                    } else if (Integer.class.isAssignableFrom(toType)) {
+                        coercedArgument = Integer.valueOf(args.get(i));
+                    } else if (Long.class.isAssignableFrom(toType)) {
+                        coercedArgument = Long.valueOf(args.get(i));
+                    } else if (Double.class.isAssignableFrom(toType)) {
+                        coercedArgument = Double.valueOf(args.get(i));
+                    } else if (Float.class.isAssignableFrom(toType)) {
+                        coercedArgument = Float.valueOf(args.get(i));
+                    } else if (Byte.class.isAssignableFrom(toType)) {
+                        coercedArgument = Byte.valueOf(args.get(i));
+                    } else if (Short.class.isAssignableFrom(toType)) {
+                        coercedArgument = Short.valueOf(args.get(i));
+                    } else if (BigDecimal.class.isAssignableFrom(toType)) {
+                        coercedArgument = new BigDecimal(args.get(i));
+                    } else if (BigInteger.class.isAssignableFrom(toType)) {
+                        coercedArgument = new BigInteger(args.get(i));
                     } else {
+                        final Constructor<?> ctor = toType.getConstructor(String.class);
                         coercedArgument = ctor.newInstance(args.get(i));
                     }
                 }
