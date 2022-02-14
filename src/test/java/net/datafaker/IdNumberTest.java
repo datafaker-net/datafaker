@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.repeating.Repeat;
 import org.junit.Test;
 
 import java.util.Locale;
@@ -54,5 +55,29 @@ public class IdNumberTest extends AbstractFakerTest {
         for (int i = 0; i < 100; i++) {
             assertThat(f.idNumber().inValidEnZaSsn(), matchesRegularExpression("[0-9]{10}(0|1)8[0-9]"));
         }
+    }
+
+    @Test
+    @Repeat(times = 100)
+    public void testSingaporeanFin() {
+        assertThat(faker.idNumber().singaporeanFin(), matchesRegularExpression("G[0-9]{7}[A-Z]"));
+    }
+
+    @Test
+    @Repeat(times = 100)
+    public void testSingaporeanFinBefore2000() {
+        assertThat(faker.idNumber().singaporeanFinBefore2000(), matchesRegularExpression("F[0-9]{7}[A-Z]"));
+    }
+
+    @Test
+    @Repeat(times = 100)
+    public void testSingaporeanUin() {
+        assertThat(faker.idNumber().singaporeanUin(), matchesRegularExpression("T[0-9]{7}[A-Z]"));
+    }
+
+    @Test
+    @Repeat(times = 100)
+    public void testSingaporeanUinBefore2000() {
+        assertThat(faker.idNumber().singaporeanUinBefore2000(), matchesRegularExpression("S[0-9]{7}[A-Z]"));
     }
 }
