@@ -1,40 +1,45 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.AbstractFakerTest;
 import net.datafaker.Faker;
+import net.datafaker.repeating.Repeat;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
 import java.util.Random;
 
+import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
-public class PtNifIdNumberTest {
+public class PtNifIdNumberTest extends AbstractFakerTest {
 
-    private static final int CONSTANT_SEED_VALUE = 10;
-    private Faker faker;
+    private Faker ptFaker;
 
     @Before
     public void before() {
-        final Random random = new Random(CONSTANT_SEED_VALUE);
-        faker = new Faker(new Locale("pt"), random);
+        ptFaker = new Faker(new Locale("pt"));
     }
 
     @Test
+    @Repeat(times = 100)
     public void testInValid() {
         PtNifIdNumber idNumber = new PtNifIdNumber();
-        assertEquals("7202838711", idNumber.getInvalid(faker));
+        assertThat(idNumber.getInvalid(ptFaker), matchesRegularExpression("[0-9]{9,10}"));
     }
 
     @Test
+    @Repeat(times = 100)
     public void testValid() {
         PtNifIdNumber idNumber = new PtNifIdNumber();
-        assertEquals("346336848", idNumber.getValid(faker));
+        assertThat(idNumber.getValid(ptFaker), matchesRegularExpression("[0-9]{9,10}"));
     }
 
     @Test
+    @Repeat(times = 100)
     public void testValidWithFaker() {
-        assertEquals("346336848", faker.idNumber().valid());
+        assertThat(ptFaker.idNumber().valid(), matchesRegularExpression("[0-9]{9,10}"));
     }
 
 }
