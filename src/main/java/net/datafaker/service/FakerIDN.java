@@ -22,10 +22,8 @@ public class FakerIDN {
             try {
                 sb.append(IDN.toASCII(in.substring(i, i + 1)));
             } catch (Exception ignored) {
+                throw new RuntimeException("Unable to convert " + in + " to ASCII");
             }
-        }
-        if (sb.length() == 0) {
-            throw new RuntimeException("Unable to convert " + in + " to ASCII");
         }
         return sb.toString();
     }
