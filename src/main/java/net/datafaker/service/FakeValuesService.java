@@ -60,11 +60,7 @@ public class FakeValuesService {
         for (final Locale l : localesChain) {
             boolean isEnglish = l.equals(Locale.ENGLISH);
             if (isEnglish) {
-                FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
-                for (EnFile file : EnFile.getFiles()) {
-                    fakeValuesGrouping.add(new FakeValues(l, file.getFile(), file.getPath()));
-                }
-                all.add(fakeValuesGrouping);
+                all.add(FakeValuesGrouping.getEnglishFakeValueGrouping());
             } else {
                 all.add(new FakeValues(l));
             }

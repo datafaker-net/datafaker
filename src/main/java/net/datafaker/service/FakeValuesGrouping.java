@@ -1,14 +1,18 @@
 package net.datafaker.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import net.datafaker.service.files.EnFile;
+
+import java.util.*;
 
 public class FakeValuesGrouping implements FakeValuesInterface {
-
+    private static final FakeValuesGrouping ENGLISH_FAKE_VALUE_GROUPING = new FakeValuesGrouping();
     private final Map<String, Collection<FakeValues>> fakeValues = new HashMap<>();
+
+    static {
+        for (EnFile file : EnFile.getFiles()) {
+            ENGLISH_FAKE_VALUE_GROUPING.add(new FakeValues(Locale.ENGLISH, file.getFile(), file.getPath()));
+        }
+    }
 
     public void add(FakeValues fakeValue) {
         fakeValues.putIfAbsent(fakeValue.getPath(), new ArrayList<>());
@@ -28,5 +32,9 @@ public class FakeValuesGrouping implements FakeValuesInterface {
             }
         }
         return result;
+    }
+
+    public static FakeValuesGrouping getEnglishFakeValueGrouping() {
+        return ENGLISH_FAKE_VALUE_GROUPING;
     }
 }
