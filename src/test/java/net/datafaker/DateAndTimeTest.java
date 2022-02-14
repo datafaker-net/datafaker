@@ -37,8 +37,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
             Date now = new Date();
             Date future = faker.date().future(5, 4, TimeUnit.SECONDS);
             assertThat("past date", future.getTime(), greaterThan(now.getTime()));
-            assertThat("future date over range", future.getTime(), lessThan(now.getTime() + 5001));
-            assertThat("future date under minimum range", future.getTime(), greaterThan(now.getTime() + 3999));
+            assertThat("future date over range", future.getTime(), lessThan(now.getTime() + 5500));
+            assertThat("future date under minimum range", future.getTime(), greaterThan(now.getTime() + 3500));
         }
     }
 
@@ -48,8 +48,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
             Date now = new Date();
             Date past = faker.date().past(5, 4, TimeUnit.SECONDS);
             assertThat("future date", past.getTime(), lessThan(now.getTime()));
-            assertThat("past date over range", past.getTime(), greaterThan(now.getTime() - 5001));
-            assertThat("past date under minimum range", past.getTime(), lessThan(now.getTime() - 3999));
+            assertThat("past date over range", past.getTime(), greaterThan(now.getTime() - 5500));
+            assertThat("past date under minimum range", past.getTime(), lessThan(now.getTime() - 3500));
         }
     }
 
