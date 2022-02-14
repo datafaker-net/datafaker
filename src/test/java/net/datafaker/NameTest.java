@@ -46,10 +46,10 @@ public class NameTest extends AbstractFakerTest {
 
     @Test
     public void testFullNameArabic() {
-        faker = new Faker(new Locale("ar"));
+        Faker localFaker = new Faker(new Locale("ar"));
 
         for (int i = 0; i < 25; i++) {
-            assertThat(faker.name().fullName(), matchesRegularExpression("^[\\u0600-\\u06FF\\u0750-\\u077F ]+$"));
+            assertThat(localFaker.name().fullName(), matchesRegularExpression("^[\\u0600-\\u06FF\\u0750-\\u077F ]+$"));
         }
     }
 
