@@ -10,8 +10,6 @@ import java.util.Locale;
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.doReturn;
 
 
@@ -41,7 +39,7 @@ public class NameTest extends AbstractFakerTest {
                 theSameNameCnt++;
             }
         }
-        assertThat(theSameNameCnt, lessThan(total/10));
+        assertThat(theSameNameCnt, lessThan(total / 10));
     }
 
     @Test
