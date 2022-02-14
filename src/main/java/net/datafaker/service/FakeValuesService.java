@@ -30,7 +30,7 @@ public class FakeValuesService {
     private static final Pattern LOCALE = Pattern.compile("[-_]");
     private static final Pattern A_TO_Z = Pattern.compile("([A-Z])");
     private static final Pattern UNDERSCORE = Pattern.compile("_");
-
+    private static final String DIGITS = "0123456789";
     private static final Logger LOG = Logger.getLogger("faker");
 
     private final List<FakeValuesInterface> fakeValuesList;
@@ -233,16 +233,16 @@ public class FakeValuesService {
      * For example, the string "ABC##EFG" could be replaced with a string like "ABC99EFG".
      */
     public String numerify(String numberString) {
-        StringBuilder sb = new StringBuilder();
+        char[] res = new char[numberString.length()];
         for (int i = 0; i < numberString.length(); i++) {
             if (numberString.charAt(i) == '#') {
-                sb.append(randomService.nextInt(10));
+                res[i] = DIGITS.charAt(randomService.nextInt(10));
             } else {
-                sb.append(numberString.charAt(i));
+                res[i] = numberString.charAt(i);
             }
         }
 
-        return sb.toString();
+        return String.valueOf(res);
     }
 
     /**
@@ -274,24 +274,20 @@ public class FakeValuesService {
      * Generates a String by example. The output string will have the same pattern as the input string.
      */
     public String examplify(String example) {
-        StringBuilder sb = new StringBuilder();
         if(example == null) {
             return null;
         }
-
         char[] chars = example.toCharArray();
 
-        for (char character : chars) {
-            if (Character.isLetter(character)) {
-                sb.append(letterify("?", Character.isUpperCase(character)));
-            } else if(Character.isDigit(character)) {
-                sb.append(randomService.nextInt(10));
-            } else {
-                sb.append(character);
+        for (int i = 0; i < chars.length; i++) {
+            if (Character.isLetter(chars[i])) {
+                chars[i] = letterify("?", Character.isUpperCase(chars[i])).charAt(0);
+            } else if(Character.isDigit(chars[i])) {
+                chars[i] = DIGITS.charAt(randomService.nextInt(10));
             }
         }
 
-        return sb.toString();
+        return String.valueOf(chars);
 
     }
 
@@ -342,16 +338,14 @@ public class FakeValuesService {
     }
 
     private String letterHelper(int baseChar, String letterString) {
-        StringBuilder sb = new StringBuilder();
+        final char[] res = letterString.toCharArray();
         for (int i = 0; i < letterString.length(); i++) {
             if (letterString.charAt(i) == '?') {
-                sb.append((char) (baseChar + randomService.nextInt(26))); // a-z
-            } else {
-                sb.append(letterString.charAt(i));
+                res[i] = (char) (baseChar + randomService.nextInt(26)); // a-z
             }
         }
 
-        return sb.toString();
+        return String.valueOf(res);
     }
 
     /**
