@@ -4,7 +4,7 @@ Data Faker
 
 [![Maven Status](https://maven-badges.herokuapp.com/maven-central/net.datafaker/datafaker/badge.svg?style=flat)](http://mvnrepository.com/artifact/net.datafaker/datafaker)
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![Coverage Status](https://coveralls.io/repos/github/datafaker-net/datafaker/badge.svg?branch=master)](https://coveralls.io/github/datafaker-net/datafaker?branch=master)
+[![codecov](https://codecov.io/gh/datafaker-net/datafaker/branch/master/graph/badge.svg?token=FJ6EXMUTFD)](https://codecov.io/gh/datafaker-net/datafaker)
 
 This library is a modern port of [java-faker](https://github.com/DiUS/java-faker), built on Java 8, 
 with up to date libraries and several newly added Fake Generators. 
