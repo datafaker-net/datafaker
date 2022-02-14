@@ -214,7 +214,7 @@ public class Lorem {
     }
 
     /**
-     * Creates a paragraph with a range (sentenceCount)...(<sentenceCount+3)
+     * Creates a paragraph with a range (sentenceCount)...(&lt;sentenceCount+3)
      */
     public String paragraph(int sentenceCount) {
         return String.join(" ", sentences(sentenceCount + faker.random().nextInt(3)));
