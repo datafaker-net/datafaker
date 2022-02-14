@@ -14,6 +14,8 @@
 *.js     text
 *.sql    text
 *.q      text
+*.yml    text
+*.yaml   text
 
 *.sh     text eol=lf executable
 gradlew  text eol=lf executable
