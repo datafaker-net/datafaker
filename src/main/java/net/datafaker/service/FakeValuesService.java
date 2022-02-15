@@ -2,7 +2,6 @@ package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
 import net.datafaker.Faker;
-import net.datafaker.service.files.EnFile;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
