@@ -29,6 +29,7 @@ public class FakeValuesService {
 
     private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
     private final Map<String, Supplier<String>> expression2function = new WeakHashMap<>();
+    private final Map<String, Generex> expression2generex = new WeakHashMap<>();
 
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
@@ -248,8 +249,12 @@ public class FakeValuesService {
      * Generates a String that matches the given regular expression.
      */
     public String regexify(String regex) {
-        Generex generex = new Generex(regex);
-        generex.setSeed(randomService.nextLong());
+        Generex generex = expression2generex.get(regex);
+        if (generex == null) {
+            generex = new Generex(regex);
+            generex.setSeed(randomService.nextLong());
+            expression2generex.put(regex, generex);
+        }
         return generex.random();
     }
 
