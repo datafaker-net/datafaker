@@ -71,8 +71,8 @@ public class CsvTest extends AbstractFakerTest {
                 .separator(",")
                 .limit(1).build().get();
 
-        String expected = "\"values\",\"title\"\n" +
-                "\"1,2,3\",\"The \"\"fabulous\"\" artist\"\n";
+        String expected = "\"values\",\"title\"" + System.lineSeparator() +
+                "\"1,2,3\",\"The \"\"fabulous\"\" artist\"" + System.lineSeparator();
 
         assertEquals(csv, expected);
     }
