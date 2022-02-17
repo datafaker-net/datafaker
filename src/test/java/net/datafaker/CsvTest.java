@@ -60,4 +60,20 @@ public class CsvTest extends AbstractFakerTest {
         assertEquals(limit + 1, numberOfLines); // limit + 1 line for header
         assertEquals((limit + 1) * (columns.size() - 1), numberOfSeparator); // number of lines * (number of columns - 1)
     }
+
+    @Test
+    public void testCsvWithComma() {
+        String csv = new Csv.CsvBuilder()
+                .columns(
+                        Csv.Column.of("values", () -> "1,2,3"),
+                        Csv.Column.of("title", () -> "The \"fabulous\" artist"))
+                .header(true)
+                .separator(",")
+                .limit(1).build().get();
+
+        String expected = "\"values\",\"title\"\n" +
+                "\"1,2,3\",\"The \"\"fabulous\"\" artist\"\n";
+
+        assertEquals(csv, expected);
+    }
 }
