@@ -2,6 +2,7 @@ package net.datafaker;
 
 import org.junit.Test;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -33,8 +34,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
     @Test
     public void testFutureDateWithMinimum() {
+        final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
-            Date now = new Date();
             Date future = faker.date().future(5, 4, TimeUnit.SECONDS);
             assertThat("past date", future.getTime(), greaterThan(now.getTime()));
             assertThat("future date over range", future.getTime(), lessThan(now.getTime() + 5500));
@@ -44,8 +45,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
     @Test
     public void testPastDateWithMinimum() {
+        final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
-            Date now = new Date();
             Date past = faker.date().past(5, 4, TimeUnit.SECONDS);
             assertThat("future date", past.getTime(), lessThan(now.getTime()));
             assertThat("past date over range", past.getTime(), greaterThan(now.getTime() - 5500));
@@ -129,4 +130,25 @@ public class DateAndTimeTest extends AbstractFakerTest {
         }
     }
 
+    @Test
+    public void birthdayWithMask() {
+        String pattern = "YYYY MM.dd";
+        DateTimeFormatter.ofPattern(pattern).parse(faker.date().birthday(1, 50, pattern));
+    }
+
+    @Test
+    public void futureWithMask() {
+        String pattern = "YYYY MM.dd mm:hh:ss";
+        DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(1, TimeUnit.HOURS, pattern));
+        DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(20, 1, TimeUnit.HOURS, pattern));
+        DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(20, TimeUnit.HOURS, new Date(), pattern));
+    }
+
+    @Test
+    public void pastWithMask() {
+        String pattern = "YYYY MM.dd mm:hh:ss";
+        DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(1, TimeUnit.DAYS, pattern));
+        DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(20, 1, TimeUnit.DAYS, pattern));
+        DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(1, TimeUnit.DAYS, new Date(), pattern));
+    }
 }
