@@ -15,7 +15,7 @@ public class FakeValuesGrouping implements FakeValuesInterface {
     }
 
     public void add(FakeValues fakeValue) {
-        fakeValues.putIfAbsent(fakeValue.getPath(), new ArrayList<>());
+        fakeValues.putIfAbsent(fakeValue.getPath(), new HashSet<>());
         fakeValues.get(fakeValue.getPath()).add(fakeValue);
     }
 

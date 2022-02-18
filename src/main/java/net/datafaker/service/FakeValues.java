@@ -4,10 +4,13 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,18 +19,39 @@ public class FakeValues implements FakeValuesInterface {
     private final Locale locale;
     private final String filename;
     private final String path;
+    private final Path filePath;
     private Map<String, Object> values;
 
     FakeValues(Locale locale) {
-        this(locale, getFilename(locale), getFilename(locale));
+        this(locale, getFilename(locale), getFilename(locale), null);
+    }
+
+    FakeValues(Locale locale, Path filePath) {
+        this(locale, getFilename(locale), null, filePath);
+    }
+
+    FakeValues(Locale locale, String filename, String path) {
+        this(locale, filename, path, null);
+    }
+
+    FakeValues(Locale locale, String filename, String path, Path filePath) {
+        this.locale = locale;
+        this.filename = filename;
+        this.filePath = filePath;
+        if (path == null) {
+            values = loadValues();
+            this.path = values == null || values.isEmpty() ? null : values.keySet().iterator().next();
+        } else {
+            this.path = path;
+        }
     }
 
     private static String getFilename(Locale locale) {
-        final StringBuilder filename = new StringBuilder(language(locale));
-        if (!"".equals(locale.getCountry())) {
-            filename.append("-").append(locale.getCountry());
+        final String lang = language(locale);
+        if ("".equals(locale.getCountry())) {
+            return lang;
         }
-        return filename.toString();
+        return lang + "-" + locale.getCountry();
     }
 
     /**
@@ -41,12 +65,6 @@ public class FakeValues implements FakeValuesInterface {
         return l.getLanguage();
     }
 
-    FakeValues(Locale locale, String filename, String path) {
-        this.locale = locale;
-        this.filename = filename;
-        this.path = path;
-    }
-
     @Override
     public Map<String, Object> get(String key) {
         if (values == null) {
@@ -56,13 +74,26 @@ public class FakeValues implements FakeValuesInterface {
         return values == null ? null : (Map) values.get(key);
     }
 
+    private Map<String, Object> loadFromFilePath() {
+        if (filePath == null || !Files.exists(filePath) || Files.isDirectory(filePath) || !Files.isReadable(filePath)) {
+            return null;
+        }
+        try (InputStream stream = Files.newInputStream(filePath)) {
+            return readFromStream(stream);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, "Exception: ", e);
+        }
+        return null;
+    }
+
     private Map<String, Object> loadValues() {
+        Map<String, Object> result = loadFromFilePath();
+        if (result != null) return result;
         String pathWithLocaleAndFilename = "/" + locale.getLanguage() + "/" + this.filename;
         String pathWithFilename = "/" + filename + ".yml";
         String pathWithLocale = "/" + locale.getLanguage() + ".yml";
 
         List<String> paths = Arrays.asList(pathWithLocaleAndFilename, pathWithFilename, pathWithLocale);
-        Map<String, Object> result = null;
         for (String path : paths) {
             try (InputStream stream = getClass().getResourceAsStream(path)) {
                 if (stream != null) {
@@ -99,7 +130,24 @@ public class FakeValues implements FakeValuesInterface {
         return this.path.equals(path);
     }
 
-    public String getPath() {
+    String getPath() {
         return path;
+    }
+
+    Locale getLocale() {
+        return locale;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FakeValues that = (FakeValues) o;
+        return Objects.equals(locale, that.locale) && Objects.equals(filename, that.filename) && Objects.equals(path, that.path) && Objects.equals(filePath, that.filePath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(locale, filename, path, filePath);
     }
 }

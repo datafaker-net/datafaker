@@ -1,0 +1,4 @@
+en:
+  faker:
+    spaceforcefromfile:
+      rocketname: ['Appollo', 'Soyuz', 'Vostok', 'Voskhod', 'Progress', 'Falcon', 'Gemini', 'Mercury']

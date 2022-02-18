@@ -9,6 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -21,7 +23,7 @@ public class FakeValuesService {
     private static final String DIGITS = "0123456789";
     private static final Logger LOG = Logger.getLogger("faker");
 
-    private final List<FakeValuesInterface> fakeValuesList;
+    private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
     private final RandomService randomService;
 
     private final List<Locale> localesChain;
@@ -55,18 +57,40 @@ public class FakeValuesService {
         locale = normalizeLocale(locale);
 
         localesChain = localeChain(locale);
-        final List<FakeValuesInterface> all = new ArrayList(localesChain.size());
-
         for (final Locale l : localesChain) {
-            boolean isEnglish = l.equals(Locale.ENGLISH);
-            if (isEnglish) {
-                all.add(FakeValuesGrouping.getEnglishFakeValueGrouping());
+            if (l.equals(Locale.ENGLISH)) {
+                fakeValuesInterfaceMap.putIfAbsent(l, FakeValuesGrouping.getEnglishFakeValueGrouping());
             } else {
-                all.add(new FakeValues(l));
+                fakeValuesInterfaceMap.putIfAbsent(l, new FakeValues(l));
             }
         }
+    }
 
-        this.fakeValuesList = Collections.unmodifiableList(all);
+    /**
+     * Allows to add paths to files with custom data. Data should be in YAML format.
+     *
+     * @param locale        the locale for which a path is going to be added.
+     * @param path          path to a file with YAML structure
+     * @throws IllegalArgumentException in case of invalid path
+     */
+    public void addPath(Locale locale, Path path) {
+        Objects.requireNonNull(locale);
+        if (path == null || Files.notExists(path) || Files.isDirectory(path) || !Files.isReadable(path)) {
+            throw new IllegalArgumentException("Path should be an existing readable file");
+        }
+        FakeValues fakeValues = new FakeValues(locale, path);
+        FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(locale);
+        if (existingFakeValues == null) {
+            fakeValuesInterfaceMap.putIfAbsent(locale, fakeValues);
+        } else if (existingFakeValues instanceof FakeValuesGrouping) {
+            ((FakeValuesGrouping)fakeValuesInterfaceMap.get(locale)).add(fakeValues);
+        } else if (existingFakeValues instanceof FakeValues) {
+            FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
+            fakeValuesGrouping.add((FakeValues) existingFakeValues);
+            fakeValuesGrouping.add(fakeValues);
+        } else {
+            throw new RuntimeException(fakeValues.getClass() + " not supported (please raise an issue)");
+        }
     }
 
     /**
@@ -171,8 +195,8 @@ public class FakeValuesService {
         String[] path = split(key, '.');
 
         Object result = null;
-        for (FakeValuesInterface fakeValuesInterface : fakeValuesList) {
-            Object currentValue = fakeValuesInterface;
+        for (Locale locale : localesChain) {
+            Object currentValue = fakeValuesInterfaceMap.get(locale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
                 if (currentValue instanceof Map) {
