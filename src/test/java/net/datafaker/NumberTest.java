@@ -2,9 +2,9 @@ package net.datafaker;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import net.datafaker.repeating.Repeat;
 import org.apache.commons.lang3.tuple.Pair;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -26,8 +26,8 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NumberTest extends AbstractFakerTest {
 
@@ -131,8 +131,7 @@ public class NumberTest extends AbstractFakerTest {
         assertThat(v1, is(lessThan(980000000L)));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testLongNumberBetweenRepeated() {
         long low = 1;
         long high = 10;
@@ -141,8 +140,7 @@ public class NumberTest extends AbstractFakerTest {
         assertThat(v, is(greaterThanOrEqualTo(low)));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testIntNumberBetweenRepeated() {
         int low = 1;
         int high = 10;

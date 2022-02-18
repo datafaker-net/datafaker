@@ -50,9 +50,9 @@ public class Relationship {
             Relationship relationship = new Relationship(faker);
             return (String) runMethod.invoke(relationship);
         } catch (SecurityException e) {
-            throw new RuntimeException("SecurityException: " + e.getMessage());
+            throw new SecurityException("SecurityException: " + e.getMessage());
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("IllegalArgumentException: " + e.getMessage());
+            throw new IllegalArgumentException("IllegalArgumentException: " + e.getMessage());
         } catch (IllegalAccessException e) {
             throw new RuntimeException("IllegalAccessException: " + e.getMessage());
         } catch (InvocationTargetException e) {

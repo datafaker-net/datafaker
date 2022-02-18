@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class Company {
 
-    private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[,' ]");
+    private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[.,' ]");
     private final Faker faker;
 
     protected Company(Faker faker) {

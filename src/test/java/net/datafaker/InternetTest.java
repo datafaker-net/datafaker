@@ -2,10 +2,10 @@ package net.datafaker;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import net.datafaker.repeating.Repeat;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InternetTest extends AbstractFakerTest {
 
@@ -285,26 +285,22 @@ public class InternetTest extends AbstractFakerTest {
         }
     }
 
-    @Test
-    @Repeat(times = 10)
+    @RepeatedTest(10)
     public void testSlugWithParams() {
         assertThat(faker.internet().slug(ImmutableList.of("a", "b"), "-"), matchesRegularExpression("[a-zA-Z]+\\-[a-zA-Z]+"));
     }
 
-    @Test
-    @Repeat(times = 10)
+    @RepeatedTest(10)
     public void testSlug() {
         assertThat(faker.internet().slug(), matchesRegularExpression("[a-zA-Z]+\\_[a-zA-Z]+"));
     }
 
-    @Test
-    @Repeat(times = 10)
+    @RepeatedTest(10)
     public void testUuid() {
         assertThat(faker.internet().uuid(), matchesRegularExpression("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testFarsiIDNs() {
         // in this case, we're just making sure Farsi doesn't blow up.
         // there have been issues with Farsi not being produced.

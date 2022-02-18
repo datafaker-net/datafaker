@@ -3,7 +3,7 @@ package net.datafaker.integration;
 import net.datafaker.Faker;
 import net.datafaker.matchers.MatchesRegularExpression;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 

@@ -1,12 +1,12 @@
 package net.datafaker;
 
 import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FinanceTest extends AbstractFakerTest {
 

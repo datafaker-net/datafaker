@@ -1,8 +1,8 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoremTest extends AbstractFakerTest {
 
@@ -97,14 +97,12 @@ public class LoremTest extends AbstractFakerTest {
         assertThat(faker.lorem().characters(1, 10), matchesRegularExpression("[a-z\\d]{1,10}"));
     }
 
-    @Test
-    @Repeat(times = 10)
+    @RepeatedTest(10)
     public void testCharactersMinimumMaximumLengthEquals() {
         assertThat(faker.lorem().characters(5, 5), matchesRegularExpression("[a-z\\d]{5}"));
     }
 
-    @Test
-    @Repeat(times = 10)
+    @RepeatedTest(10)
     public void testCharactersMinimumMaximumLengthEqualsIncludingUppercaseAndIncludingDigit() {
         assertThat(faker.lorem().characters(8, 8, true, true), matchesRegularExpression("[a-zA-Z\\d]{8}"));
     }
@@ -164,8 +162,7 @@ public class LoremTest extends AbstractFakerTest {
         assertThat(faker.lorem().words(), hasSize(greaterThanOrEqualTo(1)));
     }
 
-    @Test
-    @Repeat(times = 10)
+    @RepeatedTest(10)
     public void testMaxLengthSentence() {
         Random rand = new Random();
         // Test different lengths over 10 runs
@@ -186,8 +183,7 @@ public class LoremTest extends AbstractFakerTest {
         assertEquals(s.length(), 0);
     }
 
-    @Test
-    @Repeat(times = 10)
+    @RepeatedTest(10)
     public void testSentences() {
         String paragraph = faker.lorem().paragraph();
 
@@ -195,8 +191,7 @@ public class LoremTest extends AbstractFakerTest {
         assertThat(matches, is(both(greaterThanOrEqualTo(3)).and(lessThanOrEqualTo(6))));
     }
 
-    @Test
-    @Repeat(times = 10)
+    @RepeatedTest(10)
     public void testSentencesWithCount() {
         String paragraph = faker.lorem().paragraph(1);
         System.out.println(paragraph);

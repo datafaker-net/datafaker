@@ -1,7 +1,7 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 
@@ -81,8 +81,7 @@ public class NameTest extends AbstractFakerTest {
         assertThat(faker.name().title(), matchesRegularExpression("(\\w+\\.?( )?){3}"));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testUsername() {
         assertThat(faker.name().username(), matchesRegularExpression("^(\\w+)\\.(\\w+)$"));
     }

@@ -1,7 +1,7 @@
 package net.datafaker.matchers;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -10,7 +10,7 @@ public class IsStringWithContentsTest {
 
     private IsStringWithContents matcher;
 
-    @Before
+    @BeforeEach
     public void before() {
         matcher = new IsStringWithContents();
     }

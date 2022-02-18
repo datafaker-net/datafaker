@@ -1,13 +1,13 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.CoreMatchers.is;
@@ -21,31 +21,17 @@ import static org.hamcrest.core.CombinableMatcher.both;
 /**
  * @author pmiklos
  */
-@RunWith(Parameterized.class)
 public class RandomServiceTest extends AbstractFakerTest {
 
-    private final RandomService randomService;
-
-    public RandomServiceTest(String ignoredTitle, RandomService service) {
-        this.randomService = service;
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    public void testPositiveBoundariesOnly(RandomService randomService) {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> randomService.nextLong(0L));
     }
 
-    @Parameterized.Parameters(name = "Created via {0}")
-    public static Collection<Object[]> data() {
-        Object[][] data = new Object[][]{
-                {"RandomService(Random)", new RandomService(new Random())},
-                {"RandomService()", new RandomService()}
-        };
-        return Arrays.asList(data);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testPositiveBoundariesOnly() {
-        randomService.nextLong(0L);
-    }
-
-    @Test
-    public void testLongWithinBoundary() {
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    public void testLongWithinBoundary(RandomService randomService) {
         assertThat(randomService.nextLong(1), is(0L));
 
         for (int i = 1; i < 10; i++) {
@@ -53,40 +39,52 @@ public class RandomServiceTest extends AbstractFakerTest {
         }
     }
 
-    @Test
-    public void testLongMaxBoundary() {
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    public void testLongMaxBoundary(RandomService randomService) {
         assertThat(randomService.nextLong(Long.MAX_VALUE), greaterThan(0L));
         assertThat(randomService.nextLong(Long.MAX_VALUE), lessThan(Long.MAX_VALUE));
     }
 
-    @Test
-    public void testIntInRange() {
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    public void testIntInRange(RandomService randomService) {
         for (int i = 1; i < 100; i++) {
             assertThat(randomService.nextInt(-5, 5), both(lessThanOrEqualTo(5)).and(greaterThanOrEqualTo(-5)));
         }
     }
 
-    @Test
-    public void testDoubleInRange() {
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    public void testDoubleInRange(RandomService randomService) {
         for (int i = 1; i < 100; i++) {
             assertThat(randomService.nextDouble(-5, 5), both(lessThanOrEqualTo(5.0)).and(greaterThanOrEqualTo(-5.0)));
         }
     }
 
-    @Test
-    public void testLongInRange() {
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    public void testLongInRange(RandomService randomService) {
         for (int i = 1; i < 1_000; i++) {
             assertThat(randomService.nextLong(-5_000_000_000L, 5_000_000_000L), both(lessThanOrEqualTo(5_000_000_000L)).and(greaterThanOrEqualTo(-5_000_000_000L)));
         }
     }
 
-    @Test
-    public void testHex() {
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    public void testHex(RandomService randomService) {
         assertThat(randomService.hex(8), matchesRegularExpression("^[0-9A-F]{8}$"));
     }
 
-    @Test
-    public void testDefaultHex() {
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    public void testDefaultHex(RandomService randomService) {
         assertThat(randomService.hex(), matchesRegularExpression("^[0-9A-F]{8}$"));
+    }
+
+    private static Stream<Arguments> randomServiceProvider() {
+        return Stream.of(
+                Arguments.of(new RandomService(), new RandomService(new Random()))
+        );
     }
 }

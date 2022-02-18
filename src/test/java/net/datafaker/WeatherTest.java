@@ -1,6 +1,6 @@
 package net.datafaker;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.CoreMatchers.not;

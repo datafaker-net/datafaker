@@ -1,6 +1,6 @@
 package net.datafaker;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -13,8 +13,8 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author pmiklos

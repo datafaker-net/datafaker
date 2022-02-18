@@ -31,7 +31,9 @@
         <generex.version>1.0.2</generex.version>
         <guava.version>31.0.1-jre</guava.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <junit.version>4.13.2</junit.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <jbanking.version>3.1.1</jbanking.version>
+        <junit.version>5.8.2</junit.version>
         <libphonenumber.version>8.12.43</libphonenumber.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -41,6 +43,7 @@
         <maven-javadoc-plugin.version>3.3.2</maven-javadoc-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <mockito-core.version>4.3.1</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.6.11</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
@@ -77,14 +80,32 @@
         </dependency>
         <!-- Test dependencies -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
             <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
@@ -103,7 +124,7 @@
         <dependency>
             <groupId>fr.marcwrobel</groupId>
             <artifactId>jbanking</artifactId>
-            <version>3.1.1</version>
+            <version>${jbanking.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -276,7 +297,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
+                <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -292,6 +313,20 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                    <systemPropertyVariables>
+                        <!-- Run tests in Turkish to make sure that they don't depend on
+                             locale. Turkish is a notoriously tricky locale. -->
+                        <user.language>TR</user.language>
+                        <user.country>tr</user.country>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
         </plugins>
     </build>

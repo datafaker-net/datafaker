@@ -1,10 +1,10 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
 import org.apache.commons.validator.routines.ISBNValidator;
 import org.apache.commons.validator.routines.checkdigit.EAN13CheckDigit;
 import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
@@ -19,8 +19,7 @@ public class CodeTest extends AbstractFakerTest {
 
     private static final ISBNValidator ISBN_VALIDATOR = ISBNValidator.getInstance(false);
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void isbn10DefaultIsNoSeparator() {
         String isbn10 = faker.code().isbn10();
 
@@ -28,8 +27,7 @@ public class CodeTest extends AbstractFakerTest {
         assertThat(isbn10, not(containsString("-")));
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void isbn13DefaultIsNoSeparator() {
         String isbn13 = faker.code().isbn13();
 
@@ -37,8 +35,7 @@ public class CodeTest extends AbstractFakerTest {
         assertThat(isbn13, not(containsString("-")));
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testIsbn10() {
         final String isbn10NoSep = faker.code().isbn10(false);
         final String isbn10Sep = faker.code().isbn10(true);
@@ -52,8 +49,7 @@ public class CodeTest extends AbstractFakerTest {
         assertIsValidISBN10(isbn10Sep);
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testIsbn13() {
         final String isbn13NoSep = faker.code().isbn13(false);
         final String isbn13Sep = faker.code().isbn13(true);
@@ -75,8 +71,7 @@ public class CodeTest extends AbstractFakerTest {
         assertThat(isbn13 + " is valid", ISBN_VALIDATOR.isValidISBN13(isbn13), is(true));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testOverrides() {
         Faker faker = new Faker(new Locale("test"));
 

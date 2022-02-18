@@ -1,13 +1,13 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PhotographyTest extends AbstractFakerTest {
 
@@ -53,15 +53,13 @@ public class PhotographyTest extends AbstractFakerTest {
         assertNonNullOrEmpty(value);
     }
 
-    @Test
-    @Repeat(times = 7)
+    @RepeatedTest(7)
     public void shutter() {
         final String value = faker.photography().shutter();
         assertThat(value, matchesRegularExpression("\\d{1,}\\/{0,1}\\d*"));
     }
 
-    @Test
-    @Repeat(times = 7)
+    @RepeatedTest(7)
     public void iso() {
         final String value = faker.photography().iso();
         assertThat(value, matchesRegularExpression("\\d{1,}"));

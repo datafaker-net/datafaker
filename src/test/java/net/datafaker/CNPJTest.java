@@ -1,14 +1,14 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
 import org.hamcrest.Matcher;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCNPJValid;
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class CNPJTest extends AbstractFakerTest {
@@ -16,8 +16,7 @@ public class CNPJTest extends AbstractFakerTest {
     /**
      * A valid CNPJ is either a real number or a generated valid number.
      */
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void isValidCNPJ() {
         assertTrue(isCNPJValid(faker.cnpj().valid()));
     }
@@ -25,8 +24,7 @@ public class CNPJTest extends AbstractFakerTest {
     /**
      * A invalid CNPJ is that does not meet the requirements of the algorithm
      */
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void isInvalidCNPJ() {
         CNPJ cnpj = faker.cnpj();
         assertFalse(isCNPJValid(cnpj.invalid()));

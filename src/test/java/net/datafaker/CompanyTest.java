@@ -1,7 +1,7 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -48,8 +48,7 @@ public class CompanyTest extends AbstractFakerTest {
         assertThat(faker.company().profession(), matchesRegularExpression("[a-z ]+"));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testUrl() {
         String regexp = "(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])";
         assertThat(faker.company().url(), matchesRegularExpression(regexp));

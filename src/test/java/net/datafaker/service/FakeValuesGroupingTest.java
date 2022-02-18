@@ -1,8 +1,8 @@
 package net.datafaker.service;
 
 import com.google.common.collect.Maps;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
@@ -17,7 +17,7 @@ public class FakeValuesGroupingTest {
     private FakeValuesGrouping fakeValuesGrouping;
     private FakeValues addressValues;
 
-    @Before
+    @BeforeEach
     public void before() {
         fakeValuesGrouping = new FakeValuesGrouping();
         addressValues = new FakeValues(Locale.ENGLISH, "address.yml", "address");

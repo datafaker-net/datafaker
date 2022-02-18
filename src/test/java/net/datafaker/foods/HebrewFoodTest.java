@@ -1,8 +1,8 @@
 package net.datafaker.foods;
 
 import net.datafaker.Faker;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
@@ -13,7 +13,7 @@ public class HebrewFoodTest {
     public final String matchHebrewFood = "[\\u0590-\\u05FF ']+";
     public static Faker food;
 
-    @Before
+    @BeforeEach
     public void before() {
         food = new Faker(new Locale("he"));
     }

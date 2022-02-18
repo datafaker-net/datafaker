@@ -1,7 +1,7 @@
 package net.datafaker;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -17,7 +17,7 @@ public class OptionsTest extends AbstractFakerTest {
 
     private String[] options;
 
-    @Before
+    @BeforeEach
     public void setupOptions() {
         options = new String[]{"A", "B", "C"};
     }

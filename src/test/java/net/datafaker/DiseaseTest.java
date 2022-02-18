@@ -1,12 +1,12 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import static net.datafaker.matchers.IsStringWithContents.isStringWithContents;
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DiseaseTest extends AbstractFakerTest {
     @Test
@@ -57,38 +57,32 @@ public class DiseaseTest extends AbstractFakerTest {
         assertTrue(isExist);
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testNeurologyWith1000Times() {
         assertThat(faker.disease().neurology(), isStringWithContents());
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testSurgeryWith1000Times() {
         assertThat(faker.disease().surgery(), isStringWithContents());
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testPaediatricsWith1000Times() {
         assertThat(faker.disease().paediatrics(), isStringWithContents());
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testGynecologyAndObstetricsWith1000Times() {
         assertThat(faker.disease().gynecologyAndObstetrics(), isStringWithContents());
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testOphthalmologyAndOtorhinolaryngologyWith1000Times() {
         assertThat(faker.disease().ophthalmologyAndOtorhinolaryngology(), isStringWithContents());
     }
 
-    @Test
-    @Repeat(times = 10000)
+    @RepeatedTest(10000)
     public void testDermatoloryWith10000Times() {
         assertThat(faker.disease().dermatolory(), isStringWithContents());
     }

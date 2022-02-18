@@ -1,7 +1,6 @@
 package net.datafaker.matchers;
 
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
@@ -23,7 +22,6 @@ public class MatchesRegularExpression extends TypeSafeMatcher<String> {
         description.appendText("to match the regular expression " + regularExpression);
     }
 
-    @Factory
     public static Matcher<String> matchesRegularExpression(String regularExpression) {
         return new MatchesRegularExpression(regularExpression);
     }

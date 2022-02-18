@@ -1,8 +1,8 @@
 package net.datafaker.integration;
 
 import net.datafaker.service.FakeValuesService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +22,7 @@ public class MostSpecificLocaleIT {
     private FakeValuesService en;
     private FakeValuesService en_US;
 
-    @Before
+    @BeforeEach
     public void setupFakers() {
         en = new FakeValuesService(new Locale("en"), null);
         en_US = new FakeValuesService(new Locale("en", "US"), null);

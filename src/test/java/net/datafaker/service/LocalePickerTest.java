@@ -1,10 +1,10 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.repeating.Repeat;
 import org.hamcrest.collection.IsEmptyCollection;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.Random;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocalePickerTest extends AbstractFakerTest {
 
@@ -26,7 +26,7 @@ public class LocalePickerTest extends AbstractFakerTest {
     /**
      * Initialize tests by instantiating a LocalePicker object and list of all supported locales
      */
-    @Before
+    @BeforeEach
     public void init() {
         localePicker = new LocalePicker();
         allLocales = localePicker.getAllSupportedLocales();
@@ -68,8 +68,7 @@ public class LocalePickerTest extends AbstractFakerTest {
      * Test to check LocalePicker's getLocaleString method. It verifies that the randomly selected
      * locale is within the set of all supported locales
      */
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testGetLocale() {
 
         Random random = new Random();

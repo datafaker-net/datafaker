@@ -1,7 +1,7 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 public class DomainTest extends AbstractFakerTest {
 
@@ -48,8 +48,7 @@ public class DomainTest extends AbstractFakerTest {
         }
     }
 
-    @Test
-    @Repeat(times = 10)
+    @RepeatedTest(10)
     public void testValidDomainNotNull() {
         String ret = faker.domain().validDomain("example");
         assert (ret != null);

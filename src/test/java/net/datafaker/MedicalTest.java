@@ -1,7 +1,7 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
@@ -64,8 +64,7 @@ public class MedicalTest extends AbstractFakerTest {
         }
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testProcedureCodes() {
         // will use icd-10-pcs - https://regex101.com/library/nJ1wC4
         String procedureCode = faker.medical().procedureCode();

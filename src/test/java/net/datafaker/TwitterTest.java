@@ -1,15 +1,15 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TwitterTest extends AbstractFakerTest {
 
@@ -38,8 +38,7 @@ public class TwitterTest extends AbstractFakerTest {
         assertEquals(generatedID.length(), expectedLength);
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testLongTwitterIdLength() {
         int expectedLength = 25;
         String generatedID = faker.twitter().twitterId(expectedLength);

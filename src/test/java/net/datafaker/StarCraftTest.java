@@ -1,7 +1,7 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,8 +19,7 @@ public class StarCraftTest extends AbstractFakerTest {
         assertThat(unit, matchesRegularExpression(noLeadingTrailingWhitespaceRegex));
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testUnitOneThousand() {
         String unit = faker.starCraft().unit();
         // System.out.println(unit);
@@ -49,8 +48,7 @@ public class StarCraftTest extends AbstractFakerTest {
         assertThat(planet, matchesRegularExpression(noLeadingTrailingWhitespaceRegex));
     }
 
-    @Test
-    @Repeat(times = 1000)
+    @RepeatedTest(1000)
     public void testPlanetOneThousand() {
         String planet = faker.starCraft().planet();
         // System.out.println(planet);

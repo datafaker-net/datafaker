@@ -1,7 +1,6 @@
 package net.datafaker.matchers;
 
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
@@ -20,7 +19,6 @@ public class IsStringWithContents extends TypeSafeMatcher<String> {
         description.appendText("is string with contents");
     }
 
-    @Factory
     public static Matcher<String> isStringWithContents() {
         return new IsStringWithContents();
     }

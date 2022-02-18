@@ -1,7 +1,6 @@
 package net.datafaker.matchers;
 
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
@@ -22,7 +21,6 @@ public class IsANumber extends TypeSafeMatcher<String> {
         description.appendText("is a number");
     }
 
-    @Factory
     public static <T> Matcher<String> isANumber() {
         return new IsANumber();
     }

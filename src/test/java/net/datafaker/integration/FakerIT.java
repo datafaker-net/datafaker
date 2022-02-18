@@ -3,21 +3,21 @@ package net.datafaker.integration;
 import com.google.common.collect.Maps;
 import net.datafaker.Faker;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
@@ -38,11 +38,9 @@ import static org.reflections.ReflectionUtils.withReturnType;
  * and that methods return values. The unit tests should ensure what the values returned
  * are correct. These tests just ensure that the methods can be invoked.
  */
-@RunWith(value = Parameterized.class)
 public class FakerIT {
-
-    private final Locale locale;
-    private final Faker faker;
+    private Faker faker;
+    private Locale locale;
 
     /**
      * a collection of Locales -> Exceptions.
@@ -66,7 +64,7 @@ public class FakerIT {
         exceptions.put(new Locale("pt", "Br", "x2"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
     }
 
-    public FakerIT(Locale locale, Random random) {
+    private void init(Locale locale, Random random) {
         this.locale = locale;
         if (locale != null && random != null) {
             faker = new Faker(locale, random);
@@ -79,33 +77,10 @@ public class FakerIT {
         }
     }
 
-    @Parameterized.Parameters(name = "testing locale {0} and random {1}")
-    public static Collection<Object[]> data() {
-        Object[][] data = new Object[][]{
-                {Locale.ENGLISH, new Random()},
-                {new Locale("pt-BR"), null},
-                {new Locale("pt-br"), null},
-                {new Locale("Pt_br"), null},
-                {new Locale("pT_Br"), null},
-                {new Locale("pt", "Br", "x2"), null},
-                {null, new Random()},
-                {null, null}};
-
-        String[] ymlFiles = new File("./src/main/resources").list();
-        int numberOfYmlFiles = ymlFiles.length;
-        Object[][] dataFromYmlFiles = new Object[numberOfYmlFiles][2];
-        for (int i = 0; i < numberOfYmlFiles; i++) {
-            String ymlFileName = ymlFiles[i];
-            dataFromYmlFiles[i][0] = new Locale(StringUtils.substringBefore(ymlFileName, "."));
-        }
-
-        List<Object[]> allData = new ArrayList<>(Arrays.asList(data));
-        allData.addAll(Arrays.asList(dataFromYmlFiles));
-        return allData;
-    }
-
-    @Test
-    public void testAllFakerMethodsThatReturnStrings() throws Exception {
+    @ParameterizedTest
+    @MethodSource("dataParameters")
+    public void testAllFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
+        init(locale, random);
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker);
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.address());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.ancient());
@@ -234,8 +209,10 @@ public class FakerIT {
         return classDotMethod.contains(object.getClass().getSimpleName() + "." + method.getName());
     }
 
-    @Test
-    public void testExceptionsNotCoveredInAboveTest() {
+    @ParameterizedTest
+    @MethodSource("dataParameters")
+    public void testExceptionsNotCoveredInAboveTest(Locale locale, Random random) {
+        init(locale, random);
         assertThat(faker.bothify("####???"), is(notNullValue()));
         assertThat(faker.letterify("????"), is(notNullValue()));
         assertThat(faker.numerify("####"), is(notNullValue()));
@@ -252,4 +229,21 @@ public class FakerIT {
         assertThat(faker.lorem().words(1), is(notNullValue()));
     }
 
+    private static Stream<Arguments> dataParameters() {
+        List<Arguments> arguments = new ArrayList<>();
+        arguments.add(Arguments.of(Locale.ENGLISH, new Random()));
+        arguments.add(Arguments.of(new Locale("pt-BR"), null));
+        arguments.add(Arguments.of(new Locale("pt-br"), null));
+        arguments.add(Arguments.of(new Locale("Pt_br"), null));
+        arguments.add(Arguments.of(new Locale("pt", "Br", "x2"), null));
+        arguments.add(Arguments.of(null, new Random()));
+        arguments.add(Arguments.of(null, null));
+
+        String[] ymlFiles = new File("./src/main/resources").list();
+        for (String ymlFileName : ymlFiles) {
+            arguments.add(Arguments.of(new Locale(StringUtils.substringBefore(ymlFileName, ".")), null));
+        }
+
+        return arguments.stream();
+    }
 }

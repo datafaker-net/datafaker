@@ -1,9 +1,7 @@
 package net.datafaker.script;
 
-import net.datafaker.Faker;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
-import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -87,7 +85,7 @@ public class ProviderGenerator {
 
         System.out.println("package net.datafaker;");
         System.out.println();
-        System.out.println("import org.junit.Test;");
+        System.out.println("import org.junit.jupiter.api.Test;");
         System.out.println("import static org.hamcrest.MatcherAssert.assertThat;");
         System.out.println("import static org.hamcrest.Matchers.is;");
         System.out.println("import static org.hamcrest.Matchers.not;");

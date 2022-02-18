@@ -1,11 +1,8 @@
 package net.datafaker;
 
-import net.datafaker.repeating.RepeatRule;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -14,12 +11,9 @@ import java.util.logging.Logger;
 
 public class AbstractFakerTest {
 
-    @Rule
-    public RepeatRule repeatRule = new RepeatRule();
-
     protected static Faker faker;
 
-    @Before
+    @BeforeEach
     public void before() {
         MockitoAnnotations.openMocks(this);
 
@@ -31,7 +25,7 @@ public class AbstractFakerTest {
         }
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         faker = new Faker();
     }

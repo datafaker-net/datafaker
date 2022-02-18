@@ -4,8 +4,8 @@ import net.datafaker.AbstractFakerTest;
 import net.datafaker.Faker;
 import net.datafaker.Superhero;
 import org.hamcrest.core.Is;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.oneOf;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -48,7 +48,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
 
     private FakeValuesService fakeValuesService;
 
-    @Before
+    @BeforeEach
     public void before() {
         super.before();
         MockitoAnnotations.openMocks(this);

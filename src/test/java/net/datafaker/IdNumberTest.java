@@ -1,7 +1,7 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
@@ -57,26 +57,22 @@ public class IdNumberTest extends AbstractFakerTest {
         }
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testSingaporeanFin() {
         assertThat(faker.idNumber().singaporeanFin(), matchesRegularExpression("G[0-9]{7}[A-Z]"));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testSingaporeanFinBefore2000() {
         assertThat(faker.idNumber().singaporeanFinBefore2000(), matchesRegularExpression("F[0-9]{7}[A-Z]"));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testSingaporeanUin() {
         assertThat(faker.idNumber().singaporeanUin(), matchesRegularExpression("T[0-9]{7}[A-Z]"));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void testSingaporeanUinBefore2000() {
         assertThat(faker.idNumber().singaporeanUinBefore2000(), matchesRegularExpression("S[0-9]{7}[A-Z]"));
     }

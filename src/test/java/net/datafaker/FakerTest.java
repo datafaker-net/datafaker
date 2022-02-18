@@ -1,7 +1,8 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Locale;
@@ -14,7 +15,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
 
 public class FakerTest extends AbstractFakerTest {
 
@@ -147,19 +147,19 @@ public class FakerTest extends AbstractFakerTest {
         assertThat(faker.regexify("\\.\\*\\?\\+"), matchesRegularExpression("\\.\\*\\?\\+"));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void badExpressionTooManyArgs() {
-        faker.expression("#{regexify 'a','a'}");
+        Assertions.assertThrows(RuntimeException.class, () -> faker.expression("#{regexify 'a','a'}"));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void badExpressionTooFewArgs() {
-        faker.expression("#{regexify}");
+        Assertions.assertThrows(RuntimeException.class, () -> faker.expression("#{regexify}"));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void badExpressionCouldntCoerce() {
-        faker.expression("#{number.number_between 'x','10'}");
+        Assertions.assertThrows(RuntimeException.class, () -> faker.expression("#{number.number_between 'x','10'}"));
     }
 
     @Test
@@ -181,8 +181,7 @@ public class FakerTest extends AbstractFakerTest {
                 matchesRegularExpression("[0-9]{2} [0-9]{3} [0-9]{2}:[0-9]{2}:[0-9]{2}"));
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void numberBetweenRepeated() {
         assertThat(faker.expression("#{number.number_between '1','10'}"), matchesRegularExpression("[1-9]"));
     }
@@ -203,10 +202,9 @@ public class FakerTest extends AbstractFakerTest {
         assertThat(faker.resolve("address.city_prefix"), not(is(emptyString())));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void resolveShouldThrowExceptionWhenPropertyDoesntExist() {
-        final String resolve = faker.resolve("address.nothing");
-        assertThat(resolve, is(nullValue()));
+        Assertions.assertThrows(RuntimeException.class, () -> faker.resolve("address.nothing"));
     }
 
     @Test

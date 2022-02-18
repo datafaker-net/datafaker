@@ -1,8 +1,9 @@
 package net.datafaker;
 
-import net.datafaker.repeating.Repeat;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,20 +12,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 public class RelationshipTest extends AbstractFakerTest {
 
     private Faker mockFaker;
 
-    @Before
+    @BeforeEach
     public void before() {
         super.before();
         mockFaker = Mockito.mock(Faker.class);
     }
 
-    @Test
-    @Repeat(times = 100)
+    @RepeatedTest(100)
     public void anyTest() {
         assertThat(faker.relationships().any(), not(is(emptyOrNullString())));
     }
@@ -59,28 +60,34 @@ public class RelationshipTest extends AbstractFakerTest {
         assertThat(faker.relationships().sibling(), not(is(emptyOrNullString())));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void anyWithIllegalArgumentExceptionThrown() {
         when(mockFaker.random()).thenThrow(new IllegalArgumentException());
-        new Relationship(mockFaker).any();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Relationship(mockFaker).any());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void anyWithSecurityExceptionThrown() {
         when(mockFaker.random()).thenThrow(new SecurityException());
-        new Relationship(mockFaker).any();
+        Assertions.assertThrows(SecurityException.class, () -> new Relationship(mockFaker).any());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void anyWithIllegalAccessExceptionThrown() {
-        when(mockFaker.random()).thenThrow(new IllegalAccessException());
-        new Relationship(mockFaker).any();
+        when(mockFaker.random()).then(invocationOnMock -> {
+            throw new IllegalAccessException();
+        });
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> new Relationship(mockFaker).any());
+        assertTrue(exception.getMessage().startsWith("IllegalAccessException: "));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void anyWithInvocationTargetExceptionThrown() {
-        when(mockFaker.random()).thenThrow(new InvocationTargetException(new Exception()));
-        new Relationship(mockFaker).any();
+        when(mockFaker.random()).then(invocationOnMock -> {
+            throw new InvocationTargetException(new Exception());
+        });
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> new Relationship(mockFaker).any());
+        assertTrue(exception.getMessage().startsWith("InvocationTargetException: "));
     }
 
 }

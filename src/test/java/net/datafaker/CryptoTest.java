@@ -1,9 +1,6 @@
 package net.datafaker;
 
-import org.junit.Test;
-
-import java.security.Security;
-import java.util.Arrays;
+import org.junit.jupiter.api.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
