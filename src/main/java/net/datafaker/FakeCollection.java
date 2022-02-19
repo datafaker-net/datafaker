@@ -23,7 +23,7 @@ public class FakeCollection<T> {
         return result;
     }
 
-    public FakeCollection(List<Supplier<T>> suppliers, int minLength, int maxLength) {
+    private FakeCollection(List<Supplier<T>> suppliers, int minLength, int maxLength) {
         this.suppliers = suppliers;
         this.minLength = minLength;
         this.maxLength = maxLength;
