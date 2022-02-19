@@ -1,5 +1,6 @@
-package net.datafaker;
+package net.datafaker.fileformats;
 
+import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

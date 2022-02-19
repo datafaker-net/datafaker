@@ -1,4 +1,4 @@
-package net.datafaker;
+package net.datafaker.fileformats;
 
 import java.util.ArrayList;
 import java.util.Arrays;
