@@ -44,7 +44,7 @@ public class PeselNumber {
 	digits[7] = randomDigit();
 	digits[8] = randomDigit();
 
-	digits[9] = getGenderDigit(faker, gender);
+	digits[9] = getGenderDigit(gender);
 
 	final int controlDigit = getControlDigit(digits);
 
@@ -66,12 +66,12 @@ public class PeselNumber {
 	return (10 - sum % 10) % 10;
     }
 
-    private int getGenderDigit(Faker f, Gender gender) {
+    private int getGenderDigit(Gender gender) {
 	switch (gender) {
 	case FEMALE:
-	    return f.random().nextInt(5) * 2;
+	    return faker.random().nextInt(5) * 2;
 	case MALE:
-	    return f.random().nextInt(5) * 2 + 1;
+	    return faker.random().nextInt(5) * 2 + 1;
 	default:
 	    return randomDigit();
 	}
