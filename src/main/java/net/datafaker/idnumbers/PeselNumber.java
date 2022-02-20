@@ -2,6 +2,7 @@ package net.datafaker.idnumbers;
 
 import java.time.LocalDate;
 import java.util.Optional;
+
 import net.datafaker.Faker;
 
 /**
@@ -16,84 +17,84 @@ public class PeselNumber {
     private final Faker faker;
 
     public enum Gender {
-	MALE, FEMALE, ANY;
-    }
+        MALE, FEMALE, ANY
+	}
 
     public PeselNumber(Faker faker) {
-	super();
-	this.faker = faker;
+        super();
+        this.faker = faker;
     }
 
     public String get(LocalDate birthDate, Gender gender) {
-	return getInternal(birthDate, Optional.ofNullable(gender).orElse(Gender.ANY));
+        return getInternal(birthDate, Optional.ofNullable(gender).orElse(Gender.ANY));
     }
 
     private String getInternal(LocalDate birthDate, Gender gender) {
-	final int[] digits = new int[PESEL_LENGTH - 1];
-	digits[0] = birthDate.getYear() / 10 % 10;
-	digits[1] = birthDate.getYear() % 10;
+        final int[] digits = new int[PESEL_LENGTH - 1];
+        digits[0] = birthDate.getYear() / 10 % 10;
+        digits[1] = birthDate.getYear() % 10;
 
-	int monthEncoded = getMonthEncoded(birthDate.getYear(), birthDate.getMonthValue());
-	digits[2] = monthEncoded / 10;
-	digits[3] = monthEncoded % 10;
+        int monthEncoded = getMonthEncoded(birthDate.getYear(), birthDate.getMonthValue());
+        digits[2] = monthEncoded / 10;
+        digits[3] = monthEncoded % 10;
 
-	digits[4] = birthDate.getDayOfMonth() / 10;
-	digits[5] = birthDate.getDayOfMonth() % 10;
+        digits[4] = birthDate.getDayOfMonth() / 10;
+        digits[5] = birthDate.getDayOfMonth() % 10;
 
-	digits[6] = randomDigit();
-	digits[7] = randomDigit();
-	digits[8] = randomDigit();
+        digits[6] = randomDigit();
+        digits[7] = randomDigit();
+        digits[8] = randomDigit();
 
-	digits[9] = getGenderDigit(gender);
+        digits[9] = getGenderDigit(gender);
 
-	final int controlDigit = getControlDigit(digits);
+        final int controlDigit = getControlDigit(digits);
 
-	final StringBuilder peselSb = new StringBuilder(PESEL_LENGTH);
-	for (int i = 0; i < digits.length; i++) {
-	    peselSb.append(digits[i]);
-	}
-	peselSb.append(controlDigit);
-	return peselSb.toString();
+        final StringBuilder peselSb = new StringBuilder(PESEL_LENGTH);
+		for (int digit : digits) {
+			peselSb.append(digit);
+		}
+        peselSb.append(controlDigit);
+        return peselSb.toString();
     }
 
     private int randomDigit() {
-	return faker.random().nextInt(10);
+        return faker.random().nextInt(10);
     }
 
     private int getControlDigit(int[] digits) {
-	final int sum = digits[0] + digits[4] + digits[8] + (digits[1] + digits[5] + digits[9]) * 3
-		+ (digits[2] + digits[6]) * 7 + (digits[3] + digits[7]) * 9;
-	return (10 - sum % 10) % 10;
+        final int sum = digits[0] + digits[4] + digits[8] + (digits[1] + digits[5] + digits[9]) * 3
+                + (digits[2] + digits[6]) * 7 + (digits[3] + digits[7]) * 9;
+        return (10 - sum % 10) % 10;
     }
 
     private int getGenderDigit(Gender gender) {
-	switch (gender) {
-	case FEMALE:
-	    return faker.random().nextInt(5) * 2;
-	case MALE:
-	    return faker.random().nextInt(5) * 2 + 1;
-	default:
-	    return randomDigit();
-	}
+        switch (gender) {
+            case FEMALE:
+                return faker.random().nextInt(5) * 2;
+            case MALE:
+                return faker.random().nextInt(5) * 2 + 1;
+            default:
+                return randomDigit();
+        }
     }
 
     private int getMonthEncoded(int year, int month) {
-	final int monthModifier;
-	if (year < 1800) {
-	    throw new IllegalArgumentException("Year is before 1800");
-	} else if (year < 1900) {
-	    monthModifier = 80;
-	} else if (year < 2000) {
-	    monthModifier = 0;
-	} else if (year < 2100) {
-	    monthModifier = 20;
-	} else if (year < 2200) {
-	    monthModifier = 40;
-	} else if (year < 2300) {
-	    monthModifier = 60;
-	} else {
-	    throw new IllegalArgumentException("Year is after 2300");
-	}
-	return month + monthModifier;
+        final int monthModifier;
+        if (year < 1800) {
+            throw new IllegalArgumentException("Year is before 1800");
+        } else if (year < 1900) {
+            monthModifier = 80;
+        } else if (year < 2000) {
+            monthModifier = 0;
+        } else if (year < 2100) {
+            monthModifier = 20;
+        } else if (year < 2200) {
+            monthModifier = 40;
+        } else if (year < 2300) {
+            monthModifier = 60;
+        } else {
+            throw new IllegalArgumentException("Year is after 2300");
+        }
+        return month + monthModifier;
     }
 }

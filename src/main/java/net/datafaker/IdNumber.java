@@ -138,7 +138,7 @@ public class IdNumber {
      * Generates a valid PESEL number for a person with given gender and birth date.
      *
      * @param birthDate Given birth date
-     * @param gender    Person's gender. Null value means {@link Gender.ANY}
+     * @param gender    Person's gender. Null value means {@link Gender#ANY}
      * @return A valid PESEL number
      */
     public String peselNumber(LocalDate birthDate, Gender gender) {
