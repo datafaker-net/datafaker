@@ -29,36 +29,29 @@ public class PeselNumber {
     }
 
     private String getInternal(LocalDate birthDate, Gender gender) {
-	final int yearDigit2 = birthDate.getYear() / 10 % 10;
-	final int yearDigit1 = birthDate.getYear() % 10;
+	final int[] digits = new int[PESEL_LENGTH - 1];
+	digits[0] = birthDate.getYear() / 10 % 10;
+	digits[1] = birthDate.getYear() % 10;
 
 	int monthEncoded = getMonthEncoded(birthDate.getYear(), birthDate.getMonthValue());
-	final int monthDigit2 = monthEncoded / 10;
-	final int monthDigit1 = monthEncoded % 10;
+	digits[2] = monthEncoded / 10;
+	digits[3] = monthEncoded % 10;
 
-	final int dayDigit2 = birthDate.getDayOfMonth() / 10;
-	final int dayDigit1 = birthDate.getDayOfMonth() % 10;
+	digits[4] = birthDate.getDayOfMonth() / 10;
+	digits[5] = birthDate.getDayOfMonth() % 10;
 
-	final int uinDigit3 = randomDigit();
-	final int uinDigit2 = randomDigit();
-	final int uinDigit1 = randomDigit();
+	digits[6] = randomDigit();
+	digits[7] = randomDigit();
+	digits[8] = randomDigit();
 
-	final int genderDigit = getGenderDigit(faker, gender);
+	digits[9] = getGenderDigit(faker, gender);
 
-	final int controlDigit = getControlDigit(yearDigit2, yearDigit1, monthDigit2, monthDigit1, dayDigit2, dayDigit1,
-		uinDigit3, uinDigit2, uinDigit1, genderDigit);
+	final int controlDigit = getControlDigit(digits);
 
 	final StringBuilder peselSb = new StringBuilder(PESEL_LENGTH);
-	peselSb.append(yearDigit2);
-	peselSb.append(yearDigit1);
-	peselSb.append(monthDigit2);
-	peselSb.append(monthDigit1);
-	peselSb.append(dayDigit2);
-	peselSb.append(dayDigit1);
-	peselSb.append(uinDigit3);
-	peselSb.append(uinDigit2);
-	peselSb.append(uinDigit1);
-	peselSb.append(genderDigit);
+	for (int i = 0; i < digits.length; i++) {
+	    peselSb.append(digits[i]);
+	}
 	peselSb.append(controlDigit);
 	return peselSb.toString();
     }
@@ -67,10 +60,9 @@ public class PeselNumber {
 	return faker.random().nextInt(10);
     }
 
-    private int getControlDigit(int yearDigit2, int yearDigit1, int monthDigit2, int monthDigit1, int dayDigit2,
-	    int dayDigit1, int uinDigit3, int uinDigit2, int uinDigit1, int genderDigit) {
-	final int sum = yearDigit2 + dayDigit2 + uinDigit1 + (yearDigit1 + dayDigit1 + genderDigit) * 3
-		+ (monthDigit2 + uinDigit3) * 7 + (monthDigit1 + uinDigit2) * 9;
+    private int getControlDigit(int[] digits) {
+	final int sum = digits[0] + digits[4] + digits[8] + (digits[1] + digits[5] + digits[9]) * 3
+		+ (digits[2] + digits[6]) * 7 + (digits[3] + digits[7]) * 9;
 	return (10 - sum % 10) % 10;
     }
 
