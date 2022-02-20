@@ -33,7 +33,7 @@ public class PeselNumber {
 	final int yearDigit1 = birthDate.getYear() % 10;
 
 	int monthEncoded = getMonthEncoded(birthDate.getYear(), birthDate.getMonthValue());
-	final int monthDigit2 = monthEncoded / 10 % 10;
+	final int monthDigit2 = monthEncoded / 10;
 	final int monthDigit1 = monthEncoded % 10;
 
 	final int dayDigit2 = birthDate.getDayOfMonth() / 10;
