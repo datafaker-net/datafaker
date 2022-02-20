@@ -76,4 +76,9 @@ public class IdNumberTest extends AbstractFakerTest {
     public void testSingaporeanUinBefore2000() {
         assertThat(faker.idNumber().singaporeanUinBefore2000(), matchesRegularExpression("S[0-9]{7}[A-Z]"));
     }
+
+    @RepeatedTest(100)
+    public void testPeselNumber() {
+        assertThat(faker.idNumber().peselNumber(), matchesRegularExpression("[0-9]{11}"));
+    }
 }

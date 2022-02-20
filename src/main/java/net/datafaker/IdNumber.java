@@ -1,11 +1,15 @@
 package net.datafaker;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import net.datafaker.idnumbers.EnIdNumber;
-import net.datafaker.idnumbers.NricNumber;
-import net.datafaker.idnumbers.NricNumber.Type;
-import net.datafaker.idnumbers.PtNifIdNumber;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.EsMXIdNumber;
+import net.datafaker.idnumbers.NricNumber;
+import net.datafaker.idnumbers.NricNumber.Type;
+import net.datafaker.idnumbers.PeselNumber;
+import net.datafaker.idnumbers.PeselNumber.Gender;
+import net.datafaker.idnumbers.PtNifIdNumber;
 import net.datafaker.idnumbers.SvSEIdNumber;
 import net.datafaker.idnumbers.ZhCnIdNumber;
 
@@ -119,4 +123,25 @@ public class IdNumber {
         return esMXIdNumber.getWrong(faker);
     }
 
+    /**
+     * Generates a valid PESEL number for a person of random gender and age between
+     * 0 and 100.
+     *
+     * @return A valid PESEL number
+     */
+    public String peselNumber() {
+	return peselNumber(faker.date().birthday(0, 100).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+		Gender.ANY);
+    }
+
+    /**
+     * Generates a valid PESEL number for a person with given gender and birth date.
+     *
+     * @param birthDate Given birth date
+     * @param gender    Person's gender. Null value means {@link Gender.ANY}
+     * @return A valid PESEL number
+     */
+    public String peselNumber(LocalDate birthDate, Gender gender) {
+	return new PeselNumber(faker).get(birthDate, gender);
+    }
 }
