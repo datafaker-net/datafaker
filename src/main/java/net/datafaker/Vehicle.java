@@ -64,8 +64,8 @@ public class Vehicle {
 
     public String engine() {
         return faker.resolve("vehicle.engine_sizes")
-                + " "
-                + faker.resolve("vehicle.cylinder_engine");
+            + " "
+            + faker.resolve("vehicle.cylinder_engine");
     }
 
     public List<String> carOptions() {

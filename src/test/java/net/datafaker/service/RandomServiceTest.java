@@ -84,7 +84,7 @@ public class RandomServiceTest extends AbstractFakerTest {
 
     private static Stream<Arguments> randomServiceProvider() {
         return Stream.of(
-                Arguments.of(new RandomService(), new RandomService(new Random()))
+            Arguments.of(new RandomService(), new RandomService(new Random()))
         );
     }
 }

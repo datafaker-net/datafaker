@@ -47,13 +47,13 @@ public class PhoneNumberValidityFinderTest {
     }
 
     @Test
-    public void testAllPhoneNumbers()  {
+    public void testAllPhoneNumbers() {
         List<String> allSupportedLocales = new LocalePicker().getAllSupportedLocales();
         Map<Locale, Integer> errorCounts = new HashMap<>();
 
         for (String supportedLocale : allSupportedLocales) {
             String country = supportedLocale;
-            if(supportedLocale.contains("-")) {
+            if (supportedLocale.contains("-")) {
                 country = supportedLocale.split("-")[1];
                 supportedLocale = supportedLocale.split("-")[0];
             }
@@ -68,7 +68,7 @@ public class PhoneNumberValidityFinderTest {
                 try {
                     Phonenumber.PhoneNumber proto = util.parse(phoneNumber, country.toUpperCase());
 
-                    if(!util.isValidNumber(proto)) {
+                    if (!util.isValidNumber(proto)) {
                         errorCount++;
                     }
                 } catch (Exception e) {
@@ -80,8 +80,8 @@ public class PhoneNumberValidityFinderTest {
 
         // sort by error count
         errorCounts.entrySet().stream()
-                .filter(e -> e.getValue() > 50)
-                .sorted(Map.Entry.comparingByValue())
-                .forEach(System.out::println);
+            .filter(e -> e.getValue() > 50)
+            .sorted(Map.Entry.comparingByValue())
+            .forEach(System.out::println);
     }
 }

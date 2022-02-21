@@ -34,7 +34,9 @@ public class RandomService {
     }
 
     @SuppressWarnings("unused")
-    public float nextFloat() { return random.nextFloat();}
+    public float nextFloat() {
+        return random.nextFloat();
+    }
 
     public long nextLong() {
         return random.nextLong();

@@ -9,7 +9,8 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  * CGC (short for Cadastro Geral de Contribuintes in Portuguese, or 'General Taxpayers Registry').
  * At the end of 2003 it gained a new impulse by sharing and integrating registration data and fiscal information between States and the Union.
  * In 2009 the MEI (Microempreendedor Individual in Portuguese, or 'Individual Microentrepreneur') was created to supply market demand.
- * @see  <a href="https://en.wikipedia.org/wiki/CNPJ">CNPJ</a>
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/CNPJ">CNPJ</a>
  */
 public class CNPJ {
 
@@ -26,7 +27,7 @@ public class CNPJ {
      * @see IdNumberGeneratorPtBrUtil#cnpj(Faker, boolean, boolean)
      */
     public String valid() {
-        return IdNumberGeneratorPtBrUtil.cnpj(faker,true, true);
+        return IdNumberGeneratorPtBrUtil.cnpj(faker, true, true);
     }
 
     /**
@@ -47,7 +48,7 @@ public class CNPJ {
      * @see IdNumberGeneratorPtBrUtil#cnpj(Faker, boolean, boolean)
      */
     public String invalid() {
-        return IdNumberGeneratorPtBrUtil.cnpj(faker,true, false);
+        return IdNumberGeneratorPtBrUtil.cnpj(faker, true, false);
     }
 
     /**

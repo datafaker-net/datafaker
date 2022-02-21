@@ -15,12 +15,12 @@ public class CsvTest extends AbstractFakerTest {
         String separator = "@@@";
         int limit = 20;
         String csv = new Csv.CsvBuilder()
-                .columns(Csv.Column.of("first_name", () -> faker.name().firstName()),
-                        Csv.Column.of("last_name", () -> faker.name().lastName()),
-                        Csv.Column.of("address", () -> faker.address().streetAddress()))
-                .header(true)
-                .separator(separator)
-                .limit(limit).build().get();
+            .columns(Csv.Column.of("first_name", () -> faker.name().firstName()),
+                Csv.Column.of("last_name", () -> faker.name().lastName()),
+                Csv.Column.of("address", () -> faker.address().streetAddress()))
+            .header(true)
+            .separator(separator)
+            .limit(limit).build().get();
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
@@ -43,11 +43,11 @@ public class CsvTest extends AbstractFakerTest {
         columns.add(Csv.Column.of("first_name", () -> faker.expression("#{Name.first_name}")));
         columns.add(Csv.Column.of("last_name", () -> faker.expression("#{Name.last_name}")));
         String csv = new Csv.CsvBuilder()
-                .columns(columns)
-                .header(true)
-                .separator(separator)
-                .quote('%')
-                .limit(limit).build().get();
+            .columns(columns)
+            .header(true)
+            .separator(separator)
+            .quote('%')
+            .limit(limit).build().get();
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
@@ -65,15 +65,15 @@ public class CsvTest extends AbstractFakerTest {
     @Test
     public void testCsvWithComma() {
         String csv = new Csv.CsvBuilder()
-                .columns(
-                        Csv.Column.of("values", () -> "1,2,3"),
-                        Csv.Column.of("title", () -> "The \"fabulous\" artist"))
-                .header(true)
-                .separator(",")
-                .limit(1).build().get();
+            .columns(
+                Csv.Column.of("values", () -> "1,2,3"),
+                Csv.Column.of("title", () -> "The \"fabulous\" artist"))
+            .header(true)
+            .separator(",")
+            .limit(1).build().get();
 
         String expected = "\"values\",\"title\"" + System.lineSeparator() +
-                "\"1,2,3\",\"The \"\"fabulous\"\" artist\"" + System.lineSeparator();
+            "\"1,2,3\",\"The \"\"fabulous\"\" artist\"" + System.lineSeparator();
 
         assertEquals(csv, expected);
     }

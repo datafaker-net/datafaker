@@ -240,13 +240,13 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
     @Test
     public void expressionWithInvalidFakerObject() {
         expressionShouldFailWith("#{ObjectNotOnFaker.methodName}",
-                "Unable to resolve #{ObjectNotOnFaker.methodName} directive.");
+            "Unable to resolve #{ObjectNotOnFaker.methodName} directive.");
     }
 
     @Test
     public void expressionWithValidFakerObjectButInvalidMethod() {
         expressionShouldFailWith("#{Name.nonExistentMethod}",
-                "Unable to resolve #{Name.nonExistentMethod} directive.");
+            "Unable to resolve #{Name.nonExistentMethod} directive.");
     }
 
     /**
@@ -260,7 +260,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
     @Test
     public void expressionWithValidFakerObjectValidMethodInvalidArgs() {
         expressionShouldFailWith("#{Number.number_between 'x','y'}",
-                "Unable to resolve #{Number.number_between 'x','y'} directive.");
+            "Unable to resolve #{Number.number_between 'x','y'} directive.");
     }
 
     @Test
@@ -293,7 +293,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
     public void expressionWithFourArguments() {
 
         assertThat(fakeValuesService.expression("#{Internet.password '5','8','true','true'}", faker),
-                matchesRegularExpression("[\\w\\d\\!%#$@_\\^&\\*]{5,8}"));
+            matchesRegularExpression("[\\w\\d\\!%#$@_\\^&\\*]{5,8}"));
     }
 
     /**

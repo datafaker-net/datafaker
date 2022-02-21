@@ -69,9 +69,9 @@ public class Company {
 
     public String url() {
         return String.join(".",
-                "www",
-                FakerIDN.toASCII(domainName()),
-                domainSuffix()
+            "www",
+            FakerIDN.toASCII(domainName()),
+            domainSuffix()
         );
     }
 

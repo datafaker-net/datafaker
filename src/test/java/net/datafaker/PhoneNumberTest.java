@@ -30,14 +30,12 @@ public class PhoneNumberTest extends AbstractFakerTest {
     }
 
 
-
     @RepeatedTest(100)
     public void testAllCellPhone_enUS() throws NumberParseException {
         String phoneNumber = US_FAKER.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "US");
         assertTrue(util.isValidNumberForRegion(proto, "US"), phoneNumber);
     }
-
 
 
     @RepeatedTest(100)
@@ -48,7 +46,6 @@ public class PhoneNumberTest extends AbstractFakerTest {
     }
 
 
-
     @RepeatedTest(100)
     public void testAllCellPhone_csCZ() throws NumberParseException {
         String phoneNumber = CZ_FAKER.phoneNumber().phoneNumber();
@@ -57,16 +54,15 @@ public class PhoneNumberTest extends AbstractFakerTest {
     }
 
 
-
     @Test
     public void testAllCellPhone_enGB() throws NumberParseException {
 
         int errorCount = 0;
-        for(int i= 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             String phoneNumber = GB_FAKER.phoneNumber().phoneNumber();
             Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "GB");
             if (!util.isValidNumberForRegion(proto, "GB")) {
-                errorCount ++;
+                errorCount++;
             }
         }
 
@@ -75,24 +71,22 @@ public class PhoneNumberTest extends AbstractFakerTest {
     }
 
 
-
     @Test
     public void testAllCellPhone_nbNO() throws NumberParseException {
         int errorCount = 0;
 
-        for(int i= 0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             String phoneNumber = NO_FAKER.phoneNumber().phoneNumber();
             Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "NO");
 
             if (!util.isValidNumberForRegion(proto, "NO")) {
-                errorCount ++;
+                errorCount++;
             }
         }
 
         // Not perfect yet, but should be good enough
         assertTrue(errorCount < 250);
     }
-
 
 
     @RepeatedTest(100)
@@ -117,13 +111,13 @@ public class PhoneNumberTest extends AbstractFakerTest {
         for (Locale locale : locales) {
             final Faker f = new Faker(locale);
             final String canadianAreaCode = "403|587|780|825|236|250|604|672|778|204|431|506|"
-                    + "709|782|902|226|249|289|343|365|416|437|519|548|613|647|705|807|905|367|"
-                    + "418|438|450|514|579|581|819|873|306|639|867";
+                + "709|782|902|226|249|289|343|365|416|437|519|548|613|647|705|807|905|367|"
+                + "418|438|450|514|579|581|819|873|306|639|867";
             for (int i = 0; i < 100; i++) {
                 assertThat(f.phoneNumber().cellPhone(),
-                        matchesRegularExpression(
-                                String.format("((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}",
-                                        canadianAreaCode, canadianAreaCode)));
+                    matchesRegularExpression(
+                        String.format("((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}",
+                            canadianAreaCode, canadianAreaCode)));
             }
         }
     }

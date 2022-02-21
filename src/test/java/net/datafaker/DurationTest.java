@@ -21,9 +21,9 @@ public class DurationTest extends AbstractFakerTest {
         Duration upperBound = Duration.ofSeconds(maxSeconds);
 
         assertThat(randomDuration.compareTo(lowerBound), anyOf(
-                is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
+            is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
         assertThat(randomDuration.compareTo(upperBound), anyOf(
-                is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
+            is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
     }
 
     @Test
@@ -34,9 +34,9 @@ public class DurationTest extends AbstractFakerTest {
         Duration upperBound = Duration.ofMinutes(maxMins);
 
         assertThat(randomDuration.compareTo(lowerBound), anyOf(
-                is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
+            is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
         assertThat(randomDuration.compareTo(upperBound), anyOf(
-                is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
+            is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
     }
 
     @Test
@@ -47,9 +47,9 @@ public class DurationTest extends AbstractFakerTest {
         Duration upperBound = Duration.ofHours(maxHours);
 
         assertThat(randomDuration.compareTo(lowerBound), anyOf(
-                is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
+            is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
         assertThat(randomDuration.compareTo(upperBound), anyOf(
-                is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
+            is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
     }
 
     @Test
@@ -60,9 +60,9 @@ public class DurationTest extends AbstractFakerTest {
         Duration upperBound = Duration.ofDays(maxDays);
 
         assertThat(randomDuration.compareTo(lowerBound), anyOf(
-                is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
+            is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
         assertThat(randomDuration.compareTo(upperBound), anyOf(
-                is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
+            is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
     }
 
 }

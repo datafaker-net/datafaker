@@ -161,6 +161,7 @@ public class AddressTest extends AbstractFakerTest {
     public void testCityPrefix() {
         assertThat(faker.address().cityPrefix(), isStringWithContents());
     }
+
     @Test
     public void testCitySuffix() {
         assertThat(faker.address().citySuffix(), isStringWithContents());

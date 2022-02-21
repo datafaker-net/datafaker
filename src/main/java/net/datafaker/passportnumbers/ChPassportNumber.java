@@ -4,8 +4,8 @@ import net.datafaker.Faker;
 
 public class ChPassportNumber {
     private static final String[] validCHPatterns = {
-            "E[0-9][0-9]{7}",
-            "G[0-9]{8}"};
+        "E[0-9][0-9]{7}",
+        "G[0-9]{8}"};
 
     /**
      * Generates a valid Chinese passport number

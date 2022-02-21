@@ -37,7 +37,7 @@ public class PassportTest extends AbstractFakerTest {
     @Test
     public void testChInValid() {
         assertFalse(faker.passport().chInvalid().matches("E[0-9A-HJ-NP-Z][0-9]{7}")
-                && faker.passport().chInvalid().matches("G[0-9]{8}"));
+            && faker.passport().chInvalid().matches("G[0-9]{8}"));
     }
 
     @Test

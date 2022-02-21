@@ -43,8 +43,8 @@ public class Relationship {
 
         try {
             Method[] methods = Arrays.stream(Relationship.class.getDeclaredMethods())
-                    .filter(declaredMethod -> !declaredMethod.getName().equals(currentMethodName) && Modifier.isPublic(declaredMethod.getModifiers()))
-                    .toArray(Method[]::new);
+                .filter(declaredMethod -> !declaredMethod.getName().equals(currentMethodName) && Modifier.isPublic(declaredMethod.getModifiers()))
+                .toArray(Method[]::new);
             int indx = faker.random().nextInt(methods.length);
             Method runMethod = methods[indx];
             Relationship relationship = new Relationship(faker);

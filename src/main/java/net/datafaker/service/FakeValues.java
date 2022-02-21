@@ -66,7 +66,7 @@ public class FakeValues implements FakeValuesInterface {
         for (String path : paths) {
             try (InputStream stream = getClass().getResourceAsStream(path)) {
                 if (stream != null) {
-                   result = readFromStream(stream);
+                    result = readFromStream(stream);
                 } else {
                     try (InputStream stream2 = getClass().getClassLoader().getResourceAsStream(path)) {
                         result = readFromStream(stream2);

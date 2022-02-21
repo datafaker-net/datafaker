@@ -21,7 +21,7 @@ public class Json {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         int i = 0;
-        for (Object value: collection) {
+        for (Object value : collection) {
             if (i > 0) {
                 sb.append(", ");
             }
@@ -36,11 +36,11 @@ public class Json {
         if (value == null) {
             sb.append("null");
         } else if (value instanceof Integer
-                || value instanceof Long
-                || value instanceof Short
-                || value instanceof BigInteger
-                || value instanceof Boolean
-                || (value instanceof BigDecimal && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
+            || value instanceof Long
+            || value instanceof Short
+            || value instanceof BigInteger
+            || value instanceof Boolean
+            || (value instanceof BigDecimal && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
             sb.append(value);
         } else if (value instanceof Map) {
             sb.append(generate((Map<Supplier<String>, Supplier<Object>>) value));
@@ -50,7 +50,7 @@ public class Json {
             sb.append(generate(Arrays.asList((Object[]) value)));
         } else {
             sb.append("\"");
-            for (char c: String.valueOf(value).toCharArray()) {
+            for (char c : String.valueOf(value).toCharArray()) {
                 sb.append(ESCAPING_MAP.getOrDefault(c, c + ""));
             }
             sb.append("\"");
@@ -61,14 +61,14 @@ public class Json {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         Set<String> keys = new HashSet<>();
-        for (Map.Entry<Supplier<String>, Supplier<Object>> entry: map.entrySet()) {
+        for (Map.Entry<Supplier<String>, Supplier<Object>> entry : map.entrySet()) {
             String key = entry.getKey().get();
             if (!keys.add(key)) continue;
             if (keys.size() > 1) {
                 sb.append(", ");
             }
             sb.append("\"");
-            for (char c: key.toCharArray()) {
+            for (char c : key.toCharArray()) {
                 sb.append(ESCAPING_MAP.getOrDefault(c, c + ""));
             }
             sb.append("\": ");

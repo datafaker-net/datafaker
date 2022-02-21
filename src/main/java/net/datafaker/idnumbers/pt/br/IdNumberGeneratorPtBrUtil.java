@@ -11,7 +11,7 @@ public final class IdNumberGeneratorPtBrUtil {
      * https://en.wikipedia.org/wiki/CNPJ
      *
      * @param formatted a cnpj (un)formatted
-     * @param valid a cnpj (in)valid
+     * @param valid     a cnpj (in)valid
      */
     public static String cnpj(Faker faker, boolean formatted, boolean valid) {
         String cnpj;
@@ -36,7 +36,7 @@ public final class IdNumberGeneratorPtBrUtil {
 
         // Sometimes the generated number is not what you expected, for example, you expected an invalid number,
         // but the generated number is valid. This fixes the issue by generating a new number until it matches the expectation.
-        if(isCNPJValid(result) != valid) {
+        if (isCNPJValid(result) != valid) {
             result = cnpj(faker, formatted, valid);
         }
 
@@ -47,7 +47,7 @@ public final class IdNumberGeneratorPtBrUtil {
      * https://en.wikipedia.org/wiki/CPF_number
      *
      * @param formatted a CPF (un)formatted
-     * @param valid a CPF (in)valid
+     * @param valid     a CPF (in)valid
      */
     public static String cpf(Faker faker, boolean formatted, boolean valid) {
         String cpf;
@@ -68,7 +68,7 @@ public final class IdNumberGeneratorPtBrUtil {
 
         String result = formatted ? DocumentFormatterUtil.cpf(cpf) : cpf;
 
-        if(isCPFValid(result) != valid) {
+        if (isCPFValid(result) != valid) {
             // Sometimes the generated number is not what you expected, for example, you expected an invalid number,
             // but the generated number is valid. This fixes the issue by generating a new number until it matches the expectation.
             result = cpf(faker, formatted, valid);

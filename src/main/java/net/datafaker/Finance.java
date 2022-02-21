@@ -18,7 +18,7 @@ public class Finance {
 
 
     private static final Map<String, String> countryCodeToBasicBankAccountNumberPattern =
-            createCountryCodeToBasicBankAccountNumberPatternMap();
+        createCountryCodeToBasicBankAccountNumberPatternMap();
 
     public String creditCard(CreditCardType creditCardType) {
         final String key = String.format("finance.credit_card.%s", creditCardType.toString().toLowerCase());

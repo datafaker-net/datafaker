@@ -18,7 +18,7 @@ public class PeselNumber {
 
     public enum Gender {
         MALE, FEMALE, ANY
-	}
+    }
 
     public PeselNumber(Faker faker) {
         super();
@@ -50,9 +50,9 @@ public class PeselNumber {
         final int controlDigit = getControlDigit(digits);
 
         final StringBuilder peselSb = new StringBuilder(PESEL_LENGTH);
-		for (int digit : digits) {
-			peselSb.append(digit);
-		}
+        for (int digit : digits) {
+            peselSb.append(digit);
+        }
         peselSb.append(controlDigit);
         return peselSb.toString();
     }
@@ -63,7 +63,7 @@ public class PeselNumber {
 
     private int getControlDigit(int[] digits) {
         final int sum = digits[0] + digits[4] + digits[8] + (digits[1] + digits[5] + digits[9]) * 3
-                + (digits[2] + digits[6]) * 7 + (digits[3] + digits[7]) * 9;
+            + (digits[2] + digits[6]) * 7 + (digits[3] + digits[7]) * 9;
         return (10 - sum % 10) % 10;
     }
 

@@ -32,9 +32,9 @@ public class Commerce {
 
     public String productName() {
         return String.join(" ",
-                faker.fakeValuesService().resolve("commerce.product_name.adjective", this, faker),
-                faker.fakeValuesService().resolve("commerce.product_name.material", this, faker),
-                faker.fakeValuesService().resolve("commerce.product_name.product", this, faker)
+            faker.fakeValuesService().resolve("commerce.product_name.adjective", this, faker),
+            faker.fakeValuesService().resolve("commerce.product_name.material", this, faker),
+            faker.fakeValuesService().resolve("commerce.product_name.product", this, faker)
         );
     }
 
@@ -60,7 +60,7 @@ public class Commerce {
 
     public String promotionCode(int digits) {
         return String.join(faker.resolve("commerce.promotion_code.adjective"),
-                faker.resolve("commerce.promotion_code.noun"),
-                faker.number().digits(digits));
+            faker.resolve("commerce.promotion_code.noun"),
+            faker.number().digits(digits));
     }
 }

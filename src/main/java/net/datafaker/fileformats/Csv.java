@@ -14,6 +14,7 @@ public class Csv {
     private final List<Column> columns;
     private final int limit;
     private final boolean withHeader;
+
     private Csv(List<Column> columns, String separator, char quote, boolean withHeader, int limit) {
         this.separator = separator;
         this.columns = columns;

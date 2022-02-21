@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ProviderGenerator {
 
 
-//    @Test
+    //    @Test
     public void generateProvider() throws FileNotFoundException {
         File dir = new File("/Users/erikp/UserFiles/projects/datafaker/src/main/resources/en");
 
@@ -70,8 +70,8 @@ public class ProviderGenerator {
             String methodName = StringUtils.uncapitalize(toJavaConvention(string));
 
             System.out.println("    public String " + methodName + "() {\n" +
-                    "        return faker.fakeValuesService().resolve(\"" + key + "." + string + "\", this, faker);\n" +
-                    "    }");
+                "        return faker.fakeValuesService().resolve(\"" + key + "." + string + "\", this, faker);\n" +
+                "    }");
             System.out.println();
         }
 
@@ -100,7 +100,7 @@ public class ProviderGenerator {
 
             System.out.println("    @Test");
             System.out.println("    public void " + testMethodName + "() {");
-            System.out.println("        assertThat(faker." + methodName + "()." + string +"(), not(is(emptyOrNullString())));");
+            System.out.println("        assertThat(faker." + methodName + "()." + string + "(), not(is(emptyOrNullString())));");
             System.out.println("    }");
             System.out.println();
         }

@@ -2,6 +2,7 @@ package net.datafaker;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+
 import net.datafaker.idnumbers.EnIdNumber;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.EsMXIdNumber;
@@ -130,8 +131,8 @@ public class IdNumber {
      * @return A valid PESEL number
      */
     public String peselNumber() {
-	return peselNumber(faker.date().birthday(0, 100).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-		Gender.ANY);
+        return peselNumber(faker.date().birthday(0, 100).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            Gender.ANY);
     }
 
     /**
@@ -142,6 +143,6 @@ public class IdNumber {
      * @return A valid PESEL number
      */
     public String peselNumber(LocalDate birthDate, Gender gender) {
-	return new PeselNumber(faker).get(birthDate, gender);
+        return new PeselNumber(faker).get(birthDate, gender);
     }
 }

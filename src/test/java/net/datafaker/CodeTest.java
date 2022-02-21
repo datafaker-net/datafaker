@@ -19,7 +19,7 @@ public class CodeTest extends AbstractFakerTest {
 
     private static final ISBNValidator ISBN_VALIDATOR = ISBNValidator.getInstance(false);
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     public void isbn10DefaultIsNoSeparator() {
         String isbn10 = faker.code().isbn10();
 
@@ -27,7 +27,7 @@ public class CodeTest extends AbstractFakerTest {
         assertThat(isbn10, not(containsString("-")));
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     public void isbn13DefaultIsNoSeparator() {
         String isbn13 = faker.code().isbn13();
 
@@ -35,7 +35,7 @@ public class CodeTest extends AbstractFakerTest {
         assertThat(isbn13, not(containsString("-")));
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     public void testIsbn10() {
         final String isbn10NoSep = faker.code().isbn10(false);
         final String isbn10Sep = faker.code().isbn10(true);
@@ -49,7 +49,7 @@ public class CodeTest extends AbstractFakerTest {
         assertIsValidISBN10(isbn10Sep);
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     public void testIsbn13() {
         final String isbn13NoSep = faker.code().isbn13(false);
         final String isbn13Sep = faker.code().isbn13(true);
@@ -79,12 +79,12 @@ public class CodeTest extends AbstractFakerTest {
         final String isbn13Sep = faker.code().isbn13(true);
 
         assertThat("Uses overridden expressions from test.yml",
-                isbn10Sep,
-                matchesRegularExpression("9971-\\d-\\d{4}-(\\d|X)"));
+            isbn10Sep,
+            matchesRegularExpression("9971-\\d-\\d{4}-(\\d|X)"));
 
         assertThat("Uses overridden expressions from test.yml",
-                isbn13Sep,
-                matchesRegularExpression("(333|444)-9971-\\d-\\d{4}-\\d"));
+            isbn13Sep,
+            matchesRegularExpression("(333|444)-9971-\\d-\\d{4}-\\d"));
     }
 
     @Test
@@ -122,5 +122,23 @@ public class CodeTest extends AbstractFakerTest {
         String gtin13 = faker.code().gtin13();
         assertThat(gtin13, matchesRegularExpression("\\d{13}"));
         assertThat(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(gtin13), is(true));
+    }
+
+    @Test
+    public void isbnGs1() {
+        String isbnGs1 = faker.code().isbnGs1();
+        assertThat(isbnGs1, matchesRegularExpression("978|979"));
+    }
+
+    @Test
+    public void isbnGroup() {
+        String isbnGroup = faker.code().isbnGroup();
+        assertThat(isbnGroup, matchesRegularExpression("0|1"));
+    }
+
+    @RepeatedTest(100)
+    public void isbnRegistrant() {
+        String isbnRegistrant = faker.code().isbnRegistrant();
+        assertThat(isbnRegistrant, matchesRegularExpression("[0-9]{1,7}-[0-9]{1,6}"));
     }
 }

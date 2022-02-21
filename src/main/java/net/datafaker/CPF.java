@@ -46,7 +46,7 @@ public class CPF {
      * @see IdNumberGeneratorPtBrUtil#cpf(Faker, boolean, boolean)
      */
     public String invalid() {
-        return IdNumberGeneratorPtBrUtil.cpf(faker,true, false);
+        return IdNumberGeneratorPtBrUtil.cpf(faker, true, false);
     }
 
     /**

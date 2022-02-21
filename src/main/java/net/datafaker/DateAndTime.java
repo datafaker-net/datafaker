@@ -38,9 +38,9 @@ public class DateAndTime {
      * Generates and converts to string representation a future date from now.
      * Note that there is a 1 second slack to avoid generating a past date.
      *
-     * @param atMost    at most this amount of time ahead from now exclusive.
-     * @param unit      the time unit.
-     * @param pattern   date time pattern to convert to string.
+     * @param atMost  at most this amount of time ahead from now exclusive.
+     * @param unit    the time unit.
+     * @param pattern date time pattern to convert to string.
      * @return a string representation of a future date from now.
      */
     public String future(int atMost, TimeUnit unit, String pattern) {

@@ -9,6 +9,11 @@ import java.util.stream.Collectors;
  */
 public class Code {
 
+    private static final int[] GTIN_8_CHECK_DIGITS = {3, 1, 3, 1, 3, 1, 3};
+    private static final int[] GTIN_13_CHECK_DIGITS = {1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3};
+    private static final String[] REPORTING_BODY_IDENTIFIERS
+        = {"01", "10", "30", "33", "35", "44", "45", "49", "50", "51", "52", "53", "54", "86", "91", "98", "99"};
+
     private static final Pattern HYPHEN = Pattern.compile("-");
     private final Faker faker;
 
@@ -88,10 +93,10 @@ public class Code {
     public String isbn10(boolean separator) {
         // The registration group identifier is a 1- to 5-digit number
         final StringBuilder isbn10 = new StringBuilder()
-                .append(faker.expression("#{code.isbn_group}"))
-                .append('-')
-                .append(faker.expression("#{code.isbn_registrant}"))
-                .append('-');
+            .append(faker.expression("#{code.isbn_group}"))
+            .append('-')
+            .append(faker.expression("#{code.isbn_registrant}"))
+            .append('-');
 
         final int checkDigit = isbn10CheckDigit(isbn10);
         isbn10.append(checkDigit != 10 ? checkDigit : "X");
@@ -112,12 +117,12 @@ public class Code {
     public String isbn13(boolean separator) {
         // The registration group identifier is a 1- to 5-digit number
         final StringBuilder isbn13 = new StringBuilder()
-                .append(faker.expression("#{code.isbn_gs1}"))
-                .append('-')
-                .append(faker.expression("#{code.isbn_group}"))
-                .append('-')
-                .append(faker.expression("#{code.isbn_registrant}"))
-                .append('-');
+            .append(faker.expression("#{code.isbn_gs1}"))
+            .append('-')
+            .append(faker.expression("#{code.isbn_group}"))
+            .append('-')
+            .append(faker.expression("#{code.isbn_registrant}"))
+            .append('-');
 
         final int checkDigit = isbn13CheckDigit(isbn13);
         isbn13.append(checkDigit);
@@ -190,9 +195,6 @@ public class Code {
         return new String(str);
     }
 
-    private static final String[] REPORTING_BODY_IDENTIFIERS
-            = {"01", "10", "30", "33", "35", "44", "45", "49", "50", "51", "52", "53", "54", "86", "91", "98", "99"};
-
     public String ean8() {
         return gtin8();
     }
@@ -211,9 +213,9 @@ public class Code {
 
     private String gtin(String regex, int[] checkDigits) {
         List<Character> values = faker.regexify(regex)
-                .chars()
-                .mapToObj(c -> (char) c)
-                .collect(Collectors.toList());
+            .chars()
+            .mapToObj(c -> (char) c)
+            .collect(Collectors.toList());
 
         int sum = 0;
         for (int i = 0; i < values.size(); i++) {
@@ -227,11 +229,7 @@ public class Code {
         }
 
         return values.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining());
+            .map(String::valueOf)
+            .collect(Collectors.joining());
     }
-
-    private static final int[] GTIN_8_CHECK_DIGITS = {3, 1, 3, 1, 3, 1, 3};
-    private static final int[] GTIN_13_CHECK_DIGITS = {1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3};
-
 }

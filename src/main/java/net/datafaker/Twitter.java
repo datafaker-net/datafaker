@@ -53,7 +53,7 @@ public class Twitter {
             Logger logger = Logger.getLogger(Twitter.class.getName());
             logger.setLevel(Level.WARNING);
             logger.warning("expectedLength <= 6 may easily cause twitter id collision. And expectedLength >= 25" +
-                    " can be easily out of bound.");
+                " can be easily out of bound.");
         }
         int hashCodeV = UUID.randomUUID().toString().hashCode();
         if (hashCodeV < 0) {
@@ -97,9 +97,7 @@ public class Twitter {
      */
     public String text(String[] keywords, int sentenceMaxLength, int wordMaxLength) {
         if (wordMaxLength <= 2) {
-            Logger logger
-                    = Logger.getLogger(
-                    Twitter.class.getName());
+            Logger logger = Logger.getLogger(Twitter.class.getName());
             logger.setLevel(Level.WARNING);
             logger.warning("Word length less than 2 is dangerous. Exceptions can be raised.");
         }
@@ -148,9 +146,7 @@ public class Twitter {
      */
     public String getLink(String username, int extraLength) {
         if (extraLength <= 4) {
-            Logger logger
-                    = Logger.getLogger(
-                    Twitter.class.getName());
+            Logger logger = Logger.getLogger(Twitter.class.getName());
             logger.setLevel(Level.WARNING);
             logger.warning("Extra length <=4 can cause collision.");
         }

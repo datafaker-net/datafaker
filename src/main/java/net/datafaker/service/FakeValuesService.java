@@ -261,7 +261,7 @@ public class FakeValuesService {
      * Generates a String by example. The output string will have the same pattern as the input string.
      */
     public String examplify(String example) {
-        if(example == null) {
+        if (example == null) {
             return null;
         }
         char[] chars = example.toCharArray();
@@ -269,7 +269,7 @@ public class FakeValuesService {
         for (int i = 0; i < chars.length; i++) {
             if (Character.isLetter(chars[i])) {
                 chars[i] = letterify("?", Character.isUpperCase(chars[i])).charAt(0);
-            } else if(Character.isDigit(chars[i])) {
+            } else if (Character.isDigit(chars[i])) {
                 chars[i] = DIGITS.charAt(randomService.nextInt(10));
             }
         }
@@ -317,7 +317,7 @@ public class FakeValuesService {
                 final String[] options = optionsMap.get(letterString.charAt(i));
                 Objects.requireNonNull(options, "Array with available options should be non null");
                 sb.append(options[randomService.nextInt(options.length)]);
-            } else{
+            } else {
                 sb.append(letterString.charAt(i));
             }
         }
@@ -425,13 +425,13 @@ public class FakeValuesService {
         int quoteCnt = 0;
         for (int i = 0; i < expression.length(); i++) {
             if (isExpression) {
-              if (expression.charAt(i) == '}' && quoteCnt % 2 == 0) {
-                  result.add(expression.substring(start, i));
-                  start = i + 1;
-                  isExpression = false;
-              } else if (expression.charAt(i) =='\'') {
-                  quoteCnt++;
-              }
+                if (expression.charAt(i) == '}' && quoteCnt % 2 == 0) {
+                    result.add(expression.substring(start, i));
+                    start = i + 1;
+                    isExpression = false;
+                } else if (expression.charAt(i) == '\'') {
+                    quoteCnt++;
+                }
             } else if (i < expression.length() - 2 && expression.charAt(i) == '#' && expression.charAt(i + 1) == '{') {
                 result.add(expression.substring(start, i));
                 isExpression = true;
@@ -458,8 +458,8 @@ public class FakeValuesService {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
         final String simpleDirective = (isDotDirective(directive) || current == null)
-                ? directive
-                : classNameToYamlName(current) + "." + directive;
+            ? directive
+            : classNameToYamlName(current) + "." + directive;
 
         String resolved;
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
@@ -554,8 +554,8 @@ public class FakeValuesService {
      */
     private String javaNameToYamlName(String expression) {
         return A_TO_Z.matcher(expression).replaceAll("_$1")
-                .substring(1)
-                .toLowerCase();
+            .substring(1)
+            .toLowerCase();
     }
 
 
@@ -571,8 +571,8 @@ public class FakeValuesService {
         try {
             final MethodAndCoercedArgs accessor = accessor(obj, directive, args);
             return (accessor == null)
-                    ? null
-                    : string(accessor.invoke(obj));
+                ? null
+                : string(accessor.invoke(obj));
         } catch (Exception e) {
             LOG.log(Level.FINE, "Can't call " + directive + " on " + obj, e);
             return null;
@@ -589,9 +589,9 @@ public class FakeValuesService {
         int index = key.indexOf('.');
         final String[] classAndMethod;
         if (index == -1) {
-            classAndMethod = new String[] {key};
+            classAndMethod = new String[]{key};
         } else {
-            classAndMethod = new String[] {key.substring(0, index), index == key.length() - 1 ? "" : key.substring(index + 1)};
+            classAndMethod = new String[]{key.substring(0, index), index == key.length() - 1 ? "" : key.substring(index + 1)};
         }
 
         try {
@@ -606,8 +606,8 @@ public class FakeValuesService {
             final MethodAndCoercedArgs accessor = accessor(objectWithMethodToInvoke, nestedMethodName, args);
             if (accessor == null) {
                 throw new Exception("Can't find method on "
-                        + objectWithMethodToInvoke.getClass().getSimpleName()
-                        + " called " + nestedMethodName + ".");
+                    + objectWithMethodToInvoke.getClass().getSimpleName()
+                    + " called " + nestedMethodName + ".");
             }
 
             return string(accessor.invoke(objectWithMethodToInvoke));
@@ -627,14 +627,14 @@ public class FakeValuesService {
         final Class clazz = onObject.getClass();
         if (!class2methodsCache.containsKey(clazz)) {
             Map<String, Collection<Method>> methodMap = new HashMap<>();
-            for (Method m: clazz.getMethods()) {
+            for (Method m : clazz.getMethods()) {
                 methodMap.computeIfAbsent(m.getName().toLowerCase(Locale.ROOT), k -> new ArrayList<>());
                 methodMap.get(m.getName().toLowerCase(Locale.ROOT)).add(m);
             }
             class2methodsCache.put(clazz, methodMap);
         }
         final Collection<Method> methods =
-                class2methodsCache.get(clazz).getOrDefault(name.toLowerCase(Locale.ROOT), Collections.emptyList());
+            class2methodsCache.get(clazz).getOrDefault(name.toLowerCase(Locale.ROOT), Collections.emptyList());
         for (Method m : methods) {
             if (m.getParameterTypes().length == args.size() || m.getParameterTypes().length < args.size() && m.isVarArgs()) {
                 final List<Object> coercedArguments = coerceArguments(m, args);

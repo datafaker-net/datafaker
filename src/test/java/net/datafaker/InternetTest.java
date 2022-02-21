@@ -55,7 +55,7 @@ public class InternetTest extends AbstractFakerTest {
         final String safeDomain = faker.resolve("internet.safe_email");
 
         assertThat("Should find at least one email from " + safeDomain, emails,
-                Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
+            Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class InternetTest extends AbstractFakerTest {
         final String safeDomain = faker.resolve("internet.safe_email");
 
         assertThat("Should find at least one email from " + safeDomain, emails,
-                Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
+            Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
     }
 
     @Test
@@ -193,9 +193,9 @@ public class InternetTest extends AbstractFakerTest {
         // loop through 1000 times just to 'run it through the wringer'
         for (int i = 0; i < 1000; i++) {
             assertThat(
-                    "Is valid mac format",
-                    faker.internet().macAddress(),
-                    matchesRegularExpression("[0-9a-fA-F]{2}(\\:([0-9a-fA-F]{1,4})){5}"));
+                "Is valid mac format",
+                faker.internet().macAddress(),
+                matchesRegularExpression("[0-9a-fA-F]{2}(\\:([0-9a-fA-F]{1,4})){5}"));
         }
     }
 
@@ -205,13 +205,13 @@ public class InternetTest extends AbstractFakerTest {
         for (int i = 0; i < 100; i++) {
             final String[] octets = faker.internet().ipV4Address().split("\\.");
             assertThat("first octet is 1-255", parseInt(octets[0]),
-                    both(greaterThan(0)).and(lessThanOrEqualTo(255)));
+                both(greaterThan(0)).and(lessThanOrEqualTo(255)));
             assertThat("second octet is 0-255", parseInt(octets[1]),
-                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+                both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
             assertThat("second octet is 0-255", parseInt(octets[2]),
-                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+                both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
             assertThat("second octet is 0-255", parseInt(octets[3]),
-                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+                both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
         }
     }
 
@@ -222,7 +222,7 @@ public class InternetTest extends AbstractFakerTest {
 
         for (int i = 0; i < 1000; i++) {
             assertThat(parseInt(faker.internet().ipV4Cidr().split("/")[1]),
-                    both(greaterThanOrEqualTo(1)).and(lessThan(32)));
+                both(greaterThanOrEqualTo(1)).and(lessThan(32)));
         }
     }
 
@@ -238,10 +238,10 @@ public class InternetTest extends AbstractFakerTest {
         for (int i = 0; i < 1000; i++) {
             String addr = faker.internet().privateIpV4Address();
             assertThat(addr, anyOf(matchesRegularExpression(tenDot),
-                    matchesRegularExpression(oneTwoSeven),
-                    matchesRegularExpression(oneSixNine),
-                    matchesRegularExpression(oneNineTwo),
-                    matchesRegularExpression(oneSevenTwo)));
+                matchesRegularExpression(oneTwoSeven),
+                matchesRegularExpression(oneSixNine),
+                matchesRegularExpression(oneNineTwo),
+                matchesRegularExpression(oneSevenTwo)));
         }
     }
 
@@ -268,9 +268,9 @@ public class InternetTest extends AbstractFakerTest {
 
         for (int i = 0; i < 1000; i++) {
             assertThat(
-                    "Is valid ipv6 format",
-                    faker.internet().ipV6Address(),
-                    matchesRegularExpression("[0-9a-fA-F]{1,4}(\\:([0-9a-fA-F]{1,4})){1,7}"));
+                "Is valid ipv6 format",
+                faker.internet().ipV6Address(),
+                matchesRegularExpression("[0-9a-fA-F]{1,4}(\\:([0-9a-fA-F]{1,4})){1,7}"));
         }
     }
 
@@ -281,7 +281,7 @@ public class InternetTest extends AbstractFakerTest {
 
         for (int i = 0; i < 1000; i++) {
             assertThat(parseInt(faker.internet().ipV6Cidr().split("/")[1]),
-                    both(greaterThanOrEqualTo(1)).and(lessThan(128)));
+                both(greaterThanOrEqualTo(1)).and(lessThan(128)));
         }
     }
 

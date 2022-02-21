@@ -39,7 +39,7 @@ public class Internet {
     }
 
     public static final Pattern DIACRITICS_AND_FRIENDS
-            = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
+        = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
     private String stripAccents(String input) {
         // strip accents from input
@@ -62,15 +62,15 @@ public class Internet {
 
     public String url() {
         return String.join("",
-                "www",
-                ".",
-                FakerIDN.toASCII(
-                        SINGLE_QUOTE.matcher(faker.name().firstName().toLowerCase()).replaceAll("") +
-                                "-" +
-                                domainWord()
-                ),
-                ".",
-                domainSuffix()
+            "www",
+            ".",
+            FakerIDN.toASCII(
+                SINGLE_QUOTE.matcher(faker.name().firstName().toLowerCase()).replaceAll("") +
+                    "-" +
+                    domainWord()
+            ),
+            ".",
+            domainSuffix()
         );
     }
 
@@ -94,13 +94,13 @@ public class Internet {
      * @see <a href="http://lorempixel.com/">lorempixel - Placeholder Images for every case</a>
      */
     public String image() {
-        String[] dimension = faker.fakeValuesService().resolve("internet.image_dimension", this, faker).split( "x");
+        String[] dimension = faker.fakeValuesService().resolve("internet.image_dimension", this, faker).split("x");
         if (dimension.length == 0) {
             return "";
         } else {
             return image(
-                    Integer.valueOf(dimension[0].trim()), Integer.valueOf(dimension[1].trim()),
-                    faker.bool().bool(), null);
+                Integer.valueOf(dimension[0].trim()), Integer.valueOf(dimension[1].trim()),
+                faker.bool().bool(), null);
         }
     }
 
@@ -115,8 +115,8 @@ public class Internet {
      */
     public String image(Integer width, Integer height, Boolean gray, String text) {
         return String.format("https://lorempixel.com/%s%s/%s/%s/%s",
-                gray ? "g/" : "", width, height, faker.fakeValuesService().resolve("internet.image_category", this, faker),
-                (text == null || text.length() == 0) ? "" : text);
+            gray ? "g/" : "", width, height, faker.fakeValuesService().resolve("internet.image_category", this, faker),
+            (text == null || text.length() == 0) ? "" : text);
     }
 
     public String password() {
@@ -152,8 +152,8 @@ public class Internet {
     public String macAddress(String prefix) {
         final String tmp = (prefix == null) ? "" : prefix;
         final int prefixLength = tmp.trim().length() == 0
-                ? 0
-                : COLON.split(tmp).length;
+            ? 0
+            : COLON.split(tmp).length;
 
         final StringBuilder out = new StringBuilder(tmp);
         for (int i = 0; i < 6 - prefixLength; i++) {
@@ -180,10 +180,10 @@ public class Internet {
      */
     public String ipV4Address() {
         return String.format("%d.%d.%d.%d",
-                faker.random().nextInt(254) + 2,
-                faker.random().nextInt(254) + 2,
-                faker.random().nextInt(254) + 2,
-                faker.random().nextInt(254) + 2);
+            faker.random().nextInt(254) + 2,
+            faker.random().nextInt(254) + 2,
+            faker.random().nextInt(254) + 2,
+            faker.random().nextInt(254) + 2);
     }
 
     /**
@@ -195,9 +195,9 @@ public class Internet {
 
         final RandomService r = faker.random();
         int first = random(PRIVATE_FIRST_OCTET),
-                second = r.nextInt(256),
-                third = r.nextInt(256),
-                fourth = r.nextInt(256);
+            second = r.nextInt(256),
+            third = r.nextInt(256),
+            fourth = r.nextInt(256);
 
         switch (first) {
             case 172:
@@ -222,9 +222,9 @@ public class Internet {
         final int[] PRIVATE_FIRST_OCTET = {10, 127, 169, 192, 172};
 
         int first = r.nextInt(256),
-                second = r.nextInt(256),
-                third = r.nextInt(256),
-                fourth = r.nextInt(256);
+            second = r.nextInt(256),
+            third = r.nextInt(256),
+            fourth = r.nextInt(256);
 
         while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
             first = r.nextInt(256);
@@ -237,8 +237,8 @@ public class Internet {
      */
     public String ipV4Cidr() {
         return ipV4Address() +
-                '/' +
-                (faker.random().nextInt(31) + 1);
+            '/' +
+            (faker.random().nextInt(31) + 1);
     }
 
     /**
@@ -265,8 +265,8 @@ public class Internet {
      */
     public String ipV6Cidr() {
         return ipV6Address() +
-                '/' +
-                (faker.random().nextInt(127) + 1);
+            '/' +
+            (faker.random().nextInt(127) + 1);
     }
 
     /**
@@ -283,11 +283,11 @@ public class Internet {
      */
     public String slug(List<String> wordsOrNull, String glueOrNull) {
         final String glue = glueOrNull == null
-                ? "_"
-                : glueOrNull;
+            ? "_"
+            : glueOrNull;
         final List<String> words = wordsOrNull == null
-                ? faker.lorem().words(2)
-                : wordsOrNull;
+            ? faker.lorem().words(2)
+            : wordsOrNull;
 
         final StringBuilder slug = new StringBuilder();
         for (int i = 0; i < words.size(); i++) {

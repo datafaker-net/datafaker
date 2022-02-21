@@ -27,9 +27,9 @@ public class Domain {
     public String firstLevelDomain(String name) {
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
         return String.join("",
-                name,
-                ".",
-                top
+            name,
+            ".",
+            top
         );
     }
 
@@ -43,11 +43,11 @@ public class Domain {
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
         String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
         return String.join("",
-                name,
-                ".",
-                top,
-                ".",
-                suffix
+            name,
+            ".",
+            top,
+            ".",
+            suffix
         );
     }
 
@@ -62,13 +62,13 @@ public class Domain {
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
         String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
         return String.join("",
-                prefix,
-                ".",
-                name,
-                ".",
-                top,
-                ".",
-                suffix
+            prefix,
+            ".",
+            name,
+            ".",
+            top,
+            ".",
+            suffix
         );
     }
 
@@ -88,26 +88,26 @@ public class Domain {
         String top = faker.fakeValuesService().resolve("domain.top", this, faker);
 
         String result = String.join("",
-                name,
-                ".",
-                top
+            name,
+            ".",
+            top
         );
 
         if (hasPrefix) {
             String prefix = faker.fakeValuesService().resolve("domain.prefix", this, faker);
             result = String.join("",
-                    prefix,
-                    ".",
-                    result
+                prefix,
+                ".",
+                result
             );
         }
 
         if (hasSuffix) {
             String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
             result = String.join("",
-                    result,
-                    ".",
-                    suffix
+                result,
+                ".",
+                suffix
             );
         }
 

@@ -56,7 +56,7 @@ public class FakerIT {
         exceptions.put(new Locale("es-mx"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("pt"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("uk"), Arrays.asList("Address.stateAbbr", "Address.streetSuffix",
-                "Address.cityPrefix", "Address.citySuffix"));
+            "Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("pt-BR"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("pt-br"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("Pt_br"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
@@ -183,9 +183,9 @@ public class FakerIT {
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {
         @SuppressWarnings("unchecked")
         Set<Method> methodsThatReturnStrings = getAllMethods(object.getClass(),
-                withModifier(Modifier.PUBLIC),
-                withReturnType(String.class),
-                withParametersCount(0));
+            withModifier(Modifier.PUBLIC),
+            withReturnType(String.class),
+            withParametersCount(0));
 
         for (Method method : methodsThatReturnStrings) {
             if (isExcepted(object, method)) {
@@ -197,7 +197,7 @@ public class FakerIT {
             final String returnValueAsString = (String) returnValue;
             assertThat(failureReason, returnValueAsString, not(is(emptyOrNullString())));
             assertThat(failureReason + " is a slash encoded regex", returnValueAsString,
-                    not(allOf(startsWith("/"), endsWith("/"))));
+                not(allOf(startsWith("/"), endsWith("/"))));
         }
     }
 

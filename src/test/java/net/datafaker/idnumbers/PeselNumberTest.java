@@ -30,7 +30,7 @@ class PeselNumberTest {
          * Given
          */
         final LocalDate givenBirthDate = Faker.instance().date().birthday(0, 100).toInstant()
-                .atZone(ZoneId.systemDefault()).toLocalDate();
+            .atZone(ZoneId.systemDefault()).toLocalDate();
         /*
          * When
          */
@@ -151,8 +151,8 @@ class PeselNumberTest {
 
     private void assertControlDigit(String gotPesel) {
         final int gotSum = (gotPesel.charAt(0) + gotPesel.charAt(4) + gotPesel.charAt(8) + gotPesel.charAt(10)
-                + 3 * (gotPesel.charAt(1) + gotPesel.charAt(5) + gotPesel.charAt(9))
-                + 7 * (gotPesel.charAt(2) + gotPesel.charAt(6)) + 9 * (gotPesel.charAt(3) + gotPesel.charAt(7))) % 10;
+            + 3 * (gotPesel.charAt(1) + gotPesel.charAt(5) + gotPesel.charAt(9))
+            + 7 * (gotPesel.charAt(2) + gotPesel.charAt(6)) + 9 * (gotPesel.charAt(3) + gotPesel.charAt(7))) % 10;
         Assertions.assertEquals(0, gotSum);
     }
 

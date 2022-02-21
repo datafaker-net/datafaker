@@ -57,7 +57,7 @@ public class Lorem {
     public String characters(int minimumLength, int maximumLength,
                              boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return characters(faker.random().nextInt(minimumLength, maximumLength),
-                includeUppercase, includeSpecial, includeDigit);
+            includeUppercase, includeSpecial, includeDigit);
     }
 
 
@@ -240,7 +240,7 @@ public class Lorem {
      * @return a string with a fixed size
      */
     public String fixedString(int numberOfLetters) {
-        if(numberOfLetters <= 0) {
+        if (numberOfLetters <= 0) {
             return "";
         }
 

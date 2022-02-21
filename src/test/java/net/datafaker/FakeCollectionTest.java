@@ -17,9 +17,9 @@ public class FakeCollectionTest extends AbstractFakerTest {
     @Test
     public void generateCollection() {
         List<String> names = new FakeCollection.Builder<String>()
-                .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
-                .minLen(3)
-                .maxLen(5).build().get();
+            .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
+            .minLen(3)
+            .maxLen(5).build().get();
         assertThat(names.size(), is(lessThanOrEqualTo(5)));
         assertThat(names.size(), is(greaterThanOrEqualTo(3)));
         for (String name : names) {
@@ -30,8 +30,8 @@ public class FakeCollectionTest extends AbstractFakerTest {
     @Test
     public void generateCollectionWithDifferentObjects() {
         List<Object> objects = new FakeCollection.Builder<>()
-                .suppliers(() -> faker.name().firstName(), () -> faker.random().nextInt(100))
-                .maxLen(5).build().get();
+            .suppliers(() -> faker.name().firstName(), () -> faker.random().nextInt(100))
+            .maxLen(5).build().get();
         assertEquals(5, objects.size());
         for (Object object : objects) {
             assertTrue(object instanceof Integer || object instanceof String);
@@ -41,10 +41,10 @@ public class FakeCollectionTest extends AbstractFakerTest {
     @Test
     public void checkWrongArguments() {
         IllegalArgumentException iae = Assertions.assertThrows(IllegalArgumentException.class, () ->
-                new FakeCollection.Builder<String>()
-                        .suppliers(() -> faker.name().firstName())
-                        .minLen(10)
-                        .maxLen(5).build().get());
+            new FakeCollection.Builder<String>()
+                .suppliers(() -> faker.name().firstName())
+                .minLen(10)
+                .maxLen(5).build().get());
         assertEquals("Max length must be not less than min length and not negative", iae.getMessage());
     }
 }

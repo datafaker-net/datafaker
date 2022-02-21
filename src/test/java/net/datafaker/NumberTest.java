@@ -180,21 +180,21 @@ public class NumberTest extends AbstractFakerTest {
     @Test
     public void numberBetweenIntIntZeroMinMax() {
         assertThat("Calling numberBetween with min==max yields min, with 0",
-                faker.number().numberBetween(0, 0),
-                is(0));
+            faker.number().numberBetween(0, 0),
+            is(0));
         assertThat("Calling numberBetween with min==max yields min",
-                faker.number().numberBetween(2, 2),
-                is(2));
+            faker.number().numberBetween(2, 2),
+            is(2));
     }
 
     @Test
     public void numberBetweenLongLongZeroMinMax() {
         assertThat("Calling numberBetween with min==max yields min, with 0",
-                faker.number().numberBetween(0L, 0L),
-                is(0L));
+            faker.number().numberBetween(0L, 0L),
+            is(0L));
         assertThat("Calling numberBetween with min==max yields min",
-                faker.number().numberBetween(2L, 2L),
-                is(2L));
+            faker.number().numberBetween(2L, 2L),
+            is(2L));
     }
 
     /**
@@ -217,13 +217,13 @@ public class NumberTest extends AbstractFakerTest {
 
         final double percentGreaterThan80Percent = randomizationQualityTest(minMaxRangeToUniquePercentageFunction);
         assertThat("Percentage of runs > 80% unique is gte 90%",
-                percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
+            percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
 
         // this covers Issue # 121, the number of times the function is called with the MIN/MAX values here
         // is RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET
         final double extremeRunUniquePercent = minMaxRangeToUniquePercentageFunction.apply(Pair.of((long) Integer.MIN_VALUE, (long) Integer.MAX_VALUE));
         assertThat("Percentage of extreme runs > 80%",
-                extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
+            extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
     }
 
     /**
@@ -247,13 +247,13 @@ public class NumberTest extends AbstractFakerTest {
 
         final double percentGreaterThan80Percent = randomizationQualityTest(minMaxRangeToUniquePercentageFunction);
         assertThat("Percentage of runs > 80% unique is gte 90%",
-                percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
+            percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
 
         // this covers Issue # 121, the number of times the function is called with the MIN/MAX values here
         // is RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET
         final double extremeRunUniquePercent = minMaxRangeToUniquePercentageFunction.apply(Pair.of((long) Integer.MIN_VALUE, (long) Integer.MAX_VALUE));
         assertThat("Percentage of extreme runs > 80%",
-                extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
+            extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
     }
 
     /**
@@ -276,13 +276,13 @@ public class NumberTest extends AbstractFakerTest {
 
         final double percentGreaterThan80Percent = randomizationQualityTest(minMaxRangeToUniquePercentageFunction);
         assertThat("Percentage of runs > 80% unique is gte 90%",
-                percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
+            percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
 
         // this covers Issue # 121, the number of times the function is called with the MIN/MAX values here
         // is RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET.
         final double extremeRunUniquePercent = minMaxRangeToUniquePercentageFunction.apply(Pair.of(Long.MIN_VALUE, Long.MAX_VALUE));
         assertThat("Percentage of extreme runs > 80%",
-                extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
+            extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
     }
 
     @Test

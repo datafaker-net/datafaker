@@ -40,7 +40,7 @@ public class OptionsTest extends AbstractFakerTest {
         assertThat(faker.options().option(longOptions), is(oneOf(longOptions)));
         Short[] shortOptions = new Short[]{1, 3, 4};
         assertThat(faker.options().option(shortOptions), is(oneOf(shortOptions)));
-        Byte[] byteOptions = new Byte[]{(byte)11, (byte)13, (byte)14};
+        Byte[] byteOptions = new Byte[]{(byte) 11, (byte) 13, (byte) 14};
         assertThat(faker.options().option(byteOptions), is(oneOf(byteOptions)));
         Double[] doubleOptions = new Double[]{1.1d, 13d, 14.2d};
         assertThat(faker.options().option(doubleOptions), is(oneOf(doubleOptions)));

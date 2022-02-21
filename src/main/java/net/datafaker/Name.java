@@ -103,9 +103,9 @@ public class Name {
      */
     public String title() {
         return String.join(" ",
-                faker.fakeValuesService().resolve("name.title.descriptor", this, faker),
-                faker.fakeValuesService().resolve("name.title.level", this, faker),
-                faker.fakeValuesService().resolve("name.title.job", this, faker)
+            faker.fakeValuesService().resolve("name.title.descriptor", this, faker),
+            faker.fakeValuesService().resolve("name.title.level", this, faker),
+            faker.fakeValuesService().resolve("name.title.job", this, faker)
         );
     }
 
@@ -125,9 +125,9 @@ public class Name {
     public String username() {
 
         String username = String.join("",
-                SINGLE_QUOTE.matcher(firstName()).replaceAll("").toLowerCase(),
-                ".",
-                SINGLE_QUOTE.matcher(lastName()).replaceAll("").toLowerCase()
+            SINGLE_QUOTE.matcher(firstName()).replaceAll("").toLowerCase(),
+            ".",
+            SINGLE_QUOTE.matcher(lastName()).replaceAll("").toLowerCase()
         );
 
         return username.replaceAll("\\s+", "");

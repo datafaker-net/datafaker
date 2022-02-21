@@ -81,8 +81,8 @@ public class Number {
      */
     public double randomDouble(int maxNumberOfDecimals, long min, long max) {
         return decimalBetween(min, max)
-                .setScale(maxNumberOfDecimals, RoundingMode.HALF_DOWN)
-                .doubleValue();
+            .setScale(maxNumberOfDecimals, RoundingMode.HALF_DOWN)
+            .doubleValue();
     }
 
     /**

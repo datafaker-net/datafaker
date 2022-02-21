@@ -149,12 +149,12 @@ public class Faker {
 
     /**
      * Generates a String by example. The output string will have the same pattern as the input string.
-     *
+     * <p>
      * For example:
-     *   "AAA" becomes "KRA"
-     *   "abc" becomes "uio"
-     *   "948" becomes "345"
-     *   "A19c" becomes "Z20d"
+     * "AAA" becomes "KRA"
+     * "abc" becomes "uio"
+     * "948" becomes "345"
+     * "A19c" becomes "Z20d"
      *
      * @param example The input string
      * @return The output string based on the input pattern
@@ -169,9 +169,9 @@ public class Faker {
      * For example, the string "ABC??EFG" could be replaced with a string like "ABCtestтестEFG"
      * if passed options are new String[]{"test", "тест"}.
      *
-     * @param string        Template for string generation
-     * @param char2replace  Char to replace
-     * @param options       Options to use while filling the template
+     * @param string       Template for string generation
+     * @param char2replace Char to replace
+     * @param options      Options to use while filling the template
      * @return Generated string
      */
     public String templatify(String string, char char2replace, String... options) {
@@ -185,8 +185,8 @@ public class Faker {
      * For example, the string "ABC$$EFG" could be replaced with a string like "ABCtestтестEFG"
      * if passed for key '$' there is value new String[]{"test", "тест"} in optionsMap
      *
-     * @param string       Template for string generation
-     * @param optionsMap   Map with replacement rules
+     * @param string     Template for string generation
+     * @param optionsMap Map with replacement rules
      * @return Generated string
      */
     public String templatify(String string, Map<Character, String[]> optionsMap) {
