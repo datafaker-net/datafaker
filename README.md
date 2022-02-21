@@ -41,6 +41,9 @@ dependencies {
 
 ```
 
+You can also use the snapshot version (1.2.0-SNAPSHOT), which automatically gets published 
+after every push to the master branch of this repository.
+
 In your Java code:
 
 ```java
@@ -64,8 +67,6 @@ val lastName = faker.name().lastName() // Barton
 
 val streetAddress = faker.address().streetAddress() // 60018 Sawayn Brooks Suite 449
 ```
-
-This is a [demo web application](https://java-faker.herokuapp.com/) that uses the library.
 
 Documentation
 -----

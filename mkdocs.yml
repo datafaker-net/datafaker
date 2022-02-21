@@ -90,10 +90,8 @@ extra:
 # Page tree
 nav:
   - Home: index.md
-  - Getting started:
-    - Installation: getting-started.md
-
   - Documentation:
+    - Getting started: getting-started.md
     - Usage: usage.md
     - Data providers: providers.md
     - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.1.0/datafaker-1.1.0-javadoc.jar/!/index.html'
