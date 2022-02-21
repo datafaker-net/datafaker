@@ -28,13 +28,15 @@ public class EnFile {
         return path;
     }
 
-    private static final List<EnFile> FILES = Stream.of("address.yml",
+    private static final List<EnFile> FILES = Stream.of(
+        "address.yml",
         "ancient.yml",
         "animal.yml",
         "app.yml",
         "appliance.yml",
         "aqua_teen_hunger_force.yml",
         "artist.yml",
+        "australia.yml",
         "aviation.yml",
         "babylon5.yml",
         "back_to_the_future.yml",

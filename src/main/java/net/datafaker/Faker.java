@@ -201,6 +201,7 @@ public class Faker {
         return this.fakeValuesService;
     }
 
+    @SuppressWarnings("unchecked")
     protected <T> T getProvider(Class<T> clazz, Supplier<T> valueSupplier) {
         T result = (T) providersMap.get(clazz);
         if (result == null) {
@@ -236,6 +237,10 @@ public class Faker {
 
     public Artist artist() {
         return getProvider(Artist.class, () -> new Artist(this));
+    }
+
+    public Australia australia() {
+        return getProvider(Australia.class, () -> new Australia(this));
     }
 
     public Avatar avatar() {

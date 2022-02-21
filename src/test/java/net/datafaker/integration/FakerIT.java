@@ -89,6 +89,7 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.appliance());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.aquaTeenHungerForce());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.artist());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.australia());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.aviation());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.babylon5());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.backToTheFuture());
