@@ -320,12 +320,9 @@
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <useManifestOnlyJar>false</useManifestOnlyJar>
-                    <systemPropertyVariables>
-                        <!-- Run tests in Turkish to make sure that they don't depend on
-                             locale. Turkish is a notoriously tricky locale. -->
-                        <user.language>TR</user.language>
-                        <user.country>tr</user.country>
-                    </systemPropertyVariables>
+                    <!-- Run tests in Turkish to make sure that they don't depend on
+                         locale. Turkish is a notoriously tricky locale. -->
+                    <argLine>-Duser.language=TR -Duser.country=tr</argLine>
                 </configuration>
             </plugin>
         </plugins>
