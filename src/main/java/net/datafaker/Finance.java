@@ -1,10 +1,7 @@
 package net.datafaker;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Finance {
@@ -21,7 +18,7 @@ public class Finance {
         createCountryCodeToBasicBankAccountNumberPatternMap();
 
     public String creditCard(CreditCardType creditCardType) {
-        final String key = String.format("finance.credit_card.%s", creditCardType.toString().toLowerCase());
+        final String key = String.format("finance.credit_card.%s", creditCardType.toString().toLowerCase(Locale.ROOT));
         String value = faker.fakeValuesService().resolve(key, this, faker);
         final String template = faker.numerify(value);
 

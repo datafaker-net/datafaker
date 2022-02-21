@@ -2,6 +2,7 @@ package net.datafaker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Lorem {
     private final Faker faker;
@@ -202,7 +203,7 @@ public class Lorem {
 
     private static String capitalize(String input) {
         if (input == null) return null;
-        return input.substring(0, 1).toUpperCase() + input.substring(1);
+        return input.substring(0, 1).toUpperCase(Locale.ROOT) + input.substring(1);
     }
 
     public List<String> sentences(int sentenceCount) {

@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.text.DecimalFormatSymbols;
@@ -33,30 +34,22 @@ public class AddressTest extends AbstractFakerTest {
         assertThat(streetAddressNumber, matchesRegularExpression("[0-9]+"));
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testLatitude() {
-        String latStr;
-        Double lat;
-        for (int i = 0; i < 100; i++) {
-            latStr = faker.address().latitude().replace(decimalSeparator, '.');
-            assertThat(latStr, isANumber());
-            lat = Double.valueOf(latStr);
-            assertThat("Latitude is less then -90", lat, greaterThanOrEqualTo(-90.0));
-            assertThat("Latitude is greater than 90", lat, lessThanOrEqualTo(90.0));
-        }
+        String latStr = faker.address().latitude().replace(decimalSeparator, '.');
+        assertThat(latStr, isANumber());
+        Double lat = Double.valueOf(latStr);
+        assertThat("Latitude is less then -90", lat, greaterThanOrEqualTo(-90.0));
+        assertThat("Latitude is greater than 90", lat, lessThanOrEqualTo(90.0));
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testLongitude() {
-        String longStr;
-        Double lon;
-        for (int i = 0; i < 100; i++) {
-            longStr = faker.address().longitude().replace(decimalSeparator, '.');
-            assertThat(longStr, isANumber());
-            lon = Double.valueOf(longStr);
-            assertThat("Longitude is less then -180", lon, greaterThanOrEqualTo(-180.0));
-            assertThat("Longitude is greater than 180", lon, lessThanOrEqualTo(180.0));
-        }
+        String longStr = faker.address().longitude().replace(decimalSeparator, '.');
+        assertThat(longStr, isANumber());
+        Double lon = Double.valueOf(longStr);
+        assertThat("Longitude is less then -180", lon, greaterThanOrEqualTo(-180.0));
+        assertThat("Longitude is greater than 180", lon, lessThanOrEqualTo(180.0));
     }
 
     @Test

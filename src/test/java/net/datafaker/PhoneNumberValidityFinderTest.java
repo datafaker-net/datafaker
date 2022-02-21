@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * These tests use System.out.printlns because the error rate is quite high.
+ */
 public class PhoneNumberValidityFinderTest {
 
     @Test

@@ -25,36 +25,28 @@ public class IdNumberTest extends AbstractFakerTest {
         assertThat(faker.idNumber().ssnValid(), matchesRegularExpression("[0-8]\\d{2}-\\d{2}-\\d{4}"));
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testValidSwedishSsn() {
         final Faker f = new Faker(new Locale("sv_SE"));
-        for (int i = 0; i < 100; i++) {
-            assertThat(f.idNumber().validSvSeSsn(), matchesRegularExpression("\\d{6}[-+]\\d{4}"));
-        }
+        assertThat(f.idNumber().validSvSeSsn(), matchesRegularExpression("\\d{6}[-+]\\d{4}"));
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testInvalidSwedishSsn() {
         final Faker f = new Faker(new Locale("sv_SE"));
-        for (int i = 0; i < 100; i++) {
-            assertThat(f.idNumber().invalidSvSeSsn(), matchesRegularExpression("\\d{6}[-+]\\d{4}"));
-        }
+        assertThat(f.idNumber().invalidSvSeSsn(), matchesRegularExpression("\\d{6}[-+]\\d{4}"));
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testValidEnZaSsn() {
         final Faker f = new Faker(new Locale("en_ZA"));
-        for (int i = 0; i < 100; i++) {
-            assertThat(f.idNumber().validEnZaSsn(), matchesRegularExpression("[0-9]{10}(0|1)8[0-9]"));
-        }
+        assertThat(f.idNumber().validEnZaSsn(), matchesRegularExpression("[0-9]{10}(0|1)8[0-9]"));
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testInvalidEnZaSsn() {
         final Faker f = new Faker(new Locale("en_ZA"));
-        for (int i = 0; i < 100; i++) {
-            assertThat(f.idNumber().inValidEnZaSsn(), matchesRegularExpression("[0-9]{10}(0|1)8[0-9]"));
-        }
+        assertThat(f.idNumber().inValidEnZaSsn(), matchesRegularExpression("[0-9]{10}(0|1)8[0-9]"));
     }
 
     @RepeatedTest(100)

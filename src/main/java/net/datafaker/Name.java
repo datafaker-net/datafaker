@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class Name {
@@ -125,9 +126,9 @@ public class Name {
     public String username() {
 
         String username = String.join("",
-            SINGLE_QUOTE.matcher(firstName()).replaceAll("").toLowerCase(),
+            SINGLE_QUOTE.matcher(firstName()).replaceAll("").toLowerCase(Locale.ROOT),
             ".",
-            SINGLE_QUOTE.matcher(lastName()).replaceAll("").toLowerCase()
+            SINGLE_QUOTE.matcher(lastName()).replaceAll("").toLowerCase(Locale.ROOT)
         );
 
         return username.replaceAll("\\s+", "");

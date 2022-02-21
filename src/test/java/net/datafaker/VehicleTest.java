@@ -1,6 +1,7 @@
 package net.datafaker;
 
 import net.datafaker.matchers.MatchesRegularExpression;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -129,7 +130,7 @@ public class VehicleTest extends AbstractFakerTest {
         assertThat(faker.vehicle().licensePlate("AL"), matchesRegularExpression(WORDS_MATCH));
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testLicensePlateWithParam_Canada() {
         Faker test = new Faker(Locale.CANADA);
         assertThat(test.vehicle().licensePlate("MB"), matchesRegularExpression(WORDS_MATCH));

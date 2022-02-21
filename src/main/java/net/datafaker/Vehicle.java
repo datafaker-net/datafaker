@@ -3,6 +3,7 @@ package net.datafaker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Vehicle {
     private final Faker faker;
@@ -111,6 +112,6 @@ public class Vehicle {
         }
 
         String licensePlatesByState = faker.fakeValuesService().resolve("vehicle.license_plate_by_state." + stateAbbreviation, this, faker);
-        return licensePlatesByState == null ? null : faker.regexify(faker.bothify(licensePlatesByState)).toUpperCase();
+        return licensePlatesByState == null ? null : faker.regexify(faker.bothify(licensePlatesByState)).toUpperCase(Locale.ROOT);
     }
 }

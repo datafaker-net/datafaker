@@ -1,6 +1,7 @@
 package net.datafaker;
 
 import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
@@ -10,12 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FinanceTest extends AbstractFakerTest {
 
-    @Test
+    @RepeatedTest(100)
     public void creditCard() {
-        for (int i = 0; i < 100; i++) {
-            final String creditCard = faker.finance().creditCard();
-            assertCardLuhnDigit(creditCard);
-        }
+        final String creditCard = faker.finance().creditCard();
+        assertCardLuhnDigit(creditCard);
     }
 
     private void assertCardLuhnDigit(String creditCard) {
@@ -28,11 +27,9 @@ public class FinanceTest extends AbstractFakerTest {
         assertThat(faker.finance().bic(), matchesRegularExpression("([A-Z]){4}([A-Z]){2}([0-9A-Z]){2}([0-9A-Z]{3})?"));
     }
 
-    @Test
+    @RepeatedTest(100)
     public void iban() {
-        for (int i = 0; i < 100; i++) {
-            assertThat(faker.finance().iban(), matchesRegularExpression("[A-Z]{2}\\p{Alnum}{13,30}"));
-        }
+        assertThat(faker.finance().iban(), matchesRegularExpression("[A-Z]{2}\\p{Alnum}{13,30}"));
     }
 
     @Test

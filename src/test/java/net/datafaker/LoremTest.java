@@ -146,12 +146,12 @@ public class LoremTest extends AbstractFakerTest {
         assertThat(sentence, endsWith("."));
     }
 
-    @Test
+    @RepeatedTest(10)
     public void testSentenceWithWordCountAndRandomWordsToAdd() {
         assertThat(faker.lorem().sentence(10, 10), matchesRegularExpression("(\\w+\\s?){10,20}\\."));
     }
 
-    @Test
+    @RepeatedTest(10)
     public void testSentenceFixedNumberOfWords() {
         assertThat(faker.lorem().sentence(10, 0), matchesRegularExpression("(\\w+\\s?){10}\\."));
     }
@@ -185,7 +185,6 @@ public class LoremTest extends AbstractFakerTest {
     @RepeatedTest(10)
     public void testSentences() {
         String paragraph = faker.lorem().paragraph();
-
         int matches = StringUtils.countMatches(paragraph, ".");
         assertThat(matches, is(both(greaterThanOrEqualTo(3)).and(lessThanOrEqualTo(6))));
     }
@@ -193,7 +192,6 @@ public class LoremTest extends AbstractFakerTest {
     @RepeatedTest(10)
     public void testSentencesWithCount() {
         String paragraph = faker.lorem().paragraph(1);
-        System.out.println(paragraph);
         int matches = StringUtils.countMatches(paragraph, ".");
         assertThat(matches, is(both(greaterThanOrEqualTo(1)).and(lessThanOrEqualTo(3))));
     }

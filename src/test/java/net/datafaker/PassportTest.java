@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,17 +66,13 @@ public class PassportTest extends AbstractFakerTest {
         assertNotNull(faker.passport().amInvalid());
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testChValidFrequently() {
-        for (int i = 0; i < 100; i++) {
-            testChValid();
-        }
+        testChValid();
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testChInValidFrequently() {
-        for (int i = 0; i < 100; i++) {
-            testChInValid();
-        }
+        testChInValid();
     }
 }
