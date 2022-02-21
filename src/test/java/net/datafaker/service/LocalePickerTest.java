@@ -7,14 +7,17 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -68,9 +71,8 @@ public class LocalePickerTest extends AbstractFakerTest {
      * Test to check LocalePicker's getLocaleString method. It verifies that the randomly selected
      * locale is within the set of all supported locales
      */
-    @RepeatedTest(1000)
-    public void testGetLocale() {
-
+    @RepeatedTest(100)
+    public void testGetLocaleString() {
         Random random = new Random();
         String randomLocale = localePicker.getLocaleString(random);
         assertThat(allLocales, hasItems(randomLocale));
@@ -84,20 +86,26 @@ public class LocalePickerTest extends AbstractFakerTest {
     @Test
     public void testGetLocaleStringWithoutReplacement() {
         Random random = new Random();
-        List<String> returnedLocales;
-        int numSupportedLocales = allLocales.size();
 
         // loop through all supported locales
         for (int i = 0; i < 2; i++) {
-            returnedLocales = new ArrayList<>(numSupportedLocales);
+            List<String> returnedLocales = IntStream.range(0, allLocales.size())
+                .mapToObj(j -> localePicker.getLocaleStringWithoutReplacement(random))
+                .sorted()
+                .collect(Collectors.toList());
 
-            for (int j = 0; j < numSupportedLocales; j++) {
-                returnedLocales.add(localePicker.getLocaleStringWithoutReplacement(random));
-            }
-
-            Collections.sort(returnedLocales);
             Collections.sort(allLocales);
             assertEquals(returnedLocales, allLocales);
         }
+    }
+
+    @Test
+    public void testGetLocale() {
+        assertThat(localePicker.getLocale(), is(not(nullValue())));
+    }
+
+    @Test
+    public void testGetLocaleWithoutReplacement() {
+        assertThat(localePicker.getLocaleWithoutReplacement(), is(not(nullValue())));
     }
 }
