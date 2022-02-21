@@ -6,6 +6,7 @@ import net.datafaker.service.RandomService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * This class is used for generating Zh_CN Id numbers.
@@ -32,14 +33,14 @@ public class ZhCnIdNumber {
             String startTime = "1900-01-01";
             String endTime = "2020-12-31";
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", faker.getLocale());
             Date start = format.parse(startTime);
             Date end = format.parse(endTime);
             date = start.getTime() + (long) (random.nextDouble() * (end.getTime() - start.getTime()));
         } catch (ParseException e) {
             return null;
         }
-        String pickedDate = new SimpleDateFormat("yyyyMMdd").format(date);
+        String pickedDate = new SimpleDateFormat("yyyyMMdd", faker.getLocale()).format(date);
         s += pickedDate;
         RandomService rand = faker.random();
         int randnum = faker.random().nextInt(locations.length);

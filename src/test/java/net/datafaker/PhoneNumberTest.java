@@ -116,7 +116,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
             for (int i = 0; i < 100; i++) {
                 assertThat(f.phoneNumber().cellPhone(),
                     matchesRegularExpression(
-                        String.format("((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}",
+                        String.format(faker.getLocale(), "((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}",
                             canadianAreaCode, canadianAreaCode)));
             }
         }

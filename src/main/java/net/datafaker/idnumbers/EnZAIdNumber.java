@@ -5,6 +5,7 @@ import net.datafaker.Faker;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Implementation based on the definition at
@@ -24,7 +25,7 @@ public class EnZAIdNumber {
     public String getValidSsn(Faker f) {
 
         String ssn = "";
-        while (!validSsn(ssn)) {
+        while (!validSsn(ssn, f.getLocale())) {
             String pattern = getPattern(f);
             ssn = f.numerify(pattern);
         }
@@ -41,7 +42,8 @@ public class EnZAIdNumber {
     public String getInValidSsn(Faker f) {
 
         String ssn = f.numerify(validPattern[f.random().nextInt(2)]);
-        while (validSsn(ssn)) {
+        Locale l = f.getLocale();
+        while (validSsn(ssn, l)) {
             String pattern = getPattern(f);
             ssn = f.numerify(pattern);
         }
@@ -63,13 +65,13 @@ public class EnZAIdNumber {
      *
      * @param ssn social security number
      */
-    boolean validSsn(String ssn) {
+    boolean validSsn(String ssn, Locale locale) {
         if (ssn.length() != 13) {
             return false;
         }
 
         try {
-            if (parseDate(ssn)) {
+            if (parseDate(ssn, locale)) {
                 return false;
             }
         } catch (ParseException e) {
@@ -81,13 +83,17 @@ public class EnZAIdNumber {
         return (checksum == calculatedChecksum);
     }
 
+    boolean validSsn(String ssn) {
+        return validSsn(ssn, Locale.ROOT);
+    }
+
     /**
      * Judge whether a numeric string of ssn can represent a legal date
      *
      * @param ssn social security number
      */
-    private boolean parseDate(String ssn) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+    private boolean parseDate(String ssn, Locale locale) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd", locale);
         String dateString = ssn.substring(0, 6);
         Date date = sdf.parse(dateString);
 

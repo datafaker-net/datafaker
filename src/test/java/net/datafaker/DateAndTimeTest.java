@@ -2,10 +2,11 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
+import java.time.temporal.ChronoField;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -98,57 +99,63 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
     @Test
     public void testBirthday() {
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
-        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        long from = new GregorianCalendar(currentYear - 65, currentMonth, currentDay).getTime().getTime();
-        long to = new GregorianCalendar(currentYear - 18, currentMonth, currentDay).getTime().getTime();
+        LocalDate now = LocalDate.now(Clock.systemDefaultZone());
+        int currentYear = now.getYear();
+        int currentMonth = now.getMonthValue();
+        int currentDay = now.getDayOfMonth();
+        LocalDate from = LocalDate.of(currentYear - 65, currentMonth, currentDay);
+        LocalDate to = LocalDate.of(currentYear - 18, currentMonth, currentDay);
 
         for (int i = 0; i < 5000; i++) {
-            Date birthday = faker.date().birthday();
-            assertThat("birthday is after upper bound", birthday.getTime(), lessThan(to));
-            assertThat("birthday is before lower bound", birthday.getTime(), greaterThanOrEqualTo(from));
+            LocalDate birthday = faker.date().birthday();
+            assertThat("birthday is after upper bound", birthday.getLong(ChronoField.EPOCH_DAY), lessThanOrEqualTo(to.getLong(ChronoField.EPOCH_DAY)));
+            assertThat("birthday is before lower bound", birthday.getLong(ChronoField.EPOCH_DAY), greaterThanOrEqualTo(from.getLong(ChronoField.EPOCH_DAY)));
         }
     }
 
     @Test
     public void testBirthdayWithAges() {
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
-        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        LocalDate now = LocalDate.now(Clock.systemDefaultZone());
+        int currentYear = now.getYear();
+        int currentMonth = now.getMonthValue();
+        int currentDay = now.getDayOfMonth();
 
         for (int i = 0; i < 5000; i++) {
             int minAge = faker.number().numberBetween(1, 99);
             int maxAge = faker.number().numberBetween(minAge, 100);
 
-            long from = new GregorianCalendar(currentYear - maxAge, currentMonth, currentDay).getTime().getTime();
-            long to = new GregorianCalendar(currentYear - minAge, currentMonth, currentDay).getTime().getTime();
+            LocalDate from = LocalDate.of(currentYear - maxAge, currentMonth, currentDay);
+            LocalDate to = LocalDate.of(currentYear - minAge, currentMonth, currentDay);
 
-            Date birthday = faker.date().birthday(minAge, maxAge);
-            assertThat("birthday is after upper bound", birthday.getTime(), lessThanOrEqualTo(to));
-            assertThat("birthday is before lower bound", birthday.getTime(), greaterThanOrEqualTo(from));
+            LocalDate birthday = faker.date().birthday(minAge, maxAge);
+            assertThat("birthday is after upper bound", birthday.getLong(ChronoField.EPOCH_DAY), lessThanOrEqualTo(to.getLong(ChronoField.EPOCH_DAY)));
+            assertThat("birthday is before lower bound", birthday.getLong(ChronoField.EPOCH_DAY), greaterThanOrEqualTo(from.getLong(ChronoField.EPOCH_DAY)));
         }
     }
 
     @Test
+    public void test() {
+        assertThat("birthday is after upper bound", -910749600000L, lessThanOrEqualTo(-910749600000L));
+    }
+    @Test
     public void birthdayWithMask() {
         String pattern = "YYYY MM.dd";
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().birthday(1, 50, pattern));
+        DateTimeFormatter.ofPattern(pattern, faker.getLocale()).parse(faker.date().birthday(1, 50, pattern));
     }
 
     @Test
     public void futureWithMask() {
         String pattern = "YYYY MM.dd mm:hh:ss";
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(1, TimeUnit.HOURS, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(20, 1, TimeUnit.HOURS, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(20, TimeUnit.HOURS, new Date(), pattern));
+        DateTimeFormatter.ofPattern(pattern, faker.getLocale()).parse(faker.date().future(1, TimeUnit.HOURS, pattern));
+        DateTimeFormatter.ofPattern(pattern, faker.getLocale()).parse(faker.date().future(20, 1, TimeUnit.HOURS, pattern));
+        DateTimeFormatter.ofPattern(pattern, faker.getLocale()).parse(faker.date().future(20, TimeUnit.HOURS, new Date(), pattern));
     }
 
     @Test
     public void pastWithMask() {
         String pattern = "YYYY MM.dd mm:hh:ss";
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(1, TimeUnit.DAYS, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(20, 1, TimeUnit.DAYS, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(1, TimeUnit.DAYS, new Date(), pattern));
+        DateTimeFormatter.ofPattern(pattern, faker.getLocale()).parse(faker.date().past(1, TimeUnit.DAYS, pattern));
+        DateTimeFormatter.ofPattern(pattern, faker.getLocale()).parse(faker.date().past(20, 1, TimeUnit.DAYS, pattern));
+        DateTimeFormatter.ofPattern(pattern, faker.getLocale()).parse(faker.date().past(1, TimeUnit.DAYS, new Date(), pattern));
     }
 }

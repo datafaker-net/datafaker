@@ -179,7 +179,8 @@ public class FakeValuesService {
             }
             return values.get(randomService.nextInt(values.size()));
         } else if (isSlashDelimitedRegex(o.toString())) {
-            return String.format("#{regexify '%s'}", trimRegexSlashes(o.toString()));
+            return String.format(localesChain.isEmpty() ? Locale.ROOT : localesChain.get(0),
+                "#{regexify '%s'}", trimRegexSlashes(o.toString()));
         } else {
             return (String) o;
         }
@@ -579,7 +580,7 @@ public class FakeValuesService {
     private String javaNameToYamlName(String expression) {
         return A_TO_Z.matcher(expression).replaceAll("_$1")
             .substring(1)
-            .toLowerCase();
+            .toLowerCase(localesChain.isEmpty() ? Locale.ROOT : localesChain.get(0));
     }
 
 

@@ -1,6 +1,7 @@
 package net.datafaker;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -39,7 +40,7 @@ public class Crypto {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
             String characters = faker.lorem().characters();
-            messageDigest.update(characters.getBytes(), 0, characters.length());
+            messageDigest.update(characters.getBytes(StandardCharsets.UTF_8), 0, characters.length());
             return new BigInteger(1, messageDigest.digest()).toString(16);
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
             throw new RuntimeException(noSuchAlgorithmException);

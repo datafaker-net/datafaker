@@ -69,7 +69,7 @@ public class PhoneNumberValidityFinderTest {
                 String phoneNumber = f.phoneNumber().phoneNumber();
 
                 try {
-                    Phonenumber.PhoneNumber proto = util.parse(phoneNumber, country.toUpperCase());
+                    Phonenumber.PhoneNumber proto = util.parse(phoneNumber, country.toUpperCase(f.getLocale()));
 
                     if (!util.isValidNumber(proto)) {
                         errorCount++;

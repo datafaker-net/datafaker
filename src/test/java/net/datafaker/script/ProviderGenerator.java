@@ -6,10 +6,10 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ public class ProviderGenerator {
     public void generateProvider() throws FileNotFoundException {
         File dir = new File("/Users/erikp/UserFiles/projects/datafaker/src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("todo.yml"));
+        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase(Locale.ROOT).endsWith("todo.yml"));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
@@ -30,7 +30,7 @@ public class ProviderGenerator {
         System.out.println(files.length + " files");
 
         for (File file : filesToProcess) {
-            final Map<String, Object> valuesMap = new Yaml().loadAs(new FileReader(file), Map.class);
+            final Map<String, Object> valuesMap = new Yaml().loadAs(file.getAbsolutePath(), Map.class);
 
             Map<String, Object> en = (Map<String, Object>) valuesMap.get("en");
             Map<String, Object> faker = (Map<String, Object>) en.get("faker");

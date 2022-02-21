@@ -53,7 +53,7 @@ public class Internet {
     }
 
     public String domainWord() {
-        return FakerIDN.toASCII(SINGLE_QUOTE.matcher(faker.name().lastName().toLowerCase()).replaceAll(""));
+        return FakerIDN.toASCII(SINGLE_QUOTE.matcher(faker.name().lastName().toLowerCase(faker.getLocale())).replaceAll(""));
     }
 
     public String domainSuffix() {
@@ -65,7 +65,7 @@ public class Internet {
             "www",
             ".",
             FakerIDN.toASCII(
-                SINGLE_QUOTE.matcher(faker.name().firstName().toLowerCase()).replaceAll("") +
+                SINGLE_QUOTE.matcher(faker.name().firstName().toLowerCase(faker.getLocale())).replaceAll("") +
                     "-" +
                     domainWord()
             ),
@@ -114,7 +114,7 @@ public class Internet {
      * @return an url to a random image with the given characteristics.
      */
     public String image(Integer width, Integer height, Boolean gray, String text) {
-        return String.format("https://lorempixel.com/%s%s/%s/%s/%s",
+        return String.format(faker.getLocale(), "https://lorempixel.com/%s%s/%s/%s/%s",
             gray ? "g/" : "", width, height, faker.fakeValuesService().resolve("internet.image_category", this, faker),
             (text == null || text.length() == 0) ? "" : text);
     }
@@ -179,7 +179,7 @@ public class Internet {
      * @return a correctly formatted IPv4 address.
      */
     public String ipV4Address() {
-        return String.format("%d.%d.%d.%d",
+        return String.format(faker.getLocale(), "%d.%d.%d.%d",
             faker.random().nextInt(254) + 2,
             faker.random().nextInt(254) + 2,
             faker.random().nextInt(254) + 2,
@@ -210,7 +210,7 @@ public class Internet {
                 second = 254;
                 break;
         }
-        return String.format("%d.%d.%d.%d", first, second, third, fourth);
+        return String.format(faker.getLocale(), "%d.%d.%d.%d", first, second, third, fourth);
     }
 
     /**
@@ -229,7 +229,7 @@ public class Internet {
         while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
             first = r.nextInt(256);
         }
-        return String.format("%d.%d.%d.%d", first, second, third, fourth);
+        return String.format(faker.getLocale(), "%d.%d.%d.%d", first, second, third, fourth);
     }
 
     /**

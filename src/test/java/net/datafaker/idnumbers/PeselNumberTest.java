@@ -1,8 +1,5 @@
 package net.datafaker.idnumbers;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-
 import net.datafaker.Faker;
 import net.datafaker.idnumbers.PeselNumber.Gender;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.time.Clock;
+import java.time.LocalDate;
 
 class PeselNumberTest {
 
@@ -29,8 +29,7 @@ class PeselNumberTest {
         /*
          * Given
          */
-        final LocalDate givenBirthDate = Faker.instance().date().birthday(0, 100).toInstant()
-            .atZone(ZoneId.systemDefault()).toLocalDate();
+        final LocalDate givenBirthDate = Faker.instance().date().birthday(0, 100);
         /*
          * When
          */
@@ -85,7 +84,7 @@ class PeselNumberTest {
         /*
          * Given
          */
-        final LocalDate givenBirthDate = LocalDate.now();
+        final LocalDate givenBirthDate = LocalDate.now(Clock.systemDefaultZone());
 
         /*
          * When

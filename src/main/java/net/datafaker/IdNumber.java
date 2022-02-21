@@ -131,7 +131,7 @@ public class IdNumber {
      * @return A valid PESEL number
      */
     public String peselNumber() {
-        return peselNumber(faker.date().birthday(0, 100).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+        return peselNumber(faker.date().birthday(0, 100),
             Gender.ANY);
     }
 

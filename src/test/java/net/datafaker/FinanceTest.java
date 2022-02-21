@@ -49,7 +49,7 @@ public class FinanceTest extends AbstractFakerTest {
     public void costaRicaIbanMustBeValid() {
         final String givenCountryCode = "CR";
         final Faker faker = new Faker();
-        final String ibanFaker = faker.finance().iban(givenCountryCode).toUpperCase();
+        final String ibanFaker = faker.finance().iban(givenCountryCode).toUpperCase(faker.getLocale());
         assertTrue(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker));
     }
 }

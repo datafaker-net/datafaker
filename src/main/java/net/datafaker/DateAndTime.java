@@ -1,9 +1,13 @@
 package net.datafaker;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,7 +48,7 @@ public class DateAndTime {
      * @return a string representation of a future date from now.
      */
     public String future(int atMost, TimeUnit unit, String pattern) {
-        return toString(future(atMost, unit), pattern);
+        return toString(future(atMost, unit), pattern, faker.getLocale());
     }
 
     /**
@@ -72,7 +76,7 @@ public class DateAndTime {
      * @return a string representation of a future date from now, with a minimum time.
      */
     public String future(int atMost, int minimum, TimeUnit unit, String pattern) {
-        return toString(future(atMost, minimum, unit), pattern);
+        return toString(future(atMost, minimum, unit), pattern, faker.getLocale());
     }
 
     /**
@@ -103,7 +107,7 @@ public class DateAndTime {
      * @return a string representation of a future date relative to {@code referenceDate}.
      */
     public String future(int atMost, TimeUnit unit, Date referenceDate, String pattern) {
-        return toString(future(atMost, unit, referenceDate), pattern);
+        return toString(future(atMost, unit, referenceDate), pattern, faker.getLocale());
     }
 
     /**
@@ -129,7 +133,7 @@ public class DateAndTime {
      * @return a string representation of a past date from now.
      */
     public String past(int atMost, TimeUnit unit, String pattern) {
-        return toString(past(atMost, unit), pattern);
+        return toString(past(atMost, unit), pattern, faker.getLocale());
     }
 
     /**
@@ -156,7 +160,7 @@ public class DateAndTime {
      * @return a string representation of a past date from now, with a minimum time.
      */
     public String past(int atMost, int minimum, TimeUnit unit, String pattern) {
-        return toString(past(atMost, minimum, unit), pattern);
+        return toString(past(atMost, minimum, unit), pattern, faker.getLocale());
     }
 
     /**
@@ -186,7 +190,7 @@ public class DateAndTime {
      * @return a string representation of a past date relative to {@code referenceDate}.
      */
     public String past(int atMost, TimeUnit unit, Date referenceDate, String pattern) {
-        return toString(past(atMost, unit, referenceDate), pattern);
+        return toString(past(atMost, unit, referenceDate), pattern, faker.getLocale());
     }
 
     /**
@@ -203,11 +207,26 @@ public class DateAndTime {
         }
 
         if (from.equals(to)) {
+            System.out.println("\t" + to.getTime() + " vs " + from.getTime());
             return from;
         }
 
         long offsetMillis = faker.random().nextLong(to.getTime() - from.getTime());
         return new Date(from.getTime() + offsetMillis);
+    }
+
+
+    public LocalDate between(LocalDate from, LocalDate to) throws IllegalArgumentException {
+        if (to.isBefore(from)) {
+            throw new IllegalArgumentException("Invalid date range, the upper bound date is before the lower bound.");
+        }
+
+        if (from.equals(to)) {
+            return from;
+        }
+
+        return LocalDate.ofEpochDay(
+            faker.random().nextLong(to.getLong(ChronoField.EPOCH_DAY), from.getLong(ChronoField.EPOCH_DAY) + 1));
     }
 
     /**
@@ -220,7 +239,7 @@ public class DateAndTime {
      * @throws IllegalArgumentException if the {@code to} date represents an earlier date than {@code from} date.
      */
     public String between(Date from, Date to, String pattern) throws IllegalArgumentException {
-        return toString(between(from, to), pattern);
+        return toString(between(from, to), pattern, faker.getLocale());
     }
 
     /**
@@ -228,7 +247,7 @@ public class DateAndTime {
      *
      * @return a random birthday between 65 and 18 years ago from now.
      */
-    public Date birthday() {
+    public LocalDate birthday() {
         return birthday(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE);
     }
 
@@ -239,7 +258,7 @@ public class DateAndTime {
      * @return a string representation of a random birthday between 65 and 18 years ago from now.
      */
     public String birthday(String pattern) {
-        return toString(birthday(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE), pattern);
+        return toString(birthday(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE), pattern, faker.getLocale());
     }
 
     /**
@@ -250,14 +269,13 @@ public class DateAndTime {
      * @return a random birthday between {@code minAge} and {@code maxAge} years ago from now.
      * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
      */
-    public Date birthday(int minAge, int maxAge) {
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
-        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        Calendar from = new GregorianCalendar(currentYear - maxAge, currentMonth, currentDay);
-        Calendar to = new GregorianCalendar(currentYear - minAge, currentMonth, currentDay);
-
-        return between(from.getTime(), to.getTime());
+    public LocalDate birthday(int minAge, int maxAge) {
+        LocalDate now = LocalDate.now(Clock.systemDefaultZone());
+        int year = now.getYear();
+        int month = now.getMonthValue();
+        int day = now.getDayOfMonth();
+        return between(LocalDate.of(year, month, day).minus(maxAge, ChronoUnit.YEARS),
+            LocalDate.of(year, month, day).minus(minAge, ChronoUnit.YEARS));
     }
 
     /**
@@ -270,10 +288,14 @@ public class DateAndTime {
      * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
      */
     public String birthday(int minAge, int maxAge, String pattern) {
-        return toString(birthday(minAge, maxAge), pattern);
+        return toString(birthday(minAge, maxAge), pattern, faker.getLocale());
     }
 
-    private String toString(Date date, String pattern) {
-        return new SimpleDateFormat(pattern).format(date);
+    private String toString(Date date, String pattern, Locale locale) {
+        return new SimpleDateFormat(pattern, locale).format(date);
+    }
+
+    private String toString(LocalDate localDate, String pattern, Locale locale) {
+        return DateTimeFormatter.ofPattern(pattern, locale).format(localDate);
     }
 }

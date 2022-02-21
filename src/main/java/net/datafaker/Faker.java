@@ -85,7 +85,7 @@ public class Faker {
         return new Faker(locale, random);
     }
 
-    Locale getLocale() {
+    public Locale getLocale() {
         return fakeValuesService.getLocalesChain().get(0);
     }
 

@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import java.util.Locale;
+
 public class File {
     private final Faker faker;
 
@@ -22,7 +24,7 @@ public class File {
     public String fileName(String dirOrNull, String nameOrNull, String extensionOrNull, String separatorOrNull) {
         final String sep = separatorOrNull == null ? System.getProperty("file.separator") : separatorOrNull;
         final String dir = dirOrNull == null ? faker.internet().slug() : dirOrNull;
-        final String name = nameOrNull == null ? faker.lorem().word().toLowerCase() : nameOrNull;
+        final String name = nameOrNull == null ? faker.lorem().word().toLowerCase(Locale.ROOT) : nameOrNull;
         final String ext = extensionOrNull == null ? extension() : extensionOrNull;
         return dir + sep + name + "." + ext;
     }

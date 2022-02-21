@@ -61,7 +61,7 @@ public class Twitter {
         }
         String id1 = String.valueOf(hashCodeV);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", faker.getLocale());
         String newDate = sdf.format(new Date());
         String result = "";
         RandomService random = faker.random();

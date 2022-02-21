@@ -18,7 +18,7 @@ public class Finance {
         createCountryCodeToBasicBankAccountNumberPatternMap();
 
     public String creditCard(CreditCardType creditCardType) {
-        final String key = String.format("finance.credit_card.%s", creditCardType.toString().toLowerCase(Locale.ROOT));
+        final String key = String.format(faker.getLocale(), "finance.credit_card.%s", creditCardType.toString().toLowerCase(Locale.ROOT));
         String value = faker.fakeValuesService().resolve(key, this, faker);
         final String template = faker.numerify(value);
 
@@ -60,7 +60,7 @@ public class Finance {
 
     public String iban(String countryCode) {
         String basicBankAccountNumber = faker.regexify(countryCodeToBasicBankAccountNumberPattern.get(countryCode));
-        String checkSum = calculateIbanChecksum(countryCode, basicBankAccountNumber);
+        String checkSum = calculateIbanChecksum(countryCode, basicBankAccountNumber, faker.getLocale());
         return countryCode + checkSum + basicBankAccountNumber;
     }
 
@@ -78,11 +78,11 @@ public class Finance {
         return sum;
     }
 
-    private static String calculateIbanChecksum(String countryCode, String basicBankAccountNumber) {
+    private static String calculateIbanChecksum(String countryCode, String basicBankAccountNumber, Locale locale) {
         String basis = basicBankAccountNumber + countryCode + "00";
 
         StringBuilder sb = new StringBuilder();
-        char[] characters = basis.toLowerCase().toCharArray();
+        char[] characters = basis.toLowerCase(locale).toCharArray();
         for (char c : characters) {
             if (Character.isLetter(c)) {
                 sb.append((c - 'a') + 10);

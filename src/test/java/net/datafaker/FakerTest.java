@@ -177,8 +177,7 @@ public class FakerTest extends AbstractFakerTest {
         assertThat(faker.expression("#{color.name}"), matchesRegularExpression("[a-z\\s]+"));
         assertThat(faker.expression("#{date.past '15','SECONDS','dd/MM/yyyy hh:mm:ss'}"),
             matchesRegularExpression("[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}"));
-        assertThat(faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}"),
-            matchesRegularExpression("[0-9]{2} [0-9]{3} [0-9]{2}:[0-9]{2}:[0-9]{2}"));
+        assertThat(faker.expression("#{date.birthday 'yy DDD'}"),   matchesRegularExpression("[0-9]{2} [0-9]{3}"));
     }
 
     @RepeatedTest(100)

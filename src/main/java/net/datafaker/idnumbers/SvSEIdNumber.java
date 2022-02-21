@@ -5,6 +5,7 @@ import net.datafaker.Faker;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Implementation based on the definition at
@@ -17,7 +18,7 @@ public class SvSEIdNumber {
 
     public String getValidSsn(Faker f) {
         String candidate = "";
-        while (!validSwedishSsn(candidate)) {
+        while (!validSwedishSsn(candidate, f.getLocale())) {
             String pattern = getPattern(f);
             candidate = f.numerify(pattern);
         }
@@ -27,7 +28,7 @@ public class SvSEIdNumber {
 
     public String getInvalidSsn(Faker f) {
         String candidate = "121212-1212"; // Seed with a valid number
-        while (validSwedishSsn(candidate)) {
+        while (validSwedishSsn(candidate, f.getLocale())) {
             String pattern = getPattern(f);
             candidate = f.numerify(pattern);
         }
@@ -40,12 +41,16 @@ public class SvSEIdNumber {
     }
 
     boolean validSwedishSsn(String ssn) {
+        return validSwedishSsn(ssn, Locale.ROOT);
+    }
+
+    boolean validSwedishSsn(String ssn, Locale locale) {
         if (ssn.length() != 11) {
             return false;
         }
 
         try {
-            if (parseDate(ssn)) {
+            if (parseDate(ssn, locale)) {
                 return false;
             }
         } catch (ParseException e) {
@@ -57,8 +62,8 @@ public class SvSEIdNumber {
         return checksum == calculatedChecksum;
     }
 
-    private boolean parseDate(String ssn) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+    private boolean parseDate(String ssn, Locale locale) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd", locale);
         String dateString = ssn.substring(0, 6);
         Date date = sdf.parse(dateString);
 
