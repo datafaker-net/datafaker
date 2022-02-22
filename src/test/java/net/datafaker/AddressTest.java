@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.not;
 
 public class AddressTest extends AbstractFakerTest {
 
-    private static final char decimalSeparator = new DecimalFormatSymbols().getDecimalSeparator();
+    private static final char decimalSeparator = new DecimalFormatSymbols(faker.getLocale()).getDecimalSeparator();
 
     @Test
     public void testStreetAddressStartsWithNumber() {

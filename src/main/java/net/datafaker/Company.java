@@ -76,7 +76,7 @@ public class Company {
     }
 
     private String domainName() {
-        return UNWANTED_CHARACTERS.matcher(name().toLowerCase()).replaceAll("");
+        return UNWANTED_CHARACTERS.matcher(name().toLowerCase(faker.getLocale())).replaceAll("");
     }
 
     private String domainSuffix() {

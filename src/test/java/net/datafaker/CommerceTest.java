@@ -9,7 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CommerceTest extends AbstractFakerTest {
 
-    private static final char decimalSeparator = new DecimalFormatSymbols().getDecimalSeparator();
+    private static final char decimalSeparator = new DecimalFormatSymbols(faker.getLocale()).getDecimalSeparator();
 
     private static final String CAPITALIZED_WORD_REGEX = "[A-Z][a-z]+";
 
