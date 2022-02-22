@@ -7,6 +7,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +29,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class InternetTest extends AbstractFakerTest {
 
@@ -203,15 +205,19 @@ public class InternetTest extends AbstractFakerTest {
     public void testIpV4Address() {
         assertThat(faker.internet().ipV4Address(), countOf('.', is(3)));
         for (int i = 0; i < 100; i++) {
-            final String[] octets = faker.internet().ipV4Address().split("\\.");
-            assertThat("first octet is 1-255", parseInt(octets[0]),
-                both(greaterThan(0)).and(lessThanOrEqualTo(255)));
-            assertThat("second octet is 0-255", parseInt(octets[1]),
-                both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
-            assertThat("second octet is 0-255", parseInt(octets[2]),
-                both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
-            assertThat("second octet is 0-255", parseInt(octets[3]),
-                both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+            try {
+                final String[] octets = faker.internet().getIpV4Address().getHostAddress().split("\\.");
+                assertThat("first octet is 1-255", parseInt(octets[0]),
+                    both(greaterThan(0)).and(lessThanOrEqualTo(255)));
+                assertThat("second octet is 0-255", parseInt(octets[1]),
+                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+                assertThat("second octet is 0-255", parseInt(octets[2]),
+                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+                assertThat("second octet is 0-255", parseInt(octets[3]),
+                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+            } catch (UnknownHostException e) {
+                fail("Failed with ", e);
+            }
         }
     }
 
@@ -236,12 +242,16 @@ public class InternetTest extends AbstractFakerTest {
 
 
         for (int i = 0; i < 1000; i++) {
-            String addr = faker.internet().privateIpV4Address();
-            assertThat(addr, anyOf(matchesRegularExpression(tenDot),
-                matchesRegularExpression(oneTwoSeven),
-                matchesRegularExpression(oneSixNine),
-                matchesRegularExpression(oneNineTwo),
-                matchesRegularExpression(oneSevenTwo)));
+            try {
+                String addr = faker.internet().getPrivateIpV4Address().getHostAddress();
+                assertThat(addr, anyOf(matchesRegularExpression(tenDot),
+                    matchesRegularExpression(oneTwoSeven),
+                    matchesRegularExpression(oneSixNine),
+                    matchesRegularExpression(oneNineTwo),
+                    matchesRegularExpression(oneSevenTwo)));
+            } catch (UnknownHostException e) {
+                fail("Failed with", e);
+            }
         }
     }
 
@@ -253,12 +263,16 @@ public class InternetTest extends AbstractFakerTest {
         String oneNineTwo = "^192\\.168\\.";
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\.";
         for (int i = 0; i < 1000; i++) {
-            String addr = faker.internet().publicIpV4Address();
-            assertThat(addr.matches(tenDot), is(false));
-            assertThat(addr.matches(oneTwoSeven), is(false));
-            assertThat(addr.matches(oneSixNine), is(false));
-            assertThat(addr.matches(oneNineTwo), is(false));
-            assertThat(addr.matches(oneSevenTwo), is(false));
+            try {
+                String addr = faker.internet().getPublicIpV4Address().getHostAddress();
+                assertThat(addr.matches(tenDot), is(false));
+                assertThat(addr.matches(oneTwoSeven), is(false));
+                assertThat(addr.matches(oneSixNine), is(false));
+                assertThat(addr.matches(oneNineTwo), is(false));
+                assertThat(addr.matches(oneSevenTwo), is(false));
+            } catch (UnknownHostException e) {
+                fail("Failed with", e);
+            }
         }
     }
 
@@ -267,10 +281,14 @@ public class InternetTest extends AbstractFakerTest {
         assertThat(faker.internet().ipV6Address(), countOf(':', is(7)));
 
         for (int i = 0; i < 1000; i++) {
-            assertThat(
-                "Is valid ipv6 format",
-                faker.internet().ipV6Address(),
-                matchesRegularExpression("[0-9a-fA-F]{1,4}(\\:([0-9a-fA-F]{1,4})){1,7}"));
+            try {
+                assertThat(
+                    "Is valid ipv6 format",
+                    faker.internet().getIpV6Address().getHostAddress(),
+                    matchesRegularExpression("[0-9a-fA-F]{1,4}(\\:([0-9a-fA-F]{1,4})){1,7}"));
+            } catch (UnknownHostException e) {
+                fail("Failed with", e);
+            }
         }
     }
 

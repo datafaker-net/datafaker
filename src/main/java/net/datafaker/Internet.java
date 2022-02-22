@@ -3,6 +3,10 @@ package net.datafaker;
 import net.datafaker.service.FakerIDN;
 import net.datafaker.service.RandomService;
 
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
@@ -179,57 +183,92 @@ public class Internet {
      * @return a correctly formatted IPv4 address.
      */
     public String ipV4Address() {
-        return String.format("%d.%d.%d.%d",
-            faker.random().nextInt(254) + 2,
-            faker.random().nextInt(254) + 2,
-            faker.random().nextInt(254) + 2,
-            faker.random().nextInt(254) + 2);
+        try {
+            return getIpV4Address().getHostAddress();
+        } catch (UnknownHostException e) {
+            return "127.0.0.1";
+        }
+    }
+
+    /**
+     * returns an IPv4 address.
+     *
+     * @return an IPv4 address.
+     */
+    public InetAddress getIpV4Address() throws UnknownHostException {
+        return Inet4Address.getByAddress(new byte[]{
+            (byte) (faker.random().nextInt(254) + 2),
+            (byte) (faker.random().nextInt(254) + 2),
+            (byte) (faker.random().nextInt(254) + 2),
+            (byte) (faker.random().nextInt(254) + 2)});
     }
 
     /**
      * @return a valid private IPV4 address in dot notation
      */
     public String privateIpV4Address() {
-        final Integer[] PRIVATE_FIRST_OCTET = {10, 127, 169, 192, 172};
-        final Integer[] PRIVATE_SECOND_OCTET_172 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
+        try {
+            return getPrivateIpV4Address().getHostAddress();
+        } catch (UnknownHostException e) {
+            return "127.0.0.1";
+        }
+    }
+
+    /**
+     * @return a private IPV4 address
+     */
+    public InetAddress getPrivateIpV4Address() throws UnknownHostException {
+        final Byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
+        final Byte[] PRIVATE_SECOND_OCTET_172 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 
         final RandomService r = faker.random();
-        int first = random(PRIVATE_FIRST_OCTET),
-            second = r.nextInt(256),
-            third = r.nextInt(256),
-            fourth = r.nextInt(256);
+        byte first = random(PRIVATE_FIRST_OCTET),
+            second = (byte) r.nextInt(256),
+            third = (byte) r.nextInt(256),
+            fourth = (byte) r.nextInt(256);
 
         switch (first) {
-            case 172:
+            case (byte) 172:
                 second = random(PRIVATE_SECOND_OCTET_172);
                 break;
-            case 192:
-                second = 168;
+            case (byte) 192:
+                second = (byte) 168;
                 break;
-            case 169:
-                second = 254;
+            case (byte) 169:
+                second = (byte) 254;
                 break;
         }
-        return String.format("%d.%d.%d.%d", first, second, third, fourth);
+        return Inet4Address.getByAddress(new byte[]{first, second, third, fourth});
     }
 
     /**
      * @return a valid public IPV4 address in dot notation
      */
     public String publicIpV4Address() {
+        try {
+            return getPublicIpV4Address().getHostAddress();
+        } catch (UnknownHostException e) {
+            return "127.0.0.1";
+        }
+    }
+
+    /**
+     * @return a valid public IPV4 address
+     */
+    public InetAddress getPublicIpV4Address() throws UnknownHostException {
         final RandomService r = faker.random();
 
-        final int[] PRIVATE_FIRST_OCTET = {10, 127, 169, 192, 172};
+        final byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte)169, (byte)192, (byte)172};
 
-        int first = r.nextInt(256),
-            second = r.nextInt(256),
-            third = r.nextInt(256),
-            fourth = r.nextInt(256);
+        byte first = (byte) r.nextInt(256),
+            second = (byte) r.nextInt(256),
+            third = (byte) r.nextInt(256),
+            fourth = (byte) r.nextInt(256);
 
         while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
-            first = r.nextInt(256);
+            first = (byte) r.nextInt(256);
         }
-        return String.format("%d.%d.%d.%d", first, second, third, fourth);
+        return Inet4Address.getByAddress(new byte[]{first, second, third, fourth});
     }
 
     /**
@@ -247,6 +286,19 @@ public class Internet {
      * @return a correctly formatted IPv6 address.
      */
     public String ipV6Address() {
+        try {
+            return getIpV6Address().getHostAddress();
+        } catch (UnknownHostException e) {
+            return "0:0:0:0:0:0:0:1";
+        }
+    }
+
+    /**
+     * <p>Returns an IPv6 address in hh:hh:hh:hh:hh:hh:hh:hh format.</p>
+     *
+     * @return a IPV6 address.
+     */
+    public InetAddress getIpV6Address() throws UnknownHostException {
         final StringBuilder tmp = new StringBuilder();
         for (int i = 0; i < 8; i++) {
             if (i > 0) {
@@ -257,7 +309,7 @@ public class Internet {
             tmp.append(Integer.toHexString(faker.random().nextInt(16)));
             tmp.append(Integer.toHexString(faker.random().nextInt(16)));
         }
-        return tmp.toString();
+        return Inet6Address.getByName(tmp.toString());
     }
 
     /**
