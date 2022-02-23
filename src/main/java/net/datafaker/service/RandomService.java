@@ -1,9 +1,10 @@
 package net.datafaker.service;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomService {
-    private static final Random SHARED_RANDOM = new Random();
+    private static final Random SHARED_RANDOM = ThreadLocalRandom.current();
     private final Random random;
 
     /**
@@ -29,8 +30,9 @@ public class RandomService {
         return random.nextInt(n);
     }
 
-    public Integer nextInt(int min, int max) {
-        return random.nextInt((max - min) + 1) + min;
+    public int nextInt(int min, int max) {
+        if (min == max) return min;
+        return ThreadLocalRandom.current().nextInt(min, max);
     }
 
     @SuppressWarnings("unused")
@@ -42,23 +44,13 @@ public class RandomService {
         return random.nextLong();
     }
 
-    // lifted from http://stackoverflow.com/questions/2546078/java-random-long-number-in-0-x-n-range
     public long nextLong(long n) {
-        if (n <= 0) {
-            throw new IllegalArgumentException("bound must be positive");
-        }
-
-        long bits, val;
-        do {
-            long randomLong = random.nextLong();
-            bits = (randomLong << 1) >>> 1;
-            val = bits % n;
-        } while (bits - val + (n - 1) < 0L);
-        return val;
+        return ThreadLocalRandom.current().nextLong(n);
     }
 
     public long nextLong(long min, long max) {
-        return min + (long) (nextDouble() * (max - min));
+        if (min == max) return min;
+        return ThreadLocalRandom.current().nextLong(min, max);
     }
 
     public double nextDouble() {
@@ -66,7 +58,8 @@ public class RandomService {
     }
 
     public double nextDouble(double min, double max) {
-        return min + (nextDouble() * (max - min));
+        if (min == max) return min;
+        return ThreadLocalRandom.current().nextDouble(min, max);
     }
 
     public boolean nextBoolean() {

@@ -14,7 +14,7 @@ public class Number {
      * Returns a random number from 0-9 (both inclusive)
      */
     public int randomDigit() {
-        return decimalBetween(0, 10).intValue();
+        return numberBetween(0, 10);
     }
 
     /**
@@ -32,7 +32,7 @@ public class Number {
      */
     public int numberBetween(int min, int max) {
         if (min == max) return min;
-        return decimalBetween(min, max).intValue();
+        return intBetween(min, max);
     }
 
     /**
@@ -43,7 +43,7 @@ public class Number {
      */
     public long numberBetween(long min, long max) {
         if (min == max) return min;
-        return decimalBetween(min, max).longValue();
+        return longBetween(min, max);
     }
 
     /**
@@ -51,10 +51,12 @@ public class Number {
      * @param strict         whether or not the generated value should have exactly <code>numberOfDigits</code>
      */
     public long randomNumber(int numberOfDigits, boolean strict) {
-        long max = (long) Math.pow(10, numberOfDigits);
+        long max = 1;
+        for (int i = 0; i < numberOfDigits; i++) max *= 10;
         if (strict) {
-            long min = (long) Math.pow(10, numberOfDigits - 1);
-            return faker.random().nextLong(max - min) + min;
+            long min = numberOfDigits <= 1 ? 0 : 1;
+            for (int i = 0; i < numberOfDigits - 1; i++) min *= 10;
+            return faker.random().nextLong(min, max);
         }
 
         return faker.random().nextLong(max);
@@ -64,7 +66,7 @@ public class Number {
      * Returns a random number
      */
     public long randomNumber() {
-        int numberOfDigits = decimalBetween(1, 10).intValue();
+        int numberOfDigits = intBetween(1, 10);
         return randomNumber(numberOfDigits, false);
     }
 
@@ -103,12 +105,20 @@ public class Number {
         return trueMin.add(trueMax.subtract(trueMin).multiply(random));
     }
 
+    private int intBetween(int min, int max) {
+        return faker.random().nextInt(min, max);
+    }
+
+    private long longBetween(long min, long max) {
+        return faker.random().nextLong(min, max);
+    }
+
     public String digits(int count) {
-        final StringBuilder tmp = new StringBuilder();
+        final char[] result = new char[count];
         for (int i = 0; i < count; i++) {
-            tmp.append(randomDigit());
+            result[i] = (char) ('0' + randomDigit());
         }
-        return tmp.toString();
+        return String.valueOf(result);
     }
 
     public String digit() {
