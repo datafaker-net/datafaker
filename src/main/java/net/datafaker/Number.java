@@ -21,7 +21,7 @@ public class Number {
      * Returns a random number from 1-9 (both inclusive)
      */
     public int randomDigitNotZero() {
-        return decimalBetween(1, 10).intValue();
+        return intBetween(1, 10);
     }
 
     /**
