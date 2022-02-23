@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public class FakeValuesService {
     private static final Pattern LOCALE = Pattern.compile("[-_]");
     private static final Pattern A_TO_Z = Pattern.compile("([A-Z])");
     private static final String DIGITS = "0123456789";
+    private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
 
     private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
@@ -416,7 +418,7 @@ public class FakeValuesService {
                     String directive = expr.substring(0, j);
                     while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
                     String arguments = j == expr.length() ? "" : expr.substring(j);
-                    List<String> args = splitArguments(arguments);
+                    String[] args = splitArguments(arguments);
 
                     resolved = resolveExpression(expr, directive, args, current, root);
                     if (resolved == null) {
@@ -430,9 +432,9 @@ public class FakeValuesService {
         return String.join("", expressions);
     }
 
-    private static List<String> splitArguments(String arguments) {
+    private static String[] splitArguments(String arguments) {
         if (arguments == null || arguments.length() == 0) {
-            return Collections.emptyList();
+            return EMPTY_ARRAY;
         }
         List<String> result = new ArrayList<>();
         int start = 0;
@@ -448,7 +450,7 @@ public class FakeValuesService {
                 start = i + 1;
             }
         }
-        return result;
+        return result.toArray(new String[0]);
     }
 
     private static List<String> splitExpressions(String expression) {
@@ -487,7 +489,7 @@ public class FakeValuesService {
      *
      * @return null if unable to resolve
      */
-    private String resolveExpression(String expression, String directive, List<String> args, Object current, Faker root) {
+    private String resolveExpression(String expression, String directive, String[] args, Object current, Faker root) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
         final String simpleDirective = (isDotDirective(directive) || current == null)
@@ -498,9 +500,8 @@ public class FakeValuesService {
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
         // #{ssn_valid} on IdNumber
         if (!isDotDirective(directive)) {
-            Supplier<String> supplier = () -> resolveFromMethodOn(current, directive, args);
-            resolved = supplier.get();
-            if (resolved != null) {
+            Supplier<String> supplier = resolveFromMethodOn(current, directive, args);
+            if (supplier != null && (resolved = supplier.get()) != null) {
                 expression2function.put(expression, supplier);
                 return resolved;
             }
@@ -518,9 +519,8 @@ public class FakeValuesService {
 
         // resolve method references on faker object like #{regexify '[a-z]'}
         if (!isDotDirective(directive)) {
-            supplier = () -> resolveFromMethodOn(root, directive, args);
-            resolved = supplier.get();
-            if (resolved != null) {
+            supplier = resolveFromMethodOn(root, directive, args);
+            if (supplier != null && (resolved = supplier.get()) != null) {
                 expression2function.put(expression, supplier);
                 return resolved;
             }
@@ -596,18 +596,18 @@ public class FakeValuesService {
      * {@link net.datafaker.Name} then this method would return {@link net.datafaker.Name#firstName()}.  Returns null if the directive is nested
      * (i.e. has a '.') or the method doesn't exist on the <em>obj</em> object.
      */
-    private String resolveFromMethodOn(Object obj, String directive, List<String> args) {
+    private Supplier<String> resolveFromMethodOn(Object obj, String directive, String[] args) {
         if (obj == null) {
             return null;
         }
         try {
             final MethodAndCoercedArgs accessor = accessor(obj, directive, args);
             return (accessor == null)
-                ? null
-                : string(accessor.invoke(obj));
+                ? () -> null
+                : () -> invokeAndToString(accessor, obj);
         } catch (Exception e) {
             LOG.log(Level.FINE, "Can't call " + directive + " on " + obj, e);
-            return null;
+            return () -> null;
         }
     }
 
@@ -617,7 +617,7 @@ public class FakeValuesService {
      *
      * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
      */
-    private Supplier<String> resolveFakerObjectAndMethod(Faker faker, String key, List<String> args) {
+    private Supplier<String> resolveFakerObjectAndMethod(Faker faker, String key, String[] args) {
         int index = key.indexOf('.');
         final String[] classAndMethod;
         if (index == -1) {
@@ -628,7 +628,7 @@ public class FakeValuesService {
 
         try {
             String fakerMethodName = removeChars(classAndMethod[0], '_');
-            MethodAndCoercedArgs fakerAccessor = accessor(faker, fakerMethodName, Collections.emptyList());
+            MethodAndCoercedArgs fakerAccessor = accessor(faker, fakerMethodName, EMPTY_ARRAY);
             if (fakerAccessor == null) {
                 LOG.fine("Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
@@ -651,7 +651,7 @@ public class FakeValuesService {
 
     private String invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
         try {
-        return string(accessor.invoke(objectWithMethodToInvoke));
+            return string(accessor.invoke(objectWithMethodToInvoke));
         } catch (Exception e) {
             LOG.fine(e.getMessage());
             return null;
@@ -662,8 +662,8 @@ public class FakeValuesService {
     /**
      * Find an accessor by name ignoring case.
      */
-    private MethodAndCoercedArgs accessor(Object onObject, String name, List<String> args) {
-        LOG.log(Level.FINE, () -> "Find accessor named " + name + " on " + onObject.getClass().getSimpleName() + " with args " + args);
+    private MethodAndCoercedArgs accessor(Object onObject, String name, String[] args) {
+        LOG.log(Level.FINE, () -> "Find accessor named " + name + " on " + onObject.getClass().getSimpleName() + " with args " + Arrays.toString(args));
 
         final Class clazz = onObject.getClass();
         if (!class2methodsCache.containsKey(clazz)) {
@@ -677,8 +677,8 @@ public class FakeValuesService {
         final Collection<Method> methods =
             class2methodsCache.get(clazz).getOrDefault(name.toLowerCase(Locale.ROOT), Collections.emptyList());
         for (Method m : methods) {
-            if (m.getParameterTypes().length == args.size() || m.getParameterTypes().length < args.size() && m.isVarArgs()) {
-                final List<Object> coercedArguments = coerceArguments(m, args);
+            if (m.getParameterTypes().length == args.length || m.getParameterTypes().length < args.length && m.isVarArgs()) {
+                final Object[] coercedArguments = coerceArguments(m, args);
                 if (coercedArguments != null) {
                     return new MethodAndCoercedArgs(m, coercedArguments);
                 }
@@ -713,8 +713,8 @@ public class FakeValuesService {
      *
      * @return array of coerced values if successful, null otherwise
      */
-    private List<Object> coerceArguments(Method accessor, List<String> args) {
-        final List<Object> coerced = new ArrayList<>();
+    private Object[] coerceArguments(Method accessor, String[] args) {
+        final Object[] coerced = new Object[accessor.getParameterTypes().length];
         for (int i = 0; i < accessor.getParameterTypes().length; i++) {
             final boolean isVarArg = i == accessor.getParameterTypes().length - 1 && accessor.isVarArgs();
             Class<?> toType = primitiveToWrapper(accessor.getParameterTypes()[i]);
@@ -724,52 +724,52 @@ public class FakeValuesService {
                 if (toType.isEnum()) {
                     Method method = toType.getMethod("valueOf", String.class);
                     if (isVarArg) {
-                        coercedArgument = Array.newInstance(toType, args.size() - i);
-                        for (int j = i; j < args.size(); j++) {
-                            String enumArg = args.get(j).substring(args.get(j).indexOf(".") + 1);
+                        coercedArgument = Array.newInstance(toType, args.length - i);
+                        for (int j = i; j < args.length; j++) {
+                            String enumArg = args[j].substring(args[j].indexOf(".") + 1);
                             Array.set(coercedArgument, j - i, method.invoke(null, enumArg));
                         }
                     } else {
-                        String enumArg = args.get(i).substring(args.get(i).indexOf(".") + 1);
+                        String enumArg = args[i].substring(args[i].indexOf(".") + 1);
                         coercedArgument = method.invoke(null, enumArg);
                     }
                 } else {
                     if (isVarArg) {
                         final Constructor<?> ctor = toType.getConstructor(String.class);
-                        coercedArgument = Array.newInstance(toType, args.size() - i);
-                        for (int j = i; j < args.size(); j++) {
-                            Array.set(coercedArgument, j - i, ctor.newInstance(args.get(j)));
+                        coercedArgument = Array.newInstance(toType, args.length - i);
+                        for (int j = i; j < args.length; j++) {
+                            Array.set(coercedArgument, j - i, ctor.newInstance(args[j]));
                         }
                     } else if (toType == Character.class) {
-                        coercedArgument = args.get(i) == null ? null : args.get(i).charAt(0);
+                        coercedArgument = args[i] == null ? null : args[i].charAt(0);
                     } else if (CharSequence.class.isAssignableFrom(toType)) {
-                        coercedArgument = args.get(i);
+                        coercedArgument = args[i];
                     } else if (Boolean.class.isAssignableFrom(toType)) {
-                        coercedArgument = Boolean.valueOf(args.get(i));
+                        coercedArgument = Boolean.valueOf(args[i]);
                     } else if (Integer.class.isAssignableFrom(toType)) {
-                        coercedArgument = Integer.valueOf(args.get(i));
+                        coercedArgument = Integer.valueOf(args[i]);
                     } else if (Long.class.isAssignableFrom(toType)) {
-                        coercedArgument = Long.valueOf(args.get(i));
+                        coercedArgument = Long.valueOf(args[i]);
                     } else if (Double.class.isAssignableFrom(toType)) {
-                        coercedArgument = Double.valueOf(args.get(i));
+                        coercedArgument = Double.valueOf(args[i]);
                     } else if (Float.class.isAssignableFrom(toType)) {
-                        coercedArgument = Float.valueOf(args.get(i));
+                        coercedArgument = Float.valueOf(args[i]);
                     } else if (Byte.class.isAssignableFrom(toType)) {
-                        coercedArgument = Byte.valueOf(args.get(i));
+                        coercedArgument = Byte.valueOf(args[i]);
                     } else if (Short.class.isAssignableFrom(toType)) {
-                        coercedArgument = Short.valueOf(args.get(i));
+                        coercedArgument = Short.valueOf(args[i]);
                     } else if (BigDecimal.class.isAssignableFrom(toType)) {
-                        coercedArgument = new BigDecimal(args.get(i));
+                        coercedArgument = new BigDecimal(args[i]);
                     } else if (BigInteger.class.isAssignableFrom(toType)) {
-                        coercedArgument = new BigInteger(args.get(i));
+                        coercedArgument = new BigInteger(args[i]);
                     } else {
                         final Constructor<?> ctor = toType.getConstructor(String.class);
-                        coercedArgument = ctor.newInstance(args.get(i));
+                        coercedArgument = ctor.newInstance(args[i]);
                     }
                 }
-                coerced.add(coercedArgument);
+                coerced[i] = coercedArgument;
             } catch (Exception e) {
-                LOG.fine("Unable to coerce " + args.get(i) + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor.");
+                LOG.fine("Unable to coerce " + args[i] + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor.");
                 return null;
             }
         }
@@ -812,15 +812,15 @@ public class FakeValuesService {
 
         private final Method method;
 
-        private final List<Object> coerced;
+        private final Object[] coerced;
 
-        private MethodAndCoercedArgs(Method m, List<Object> coerced) {
+        private MethodAndCoercedArgs(Method m, Object[] coerced) {
             this.method = Objects.requireNonNull(m, "method cannot be null");
             this.coerced = Objects.requireNonNull(coerced, "coerced arguments cannot be null");
         }
 
         private Object invoke(Object on) throws InvocationTargetException, IllegalAccessException {
-            return method.invoke(on, coerced.toArray());
+            return method.invoke(on, coerced);
         }
     }
 }
