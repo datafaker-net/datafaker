@@ -93,27 +93,31 @@ public class Lorem {
         char[] buffer = new char[fixedNumberOfCharacters];
         char[] special = new char[]{'!', '@', '#', '$', '%', '^', '&', '*'};
         char[] number = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-        char[] All = (new String(special) + new String(characters)).toCharArray();
-        char[] SpecialAndLetter = (new String(special) + new String(letters)).toCharArray();
+        char[] all = new char[special.length + characters.length];
+        System.arraycopy(special, 0, all, 0, special.length);
+        System.arraycopy(characters, 0, all, special.length, characters.length);
+        char[] specialAndLetter = new char[special.length + letters.length];
+        System.arraycopy(special, 0, specialAndLetter, 0, special.length);
+        System.arraycopy(letters, 0, specialAndLetter, special.length, letters.length);
 
         int cnt = 0;
         if (includeUppercase) {
-            char TheUpper = Character.toUpperCase(letters[faker.random().nextInt(letters.length)]);
+            char theUpper = Character.toUpperCase(letters[faker.random().nextInt(letters.length)]);
             if (cnt > fixedNumberOfCharacters - 1) return "";
-            buffer[cnt++] = TheUpper;
+            buffer[cnt++] = theUpper;
 
         }
 
         if (includeSpecial) {
-            char TheSpecial = special[faker.random().nextInt(special.length)];
+            char theSpecial = special[faker.random().nextInt(special.length)];
             if (cnt > fixedNumberOfCharacters - 1) return "";
-            buffer[cnt++] = TheSpecial;
+            buffer[cnt++] = theSpecial;
         }
 
         if (includeDigit) {
-            char TheNum = number[faker.random().nextInt(number.length)];
+            char theNum = number[faker.random().nextInt(number.length)];
             if (cnt > fixedNumberOfCharacters - 1) return "";
-            buffer[cnt++] = TheNum;
+            buffer[cnt++] = theNum;
         }
 
 
@@ -121,13 +125,13 @@ public class Lorem {
             char randomCharacter;
 
             if (includeSpecial && !includeDigit) {
-                randomCharacter = SpecialAndLetter[faker.random().nextInt(SpecialAndLetter.length)];
+                randomCharacter = specialAndLetter[faker.random().nextInt(specialAndLetter.length)];
             } else if (!includeSpecial && includeDigit) {
                 randomCharacter = characters[faker.random().nextInt(characters.length)];
             } else if (!includeSpecial && !includeDigit) {
                 randomCharacter = letters[faker.random().nextInt(letters.length)];
             } else {                                            //includeSpecial && includeDigit
-                randomCharacter = All[faker.random().nextInt(All.length)];
+                randomCharacter = all[faker.random().nextInt(all.length)];
             }
 
             if (includeUppercase && faker.bool().bool()) {
@@ -137,7 +141,7 @@ public class Lorem {
         }
 
         shuffle(buffer);
-        return new String(buffer);
+        return String.valueOf(buffer);
     }
 
     private void shuffle(char[] buffer) {

@@ -69,7 +69,7 @@ public class RandomService {
         return min + (nextDouble() * (max - min));
     }
 
-    public Boolean nextBoolean() {
+    public boolean nextBoolean() {
         return random.nextBoolean();
     }
 

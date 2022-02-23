@@ -10,13 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class InternetPasswordTest extends AbstractFakerTest {
     @Test
     public void testPassword1000() {
+        final Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
+        final Pattern digitPattern = Pattern.compile("[0-9]");
         for (int i = 0; i < 1000; i++) {
             String password = faker.internet().password(8, 16, true, true, true);
-
-            Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
             Matcher specialCharacterMatcher = specialCharacterPattern.matcher(password);
-
-            Pattern digitPattern = Pattern.compile("[0-9]");
             Matcher digitMatcher = digitPattern.matcher(password);
 
             boolean isPasswordContainsSpecialCharacter = specialCharacterMatcher.find();
