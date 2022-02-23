@@ -11,7 +11,16 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.WeakHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -519,9 +528,8 @@ public class FakeValuesService {
 
         // Resolve Faker Object method references like #{ClassName.method_name}
         if (isDotDirective(directive)) {
-            supplier = () -> resolveFakerObjectAndMethod(root, directive, args);
-            resolved = supplier.get();
-            if (resolved != null) {
+            supplier = resolveFakerObjectAndMethod(root, directive, args);
+            if (supplier != null && (resolved = supplier.get()) != null) {
                 expression2function.put(expression, supplier);
                 return resolved;
             }
@@ -609,7 +617,7 @@ public class FakeValuesService {
      *
      * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
      */
-    private String resolveFakerObjectAndMethod(Faker faker, String key, List<String> args) {
+    private Supplier<String> resolveFakerObjectAndMethod(Faker faker, String key, List<String> args) {
         int index = key.indexOf('.');
         final String[] classAndMethod;
         if (index == -1) {
@@ -634,7 +642,16 @@ public class FakeValuesService {
                     + " called " + nestedMethodName + ".");
             }
 
-            return string(accessor.invoke(objectWithMethodToInvoke));
+            return () -> invokeAndToString(accessor, objectWithMethodToInvoke);
+        } catch (Exception e) {
+            LOG.fine(e.getMessage());
+            return () -> null;
+        }
+    }
+
+    private String invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
+        try {
+        return string(accessor.invoke(objectWithMethodToInvoke));
         } catch (Exception e) {
             LOG.fine(e.getMessage());
             return null;
