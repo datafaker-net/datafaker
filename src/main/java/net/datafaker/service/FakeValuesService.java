@@ -150,10 +150,12 @@ public class FakeValuesService {
      * Fetch a random value from an array item specified by the key
      */
     public Object fetch(String key) {
-        List<?> valuesArray = new ArrayList<>();
-        if (fetchObject(key) instanceof ArrayList)
-            valuesArray = (ArrayList<?>) fetchObject(key);
-        return valuesArray == null ? null : valuesArray.get(randomService.nextInt(valuesArray.size()));
+        List<?> valuesArray = null;
+        Object o = fetchObject(key);
+        if (o instanceof ArrayList)
+            valuesArray = (ArrayList<?>) o;
+        return valuesArray == null || valuesArray.isEmpty()
+            ? null : valuesArray.get(randomService.nextInt(valuesArray.size()));
     }
 
     /**
@@ -409,24 +411,26 @@ public class FakeValuesService {
         List<String> expressions = splitExpressions(expression);
         for (int i = 0; i < expressions.size(); i++) {
             // odd are expressions, even are not expressions, just strings
-            if (i % 2 != 0) {
-                String expr = expressions.get(i);
-                String resolved = expression2function.get(expr) == null ? null : expression2function.get(expr).get();
-                if (resolved == null) {
-                    int j = 0;
-                    while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
-                    String directive = expr.substring(0, j);
-                    while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
-                    String arguments = j == expr.length() ? "" : expr.substring(j);
-                    String[] args = splitArguments(arguments);
-
-                    resolved = resolveExpression(expr, directive, args, current, root);
-                    if (resolved == null) {
-                        throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
-                    }
-                }
-                expressions.set(i, resolveExpression(resolved, current, root));
+            if (i % 2 == 0) {
+                continue;
             }
+            String expr = expressions.get(i);
+            final Supplier<String> supplier = expression2function.get(expr);
+            String resolved = supplier == null ? null : supplier.get();
+            if (resolved == null) {
+                int j = 0;
+                while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
+                String directive = expr.substring(0, j);
+                while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
+                String arguments = j == expr.length() ? "" : expr.substring(j);
+                String[] args = splitArguments(arguments);
+
+                resolved = resolveExpression(expr, directive, args, current, root);
+                if (resolved == null) {
+                    throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
+                }
+            }
+            expressions.set(i, resolveExpression(resolved, current, root));
         }
 
         return String.join("", expressions);
@@ -450,7 +454,7 @@ public class FakeValuesService {
                 start = i + 1;
             }
         }
-        return result.toArray(new String[0]);
+        return result.toArray(EMPTY_ARRAY);
     }
 
     private static List<String> splitExpressions(String expression) {
@@ -669,8 +673,9 @@ public class FakeValuesService {
         if (!class2methodsCache.containsKey(clazz)) {
             Map<String, Collection<Method>> methodMap = new HashMap<>();
             for (Method m : clazz.getMethods()) {
-                methodMap.computeIfAbsent(m.getName().toLowerCase(Locale.ROOT), k -> new ArrayList<>());
-                methodMap.get(m.getName().toLowerCase(Locale.ROOT)).add(m);
+                final String key = m.getName().toLowerCase(Locale.ROOT);
+                methodMap.computeIfAbsent(key, k -> new ArrayList<>());
+                methodMap.get(key).add(m);
             }
             class2methodsCache.put(clazz, methodMap);
         }
