@@ -59,7 +59,7 @@ en:
         CD: "Congo, The Democratic Republic Of The"
         CK: "Cook Islands"
         CR: "Costa Rica"
-        CI: "Cote D'ivoire"
+        CI: "Ivory Coast"
         HR: "Croatia"
         CU: "Cuba"
         CW: "Curacao"
@@ -69,7 +69,6 @@ en:
         DJ: "Djibouti"
         DM: "Dominica"
         DO: "Dominican Republic"
-        TP: "East Timor"
         EC: "Ecuador"
         EG: "Egypt"
         SV: "El Salvador"
@@ -318,7 +317,6 @@ en:
         djibouti: "DJ"
         dominica: "DM"
         dominican_republic: "DO"
-        east_timor: "TP"
         ecuador: "EC"
         egypt: "EG"
         el_salvador: "SV"
@@ -471,6 +469,7 @@ en:
         tajikistan: "TJ"
         tanzania_united_republic_of: "TZ"
         thailand: "TH"
+        timor_leste: "TL"
         togo: "TG"
         tokelau: "TK"
         tonga: "TO"
@@ -582,4 +581,8 @@ en:
       full_address:
         - "#{street_address}, #{city}, #{state_abbr} #{zip_code}"
         - "#{secondary_address} #{street_address}, #{city}, #{state_abbr} #{zip_code}"
+      mail_box:
+        - "PO Box ##"
+        - "PO Box ###"
+        - "PO Box ####"
       default_country: [United States of America]

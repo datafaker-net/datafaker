@@ -94,10 +94,18 @@ public class Address {
         return faker.fakeValuesService().resolve("address.state_abbr", this, faker);
     }
 
+    /**
+     * @deprecated Use faker.name.firstName instead
+     */
+    @Deprecated
     public String firstName() {
         return faker.name().firstName();
     }
 
+    /**
+     * @deprecated Use faker.name.lastName instead
+     */
+    @Deprecated
     public String lastName() {
         return faker.name().lastName();
     }
@@ -128,5 +136,9 @@ public class Address {
 
     public String fullAddress() {
         return faker.fakeValuesService().resolve("address.full_address", this, faker);
+    }
+
+    public String mailBox() {
+        return faker.numerify(faker.fakeValuesService().resolve("address.mail_box", this, faker));
     }
 }

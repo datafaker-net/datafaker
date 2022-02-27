@@ -160,6 +160,11 @@ public class AddressTest extends AbstractFakerTest {
         assertThat(faker.address().citySuffix(), isStringWithContents());
     }
 
+    @RepeatedTest(10)
+    public void testMailbox() {
+        assertThat(faker.address().mailBox(), matchesRegularExpression("PO Box [0-9]{2,4}"));
+    }
+
     @Test
     public void testZipIsFiveChars() {
         final Faker localFaker = new Faker(new Locale("en-us"));
