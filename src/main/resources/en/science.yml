@@ -8,3 +8,54 @@ en:
         leptons: ["electron", "muon", "tau", "electron neutrino", "muon neutrino", "tau neutrino"]
         bosons: ["gluon", "photon", "Z boson", "W boson", "higgs"]
       scientist: ["Isaac Newton", "Albert Einstein", "Neils Bohr", "Charles Darwin", "Louis Pasteur", "Sigmund Freud", "Galileo Galilei", "Antoine Laurent Lavoisier", "Johannes Kepler", "Nicolaus Copernicus", "Michael Faraday", "James Clerk Maxwell", "Claude Bernard", "Franz Boas", "Werner Heisenberg", "Linus Pauling", "Rudolf Virchow", "Erwin Schrodinger", "Ernest Rutherford", "Paul Dirac", "Andreas Vesalius", "Tycho Brahe", "Comte de Buffon", "Ludwig Boltzmann", "Max Planck", "Marie Curie", "William Herschel", "Charles Lyell", "Pierre Simon de Laplace", "Edwin Hubble", "Joseph J. Thomson", "Max Born", "Francis Crick", "Enrico Fermi", "Leonard Euler", "Justus Liebig", "Arthur Eddington", "William Harvey", "Marcello Malpighi", "Christiaan Huygens", "Carl Gauss", "Albrecht von Haller", "August Kekule", "Robert Koch", "Murray Gell-Mann", "Emil Fischer", "Dmitri Mendeleev", "Sheldon Glashow", "James Watson", "John Bardeen", "John von Neumann", "Richard Feynman", "Alfred Wegener", "Stephen Hawking", "Anton van Leeuwenhoek", "Max von Laue", "Gustav Kirchhoff", "Hans Bethe", "Euclid", "Gregor Mendel", "Heike Kamerlingh Onnes", "Thomas Hunt Morgan", "Hermann von Helmholtz", "Paul Ehrlich", "Ernst Mayr", "Charles Sherrington", "Theodosius Dobzhansky", "Max Delbruck", "Jean Baptiste Lamarck", "William Bayliss", "Noam Chomsky", "Frederick Sanger", "Lucretius", "John Dalton", "Louis Victor de Broglie", "Carl Linnaeus", "Jean Piaget", "George Gaylord Simpson", "Claude Levi-Strauss", "Lynn Margulis", "Karl Landsteiner", "Konrad Lorenz", "Edward O. Wilson", "Frederick Gowland Hopkins", "Gertrude Belle Elion", "Hans Selye", "J. Robert Oppenheimer", "Edward Teller", "Willard Libby", "Ernst Haeckel", "Jonas Salk", "Emil Kraepelin", "Trofim Lysenko", "Francis Galton", "Alfred Binet", "Alfred Kinsey", "Alexander Fleming", "B. F. Skinner", "Wilhelm Wundt", "Archimedes"]
+      tool:
+        - Microscope
+        - Stereomicroscope
+        - Laser
+        - Interferometer
+        - Spectrophotometer
+        - Spectrometer
+        - Mass Spectrometer
+        - NMR Spectrometer
+        - Homogeniser
+        - PCR
+        - NMR
+        - SDR
+        - Electrophoresis
+        - Simulator
+        - Centrifuge
+        - Microcentrifuge
+        - Transducer
+        - Calorimeter
+        - Glucometers
+        - Bioreactor
+        - Telescope
+        - Autoclave
+        - Microwave
+        - Computer
+        - Supercomputer
+        - Analyzer
+        - Imager
+        - Fumehood
+        - Cleanroom
+        - Mastersizer
+        - Accelerator
+        - Microphone
+        - Fluorimeter
+        - 3D Scanner
+        - Data Logger
+        - Freezer
+        - Furnace
+        - Synthesiser
+        - Reflector
+        - Cryostat
+        - Diffractometer
+        - Manifold
+        - Pump
+        - Incubator
+        - Regulator
+        - Sonicator
+        - Chromatographer
+        - Viscometer
+        - Generator
+        - Reactor

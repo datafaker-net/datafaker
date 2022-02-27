@@ -19,6 +19,10 @@ public class Science {
         return faker.fakeValuesService().resolve("science.scientist", this, faker);
     }
 
+    public String tool() {
+        return faker.fakeValuesService().resolve("science.tool", this, faker);
+    }
+
     public String quark() {
         return faker.fakeValuesService().resolve("science.particles.quarks", this, faker);
     }
@@ -30,4 +34,5 @@ public class Science {
     public String bosons() {
         return faker.fakeValuesService().resolve("science.particles.bosons", this, faker);
     }
+
 }
