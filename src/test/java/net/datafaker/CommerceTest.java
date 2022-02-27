@@ -36,6 +36,16 @@ public class CommerceTest extends AbstractFakerTest {
     }
 
     @Test
+    public void testBrand() {
+        assertThat(faker.commerce().brand(), matchesRegularExpression("\\w+"));
+    }
+
+    @Test
+    public void testVendor() {
+        assertThat(faker.commerce().vendor(), matchesRegularExpression("[A-Za-z'() 0-9-,]+"));
+    }
+
+    @Test
     public void testPrice() {
         assertThat(faker.commerce().price(), matchesRegularExpression("\\d{1,3}\\" + decimalSeparator + "\\d{2}"));
     }

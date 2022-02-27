@@ -14,6 +14,10 @@ public class Commerce {
         decimalFormatSymbols = new DecimalFormatSymbols(faker.getLocale());
     }
 
+    /**
+     * @deprecated Use faker.color.name instead
+     */
+    @Deprecated
     public String color() {
         return faker.fakeValuesService().resolve("color.name", this, faker);
     }
@@ -43,6 +47,14 @@ public class Commerce {
 
     public String material() {
         return faker.fakeValuesService().resolve("commerce.product_name.material", this, faker);
+    }
+
+    public String brand() {
+        return faker.fakeValuesService().resolve("commerce.brand", this, faker);
+    }
+
+    public String vendor() {
+        return faker.fakeValuesService().resolve("commerce.vendor", this, faker);
     }
 
     /**
