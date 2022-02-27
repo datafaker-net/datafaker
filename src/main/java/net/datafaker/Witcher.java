@@ -30,4 +30,15 @@ public class Witcher {
     public String monster() {
         return faker.fakeValuesService().resolve("games.witcher.monsters", this, faker);
     }
+    public String sign() {
+        return faker.fakeValuesService().resolve("games.witcher.signs", this, faker);
+    }
+
+    public String potion() {
+        return faker.fakeValuesService().resolve("games.witcher.potions", this, faker);
+    }
+
+    public String book() {
+        return faker.fakeValuesService().resolve("games.witcher.books", this, faker);
+    }
 }
