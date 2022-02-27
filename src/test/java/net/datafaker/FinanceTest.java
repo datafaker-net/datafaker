@@ -22,6 +22,22 @@ public class FinanceTest extends AbstractFakerTest {
         assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(creditCardStripped), is(true));
     }
 
+    @RepeatedTest(10)
+    public void nasdaqTicker() {
+        assertThat(faker.finance().nasdaqTicker(), matchesRegularExpression("[A-Z.-]+"));
+    }
+
+    @RepeatedTest(10)
+    public void nyseTicker() {
+        assertThat(faker.finance().nyseTicker(), matchesRegularExpression("[A-Z.-]+"));
+    }
+
+    @Test
+    public void stockMarket() {
+        assertThat(faker.finance().stockMarket(), matchesRegularExpression("[A-Z.-]+"));
+    }
+
+
     @Test
     public void bic() {
         assertThat(faker.finance().bic(), matchesRegularExpression("([A-Z]){4}([A-Z]){2}([0-9A-Z]){2}([0-9A-Z]{3})?"));

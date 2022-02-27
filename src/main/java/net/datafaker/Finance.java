@@ -13,6 +13,17 @@ public class Finance {
         this.faker = faker;
     }
 
+    public String nasdaqTicker() {
+        return faker.fakeValuesService().resolve("finance.ticker.nasdaq", this, faker);
+    }
+
+    public String nyseTicker() {
+        return faker.fakeValuesService().resolve("finance.ticker.nyse", this, faker);
+    }
+
+    public String stockMarket() {
+        return faker.fakeValuesService().resolve("finance.stock_market", this, faker);
+    }
 
     private static final Map<String, String> countryCodeToBasicBankAccountNumberPattern =
         createCountryCodeToBasicBankAccountNumberPatternMap();
