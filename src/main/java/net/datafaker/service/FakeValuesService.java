@@ -61,7 +61,6 @@ public class FakeValuesService {
      * <li>eN_uS</li>
      * </ul>
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public FakeValuesService(Locale locale, RandomService randomService) {
         if (locale == null) {
             throw new IllegalArgumentException("locale is required");
@@ -207,7 +206,7 @@ public class FakeValuesService {
      *            dot. E.g. name.first_name
      */
     public Object fetchObject(String key) {
-        String[] path = split(key, '.');
+        String[] path = split(key);
 
         Object result = null;
         for (Locale locale : localesChain) {
@@ -215,7 +214,7 @@ public class FakeValuesService {
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
                 if (currentValue instanceof Map) {
-                    currentValue = ((Map) currentValue).get(currentPath);
+                    currentValue = ((Map<?, ?>) currentValue).get(currentPath);
                 } else {
                     currentValue = ((FakeValuesInterface) currentValue).get(currentPath);
                 }
@@ -228,17 +227,20 @@ public class FakeValuesService {
         return result;
     }
 
-    private String[] split(String string, char sep) {
+    private String[] split(String string) {
         int size = 0;
+        char splitChar = '.';
         for (int i = 0; i < string.length(); i++) {
-            if (string.charAt(i) == sep) size++;
+            if (string.charAt(i) == splitChar) {
+                size++;
+            }
         }
         String[] result = new String[size + 1];
         char[] chars = string.toCharArray();
         int start = 0;
         int j = 0;
         for (int i = 0; i < string.length(); i++) {
-            if (string.charAt(i) == sep) {
+            if (string.charAt(i) == splitChar) {
                 if (i - start > 0) {
                     result[j++] = String.valueOf(chars, start, i - start);
                 }
@@ -681,7 +683,7 @@ public class FakeValuesService {
     private MethodAndCoercedArgs accessor(Object onObject, String name, String[] args) {
         LOG.log(Level.FINE, () -> "Find accessor named " + name + " on " + onObject.getClass().getSimpleName() + " with args " + Arrays.toString(args));
 
-        final Class clazz = onObject.getClass();
+        final Class<?> clazz = onObject.getClass();
         if (!class2methodsCache.containsKey(clazz)) {
             Map<String, Collection<Method>> methodMap = new HashMap<>();
             for (Method m : clazz.getMethods()) {
