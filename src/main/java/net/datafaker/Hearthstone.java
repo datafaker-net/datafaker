@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 0.9.0
+ */
 public class Hearthstone {
 
     private final Faker faker;
@@ -37,6 +40,4 @@ public class Hearthstone {
     public String wildRank() {
         return standardRank();
     }
-
-
 }

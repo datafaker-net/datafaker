@@ -11,6 +11,7 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  * In 2009 the MEI (Microempreendedor Individual in Portuguese, or 'Individual Microentrepreneur') was created to supply market demand.
  *
  * @see <a href="https://en.wikipedia.org/wiki/CNPJ">CNPJ</a>
+ * @since 1.1.0
  */
 public class CNPJ {
 

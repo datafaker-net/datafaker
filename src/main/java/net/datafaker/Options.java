@@ -2,6 +2,9 @@ package net.datafaker;
 
 import java.util.List;
 
+/**
+ * @since 0.8.0
+ */
 public class Options {
     private final Faker faker;
 

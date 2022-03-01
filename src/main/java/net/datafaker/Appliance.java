@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 1.0.0
+ */
 public class Appliance {
     private final Faker faker;
 

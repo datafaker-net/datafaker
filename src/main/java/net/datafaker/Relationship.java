@@ -5,6 +5,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
+/**
+ * @since 0.8.0
+ */
 public class Relationship {
     private final Faker faker;
 

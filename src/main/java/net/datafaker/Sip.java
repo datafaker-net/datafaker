@@ -6,8 +6,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Faker class for generating Session Initiation Protocol (SIP) related data.
  *
  * @author TomerFi
+ * @since 0.8.0
  */
-public final class Sip {
+public class Sip {
     private final Faker faker;
     private final int[] portPool = new int[5001];
 

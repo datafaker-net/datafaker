@@ -1,5 +1,10 @@
 package net.datafaker;
 
+/**
+ * Military ranks.
+ *
+ * @since 1.2.0
+ */
 public class Military {
 
     private final Faker faker;

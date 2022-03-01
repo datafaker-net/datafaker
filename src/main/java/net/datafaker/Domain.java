@@ -4,7 +4,9 @@ package net.datafaker;
 import net.datafaker.service.RandomService;
 
 /**
- * The type Domain.
+ * A domain name generator.
+ *
+ * @since 0.9.0
  */
 public class Domain {
     private final Faker faker;

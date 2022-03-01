@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 0.9.0
+ */
 public class Barcode {
     private final Faker faker;
 

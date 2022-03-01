@@ -2,6 +2,8 @@ package net.datafaker;
 
 /**
  * A class for generating random value of ResidentEvil series.
+ *
+ * @since 0.9.0
  */
 public class ResidentEvil {
     private final Faker faker;

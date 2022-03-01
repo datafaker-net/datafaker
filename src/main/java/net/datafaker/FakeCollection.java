@@ -56,7 +56,7 @@ public class FakeCollection<T> {
                 throw new IllegalArgumentException("Max length must be not less than min length and not negative");
             }
             minLength = minLength < 0 ? maxLength : minLength;
-            return new FakeCollection<T>(suppliers, minLength, maxLength);
+            return new FakeCollection<>(suppliers, minLength, maxLength);
         }
     }
 }

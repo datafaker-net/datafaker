@@ -5,6 +5,9 @@ import java.text.DecimalFormatSymbols;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @since 0.8.0
+ */
 public class Commerce {
     private final Faker faker;
     private final DecimalFormatSymbols decimalFormatSymbols;

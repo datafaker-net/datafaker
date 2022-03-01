@@ -16,8 +16,10 @@ import java.util.stream.Collectors;
 
 public class ProviderGenerator {
 
+    public static void main(String[] args) throws FileNotFoundException {
+        new ProviderGenerator().generateProvider();
+    }
 
-    //    @Test
     public void generateProvider() throws FileNotFoundException {
         File dir = new File("/Users/erikp/UserFiles/projects/datafaker/src/main/resources/en");
 

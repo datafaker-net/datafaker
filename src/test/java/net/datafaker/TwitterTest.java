@@ -17,7 +17,7 @@ public class TwitterTest extends AbstractFakerTest {
     public void testCreatedDateForward() {
         Date testDate = new Date();
         Date constrainDate = new Date(testDate.getTime() + 3000000);
-        Date generated = faker.twitter().created_time(true, testDate, constrainDate);
+        Date generated = faker.twitter().createdTime(true, testDate, constrainDate);
         boolean test = generated.after(testDate) && generated.before(constrainDate);
         assertTrue(test);
     }
@@ -26,7 +26,7 @@ public class TwitterTest extends AbstractFakerTest {
     public void testCreatedDateBackward() {
         Date testDate = new Date();
         Date constrainDate = new Date(testDate.getTime() - 3000000);
-        Date generated = faker.twitter().created_time(false, testDate, constrainDate);
+        Date generated = faker.twitter().createdTime(false, testDate, constrainDate);
         boolean test = generated.before(testDate) && generated.after(constrainDate);
         assertTrue(test);
     }

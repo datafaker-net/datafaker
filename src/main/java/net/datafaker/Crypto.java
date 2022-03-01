@@ -5,6 +5,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @since 0.8.0
+ */
 public class Crypto {
     private final Faker faker;
 

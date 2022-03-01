@@ -1,7 +1,9 @@
 package net.datafaker;
 
 /**
- * A generator for Weather data.
+ * A generator for weather data.
+ *
+ * @since 0.8.0
  */
 public class Weather {
 

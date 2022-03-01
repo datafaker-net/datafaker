@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+/**
+ * @since 0.8.0
+ */
 public class Internet {
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
     private static final Pattern COLON = Pattern.compile(":");

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * @since 0.8.0
+ */
 public class Company {
 
     private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[.,' ]");

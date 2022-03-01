@@ -3,6 +3,9 @@ package net.datafaker;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * @since 0.8.0
+ */
 public class Number {
     private final Faker faker;
 

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
  * A generator of random dates.
  *
  * @author pmiklos
+ * @since 0.8.0
  */
 public class DateAndTime {
     private static final int DEFAULT_MIN_AGE = 18;

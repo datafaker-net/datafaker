@@ -2,6 +2,8 @@ package net.datafaker;
 
 /**
  * Generate random, different kinds of disease.
+ *
+ * @since 0.8.0
  */
 public class Disease {
     private final Faker faker;

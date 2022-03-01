@@ -9,6 +9,7 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  * directly or indirectly, pay taxes in Brazil. It's an 11-digit number in the format 000.000.000-00.
  *
  * @see <a href="https://en.wikipedia.org/wiki/CPF_number">CPF</a>
+ * @since 0.8.0
  */
 public class CPF {
 

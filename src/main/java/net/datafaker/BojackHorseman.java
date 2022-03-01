@@ -4,8 +4,8 @@ package net.datafaker;
  * Generate random parts in BojackHorseman.
  *
  * @author unknown and irakatz
+ * @since 0.8.0
  */
-
 public class BojackHorseman {
     private final Faker faker;
 

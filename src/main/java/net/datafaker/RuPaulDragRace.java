@@ -1,5 +1,10 @@
 package net.datafaker;
 
+/**
+ * RuPaul's Drag Race is a reality competition series produced by World of Wonder for the Logo TV Network.
+ *
+ * @since 1.0.0
+ */
 public class RuPaulDragRace {
 
     private final Faker faker;

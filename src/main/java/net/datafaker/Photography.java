@@ -2,6 +2,8 @@ package net.datafaker;
 
 /**
  * Provides photography related strings.
+ *
+ * @since 0.8.0
  */
 public class Photography {
 

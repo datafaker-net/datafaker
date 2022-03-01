@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 0.9.0
+ */
 public class Minecraft {
     private final Faker faker;
 

@@ -1,5 +1,10 @@
 package net.datafaker;
 
+/**
+ * Generates marketing buzzwords.
+ *
+ * @since 1.2.0
+ */
 public class Marketing {
 
     private final Faker faker;
@@ -11,5 +16,4 @@ public class Marketing {
     public String buzzwords() {
         return faker.fakeValuesService().resolve("marketing.buzzwords", this, faker);
     }
-
 }

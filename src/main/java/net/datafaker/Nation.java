@@ -7,6 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * @since 0.8.0
+ */
 public class Nation {
 
     private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;

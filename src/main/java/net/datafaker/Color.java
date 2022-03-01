@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 0.8.0
+ */
 public class Color {
     private final Faker faker;
 

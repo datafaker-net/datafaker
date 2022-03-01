@@ -3,6 +3,9 @@ package net.datafaker;
 import net.datafaker.passportnumbers.AmPassportNumber;
 import net.datafaker.passportnumbers.ChPassportNumber;
 
+/**
+ * @since 0.9.0
+ */
 public class Passport {
     private final Faker faker;
 

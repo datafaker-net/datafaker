@@ -1,5 +1,10 @@
 package net.datafaker;
 
+/**
+ * A generator for Mountain names and ranges.
+ *
+ * @since 1.1.0
+ */
 public class Mountain {
     private final Faker faker;
 

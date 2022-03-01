@@ -2,6 +2,8 @@ package net.datafaker;
 
 /**
  * Generates aviation related strings.
+ *
+ * @since 0.8.0
  */
 public class Aviation {
 

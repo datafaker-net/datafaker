@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 1.2.0
+ */
 public class Restaurant {
 
     private final Faker faker;

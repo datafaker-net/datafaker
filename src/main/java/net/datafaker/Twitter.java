@@ -10,7 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /*
- * This file was used create fake Twitter message using twitter.yml
+ * Creates fake Twitter messages.
+ *
+ * @since 0.9.0
  */
 public class Twitter {
 
@@ -32,7 +34,7 @@ public class Twitter {
      * @param constrains used to constrain the returned date range.
      * @return a new date later (or before) the base date with respect to the constrain (no later/earlier than the constrain).
      */
-    public Date created_time(boolean forward, Date base, Date constrains) {
+    public Date createdTime(boolean forward, Date base, Date constrains) {
         final RandomService random = faker.random();
         if (forward) {
             return new Date(base.getTime() + (long) (random.nextDouble() * (constrains.getTime() - base.getTime())));

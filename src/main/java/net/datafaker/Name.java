@@ -3,6 +3,9 @@ package net.datafaker;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+/**
+ * @since 0.8.0
+ */
 public class Name {
 
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");

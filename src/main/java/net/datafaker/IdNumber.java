@@ -14,6 +14,9 @@ import net.datafaker.idnumbers.PtNifIdNumber;
 import net.datafaker.idnumbers.SvSEIdNumber;
 import net.datafaker.idnumbers.ZhCnIdNumber;
 
+/**
+ * @since 0.8.0
+ */
 public class IdNumber {
     private final Faker faker;
 

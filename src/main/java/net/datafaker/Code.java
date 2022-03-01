@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 /**
  * ISBN Rules : https://en.wikipedia.org/wiki/International_Standard_Book_Number
+ *
+ * @since 0.8.0
  */
 public class Code {
 
