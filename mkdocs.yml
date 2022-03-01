@@ -91,12 +91,14 @@ extra:
 nav:
   - Home: index.md
   - Documentation:
-    - Getting started: getting-started.md
-    - Usage: usage.md
-    - Data providers: providers.md
+    - Getting started: documentation/getting-started.md
+    - Usage: documentation/usage.md
+    - Data providers: documentation/providers.md
+    - Custom providers: documentation/custom-providers.md
+    - File formats: documentation/file-formats.md
     - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.1.0/datafaker-1.1.0-javadoc.jar/!/index.html'
-    - Contributing: contributing.md
-    - License: license.md
+    - Contributing: documentation/contributing.md
+    - License: documentation/license.md
 #    - Changelog:
 #      - Changes: changelog/index.md
 #      - How to upgrade: upgrade.md
