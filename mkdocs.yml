@@ -93,6 +93,7 @@ nav:
   - Documentation:
     - Getting started: documentation/getting-started.md
     - Usage: documentation/usage.md
+    - Collections: documentation/collections.md
     - Data providers: documentation/providers.md
     - Custom providers: documentation/custom-providers.md
     - File formats: documentation/file-formats.md
