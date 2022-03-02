@@ -16,21 +16,21 @@ In code, this would look like the following:
 
 ### Hardcoded provider
 
-Create custom provider of data:
+Create a custom provider of data:
 
 === "Java"
 
     ``` java
-    public static class SpaceForce<T extends Faker> {
-        private static final String[] ROCKET_NAMES = new String[]{"Appollo", "Soyuz", "Vostok", "Voskhod", "Progress", "Falcon", "Gemini", "Mercury"};
-        private final T faker;
+    public static class Insect {
+        private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
+        private final Faker faker;
 
-        public SpaceForce(T faker) {
+        public Insect(Faker faker) {
             this.faker = faker;
         }
 
-        public String nextRocketName() {
-            return ROCKET_NAMES[faker.random().nextInt(ROCKET_NAMES.length)];
+        public String nextInsectName() {
+            return INSECT_NAMES[faker.random().nextInt(INSECT_NAMES.length)];
         }
     }
     ```
@@ -38,14 +38,14 @@ Create custom provider of data:
 
 ### Register provider
 
-Create your own custom faker which extends `Faker` and register custom provider:
+Create your own custom faker, which extends `Faker`, and register the custom provider:
 
 === "Java"
 
     ``` java
     public static class MyCustomFaker extends Faker {
-        public SpaceForce spaceForce() {
-            return getProvider(SpaceForce.class, () -> new SpaceForce<>(this));
+        public Insect insect() {
+            return getProvider(Insect.class, () -> new Insect(this));
         }
     }
     ```
@@ -58,60 +58,69 @@ To use the custom faker, you can do the following:
 
     ``` java
     MyCustomFaker myFaker = new MyCustomFaker();
-    System.out.println(myFaker.spaceForce().nextRocketName());
+    System.out.println(myFaker.insect().nextInsectName());
     ```
 
 This will print something like the following:
 
 ```
-Falcon
+Wasp
 ```
 
 ## Custom provider using Yaml file
 
-In case you have a large set of data to load, it might be easier to use a Yaml file.
-This is possible too.
+In case you have a large set of data to load, it might be better to use a Yaml file.
 
 To create a custom provider of data fom a file, you'll need to do the following steps:
 
-* Create custom provider of data
+* Create a custom provider of data
 * Create your own custom faker which extends `Faker` and register custom provider
 
 ### Yaml provider
 
-In code, this would look like the following:
+First, create the custom provider which loads the data from a file:
 
 === "Java"
 
     ``` java
-    public static class SpaceForceFromFile<T extends Faker> {
-        private static final String KEY = "spaceforcefromfile";
-        private final T faker;
+    public static class InsectFromFile {
+        private static final String KEY = "insectsfromfile";
+        private final Faker faker;
 
-        public SpaceForceFromFile(T faker) {
+        public InsectFromFile(Faker faker) {
             this.faker = faker;
-            // Multiple files can be loaded here if needed
-            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/rockets.yml"));
+            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
+            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
         }
 
-        public String rocketName() {
-            return faker.fakeValuesService().resolve(KEY + ".rocketname", null, faker);
+        public String ant() {
+            return faker.fakeValuesService().resolve(KEY + ".ants", null, faker);
         }
 
-        public String rocketName2() {
-            return faker.fakeValuesService().resolve(KEY + ".rocketname2", null, faker);
+        public String bee() {
+            return faker.fakeValuesService().resolve(KEY + ".bees", null, faker);
         }
-    }    
+    }
     ```
 
-The `rockets.yml` would look like the following:
+The `ants.yml` would look like the following:
 
 ```yaml
 en:
   faker:
-    spaceforcefromfile:
-      rocketname: ['Appollo', 'Soyuz', 'Vostok', 'Voskhod', 'Progress', 'Falcon', 'Gemini', 'Mercury']
+    insectsfromfile:
+      ants: ['Driver ant', 'Fire ant', 'Harvester ant', 'Honey ant', 'Leafcutter ant', 'Sahara desert ant']
 ```
+
+And if you want to use multiple YAML files, the `bees.yml` would look like this:
+
+```yaml
+en:
+  faker:
+    insectsfromfile:
+      bees: ['Bumblebee', 'Euglossine bee', 'Honeybee', 'Carpenter bee', 'Leaf-cutter bee', 'Mining bee']
+```
+
 
 ### Register provider
 
@@ -121,8 +130,8 @@ Registering the provider would happen like this:
 
     ``` java
     public static class MyCustomFaker extends Faker {
-        public SpaceForceFromFile spaceForceFromFile() {
-            return getProvider(SpaceForceFromFile.class, () -> new SpaceForceFromFile<>(this));
+        public InsectFromFile insectFromFile() {
+            return getProvider(InsectFromFile.class, () -> new InsectFromFile(this));
         }
     }
     ```
@@ -135,11 +144,11 @@ To use the custom faker, you can do the following:
 
     ``` java
     MyCustomFaker myFaker = new MyCustomFaker();
-    System.out.println(myFaker.spaceForceFromFile().rocketName());
+    System.out.println(myFaker.insectFromFile().ant());
     ```
 
 This will print something like the following:
 
 ```
-Mercury
+Honey ant
 ```

@@ -1,6 +1,7 @@
 package net.datafaker;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
@@ -10,90 +11,85 @@ import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpr
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * This is a demo of how to create a custom faker and register a custom faker in it.
+ */
 public class CustomFakerTest {
     public static class MyCustomFaker extends Faker {
-        public SpaceForce spaceForce() {
-            return getProvider(SpaceForce.class, () -> new SpaceForce<>(this));
+        public Insect insect() {
+            return getProvider(Insect.class, () -> new Insect(this));
         }
 
-        public SpaceForceFromFile spaceForceFromFile() {
-            return getProvider(SpaceForceFromFile.class, () -> new SpaceForceFromFile<>(this));
-        }
-    }
-
-    public static class SpaceForce<T extends Faker> {
-        private static final String[] ROCKET_NAMES = new String[]{"Appollo", "Soyuz", "Vostok", "Voskhod", "Progress", "Falcon", "Gemini", "Mercury"};
-        private final T faker;
-
-        public SpaceForce(T faker) {
-            this.faker = faker;
-        }
-
-        public String nextRocketName() {
-            return ROCKET_NAMES[faker.random().nextInt(ROCKET_NAMES.length)];
+        public InsectFromFile insectFromFile() {
+            return getProvider(InsectFromFile.class, () -> new InsectFromFile(this));
         }
     }
 
-    public static class SpaceForceFromFile<T extends Faker> {
-        private static final String KEY = "spaceforcefromfile";
-        private final T faker;
+    public static class Insect {
+        private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
+        private final Faker faker;
 
-        public SpaceForceFromFile(T faker) {
+        public Insect(Faker faker) {
             this.faker = faker;
-            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/rockets.yml"));
-            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/rockets2.yml"));
         }
 
-        public String rocketName() {
-            return faker.fakeValuesService().resolve(KEY + ".rocketname", null, faker);
+        public String nextInsectName() {
+            return INSECT_NAMES[faker.random().nextInt(INSECT_NAMES.length)];
+        }
+    }
+
+    public static class InsectFromFile {
+        private static final String KEY = "insectsfromfile";
+        private final Faker faker;
+
+        public InsectFromFile(Faker faker) {
+            this.faker = faker;
+            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
+            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
         }
 
-        public String rocketName2() {
-            return faker.fakeValuesService().resolve(KEY + ".rocketname2", null, faker);
+        public String ant() {
+            return faker.fakeValuesService().resolve(KEY + ".ants", null, faker);
+        }
+
+        public String bee() {
+            return faker.fakeValuesService().resolve(KEY + ".bees", null, faker);
         }
     }
 
     @Test
     public void addNullExistingPath() {
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> new Faker().fakeValuesService().addPath(Locale.ENGLISH, null));
+            () -> new Faker().fakeValuesService().addPath(Locale.ENGLISH, null));
     }
 
     @Test
     public void addNonExistingPath() {
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> new Faker().fakeValuesService().addPath(Locale.ENGLISH, Paths.get("non-existing-file")));
+            () -> new Faker().fakeValuesService().addPath(Locale.ENGLISH, Paths.get("non-existing-file")));
     }
 
-    @Test
-    public void myRocketTest() {
+    @RepeatedTest(10)
+    public void insectTest() {
         MyCustomFaker myFaker = new MyCustomFaker();
-        for (int i = 0; i < 10; i++) {
-            assertThat(myFaker.spaceForce().nextRocketName(), matchesRegularExpression("[A-Za-z ]+"));
-        }
+        assertThat(myFaker.insect().nextInsectName(), matchesRegularExpression("[A-Za-z ]+"));
     }
 
-    @Test
-    public void myRocketTestExpression() {
+    @RepeatedTest(10)
+    public void insectTestExpression() {
         MyCustomFaker myFaker = new MyCustomFaker();
-        for (int i = 0; i < 10; i++) {
-            assertThat(myFaker.expression("#{SpaceForce.nextRocketName}"), matchesRegularExpression("[A-Za-z ]+"));
-        }
+        assertThat(myFaker.expression("#{Insect.nextInsectName}"), matchesRegularExpression("[A-Za-z ]+"));
     }
 
-    @Test
-    public void myRocketTestExpressionFromFile() {
+    @RepeatedTest(10)
+    public void insectAntTestExpressionFromFile() {
         MyCustomFaker myFaker = new MyCustomFaker();
-        for (int i = 0; i < 10; i++) {
-            assertThat(myFaker.spaceForceFromFile().rocketName(), matchesRegularExpression("[A-Za-z ]+"));
-        }
+        assertThat(myFaker.insectFromFile().ant(), matchesRegularExpression("[A-Za-z ]+"));
     }
 
-    @Test
-    public void myRocketTestExpressionFromFile2() {
+    @RepeatedTest(10)
+    public void insectBeeTestExpressionFromFile() {
         MyCustomFaker myFaker = new MyCustomFaker();
-        for (int i = 0; i < 10; i++) {
-            assertTrue(myFaker.spaceForceFromFile().rocketName2().endsWith("2"));
-        }
+        assertTrue(myFaker.insectFromFile().bee().endsWith("bee"));
     }
 }
