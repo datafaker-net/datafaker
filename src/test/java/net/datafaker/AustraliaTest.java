@@ -13,8 +13,7 @@ public class AustraliaTest extends AbstractFakerTest {
     }
 
     @Test
-    public void animals() {
-        assertThat(faker.australia().animals(), not(is(emptyOrNullString())));
+    public void animals() { assertThat(faker.australia().animals(), not(is(emptyOrNullString())));
     }
 
     @Test
