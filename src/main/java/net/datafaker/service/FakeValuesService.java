@@ -44,6 +44,7 @@ public class FakeValuesService {
     private final Map<String, Supplier<String>> expression2function = new WeakHashMap<>();
     private final Map<String, List<Supplier<String>>> rawExp2function = new WeakHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
+    private final Map<String, String> key2Expression = new WeakHashMap<>();
 
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
@@ -384,7 +385,13 @@ public class FakeValuesService {
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
     public String resolve(String key, Object current, Faker root) {
-        final String expression = safeFetch(key, null);
+        String expression = root == null ? key2Expression.get(key) : null;
+        if (expression == null) {
+            expression = safeFetch(key, null);
+            if (root == null) {
+                key2Expression.put(key, expression);
+            }
+        }
 
         if (expression == null) {
             throw new RuntimeException(key + " resulted in null expression");
