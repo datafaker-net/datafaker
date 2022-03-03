@@ -1,7 +1,7 @@
 package net.datafaker;
 
 /**
- * @since 0.8.0
+ * @since 1.2.0
  */
 public class Australia {
 

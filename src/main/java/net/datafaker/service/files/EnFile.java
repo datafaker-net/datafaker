@@ -142,6 +142,7 @@ public class EnFile {
 //            "new_girl.yml",
 //            "one_piece.yml",
 //            "opera.yml",
+        "nigeria.yml",
         "overwatch.yml",
 //            "parks_and_rec.yml",
 //            "phish.yml",

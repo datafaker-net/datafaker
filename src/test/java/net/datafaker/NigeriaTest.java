@@ -6,13 +6,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 
-class NigeriaTest extends AbstractFakerTest{
+class NigeriaTest extends AbstractFakerTest {
 
     @Test
     public void places() {
         assertThat(faker.nigeria().places(), not(is(emptyOrNullString())));
     }
-
 
     @Test
     void food() {
@@ -26,7 +25,7 @@ class NigeriaTest extends AbstractFakerTest{
 
     @Test
     void schools() {
-        assertThat(faker.nigeria().celebrities(), not(is(emptyOrNullString())));
+        assertThat(faker.nigeria().schools(), not(is(emptyOrNullString())));
     }
 
     @Test
