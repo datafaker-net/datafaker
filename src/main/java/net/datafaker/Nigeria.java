@@ -9,7 +9,7 @@ public class Nigeria {
 
     protected Nigeria(Faker faker) {
         this.faker = faker;
-        faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("target/classes/en/nigeria.yml"));
+        faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/main/resources/en/nigeria.yml"));
     }
 
     public String places() {
