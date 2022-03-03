@@ -4,6 +4,7 @@ import org.hamcrest.Matcher;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import static java.lang.Integer.parseInt;
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCNPJValid;
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,6 +29,38 @@ public class CNPJTest extends AbstractFakerTest {
     public void isInvalidCNPJ() {
         CNPJ cnpj = faker.cnpj();
         assertFalse(isCNPJValid(cnpj.invalid()));
+    }
+
+    @Test
+    public void valid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
+        String cnpj = faker.cnpj().valid(true, true);
+        String branch = cnpj.substring(11,15);
+
+        // branches are allowed to be 0001 even in multibranch mode. In this case,
+        // we are giving the system 5 chances to generate something different than 0001.
+        for (int i = 0; "0001".equals(branch) && i < 5; i++) {
+            cnpj = faker.cnpj().valid(true, true);
+            branch = cnpj.substring(11,15);
+        }
+
+        assertTrue(parseInt(branch) > 1);
+        assertTrue(isCNPJValid(cnpj));
+    }
+
+    @Test
+    public void invalid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
+        String cnpj = faker.cnpj().invalid(true, true);
+        String branch = cnpj.substring(11,15);
+
+        // branches are allowed to be 0001 even in multibranch mode. In this case,
+        // we are giving the system 5 chances to generate something different than 0001.
+        for (int i = 0; "0001".equals(branch) && i < 5; i++) {
+            cnpj = faker.cnpj().valid(true, true);
+            branch = cnpj.substring(11,15);
+        }
+
+        assertTrue(parseInt(branch) > 1);
+        assertFalse(isCNPJValid(cnpj));
     }
 
     /**
