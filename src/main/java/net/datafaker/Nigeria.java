@@ -1,33 +1,35 @@
-package net.datafaker.service;
+package net.datafaker;
 
-import net.datafaker.Faker;
+import java.nio.file.Paths;
+import java.util.Locale;
 
 public class Nigeria {
-
+    private static final String KEY = "nigeria";
     private final Faker faker;
 
-    public Nigeria(Faker faker) {
+    protected Nigeria(Faker faker) {
         this.faker = faker;
+        faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("target/classes/en/nigeria.yml"));
     }
 
     public String places() {
-        return faker.resolve("nigeria.places");
+        return faker.fakeValuesService().resolve("nigeria.places", this, faker);
     }
 
     public String name() {
-        return  faker.resolve("nigeria.name");
+        return  faker.fakeValuesService().resolve("nigeria.name", this, faker);
     }
 
     public String food() {
-        return faker.resolve("nigeria.food");
+        return faker.fakeValuesService().resolve("nigeria.food", this, faker);
     }
 
     public String schools() {
-        return faker.resolve("nigeria.schools");
+        return faker.fakeValuesService().resolve("nigeria.schools", this, faker);
     }
 
     public String celebrities(){
-        return faker.resolve("nigeria.celebrities");
+        return faker.fakeValuesService().resolve("nigeria.celebrities", this, faker);
     }
 }
 

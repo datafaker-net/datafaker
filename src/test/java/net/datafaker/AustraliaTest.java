@@ -9,8 +9,7 @@ import static org.hamcrest.Matchers.emptyOrNullString;
 public class AustraliaTest extends AbstractFakerTest {
 
     @Test
-    public void locations() {
-        assertThat(faker.australia().locations(), not(is(emptyOrNullString())));
+    public void locations() { assertThat(faker.australia().locations(), not(is(emptyOrNullString())));
     }
 
     @Test
