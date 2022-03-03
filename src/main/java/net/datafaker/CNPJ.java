@@ -44,12 +44,12 @@ public class CNPJ {
 
     /**
      * Return valid and formatted. Also, it generates a multi-branch CNPJ.
-     * <br>
-     * </p>CNPJ numbers follow this format:
-     * {@code AA.AAA.AAA/BBBB-CC }</p>.
+     *
+     * CNPJ numbers follow this format:
+     * {@code AA.AAA.AAA/BBBB-CC }
      * Where A is the number of the company, B is the branch number and C are verification digits.
-     * If the parameter {@code multiBranch} is false, B will always be 0001. Otherwise, this number will vary between
-     * 0001 and 9999 .</p>
+     * If the parameter {@code multiBranch} is false, B will always be 0001.
+     * Otherwise, this number will vary between 0001 and 9999 .
      *
      * @param formatted a CNPJ (un)formatted
      * @param multiBranch CPNJ from a random company branch
@@ -82,12 +82,12 @@ public class CNPJ {
 
     /**
      * Return invalid and (un)formatted. Also, it generates a multi-branch CNPJ.
-     * <br>
-     * </p>CNPJ numbers follow this format:
-     * {@code AA.AAA.AAA/BBBB-CC }</p>.
+     *
+     * CNPJ numbers follow this format:
+     * {@code AA.AAA.AAA/BBBB-CC }
      * Where A is the number of the company, B is the branch number and C are verification digits.
-     * If the parameter {@code multiBranch} is false, B will always be 0001. Otherwise, this number will vary between
-     * 0001 and 9999 .</p>
+     * If the parameter {@code multiBranch} is false, B will always be 0001.
+     * Otherwise, this number will vary between 0001 and 9999 .
      *
      * @return an invalid CNPJ
      * @see IdNumberGeneratorPtBrUtil#cnpj(Faker, boolean, boolean, boolean)
