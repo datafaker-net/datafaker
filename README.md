@@ -152,6 +152,7 @@ Providers
 * Music
 * Name
 * Nation
+* Nigeria
 * Number
 * Options
 * Overwatch

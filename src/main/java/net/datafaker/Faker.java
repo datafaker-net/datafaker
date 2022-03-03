@@ -536,6 +536,10 @@ public class Faker {
         return getProvider(NatoPhoneticAlphabet.class, () -> new NatoPhoneticAlphabet(this));
     }
 
+    public Nigeria nigeria() {
+        return getProvider(Nigeria.class, () -> new Nigeria(this));
+    }
+
     public Number number() {
         return getProvider(Number.class, () -> new Number(this));
     }
