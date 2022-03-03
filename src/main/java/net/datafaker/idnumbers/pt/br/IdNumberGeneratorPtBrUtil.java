@@ -2,6 +2,9 @@ package net.datafaker.idnumbers.pt.br;
 
 import net.datafaker.Faker;
 
+import java.util.Random;
+import java.util.stream.IntStream;
+
 public final class IdNumberGeneratorPtBrUtil {
 
     private IdNumberGeneratorPtBrUtil() {
@@ -13,7 +16,7 @@ public final class IdNumberGeneratorPtBrUtil {
      * @param formatted a cnpj (un)formatted
      * @param valid     a cnpj (in)valid
      */
-    public static String cnpj(Faker faker, boolean formatted, boolean valid) {
+    public static String cnpj(Faker faker, boolean formatted, boolean valid, boolean multiBranch) {
         String cnpj;
 
         if (valid) {
@@ -22,7 +25,14 @@ public final class IdNumberGeneratorPtBrUtil {
                 partial.append(faker.random().nextInt(9));
             }
 
-            cnpj = partial.append("0001").toString();
+            if (multiBranch) {
+                partial.append(leftPad('0', 4, String.valueOf(faker.random().nextInt(1, 9999))));
+            }
+            else {
+                partial.append("0001");
+            }
+
+            cnpj = partial.toString();
 
             int d1 = digit(calculateWeight(cnpj.substring(4, 12), 9) + calculateWeight(cnpj.substring(0, 4), 5));
             int d2 = digit((d1 * 2) + calculateWeight(cnpj.substring(5, 12), 9) + calculateWeight(cnpj.substring(0, 5), 6));
@@ -37,7 +47,7 @@ public final class IdNumberGeneratorPtBrUtil {
         // Sometimes the generated number is not what you expected, for example, you expected an invalid number,
         // but the generated number is valid. This fixes the issue by generating a new number until it matches the expectation.
         if (isCNPJValid(result) != valid) {
-            result = cnpj(faker, formatted, valid);
+            result = cnpj(faker, formatted, valid, multiBranch);
         }
 
         return result;
@@ -130,6 +140,14 @@ public final class IdNumberGeneratorPtBrUtil {
             return 0;
         else
             return 11 - verifyingDigit % 11;
+    }
+
+    private static String leftPad(char pad, int length, String string) {
+        StringBuilder appender = new StringBuilder();
+        for (int i = 0; i < length - string.length(); i++ ) {
+            appender.append(pad);
+        }
+        return appender.append(string).toString();
     }
 
 }
