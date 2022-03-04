@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -167,6 +168,25 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("generateDurationsWithMinMax")
+    public void durationTest(long minValue, long maxValue, ChronoUnit unit) {
+        Duration generated = faker.date().duration(minValue, maxValue, unit);
+        Duration min = Duration.of(minValue, unit);
+        Duration max = Duration.of(maxValue, unit);
+        assertThat("Duration must be equal or greater than min value", min.compareTo(generated) <= 0);
+        assertThat("Duration must be lower than max value",
+            max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated));
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateDurationsWithMaxOnly")
+    public void durationTest(long maxValue, ChronoUnit unit) {
+        Duration generated = faker.date().duration(maxValue, unit);
+        Duration max = Duration.of(maxValue, unit);
+        assertThat("Duration must be lower than max value", max.compareTo(generated) > 0 || maxValue == 0);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateDurationsFromStringWithMinMax")
     public void durationTest(long minValue, long maxValue, String unit) {
         Duration generated = faker.date().duration(minValue, maxValue, unit);
         Duration min = Duration.of(minValue, DateAndTime.str2unit(unit));
@@ -177,14 +197,14 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @ParameterizedTest
-    @MethodSource("generateDurationsWithMaxOnly")
+    @MethodSource("generateDurationsFromStringWithMaxOnly")
     public void durationTest(long maxValue, String unit) {
         Duration generated = faker.date().duration(maxValue, unit);
         Duration max = Duration.of(maxValue, DateAndTime.str2unit(unit));
         assertThat("Duration must be lower than max value", max.compareTo(generated) > 0 || maxValue == 0);
     }
 
-    private static Stream<Arguments> generateDurationsWithMaxOnly() {
+    private static Stream<Arguments> generateDurationsFromStringWithMaxOnly() {
         return Stream.of(
             Arguments.of(0, "days"),
             Arguments.of(100, "days"),
@@ -202,7 +222,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
         );
     }
 
-    private static Stream<Arguments> generateDurationsWithMinMax() {
+    private static Stream<Arguments> generateDurationsFromStringWithMinMax() {
         return Stream.of(
             Arguments.of(123, 123, "days"),
             Arguments.of(12, 123, "days"),
@@ -215,8 +235,35 @@ public class DateAndTimeTest extends AbstractFakerTest {
             Arguments.of(65, 98, "second"),
             Arguments.of(76, 100, "millis"),
             Arguments.of(87, 100, "milli"),
+            Arguments.of(76, 100, "micros"),
+            Arguments.of(87, 100, "micro"),
             Arguments.of(874, 1300, "nano"),
             Arguments.of(879, 1030, "nanos")
+        );
+    }
+
+    private static Stream<Arguments> generateDurationsWithMaxOnly() {
+        return Stream.of(
+            Arguments.of(0, ChronoUnit.DAYS),
+            Arguments.of(100, ChronoUnit.DAYS),
+            Arguments.of(456, ChronoUnit.HOURS),
+            Arguments.of(43, ChronoUnit.MINUTES),
+            Arguments.of(78, ChronoUnit.SECONDS),
+            Arguments.of(786, ChronoUnit.MILLIS),
+            Arguments.of(786, ChronoUnit.MICROS),
+            Arguments.of(8729, ChronoUnit.NANOS)
+        );
+    }
+
+    private static Stream<Arguments> generateDurationsWithMinMax() {
+        return Stream.of(
+            Arguments.of(123, 123, ChronoUnit.DAYS),
+            Arguments.of(12, 123, ChronoUnit.HOURS),
+            Arguments.of(15, 400, ChronoUnit.MINUTES),
+            Arguments.of(65, 98, ChronoUnit.SECONDS),
+            Arguments.of(76, 100, ChronoUnit.MILLIS),
+            Arguments.of(879, 1030, ChronoUnit.MICROS),
+            Arguments.of(879, 1030, ChronoUnit.NANOS)
         );
     }
 }
