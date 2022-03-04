@@ -102,12 +102,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <version>${hamcrest.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>${reflections.version}</version>
@@ -252,6 +246,7 @@
                 <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <detectJavaApiLink>false</detectJavaApiLink>
+                    <additionalOptions>-Xdoclint:all -Xdoclint:-missing</additionalOptions>
                 </configuration>
                 <executions>
                     <execution>
