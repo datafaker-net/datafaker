@@ -1,13 +1,13 @@
 package net.datafaker;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -41,7 +41,7 @@ public class NumberTest extends AbstractFakerTest {
 
     @Test
     public void testRandomDigit() {
-        Set<Integer> nums = Sets.newHashSet();
+        Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigit();
             assertThat(value, is(lessThanOrEqualTo(9)));
@@ -53,7 +53,7 @@ public class NumberTest extends AbstractFakerTest {
 
     @Test
     public void testRandomDigitNotZero() {
-        Set<Integer> nums = Sets.newHashSet();
+        Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigitNotZero();
             assertThat(value, is(lessThanOrEqualTo(9)));
@@ -151,7 +151,7 @@ public class NumberTest extends AbstractFakerTest {
 
     @Test
     public void testNumberBetweenOneAndThree() {
-        Set<Integer> nums = Sets.newHashSet();
+        Set<Integer> nums = new HashSet<>();
         final int lowerLimit = 0;
         final int upperLimit = 3;
         for (int i = 0; i < 1000; ++i) {
@@ -165,7 +165,7 @@ public class NumberTest extends AbstractFakerTest {
 
     @Test
     public void testLongBetweenOneAndThree() {
-        Set<Long> nums = Sets.newHashSet();
+        Set<Long> nums = new HashSet<>();
         final long lowerLimit = 0;
         final long upperLimit = 3;
         for (int i = 0; i < 1000; ++i) {
@@ -342,11 +342,11 @@ public class NumberTest extends AbstractFakerTest {
      */
     private <T> double uniquePercentageOfResults(long iterations, Callable<T> callable) {
         try {
-            List<T> values = Lists.newArrayList();
+            List<T> values = new ArrayList<>();
             for (long i = 0; i < iterations; i++) {
                 values.add(callable.call());
             }
-            long setSize = Sets.newHashSet(values).size();
+            long setSize = new HashSet<>(values).size();
             return (double) setSize / (double) values.size();
         } catch (Exception e) {
             throw new RuntimeException("error in uniquePercentageOfResults", e);
@@ -412,8 +412,8 @@ public class NumberTest extends AbstractFakerTest {
     @Test
     public void testNumberBetweenContain() {
 
-        Set<Integer> ints = Sets.newHashSet();
-        Set<Long> longs = Sets.newHashSet();
+        Set<Integer> ints = new HashSet<>();
+        Set<Long> longs = new HashSet<>();
         Random random = new Random();
         int size = Math.abs(random.nextInt(100));
 

@@ -1,6 +1,5 @@
 package net.datafaker.integration;
 
-import com.google.common.collect.Maps;
 import net.datafaker.Faker;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +11,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -48,7 +48,7 @@ public class FakerIT {
      * methods return a non blank string. But pt city_prefix is blank ,but the test shouldn't fail. So we add put
      * exceptions like this into this collection.
      */
-    private static final Map<Locale, List<String>> exceptions = Maps.newHashMap();
+    private static final Map<Locale, List<String>> exceptions = new HashMap<>();
 
     static {
         // 'it' has an empty suffix list so it never returns a value

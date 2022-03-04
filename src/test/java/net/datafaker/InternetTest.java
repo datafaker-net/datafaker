@@ -1,7 +1,5 @@
 package net.datafaker;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.RepeatedTest;
@@ -9,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -48,7 +47,7 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testSafeEmailAddress() {
-        List<String> emails = Lists.newArrayList();
+        List<String> emails = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress();
             assertThat(EmailValidator.getInstance().isValid(emailAddress), is(true));
@@ -62,7 +61,7 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testSafeEmailAddressWithLocalPartParameter() {
-        List<String> emails = Lists.newArrayList();
+        List<String> emails = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress("john");
             assertThat(emailAddress, startsWith("john@"));
@@ -305,7 +304,7 @@ public class InternetTest extends AbstractFakerTest {
 
     @RepeatedTest(10)
     public void testSlugWithParams() {
-        assertThat(faker.internet().slug(ImmutableList.of("a", "b"), "-"), matchesRegularExpression("[a-zA-Z]+\\-[a-zA-Z]+"));
+        assertThat(faker.internet().slug(Arrays.asList("a", "b"), "-"), matchesRegularExpression("[a-zA-Z]+\\-[a-zA-Z]+"));
     }
 
     @RepeatedTest(10)
