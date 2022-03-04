@@ -1,9 +1,8 @@
 package net.datafaker;
 
-import java.nio.file.Paths;
-import java.util.Locale;
-
 /**
+ * Nigeria, officially the Federal Republic of Nigeria, is a country in West Africa.
+ *
  * @since 1.2.0
  */
 public class Nigeria {
@@ -12,7 +11,6 @@ public class Nigeria {
 
     protected Nigeria(Faker faker) {
         this.faker = faker;
-        faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/main/resources/en/nigeria.yml"));
     }
 
     public String places() {
