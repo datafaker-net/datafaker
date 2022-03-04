@@ -93,12 +93,13 @@ nav:
   - Documentation:
     - Getting started: documentation/getting-started.md
     - Usage: documentation/usage.md
-    - Collections: documentation/collections.md
-    - Data providers: documentation/providers.md
-    - Date format: documentation/date-format.md
-    - Custom providers: documentation/custom-providers.md
-    - Expressions: documentation/expressions.md
-    - File formats: documentation/file-formats.md
+    - Advanced usage:
+      - Collections: documentation/collections.md
+      - Data providers: documentation/providers.md
+      - Date format: documentation/date-format.md
+      - Custom providers: documentation/custom-providers.md
+      - Expressions: documentation/expressions.md
+      - File formats: documentation/file-formats.md
     - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.2.0/datafaker-1.2.0-javadoc.jar/!/index.html'
     - Contributing: documentation/contributing.md
     - License: documentation/license.md
