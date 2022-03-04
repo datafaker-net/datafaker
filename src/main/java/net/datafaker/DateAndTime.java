@@ -1,9 +1,12 @@
 package net.datafaker;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -272,6 +275,70 @@ public class DateAndTime {
      */
     public String birthday(int minAge, int maxAge, String pattern) {
         return toString(birthday(minAge, maxAge), pattern);
+    }
+
+    /**
+     * Generates a random Duration lower than max.
+     *
+     * @param max  the maximum value
+     * @param unit the temporal unit (day or shorter than a day)
+     * @return a random Duration lower than {@code max}.
+     * @throws IllegalArgumentException if the {@code unit} is invalid.
+     */
+    public Duration duration(long max, String unit) {
+        return duration(0, max, unit);
+    }
+
+    /**
+     * Generates a random Duration between min and max.
+     *
+     * @param min  the maximum value
+     * @param max  the minimal value
+     * @param unit the temporal unit (day or shorter than a day)
+     * @return a random Duration between {@code min} inclusive and {@code max} exclusive if {@code max} greater {@code min}.
+     * @throws IllegalArgumentException if the {@code unit} is invalid.
+     */
+    public Duration duration(long min, long max, String unit) {
+        return generateDuration(faker.random().nextLong(min, max), unit);
+    }
+
+    /**
+     * Utility method to convert string to ChronoUnit.
+     *
+     * @param unit the temporal unit (day or shorter than a day)
+     * @return converts unit to ChronoUnit.
+     * @throws IllegalArgumentException if the {@code unit} is invalid.
+     */
+    public static ChronoUnit str2unit(String unit) {
+        if (unit == null || unit.trim().isEmpty()) {
+            throw new IllegalArgumentException("Illegal duration unit '" + unit + "'");
+        }
+        switch (unit.toUpperCase(Locale.ROOT)) {
+            case "NANO":
+            case "NANOS":
+                return ChronoUnit.NANOS;
+            case "MILLI":
+            case "MILLIS":
+                return ChronoUnit.MILLIS;
+            case "SECOND":
+            case "SECONDS":
+                return ChronoUnit.SECONDS;
+            case "MINUTE":
+            case "MINUTES":
+                return ChronoUnit.MINUTES;
+            case "HOUR":
+            case "HOURS":
+                return ChronoUnit.HOURS;
+            case "DAY":
+            case "DAYS":
+                return ChronoUnit.DAYS;
+            default:
+                throw new IllegalArgumentException("Illegal duration unit '" + unit + "'");
+        }
+    }
+
+    private Duration generateDuration(long value, String unit) {
+        return Duration.of(value, str2unit(unit));
     }
 
     private String toString(Date date, String pattern) {

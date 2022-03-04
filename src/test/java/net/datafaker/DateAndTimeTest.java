@@ -1,12 +1,19 @@
 package net.datafaker;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -150,5 +157,66 @@ public class DateAndTimeTest extends AbstractFakerTest {
         DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(1, TimeUnit.DAYS, pattern));
         DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(20, 1, TimeUnit.DAYS, pattern));
         DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(1, TimeUnit.DAYS, new Date(), pattern));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"null", "", "month", "year", "week"})
+    public void invalidDuration(String invalid) {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> faker.date().duration(faker.random().nextLong(), invalid));
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateDurationsWithMinMax")
+    public void durationTest(long minValue, long maxValue, String unit) {
+        Duration generated = faker.date().duration(minValue, maxValue, unit);
+        Duration min = Duration.of(minValue, DateAndTime.str2unit(unit));
+        Duration max = Duration.of(maxValue, DateAndTime.str2unit(unit));
+        assertThat("Duration must be equal or greater than min value", min.compareTo(generated) <= 0);
+        assertThat("Duration must be lower than max value",
+            max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated));
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateDurationsWithMaxOnly")
+    public void durationTest(long maxValue, String unit) {
+        Duration generated = faker.date().duration(maxValue, unit);
+        Duration max = Duration.of(maxValue, DateAndTime.str2unit(unit));
+        assertThat("Duration must be lower than max value", max.compareTo(generated) > 0 || maxValue == 0);
+    }
+
+    private static Stream<Arguments> generateDurationsWithMaxOnly() {
+        return Stream.of(
+            Arguments.of(0, "days"),
+            Arguments.of(100, "days"),
+            Arguments.of(123, "DAY"),
+            Arguments.of(456, "HOUR"),
+            Arguments.of(1234, "hours"),
+            Arguments.of(43, "minutes"),
+            Arguments.of(78, "minute"),
+            Arguments.of(56, "seconds"),
+            Arguments.of(34, "second"),
+            Arguments.of(786, "millis"),
+            Arguments.of(879, "milli"),
+            Arguments.of(8729, "nano"),
+            Arguments.of(8739, "nanos")
+        );
+    }
+
+    private static Stream<Arguments> generateDurationsWithMinMax() {
+        return Stream.of(
+            Arguments.of(123, 123, "days"),
+            Arguments.of(12, 123, "days"),
+            Arguments.of(21, 32, "DAY"),
+            Arguments.of(45, 100, "HOUR"),
+            Arguments.of(23, 100, "hours"),
+            Arguments.of(15, 400, "minutes"),
+            Arguments.of(14, 500, "minute"),
+            Arguments.of(32, 54, "seconds"),
+            Arguments.of(65, 98, "second"),
+            Arguments.of(76, 100, "millis"),
+            Arguments.of(87, 100, "milli"),
+            Arguments.of(874, 1300, "nano"),
+            Arguments.of(879, 1030, "nanos")
+        );
     }
 }
