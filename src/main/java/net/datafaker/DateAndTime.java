@@ -285,7 +285,7 @@ public class DateAndTime {
      * @return a random Duration lower than {@code max}.
      * @throws IllegalArgumentException if the {@code unit} is invalid.
      */
-    public Duration duration(long max, String unit) {
+    public Duration duration(long max, ChronoUnit unit) {
         return duration(0, max, unit);
     }
 
@@ -298,8 +298,33 @@ public class DateAndTime {
      * @return a random Duration between {@code min} inclusive and {@code max} exclusive if {@code max} greater {@code min}.
      * @throws IllegalArgumentException if the {@code unit} is invalid.
      */
-    public Duration duration(long min, long max, String unit) {
+    public Duration duration(long min, long max, ChronoUnit unit) {
         return generateDuration(faker.random().nextLong(min, max), unit);
+    }
+
+    /**
+     * Generates a random Duration lower than max.
+     *
+     * @param max  the maximum value
+     * @param unit the temporal unit (day or shorter than a day)
+     * @return a random Duration lower than {@code max}.
+     * @throws IllegalArgumentException if the {@code unit} is invalid.
+     */
+    public Duration duration(long max, String unit) {
+        return duration(0, max, str2unit(unit));
+    }
+
+    /**
+     * Generates a random Duration between min and max.
+     *
+     * @param min  the maximum value
+     * @param max  the minimal value
+     * @param unit the temporal unit (day or shorter than a day)
+     * @return a random Duration between {@code min} inclusive and {@code max} exclusive if {@code max} greater {@code min}.
+     * @throws IllegalArgumentException if the {@code unit} is invalid.
+     */
+    public Duration duration(long min, long max, String unit) {
+        return generateDuration(faker.random().nextLong(min, max), str2unit(unit));
     }
 
     /**
@@ -317,6 +342,9 @@ public class DateAndTime {
             case "NANO":
             case "NANOS":
                 return ChronoUnit.NANOS;
+            case "MICRO":
+            case "MICROS":
+                return ChronoUnit.MICROS;
             case "MILLI":
             case "MILLIS":
                 return ChronoUnit.MILLIS;
@@ -337,8 +365,8 @@ public class DateAndTime {
         }
     }
 
-    private Duration generateDuration(long value, String unit) {
-        return Duration.of(value, str2unit(unit));
+    private Duration generateDuration(long value, ChronoUnit unit) {
+        return Duration.of(value, unit);
     }
 
     private String toString(Date date, String pattern) {
