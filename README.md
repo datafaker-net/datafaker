@@ -70,7 +70,7 @@ val streetAddress = faker.address().streetAddress() // 60018 Sawayn Brooks Suite
 
 Documentation
 -----
-https://www.datafaker.net/providers/
+https://www.datafaker.net/documentation/providers/
 
 
 Contributions
