@@ -660,6 +660,10 @@ public class Faker {
         return getProvider(Stock.class, () -> new Stock(this));
     }
 
+    public Subscription subscription() {
+        return getProvider(Subscription.class, () -> new Subscription(this));
+    }
+
     public Superhero superhero() {
         return getProvider(Superhero.class, () -> new Superhero(this));
     }
@@ -740,5 +744,4 @@ public class Faker {
     public String expression(String expression) {
         return this.fakeValuesService.expression(expression, this);
     }
-
 }

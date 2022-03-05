@@ -179,7 +179,7 @@ public class EnFile {
         "stock.yml",
 //            "stranger_thing.yml",
 //            "stripe.yml",
-//            "subscription.yml",
+        "subscription.yml",
 //            "super_smash_bros.yml",
         "superhero.yml",
 //            "sword_art_online.yml",
