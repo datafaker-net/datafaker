@@ -692,6 +692,10 @@ public class Faker {
         return getProvider(Vehicle.class, () -> new Vehicle(this));
     }
 
+    public Volleyball volleyball() {
+        return getProvider(Volleyball.class, () -> new Volleyball(this));
+    }
+
     public Weather weather() {
         return getProvider(Weather.class, () -> new Weather(this));
     }
