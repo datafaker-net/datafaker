@@ -21,7 +21,7 @@ public class ProviderGenerator {
     }
 
     public void generateProvider() throws FileNotFoundException {
-        File dir = new File("/Users/erikp/UserFiles/projects/datafaker/src/main/resources/en");
+        File dir = new File("src/main/resources/en");
 
         File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("todo.yml"));
 
@@ -59,6 +59,9 @@ public class ProviderGenerator {
 
         System.out.println("package net.datafaker;");
         System.out.println();
+        System.out.println("/**");
+        System.out.println(" * @since 1.3.0");
+        System.out.println(" */");
         System.out.println("public class " + className + " {");
         System.out.println();
         System.out.println("    private final Faker faker;");
