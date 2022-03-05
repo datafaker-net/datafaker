@@ -105,7 +105,7 @@ public class ProviderGenerator {
 
             System.out.println("    @Test");
             System.out.println("    public void " + testMethodName + "() {");
-            System.out.println("        assertThat(faker." + methodName + "()." + string + "(), not(is(emptyOrNullString())));");
+            System.out.println("        assertThat(faker." + methodName + "()." + testMethodName + "(), not(is(emptyOrNullString())));");
             System.out.println("    }");
             System.out.println();
         }

@@ -119,7 +119,7 @@ public class EnFile {
         "internet.yml",
 //            "invoice.yml",
         "job.yml",
-//            "kpop.yml",
+        "kpop.yml",
         "lebowski.yml",
         "lord_of_the_rings.yml",
         "lorem.yml",

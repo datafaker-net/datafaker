@@ -492,6 +492,10 @@ public class Faker {
         return getProvider(Kaamelott.class, () -> new Kaamelott(this));
     }
 
+    public Kpop kpop() {
+        return getProvider(Kpop.class, () -> new Kpop(this));
+    }
+
     public Lebowski lebowski() {
         return getProvider(Lebowski.class, () -> new Lebowski(this));
     }
