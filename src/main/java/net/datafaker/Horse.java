@@ -11,8 +11,12 @@ public class Horse {
         this.faker = faker;
     }
 
-    public String horse() {
-        return faker.fakeValuesService().resolve("creature.horse", this, faker);
+    public String name() {
+        return faker.fakeValuesService().resolve("creature.horse.name", this, faker);
+    }
+
+    public String breed() {
+        return faker.fakeValuesService().resolve("creature.horse.breed", this, faker);
     }
 
 }
