@@ -214,6 +214,7 @@ public class EnFile {
         new EnFile("overwatch.yml", "games"),
 //            new EnFile("dota.yml", "games"),
         new EnFile("pokemon.yml", "games"),
+        new EnFile("super_mario.yml", "games"),
         new EnFile("witcher.yml", "games"),
         new EnFile("zelda.yml", "games"),
         new EnFile("elder_scrolls.yml", "games"),

@@ -664,6 +664,10 @@ public class Faker {
         return getProvider(Superhero.class, () -> new Superhero(this));
     }
 
+    public SuperMario superMario() {
+        return getProvider(SuperMario.class, () -> new SuperMario(this));
+    }
+
     public Team team() {
         return getProvider(Team.class, () -> new Team(this));
     }
