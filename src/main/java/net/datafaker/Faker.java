@@ -292,6 +292,10 @@ public class Faker {
         return getProvider(BreakingBad.class, () -> new BreakingBad(this));
     }
 
+    public BrooklynNineNine brooklynNineNine() {
+        return getProvider(BrooklynNineNine.class, () -> new BrooklynNineNine(this));
+    }
+
     public Buffy buffy() {
         return getProvider(Buffy.class, () -> new Buffy(this));
     }
