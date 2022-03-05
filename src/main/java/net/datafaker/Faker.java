@@ -468,6 +468,10 @@ public class Faker {
         return getProvider(Hobby.class, () -> new Hobby(this));
     }
 
+    public Horse horse() {
+        return getProvider(Horse.class, () -> new Horse(this));
+    }
+
     public HowIMetYourMother howIMetYourMother() {
         return getProvider(HowIMetYourMother.class, () -> new HowIMetYourMother(this));
     }
