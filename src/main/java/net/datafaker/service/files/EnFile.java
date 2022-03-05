@@ -63,7 +63,7 @@ public class EnFile {
 //            "construction.yml",
 //            "cosmere.yml",
         "country.yml",
-//            "crypto_coin.yml",
+        "crypto_coin.yml",
 //            "culture_series.yml",
         "currency.yml",
 //            "dc_comics.yml",

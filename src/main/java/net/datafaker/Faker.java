@@ -344,6 +344,10 @@ public class Faker {
         return getProvider(Crypto.class, () -> new Crypto(this));
     }
 
+    public CryptoCoin cryptoCoin() {
+        return getProvider(CryptoCoin.class, () -> new CryptoCoin(this));
+    }
+
     public Currency currency() {
         return getProvider(Currency.class, () -> new Currency(this));
     }
