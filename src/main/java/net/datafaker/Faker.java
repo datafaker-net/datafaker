@@ -3,6 +3,7 @@ package net.datafaker;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.RandomService;
 
+import java.nio.file.Path;
 import java.util.IdentityHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -200,6 +201,17 @@ public class Faker {
 
     FakeValuesService fakeValuesService() {
         return this.fakeValuesService;
+    }
+
+    /**
+     * Allows to add paths to files with custom data. Data should be in YAML format.
+     *
+     * @param locale        the locale for which a path is going to be added.
+     * @param path          path to a file with YAML structure
+     * @throws IllegalArgumentException in case of invalid path
+     */
+    public void addPath(Locale locale, Path path) {
+        fakeValuesService().addPath(locale, path);
     }
 
     @SuppressWarnings("unchecked")
