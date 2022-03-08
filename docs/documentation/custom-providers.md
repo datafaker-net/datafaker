@@ -89,8 +89,8 @@ First, create the custom provider which loads the data from a file:
 
         public InsectFromFile(Faker faker) {
             this.faker = faker;
-            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
-            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
         }
 
         public String ant() {
