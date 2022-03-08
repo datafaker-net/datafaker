@@ -2,6 +2,9 @@ package net.datafaker.service;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 public class RandomService {
     private static final Random SHARED_RANDOM = ThreadLocalRandom.current();
@@ -35,6 +38,22 @@ public class RandomService {
         return ThreadLocalRandom.current().nextInt(min, max);
     }
 
+    public IntStream ints() {
+        return ThreadLocalRandom.current().ints();
+    }
+
+    public IntStream ints(long size) {
+        return ThreadLocalRandom.current().ints(size);
+    }
+
+    public IntStream ints(long size, int min, int max) {
+        return ThreadLocalRandom.current().ints(size, min, max);
+    }
+
+    public IntStream ints(int min, int max) {
+        return ThreadLocalRandom.current().ints(min, max);
+    }
+
     @SuppressWarnings("unused")
     public float nextFloat() {
         return random.nextFloat();
@@ -53,6 +72,22 @@ public class RandomService {
         return ThreadLocalRandom.current().nextLong(min, max);
     }
 
+    public LongStream longs() {
+        return ThreadLocalRandom.current().longs();
+    }
+
+    public LongStream longs(long size) {
+        return ThreadLocalRandom.current().longs(size);
+    }
+
+    public LongStream longs(long size, long min, long max) {
+        return ThreadLocalRandom.current().longs(size, min, max);
+    }
+
+    public LongStream longs(long min, long max) {
+        return ThreadLocalRandom.current().longs(min, max);
+    }
+
     public double nextDouble() {
         return random.nextDouble();
     }
@@ -60,6 +95,22 @@ public class RandomService {
     public double nextDouble(double min, double max) {
         if (min == max) return min;
         return ThreadLocalRandom.current().nextDouble(min, max);
+    }
+
+    public DoubleStream doubles() {
+        return ThreadLocalRandom.current().doubles();
+    }
+
+    public DoubleStream doubles(long size) {
+        return ThreadLocalRandom.current().doubles(size);
+    }
+
+    public DoubleStream doubles(long size, double min, double max) {
+        return ThreadLocalRandom.current().doubles(size, min, max);
+    }
+
+    public DoubleStream doubles(double min, double max) {
+        return ThreadLocalRandom.current().doubles(min, max);
     }
 
     public boolean nextBoolean() {
