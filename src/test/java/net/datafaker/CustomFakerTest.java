@@ -44,8 +44,8 @@ public class CustomFakerTest {
 
         public InsectFromFile(Faker faker) {
             this.faker = faker;
-            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
-            faker.fakeValuesService().addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
         }
 
         public String ant() {
@@ -60,13 +60,13 @@ public class CustomFakerTest {
     @Test
     public void addNullExistingPath() {
         Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new Faker().fakeValuesService().addPath(Locale.ENGLISH, null));
+            () -> new Faker().addPath(Locale.ENGLISH, null));
     }
 
     @Test
     public void addNonExistingPath() {
         Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new Faker().fakeValuesService().addPath(Locale.ENGLISH, Paths.get("non-existing-file")));
+            () -> new Faker().addPath(Locale.ENGLISH, Paths.get("non-existing-file")));
     }
 
     @RepeatedTest(10)
