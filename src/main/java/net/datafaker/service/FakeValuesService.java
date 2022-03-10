@@ -34,6 +34,7 @@ public class FakeValuesService {
     private static final String DIGITS = "0123456789";
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
+    private static final Map<Locale, FakeValuesInterface> FAKE_VALUES_CACHE = new HashMap<>();
 
     private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
     private final RandomService randomService;
@@ -71,19 +72,22 @@ public class FakeValuesService {
 
         localesChain = localeChain(locale);
         for (final Locale l : localesChain) {
-            if (l.equals(Locale.ENGLISH)) {
-                fakeValuesInterfaceMap.putIfAbsent(l, FakeValuesGrouping.getEnglishFakeValueGrouping());
-            } else {
-                fakeValuesInterfaceMap.putIfAbsent(l, new FakeValues(l));
-            }
+            fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
         }
     }
 
+    private FakeValuesInterface getCachedFakeValue(Locale locale) {
+        if (Locale.ENGLISH.equals(locale)) {
+            return FakeValuesGrouping.getEnglishFakeValueGrouping();
+        }
+        return FAKE_VALUES_CACHE.computeIfAbsent(locale, FakeValues::new);
+    }
+
     /**
-     * Allows to add paths to files with custom data. Data should be in YAML format.
+     * Allows adding paths to files with custom data. Data should be in YAML format.
      *
-     * @param locale        the locale for which a path is going to be added.
-     * @param path          path to a file with YAML structure
+     * @param locale the locale for which a path is going to be added.
+     * @param path   path to a file with YAML structure
      * @throws IllegalArgumentException in case of invalid path
      */
     public void addPath(Locale locale, Path path) {
@@ -95,14 +99,11 @@ public class FakeValuesService {
         FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(locale);
         if (existingFakeValues == null) {
             fakeValuesInterfaceMap.putIfAbsent(locale, fakeValues);
-        } else if (existingFakeValues instanceof FakeValuesGrouping) {
-            ((FakeValuesGrouping)fakeValuesInterfaceMap.get(locale)).add(fakeValues);
-        } else if (existingFakeValues instanceof FakeValues) {
-            FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
-            fakeValuesGrouping.add((FakeValues) existingFakeValues);
-            fakeValuesGrouping.add(fakeValues);
         } else {
-            throw new RuntimeException(fakeValues.getClass() + " not supported (please raise an issue)");
+            FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
+            fakeValuesGrouping.add(existingFakeValues);
+            fakeValuesGrouping.add(fakeValues);
+            fakeValuesInterfaceMap.put(locale, fakeValuesGrouping);
         }
     }
 
