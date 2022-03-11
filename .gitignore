@@ -10,3 +10,4 @@ target
 META-INF/
 bin/
 site
+.mvn/wrapper/maven-wrapper.jar
