@@ -10,7 +10,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class FakeCollection<T> {
-    private final RandomService randomService = new RandomService();
+    private final RandomService randomService;
     private final List<Supplier<T>> suppliers;
     private final int minLength;
     private final int maxLength;
@@ -24,16 +24,23 @@ public class FakeCollection<T> {
         return result;
     }
 
-    private FakeCollection(List<Supplier<T>> suppliers, int minLength, int maxLength) {
+    private FakeCollection(List<Supplier<T>> suppliers, int minLength, int maxLength, RandomService randomService) {
         this.suppliers = suppliers;
         this.minLength = minLength;
         this.maxLength = maxLength;
+        this.randomService = randomService;
     }
 
     public static class Builder<T> {
         private final List<Supplier<T>> suppliers = new ArrayList<>();
         private int minLength = -1; // negative means same as maxLength
         private int maxLength = 10;
+        private Faker faker;
+
+        public Builder<T> faker(Faker faker) {
+            this.faker = faker;
+            return this;
+        }
 
         public Builder<T> minLen(int minLength) {
             this.minLength = minLength;
@@ -57,7 +64,15 @@ public class FakeCollection<T> {
                 throw new IllegalArgumentException("Max length must be not less than min length and not negative");
             }
             minLength = minLength < 0 ? maxLength : minLength;
-            return new FakeCollection<>(suppliers, minLength, maxLength);
+
+            RandomService randomService;
+            if(faker == null) {
+                randomService = new RandomService();
+            } else {
+                randomService = faker.random();
+            }
+
+            return new FakeCollection<>(suppliers, minLength, maxLength, randomService);
         }
     }
 

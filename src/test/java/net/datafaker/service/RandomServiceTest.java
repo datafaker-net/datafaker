@@ -2,6 +2,7 @@ package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,6 +11,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -52,6 +54,35 @@ public class RandomServiceTest extends AbstractFakerTest {
         for (int i = 1; i < 100; i++) {
             assertThat(randomService.nextInt(-5, 5), both(lessThanOrEqualTo(5)).and(greaterThanOrEqualTo(-5)));
         }
+    }
+
+    @Test
+    public void predictableRandomRange() {
+        RandomService randomService = new RandomService(new Random(10));
+
+        int i1 = randomService.nextInt();
+        int i2 = randomService.nextInt(100);
+        int i3 = randomService.nextInt(0, 100);
+
+        float f1 = randomService.nextFloat();
+
+        long l1 = randomService.nextLong();
+        long l2 = randomService.nextLong(100);
+        long l3 = randomService.nextLong(100, 1000);
+
+        boolean b = randomService.nextBoolean();
+
+        assertThat(i1, is(equalTo(-1157793070)));
+        assertThat(i2, is(equalTo(80)));
+        assertThat(i3, is(equalTo(35)));
+
+        assertThat(f1, is(equalTo(0.41291267F)));
+
+        assertThat(l1, is(equalTo(1092083446069765248L)));
+        assertThat(l2, is(equalTo(1L)));
+        assertThat(l3, is(equalTo(836L)));
+
+        assertThat(b, is(equalTo(false)));
     }
 
     @ParameterizedTest

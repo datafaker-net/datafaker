@@ -4,8 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Random;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -25,6 +27,21 @@ public class FakeCollectionTest extends AbstractFakerTest {
         for (String name : names) {
             assertThat(name, matchesRegularExpression("[a-zA-Z']+"));
         }
+    }
+
+    @Test
+    public void generateCollectionWithRepeatableFaker() {
+        Faker seededFaker = new Faker(new Random(10L));
+
+        List<String> names = new FakeCollection.Builder<String>()
+            .faker(seededFaker)
+            .suppliers(() -> seededFaker.name().firstName(), () -> seededFaker.name().lastName())
+            .minLen(1)
+            .maxLen(20).build().get();
+
+        assertThat(names.size(), is(equalTo(14)));
+        assertThat(names.get(0), is(equalTo("Flor")));
+        assertThat(names.get(1), is(equalTo("Brian")));
     }
 
     @Test
