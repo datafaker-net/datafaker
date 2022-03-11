@@ -4,7 +4,7 @@ import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,8 +14,7 @@ public class CsvTest extends AbstractFakerTest {
     public void csvTest() {
         String separator = "@@@";
         int limit = 20;
-        String csv = new Csv.CsvBuilder()
-            .columns(Csv.Column.of("first_name", () -> faker.name().firstName()),
+        String csv = Format.toCsv(Csv.Column.of("first_name", () -> faker.name().firstName()),
                 Csv.Column.of("last_name", () -> faker.name().lastName()),
                 Csv.Column.of("address", () -> faker.address().streetAddress()))
             .header(true)
@@ -39,11 +38,10 @@ public class CsvTest extends AbstractFakerTest {
     public void csvTestWithQuotes() {
         String separator = "$$$";
         int limit = 20;
-        Collection<Csv.Column> columns = new ArrayList<>();
+        List<Csv.Column> columns = new ArrayList<>();
         columns.add(Csv.Column.of("first_name", () -> faker.expression("#{Name.first_name}")));
         columns.add(Csv.Column.of("last_name", () -> faker.expression("#{Name.last_name}")));
-        String csv = new Csv.CsvBuilder()
-            .columns(columns)
+        String csv = Format.toCsv(columns)
             .header(true)
             .separator(separator)
             .quote('%')
@@ -64,8 +62,7 @@ public class CsvTest extends AbstractFakerTest {
 
     @Test
     public void testCsvWithComma() {
-        String csv = new Csv.CsvBuilder()
-            .columns(
+        String csv = Format.toCsv(
                 Csv.Column.of("values", () -> "1,2,3"),
                 Csv.Column.of("title", () -> "The \"fabulous\" artist"))
             .header(true)

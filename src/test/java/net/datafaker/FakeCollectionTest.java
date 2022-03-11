@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.fileformats.Format;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -148,10 +149,10 @@ public class FakeCollectionTest extends AbstractFakerTest {
     public void myTest() {
         String separator = "$$$";
         int limit = 5;
-        String csv = new FakeCollection.Builder<Data>().minLen(limit).maxLen(limit)
-            .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
-            .build()
-            .toCsv()
+        String csv = Format.toCsv(
+                new FakeCollection.Builder<Data>().minLen(limit).maxLen(limit)
+                    .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
+                    .build())
             .headers(() -> "name", () -> "value", () -> "range", () -> "unit")
             .columns(Data::name, Data::value, Data::range, Data::unit)
             .separator(separator)
@@ -166,6 +167,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
                 numberOfSeparator++;
             }
         }
+        System.out.println(csv);
 
         assertEquals(limit + 1, numberOfLines); // limit + 1 line for header
         assertEquals((limit + 1) * (4 - 1), numberOfSeparator); // number of lines * (number of columns - 1)
