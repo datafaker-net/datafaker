@@ -28,6 +28,16 @@ public class Number {
     }
 
     /**
+     * Returns a positive number
+     */
+    public int positive() { return decimalBetween(1, Integer.MAX_VALUE).intValue(); }
+
+    /**
+     * Returns a negative number
+     */
+    public int negative() { return decimalBetween(0, Integer.MIN_VALUE).intValue(); }
+
+    /**
      * @param min the lower bound (include min)
      * @param max the lower bound (not include max)
      * @return a random number on faker.number() between min and max

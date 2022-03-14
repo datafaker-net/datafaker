@@ -467,4 +467,15 @@ public class NumberTest extends AbstractFakerTest {
             }
         }
     }
+    
+    @RepeatedTest(10)
+    public void testPositive() {
+        assertThat(faker.number().positive(), is(greaterThan(0)));
+    }
+
+    @RepeatedTest(10)
+    public void testNegative() {
+        assertThat(faker.number().negative(), is(lessThan(0)));
+
+    }
 }
