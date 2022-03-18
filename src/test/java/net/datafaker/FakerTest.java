@@ -3,6 +3,8 @@ package net.datafaker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collections;
 import java.util.Locale;
@@ -205,6 +207,25 @@ public class FakerTest extends AbstractFakerTest {
     @Test
     public void resolveShouldThrowExceptionWhenPropertyDoesntExist() {
         Assertions.assertThrows(RuntimeException.class, () -> faker.resolve("address.nothing"));
+    }
+
+    /*
+    Test case for issue https://github.com/datafaker-net/datafaker/issues/87
+     */
+    @ParameterizedTest
+    @ValueSource(strings = {"#{regexify '[a-z]{5}[A-Z]{5}'}", "#{Address.city}"})
+    public void datafaker87(String expression) {
+        int n = 10;
+        int counter = 0;
+        for (int i = 0; i < n; i++) {
+            String expression1 = faker.expression(expression);
+            String expression2 = faker.expression(expression);
+            if (expression1.equals(expression2)) {
+                counter++;
+            }
+        }
+
+        Assertions.assertTrue(counter < n);
     }
 
     @Test

@@ -45,6 +45,7 @@ public class JsonTest {
         return new AbstractMap.SimpleEntry<>(key, value);
     }
 
+    @SafeVarargs
     private static Map<Supplier<String>, Supplier<Object>> map(Map.Entry<Supplier<String>, Supplier<Object>>... entries) {
         Map<Supplier<String>, Supplier<Object>> map = new LinkedHashMap<>();
         for (Map.Entry<Supplier<String>, Supplier<Object>> entry : entries) {
