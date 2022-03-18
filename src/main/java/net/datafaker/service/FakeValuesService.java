@@ -42,8 +42,6 @@ public class FakeValuesService {
     private final List<Locale> localesChain;
 
     private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
-    private final Map<String, Supplier<String>> expression2function = new WeakHashMap<>();
-    private final Map<String, List<Supplier<String>>> rawExp2function = new WeakHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<String, String> key2Expression = new WeakHashMap<>();
 
@@ -420,41 +418,29 @@ public class FakeValuesService {
      * {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, Faker root) {
-        List<Supplier<String>> expressionSuppliers = rawExp2function.get(expression);
-        if (expressionSuppliers == null) {
-            List<String> expressions = splitExpressions(expression);
-            expressionSuppliers = new ArrayList<>(expressions.size());
-            for (int i = 0; i < expressions.size(); i++) {
-                // odd are expressions, even are not expressions, just strings
-                if (i % 2 == 0) {
-                    final int index = i;
-                    expressionSuppliers.add(() -> expressions.get(index));
-                    continue;
-                }
-                String expr = expressions.get(i);
-                final Supplier<String> supplier = expression2function.get(expr);
-                String resolved = supplier == null ? null : supplier.get();
-                if (resolved == null) {
-                    int j = 0;
-                    while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
-                    String directive = expr.substring(0, j);
-                    while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
-                    String arguments = j == expr.length() ? "" : expr.substring(j);
-                    String[] args = splitArguments(arguments);
+        List<String> expressions = splitExpressions(expression);
+        List<Supplier<String>> expressionSuppliers = new ArrayList<>(expressions.size());
+        for (int i = 0; i < expressions.size(); i++) {
+            // odd are expressions, even are not expressions, just strings
+            if (i % 2 == 0) {
+                final int index = i;
+                expressionSuppliers.add(() -> expressions.get(index));
+                continue;
+            }
+            String expr = expressions.get(i);
+            int j = 0;
+            while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
+            String directive = expr.substring(0, j);
+            while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
+            String arguments = j == expr.length() ? "" : expr.substring(j);
+            String[] args = splitArguments(arguments);
 
-                    resolved = resolveExpression(expr, directive, args, current, root);
-                    if (resolved == null) {
-                        throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
-                    }
-                }
-                String r = resolved;
-                expressionSuppliers.add(() -> resolveExpression(r, current, root));
+            String resolved = resolveExpression(expr, directive, args, current, root);
+            if (resolved == null) {
+                throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
             }
-            if (current == null) {
-                rawExp2function.put(expression, expressionSuppliers);
-            }
+            expressionSuppliers.add(() -> resolveExpression(resolved, current, root));
         }
-
         return expressionSuppliers.stream().map(Supplier::get).collect(Collectors.joining());
     }
 
@@ -528,7 +514,7 @@ public class FakeValuesService {
         if (!isDotDirective(directive)) {
             Supplier<String> supplier = resolveFromMethodOn(current, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-                expression2function.put(expression, supplier);
+                //expression2function.put(expression, supplier);
                 return resolved;
             }
         }
@@ -539,7 +525,7 @@ public class FakeValuesService {
         Supplier<String> supplier = () -> safeFetch(simpleDirective, null);
         resolved = supplier.get();
         if (resolved != null) {
-            expression2function.put(expression, supplier);
+           // expression2function.put(expression, supplier);
             return resolved;
         }
 
@@ -547,7 +533,7 @@ public class FakeValuesService {
         if (!isDotDirective(directive)) {
             supplier = resolveFromMethodOn(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-                expression2function.put(expression, supplier);
+         //       expression2function.put(expression, supplier);
                 return resolved;
             }
         }
@@ -556,7 +542,7 @@ public class FakeValuesService {
         if (isDotDirective(directive)) {
             supplier = resolveFakerObjectAndMethod(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-                expression2function.put(expression, supplier);
+               // expression2function.put(expression, supplier);
                 return resolved;
             }
         }
@@ -570,7 +556,7 @@ public class FakeValuesService {
             supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), null);
             resolved = supplier.get();
             if (resolved != null) {
-                expression2function.put(expression, supplier);
+             //   expression2function.put(expression, supplier);
             }
         }
 

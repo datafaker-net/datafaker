@@ -129,6 +129,7 @@ public class FakeCollection<T> {
         }
     }
 
+    @Deprecated // use net.datafaker.fileformats.Format.toCsv
     public static class CsvBuilder<T> {
         private String separator = ",";
         private char quote = '"';
