@@ -24,6 +24,7 @@ public class JsonTest {
 
     private static Stream<Arguments> generateTestJson() {
         return Stream.of(
+            Arguments.of(map(entry(() -> "key", () -> new Json(map(entry(() -> "key", () -> "value"))))), "{\"key\": {\"key\": \"value\"}}"),
             Arguments.of(map(entry(() -> "key", () -> "value")), "{\"key\": \"value\"}"),
             Arguments.of(map(entry(() -> "number", () -> 123)), "{\"number\": 123}"),
             Arguments.of(map(entry(() -> "number", () -> BigDecimal.valueOf(123.0))), "{\"number\": 123.0}"),

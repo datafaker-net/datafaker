@@ -48,6 +48,8 @@ public class Json {
             sb.append(generate((Collection) value));
         } else if (value.getClass().isArray()) {
             sb.append(generate(Arrays.asList((Object[]) value)));
+        } else if (value instanceof Json) {
+            sb.append(((Json) value).generate());
         } else {
             sb.append("\"");
             for (char c : String.valueOf(value).toCharArray()) {
