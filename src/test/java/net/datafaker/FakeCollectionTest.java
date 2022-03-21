@@ -4,8 +4,11 @@ import net.datafaker.fileformats.Format;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -146,7 +149,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void myTest() {
+    public void toCsv() {
         String separator = "$$$";
         int limit = 5;
         String csv = Format.toCsv(
@@ -171,5 +174,29 @@ public class FakeCollectionTest extends AbstractFakerTest {
 
         assertEquals(limit + 1, numberOfLines); // limit + 1 line for header
         assertEquals((limit + 1) * (4 - 1), numberOfSeparator); // number of lines * (number of columns - 1)
+    }
+
+    @Test
+    public void toJson() {
+        int limit = 5;
+        Map<Function<Data, String>, Function<Data, Object>> map = new HashMap<>();
+        map.put(data -> "name", Data::name);
+        map.put(data -> "value", Data::value);
+        map.put(data -> "range", Data::range);
+        map.put(data -> "unit", Data::unit);
+        String json = Format.toJson(
+                new FakeCollection.Builder<Data>().minLen(limit).maxLen(limit)
+                    .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
+                    .build(), map).generate();
+
+        System.out.println(json);
+        int numberOfLines = 0;
+        for (int i = 0; i < json.length(); i++) {
+            if (json.regionMatches(i, "},", 0, "},".length())) {
+                numberOfLines++;
+            }
+        }
+
+        assertEquals(limit - 1, numberOfLines); // limit - 1 since for the last line there is no comma
     }
 }

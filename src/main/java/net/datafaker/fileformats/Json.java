@@ -1,8 +1,18 @@
 package net.datafaker.fileformats;
 
+import net.datafaker.FakeCollection;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Json {
@@ -129,5 +139,78 @@ public class Json {
         map.put('\u001E', "\\u001E");
         map.put('\u001F', "\\u001F");
         return Collections.unmodifiableMap(map);
+    }
+
+    public static class JsonForFakeCollection<T> {
+        private final Map<Function<T, String>, Function<T, Object>> map;
+        private final FakeCollection<T> collection;
+
+        public JsonForFakeCollection(FakeCollection<T> collection, Map<Function<T, String>, Function<T, Object>> map) {
+            this.map = map;
+            this.collection = collection;
+        }
+
+        public String generate() {
+            StringBuilder sb = new StringBuilder();
+            List<T> col = collection.get();
+            if (col == null) {
+                return null;
+            } else if (col.isEmpty()) {
+                return "[]";
+            } else {
+                sb.append("[");
+                for (int i = 0; i < col.size(); i++) {
+                    sb.append(generate(col.get(i), map));
+                    if (i < col.size() - 1) {
+                        sb.append(",").append(System.lineSeparator());
+                    }
+                }
+                sb.append("]");
+            }
+            return sb.toString();
+        }
+
+        private String generate(T record, Map<Function<T, String>, Function<T, Object>> map) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("{");
+            Set<String> keys = new HashSet<>();
+            for (Map.Entry<Function<T, String>, Function<T, Object>> entry : map.entrySet()) {
+                String key = entry.getKey().apply(record);
+                if (!keys.add(key)) continue;
+                if (keys.size() > 1) {
+                    sb.append(", ");
+                }
+                sb.append("\"");
+                for (char c : key.toCharArray()) {
+                    sb.append(ESCAPING_MAP.getOrDefault(c, c + ""));
+                }
+                sb.append("\": ");
+                Object value = entry.getValue().apply(record);
+                value2String(record, value, sb);
+            }
+            sb.append("}");
+            return sb.toString();
+        }
+
+        private void value2String(T record, Object value, StringBuilder sb) {
+            if (value == null) {
+                sb.append("null");
+            } else if (value instanceof Integer
+                || value instanceof Long
+                || value instanceof Short
+                || value instanceof BigInteger
+                || value instanceof Boolean
+                || (value instanceof BigDecimal && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
+                sb.append(value);
+            } else if (value instanceof Map) {
+                sb.append(generate(record, (Map<Function<T, String>, Function<T, Object>>) value));
+            } else {
+                sb.append("\"");
+                for (char c : String.valueOf(value).toCharArray()) {
+                    sb.append(ESCAPING_MAP.getOrDefault(c, c + ""));
+                }
+                sb.append("\"");
+            }
+        }
     }
 }
