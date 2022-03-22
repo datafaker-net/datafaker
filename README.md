@@ -42,7 +42,8 @@ dependencies {
 ```
 
 You can also use the snapshot version (`1.3.0-SNAPSHOT`), which automatically gets published 
-after every push to the master branch of this repository.
+after every push to the master branch of this repository. Binary repository URL for snapshots download is
+https://s01.oss.sonatype.org/content/repositories/snapshots/.
 
 In your Java code:
 
