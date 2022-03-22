@@ -4,7 +4,6 @@ import net.datafaker.FakeCollection;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Format {
@@ -20,12 +19,12 @@ public class Format {
         return new Csv.CsvColumnBasedBuilder<String, Csv.Column>().columns(columns);
     }
 
-    public static Json toJson(Map<Supplier<String>, Supplier<Object>> map) {
-        return new Json(map);
+    public static Json.JsonBuilder toJson() {
+        return new Json.JsonBuilder();
     }
 
-    public static <T> Json.JsonForFakeCollection<T> toJson(FakeCollection<T> collection, Map<Function<T, String>, Function<T, Object>> map) {
-        return new Json.JsonForFakeCollection<T>(collection, map);
+    public static <T> Json.JsonFromCollectionBuilder<T> toJson(FakeCollection<T> collection) {
+        return new Json.JsonFromCollectionBuilder<T>(collection);
     }
 
 }

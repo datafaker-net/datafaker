@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -139,6 +140,47 @@ public class Json {
         map.put('\u001E', "\\u001E");
         map.put('\u001F', "\\u001F");
         return Collections.unmodifiableMap(map);
+    }
+
+    public static class JsonBuilder {
+        private final Map<Supplier<String>, Supplier<Object>> map = new LinkedHashMap<>();
+
+        public JsonBuilder set(String key, Supplier<Object> value) {
+            map.put(() -> key, value);
+            return this;
+        }
+
+        public JsonBuilder set(Supplier<String> key, Supplier<Object> value) {
+            map.put(key, value);
+            return this;
+        }
+
+        public Json build() {
+            return new Json(map);
+        }
+    }
+
+    public static class JsonFromCollectionBuilder<T> {
+        private final Map<Function<T, String>, Function<T, Object>> map = new LinkedHashMap<>();
+        private final FakeCollection<T> collection;
+
+        public JsonFromCollectionBuilder(FakeCollection<T> collection) {
+            this.collection = collection;
+        }
+
+        public JsonFromCollectionBuilder<T> set(String key, Function<T, Object> value) {
+            map.put(t -> key, value);
+            return this;
+        }
+
+        public JsonFromCollectionBuilder<T> set(Function<T, String> key, Function<T, Object> value) {
+            map.put(key, value);
+            return this;
+        }
+
+        public JsonForFakeCollection<T> build() {
+            return new JsonForFakeCollection<>(collection, map);
+        }
     }
 
     public static class JsonForFakeCollection<T> {

@@ -1,5 +1,6 @@
 package net.datafaker.fileformats;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,13 +18,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class JsonTest {
     @ParameterizedTest
     @MethodSource("generateTestJson")
-    public void simpleJsonTest(Map<Supplier<String>, Supplier<Object>> input, String expected) {
-        Json json = new Json(input);
-        assertEquals(expected, json.generate());
+    public void simpleJsonTest(Map<Object, Supplier<Object>> input, String expected) {
+        Json.JsonBuilder builder = new Json.JsonBuilder();
+        for (Map.Entry<Object, Supplier<Object>> entry: input.entrySet()) {
+            if (entry.getKey() instanceof String) {
+                builder.set((String) entry.getKey(), entry.getValue());
+            } else if (entry.getKey() instanceof Supplier) {
+                builder.set((Supplier<String>) entry.getKey(), entry.getValue());
+            } else {
+                Assertions.fail("Key should be String or Supplier<String>");
+            }
+        }
+        assertEquals(expected, builder.build().generate());
     }
 
     private static Stream<Arguments> generateTestJson() {
         return Stream.of(
+            Arguments.of(Collections.emptyMap(), "{}"),
             Arguments.of(map(entry(() -> "key", () -> new Json(map(entry(() -> "key", () -> "value"))))), "{\"key\": {\"key\": \"value\"}}"),
             Arguments.of(map(entry(() -> "key", () -> "value")), "{\"key\": \"value\"}"),
             Arguments.of(map(entry(() -> "number", () -> 123)), "{\"number\": 123}"),
