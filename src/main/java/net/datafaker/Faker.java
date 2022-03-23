@@ -264,6 +264,10 @@ public class Faker {
         return getProvider(Aviation.class, () -> new Aviation(this));
     }
 
+    public Aws aws() {
+        return getProvider(Aws.class, () -> new Aws(this));
+    }
+
     public BackToTheFuture backToTheFuture() {
         return getProvider(BackToTheFuture.class, () -> new BackToTheFuture(this));
     }
