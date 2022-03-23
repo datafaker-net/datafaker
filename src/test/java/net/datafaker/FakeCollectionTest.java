@@ -195,4 +195,42 @@ public class FakeCollectionTest extends AbstractFakerTest {
 
         assertEquals(limit - 1, numberOfLines); // limit - 1 since for the last line there is no comma
     }
+
+    @Test
+    public void toNestedJson() {
+        final int limit = 2;
+        final String json =
+            Format.toJson(new FakeCollection.Builder<Name>().faker(faker)
+                    .suppliers(() -> faker.name())
+                    .maxLen(limit)
+                    .minLen(limit)
+                    .build())
+                .set("primaryAddress", Format.toJson()
+                    .set("country", () -> faker.address().country())
+                    .set("city", () -> faker.address().city())
+                    .set("zipcode", () -> faker.address().zipCode())
+                    .set("streetAddress", () -> faker.address().streetAddress())
+                    .build())
+                .set("secondaryAddresses", Format.toJson(new FakeCollection.Builder<Address>().faker(faker)
+                        .suppliers(() -> faker.address())
+                        .maxLen(1)
+                        .minLen(1)
+                        .build())
+                    .set("country", Address::country)
+                    .set("city", Address::city)
+                    .set("zipcode", Address::zipCode)
+                    .set("streetAddress", Address::streetAddress)
+                    .build())
+                .set("phones", name -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+                .build()
+                .generate();
+
+        int numberOfLines = 0;
+        for (int i = 0; i < json.length(); i++) {
+            if (json.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+                numberOfLines++;
+            }
+        }
+        assertEquals(limit - 1, numberOfLines); // limit - 1 since for the last line there is no comma
+    }
 }

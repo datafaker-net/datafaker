@@ -28,7 +28,7 @@ public class Json {
         return generate(map);
     }
 
-    private String generate(Collection<Object> collection) {
+    private static String generate(Collection<Object> collection) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         int i = 0;
@@ -43,7 +43,7 @@ public class Json {
         return sb.toString();
     }
 
-    private void value2String(Object value, StringBuilder sb) {
+    private static void value2String(Object value, StringBuilder sb) {
         if (value == null) {
             sb.append("null");
         } else if (value instanceof Integer
@@ -70,7 +70,7 @@ public class Json {
         }
     }
 
-    private String generate(Map<Supplier<String>, Supplier<Object>> map) {
+    private static String generate(Map<Supplier<String>, Supplier<Object>> map) {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         Set<String> keys = new HashSet<>();
@@ -178,6 +178,16 @@ public class Json {
             return this;
         }
 
+        public JsonFromCollectionBuilder<T> set(String key, Json value) {
+            map.put(t -> key, t -> value);
+            return this;
+        }
+
+        public JsonFromCollectionBuilder<T> set(String key, JsonForFakeCollection value) {
+            map.put(t -> key, t -> value);
+            return this;
+        }
+
         public JsonForFakeCollection<T> build() {
             return new JsonForFakeCollection<>(collection, map);
         }
@@ -228,7 +238,17 @@ public class Json {
                 }
                 sb.append("\": ");
                 Object value = entry.getValue().apply(record);
-                value2String(record, value, sb);
+                if (value instanceof JsonForFakeCollection) {
+                    sb.append(((JsonForFakeCollection<?>) value).generate());
+                } else if (value instanceof Collection) {
+                    sb.append(Json.generate((Collection) value));
+                } else if (value.getClass().isArray()) {
+                    sb.append(Json.generate(Arrays.asList((Object[]) value)));
+                } else if (value instanceof Json) {
+                    sb.append(((Json) value).generate());
+                } else {
+                    value2String(record, value, sb);
+                }
             }
             sb.append("}");
             return sb.toString();
