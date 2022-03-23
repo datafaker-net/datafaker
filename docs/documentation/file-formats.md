@@ -52,40 +52,37 @@ It's also possible to generate JSON output:
 
     ``` java
     Faker faker = new Faker();
-    // If order is not important other maps e.g. HashMap could be used
-    Map<Supplier<String>, Supplier<Object>> person = new LinkedHashMap<>();
-    Map<Supplier<String>, Supplier<Object>> address = new LinkedHashMap<>();
-    address.put(() -> "country", () -> faker.address().country());
-    address.put(() -> "city", () -> faker.address().city());
-    address.put(() -> "zipcode", () -> faker.address().zipCode());
-    address.put(() -> "streetAddress", () -> faker.address().streetAddress());
-
-    person.put(() -> "firstName", () -> faker.name().firstName());
-    person.put(() -> "lastName", () -> faker.name().lastName());
-    person.put(() -> "phones", () -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get());
-    person.put(() -> "address", () -> address);
-    Json json = new Json(person);
-    System.out.println(json.generate());    
+    String json = Format.toJson(
+                    new FakeCollection.Builder<Name>().faker(faker)
+                        .suppliers(() -> faker.name())
+                        .maxLen(2)
+                        .minLen(2)
+                        .build())
+                    .set("firstName", Name::firstName)
+                    .set("lastName", Name::lastName)
+                    .set("address",
+                        Format.toJson(
+                            new FakeCollection.Builder<Address>().faker(faker)
+                                .suppliers(() -> faker.address())
+                                .maxLen(1)
+                                .minLen(1)
+                                .build())
+                        .set("country", Address::country)
+                        .set("city", Address::city)
+                        .set("zipcode", Address::zipCode)
+                        .set("streetAddress", Address::streetAddress)
+                        .build())
+                    .set("phones", name -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+                    .build()
+                    .generate();
+        System.out.println(json);
     ```
 
 This will produce something similar to the following:
 
 ```json
-{
-  "firstName": "Beau",
-  "lastName": "Lueilwitz",
-  "phones": [
-    "(088) 217-5229 x0106",
-    "(343) 379-9190 x7682",
-    "(115) 661-2988 x6965"
-  ],
-  "address": {
-    "country": "Iceland",
-    "city": "East Everettefurt",
-    "zipcode": "65196",
-    "streetAddress": "929 Littel Curve"
-  }
-}
+[{"firstName": "Azucena", "lastName": "Block", "address": [{"country": "Micronesia", "city": "Ralphberg", "zipcode": "03792", "streetAddress": "522 Detra Motorway"}], "phones": ["885.387.7538 x3339", "673-179-8684 x7840", "512-510-3469 x47468"]},
+  {"firstName": "Hollis", "lastName": "Conroy", "address": [{"country": "Anguilla", "city": "Murrayshire", "zipcode": "96973", "streetAddress": "84545 Carolyne Hills"}], "phones": ["133.943.3781 x16122", "797.830.4970 x310", "(599) 214-5520 x920"]}]
 ```
 
 ## YAML
