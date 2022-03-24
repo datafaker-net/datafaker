@@ -85,6 +85,43 @@ This will produce something similar to the following:
   {"firstName": "Hollis", "lastName": "Conroy", "address": [{"country": "Anguilla", "city": "Murrayshire", "zipcode": "96973", "streetAddress": "84545 Carolyne Hills"}], "phones": ["133.943.3781 x16122", "797.830.4970 x310", "(599) 214-5520 x920"]}]
 ```
 
+Another example with json payload
+
+=== "Java"
+
+    ``` java
+        Faker faker = new Faker();
+        String json = Format.toJson(
+                        new FakeCollection.Builder<Name>().faker(faker)
+                            .suppliers(faker::name)
+                            .maxLen(2)
+                            .minLen(2)
+                            .build())
+                        .set("firstName", Name::firstName)
+                        .set("lastName", Name::lastName)
+                        .set("payload", payload ->
+                                    Format.toJson(
+                                            new FakeCollection.Builder<Address>().faker(faker)
+                                            .suppliers(faker::address)
+                                            .maxLen(1)
+                                            .minLen(1)
+                                            .build())
+                                    .set("country", Address::country)
+                                    .set("city", Address::city)
+                                    .set("zipcode", Address::zipCode)
+                                    .set("streetAddress", Address::streetAddress)
+                                    .build().generate())
+                        .set("phones", name -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+                        .build()
+                        .generate();
+        System.out.println(json);
+    ```
+
+This will produce json with escaped json payload e.g.:
+```json
+[{"firstName": "Rey", "lastName": "Hilpert", "payload": "[{\"country\": \"Vanuatu\", \"city\": \"Douglasborough\", \"zipcode\": \"78956\", \"streetAddress\": \"15586 DuBuque Circles\"}]", "phones": ["(739) 078-6320", "(530) 089-9967 x167", "422.892.6273 x46644"]},
+{"firstName": "Timmy", "lastName": "Lakin", "payload": "[{\"country\": \"Chile\", \"city\": \"East Frederick\", \"zipcode\": \"07470\", \"streetAddress\": \"425 Hackett Tunnel\"}]", "phones": ["416.215.9044", "700.631.9476", "1-521-484-1096"]}]
+```
 ## YAML
 
 A lightweight YAML generator is now built into Datafaker. 
