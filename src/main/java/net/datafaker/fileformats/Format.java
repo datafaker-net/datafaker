@@ -3,8 +3,6 @@ package net.datafaker.fileformats;
 import net.datafaker.FakeCollection;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 public class Format {
     public static <T> Csv.CsvCollectionBasedBuilder<T> toCsv(FakeCollection<T> collection) {
