@@ -23,7 +23,7 @@ public class FakeCollection<T> {
         List<T> result = new ArrayList<>();
         int size = randomService.nextInt(minLength, maxLength);
         while (result.size() < size) {
-            result.add(suppliers.get(randomService.nextInt(suppliers.size())).get());
+            result.add(singleton());
         }
         return result;
     }
