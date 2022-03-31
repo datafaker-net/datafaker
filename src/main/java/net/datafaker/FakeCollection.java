@@ -15,6 +15,13 @@ public class FakeCollection<T> {
     private final int minLength;
     private final int maxLength;
 
+    private FakeCollection(List<Supplier<T>> suppliers, int minLength, int maxLength, RandomService randomService) {
+        this.suppliers = suppliers;
+        this.minLength = minLength;
+        this.maxLength = maxLength;
+        this.randomService = randomService;
+    }
+
     public T singleton() {
         return suppliers.get(randomService.nextInt(suppliers.size())).get();
     }
@@ -26,13 +33,6 @@ public class FakeCollection<T> {
             result.add(singleton());
         }
         return result;
-    }
-
-    private FakeCollection(List<Supplier<T>> suppliers, int minLength, int maxLength, RandomService randomService) {
-        this.suppliers = suppliers;
-        this.minLength = minLength;
-        this.maxLength = maxLength;
-        this.randomService = randomService;
     }
 
     public static class Builder<T> {
