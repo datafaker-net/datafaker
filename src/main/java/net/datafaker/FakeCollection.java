@@ -15,6 +15,10 @@ public class FakeCollection<T> {
     private final int minLength;
     private final int maxLength;
 
+    public T singleton() {
+        return suppliers.get(randomService.nextInt(suppliers.size())).get();
+    }
+
     public List<T> get() {
         List<T> result = new ArrayList<>();
         int size = randomService.nextInt(minLength, maxLength);

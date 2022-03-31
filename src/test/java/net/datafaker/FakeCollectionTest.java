@@ -2,6 +2,7 @@ package net.datafaker;
 
 import net.datafaker.fileformats.Format;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FakeCollectionTest extends AbstractFakerTest {
@@ -232,5 +234,13 @@ public class FakeCollectionTest extends AbstractFakerTest {
             }
         }
         assertEquals(limit - 1, numberOfLines); // limit - 1 since for the last line there is no comma
+    }
+
+    @RepeatedTest(10)
+    public void singletonTest() {
+        int limit = 10;
+        assertNotNull(new FakeCollection.Builder<Data>().minLen(limit).maxLen(limit)
+            .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
+            .build().singleton());
     }
 }
