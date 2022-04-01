@@ -16,16 +16,6 @@ public class BarcodeTest extends AbstractFakerTest {
                 "GS1 Databar|MSI Plessey"));
     }
 
-    @Test
-    public void data() {
-        assertThat(faker.barcode().data(), matchesRegularExpression("\\d+"));
-    }
-
-    @Test
-    public void typeAndData() {
-        assertThat(faker.barcode().typeAndData(), matchesRegularExpression("(\\w|\\W)+\\s\\d+$"));
-    }
-
     public static boolean isBarcodeValid(long barcode) {
         char[] array = String.valueOf(barcode).toCharArray();
         int sum = 0;

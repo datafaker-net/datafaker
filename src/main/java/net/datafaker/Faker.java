@@ -360,14 +360,6 @@ public class Faker {
         return getProvider(CPF.class, () -> new CPF(this));
     }
 
-    /**
-     * @deprecated Using hashing instead.
-     */
-    @Deprecated
-    public Hashing crypto() {
-        return getProvider(Hashing.class, () -> new Hashing(this));
-    }
-
     public Hashing hashing() {
         return getProvider(Hashing.class, () -> new Hashing(this));
     }
@@ -394,6 +386,10 @@ public class Faker {
 
     public Dessert dessert() {
         return getProvider(Dessert.class, () -> new Dessert(this));
+    }
+
+    public Device device() {
+        return getProvider(Device.class, () -> new Device(this));
     }
 
     public Dog dog() {
@@ -464,6 +460,10 @@ public class Faker {
         return getProvider(Gender.class, () -> new Gender(this));
     }
 
+    public GratefulDead gratefulDead() {
+        return getProvider(GratefulDead.class, () -> new GratefulDead(this));
+    }
+
     public Hacker hacker() {
         return getProvider(Hacker.class, () -> new Hacker(this));
     }
@@ -474,6 +474,10 @@ public class Faker {
 
     public Hearthstone hearthstone() {
         return getProvider(Hearthstone.class, () -> new Hearthstone(this));
+    }
+
+    public HeyArnold heyArnold() {
+        return getProvider(HeyArnold.class, () -> new HeyArnold(this));
     }
 
     public Hipster hipster() {
@@ -652,6 +656,10 @@ public class Faker {
         return getProvider(Science.class, () -> new Science(this));
     }
 
+    public Seinfeld seinfeld() {
+        return getProvider(Seinfeld.class, () -> new Seinfeld(this));
+    }
+
     public SlackEmoji slackEmoji() {
         return getProvider(SlackEmoji.class, () -> new SlackEmoji(this));
     }
@@ -768,4 +776,5 @@ public class Faker {
     public String expression(String expression) {
         return this.fakeValuesService.expression(expression, this);
     }
+
 }

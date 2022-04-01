@@ -60,7 +60,7 @@ public class ProviderGenerator {
         System.out.println("package net.datafaker;");
         System.out.println();
         System.out.println("/**");
-        System.out.println(" * @since 1.3.0");
+        System.out.println(" * @since 1.4.0");
         System.out.println(" */");
         System.out.println("public class " + className + " {");
         System.out.println();

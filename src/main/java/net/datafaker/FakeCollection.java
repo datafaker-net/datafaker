@@ -80,11 +80,6 @@ public class FakeCollection<T> {
         }
     }
 
-    @Deprecated // use net.datafaker.fileformats.Format.toCsv
-    public CsvBuilder<T> toCsv() {
-        return new CsvBuilder<T>().collection(this);
-    }
-
     public static class Csv<T> {
         private final FakeCollection<T> collection;
         private final String separator;

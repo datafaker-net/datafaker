@@ -109,9 +109,9 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.commerce());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.company());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.country());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.crypto());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.demographic());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dessert());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.device());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.disease());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dog());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dragonBall());
@@ -128,9 +128,12 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.funnyName());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gameOfThrones());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gender());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gratefulDead());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hacker());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.harryPotter());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hashing());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hearthstone());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.heyArnold());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hipster());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hitchhikersGuideToTheGalaxy());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hobbit());
@@ -143,10 +146,13 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lebowski());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lordOfTheRings());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lorem());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.matz());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.music());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.name());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nation());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.natoPhoneticAlphabet());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nigeria());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.overwatch());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.phoneNumber());
@@ -155,10 +161,12 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.princessBride());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.programmingLanguage());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.relationships());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.restaurant());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.rickAndMorty());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.robin());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.rockBand());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.ruPaulDragRace());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.seinfeld());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.shakespeare());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.slackEmoji());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.space());
@@ -167,6 +175,7 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.stock());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.superhero());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.team());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.theItCrowd());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.touhou());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.twinPeaks());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.university());
@@ -175,12 +184,6 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.witcher());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.yoda());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.zelda());
-
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.theItCrowd());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.restaurant());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.natoPhoneticAlphabet());
     }
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {

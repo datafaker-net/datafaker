@@ -10,31 +10,31 @@ public class HashingTest extends AbstractFakerTest {
 
     @Test
     public void testMd2() {
-        assertThat(faker.crypto().md2(), matchesRegularExpression("[a-z\\d]+"));
+        assertThat(faker.hashing().md2(), matchesRegularExpression("[a-z\\d]+"));
     }
 
     @Test
     public void testMd5() {
-        assertThat(faker.crypto().md5(), matchesRegularExpression("[a-z\\d]+"));
+        assertThat(faker.hashing().md5(), matchesRegularExpression("[a-z\\d]+"));
     }
 
     @Test
     public void testSha1() {
-        assertThat(faker.crypto().sha1(), matchesRegularExpression("[a-z\\d]+"));
+        assertThat(faker.hashing().sha1(), matchesRegularExpression("[a-z\\d]+"));
     }
 
     @Test
     public void testSha256() {
-        assertThat(faker.crypto().sha256(), matchesRegularExpression("[a-z\\d]+"));
+        assertThat(faker.hashing().sha256(), matchesRegularExpression("[a-z\\d]+"));
     }
 
     @Test
     public void testSha384() {
-        assertThat(faker.crypto().sha384(), matchesRegularExpression("[a-z\\d]+"));
+        assertThat(faker.hashing().sha384(), matchesRegularExpression("[a-z\\d]+"));
     }
 
     @Test
     public void testSha512() {
-        assertThat(faker.crypto().sha512(), matchesRegularExpression("[a-z\\d]+"));
+        assertThat(faker.hashing().sha512(), matchesRegularExpression("[a-z\\d]+"));
     }
 }

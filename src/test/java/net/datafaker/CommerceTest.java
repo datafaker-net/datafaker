@@ -16,11 +16,6 @@ public class CommerceTest extends AbstractFakerTest {
     private static final String PROMOTION_CODE_REGEX = CAPITALIZED_WORD_REGEX + "(-" + CAPITALIZED_WORD_REGEX + ")*";
 
     @Test
-    public void testColor() {
-        assertThat(faker.commerce().color(), matchesRegularExpression("(\\w+ ?){1,2}"));
-    }
-
-    @Test
     public void testDepartment() {
         assertThat(faker.commerce().department(), matchesRegularExpression("(\\w+(, | & )?){1,3}"));
     }

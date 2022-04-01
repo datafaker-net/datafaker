@@ -22,7 +22,7 @@ public class Format {
     }
 
     public static <T> Json.JsonFromCollectionBuilder<T> toJson(FakeCollection<T> collection) {
-        return new Json.JsonFromCollectionBuilder<T>(collection);
+        return new Json.JsonFromCollectionBuilder<>(collection);
     }
 
 }
