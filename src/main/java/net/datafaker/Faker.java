@@ -360,8 +360,16 @@ public class Faker {
         return getProvider(CPF.class, () -> new CPF(this));
     }
 
-    public Crypto crypto() {
-        return getProvider(Crypto.class, () -> new Crypto(this));
+    /**
+     * @deprecated Using hashing instead.
+     */
+    @Deprecated
+    public Hashing crypto() {
+        return getProvider(Hashing.class, () -> new Hashing(this));
+    }
+
+    public Hashing hashing() {
+        return getProvider(Hashing.class, () -> new Hashing(this));
     }
 
     public CryptoCoin cryptoCoin() {

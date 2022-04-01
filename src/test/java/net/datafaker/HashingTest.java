@@ -6,7 +6,7 @@ import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpr
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
-public class CryptoTest extends AbstractFakerTest {
+public class HashingTest extends AbstractFakerTest {
 
     @Test
     public void testMd2() {

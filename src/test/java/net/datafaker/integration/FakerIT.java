@@ -130,6 +130,7 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gender());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hacker());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.harryPotter());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hashing());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hipster());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hitchhikersGuideToTheGalaxy());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hobbit());
