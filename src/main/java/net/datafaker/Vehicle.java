@@ -11,7 +11,7 @@ import java.util.Locale;
 public class Vehicle {
     private final Faker faker;
 
-    static final String VIN_REGEX = "[A-Z0-9]{3}[A-Z0-9]{5}[A-Z0-9]{1}[A-Z0-9]{1}[A-Z0]{1}[A-Z0-9]{1}\\d{5}";
+    static final String VIN_REGEX = "([A-HJ-NPS-Z0-9]){3}[A-HJ-NPS-Z0-9]{5}[A-HJ-NPS-Z0-9]{1}[A-HJ-NPS-Z0-9]{1}[A-HJ-NPS-Z0-0]{1}[A-HJ-NPS-Z0-9]{1}\\d{5}";
 
     public Vehicle(Faker faker) {
         this.faker = faker;

@@ -19,7 +19,7 @@ public class VehicleTest extends AbstractFakerTest {
     private static final String WORDS_MATCH = "^[a-zA-Z0-9_/ -]*$";
     private static final String INTERNATIONAL_WORDS_MATCH = "\\P{Cc}+";
 
-    @Test
+    @RepeatedTest(10)
     public void testVin() {
         assertThat(faker.vehicle().vin(), matchesRegularExpression(Vehicle.VIN_REGEX));
     }
