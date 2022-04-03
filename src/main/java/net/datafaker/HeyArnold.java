@@ -1,6 +1,8 @@
 package net.datafaker;
 
 /**
+ * Hey Arnold! is an American animated comedy television series created by Craig Bartlett.
+ *
  * @since 1.4.0
  */
 public class HeyArnold {

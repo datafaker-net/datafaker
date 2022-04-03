@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +39,7 @@ import static org.reflections.ReflectionUtils.withReturnType;
  * and that methods return values. The unit tests should ensure what the values returned
  * are correct. These tests just ensure that the methods can be invoked.
  */
+@SuppressWarnings("NewClassNamingConvention")
 public class FakerIT {
     private Faker faker;
     private Locale locale;
@@ -52,7 +54,7 @@ public class FakerIT {
 
     static {
         // 'it' has an empty suffix list so it never returns a value
-        exceptions.put(new Locale("it"), Arrays.asList("Name.suffix"));
+        exceptions.put(new Locale("it"), Collections.singletonList("Name.suffix"));
         exceptions.put(new Locale("es-mx"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("pt"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("uk"), Arrays.asList("Address.stateAbbr", "Address.streetSuffix",
@@ -149,6 +151,8 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.matz());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountain());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountaineering());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.music());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.name());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nation());

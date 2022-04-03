@@ -568,6 +568,10 @@ public class Faker {
         return getProvider(Mountain.class, () -> new Mountain(this));
     }
 
+    public Mountaineering mountaineering() {
+        return getProvider(Mountaineering.class, () -> new Mountaineering(this));
+    }
+
     public Music music() {
         return getProvider(Music.class, () -> new Music(this));
     }
