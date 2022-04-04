@@ -2,8 +2,6 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Locale;
-
 import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;

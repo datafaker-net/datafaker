@@ -2,9 +2,6 @@ package net.datafaker.idnumbers.pt.br;
 
 import net.datafaker.Faker;
 
-import java.util.Random;
-import java.util.stream.IntStream;
-
 public final class IdNumberGeneratorPtBrUtil {
 
     private IdNumberGeneratorPtBrUtil() {
