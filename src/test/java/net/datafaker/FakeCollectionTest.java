@@ -4,6 +4,8 @@ import net.datafaker.fileformats.Format;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 import java.util.Random;
@@ -16,6 +18,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FakeCollectionTest extends AbstractFakerTest {
@@ -30,6 +33,31 @@ public class FakeCollectionTest extends AbstractFakerTest {
         for (String name : names) {
             assertThat(name, matchesRegularExpression("[a-zA-Z']+"));
         }
+    }
+
+    @Test
+    public void generateNullCollection() {
+        List<String> names = new FakeCollection.Builder<String>()
+            .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
+            .nullRate(1d)
+            .minLen(3)
+            .maxLen(5).build().get();
+        assertThat(names.size(), is(lessThanOrEqualTo(5)));
+        assertThat(names.size(), is(greaterThanOrEqualTo(3)));
+        for (String name : names) {
+            assertNull(name);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, -0.3, 2, 3, Integer.MAX_VALUE, Double.MAX_VALUE})
+    public void illegalNullRate(double nullRate) {
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new FakeCollection.Builder<String>()
+                .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
+                .nullRate(nullRate)
+                .minLen(3)
+                .maxLen(5).build().get(), "Not thrown for nullRate " + nullRate);
     }
 
     @Test
