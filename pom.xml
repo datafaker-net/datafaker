@@ -28,7 +28,7 @@
         <commons-validator.version>1.7</commons-validator.version>
         <generex.version>1.0.2</generex.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <jbanking.version>3.1.1</jbanking.version>
         <junit.version>5.8.2</junit.version>
         <libphonenumber.version>8.12.46</libphonenumber.version>
