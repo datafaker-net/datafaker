@@ -4,13 +4,20 @@ import net.datafaker.AbstractFakerTest;
 import net.datafaker.Faker;
 import net.datafaker.Superhero;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -294,6 +301,33 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
 
         assertThat(fakeValuesService.expression("#{Internet.password '5','8','true','true'}", faker),
             matchesRegularExpression("[\\w\\d\\!%#$@_\\^&\\*]{5,8}"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"src/test/test.txt_null", "qwerty", "src"})
+    public void fileExpressionTestFailure(String filename) {
+        Assertions.assertThrows(RuntimeException.class, () -> fakeValuesService.fileExpression(Paths.get(filename), faker));
+    }
+
+    @Test
+    public void fileNoExpressionTest() {
+        try {
+            Path tmpPath = Files.createTempFile("tmp", "file");
+            Assertions.assertEquals(String.join("", Files.readAllLines(tmpPath)), fakeValuesService.fileExpression(tmpPath, faker));
+        } catch (IOException e) {
+            Assertions.fail("Fail ", e);
+        }
+    }
+
+    @Test
+    public void fileExpressionTest() {
+        try {
+            Path path = Paths.get("src/test/test.txt");
+            Assertions.assertNotEquals(String.join(System.lineSeparator(), Files.readAllLines(path)),
+                fakeValuesService.fileExpression(path, faker));
+        } catch (IOException e) {
+            Assertions.fail("Fail ", e);
+        }
     }
 
     /**

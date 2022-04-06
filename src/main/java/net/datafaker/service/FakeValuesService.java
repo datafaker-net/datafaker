@@ -3,6 +3,7 @@ package net.datafaker.service;
 import com.mifmif.common.regex.Generex;
 import net.datafaker.Faker;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -400,10 +401,23 @@ public class FakeValuesService {
     }
 
     /**
-     * resolves an expression using the current faker.
+     * Resolves an expression using the current faker.
      */
     public String expression(String expression, Faker faker) {
         return resolveExpression(expression, null, faker);
+    }
+
+    /**
+     * Resolves an expression in file using the current faker.
+     */
+    public String fileExpression(Path path, Faker faker) {
+        try {
+            return Files.readAllLines(path)
+                .stream().map(t -> expression(t, faker))
+                .collect(Collectors.joining(System.lineSeparator()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
