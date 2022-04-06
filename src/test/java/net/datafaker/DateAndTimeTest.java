@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
@@ -189,8 +190,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
     @MethodSource("generateDurationsFromStringWithMinMax")
     public void durationTest(long minValue, long maxValue, String unit) {
         Duration generated = faker.date().duration(minValue, maxValue, unit);
-        Duration min = Duration.of(minValue, DateAndTime.str2unit(unit));
-        Duration max = Duration.of(maxValue, DateAndTime.str2unit(unit));
+        Duration min = Duration.of(minValue, DateAndTime.str2durationUnit(unit));
+        Duration max = Duration.of(maxValue, DateAndTime.str2durationUnit(unit));
         assertThat("Duration must be equal or greater than min value", min.compareTo(generated) <= 0);
         assertThat("Duration must be lower than max value",
             max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated));
@@ -200,8 +201,14 @@ public class DateAndTimeTest extends AbstractFakerTest {
     @MethodSource("generateDurationsFromStringWithMaxOnly")
     public void durationTest(long maxValue, String unit) {
         Duration generated = faker.date().duration(maxValue, unit);
-        Duration max = Duration.of(maxValue, DateAndTime.str2unit(unit));
+        Duration max = Duration.of(maxValue, DateAndTime.str2durationUnit(unit));
         assertThat("Duration must be lower than max value", max.compareTo(generated) > 0 || maxValue == 0);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generatePeriod")
+    public void maxLessThanMinPeriod(Period min, Period max) {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> faker.date().period(min, max));
     }
 
     private static Stream<Arguments> generateDurationsFromStringWithMaxOnly() {
@@ -264,6 +271,14 @@ public class DateAndTimeTest extends AbstractFakerTest {
             Arguments.of(76, 100, ChronoUnit.MILLIS),
             Arguments.of(879, 1030, ChronoUnit.MICROS),
             Arguments.of(879, 1030, ChronoUnit.NANOS)
+        );
+    }
+
+    private static Stream<Arguments> generatePeriod() {
+        return Stream.of(
+            Arguments.of(Period.of(1, 1, 1), Period.of(0, 1, 1)),
+            Arguments.of(Period.of(1, 1, 3), Period.of(1, 1, 2)),
+            Arguments.of(Period.of(1, 2, 1), Period.of(1, 1, 1))
         );
     }
 }
