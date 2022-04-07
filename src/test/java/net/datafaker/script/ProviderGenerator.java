@@ -1,7 +1,7 @@
 package net.datafaker.script;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
