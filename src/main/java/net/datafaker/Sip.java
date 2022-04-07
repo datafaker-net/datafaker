@@ -53,7 +53,7 @@ public class Sip {
      * @return an RTP UDP 5 digit port int, e.g. 40002.
      */
     public int rtpPort() {
-        return portPool[faker.random().nextInt(0, portPool.length)];
+        return portPool[faker.random().nextInt(portPool.length)];
     }
 
     /**
