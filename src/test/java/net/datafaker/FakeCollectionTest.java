@@ -171,6 +171,18 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
+    public void differentNumberOfHeadersAndColumns() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Format.toCsv(
+                new FakeCollection.Builder<Name>()
+                    .suppliers(() -> faker.name())
+                    .minLen(3)
+                    .maxLen(5)
+                    .build())
+            .headers(() -> "firstName", () -> "lastname")
+            .columns(Name::firstName, Name::lastName, Name::fullName).build().get());
+    }
+
+    @Test
     public void toCsv() {
         String separator = "$$$";
         int limit = 5;

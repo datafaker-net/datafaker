@@ -150,6 +150,9 @@ public class Csv<T> {
         }
 
         public Csv<T> build() {
+            if (headers != null && columnValues != null && headers.length != columnValues.length) {
+                throw new IllegalArgumentException("Length of headers should be equal to length of columns");
+            }
             List<CollectionColumn<T>> cols = columnValues == null ? Collections.emptyList() : new ArrayList<>(columnValues.length);
             for (int i = 0; i < (columnValues == null ? 0 : columnValues.length); i++) {
                 cols.add(CollectionColumn.of(headers == null ? null : headers[i], columnValues[i]));
