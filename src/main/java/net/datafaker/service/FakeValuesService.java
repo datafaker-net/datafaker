@@ -555,9 +555,6 @@ public class FakeValuesService {
         if (isDotDirective(directive)) {
             supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), null);
             resolved = supplier.get();
-            if (resolved != null) {
-             //   expression2function.put(expression, supplier);
-            }
         }
 
         return resolved;
