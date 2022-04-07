@@ -5,30 +5,28 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-import static net.datafaker.matchers.IsStringWithContents.isStringWithContents;
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MedicalTest extends AbstractFakerTest {
 
     @Test
     public void testMedicineName() {
-        assertThat(faker.medical().medicineName(), isStringWithContents());
+        assertThat(faker.medical().medicineName()).isNotEmpty();
     }
 
     @Test
     public void testDiseaseName() {
-        assertThat(faker.medical().diseaseName(), isStringWithContents());
+        assertThat(faker.medical().diseaseName()).isNotEmpty();
     }
 
     @Test
     public void testHospitalName() {
-        assertThat(faker.medical().hospitalName(), isStringWithContents());
+        assertThat(faker.medical().hospitalName()).isNotEmpty();
     }
 
     @Test
     public void testSymptom() {
-        assertThat(faker.medical().symptoms(), isStringWithContents());
+        assertThat(faker.medical().symptoms()).isNotEmpty();
     }
 
     @Test
@@ -38,7 +36,7 @@ public class MedicalTest extends AbstractFakerTest {
 
         for (int i = 0; i < 100; i++) { // Loading the US data is slow.
             String actual = faker.medical().diagnosisCode();
-            assertThat(actual, matchesRegularExpression("[A-TV-Z][0-9][0-9AB](\\.[0-9A-TV-Z]{0,4})?"));
+            assertThat(actual).matches("[A-TV-Z][0-9][0-9AB](\\.[0-9A-TV-Z]{0,4})?");
         }
     }
 
@@ -48,7 +46,7 @@ public class MedicalTest extends AbstractFakerTest {
         Faker faker = new Faker(new Locale("en", "au"));
 
         String actual = faker.medical().diagnosisCode();
-        assertThat(actual, matchesRegularExpression("[A-Z][0-9]{1,2}\\.[0-9]{1,2}"));
+        assertThat(actual).matches("[A-Z][0-9]{1,2}\\.[0-9]{1,2}");
     }
 
     @RepeatedTest(100)
@@ -57,13 +55,13 @@ public class MedicalTest extends AbstractFakerTest {
         Faker faker = new Faker(Locale.FRANCE);
 
         String actual = faker.medical().diagnosisCode();
-        assertThat(actual, matchesRegularExpression("^[A-Z][0-9]{1,2}(\\.[0-9])?$"));
+        assertThat(actual).matches("^[A-Z][0-9]{1,2}(\\.[0-9])?$");
     }
 
     @RepeatedTest(100)
     public void testProcedureCodes() {
         // will use icd-10-pcs - https://regex101.com/library/nJ1wC4
         String procedureCode = faker.medical().procedureCode();
-        assertThat(procedureCode, matchesRegularExpression("^[a-hj-np-zA-HJ-NP-Z0-9]{7}$"));
+        assertThat(procedureCode).matches("^[a-hj-np-zA-HJ-NP-Z0-9]{7}$");
     }
 }

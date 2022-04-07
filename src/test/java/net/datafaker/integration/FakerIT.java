@@ -20,15 +20,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.notNullValue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.reflections.ReflectionUtils.getAllMethods;
 import static org.reflections.ReflectionUtils.withModifier;
 import static org.reflections.ReflectionUtils.withParametersCount;
@@ -203,11 +196,11 @@ public class FakerIT {
             }
             final Object returnValue = method.invoke(object);
             String failureReason = method + " on " + object;
-            assertThat(failureReason, returnValue, is(instanceOf(String.class)));
+            assertThat(returnValue).isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;
-            assertThat(failureReason, returnValueAsString, not(is(emptyOrNullString())));
-            assertThat(failureReason + " is a slash encoded regex", returnValueAsString,
-                not(allOf(startsWith("/"), endsWith("/"))));
+            assertThat(returnValueAsString).isNullOrEmpty();
+            assertFalse(returnValueAsString.startsWith("/"));
+            assertFalse(returnValueAsString.endsWith("/"));
         }
     }
 
@@ -223,20 +216,20 @@ public class FakerIT {
     @MethodSource("dataParameters")
     public void testExceptionsNotCoveredInAboveTest(Locale locale, Random random) {
         init(locale, random);
-        assertThat(faker.bothify("####???"), is(notNullValue()));
-        assertThat(faker.letterify("????"), is(notNullValue()));
-        assertThat(faker.numerify("####"), is(notNullValue()));
+        assertThat(faker.bothify("####???")).isNotNull();
+        assertThat(faker.letterify("????")).isNotNull();
+        assertThat(faker.numerify("####")).isNotNull();
 
-        assertThat(faker.lorem().paragraph(1), is(notNullValue()));
-        assertThat(faker.lorem().paragraphs(1), is(notNullValue()));
+        assertThat(faker.lorem().paragraph(1)).isNotNull();
+        assertThat(faker.lorem().paragraphs(1)).isNotNull();
 
-        assertThat(faker.lorem().sentence(1), is(notNullValue()));
-        assertThat(faker.lorem().sentences(1), is(notNullValue()));
+        assertThat(faker.lorem().sentence(1)).isNotNull();
+        assertThat(faker.lorem().sentences(1)).isNotNull();
 
-        assertThat(faker.address().streetAddress(), is(notNullValue()));
+        assertThat(faker.address().streetAddress()).isNotNull();
 
-        assertThat(faker.lorem().words(), is(notNullValue()));
-        assertThat(faker.lorem().words(1), is(notNullValue()));
+        assertThat(faker.lorem().words()).isNotNull();
+        assertThat(faker.lorem().words(1)).isNotNull();
     }
 
     private static Stream<Arguments> dataParameters() {

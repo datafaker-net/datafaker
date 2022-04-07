@@ -5,26 +5,25 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Locale;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EsMXIdNumberTest {
 
     @RepeatedTest(100)
     public void testValidMXSsn() {
         final Faker f = new Faker(new Locale("es-MX"));
-        assertThat(f.idNumber().valid(), matchesRegularExpression("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
-            "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d{1}"));
-        assertThat(f.idNumber().invalid(), matchesRegularExpression("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
-            "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d{1}"));
+        assertThat(f.idNumber().valid()).matches("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
+            "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d");
+        assertThat(f.idNumber().invalid()).matches("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
+            "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d");
     }
 
     @RepeatedTest(100)
     public void testInvalidMXSsn() {
         final Faker f = new Faker(new Locale("es-MX"));
-        assertThat(f.idNumber().validEsMXSsn(), matchesRegularExpression("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
-            "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d{1}"));
-        assertThat(f.idNumber().invalidEsMXSsn(), matchesRegularExpression("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
-            "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d{1}"));
+        assertThat(f.idNumber().validEsMXSsn()).matches("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
+            "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d");
+        assertThat(f.idNumber().invalidEsMXSsn()).matches("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
+            "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d");
     }
 }

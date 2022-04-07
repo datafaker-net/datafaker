@@ -1,7 +1,7 @@
 package net.datafaker;
 
 import org.apache.commons.validator.routines.EmailValidator;
-import org.hamcrest.Matchers;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -13,20 +13,9 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
-import static net.datafaker.matchers.CountOfCharactersMatcher.countOf;
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.startsWith;
+import static org.assertj.core.api.Assertions.anyOf;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -35,14 +24,14 @@ public class InternetTest extends AbstractFakerTest {
     @Test
     public void testEmailAddress() {
         String emailAddress = faker.internet().emailAddress();
-        assertThat(EmailValidator.getInstance().isValid(emailAddress), is(true));
+        assertTrue(EmailValidator.getInstance().isValid(emailAddress));
     }
 
     @Test
     public void testEmailAddressWithLocalPartParameter() {
         String emailAddress = faker.internet().emailAddress("john");
-        assertThat(emailAddress, startsWith("john@"));
-        assertThat(EmailValidator.getInstance().isValid(emailAddress), is(true));
+        assertThat(emailAddress).startsWith("john@");
+        assertTrue(EmailValidator.getInstance().isValid(emailAddress));
     }
 
     @Test
@@ -50,13 +39,13 @@ public class InternetTest extends AbstractFakerTest {
         List<String> emails = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress();
-            assertThat(EmailValidator.getInstance().isValid(emailAddress), is(true));
+            assertTrue(EmailValidator.getInstance().isValid(emailAddress));
             emails.add(emailAddress);
         }
         final String safeDomain = faker.resolve("internet.safe_email");
 
-        assertThat("Should find at least one email from " + safeDomain, emails,
-            Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
+        assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).collect(Collectors.toList()))
+            .isNotEmpty();
     }
 
     @Test
@@ -64,98 +53,98 @@ public class InternetTest extends AbstractFakerTest {
         List<String> emails = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress("john");
-            assertThat(emailAddress, startsWith("john@"));
-            assertThat(EmailValidator.getInstance().isValid(emailAddress), is(true));
+            assertThat(emailAddress).startsWith("john@");
+            assertTrue(EmailValidator.getInstance().isValid(emailAddress));
             emails.add(emailAddress);
         }
         final String safeDomain = faker.resolve("internet.safe_email");
 
-        assertThat("Should find at least one email from " + safeDomain, emails,
-            Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
+        assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).collect(Collectors.toList()))
+            .isNotEmpty();
     }
 
     @Test
     public void testEmailAddressDoesNotIncludeAccentsInTheLocalPart() {
         String emailAddress = faker.internet().emailAddress("áéíóú");
-        assertThat(emailAddress, startsWith("aeiou@"));
+        assertThat(emailAddress).startsWith("aeiou@");
     }
 
     @Test
     public void testSafeEmailAddressDoesNotIncludeAccentsInTheLocalPart() {
         String emailAddress = faker.internet().safeEmailAddress("áéíóú");
-        assertThat(emailAddress, startsWith("aeiou@"));
+        assertThat(emailAddress).startsWith("aeiou@");
     }
 
     @Test
     public void testUrl() {
-        assertThat(faker.internet().url(), matchesRegularExpression("www\\.(\\w|-)+\\.\\w+"));
+        assertThat(faker.internet().url()).matches("www\\.(\\w|-)+\\.\\w+");
     }
 
     @Test
     public void testAvatar() {
-        assertThat(faker.internet().avatar(), matchesRegularExpression("http.*/[^/]+/128.jpg$"));
+        assertThat(faker.internet().avatar()).matches("http.*/[^/]+/128.jpg$");
     }
 
     @Test
     public void testImage() {
         String imageUrl = faker.internet().image();
-        assertThat(imageUrl, matchesRegularExpression("^https:\\/\\/lorempixel\\.com(/g)?/\\d{1,4}/\\d{1,4}/\\w+/$"));
+        assertThat(imageUrl).matches("^https://lorempixel\\.com(/g)?/\\d{1,4}/\\d{1,4}/\\w+/$");
     }
 
     @Test
     public void testDomainName() {
-        assertThat(faker.internet().domainName(), matchesRegularExpression("[a-z]+\\.\\w{2,4}"));
+        assertThat(faker.internet().domainName()).matches("[a-z]+\\.\\w{2,4}");
     }
 
     @Test
     public void testDomainWord() {
-        assertThat(faker.internet().domainWord(), matchesRegularExpression("[a-z]+"));
+        assertThat(faker.internet().domainWord()).matches("[a-z]+");
     }
 
     @Test
     public void testDomainSuffix() {
-        assertThat(faker.internet().domainSuffix(), matchesRegularExpression("\\w{2,4}"));
+        assertThat(faker.internet().domainSuffix()).matches("\\w{2,4}");
     }
 
     @Test
     public void testImageWithExplicitParams() {
         String imageUrl = faker.internet().image(800, 600, false, "bugs");
-        assertThat(imageUrl, matchesRegularExpression("^https:\\/\\/lorempixel\\.com/800/600/\\w+/bugs$"));
+        assertThat(imageUrl).matches("^https://lorempixel\\.com/800/600/\\w+/bugs$");
     }
 
     @Test
     public void testPassword() {
-        assertThat(faker.internet().password(), matchesRegularExpression("[a-z\\d]{8,16}"));
+        assertThat(faker.internet().password()).matches("[a-z\\d]{8,16}");
     }
 
     @Test
     public void testPasswordWithFixedLength() {
         String password = Faker.instance().internet().password(32, 32, true, true, true);
-        assertThat(password.length(), is(32));
+        assertThat(password.length()).isEqualTo(32);
     }
 
     @Test
     public void testPasswordIncludeDigit() {
-        assertThat(faker.internet().password(), matchesRegularExpression("[a-z\\d]{8,16}"));
-        assertThat(faker.internet().password(false), matchesRegularExpression("[a-z]{8,16}"));
+        assertThat(faker.internet().password()).matches("[a-z\\d]{8,16}");
+        assertThat(faker.internet().password(false)).matches("[a-z]{8,16}");
     }
 
     @Test
     public void testPasswordMinLengthMaxLength() {
-        assertThat(faker.internet().password(10, 25), matchesRegularExpression("[a-z\\d]{10,25}"));
+        assertThat(faker.internet().password(10, 25)).matches("[a-z\\d]{10,25}");
     }
 
     @Test
     public void testPasswordMinLengthMaxLengthIncludeUpperCase() {
-        assertThat(faker.internet().password(1, 2, false), matchesRegularExpression("[a-z\\d]{1,2}"));
-        assertThat(faker.internet().password(10, 25, true), matchesRegularExpression("[a-zA-Z\\d]{10,25}"));
+        assertThat(faker.internet().password(1, 2, false)).matches("[a-z\\d]{1,2}");
+        assertThat(faker.internet().password(10, 25, true)).matches("[a-zA-Z\\d]{10,25}");
     }
 
     @Test
     public void testPasswordMinLengthMaxLengthIncludeUpperCaseIncludeSpecial() {
-        assertThat(faker.internet().password(10, 25, false, false), matchesRegularExpression("[a-z\\d]{10,25}"));
-        assertThat(faker.internet().password(10, 25, false, true), matchesRegularExpression("[a-z\\d!@#$%^&*]{10,25}"));
-        assertThat(faker.internet().password(10, 25, true, true), matchesRegularExpression("[a-zA-Z\\d!@#$%^&*]{10,25}"));
+        assertThat(faker.internet().password(10, 25, false, false)).matches("[a-z\\d]{10,25}");
+        assertThat(faker.internet().password(10, 25, false, true)).matches("[a-z\\d!@#$%^&*]{10,25}");
+        assertThat(faker.internet().password(10, 25, true, true)).matches("[a-zA-Z\\d!@#$%^&*]{10,25}");
     }
 
     @Test
@@ -174,46 +163,59 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testPasswordMinLengthMaxLengthIncludeUpperCaseIncludeSpecialIncludeDigit() {
-        assertThat(faker.internet().password(10, 25, false, false, false), matchesRegularExpression("[a-z]{10,25}"));
-        assertThat(faker.internet().password(10, 25, false, true, true), matchesRegularExpression("[a-z\\d!@#$%^&*]{10,25}"));
-        assertThat(faker.internet().password(10, 25, true, true, false), matchesRegularExpression("[a-zA-Z!@#$%^&*]{10,25}"));
-        assertThat(faker.internet().password(10, 25, true, true, true), matchesRegularExpression("[a-zA-Z\\d!@#$%^&*]{10,25}"));
+        assertThat(faker.internet().password(10, 25, false, false, false)).matches("[a-z]{10,25}");
+        assertThat(faker.internet().password(10, 25, false, true, true)).matches("[a-z\\d!@#$%^&*]{10,25}");
+        assertThat(faker.internet().password(10, 25, true, true, false)).matches("[a-zA-Z!@#$%^&*]{10,25}");
+        assertThat(faker.internet().password(10, 25, true, true, true)).matches("[a-zA-Z\\d!@#$%^&*]{10,25}");
+    }
+
+    private Condition<String> getCharacterCondition(char c, int expectedCnt) {
+        return new Condition<>(s -> {
+            int cnt = 0;
+            if (s.length() < expectedCnt) {
+                return false;
+            }
+            for (int i = 0; i < s.length(); i++) {
+                if (s.charAt(i) == c) {
+                    cnt++;
+                }
+                if (cnt > expectedCnt) {
+                    return false;
+                }
+            }
+            return cnt == expectedCnt;
+        }, "Expect " + expectedCnt + " colons");
     }
 
     @Test
     public void testMacAddress() {
-        assertThat(faker.internet().macAddress(), countOf(':', is(5)));
-        assertThat(faker.internet().macAddress(""), countOf(':', is(5)));
+        Condition<String> colon = getCharacterCondition(':', 5);
+        assertThat(faker.internet().macAddress()).is(colon);
+        assertThat(faker.internet().macAddress("")).is(colon);
 
-        assertThat(faker.internet().macAddress("fa:fa:fa"), startsWith("fa:fa:fa"));
-        assertThat(faker.internet().macAddress("fa:fa:fa"), countOf(':', is(5)));
+        assertThat(faker.internet().macAddress("fa:fa:fa")).startsWith("fa:fa:fa");
+        assertThat(faker.internet().macAddress("fa:fa:fa")).is(colon);
 
-        assertThat(faker.internet().macAddress("01:02"), startsWith("01:02"));
-        assertThat(faker.internet().macAddress("01:02"), countOf(':', is(5)));
+        assertThat(faker.internet().macAddress("01:02")).startsWith("01:02");
+        assertThat(faker.internet().macAddress("01:02")).is(colon);
 
         // loop through 1000 times just to 'run it through the wringer'
         for (int i = 0; i < 1000; i++) {
-            assertThat(
-                "Is valid mac format",
-                faker.internet().macAddress(),
-                matchesRegularExpression("[0-9a-fA-F]{2}(\\:([0-9a-fA-F]{1,4})){5}"));
+            assertThat(faker.internet().macAddress()).matches("[0-9a-fA-F]{2}(:([0-9a-fA-F]{1,4})){5}");
         }
     }
 
     @Test
     public void testIpV4Address() {
-        assertThat(faker.internet().ipV4Address(), countOf('.', is(3)));
+        Condition<String> colon = getCharacterCondition('.', 3);
+        assertThat(faker.internet().ipV4Address()).is(colon);
         for (int i = 0; i < 100; i++) {
             try {
                 final String[] octets = faker.internet().getIpV4Address().getHostAddress().split("\\.");
-                assertThat("first octet is 1-255", parseInt(octets[0]),
-                    both(greaterThan(0)).and(lessThanOrEqualTo(255)));
-                assertThat("second octet is 0-255", parseInt(octets[1]),
-                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
-                assertThat("second octet is 0-255", parseInt(octets[2]),
-                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
-                assertThat("second octet is 0-255", parseInt(octets[3]),
-                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+                assertThat(parseInt(octets[0])).isBetween(0, 255);
+                assertThat(parseInt(octets[1])).isBetween(0, 255);
+                assertThat(parseInt(octets[2])).isBetween(0, 255);
+                assertThat(parseInt(octets[3])).isBetween(0, 255);
             } catch (UnknownHostException e) {
                 fail("Failed with ", e);
             }
@@ -222,12 +224,12 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testIpV4Cidr() {
-        assertThat(faker.internet().ipV4Cidr(), countOf('.', is(3)));
-        assertThat(faker.internet().ipV4Cidr(), countOf('/', is(1)));
+        assertThat(faker.internet().ipV4Cidr()).is(getCharacterCondition('.', 3));
+        assertThat(faker.internet().ipV4Cidr()).is(getCharacterCondition('/', 1));
 
         for (int i = 0; i < 1000; i++) {
-            assertThat(parseInt(faker.internet().ipV4Cidr().split("/")[1]),
-                both(greaterThanOrEqualTo(1)).and(lessThan(32)));
+            assertThat(parseInt(faker.internet().ipV4Cidr().split("/")[1]))
+                .isBetween(1, 32);
         }
     }
 
@@ -243,11 +245,13 @@ public class InternetTest extends AbstractFakerTest {
         for (int i = 0; i < 1000; i++) {
             try {
                 String addr = faker.internet().getPrivateIpV4Address().getHostAddress();
-                assertThat(addr, anyOf(matchesRegularExpression(tenDot),
-                    matchesRegularExpression(oneTwoSeven),
-                    matchesRegularExpression(oneSixNine),
-                    matchesRegularExpression(oneNineTwo),
-                    matchesRegularExpression(oneSevenTwo)));
+                assertThat(addr).is(anyOf(
+                    new Condition<>(s -> s.matches(tenDot), "tenDot"),
+                    new Condition<>(s -> s.matches(oneTwoSeven), "oneTwoSeven"),
+                    new Condition<>(s -> s.matches(oneSixNine), "oneSixNine"),
+                    new Condition<>(s -> s.matches(oneNineTwo), "oneNineTwo"),
+                    new Condition<>(s -> s.matches(oneSevenTwo), "oneSevenTwo")
+                ));
             } catch (UnknownHostException e) {
                 fail("Failed with", e);
             }
@@ -264,11 +268,11 @@ public class InternetTest extends AbstractFakerTest {
         for (int i = 0; i < 1000; i++) {
             try {
                 String addr = faker.internet().getPublicIpV4Address().getHostAddress();
-                assertThat(addr.matches(tenDot), is(false));
-                assertThat(addr.matches(oneTwoSeven), is(false));
-                assertThat(addr.matches(oneSixNine), is(false));
-                assertThat(addr.matches(oneNineTwo), is(false));
-                assertThat(addr.matches(oneSevenTwo), is(false));
+                assertFalse(addr.matches(tenDot));
+                assertFalse(addr.matches(oneTwoSeven));
+                assertFalse(addr.matches(oneSixNine));
+                assertFalse(addr.matches(oneNineTwo));
+                assertFalse(addr.matches(oneSevenTwo));
             } catch (UnknownHostException e) {
                 fail("Failed with", e);
             }
@@ -277,14 +281,12 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testIpV6() {
-        assertThat(faker.internet().ipV6Address(), countOf(':', is(7)));
+        assertThat(faker.internet().ipV6Address()).is(getCharacterCondition(':', 7));
 
         for (int i = 0; i < 1000; i++) {
             try {
-                assertThat(
-                    "Is valid ipv6 format",
-                    faker.internet().getIpV6Address().getHostAddress(),
-                    matchesRegularExpression("[0-9a-fA-F]{1,4}(\\:([0-9a-fA-F]{1,4})){1,7}"));
+                assertThat(faker.internet().getIpV6Address().getHostAddress())
+                    .matches("[0-9a-fA-F]{1,4}(:([0-9a-fA-F]{1,4})){1,7}");
             } catch (UnknownHostException e) {
                 fail("Failed with", e);
             }
@@ -293,28 +295,28 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testIpV6Cidr() {
-        assertThat(faker.internet().ipV6Cidr(), countOf(':', is(7)));
-        assertThat(faker.internet().ipV6Cidr(), countOf('/', is(1)));
+        assertThat(faker.internet().ipV6Cidr()).is(getCharacterCondition(':', 7));
+        assertThat(faker.internet().ipV6Cidr()).is(getCharacterCondition('/', 1));
 
         for (int i = 0; i < 1000; i++) {
-            assertThat(parseInt(faker.internet().ipV6Cidr().split("/")[1]),
-                both(greaterThanOrEqualTo(1)).and(lessThan(128)));
+            assertThat(parseInt(faker.internet().ipV6Cidr().split("/")[1]))
+                .isBetween(1, 128);
         }
     }
 
     @RepeatedTest(10)
     public void testSlugWithParams() {
-        assertThat(faker.internet().slug(Arrays.asList("a", "b"), "-"), matchesRegularExpression("[a-zA-Z]+\\-[a-zA-Z]+"));
+        assertThat(faker.internet().slug(Arrays.asList("a", "b"), "-")).matches("[a-zA-Z]+\\-[a-zA-Z]+");
     }
 
     @RepeatedTest(10)
     public void testSlug() {
-        assertThat(faker.internet().slug(), matchesRegularExpression("[a-zA-Z]+\\_[a-zA-Z]+"));
+        assertThat(faker.internet().slug()).matches("[a-zA-Z]+_[a-zA-Z]+");
     }
 
     @RepeatedTest(10)
     public void testUuid() {
-        assertThat(faker.internet().uuid(), matchesRegularExpression("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"));
+        assertThat(faker.internet().uuid()).matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
     }
 
     @RepeatedTest(100)
@@ -322,25 +324,25 @@ public class InternetTest extends AbstractFakerTest {
         // in this case, we're just making sure Farsi doesn't blow up.
         // there have been issues with Farsi not being produced.
         final Faker f = new Faker(new Locale("fa"));
-        assertThat(f.internet().domainName(), not(is(emptyOrNullString())));
-        assertThat(f.internet().emailAddress(), not(is(emptyOrNullString())));
-        assertThat(f.internet().safeEmailAddress(), not(is(emptyOrNullString())));
-        assertThat(f.internet().url(), not(is(emptyOrNullString())));
+        assertThat(f.internet().domainName()).isNotEmpty();
+        assertThat(f.internet().emailAddress()).isNotEmpty();
+        assertThat(f.internet().safeEmailAddress()).isNotEmpty();
+        assertThat(f.internet().url()).isNotEmpty();
     }
 
     @Test
     public void testUserAgent() {
         Internet.UserAgent[] agents = Internet.UserAgent.values();
         for (Internet.UserAgent agent : agents) {
-            assertThat(faker.internet().userAgent(agent), not(is(emptyOrNullString())));
+            assertThat(faker.internet().userAgent(agent)).isNotEmpty();
         }
 
         //Test faker.internet().userAgentAny() for random user_agent retrieval.
-        assertThat(faker.internet().userAgentAny(), not(is(emptyOrNullString())));
+        assertThat(faker.internet().userAgentAny()).isNotEmpty();
     }
 
     @Test
     public void testSlugWithNull() {
-        assertThat(faker.internet().slug(null, "_"), notNullValue());
+        assertThat(faker.internet().slug(null, "_")).isNotNull();
     }
 }

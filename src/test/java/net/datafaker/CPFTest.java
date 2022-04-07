@@ -1,11 +1,9 @@
 package net.datafaker;
 
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid;
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,11 +32,11 @@ public class CPFTest extends AbstractFakerTest {
      */
     @RepeatedTest(100)
     public void formattedCPF() {
-        final Matcher<String> cpfMatcher = matchesRegularExpression("(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)");
+        final String cpfExpression = "(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)";
 
-        assertThat(faker.cpf().valid(), cpfMatcher);
-        assertThat(faker.cpf().valid(true), cpfMatcher);
-        assertThat(faker.cpf().invalid(), cpfMatcher);
-        assertThat(faker.cpf().invalid(true), cpfMatcher);
+        assertThat(faker.cpf().valid()).matches(cpfExpression);
+        assertThat(faker.cpf().valid(true)).matches(cpfExpression);
+        assertThat(faker.cpf().invalid()).matches(cpfExpression);
+        assertThat(faker.cpf().invalid(true)).matches(cpfExpression);
     }
 }

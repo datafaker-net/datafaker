@@ -7,11 +7,8 @@ import org.mockito.Spy;
 
 import java.util.Locale;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.lessThan;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
-
 
 public class NameTest extends AbstractFakerTest {
 
@@ -20,12 +17,12 @@ public class NameTest extends AbstractFakerTest {
 
     @Test
     public void testName() {
-        assertThat(faker.name().name(), matchesRegularExpression("([\\w']+\\.?( )?){2,3}"));
+        assertThat(faker.name().name()).matches("([\\w']+\\.?( )?){2,3}");
     }
 
     @Test
     public void testNameWithMiddle() {
-        assertThat(faker.name().nameWithMiddle(), matchesRegularExpression("([\\w']+\\.?( )?){3,4}"));
+        assertThat(faker.name().nameWithMiddle()).matches("([\\w']+\\.?( )?){3,4}");
     }
 
     @Test
@@ -39,12 +36,12 @@ public class NameTest extends AbstractFakerTest {
                 theSameNameCnt++;
             }
         }
-        assertThat(theSameNameCnt, lessThan(total / 10));
+        assertThat(theSameNameCnt).isLessThan(total / 10);
     }
 
     @Test
     public void testFullName() {
-        assertThat(faker.name().fullName(), matchesRegularExpression("([\\w']+\\.?( )?){2,4}"));
+        assertThat(faker.name().fullName()).matches("([\\w']+\\.?( )?){2,4}");
     }
 
     @Test
@@ -52,38 +49,38 @@ public class NameTest extends AbstractFakerTest {
         Faker localFaker = new Faker(new Locale("ar"));
 
         for (int i = 0; i < 25; i++) {
-            assertThat(localFaker.name().fullName(), matchesRegularExpression("^[\\u0600-\\u06FF\\u0750-\\u077F ]+$"));
+            assertThat(localFaker.name().fullName()).matches("^[\\u0600-\\u06FF\\u0750-\\u077F ]+$");
         }
     }
 
     @Test
     public void testFirstName() {
-        assertThat(faker.name().firstName(), matchesRegularExpression("\\w+"));
+        assertThat(faker.name().firstName()).matches("\\w+");
     }
 
     @Test
     public void testLastName() {
-        assertThat(faker.name().lastName(), matchesRegularExpression("[A-Za-z']+"));
+        assertThat(faker.name().lastName()).matches("[A-Za-z']+");
     }
 
     @Test
     public void testPrefix() {
-        assertThat(faker.name().prefix(), matchesRegularExpression("\\w+\\.?"));
+        assertThat(faker.name().prefix()).matches("\\w+\\.?");
     }
 
     @Test
     public void testSuffix() {
-        assertThat(faker.name().suffix(), matchesRegularExpression("\\w+\\.?"));
+        assertThat(faker.name().suffix()).matches("\\w+\\.?");
     }
 
     @Test
     public void testTitle() {
-        assertThat(faker.name().title(), matchesRegularExpression("(\\w+\\.?( )?){3}"));
+        assertThat(faker.name().title()).matches("(\\w+\\.?( )?){3}");
     }
 
     @RepeatedTest(100)
     public void testUsername() {
-        assertThat(faker.name().username(), matchesRegularExpression("^(\\w+)\\.(\\w+)$"));
+        assertThat(faker.name().username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
     @Test
@@ -91,12 +88,12 @@ public class NameTest extends AbstractFakerTest {
         final Name name = Mockito.spy(new Name(mockedFaker));
         doReturn("Compound Name").when(name).firstName();
         doReturn(name).when(mockedFaker).name();
-        assertThat(mockedFaker.name().username(), matchesRegularExpression("^(\\w+)\\.(\\w+)$"));
+        assertThat(mockedFaker.name().username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
     @Test
     public void testBloodGroup() {
-        assertThat(faker.name().bloodGroup(), matchesRegularExpression("(A|B|AB|O)[+-]"));
+        assertThat(faker.name().bloodGroup()).matches("(A|B|AB|O)[+-]");
     }
 
 }

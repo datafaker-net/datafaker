@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -96,21 +95,21 @@ public class TwitterTest extends AbstractFakerTest {
     @Test
     public void username() {
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().userName(), matchesRegularExpression("[a-zA-Z0-9_\\-\u4e00-\u9fa5]+"));
+            assertThat(faker.twitter().userName()).matches("[a-zA-Z0-9_\\-\u4e00-\u9fa5]+");
         }
     }
 
     @Test
     public void userId() {
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().userId(), matchesRegularExpression("[0-9]+"));
+            assertThat(faker.twitter().userId()).matches("[0-9]+");
         }
     }
 
     @Test
     public void linkTestRules() {
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().getLink("John", 6), matchesRegularExpression("[A-Za-z0-9.:/]+"));
+            assertThat(faker.twitter().getLink("John", 6)).matches("[A-Za-z0-9.:/]+");
         }
     }
 

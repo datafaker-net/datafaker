@@ -1,6 +1,7 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,15 +11,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.hamcrest.core.CombinableMatcher.both;
+import static org.assertj.core.api.Assertions.allOf;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author pmiklos
@@ -34,25 +30,28 @@ public class RandomServiceTest extends AbstractFakerTest {
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     public void testLongWithinBoundary(RandomService randomService) {
-        assertThat(randomService.nextLong(1), is(0L));
+        assertEquals(randomService.nextLong(1), 0L);
 
         for (int i = 1; i < 10; i++) {
-            assertThat(randomService.nextLong(2), lessThan(2L));
+            assertThat(randomService.nextLong(2)).isLessThan(2L);
         }
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     public void testLongMaxBoundary(RandomService randomService) {
-        assertThat(randomService.nextLong(Long.MAX_VALUE), greaterThan(0L));
-        assertThat(randomService.nextLong(Long.MAX_VALUE), lessThan(Long.MAX_VALUE));
+        assertThat(randomService.nextLong(Long.MAX_VALUE)).isGreaterThan(0L);
+        assertThat(randomService.nextLong(Long.MAX_VALUE)).isLessThan(Long.MAX_VALUE);
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     public void testIntInRange(RandomService randomService) {
+        final Condition<Integer> lessThanOrEqual = new Condition<>(t -> t <= 5, "should be less than or equal 5");
+        final Condition<Integer> greaterThanOrEqual = new Condition<>(t -> t >= -5, "should be greater than or equal -5");
         for (int i = 1; i < 100; i++) {
-            assertThat(randomService.nextInt(-5, 5), both(lessThanOrEqualTo(5)).and(greaterThanOrEqualTo(-5)));
+            assertThat(randomService.nextInt(-5, 5))
+                .is(allOf(lessThanOrEqual, greaterThanOrEqual));
         }
     }
 
@@ -72,45 +71,49 @@ public class RandomServiceTest extends AbstractFakerTest {
 
         boolean b = randomService.nextBoolean();
 
-        assertThat(i1, is(equalTo(-1157793070)));
-        assertThat(i2, is(equalTo(80)));
-        assertThat(i3, is(equalTo(35)));
+        assertThat(i1).isEqualTo(-1157793070);
+        assertThat(i2).isEqualTo(80);
+        assertThat(i3).isEqualTo(35);
 
-        assertThat(f1, is(equalTo(0.41291267F)));
+        assertThat(f1).isEqualTo(0.41291267F);
 
-        assertThat(l1, is(equalTo(1092083446069765248L)));
-        assertThat(l2, is(equalTo(1L)));
-        assertThat(l3, is(equalTo(836L)));
+        assertThat(l1).isEqualTo(1092083446069765248L);
+        assertThat(l2).isEqualTo(1L);
+        assertThat(l3).isEqualTo(836L);
 
-        assertThat(b, is(equalTo(false)));
+        assertFalse(b);
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     public void testDoubleInRange(RandomService randomService) {
+        final Condition<Double> lessThanOrEqual = new Condition<>(t -> t <= 5d, "should be less than or equal 5");
+        final Condition<Double> greaterThanOrEqual = new Condition<>(t -> t >= -5d, "should be greater than or equal -5");
         for (int i = 1; i < 100; i++) {
-            assertThat(randomService.nextDouble(-5, 5), both(lessThanOrEqualTo(5.0)).and(greaterThanOrEqualTo(-5.0)));
+            assertThat(randomService.nextDouble(-5, 5)).is(allOf(lessThanOrEqual, greaterThanOrEqual));
         }
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     public void testLongInRange(RandomService randomService) {
+        final Condition<Long> lessThanOrEqual = new Condition<>(t -> t <= 5_000_000_000L, "should be less than or equal 5_000_000_000L");
+        final Condition<Long> greaterThanOrEqual = new Condition<>(t -> t >= -5_000_000_000L, "should be greater than or equal -5_000_000_000L");
         for (int i = 1; i < 1_000; i++) {
-            assertThat(randomService.nextLong(-5_000_000_000L, 5_000_000_000L), both(lessThanOrEqualTo(5_000_000_000L)).and(greaterThanOrEqualTo(-5_000_000_000L)));
+            assertThat(randomService.nextLong(-5_000_000_000L, 5_000_000_000L)).is(allOf(lessThanOrEqual, greaterThanOrEqual));
         }
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     public void testHex(RandomService randomService) {
-        assertThat(randomService.hex(8), matchesRegularExpression("^[0-9A-F]{8}$"));
+        assertThat(randomService.hex(8)).matches("^[0-9A-F]{8}$");
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     public void testDefaultHex(RandomService randomService) {
-        assertThat(randomService.hex(), matchesRegularExpression("^[0-9A-F]{8}$"));
+        assertThat(randomService.hex()).matches("^[0-9A-F]{8}$");
     }
 
     private static Stream<Arguments> randomServiceProvider() {

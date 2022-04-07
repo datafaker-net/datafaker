@@ -17,12 +17,9 @@ import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -36,8 +33,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
         for (int i = 0; i < 1000; i++) {
             Date future = faker.date().future(1, TimeUnit.SECONDS, now);
-            assertThat("past date", future.getTime(), greaterThan(now.getTime()));
-            assertThat("future date over range", future.getTime(), lessThan(now.getTime() + 1000));
+            assertThat(future.getTime()).isGreaterThan(now.getTime());
+            assertThat(future.getTime()).isLessThan(now.getTime() + 1000);
         }
     }
 
@@ -46,9 +43,9 @@ public class DateAndTimeTest extends AbstractFakerTest {
         final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
             Date future = faker.date().future(5, 4, TimeUnit.SECONDS);
-            assertThat("past date", future.getTime(), greaterThan(now.getTime()));
-            assertThat("future date over range", future.getTime(), lessThan(now.getTime() + 5500));
-            assertThat("future date under minimum range", future.getTime(), greaterThan(now.getTime() + 3500));
+            assertThat(future.getTime()).isGreaterThan(now.getTime());
+            assertThat(future.getTime()).isLessThan(now.getTime() + 5500);
+            assertThat(future.getTime()).isGreaterThan(now.getTime() + 3500);
         }
     }
 
@@ -57,9 +54,9 @@ public class DateAndTimeTest extends AbstractFakerTest {
         final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
             Date past = faker.date().past(5, 4, TimeUnit.SECONDS);
-            assertThat("future date", past.getTime(), lessThan(now.getTime()));
-            assertThat("past date over range", past.getTime(), greaterThan(now.getTime() - 5500));
-            assertThat("past date under minimum range", past.getTime(), lessThan(now.getTime() - 3500));
+            assertThat(past.getTime()).isLessThan(now.getTime());
+            assertThat(past.getTime()).isGreaterThan(now.getTime() - 5500);
+            assertThat(past.getTime()).isLessThan(now.getTime() - 3500);
         }
     }
 
@@ -69,8 +66,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
         for (int i = 0; i < 1000; i++) {
             Date past = faker.date().past(1, TimeUnit.SECONDS, now);
-            assertThat("past date", past.getTime(), lessThan(now.getTime()));
-            assertThat("past date over range", past.getTime(), greaterThan(now.getTime() - 1000));
+            assertThat(past.getTime()).isLessThan(now.getTime());
+            assertThat(past.getTime()).isGreaterThan(now.getTime() - 1000);
         }
     }
 
@@ -78,7 +75,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
     public void testPastDate() {
         Date now = new Date();
         Date past = faker.date().past(100, TimeUnit.SECONDS);
-        assertThat("past date is in the past", past.getTime(), lessThan(now.getTime()));
+        assertThat(past.getTime()).isLessThan(now.getTime());
     }
 
     @Test
@@ -88,8 +85,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
         for (int i = 0; i < 1000; i++) {
             Date date = faker.date().between(now, then);
-            assertThat("after upper bound", date.getTime(), lessThan(then.getTime()));
-            assertThat("before lower bound", date.getTime(), greaterThanOrEqualTo(now.getTime()));
+            assertThat(date.getTime()).isLessThan(then.getTime());
+            assertThat(date.getTime()).isGreaterThanOrEqualTo(now.getTime());
         }
     }
 
@@ -115,8 +112,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
         for (int i = 0; i < 5000; i++) {
             Date birthday = faker.date().birthday();
-            assertThat("birthday is after upper bound", birthday.getTime(), lessThan(to));
-            assertThat("birthday is before lower bound", birthday.getTime(), greaterThanOrEqualTo(from));
+            assertThat(birthday.getTime()).isLessThan(to);
+            assertThat(birthday.getTime()).isGreaterThanOrEqualTo(from);
         }
     }
 
@@ -134,8 +131,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
             long to = new GregorianCalendar(currentYear - minAge, currentMonth, currentDay).getTime().getTime();
 
             Date birthday = faker.date().birthday(minAge, maxAge);
-            assertThat("birthday is after upper bound", birthday.getTime(), lessThanOrEqualTo(to));
-            assertThat("birthday is before lower bound", birthday.getTime(), greaterThanOrEqualTo(from));
+            assertThat(birthday.getTime()).isLessThanOrEqualTo(to);
+            assertThat(birthday.getTime()).isGreaterThanOrEqualTo(from);
         }
     }
 
@@ -173,9 +170,9 @@ public class DateAndTimeTest extends AbstractFakerTest {
         Duration generated = faker.date().duration(minValue, maxValue, unit);
         Duration min = Duration.of(minValue, unit);
         Duration max = Duration.of(maxValue, unit);
-        assertThat("Duration must be equal or greater than min value", min.compareTo(generated) <= 0);
-        assertThat("Duration must be lower than max value",
-            max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated));
+        assertTrue(min.compareTo(generated) <= 0, "Duration must be equal or greater than min value");
+        assertTrue(max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated),
+            "Duration must be lower than max value");
     }
 
     @ParameterizedTest
@@ -183,7 +180,8 @@ public class DateAndTimeTest extends AbstractFakerTest {
     public void durationTest(long maxValue, ChronoUnit unit) {
         Duration generated = faker.date().duration(maxValue, unit);
         Duration max = Duration.of(maxValue, unit);
-        assertThat("Duration must be lower than max value", max.compareTo(generated) > 0 || maxValue == 0);
+        assertTrue(max.compareTo(generated) > 0 || maxValue == 0,
+            "Duration must be lower than max value");
     }
 
     @ParameterizedTest
@@ -192,9 +190,9 @@ public class DateAndTimeTest extends AbstractFakerTest {
         Duration generated = faker.date().duration(minValue, maxValue, unit);
         Duration min = Duration.of(minValue, DateAndTime.str2durationUnit(unit));
         Duration max = Duration.of(maxValue, DateAndTime.str2durationUnit(unit));
-        assertThat("Duration must be equal or greater than min value", min.compareTo(generated) <= 0);
-        assertThat("Duration must be lower than max value",
-            max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated));
+        assertTrue(min.compareTo(generated) <= 0, "Duration must be equal or greater than min value");
+        assertTrue(max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated),
+            "Duration must be lower than max value");
     }
 
     @ParameterizedTest
@@ -202,7 +200,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
     public void durationTest(long maxValue, String unit) {
         Duration generated = faker.date().duration(maxValue, unit);
         Duration max = Duration.of(maxValue, DateAndTime.str2durationUnit(unit));
-        assertThat("Duration must be lower than max value", max.compareTo(generated) > 0 || maxValue == 0);
+        assertTrue(max.compareTo(generated) > 0 || maxValue == 0, "Duration must be lower than max value");
     }
 
     @ParameterizedTest

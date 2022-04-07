@@ -2,23 +2,22 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DessertTest extends AbstractFakerTest {
 
     @Test
     public void variety() {
-        assertThat(faker.dessert().variety(), matchesRegularExpression("[A-Za-z ]+"));
+        assertThat(faker.dessert().variety()).matches("[A-Za-z ]+");
     }
 
     @Test
     public void topping() {
-        assertThat(faker.dessert().topping(), matchesRegularExpression("[A-Za-z ]+"));
+        assertThat(faker.dessert().topping()).matches("[A-Za-z ]+");
     }
 
     @Test
     public void flavor() {
-        assertThat(faker.dessert().flavor(), matchesRegularExpression("[A-Za-z ']+"));
+        assertThat(faker.dessert().flavor()).matches("[A-Za-z ']+");
     }
 }

@@ -3,48 +3,45 @@ package net.datafaker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DuneTest extends AbstractFakerTest {
 
     @Test
     public void character() {
-        assertThat(faker.dune().character(), matchesRegularExpression("[A-Za-z '\\-\"]+"));
+        assertThat(faker.dune().character()).matches("[A-Za-z '\\-\"]+");
     }
 
     @Test
     public void title() {
-        assertThat(faker.dune().title(), matchesRegularExpression("[A-Za-z ]+"));
+        assertThat(faker.dune().title()).matches("[A-Za-z ]+");
     }
 
     @Test
     public void planet() {
-        assertThat(faker.dune().planet(), matchesRegularExpression("[A-Za-z ]+"));
+        assertThat(faker.dune().planet()).matches("[A-Za-z ]+");
     }
 
     @Test
     public void quote() {
-        assertThat(faker.dune().quote(), matchesRegularExpression("\\P{Cc}+"));
+        assertThat(faker.dune().quote()).matches("\\P{Cc}+");
     }
 
     @RepeatedTest(100)
     public void randomQuote() {
         assertThat(
-            faker.dune().quote(faker.options().option(Dune.Quote.class)),
-            matchesRegularExpression("\\P{Cc}+"));
+            faker.dune().quote(faker.options().option(Dune.Quote.class))).matches("\\P{Cc}+");
     }
 
     @Test
     public void saying() {
-        assertThat(faker.dune().saying(), matchesRegularExpression("\\P{Cc}+"));
+        assertThat(faker.dune().saying()).matches("\\P{Cc}+");
     }
 
     @RepeatedTest(100)
     public void randomSaying() {
         assertThat(
-            faker.dune().saying(faker.options().option(Dune.Saying.class)),
-            matchesRegularExpression("\\P{Cc}+"));
+            faker.dune().saying(faker.options().option(Dune.Saying.class))).matches("\\P{Cc}+");
     }
 
 }

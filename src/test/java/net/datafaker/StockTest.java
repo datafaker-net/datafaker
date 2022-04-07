@@ -2,21 +2,18 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StockTest extends AbstractFakerTest {
 
     @Test
     public void testNasdaq() {
-        assertThat(faker.stock().nsdqSymbol(), not(is(emptyOrNullString())));
+        assertThat(faker.stock().nsdqSymbol()).isNotEmpty();
     }
 
     @Test
     public void testNYSE() {
-        assertThat(faker.stock().nyseSymbol(), not(is(emptyOrNullString())));
+        assertThat(faker.stock().nyseSymbol()).isNotEmpty();
     }
 
 }

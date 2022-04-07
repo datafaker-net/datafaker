@@ -2,24 +2,23 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GenderTest extends AbstractFakerTest {
 
     @Test
     public void types() {
-        assertThat(faker.gender().types(), matchesRegularExpression("(\\w+ ?){1,2}"));
+        assertThat(faker.gender().types()).matches("(\\w+ ?){1,2}");
     }
 
     @Test
     public void binaryTypes() {
-        assertThat(faker.gender().binaryTypes(), matchesRegularExpression("[A-Za-z ]+"));
+        assertThat(faker.gender().binaryTypes()).matches("[A-Za-z ]+");
     }
 
     @Test
     public void shortBinaryTypes() {
-        assertThat(faker.gender().shortBinaryTypes(), matchesRegularExpression("f|m"));
+        assertThat(faker.gender().shortBinaryTypes()).matches("[fm]");
     }
 
 }

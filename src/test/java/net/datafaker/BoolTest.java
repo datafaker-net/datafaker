@@ -2,14 +2,12 @@ package net.datafaker;
 
 import org.junit.jupiter.api.RepeatedTest;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.oneOf;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BoolTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     public void testBool() {
-        assertThat(faker.bool().bool(), is(oneOf(true, false)));
+        assertThat(faker.bool().bool()).isIn(true, false);
     }
 }

@@ -1,26 +1,23 @@
 package net.datafaker;
 
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.emptyOrNullString;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HeyArnoldTest extends AbstractFakerTest {
 
     @Test
     public void characters() {
-        assertThat(faker.heyArnold().characters(), not(is(emptyOrNullString())));
+        assertThat(faker.heyArnold().characters()).isNotEmpty();
     }
 
     @Test
     public void locations() {
-        assertThat(faker.heyArnold().locations(), not(is(emptyOrNullString())));
+        assertThat(faker.heyArnold().locations()).isNotEmpty();
     }
 
     @Test
     public void quotes() {
-        assertThat(faker.heyArnold().quotes(), not(is(emptyOrNullString())));
+        assertThat(faker.heyArnold().quotes()).isNotEmpty();
     }
-
 }

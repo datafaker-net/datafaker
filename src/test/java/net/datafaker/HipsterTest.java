@@ -2,13 +2,12 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HipsterTest extends AbstractFakerTest {
 
     @Test
     public void word() {
-        assertThat(faker.hipster().word(), matchesRegularExpression("^([\\w-+&']+ ?)+$"));
+        assertThat(faker.hipster().word()).matches("^([\\w-+&']+ ?)+$");
     }
 }

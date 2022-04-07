@@ -2,33 +2,32 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DemographicTest extends AbstractFakerTest {
 
     @Test
     public void race() {
-        assertThat(faker.demographic().race(), matchesRegularExpression("(\\w+ ?)+"));
+        assertThat(faker.demographic().race()).matches("(\\w+ ?)+");
     }
 
     @Test
     public void educationalAttainment() {
-        assertThat(faker.demographic().educationalAttainment(), matchesRegularExpression("(?U)([\\w'-]+ ?)+"));
+        assertThat(faker.demographic().educationalAttainment()).matches("(?U)([\\w'-]+ ?)+");
     }
 
     @Test
     public void demonym() {
-        assertThat(faker.demographic().demonym(), matchesRegularExpression("(?U)([\\w'-]+ ?)+"));
+        assertThat(faker.demographic().demonym()).matches("(?U)([\\w'-]+ ?)+");
     }
 
     @Test
     public void maritalStatus() {
-        assertThat(faker.demographic().maritalStatus(), matchesRegularExpression("(\\w+ ?)+"));
+        assertThat(faker.demographic().maritalStatus()).matches("(\\w+ ?)+");
     }
 
     @Test
     public void sex() {
-        assertThat(faker.demographic().sex(), matchesRegularExpression("\\w+"));
+        assertThat(faker.demographic().sex()).matches("\\w+");
     }
 }

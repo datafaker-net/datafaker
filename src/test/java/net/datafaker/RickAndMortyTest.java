@@ -2,26 +2,22 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsNot.not;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RickAndMortyTest extends AbstractFakerTest {
 
     @Test
     public void character() {
-        assertThat(faker.rickAndMorty().character(), matchesRegularExpression("^([\\w'-.]+ ?){2,}$"));
+        assertThat(faker.rickAndMorty().character()).matches("^([\\w'-.]+ ?){2,}$");
     }
 
     @Test
     public void location() {
-        assertThat(faker.rickAndMorty().location(), matchesRegularExpression("^([\\w-.]+ ?){2,}$"));
+        assertThat(faker.rickAndMorty().location()).matches("^([\\w-.]+ ?){2,}$");
     }
 
     @Test
     public void quote() {
-        assertThat(faker.rickAndMorty().quote(), not(is(emptyOrNullString())));
+        assertThat(faker.rickAndMorty().quote()).isNotEmpty();
     }
 }

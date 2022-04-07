@@ -2,36 +2,33 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MilitaryTest extends AbstractFakerTest {
 
     @Test
     public void armyRank() {
-        assertThat(faker.military().armyRank(), not(is(emptyOrNullString())));
+        assertThat(faker.military().armyRank()).isNotEmpty();
     }
 
     @Test
     public void marinesRank() {
-        assertThat(faker.military().marinesRank(), not(is(emptyOrNullString())));
+        assertThat(faker.military().marinesRank()).isNotEmpty();
     }
 
     @Test
     public void navyRank() {
-        assertThat(faker.military().navyRank(), not(is(emptyOrNullString())));
+        assertThat(faker.military().navyRank()).isNotEmpty();
     }
 
     @Test
     public void airForceRank() {
-        assertThat(faker.military().airForceRank(), not(is(emptyOrNullString())));
+        assertThat(faker.military().airForceRank()).isNotEmpty();
     }
 
     @Test
     public void dodPaygrade() {
-        assertThat(faker.military().dodPaygrade(), not(is(emptyOrNullString())));
+        assertThat(faker.military().dodPaygrade()).isNotEmpty();
     }
 
 }

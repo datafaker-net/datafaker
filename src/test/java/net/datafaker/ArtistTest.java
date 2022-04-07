@@ -2,13 +2,12 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ArtistTest extends AbstractFakerTest {
 
     @Test
     public void name() {
-        assertThat(faker.artist().name(), matchesRegularExpression("(\\w+ ?){1,2}"));
+        assertThat(faker.artist().name()).matches("(\\w+ ?){1,2}");
     }
 }

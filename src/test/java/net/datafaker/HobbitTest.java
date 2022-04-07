@@ -2,20 +2,19 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HobbitTest extends AbstractFakerTest {
 
     @Test
     public void character() {
-        assertThat(faker.hobbit().character(), matchesRegularExpression("^(\\(?\\w+\\.?\\s?\\)?)+$"));
+        assertThat(faker.hobbit().character()).matches("^(\\(?\\w+\\.?\\s?\\)?)+$");
     }
 
     @Test
     public void thorinsCompany() {
-        assertThat(faker.hobbit().thorinsCompany(), matchesRegularExpression("^(\\w+\\s?)+$"));
+        assertThat(faker.hobbit().thorinsCompany()).matches("^(\\w+\\s?)+$");
     }
 
     @Test
@@ -25,6 +24,6 @@ public class HobbitTest extends AbstractFakerTest {
 
     @Test
     public void location() {
-        assertThat(faker.hobbit().location(), matchesRegularExpression("^(\\w+'?-?\\s?)+$"));
+        assertThat(faker.hobbit().location()).matches("^(\\w+'?-?\\s?)+$");
     }
 }

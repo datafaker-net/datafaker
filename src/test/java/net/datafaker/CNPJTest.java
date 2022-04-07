@@ -1,13 +1,11 @@
 package net.datafaker;
 
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.Integer.parseInt;
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCNPJValid;
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,13 +32,13 @@ public class CNPJTest extends AbstractFakerTest {
     @Test
     public void valid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
         String cnpj = faker.cnpj().valid(true, true);
-        String branch = cnpj.substring(11,15);
+        String branch = cnpj.substring(11, 15);
 
         // branches are allowed to be 0001 even in multibranch mode. In this case,
         // we are giving the system 5 chances to generate something different than 0001.
         for (int i = 0; "0001".equals(branch) && i < 5; i++) {
             cnpj = faker.cnpj().valid(true, true);
-            branch = cnpj.substring(11,15);
+            branch = cnpj.substring(11, 15);
         }
 
         assertTrue(parseInt(branch) > 1);
@@ -50,13 +48,13 @@ public class CNPJTest extends AbstractFakerTest {
     @Test
     public void invalid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
         String cnpj = faker.cnpj().invalid(true, true);
-        String branch = cnpj.substring(11,15);
+        String branch = cnpj.substring(11, 15);
 
         // branches are allowed to be 0001 even in multibranch mode. In this case,
         // we are giving the system 5 chances to generate something different than 0001.
         for (int i = 0; "0001".equals(branch) && i < 5; i++) {
             cnpj = faker.cnpj().valid(true, true);
-            branch = cnpj.substring(11,15);
+            branch = cnpj.substring(11, 15);
         }
 
         assertTrue(parseInt(branch) > 1);
@@ -69,12 +67,12 @@ public class CNPJTest extends AbstractFakerTest {
      */
     @Test
     public void formattedCNPJ() {
-        final Matcher<String> cnpjMatcher = matchesRegularExpression("(^\\d{2}\\x2E\\d{3}\\x2E\\d{3}\\x2F\\d{4}\\x2D\\d{2}$)");
+        final String cnpjExpression = "(^\\d{2}\\x2E\\d{3}\\x2E\\d{3}\\x2F\\d{4}\\x2D\\d{2}$)";
 
-        assertThat(faker.cnpj().valid(), cnpjMatcher);
-        assertThat(faker.cnpj().valid(true), cnpjMatcher);
-        assertThat(faker.cnpj().invalid(), cnpjMatcher);
-        assertThat(faker.cnpj().invalid(true), cnpjMatcher);
+        assertThat(faker.cnpj().valid()).matches(cnpjExpression);
+        assertThat(faker.cnpj().valid(true)).matches(cnpjExpression);
+        assertThat(faker.cnpj().invalid()).matches(cnpjExpression);
+        assertThat(faker.cnpj().invalid(true)).matches(cnpjExpression);
     }
 
 }

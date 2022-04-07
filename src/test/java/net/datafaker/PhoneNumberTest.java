@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PhoneNumberTest extends AbstractFakerTest {
@@ -26,7 +26,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
     public void testCellPhone_enUS() {
         final Faker f = new Faker(Locale.US);
         String cellPhone = f.phoneNumber().cellPhone();
-        assertThat(cellPhone, cellPhone, matchesRegularExpression("\\(?\\d+\\)?([- .]\\d+){1,3}"));
+        assertThat(cellPhone).matches("\\(?\\d+\\)?([- .]\\d+){1,3}");
     }
 
 
@@ -100,8 +100,8 @@ public class PhoneNumberTest extends AbstractFakerTest {
     public void testPhone_esMx() {
         final Faker f = new Faker(new Locale("es_MX"));
         for (int i = 0; i < 100; i++) {
-            assertThat(f.phoneNumber().cellPhone(), matchesRegularExpression("(044 )?\\(?\\d+\\)?([- .]\\d+){1,3}"));
-            assertThat(f.phoneNumber().phoneNumber(), matchesRegularExpression("\\(?\\d+\\)?([- .]\\d+){1,3}"));
+            assertThat(f.phoneNumber().cellPhone()).matches("(044 )?\\(?\\d+\\)?([- .]\\d+){1,3}");
+            assertThat(f.phoneNumber().phoneNumber()).matches("\\(?\\d+\\)?([- .]\\d+){1,3}");
         }
     }
 
@@ -114,36 +114,35 @@ public class PhoneNumberTest extends AbstractFakerTest {
                 + "709|782|902|226|249|289|343|365|416|437|519|548|613|647|705|807|905|367|"
                 + "418|438|450|514|579|581|819|873|306|639|867";
             for (int i = 0; i < 100; i++) {
-                assertThat(f.phoneNumber().cellPhone(),
-                    matchesRegularExpression(
-                        String.format("((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}",
-                            canadianAreaCode, canadianAreaCode)));
+                assertThat(f.phoneNumber().cellPhone()).matches(
+                    String.format("((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}",
+                        canadianAreaCode, canadianAreaCode));
             }
         }
     }
 
     @Test
     public void testCellPhone() {
-        assertThat(faker.phoneNumber().cellPhone(), matchesRegularExpression("\\(?\\d+\\)?([- .]\\d+){1,3}"));
+        assertThat(faker.phoneNumber().cellPhone()).matches("\\(?\\d+\\)?([- .]\\d+){1,3}");
     }
 
     @Test
     public void testPhoneNumber() {
-        assertThat(faker.phoneNumber().phoneNumber(), matchesRegularExpression("\\(?\\d+\\)?([- .]x?\\d+){1,5}"));
+        assertThat(faker.phoneNumber().phoneNumber()).matches("\\(?\\d+\\)?([- .]x?\\d+){1,5}");
     }
 
     @Test
     public void testExtension() {
-        assertThat(faker.phoneNumber().extension(), matchesRegularExpression("\\d{4}"));
+        assertThat(faker.phoneNumber().extension()).matches("\\d{4}");
     }
 
     @Test
     public void testSubscriberNumber() {
-        assertThat(faker.phoneNumber().subscriberNumber(), matchesRegularExpression("\\d{4}"));
+        assertThat(faker.phoneNumber().subscriberNumber()).matches("\\d{4}");
     }
 
     @Test
     public void testSubscriberNumberWithLength() {
-        assertThat(faker.phoneNumber().subscriberNumber(10), matchesRegularExpression("\\d{10}"));
+        assertThat(faker.phoneNumber().subscriberNumber(10)).matches("\\d{10}");
     }
 }

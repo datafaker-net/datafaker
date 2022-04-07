@@ -2,15 +2,12 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChuckNorrisTest extends AbstractFakerTest {
 
     @Test
     public void testFact() {
-        assertThat(faker.chuckNorris().fact(), not(is(emptyOrNullString())));
+        assertThat(faker.chuckNorris().fact()).isNotEmpty();
     }
 }

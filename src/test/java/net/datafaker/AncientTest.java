@@ -2,29 +2,28 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AncientTest extends AbstractFakerTest {
 
     @Test
     public void god() {
-        assertThat(faker.ancient().god(), matchesRegularExpression("\\w+"));
+        assertThat(faker.ancient().god()).matches("\\w+");
     }
 
     @Test
     public void primordial() {
-        assertThat(faker.ancient().primordial(), matchesRegularExpression("\\w+"));
+        assertThat(faker.ancient().primordial()).matches("\\w+");
     }
 
     @Test
     public void titan() {
-        assertThat(faker.ancient().titan(), matchesRegularExpression("\\w+"));
+        assertThat(faker.ancient().titan()).matches("\\w+");
     }
 
     @Test
     public void hero() {
-        assertThat(faker.ancient().hero(), matchesRegularExpression("(?U)\\w+"));
+        assertThat(faker.ancient().hero()).matches("(?U)\\w+");
     }
 
 }

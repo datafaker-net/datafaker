@@ -3,23 +3,19 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EnglandFootBallTest extends AbstractFakerTest {
 
     @Test
     public void testLeague() {
         String league = faker.englandfootball().league();
-        assertThat(league, not(is(emptyOrNullString())));
+        assertThat(league).isNotEmpty();
     }
 
     @Test
     public void testTeam() {
         String team = faker.englandfootball().team();
-        assertThat(team, not(is(emptyOrNullString())));
-
+        assertThat(team).isNotEmpty();
     }
 }

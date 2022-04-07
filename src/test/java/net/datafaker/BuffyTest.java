@@ -2,32 +2,31 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.IsStringWithContents.isStringWithContents;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BuffyTest extends AbstractFakerTest {
     @Test
     public void testCharacters() {
-        assertThat(faker.buffy().characters(), isStringWithContents());
+        assertThat(faker.buffy().characters()).isNotEmpty();
     }
 
     @Test
     public void testQuotes() {
-        assertThat(faker.buffy().quotes(), isStringWithContents());
+        assertThat(faker.buffy().quotes()).isNotEmpty();
     }
 
     @Test
     public void testCelebrities() {
-        assertThat(faker.buffy().celebrities(), isStringWithContents());
+        assertThat(faker.buffy().celebrities()).isNotEmpty();
     }
 
     @Test
     public void testBigBads() {
-        assertThat(faker.buffy().bigBads(), isStringWithContents());
+        assertThat(faker.buffy().bigBads()).isNotEmpty();
     }
 
     @Test
     public void testEpisodes() {
-        assertThat(faker.buffy().episodes(), isStringWithContents());
+        assertThat(faker.buffy().episodes()).isNotEmpty();
     }
 }

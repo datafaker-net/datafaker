@@ -10,12 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.List;
 import java.util.Random;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -28,10 +23,10 @@ public class FakeCollectionTest extends AbstractFakerTest {
             .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
             .minLen(3)
             .maxLen(5).build().get();
-        assertThat(names.size(), is(lessThanOrEqualTo(5)));
-        assertThat(names.size(), is(greaterThanOrEqualTo(3)));
+        assertThat(names.size()).isLessThanOrEqualTo(5);
+        assertThat(names.size()).isGreaterThanOrEqualTo(3);
         for (String name : names) {
-            assertThat(name, matchesRegularExpression("[a-zA-Z']+"));
+            assertThat(name).matches("[a-zA-Z']+");
         }
     }
 
@@ -42,8 +37,8 @@ public class FakeCollectionTest extends AbstractFakerTest {
             .nullRate(1d)
             .minLen(3)
             .maxLen(5).build().get();
-        assertThat(names.size(), is(lessThanOrEqualTo(5)));
-        assertThat(names.size(), is(greaterThanOrEqualTo(3)));
+        assertThat(names.size()).isLessThanOrEqualTo(5);
+        assertThat(names.size()).isGreaterThanOrEqualTo(3);
         for (String name : names) {
             assertNull(name);
         }
@@ -70,9 +65,9 @@ public class FakeCollectionTest extends AbstractFakerTest {
             .minLen(1)
             .maxLen(20).build().get();
 
-        assertThat(names.size(), is(equalTo(14)));
-        assertThat(names.get(0), is(equalTo("Flor")));
-        assertThat(names.get(1), is(equalTo("Brian")));
+        assertThat(names.size()).isEqualTo(14);
+        assertThat(names.get(0)).isEqualTo("Flor");
+        assertThat(names.get(1)).isEqualTo("Brian");
     }
 
     @Test

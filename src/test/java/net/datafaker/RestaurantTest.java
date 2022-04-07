@@ -2,41 +2,38 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RestaurantTest extends AbstractFakerTest {
 
     @Test
     public void namePrefix() {
-        assertThat(faker.restaurant().namePrefix(), not(is(emptyOrNullString())));
+        assertThat(faker.restaurant().namePrefix()).isNotEmpty();
     }
 
     @Test
     public void nameSuffix() {
-        assertThat(faker.restaurant().nameSuffix(), not(is(emptyOrNullString())));
+        assertThat(faker.restaurant().nameSuffix()).isNotEmpty();
     }
 
     @Test
     public void name() {
-        assertThat(faker.restaurant().name(), not(is(emptyOrNullString())));
+        assertThat(faker.restaurant().name()).isNotEmpty();
     }
 
     @Test
     public void type() {
-        assertThat(faker.restaurant().type(), not(is(emptyOrNullString())));
+        assertThat(faker.restaurant().type()).isNotEmpty();
     }
 
     @Test
     public void description() {
-        assertThat(faker.restaurant().description(), not(is(emptyOrNullString())));
+        assertThat(faker.restaurant().description()).isNotEmpty();
     }
 
     @Test
     public void review() {
-        assertThat(faker.restaurant().review(), not(is(emptyOrNullString())));
+        assertThat(faker.restaurant().review()).isNotEmpty();
     }
 
 }

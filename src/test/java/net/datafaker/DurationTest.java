@@ -4,14 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DurationTest extends AbstractFakerTest {
     final int DURATION_IS_EQUAL = 0;
-    final int DURATION_IS_GREATER = 1;
-    final int DURATION_IS_LESS = -1;
 
     @Test
     public void testDurationSeconds() {
@@ -20,10 +16,8 @@ public class DurationTest extends AbstractFakerTest {
         Duration lowerBound = Duration.ofSeconds(0);
         Duration upperBound = Duration.ofSeconds(maxSeconds);
 
-        assertThat(randomDuration.compareTo(lowerBound), anyOf(
-            is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
-        assertThat(randomDuration.compareTo(upperBound), anyOf(
-            is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
+        assertThat(randomDuration.compareTo(lowerBound)).isGreaterThanOrEqualTo(DURATION_IS_EQUAL);
+        assertThat(randomDuration.compareTo(upperBound)).isLessThanOrEqualTo(DURATION_IS_EQUAL);
     }
 
     @Test
@@ -33,10 +27,8 @@ public class DurationTest extends AbstractFakerTest {
         Duration lowerBound = Duration.ofMinutes(0);
         Duration upperBound = Duration.ofMinutes(maxMins);
 
-        assertThat(randomDuration.compareTo(lowerBound), anyOf(
-            is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
-        assertThat(randomDuration.compareTo(upperBound), anyOf(
-            is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
+        assertThat(randomDuration.compareTo(lowerBound)).isGreaterThanOrEqualTo(DURATION_IS_EQUAL);
+        assertThat(randomDuration.compareTo(upperBound)).isLessThanOrEqualTo(DURATION_IS_EQUAL);
     }
 
     @Test
@@ -46,10 +38,8 @@ public class DurationTest extends AbstractFakerTest {
         Duration lowerBound = Duration.ofHours(0);
         Duration upperBound = Duration.ofHours(maxHours);
 
-        assertThat(randomDuration.compareTo(lowerBound), anyOf(
-            is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
-        assertThat(randomDuration.compareTo(upperBound), anyOf(
-            is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
+        assertThat(randomDuration.compareTo(lowerBound)).isGreaterThanOrEqualTo(DURATION_IS_EQUAL);
+        assertThat(randomDuration.compareTo(upperBound)).isLessThanOrEqualTo(DURATION_IS_EQUAL);
     }
 
     @Test
@@ -59,10 +49,8 @@ public class DurationTest extends AbstractFakerTest {
         Duration lowerBound = Duration.ofDays(0);
         Duration upperBound = Duration.ofDays(maxDays);
 
-        assertThat(randomDuration.compareTo(lowerBound), anyOf(
-            is(DURATION_IS_EQUAL), is(DURATION_IS_GREATER)));
-        assertThat(randomDuration.compareTo(upperBound), anyOf(
-            is(DURATION_IS_EQUAL), is(DURATION_IS_LESS)));
+        assertThat(randomDuration.compareTo(lowerBound)).isGreaterThanOrEqualTo(DURATION_IS_EQUAL);
+        assertThat(randomDuration.compareTo(upperBound)).isLessThanOrEqualTo(DURATION_IS_EQUAL);
     }
 
 }

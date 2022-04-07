@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Paths;
 import java.util.Locale;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -72,19 +71,19 @@ public class CustomFakerTest {
     @RepeatedTest(10)
     public void insectTest() {
         MyCustomFaker myFaker = new MyCustomFaker();
-        assertThat(myFaker.insect().nextInsectName(), matchesRegularExpression("[A-Za-z ]+"));
+        assertThat(myFaker.insect().nextInsectName()).matches("[A-Za-z ]+");
     }
 
     @RepeatedTest(10)
     public void insectTestExpression() {
         MyCustomFaker myFaker = new MyCustomFaker();
-        assertThat(myFaker.expression("#{Insect.nextInsectName}"), matchesRegularExpression("[A-Za-z ]+"));
+        assertThat(myFaker.expression("#{Insect.nextInsectName}")).matches("[A-Za-z ]+");
     }
 
     @RepeatedTest(10)
     public void insectAntTestExpressionFromFile() {
         MyCustomFaker myFaker = new MyCustomFaker();
-        assertThat(myFaker.insectFromFile().ant(), matchesRegularExpression("[A-Za-z ]+"));
+        assertThat(myFaker.insectFromFile().ant()).matches("[A-Za-z ]+");
     }
 
     @RepeatedTest(10)

@@ -8,10 +8,7 @@ import org.mockito.Mockito;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsNot.not;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -27,37 +24,37 @@ public class RelationshipTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     public void anyTest() {
-        assertThat(faker.relationships().any(), not(is(emptyOrNullString())));
+        assertThat(faker.relationships().any()).isNotEmpty();
     }
 
     @Test
     public void directTest() {
-        assertThat(faker.relationships().direct(), not(is(emptyOrNullString())));
+        assertThat(faker.relationships().direct()).isNotEmpty();
     }
 
     @Test
     public void extendedTest() {
-        assertThat(faker.relationships().extended(), not(is(emptyOrNullString())));
+        assertThat(faker.relationships().extended()).isNotEmpty();
     }
 
     @Test
     public void inLawTest() {
-        assertThat(faker.relationships().inLaw(), not(is(emptyOrNullString())));
+        assertThat(faker.relationships().inLaw()).isNotEmpty();
     }
 
     @Test
     public void spouseTest() {
-        assertThat(faker.relationships().spouse(), not(is(emptyOrNullString())));
+        assertThat(faker.relationships().spouse()).isNotEmpty();
     }
 
     @Test
     public void parentTest() {
-        assertThat(faker.relationships().parent(), not(is(emptyOrNullString())));
+        assertThat(faker.relationships().parent()).isNotEmpty();
     }
 
     @Test
     public void siblingTest() {
-        assertThat(faker.relationships().sibling(), not(is(emptyOrNullString())));
+        assertThat(faker.relationships().sibling()).isNotEmpty();
     }
 
     @Test

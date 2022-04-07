@@ -2,18 +2,17 @@ package net.datafaker;
 
 import org.junit.jupiter.api.RepeatedTest;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RuPaulDragRaceTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     public void queens() {
-        assertThat(faker.ruPaulDragRace().queen(), matchesRegularExpression("([\\w'/.,&]+ ?)+"));
+        assertThat(faker.ruPaulDragRace().queen()).matches("([\\w'/.,&]+ ?)+");
     }
 
     @RepeatedTest(100)
     public void quotes() {
-        assertThat(faker.ruPaulDragRace().quote(), matchesRegularExpression("([\\w'/.,\\-!&?\"]+ ?)+"));
+        assertThat(faker.ruPaulDragRace().quote()).matches("([\\w'/.,\\-!&?\"]+ ?)+");
     }
 }
