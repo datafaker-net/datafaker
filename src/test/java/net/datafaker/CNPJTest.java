@@ -17,7 +17,8 @@ public class CNPJTest extends AbstractFakerTest {
      */
     @RepeatedTest(1000)
     public void isValidCNPJ() {
-        assertTrue(isCNPJValid(faker.cnpj().valid()));
+        final CNPJ cnpj = faker.cnpj();
+        assertTrue(isCNPJValid(cnpj.valid()), "Current value " + cnpj);
     }
 
     /**
@@ -26,7 +27,7 @@ public class CNPJTest extends AbstractFakerTest {
     @RepeatedTest(1000)
     public void isInvalidCNPJ() {
         CNPJ cnpj = faker.cnpj();
-        assertFalse(isCNPJValid(cnpj.invalid()));
+        assertFalse(isCNPJValid(cnpj.invalid()), "Current value " + cnpj);
     }
 
     @Test
@@ -42,7 +43,7 @@ public class CNPJTest extends AbstractFakerTest {
         }
 
         assertTrue(parseInt(branch) > 1);
-        assertTrue(isCNPJValid(cnpj));
+        assertTrue(isCNPJValid(cnpj), "Current value " + cnpj);
     }
 
     @Test
@@ -58,7 +59,7 @@ public class CNPJTest extends AbstractFakerTest {
         }
 
         assertTrue(parseInt(branch) > 1);
-        assertFalse(isCNPJValid(cnpj));
+        assertFalse(isCNPJValid(cnpj), "Current value " + cnpj);
     }
 
     /**
