@@ -53,12 +53,12 @@ public class CNPJTest extends AbstractFakerTest {
 
         // branches are allowed to be 0001 even in multibranch mode. In this case,
         // we are giving the system 5 chances to generate something different than 0001.
-        for (int i = 0; "0001".equals(branch) && i < 5; i++) {
+        for (int i = 0; "0001".equals(branch) && i < 5 || "0000".equals(branch); i++) {
             cnpj = faker.cnpj().valid(true, true);
             branch = cnpj.substring(11, 15);
         }
 
-        assertTrue(parseInt(branch) > 1);
+        assertTrue(parseInt(branch) > 1, "Branch " + branch);
         assertFalse(isCNPJValid(cnpj), "Current value " + cnpj);
     }
 
