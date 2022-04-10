@@ -6,7 +6,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ZhCNIdNumberTest extends AbstractFakerTest {
 
@@ -29,7 +29,7 @@ public class ZhCNIdNumberTest extends AbstractFakerTest {
                 }
             }
         }
-        assertTrue(isSatisfied);
+        assertThat(isSatisfied).isTrue();
     }
 
     @RepeatedTest(10)
@@ -59,7 +59,7 @@ public class ZhCNIdNumberTest extends AbstractFakerTest {
         if (count == 10) {
             if (s.charAt(17) != 'X') isSatisfied = false;
         } else if ((s.charAt(17) - '0') != count) isSatisfied = false;
-        assertTrue(isSatisfied);
+        assertThat(isSatisfied).isTrue();
     }
 
     @RepeatedTest(100)
@@ -81,6 +81,6 @@ public class ZhCNIdNumberTest extends AbstractFakerTest {
                 }
             }
         }
-        assertTrue(isSatisfied);
+        assertThat(isSatisfied).isTrue();
     }
 }

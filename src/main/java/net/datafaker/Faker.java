@@ -720,6 +720,10 @@ public class Faker {
         return getProvider(Touhou.class, () -> new Touhou(this));
     }
 
+    public Tron tron() {
+        return getProvider(Tron.class, () -> new Tron(this));
+    }
+
     public TwinPeaks twinPeaks() {
         return getProvider(TwinPeaks.class, () -> new TwinPeaks(this));
     }

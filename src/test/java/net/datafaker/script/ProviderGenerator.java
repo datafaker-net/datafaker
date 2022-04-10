@@ -23,7 +23,7 @@ public class ProviderGenerator {
     public void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("todo.yml"));
+        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("tron.todo.yml"));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
@@ -91,10 +91,7 @@ public class ProviderGenerator {
         System.out.println("package net.datafaker;");
         System.out.println();
         System.out.println("import org.junit.jupiter.api.Test;");
-        System.out.println("import static org.hamcrest.MatcherAssert.assertThat;");
-        System.out.println("import static org.hamcrest.Matchers.is;");
-        System.out.println("import static org.hamcrest.Matchers.not;");
-        System.out.println("import static org.hamcrest.Matchers.emptyOrNullString;");
+        System.out.println("import static org.assertj.core.api.AssertionsForClassTypes.assertThat;");
 
         System.out.println();
         System.out.println("public class " + className + "Test extends AbstractFakerTest {");

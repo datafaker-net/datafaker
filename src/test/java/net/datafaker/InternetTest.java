@@ -120,7 +120,7 @@ public class InternetTest extends AbstractFakerTest {
     @Test
     public void testPasswordWithFixedLength() {
         String password = Faker.instance().internet().password(32, 32, true, true, true);
-        assertThat(password.length()).isEqualTo(32);
+        assertThat(password).hasSize(32);
     }
 
     @Test
@@ -157,8 +157,8 @@ public class InternetTest extends AbstractFakerTest {
         final List<String> min = results.stream().filter(x -> x.length() == 1).collect(Collectors.toList());
         final List<String> max = results.stream().filter(x -> x.length() == 10).collect(Collectors.toList());
 
-        assertTrue(min.size() > 0);
-        assertTrue(max.size() > 0);
+        assertThat(min.size()).isPositive();
+        assertThat(max.size()).isPositive();
     }
 
     @Test
@@ -193,11 +193,13 @@ public class InternetTest extends AbstractFakerTest {
         assertThat(faker.internet().macAddress()).is(colon);
         assertThat(faker.internet().macAddress("")).is(colon);
 
-        assertThat(faker.internet().macAddress("fa:fa:fa")).startsWith("fa:fa:fa");
-        assertThat(faker.internet().macAddress("fa:fa:fa")).is(colon);
+        assertThat(faker.internet().macAddress("fa:fa:fa"))
+            .startsWith("fa:fa:fa")
+            .is(colon);
 
-        assertThat(faker.internet().macAddress("01:02")).startsWith("01:02");
-        assertThat(faker.internet().macAddress("01:02")).is(colon);
+        assertThat(faker.internet().macAddress("01:02"))
+            .startsWith("01:02")
+            .is(colon);
 
         // loop through 1000 times just to 'run it through the wringer'
         for (int i = 0; i < 1000; i++) {
@@ -224,8 +226,9 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testIpV4Cidr() {
-        assertThat(faker.internet().ipV4Cidr()).is(getCharacterCondition('.', 3));
-        assertThat(faker.internet().ipV4Cidr()).is(getCharacterCondition('/', 1));
+        assertThat(faker.internet().ipV4Cidr())
+            .is(getCharacterCondition('.', 3))
+            .is(getCharacterCondition('/', 1));
 
         for (int i = 0; i < 1000; i++) {
             assertThat(parseInt(faker.internet().ipV4Cidr().split("/")[1]))
@@ -295,8 +298,9 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testIpV6Cidr() {
-        assertThat(faker.internet().ipV6Cidr()).is(getCharacterCondition(':', 7));
-        assertThat(faker.internet().ipV6Cidr()).is(getCharacterCondition('/', 1));
+        assertThat(faker.internet().ipV6Cidr())
+            .is(getCharacterCondition(':', 7))
+            .is(getCharacterCondition('/', 1));
 
         for (int i = 0; i < 1000; i++) {
             assertThat(parseInt(faker.internet().ipV6Cidr().split("/")[1]))
@@ -306,7 +310,7 @@ public class InternetTest extends AbstractFakerTest {
 
     @RepeatedTest(10)
     public void testSlugWithParams() {
-        assertThat(faker.internet().slug(Arrays.asList("a", "b"), "-")).matches("[a-zA-Z]+\\-[a-zA-Z]+");
+        assertThat(faker.internet().slug(Arrays.asList("a", "b"), "-")).matches("[a-zA-Z]+-[a-zA-Z]+");
     }
 
     @RepeatedTest(10)

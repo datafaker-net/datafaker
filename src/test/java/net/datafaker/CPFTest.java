@@ -4,8 +4,6 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class CPFTest extends AbstractFakerTest {
@@ -15,7 +13,7 @@ public class CPFTest extends AbstractFakerTest {
      */
     @RepeatedTest(100)
     public void isValidCPF() {
-        assertTrue(isCPFValid(faker.cpf().valid()));
+        assertThat(isCPFValid(faker.cpf().valid())).isTrue();
     }
 
     /**
@@ -23,7 +21,7 @@ public class CPFTest extends AbstractFakerTest {
      */
     @RepeatedTest(100)
     public void isInvalidCPF() {
-        assertFalse(isCPFValid(faker.cpf().invalid()));
+        assertThat(isCPFValid(faker.cpf().invalid())).isFalse();
     }
 
     /**

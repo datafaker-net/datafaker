@@ -3,7 +3,6 @@ package net.datafaker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BarcodeTest extends AbstractFakerTest {
 
@@ -60,19 +59,19 @@ public class BarcodeTest extends AbstractFakerTest {
     @Test
     public void testGtin12CheckSum() {
         long barcode = faker.barcode().gtin12();
-        assertTrue(BarcodeTest.isBarcodeValid(barcode));
+        assertThat(BarcodeTest.isBarcodeValid(barcode)).isTrue();
     }
 
     @Test
     public void testGtin14CheckSum() {
         long barcode = faker.barcode().gtin14();
-        assertTrue(BarcodeTest.isBarcodeValid(barcode));
+        assertThat(BarcodeTest.isBarcodeValid(barcode)).isTrue();
     }
 
     @Test
     public void testEan8CheckSum() {
         long barcode = faker.barcode().ean8();
-        assertTrue(BarcodeTest.isBarcodeValid(barcode));
+        assertThat(BarcodeTest.isBarcodeValid(barcode)).isTrue();
     }
 
     @Test
@@ -88,6 +87,6 @@ public class BarcodeTest extends AbstractFakerTest {
                 sum = sum + digit;
         }
 
-        assertTrue(String.valueOf(sum).endsWith("0"));
+        assertThat(String.valueOf(sum)).endsWith("0");
     }
 }

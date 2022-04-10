@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CodeTest extends AbstractFakerTest {
 
@@ -36,12 +35,9 @@ public class CodeTest extends AbstractFakerTest {
         final String isbn10NoSep = faker.code().isbn10(false);
         final String isbn10Sep = faker.code().isbn10(true);
 
-        assertThat(isbn10NoSep).isNotNull();
-        assertThat(isbn10NoSep.length()).isEqualTo(10);
+        assertThat(isbn10NoSep).hasSize(10);
         assertIsValidISBN10(isbn10NoSep);
-
-        assertThat(isbn10Sep).isNotNull();
-        assertThat(isbn10Sep.length()).isEqualTo(13);
+        assertThat(isbn10Sep).hasSize(13);
         assertIsValidISBN10(isbn10Sep);
     }
 
@@ -50,21 +46,19 @@ public class CodeTest extends AbstractFakerTest {
         final String isbn13NoSep = faker.code().isbn13(false);
         final String isbn13Sep = faker.code().isbn13(true);
 
-        assertThat(isbn13NoSep).isNotNull();
-        assertThat(isbn13NoSep.length()).isEqualTo(13);
+        assertThat(isbn13NoSep).hasSize(13);
         assertIsValidISBN13(isbn13NoSep);
 
-        assertThat(isbn13Sep).isNotNull();
-        assertThat(isbn13Sep.length()).isEqualTo(17);
+        assertThat(isbn13Sep).hasSize(17);
         assertIsValidISBN13(isbn13Sep);
     }
 
     private void assertIsValidISBN10(String isbn10) {
-        assertTrue(ISBN_VALIDATOR.isValidISBN10(isbn10), isbn10 + " is valid");
+        assertThat(ISBN_VALIDATOR.isValidISBN10(isbn10)).describedAs(isbn10 + " is valid").isTrue();
     }
 
     private void assertIsValidISBN13(String isbn13) {
-        assertTrue(ISBN_VALIDATOR.isValidISBN13(isbn13), isbn13 + " is valid");
+        assertThat(ISBN_VALIDATOR.isValidISBN13(isbn13)).describedAs(isbn13 + " is valid").isTrue();
     }
 
     @RepeatedTest(100)
@@ -89,7 +83,7 @@ public class CodeTest extends AbstractFakerTest {
         String imei = faker.code().imei();
 
         assertThat(imei).matches("\\A[\\d.:\\-\\s]+\\z");
-        assertTrue(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(imei));
+        assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(imei)).isTrue();
     }
 
     @Test
@@ -106,14 +100,14 @@ public class CodeTest extends AbstractFakerTest {
     public void ean13() {
         String ean13 = faker.code().ean13();
         assertThat(ean13).matches("\\d{13}");
-        assertTrue(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(ean13));
+        assertThat(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(ean13)).isTrue();
     }
 
     @Test
     public void gtin13() {
         String gtin13 = faker.code().gtin13();
         assertThat(gtin13).matches("\\d{13}");
-        assertTrue(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(gtin13));
+        assertThat(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(gtin13)).isTrue();
     }
 
     @Test

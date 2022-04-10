@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is a demo of how to create a custom faker and register a custom faker in it.
@@ -89,6 +88,6 @@ public class CustomFakerTest {
     @RepeatedTest(10)
     public void insectBeeTestExpressionFromFile() {
         MyCustomFaker myFaker = new MyCustomFaker();
-        assertTrue(myFaker.insectFromFile().bee().endsWith("bee"));
+        assertThat(myFaker.insectFromFile().bee()).endsWith("bee");
     }
 }

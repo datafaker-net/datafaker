@@ -4,16 +4,13 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PhotographyTest extends AbstractFakerTest {
 
     @Test
     public void testAperture() {
         final String value = faker.photography().aperture();
-        assertTrue(value.startsWith("f"));
+        assertThat(value).startsWith("f");
     }
 
     @Test
@@ -65,7 +62,7 @@ public class PhotographyTest extends AbstractFakerTest {
     }
 
     private void assertNonNullOrEmpty(String value) {
-        assertNotNull(value);
-        assertFalse(value.isEmpty());
+        assertThat(value)
+            .isNotEmpty();
     }
 }
