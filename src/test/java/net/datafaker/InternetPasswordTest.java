@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class InternetPasswordTest extends AbstractFakerTest {
     @Test
@@ -20,8 +20,8 @@ public class InternetPasswordTest extends AbstractFakerTest {
             boolean isPasswordContainsSpecialCharacter = specialCharacterMatcher.find();
             boolean isPasswordContainsDigit = digitMatcher.find();
 
-            assertTrue(isPasswordContainsDigit);
-            assertTrue(isPasswordContainsSpecialCharacter);
+            assertThat(isPasswordContainsDigit).isTrue();
+            assertThat(isPasswordContainsSpecialCharacter).isTrue();
         }
     }
 
@@ -38,7 +38,7 @@ public class InternetPasswordTest extends AbstractFakerTest {
             }
 
         }
-        assertTrue(check);
+        assertThat(check).isTrue();
     }
 
     @Test
@@ -59,6 +59,6 @@ public class InternetPasswordTest extends AbstractFakerTest {
                 break;
             }
         }
-        assertTrue(check);
+        assertThat(check).isTrue();
     }
 }

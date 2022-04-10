@@ -1,6 +1,5 @@
 package net.datafaker;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -9,7 +8,7 @@ import org.mockito.Mockito;
 import java.lang.reflect.InvocationTargetException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class RelationshipTest extends AbstractFakerTest {
@@ -60,13 +59,13 @@ public class RelationshipTest extends AbstractFakerTest {
     @Test
     public void anyWithIllegalArgumentExceptionThrown() {
         when(mockFaker.random()).thenThrow(new IllegalArgumentException());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Relationship(mockFaker).any());
+        assertThrows(IllegalArgumentException.class, () -> new Relationship(mockFaker).any());
     }
 
     @Test
     public void anyWithSecurityExceptionThrown() {
         when(mockFaker.random()).thenThrow(new SecurityException());
-        Assertions.assertThrows(SecurityException.class, () -> new Relationship(mockFaker).any());
+        assertThrows(SecurityException.class, () -> new Relationship(mockFaker).any());
     }
 
     @Test
@@ -74,8 +73,8 @@ public class RelationshipTest extends AbstractFakerTest {
         when(mockFaker.random()).then(invocationOnMock -> {
             throw new IllegalAccessException();
         });
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> new Relationship(mockFaker).any());
-        assertTrue(exception.getMessage().startsWith("IllegalAccessException: "));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> new Relationship(mockFaker).any());
+        assertThat(exception).hasMessageStartingWith("IllegalAccessException: ");
     }
 
     @Test
@@ -83,8 +82,8 @@ public class RelationshipTest extends AbstractFakerTest {
         when(mockFaker.random()).then(invocationOnMock -> {
             throw new InvocationTargetException(new Exception());
         });
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> new Relationship(mockFaker).any());
-        assertTrue(exception.getMessage().startsWith("InvocationTargetException: "));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> new Relationship(mockFaker).any());
+        assertThat(exception).hasMessageStartingWith("InvocationTargetException: ");
     }
 
 }

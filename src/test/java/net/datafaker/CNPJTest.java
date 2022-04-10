@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 import static java.lang.Integer.parseInt;
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCNPJValid;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 
 public class CNPJTest extends AbstractFakerTest {
 
@@ -17,8 +14,8 @@ public class CNPJTest extends AbstractFakerTest {
      */
     @RepeatedTest(1000)
     public void isValidCNPJ() {
-        final CNPJ cnpj = faker.cnpj();
-        assertTrue(isCNPJValid(cnpj.valid()), "Current value " + cnpj);
+        CNPJ cnpj = faker.cnpj();
+        assertThat(isCNPJValid(cnpj.valid())).describedAs("Current value " + cnpj).isTrue();
     }
 
     /**
@@ -27,7 +24,7 @@ public class CNPJTest extends AbstractFakerTest {
     @RepeatedTest(1000)
     public void isInvalidCNPJ() {
         CNPJ cnpj = faker.cnpj();
-        assertFalse(isCNPJValid(cnpj.invalid()), "Current value " + cnpj);
+        assertThat(isCNPJValid(cnpj.invalid())).describedAs("Current value " + cnpj).isFalse();
     }
 
     @Test
@@ -42,8 +39,8 @@ public class CNPJTest extends AbstractFakerTest {
             branch = cnpj.substring(11, 15);
         }
 
-        assertTrue(parseInt(branch) > 1);
-        assertTrue(isCNPJValid(cnpj), "Current value " + cnpj);
+        assertThat(parseInt(branch)).isGreaterThan(1);
+        assertThat(isCNPJValid(cnpj)).describedAs("Current value " + cnpj).isTrue();
     }
 
     @Test
@@ -58,8 +55,8 @@ public class CNPJTest extends AbstractFakerTest {
             branch = cnpj.substring(11, 15);
         }
 
-        assertTrue(parseInt(branch) > 1, "Branch " + branch);
-        assertFalse(isCNPJValid(cnpj), "Current value " + cnpj);
+        assertThat(parseInt(branch)).describedAs("Branch " + branch).isGreaterThan(1);
+        assertThat(isCNPJValid(cnpj)).describedAs("Current value " + cnpj).isFalse();
     }
 
     /**

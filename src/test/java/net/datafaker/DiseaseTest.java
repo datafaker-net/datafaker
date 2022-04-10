@@ -4,7 +4,6 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DiseaseTest extends AbstractFakerTest {
     @Test
@@ -52,7 +51,7 @@ public class DiseaseTest extends AbstractFakerTest {
                 isExist = true;
             }
         }
-        assertTrue(isExist);
+        assertThat(isExist).isTrue();
     }
 
     @RepeatedTest(1000)

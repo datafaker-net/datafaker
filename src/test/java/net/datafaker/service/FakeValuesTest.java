@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class FakeValuesTest {
@@ -22,12 +20,12 @@ public class FakeValuesTest {
 
     @Test
     public void supportsPathIsTrueWithTheSameValueAsThePath() {
-        assertTrue(fakeValues.supportsPath(PATH));
+        assertThat(fakeValues.supportsPath(PATH)).isTrue();
     }
 
     @Test
     public void supportsPathIsFalseWhenValueIsNotTheSame() {
-        assertFalse(fakeValues.supportsPath("dog"));
+        assertThat(fakeValues.supportsPath("dog")).isFalse();
     }
 
     @Test

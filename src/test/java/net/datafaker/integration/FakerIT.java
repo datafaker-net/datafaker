@@ -174,6 +174,7 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.team());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.theItCrowd());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.touhou());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.tron());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.twinPeaks());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.university());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.vehicle());
@@ -195,12 +196,10 @@ public class FakerIT {
                 continue;
             }
             final Object returnValue = method.invoke(object);
-            String failureReason = method + " on " + object;
             assertThat(returnValue).isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;
-            assertThat(returnValueAsString).isNullOrEmpty();
+            assertThat(returnValueAsString).isNotEmpty();
             assertFalse(returnValueAsString.startsWith("/"));
-            assertFalse(returnValueAsString.endsWith("/"));
         }
     }
 
