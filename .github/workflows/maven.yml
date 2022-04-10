@@ -13,13 +13,6 @@ env:
   mvn_options: -B -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss.SSS  
 
 jobs:
-  dependency-review:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout repository'
-        uses: actions/checkout@v3
-      - name: 'Dependency review'
-        uses: actions/dependency-review-action@v1
   build:
     strategy:
       matrix:
