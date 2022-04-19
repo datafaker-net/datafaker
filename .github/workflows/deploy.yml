@@ -15,7 +15,7 @@ jobs:
           GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
       - uses: actions/checkout@v2
       - name: Set up Maven Central Repository
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '8'
           distribution: 'temurin'
