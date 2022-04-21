@@ -112,6 +112,7 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dragonBall());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dune());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.educator());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.eldenRing());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.elderScrolls());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.englandfootball());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.esports());

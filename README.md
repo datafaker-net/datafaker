@@ -121,6 +121,7 @@ Providers
 * Dune
 * Durations
 * Educator
+* EldenRing
 * EnglandFootBall
 * Esports
 * File

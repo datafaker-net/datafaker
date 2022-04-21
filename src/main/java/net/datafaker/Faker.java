@@ -412,6 +412,10 @@ public class Faker {
         return getProvider(Educator.class, () -> new Educator(this));
     }
 
+    public EldenRing eldenRing() {
+        return getProvider(EldenRing.class, () -> new EldenRing(this));
+    }
+
     public ElderScrolls elderScrolls() {
         return getProvider(ElderScrolls.class, () -> new ElderScrolls(this));
     }
