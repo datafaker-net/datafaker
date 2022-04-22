@@ -94,6 +94,7 @@ Providers
 * Back To The Future
 * Barcode
 * Basketball
+* Battlefield1  
 * Beer
 * Bojack Horseman
 * Book

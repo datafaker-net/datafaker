@@ -44,6 +44,7 @@ public class EnFile {
         "barcode.yml",
         "bank.yml",
         "basketball.yml",
+        "battlefield1.yml",
         "beer.yml",
         "bojack_horseman.yml",
         "book.yml",
@@ -223,7 +224,8 @@ public class EnFile {
         new EnFile("elder_scrolls.yml", "games"),
         new EnFile("phone_number.yml", "cell_phone"), // load phone number again with a different path
         new EnFile("resident_evil.yml", "games"),
-        new EnFile("hearthstone.yml", "games"));
+        new EnFile("hearthstone.yml", "games"),
+        new EnFile("battlefield1.yml", "games"));
 
     private static final List<EnFile> ALL_FILES;
 
