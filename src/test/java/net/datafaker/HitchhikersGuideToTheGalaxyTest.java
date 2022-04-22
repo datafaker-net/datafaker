@@ -3,7 +3,6 @@ package net.datafaker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HitchhikersGuideToTheGalaxyTest extends AbstractFakerTest {
 
@@ -19,7 +18,7 @@ public class HitchhikersGuideToTheGalaxyTest extends AbstractFakerTest {
 
     @Test
     public void marvinQuote() {
-        assertFalse(faker.hitchhikersGuideToTheGalaxy().marvinQuote().isEmpty());
+        assertThat(faker.hitchhikersGuideToTheGalaxy().marvinQuote()).isNotEmpty();
     }
 
     @Test
@@ -29,7 +28,7 @@ public class HitchhikersGuideToTheGalaxyTest extends AbstractFakerTest {
 
     @Test
     public void quote() {
-        assertFalse(faker.hitchhikersGuideToTheGalaxy().quote().isEmpty());
+        assertThat(faker.hitchhikersGuideToTheGalaxy().quote()).isNotEmpty();
     }
 
     @Test

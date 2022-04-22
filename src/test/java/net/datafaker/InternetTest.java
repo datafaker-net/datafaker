@@ -15,23 +15,21 @@ import java.util.stream.Collectors;
 import static java.lang.Integer.parseInt;
 import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.BDDAssertions.fail;
 
 public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testEmailAddress() {
         String emailAddress = faker.internet().emailAddress();
-        assertTrue(EmailValidator.getInstance().isValid(emailAddress));
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
     }
 
     @Test
     public void testEmailAddressWithLocalPartParameter() {
         String emailAddress = faker.internet().emailAddress("john");
         assertThat(emailAddress).startsWith("john@");
-        assertTrue(EmailValidator.getInstance().isValid(emailAddress));
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
     }
 
     @Test
@@ -39,7 +37,7 @@ public class InternetTest extends AbstractFakerTest {
         List<String> emails = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress();
-            assertTrue(EmailValidator.getInstance().isValid(emailAddress));
+            assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
             emails.add(emailAddress);
         }
         final String safeDomain = faker.resolve("internet.safe_email");
@@ -54,7 +52,7 @@ public class InternetTest extends AbstractFakerTest {
         for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress("john");
             assertThat(emailAddress).startsWith("john@");
-            assertTrue(EmailValidator.getInstance().isValid(emailAddress));
+            assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
             emails.add(emailAddress);
         }
         final String safeDomain = faker.resolve("internet.safe_email");
@@ -271,11 +269,11 @@ public class InternetTest extends AbstractFakerTest {
         for (int i = 0; i < 1000; i++) {
             try {
                 String addr = faker.internet().getPublicIpV4Address().getHostAddress();
-                assertFalse(addr.matches(tenDot));
-                assertFalse(addr.matches(oneTwoSeven));
-                assertFalse(addr.matches(oneSixNine));
-                assertFalse(addr.matches(oneNineTwo));
-                assertFalse(addr.matches(oneSevenTwo));
+                assertThat(addr.matches(tenDot)).isFalse();
+                assertThat(addr.matches(oneTwoSeven)).isFalse();
+                assertThat(addr.matches(oneSixNine)).isFalse();
+                assertThat(addr.matches(oneNineTwo)).isFalse();
+                assertThat(addr.matches(oneSevenTwo)).isFalse();
             } catch (UnknownHostException e) {
                 fail("Failed with", e);
             }

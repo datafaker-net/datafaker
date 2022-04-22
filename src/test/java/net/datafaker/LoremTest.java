@@ -10,17 +10,15 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoremTest extends AbstractFakerTest {
 
     @Test
     public void shouldCreateFixedLengthString() {
-        assertEquals(10, faker.lorem().fixedString(10).length());
-        assertEquals(50, faker.lorem().fixedString(50).length());
-        assertEquals(0, faker.lorem().fixedString(0).length());
-        assertEquals(0, faker.lorem().fixedString(-1).length());
+        assertThat(faker.lorem().fixedString(10)).hasSize(10);
+        assertThat(faker.lorem().fixedString(50)).hasSize(50);
+        assertThat(faker.lorem().fixedString(0)).isEmpty();
+        assertThat(faker.lorem().fixedString(-1)).isEmpty();
     }
 
     @Test
@@ -49,8 +47,8 @@ public class LoremTest extends AbstractFakerTest {
         final List<String> min = results.stream().filter(x -> x.length() == 1).collect(Collectors.toList());
         final List<String> max = results.stream().filter(x -> x.length() == 10).collect(Collectors.toList());
 
-        assertTrue(min.size() > 0);
-        assertTrue(max.size() > 0);
+        assertThat(min.size()).isGreaterThan(0);
+        assertThat(max.size()).isGreaterThan(0);
     }
 
     @Test
@@ -99,11 +97,11 @@ public class LoremTest extends AbstractFakerTest {
 
     @Test
     public void testFixedNumberOfCharactersEmpty() {
-        assertEquals("", faker.lorem().characters(-1));
-        assertEquals("", faker.lorem().characters(0));
+        assertThat(faker.lorem().characters(-1)).isEmpty();
+        assertThat(faker.lorem().characters(0)).isEmpty();
 
-        assertEquals("", faker.lorem().characters(-1, true, true, true));
-        assertEquals("", faker.lorem().characters(0, false, false, false));
+        assertThat(faker.lorem().characters(-1, true, true, true)).isEmpty();
+        assertThat(faker.lorem().characters(0, false, false, false)).isEmpty();
     }
 
 
@@ -157,19 +155,19 @@ public class LoremTest extends AbstractFakerTest {
         // Test different lengths over 10 runs
         int length = Math.abs(rand.nextInt(10000));
         String s = faker.lorem().maxLengthSentence(length);
-        assertEquals(s.length(), length);
+        assertThat(s).hasSize(length);
     }
 
     @Test
     public void testMaxLengthWithEmptySentence() {
         String s = faker.lorem().maxLengthSentence(0);
-        assertEquals(s.length(), 0);
+        assertThat(s).isEmpty();
     }
 
     @Test
     public void testMaxLengthWithNegativeLengthSentence() {
         String s = faker.lorem().maxLengthSentence(-1);
-        assertEquals(s.length(), 0);
+        assertThat(s).isEmpty();
     }
 
     @RepeatedTest(10)

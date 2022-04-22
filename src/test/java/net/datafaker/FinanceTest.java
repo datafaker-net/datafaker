@@ -5,7 +5,6 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FinanceTest extends AbstractFakerTest {
 
@@ -17,7 +16,7 @@ public class FinanceTest extends AbstractFakerTest {
 
     private void assertCardLuhnDigit(String creditCard) {
         final String creditCardStripped = creditCard.replaceAll("-", "");
-        assertTrue(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(creditCardStripped));
+        assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(creditCardStripped)).isTrue();
     }
 
     @RepeatedTest(10)
@@ -64,6 +63,6 @@ public class FinanceTest extends AbstractFakerTest {
         final String givenCountryCode = "CR";
         final Faker faker = new Faker();
         final String ibanFaker = faker.finance().iban(givenCountryCode).toUpperCase(faker.getLocale());
-        assertTrue(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker));
+        assertThat(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker)).isTrue();
     }
 }

@@ -13,8 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocalePickerTest extends AbstractFakerTest {
 
@@ -37,7 +35,7 @@ public class LocalePickerTest extends AbstractFakerTest {
     public void testGetAllSuppportedLocales() {
         // Check that directory of locale resources exists
         File resourceDirectory = new File("./src/main/resources");
-        assertTrue(resourceDirectory.exists());
+        assertThat(resourceDirectory).exists();
 
         // Check that list of locales is not empty
         assertThat(allLocales).isNotEmpty();
@@ -59,7 +57,7 @@ public class LocalePickerTest extends AbstractFakerTest {
         Random random2 = new Random(fixedSeed);
         String randomLocale2 = localePicker.getLocaleString(random2);
 
-        assertEquals(randomLocale1, randomLocale2);
+        assertThat(randomLocale1).isEqualTo(randomLocale2);
     }
 
     /**
@@ -90,7 +88,7 @@ public class LocalePickerTest extends AbstractFakerTest {
                 .collect(Collectors.toList());
 
             Collections.sort(allLocales);
-            assertEquals(returnedLocales, allLocales);
+            assertThat(returnedLocales).isEqualTo(allLocales);
         }
     }
 

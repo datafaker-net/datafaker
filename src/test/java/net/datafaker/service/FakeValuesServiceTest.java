@@ -3,7 +3,6 @@ package net.datafaker.service;
 import net.datafaker.AbstractFakerTest;
 import net.datafaker.Faker;
 import net.datafaker.Superhero;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,9 +24,8 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -61,28 +59,28 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     public void fetchStringShouldReturnValue() {
-        assertEquals(fakeValuesService.fetchString("property.dummy"), "x");
+        assertThat(fakeValuesService.fetchString("property.dummy")).isEqualTo("x");
     }
 
     @Test
     public void fetchShouldReturnValue() {
-        assertEquals(fakeValuesService.fetch("property.dummy"), "x");
+        assertThat(fakeValuesService.fetch("property.dummy")).isEqualTo("x");
     }
 
     @Test
     public void fetchObjectShouldReturnValue() {
-        assertIterableEquals((Iterable<?>) fakeValuesService.fetchObject("property.dummy"), Arrays.asList("x", "y", "z"));
+        assertThat((Iterable<?>) fakeValuesService.fetchObject("property.dummy")).isEqualTo(Arrays.asList("x", "y", "z"));
     }
 
     @Test
     public void safeFetchShouldReturnValueInList() {
         doReturn(0).when(randomService).nextInt(Mockito.anyInt());
-        assertEquals(fakeValuesService.safeFetch("property.dummy", null), "x");
+        assertThat(fakeValuesService.safeFetch("property.dummy", null)).isEqualTo("x");
     }
 
     @Test
     public void safeFetchShouldReturnSimpleList() {
-        assertEquals(fakeValuesService.safeFetch("property.simple", null), "hello");
+        assertThat(fakeValuesService.safeFetch("property.simple", null)).isEqualTo("hello");
     }
 
     @Test
@@ -139,7 +137,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         final String actual = fakeValuesService.resolve("property.simpleResolution", dummy, mockedFaker);
 
         // then
-        assertEquals(actual, "Yo!");
+        assertThat(actual).isEqualTo("Yo!");
         verify(dummy).hello();
         verifyNoMoreInteractions(mockedFaker);
     }
@@ -156,7 +154,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         final String actual = fakeValuesService.resolve("property.advancedResolution", dummy, mockedFaker);
 
         // then
-        assertEquals(actual, "Luke Cage");
+        assertThat(actual).isEqualTo("Luke Cage");
         verify(mockedFaker).superhero();
         verify(person).name();
     }
@@ -175,7 +173,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         final String actual = fakeValuesService.resolve("property.resolutionWithList", dummy, mockedFaker);
 
         // then
-        assertEquals(actual, "Yo!");
+        assertThat(actual).isEqualTo("Yo!");
         verify(dummy).hello();
     }
 
@@ -193,7 +191,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         String actual = fakeValuesService.resolve("property.multipleResolution", dummy, mockedFaker);
 
         // then
-        assertEquals(actual, "Yo Superman! up up and away");
+        assertThat(actual).isEqualTo("Yo Superman! up up and away");
 
         verify(mockedFaker).superhero();
         verify(person).descriptor();
@@ -234,7 +232,7 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         final List<Locale> processedChain = FVS.localeChain(new Locale("ru"));
         final List<Locale> chain = FVS.getLocalesChain();
 
-        assertEquals(chain, processedChain);
+        assertThat(chain).isEqualTo(processedChain);
     }
 
     @Test
@@ -298,16 +296,17 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
     @ParameterizedTest
     @ValueSource(strings = {"src/test/test.txt_null", "qwerty", "src"})
     public void fileExpressionTestFailure(String filename) {
-        Assertions.assertThrows(RuntimeException.class, () -> fakeValuesService.fileExpression(Paths.get(filename), faker));
+        assertThatThrownBy(() -> fakeValuesService.fileExpression(Paths.get(filename), faker))
+            .isInstanceOf(RuntimeException.class);
     }
 
     @Test
     public void fileNoExpressionTest() {
         try {
             Path tmpPath = Files.createTempFile("tmp", "file");
-            Assertions.assertEquals(String.join("", Files.readAllLines(tmpPath)), fakeValuesService.fileExpression(tmpPath, faker));
+            assertThat(String.join("", Files.readAllLines(tmpPath))).isEqualTo(fakeValuesService.fileExpression(tmpPath, faker));
         } catch (IOException e) {
-            Assertions.fail("Fail ", e);
+            fail("Fail ", e);
         }
     }
 
@@ -315,10 +314,10 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
     public void fileExpressionTest() {
         try {
             Path path = Paths.get("src/test/test.txt");
-            Assertions.assertNotEquals(String.join(System.lineSeparator(), Files.readAllLines(path)),
-                fakeValuesService.fileExpression(path, faker));
+            assertThat(String.join(System.lineSeparator(), Files.readAllLines(path)))
+                .isNotEqualTo(fakeValuesService.fileExpression(path, faker));
         } catch (IOException e) {
-            Assertions.fail("Fail ", e);
+            fail("Fail ", e);
         }
     }
 
@@ -336,12 +335,9 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
     }
 
     private void expressionShouldFailWith(String expression, String errorMessage) {
-        try {
-            fakeValuesService.expression(expression, faker);
-            fail("Should have failed with RuntimeException and message of " + errorMessage);
-        } catch (RuntimeException re) {
-            assertEquals(re.getMessage(), errorMessage);
-        }
+        assertThatThrownBy(() -> fakeValuesService.expression(expression, faker))
+            .isInstanceOf(RuntimeException.class)
+            .hasMessage(errorMessage);
     }
 
     @Test
@@ -356,19 +352,16 @@ public class FakeValuesServiceTest extends AbstractFakerTest {
         final String actual = fakeValuesService.resolve("property.sameResolution", dummy, mockedFaker);
 
         // then
-        assertEquals(actual, "1 2");
+        assertThat(actual).isEqualTo("1 2");
         verifyNoMoreInteractions(mockedFaker);
     }
 
     @Test
     public void FakeValuesServiceWithNullLocaleTest() {
-        try {
-            RandomService r = new RandomService();
-            new FakeValuesService(null, r);
-            fail("Should catch IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(), "locale is required");
-        }
+        RandomService r = new RandomService();
+        assertThatThrownBy(() -> new FakeValuesService(null, new RandomService()))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("locale is required");
     }
 
     public static class DummyService {

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FakeValuesGroupingTest {
 
@@ -22,7 +21,7 @@ public class FakeValuesGroupingTest {
 
     @Test
     public void handlesOneFakeValue() {
-        assertEquals(fakeValuesGrouping.get("address"), addressValues.get("address"));
+        assertThat(fakeValuesGrouping.get("address")).isEqualTo(addressValues.get("address"));
         assertThat(fakeValuesGrouping.get("address")).isNotNull();
     }
 
@@ -31,10 +30,10 @@ public class FakeValuesGroupingTest {
         FakeValues catValues = new FakeValues(Locale.ENGLISH, "cat.yml", "creature");
         fakeValuesGrouping.add(catValues);
 
-        assertEquals(fakeValuesGrouping.get("address"), addressValues.get("address"));
+        assertThat(fakeValuesGrouping.get("address")).isEqualTo(addressValues.get("address"));
         assertThat(fakeValuesGrouping.get("address")).isNotNull();
 
-        assertEquals(fakeValuesGrouping.get("creature"), catValues.get("creature"));
+        assertThat(fakeValuesGrouping.get("creature")).isEqualTo(catValues.get("creature"));
         assertThat(fakeValuesGrouping.get("creature")).isNotNull();
     }
 

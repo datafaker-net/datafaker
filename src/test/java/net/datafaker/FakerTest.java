@@ -1,6 +1,5 @@
 package net.datafaker;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,6 +10,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FakerTest extends AbstractFakerTest {
 
@@ -145,17 +145,20 @@ public class FakerTest extends AbstractFakerTest {
 
     @Test
     public void badExpressionTooManyArgs() {
-        Assertions.assertThrows(RuntimeException.class, () -> faker.expression("#{regexify 'a','a'}"));
+        assertThatThrownBy(() -> faker.expression("#{regexify 'a','a'}"))
+            .isInstanceOf(RuntimeException.class);
     }
 
     @Test
     public void badExpressionTooFewArgs() {
-        Assertions.assertThrows(RuntimeException.class, () -> faker.expression("#{regexify}"));
+        assertThatThrownBy(() -> faker.expression("#{regexify}"))
+            .isInstanceOf(RuntimeException.class);
     }
 
     @Test
     public void badExpressionCouldntCoerce() {
-        Assertions.assertThrows(RuntimeException.class, () -> faker.expression("#{number.number_between 'x','10'}"));
+        assertThatThrownBy(() -> faker.expression("#{number.number_between 'x','10'}"))
+            .isInstanceOf(RuntimeException.class);
     }
 
     @Test
@@ -200,7 +203,8 @@ public class FakerTest extends AbstractFakerTest {
 
     @Test
     public void resolveShouldThrowExceptionWhenPropertyDoesntExist() {
-        Assertions.assertThrows(RuntimeException.class, () -> faker.resolve("address.nothing"));
+        assertThatThrownBy(() -> faker.resolve("address.nothing"))
+            .isInstanceOf(RuntimeException.class);
     }
 
     /*
@@ -219,7 +223,7 @@ public class FakerTest extends AbstractFakerTest {
             }
         }
 
-        Assertions.assertTrue(counter < n);
+        assertThat(counter).isLessThan(n);
     }
 
     @Test

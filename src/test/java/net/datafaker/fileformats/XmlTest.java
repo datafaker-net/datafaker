@@ -10,14 +10,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class XmlTest {
     @ParameterizedTest
     @MethodSource("generateTestXmlPretty")
     public void xmlPrettyTest(Xml.XmlNode xmlNode, String expected) {
         Xml xml = new Xml(xmlNode);
-        assertEquals(expected, xml.generate(true));
+        assertThat(xml.generate(true)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestXmlPretty() {
@@ -39,7 +39,7 @@ public class XmlTest {
     @MethodSource("generateTestXml")
     public void xmlTest(Xml.XmlNode xmlNode, String expected) {
         Xml xml = new Xml(xmlNode);
-        assertEquals(expected, xml.generate());
+        assertThat(xml.generate()).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestXml() {

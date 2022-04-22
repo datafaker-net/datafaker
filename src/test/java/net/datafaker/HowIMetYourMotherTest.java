@@ -3,7 +3,6 @@ package net.datafaker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HowIMetYourMotherTest extends AbstractFakerTest {
 
@@ -14,7 +13,7 @@ public class HowIMetYourMotherTest extends AbstractFakerTest {
 
     @Test
     public void catchPhrase() {
-        assertFalse(faker.howIMetYourMother().catchPhrase().isEmpty());
+        assertThat(faker.howIMetYourMother().catchPhrase()).isNotEmpty();
     }
 
     @Test
@@ -24,6 +23,6 @@ public class HowIMetYourMotherTest extends AbstractFakerTest {
 
     @Test
     public void quote() {
-        assertFalse(faker.howIMetYourMother().quote().isEmpty());
+        assertThat(faker.howIMetYourMother().quote()).isNotEmpty();
     }
 }

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Strings.isNullOrEmpty;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HarryPotterTest extends AbstractFakerTest {
 
@@ -20,7 +19,7 @@ public class HarryPotterTest extends AbstractFakerTest {
 
     @Test
     public void quote() {
-        assertFalse(isNullOrEmpty(faker.harryPotter().quote()));
+        assertThat(isNullOrEmpty(faker.harryPotter().quote())).isFalse();
     }
 
     @Test

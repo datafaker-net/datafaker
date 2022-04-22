@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * The purpose of these tests is to ensure that the Locales have been properly configured
@@ -35,6 +34,6 @@ public class MostSpecificLocaleIT {
         assertThat(enDefaultCountries).hasSize(1);
         assertThat(enUsDefaultCountries).hasSize(3);
 
-        assertNotEquals(enDefaultCountries, enUsDefaultCountries, "the default country for en is not en_US");
+        assertThat(enDefaultCountries).as("the default country for en is not en_US").isNotEqualTo(enUsDefaultCountries);
     }
 }

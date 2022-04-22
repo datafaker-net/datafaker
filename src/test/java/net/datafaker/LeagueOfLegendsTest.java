@@ -3,7 +3,6 @@ package net.datafaker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class LeagueOfLegendsTest extends AbstractFakerTest {
 
@@ -19,7 +18,7 @@ public class LeagueOfLegendsTest extends AbstractFakerTest {
 
     @Test
     public void quote() {
-        assertFalse(faker.leagueOfLegends().quote().isEmpty());
+        assertThat(faker.leagueOfLegends().quote()).isNotEmpty();
     }
 
     @Test

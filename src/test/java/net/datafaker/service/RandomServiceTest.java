@@ -2,7 +2,6 @@ package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
 import org.assertj.core.api.Condition;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,8 +12,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.allOf;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author pmiklos
@@ -24,13 +22,14 @@ public class RandomServiceTest extends AbstractFakerTest {
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     public void testPositiveBoundariesOnly(RandomService randomService) {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> randomService.nextLong(0L));
+        assertThatThrownBy( () -> randomService.nextLong(0L))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     public void testLongWithinBoundary(RandomService randomService) {
-        assertEquals(randomService.nextLong(1), 0L);
+        assertThat(randomService.nextLong(1)).isEqualTo(0L);
 
         for (int i = 1; i < 10; i++) {
             assertThat(randomService.nextLong(2)).isLessThan(2L);
@@ -81,7 +80,7 @@ public class RandomServiceTest extends AbstractFakerTest {
         assertThat(l2).isEqualTo(1L);
         assertThat(l3).isEqualTo(836L);
 
-        assertFalse(b);
+        assertThat(b).isFalse();
     }
 
     @ParameterizedTest

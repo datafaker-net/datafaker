@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TwitterTest extends AbstractFakerTest {
 
@@ -18,7 +15,7 @@ public class TwitterTest extends AbstractFakerTest {
         Date constrainDate = new Date(testDate.getTime() + 3000000);
         Date generated = faker.twitter().createdTime(true, testDate, constrainDate);
         boolean test = generated.after(testDate) && generated.before(constrainDate);
-        assertTrue(test);
+        assertThat(test).isTrue();
     }
 
     @Test
@@ -27,28 +24,28 @@ public class TwitterTest extends AbstractFakerTest {
         Date constrainDate = new Date(testDate.getTime() - 3000000);
         Date generated = faker.twitter().createdTime(false, testDate, constrainDate);
         boolean test = generated.before(testDate) && generated.after(constrainDate);
-        assertTrue(test);
+        assertThat(test).isTrue();
     }
 
     @Test
     public void testShortTwitterIdLength() {
         int expectedLength = 6;
         String generatedID = faker.twitter().twitterId(expectedLength);
-        assertEquals(generatedID.length(), expectedLength);
+        assertThat(generatedID).hasSize(expectedLength);
     }
 
     @RepeatedTest(100)
     public void testLongTwitterIdLength() {
         int expectedLength = 25;
         String generatedID = faker.twitter().twitterId(expectedLength);
-        assertEquals(generatedID.length(), expectedLength);
+        assertThat(generatedID).hasSize(expectedLength);
     }
 
     @Test
     public void testTwitterIdLength() {
         int expectedLength = 15;
         String generatedID = faker.twitter().twitterId(expectedLength);
-        assertEquals(generatedID.length(), expectedLength);
+        assertThat(generatedID).hasSize(expectedLength);
     }
 
     @Test
@@ -56,7 +53,7 @@ public class TwitterTest extends AbstractFakerTest {
         int expectedLength = 15;
         String generatedIDOne = faker.twitter().twitterId(expectedLength);
         String generatedIDTwo = faker.twitter().twitterId(expectedLength);
-        assertNotEquals(generatedIDOne, generatedIDTwo);
+        assertThat(generatedIDOne).isNotEqualTo(generatedIDTwo);
     }
 
     @Test
@@ -65,7 +62,7 @@ public class TwitterTest extends AbstractFakerTest {
         int wordMaxLength = 5;
         String text = faker.twitter().text(null, sentenceMaxLength, wordMaxLength);
         String[] textwords = text.split(" ");
-        assertTrue(textwords.length <= sentenceMaxLength);
+        assertThat(textwords.length).isLessThanOrEqualTo(sentenceMaxLength);
     }
 
     @Test
@@ -89,7 +86,7 @@ public class TwitterTest extends AbstractFakerTest {
                 break;
             }
         }
-        assertTrue(flag);
+        assertThat(flag).isTrue();
     }
 
     @Test
@@ -116,7 +113,7 @@ public class TwitterTest extends AbstractFakerTest {
     @Test
     public void linkTestKeyWords() {
         for (int i = 0; i < 10; i++) {
-            assertTrue(faker.twitter().getLink("John", 6).contains("John"));
+            assertThat(faker.twitter().getLink("John", 6)).contains("John");
         }
     }
 }

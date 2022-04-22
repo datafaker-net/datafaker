@@ -3,7 +3,6 @@ package net.datafaker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HobbitTest extends AbstractFakerTest {
 
@@ -19,7 +18,7 @@ public class HobbitTest extends AbstractFakerTest {
 
     @Test
     public void quote() {
-        assertFalse(faker.hobbit().quote().isEmpty());
+        assertThat(faker.hobbit().quote()).isNotEmpty();
     }
 
     @Test

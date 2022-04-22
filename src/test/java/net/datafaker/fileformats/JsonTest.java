@@ -1,6 +1,5 @@
 package net.datafaker.fileformats;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,7 +12,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.fail;
 
 public class JsonTest {
     @ParameterizedTest
@@ -26,10 +26,10 @@ public class JsonTest {
             } else if (entry.getKey() instanceof Supplier) {
                 builder.set((Supplier<String>) entry.getKey(), entry.getValue());
             } else {
-                Assertions.fail("Key should be String or Supplier<String>");
+                fail("Key should be String or Supplier<String>");
             }
         }
-        assertEquals(expected, builder.build().generate());
+        assertThat(builder.build().generate()).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestJson() {

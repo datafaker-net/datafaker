@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * The purpose of these tests is to ensure that the Locales have been properly configured
@@ -41,7 +41,8 @@ public class UkLocalDirectivesTest {
             startsWithFemPrefix |= streetName.startsWith(femPrefix);
         }
 
-        assertTrue(startsWithFemPrefix || startsWithMascPrefix,
-            "the streetname starts with a fem or masc prefix");
+        assertThat(startsWithFemPrefix || startsWithMascPrefix)
+            .as("the streetname starts with a fem or masc prefix")
+            .isTrue();
     }
 }

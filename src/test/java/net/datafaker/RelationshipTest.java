@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import java.lang.reflect.InvocationTargetException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 public class RelationshipTest extends AbstractFakerTest {
@@ -59,13 +59,15 @@ public class RelationshipTest extends AbstractFakerTest {
     @Test
     public void anyWithIllegalArgumentExceptionThrown() {
         when(mockFaker.random()).thenThrow(new IllegalArgumentException());
-        assertThrows(IllegalArgumentException.class, () -> new Relationship(mockFaker).any());
+        assertThatThrownBy(() -> new Relationship(mockFaker).any())
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void anyWithSecurityExceptionThrown() {
         when(mockFaker.random()).thenThrow(new SecurityException());
-        assertThrows(SecurityException.class, () -> new Relationship(mockFaker).any());
+        assertThatThrownBy(() -> new Relationship(mockFaker).any())
+            .isInstanceOf(SecurityException.class);
     }
 
     @Test
@@ -73,8 +75,9 @@ public class RelationshipTest extends AbstractFakerTest {
         when(mockFaker.random()).then(invocationOnMock -> {
             throw new IllegalAccessException();
         });
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> new Relationship(mockFaker).any());
-        assertThat(exception).hasMessageStartingWith("IllegalAccessException: ");
+        assertThatThrownBy(() -> new Relationship(mockFaker).any())
+            .isInstanceOf(RuntimeException.class)
+            .hasMessageStartingWith("IllegalAccessException: ");
     }
 
     @Test
@@ -82,8 +85,9 @@ public class RelationshipTest extends AbstractFakerTest {
         when(mockFaker.random()).then(invocationOnMock -> {
             throw new InvocationTargetException(new Exception());
         });
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> new Relationship(mockFaker).any());
-        assertThat(exception).hasMessageStartingWith("InvocationTargetException: ");
+        assertThatThrownBy(() -> new Relationship(mockFaker).any())
+            .isInstanceOf(RuntimeException.class)
+            .hasMessageStartingWith("InvocationTargetException: ");
     }
 
 }

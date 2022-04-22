@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.reflections.ReflectionUtils.getAllMethods;
 import static org.reflections.ReflectionUtils.withModifier;
 import static org.reflections.ReflectionUtils.withParametersCount;
@@ -199,7 +198,7 @@ public class FakerIT {
             assertThat(returnValue).isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;
             assertThat(returnValueAsString).isNotEmpty();
-            assertFalse(returnValueAsString.startsWith("/"));
+            assertThat(returnValueAsString).startsWith("/");
         }
     }
 

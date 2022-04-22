@@ -17,8 +17,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NumberTest extends AbstractFakerTest {
 
@@ -170,20 +168,22 @@ public class NumberTest extends AbstractFakerTest {
 
     @Test
     public void numberBetweenIntIntZeroMinMax() {
-        assertEquals(0, faker.number().numberBetween(0, 0),
-            "Calling numberBetween with min==max yields min, with 0");
-        assertEquals(2, faker.number().numberBetween(2, 2),
-            "Calling numberBetween with min==max yields min");
+        assertThat(faker.number().numberBetween(0, 0))
+            .as("Calling numberBetween with min==max yields min, with 0")
+            .isEqualTo(0);
+        assertThat(faker.number().numberBetween(2, 2))
+            .as("Calling numberBetween with min==max yields min")
+            .isEqualTo(2);
     }
 
     @Test
     public void numberBetweenLongLongZeroMinMax() {
-        assertEquals(0,
-            faker.number().numberBetween(0L, 0L),
-            "Calling numberBetween with min==max yields min, with 0");
-        assertEquals(2,
-            faker.number().numberBetween(2L, 2L),
-            "Calling numberBetween with min==max yields min");
+        assertThat(faker.number().numberBetween(0L, 0L))
+            .as("Calling numberBetween with min==max yields min, with 0")
+            .isEqualTo(0);
+        assertThat(faker.number().numberBetween(2L, 2L))
+            .as("Calling numberBetween with min==max yields min")
+            .isEqualTo(2);
     }
 
     /**
@@ -364,7 +364,7 @@ public class NumberTest extends AbstractFakerTest {
 
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             int count = entry.getValue();
-            assertTrue((mean - count) / mean < 0.2);
+            assertThat((mean - count) / mean).isLessThan(0.2);
         }
     }
 
@@ -387,7 +387,7 @@ public class NumberTest extends AbstractFakerTest {
 
         for (Map.Entry<Long, Integer> entry : map.entrySet()) {
             int count = entry.getValue();
-            assertTrue((mean - count) / mean < 0.2);
+            assertThat((mean - count) / mean).isLessThan(0.2);
         }
 
     }
@@ -411,7 +411,7 @@ public class NumberTest extends AbstractFakerTest {
             assertThat(value).isGreaterThanOrEqualTo(minInt);
             ints.add(value);
         }
-        assertEquals(ints.size(), Math.max(1, size));
+        assertThat(ints).hasSize(Math.max(1, size));
 
         //test whether NumberBetween(long, long) can
         // create all number between min and max(not included)
@@ -424,7 +424,7 @@ public class NumberTest extends AbstractFakerTest {
             assertThat(value).isGreaterThanOrEqualTo(minLong);
             longs.add(value);
         }
-        assertEquals(longs.size(), Math.max(1, size));
+        assertThat(longs).hasSize(Math.max(1, size));
     }
 
     @Test

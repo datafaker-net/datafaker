@@ -1,6 +1,5 @@
 package net.datafaker;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * This is a demo of how to create a custom faker and register a custom faker in it.
@@ -57,14 +57,14 @@ public class CustomFakerTest {
 
     @Test
     public void addNullExistingPath() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new Faker().addPath(Locale.ENGLISH, null));
+        assertThatThrownBy(() -> new Faker().addPath(Locale.ENGLISH, null))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void addNonExistingPath() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new Faker().addPath(Locale.ENGLISH, Paths.get("non-existing-file")));
+        assertThatThrownBy(() -> new Faker().addPath(Locale.ENGLISH, Paths.get("non-existing-file")))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @RepeatedTest(10)

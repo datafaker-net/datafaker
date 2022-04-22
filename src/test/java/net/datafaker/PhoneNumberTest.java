@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PhoneNumberTest extends AbstractFakerTest {
     private static final Faker US_FAKER = new Faker(new Locale("en_US"));
@@ -34,7 +32,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
     public void testAllCellPhone_enUS() throws NumberParseException {
         String phoneNumber = US_FAKER.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "US");
-        assertTrue(util.isValidNumberForRegion(proto, "US"), phoneNumber);
+        assertThat(util.isValidNumberForRegion(proto, "US")).as(phoneNumber).isTrue();
     }
 
 
@@ -42,7 +40,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
     public void testAllCellPhone_svSE() throws NumberParseException {
         String phoneNumber = SE_FAKER.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "SE");
-        assertTrue(util.isValidNumberForRegion(proto, "SE"), phoneNumber);
+        assertThat(util.isValidNumberForRegion(proto, "SE")).as(phoneNumber).isTrue();
     }
 
 
@@ -50,7 +48,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
     public void testAllCellPhone_csCZ() throws NumberParseException {
         String phoneNumber = CZ_FAKER.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "CZ");
-        assertTrue(util.isValidNumberForRegion(proto, "CZ"), phoneNumber);
+        assertThat(util.isValidNumberForRegion(proto, "CZ")).as(phoneNumber).isTrue();
     }
 
 
@@ -67,7 +65,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
         }
 
         // Current score is ~420. Improvements are welcome.
-        assertTrue(errorCount < 500);
+        assertThat(errorCount).isLessThan(500);
     }
 
 
@@ -85,7 +83,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
         }
 
         // Not perfect yet, but should be good enough
-        assertTrue(errorCount < 250);
+        assertThat(errorCount).isLessThan(250);
     }
 
 
@@ -93,7 +91,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
     public void testAllCellPhone_nl() throws NumberParseException {
         String phoneNumber = NL_FAKER.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "NL");
-        assertTrue(util.isValidNumberForRegion(proto, "NL"), phoneNumber);
+        assertThat(util.isValidNumberForRegion(proto, "NL")).as(phoneNumber).isTrue();
     }
 
     @Test

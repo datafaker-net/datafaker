@@ -1,7 +1,6 @@
 package net.datafaker;
 
 import net.datafaker.fileformats.Format;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,10 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FakeCollectionTest extends AbstractFakerTest {
     @Test
@@ -40,19 +36,21 @@ public class FakeCollectionTest extends AbstractFakerTest {
         assertThat(names.size()).isLessThanOrEqualTo(5);
         assertThat(names.size()).isGreaterThanOrEqualTo(3);
         for (String name : names) {
-            assertNull(name);
+            assertThat(name).isNull();
         }
     }
 
     @ParameterizedTest
     @ValueSource(doubles = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, -0.3, 2, 3, Integer.MAX_VALUE, Double.MAX_VALUE})
     public void illegalNullRate(double nullRate) {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        assertThatThrownBy(
             () -> new FakeCollection.Builder<String>()
                 .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
                 .nullRate(nullRate)
                 .minLen(3)
-                .maxLen(5).build().get(), "Not thrown for nullRate " + nullRate);
+                .maxLen(5).build().get())
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Null rate should be between 0 and 1");
     }
 
     @Test
@@ -75,20 +73,21 @@ public class FakeCollectionTest extends AbstractFakerTest {
         List<Object> objects = new FakeCollection.Builder<>()
             .suppliers(() -> faker.name().firstName(), () -> faker.random().nextInt(100))
             .maxLen(5).build().get();
-        assertEquals(5, objects.size());
+        assertThat(objects).hasSize(5);
         for (Object object : objects) {
-            assertTrue(object instanceof Integer || object instanceof String);
+            assertThat(object).isInstanceOfAny(Integer.class, String.class);
         }
     }
 
     @Test
     public void checkWrongArguments() {
-        IllegalArgumentException iae = Assertions.assertThrows(IllegalArgumentException.class, () ->
+        assertThatThrownBy(() ->
             new FakeCollection.Builder<String>()
                 .suppliers(() -> faker.name().firstName())
                 .minLen(10)
-                .maxLen(5).build().get());
-        assertEquals("Max length must be not less than min length and not negative", iae.getMessage());
+                .maxLen(5).build().get())
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Max length must be not less than min length and not negative");
     }
 
     private interface Data {
@@ -172,14 +171,15 @@ public class FakeCollectionTest extends AbstractFakerTest {
 
     @Test
     public void differentNumberOfHeadersAndColumns() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Format.toCsv(
+        assertThatThrownBy(() -> Format.toCsv(
                 new FakeCollection.Builder<Name>()
                     .suppliers(() -> faker.name())
                     .minLen(3)
                     .maxLen(5)
                     .build())
             .headers(() -> "firstName", () -> "lastname")
-            .columns(Name::firstName, Name::lastName, Name::fullName).build().get());
+            .columns(Name::firstName, Name::lastName, Name::fullName).build().get())
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -205,8 +205,8 @@ public class FakeCollectionTest extends AbstractFakerTest {
             }
         }
 
-        assertEquals(limit + 1, numberOfLines); // limit + 1 line for header
-        assertEquals((limit + 1) * (4 - 1), numberOfSeparator); // number of lines * (number of columns - 1)
+        assertThat(limit + 1).isEqualTo(numberOfLines); // limit + 1 line for header
+        assertThat((limit + 1) * (4 - 1)).isEqualTo(numberOfSeparator); // number of lines * (number of columns - 1)
     }
 
     @Test
@@ -230,7 +230,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
             }
         }
 
-        assertEquals(limit - 1, numberOfLines); // limit - 1 since for the last line there is no comma
+        assertThat(limit - 1).isEqualTo(numberOfLines); // limit - 1 since for the last line there is no comma
     }
 
     @Test
@@ -268,14 +268,14 @@ public class FakeCollectionTest extends AbstractFakerTest {
                 numberOfLines++;
             }
         }
-        assertEquals(limit - 1, numberOfLines); // limit - 1 since for the last line there is no comma
+        assertThat(limit - 1).isEqualTo(numberOfLines); // limit - 1 since for the last line there is no comma
     }
 
     @RepeatedTest(10)
     public void singletonTest() {
         int limit = 10;
-        assertNotNull(new FakeCollection.Builder<Data>().minLen(limit).maxLen(limit)
+        assertThat(new FakeCollection.Builder<Data>().minLen(limit).maxLen(limit)
             .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
-            .build().singleton());
+            .build().singleton()).isNotNull();
     }
 }
