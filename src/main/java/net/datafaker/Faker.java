@@ -292,6 +292,10 @@ public class Faker {
         return getProvider(Basketball.class, () -> new Basketball(this));
     }
 
+    public Battlefield1 battlefield1() {
+        return getProvider(Battlefield1.class, () -> new Battlefield1(this));
+    }
+
     public Beer beer() {
         return getProvider(Beer.class, () -> new Beer(this));
     }

@@ -157,6 +157,7 @@ Providers
 * Back To The Future
 * Barcode
 * Basketball
+* Battlefield1  
 * Beer
 * Blood Type
 * Bojack Horseman
