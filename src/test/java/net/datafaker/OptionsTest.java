@@ -9,28 +9,29 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class OptionsTest extends AbstractFakerTest {
+class OptionsTest extends AbstractFakerTest {
 
     private String[] options;
 
     @BeforeEach
-    public void setupOptions() {
+    void setupOptions() {
         options = new String[]{"A", "B", "C"};
     }
 
     @Test
-    public void testOptionWithArray() {
+    void testOptionWithArray() {
         assertThat(faker.options().option(options)).isIn(options);
     }
 
     @Test
-    public void testOptionWithVarargsString() {
+    void testOptionWithVarargsString() {
         assertThat(faker.options().option("A", "B", "C")).isIn(options);
     }
 
     @Test
-    public void testOptionWithVarargs() {
+    void testOptionWithVarargs() {
         Integer[] integerOptions = new Integer[]{1, 3, 4, 5};
         assertThat(faker.options().option(1, 3, 4, 5)).isIn(integerOptions);
         Long[] longOptions = new Long[]{1L, 3L, 4L, 5L};
@@ -52,12 +53,70 @@ public class OptionsTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testOptionWithEnum() {
+    void testSubset() {
+        Integer[] integerOptions = new Integer[]{1, 3, 4, 5};
+        assertThat(faker.options().subset(1, integerOptions))
+            .doesNotContainAnyElementsOf(Arrays.asList(2, 6))
+            .containsAnyElementsOf(Arrays.asList(integerOptions));
+        Long[] longOptions = new Long[]{1L, 3L, 4L, 5L};
+        assertThat(faker.options().subset(1, longOptions))
+            .doesNotContainAnyElementsOf(Arrays.asList(2L, 6L))
+            .containsAnyElementsOf(Arrays.asList(longOptions));
+
+        assertThat(faker.options().subset(longOptions.length, longOptions))
+            .doesNotContainAnyElementsOf(Arrays.asList(2L, 6L))
+            .containsAnyElementsOf(Arrays.asList(longOptions))
+            .hasSize(longOptions.length);
+
+        assertThat(faker.options().subset(longOptions.length + 1, longOptions))
+            .doesNotContainAnyElementsOf(Arrays.asList(2L, 6L))
+            .containsAnyElementsOf(Arrays.asList(longOptions))
+            .hasSize(longOptions.length);
+
+        String[] strOptions = new String[]{"1", "2", "3"};
+        assertThat(faker.options().subset(strOptions.length + 1, strOptions))
+            .doesNotContainAnyElementsOf(Arrays.asList("q", "w"))
+            .containsAnyElementsOf(Arrays.asList(strOptions))
+            .hasSize(strOptions.length);
+
+        assertThat(faker.options().subset(1, strOptions))
+            .doesNotContainAnyElementsOf(Arrays.asList("q", "w"))
+            .containsAnyElementsOf(Arrays.asList(strOptions))
+            .hasSize(1);
+
+    }
+
+    @Test
+    void testSubsetWithDuplicate() {
+        Object[] array = new Object[]{1, 1, 2, 2};
+        assertThat(faker.options().subset(5, array))
+            .hasSize(2);
+        String[] strArray = new String[]{"a", "s", "s", "a"};
+        assertThat(faker.options().subset(Integer.MAX_VALUE, strArray))
+            .hasSize(2);
+    }
+
+    @Test
+    void testEmptySubset() {
+        Object[] array = new Object[]{1, 2, 3};
+        assertThat(faker.options().subset(0, array))
+            .isEmpty();
+        assertThatThrownBy(() -> faker.options().subset(-1, array))
+            .isInstanceOf(IllegalArgumentException.class);
+        String[] strArray = new String[]{"1", "2", "3"};
+        assertThat(faker.options().subset(0, strArray))
+            .isEmpty();
+        assertThatThrownBy(() -> faker.options().subset(-1, strArray))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void testOptionWithEnum() {
         assertThat(faker.options().option(Day.class)).isIn(Day.values());
     }
 
     @Test
-    public void testNextArrayElement() {
+    void testNextArrayElement() {
         Integer[] array = new Integer[]{1, 2, 3, 5, 8, 13, 21};
 
         for (int i = 1; i < 10; i++) {
@@ -66,14 +125,14 @@ public class OptionsTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testNextListElement() {
+    void testNextListElement() {
         List<Integer> list = Arrays.asList(1, 2, 3, 5, 8, 13, 21);
         for (int i = 1; i < 10; i++) {
             assertThat(faker.options().nextElement(list)).isIn(list);
         }
     }
 
-    public enum Day {
+    enum Day {
         MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
     }
 }
