@@ -54,7 +54,7 @@ It's also possible to generate JSON output:
     ``` java
     Faker faker = new Faker();
     String json = Format.toJson(
-                    new FakeCollection.Builder<Name>().faker(faker)
+                    faker.<Name>collection()
                         .suppliers(() -> faker.name())
                         .maxLen(2)
                         .minLen(2)
@@ -63,7 +63,7 @@ It's also possible to generate JSON output:
                     .set("lastName", Name::lastName)
                     .set("address",
                         Format.toJson(
-                            new FakeCollection.Builder<Address>().faker(faker)
+                            faker.<Address>collection()
                                 .suppliers(() -> faker.address())
                                 .maxLen(1)
                                 .minLen(1)
@@ -73,7 +73,7 @@ It's also possible to generate JSON output:
                         .set("zipcode", Address::zipCode)
                         .set("streetAddress", Address::streetAddress)
                         .build())
-                    .set("phones", name -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+                    .set("phones", name -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
                     .build()
                     .generate();
         System.out.println(json);
@@ -93,7 +93,7 @@ Another example with json payload
     ``` java
         Faker faker = new Faker();
         String json = Format.toJson(
-                        new FakeCollection.Builder<Name>().faker(faker)
+                        faker.<Name>collection().faker(faker)
                             .suppliers(faker::name)
                             .maxLen(2)
                             .minLen(2)
@@ -102,7 +102,7 @@ Another example with json payload
                         .set("lastName", Name::lastName)
                         .set("payload", payload ->
                                     Format.toJson(
-                                            new FakeCollection.Builder<Address>().faker(faker)
+                                            faker.<Address>collection()
                                             .suppliers(faker::address)
                                             .maxLen(1)
                                             .minLen(1)
@@ -112,7 +112,7 @@ Another example with json payload
                                     .set("zipcode", Address::zipCode)
                                     .set("streetAddress", Address::streetAddress)
                                     .build().generate())
-                        .set("phones", name -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+                        .set("phones", name -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
                         .build()
                         .generate();
         System.out.println(json);
@@ -136,8 +136,8 @@ The following is an example on how to use it:
     Map<Supplier<String>, Supplier<Object>> map = new LinkedHashMap<>();
     Map<Supplier<String>, Supplier<Object>> address = new LinkedHashMap<>();
     Map<Supplier<String>, Supplier<Object>> phones = new LinkedHashMap<>();
-    phones.put(() -> "worknumbers", () -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get());
-    phones.put(() -> "cellphones", () -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get());
+    phones.put(() -> "worknumbers", () -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get());
+    phones.put(() -> "cellphones", () -> faker.<String>collection().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get());
     address.put(() -> "city", () -> faker.address().city());
     address.put(() -> "country", () -> faker.address().country());
     address.put(() -> "streetAddress", () -> faker.address().streetAddress());
@@ -162,13 +162,13 @@ attributes using randomly generated data in the following way:
     public static void main(String[] args) {
         Faker faker = new Faker();
 
-        Collection<Xml.XmlNode> address = new FakeCollection.Builder<Xml.XmlNode>()
+        Collection<Xml.XmlNode> address = faker.<Xml.XmlNode>collection()
                 .suppliers(() -> new Xml.XmlNode("address",
                         map(entry("country", faker.address().country()),
                                 entry("city", faker.address().city()), entry("streetAddress", faker.address().streetAddress())), Collections.emptyList()))
                 .maxLen(3).build().get();
 
-        Collection<Xml.XmlNode> persons = new FakeCollection.Builder<Xml.XmlNode>()
+        Collection<Xml.XmlNode> persons = faker.<Xml.XmlNode>collection()
                 .suppliers(() -> new Xml.XmlNode("person",
                         map(entry("firstname", faker.name().firstName()),
                                 entry("lastname", faker.name().lastName())),
@@ -232,13 +232,13 @@ In case you only want to generate XML elements, without any attributes, that pos
 
     ``` java
     Faker faker = new Faker();
-    Collection<Xml.XmlNode> address = new FakeCollection.Builder<Xml.XmlNode>()
+    Collection<Xml.XmlNode> address = faker.<Xml.XmlNode>collection()
             .suppliers(() -> new Xml.XmlNode("address",
                     of(new Xml.XmlNode("country", faker.address().country()),
                             new Xml.XmlNode("city", faker.address().city()),
                             new Xml.XmlNode("streetAddress", faker.address().streetAddress()))))
             .maxLen(4).build().get();
-    Collection<Xml.XmlNode> persons = new FakeCollection.Builder<Xml.XmlNode>()
+    Collection<Xml.XmlNode> persons = faker.<Xml.XmlNode>collection()
             .suppliers(() -> new Xml.XmlNode("person",
                     of(new Xml.XmlNode("firstname", faker.name().firstName()),
                             new Xml.XmlNode("lastname", faker.name().lastName()),

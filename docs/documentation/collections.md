@@ -9,7 +9,7 @@ For example, the following code will generate a list of first and last names wit
 
     ``` java 
     List<String> names = 
-        new FakeCollection.Builder<String>()
+        faker.<String>collection()
             .suppliers(
                 () -> faker.name().firstName(), 
                 () -> faker.name().lastName())
@@ -24,7 +24,7 @@ A list can also contain different types:
 
     ``` java 
     List<Object> objects = 
-        new FakeCollection.Builder<>()
+        faker.collection()
             .suppliers(
                 () -> faker.name().firstName(), 
                 () -> faker.random().nextInt(100))
@@ -39,7 +39,7 @@ By default, it's value is 0, i.e. no null values will be generated.
 
     ``` java 
     List<Object> objects = 
-        new FakeCollection.Builder<>()
+        faker.collection()
             .suppliers(
                 () -> faker.name().firstName(), 
                 () -> faker.random().nextInt(100))
@@ -54,7 +54,7 @@ And to generate a collection with only about 30% values of null `nullRate(0.3)` 
 
     ``` java 
     List<Object> objects = 
-        new FakeCollection.Builder<>()
+        faker.collection()
             .suppliers(
                 () -> faker.name().firstName(), 
                 () -> faker.random().nextInt(100))

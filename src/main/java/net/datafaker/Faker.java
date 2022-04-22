@@ -224,6 +224,14 @@ public class Faker {
         return result;
     }
 
+    /**
+     *
+     * @return builder to build {@code FakeCollection}
+     */
+    public <T> FakeCollection.Builder<T> collection() {
+        return new FakeCollection.Builder<T>().faker(this);
+    }
+
     public Address address() {
         return getProvider(Address.class, () -> new Address(this));
     }
