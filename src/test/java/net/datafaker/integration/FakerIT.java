@@ -181,6 +181,7 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.witcher());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.yoda());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.zelda());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.oscarMovie());
     }
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {
