@@ -122,6 +122,7 @@ Providers
 * Durations
 * Educator
 * EnglandFootBall
+* ElectricalComponents
 * Esports
 * File
 * Finance

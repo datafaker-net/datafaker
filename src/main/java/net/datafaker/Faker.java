@@ -428,6 +428,10 @@ public class Faker {
         return getProvider(EnglandFootBall.class, () -> new EnglandFootBall(this));
     }
 
+    public ElectricalComponents electricalComponents() {
+        return getProvider(ElectricalComponents.class, () -> new ElectricalComponents(this));
+    }
+
     public Esports esports() {
         return getProvider(Esports.class, () -> new Esports(this));
     }
