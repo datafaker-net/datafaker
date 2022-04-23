@@ -23,13 +23,14 @@ An example can be found below:
 === "Java"
 
     ``` java
-    System.out.println(new Csv.CsvBuilder()
-            .columns(Csv.Column.of("first_name", () -> faker.name().firstName()),
+        System.out.println(
+            Format.toCsv(
+                    Csv.Column.of("first_name", () -> faker.name().firstName()),
                     Csv.Column.of("last_name", () -> faker.name().lastName()),
                     Csv.Column.of("address", () -> faker.address().streetAddress()))
-            .header(true)
-            .separator(" ; ")
-            .limit(5).build().get());
+                .header(true)
+                .separator(" ; ")
+                .limit(5).build().get());
     ```
 
 Executing the above will result in something similar to the below:
@@ -52,42 +53,76 @@ It's also possible to generate JSON output:
 
     ``` java
     Faker faker = new Faker();
-    // If order is not important other maps e.g. HashMap could be used
-    Map<Supplier<String>, Supplier<Object>> person = new LinkedHashMap<>();
-    Map<Supplier<String>, Supplier<Object>> address = new LinkedHashMap<>();
-    address.put(() -> "country", () -> faker.address().country());
-    address.put(() -> "city", () -> faker.address().city());
-    address.put(() -> "zipcode", () -> faker.address().zipCode());
-    address.put(() -> "streetAddress", () -> faker.address().streetAddress());
-
-    person.put(() -> "firstName", () -> faker.name().firstName());
-    person.put(() -> "lastName", () -> faker.name().lastName());
-    person.put(() -> "phones", () -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get());
-    person.put(() -> "address", () -> address);
-    Json json = new Json(person);
-    System.out.println(json.generate());    
+    String json = Format.toJson(
+                    faker.<Name>collection()
+                        .suppliers(() -> faker.name())
+                        .maxLen(2)
+                        .minLen(2)
+                        .build())
+                    .set("firstName", Name::firstName)
+                    .set("lastName", Name::lastName)
+                    .set("address",
+                        Format.toJson(
+                            faker.<Address>collection()
+                                .suppliers(() -> faker.address())
+                                .maxLen(1)
+                                .minLen(1)
+                                .build())
+                        .set("country", Address::country)
+                        .set("city", Address::city)
+                        .set("zipcode", Address::zipCode)
+                        .set("streetAddress", Address::streetAddress)
+                        .build())
+                    .set("phones", name -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+                    .build()
+                    .generate();
+        System.out.println(json);
     ```
 
 This will produce something similar to the following:
 
 ```json
-{
-  "firstName": "Beau",
-  "lastName": "Lueilwitz",
-  "phones": [
-    "(088) 217-5229 x0106",
-    "(343) 379-9190 x7682",
-    "(115) 661-2988 x6965"
-  ],
-  "address": {
-    "country": "Iceland",
-    "city": "East Everettefurt",
-    "zipcode": "65196",
-    "streetAddress": "929 Littel Curve"
-  }
-}
+[{"firstName": "Azucena", "lastName": "Block", "address": [{"country": "Micronesia", "city": "Ralphberg", "zipcode": "03792", "streetAddress": "522 Detra Motorway"}], "phones": ["885.387.7538 x3339", "673-179-8684 x7840", "512-510-3469 x47468"]},
+  {"firstName": "Hollis", "lastName": "Conroy", "address": [{"country": "Anguilla", "city": "Murrayshire", "zipcode": "96973", "streetAddress": "84545 Carolyne Hills"}], "phones": ["133.943.3781 x16122", "797.830.4970 x310", "(599) 214-5520 x920"]}]
 ```
 
+Another example with json payload
+
+=== "Java"
+
+    ``` java
+        Faker faker = new Faker();
+        String json = Format.toJson(
+                        faker.<Name>collection().faker(faker)
+                            .suppliers(faker::name)
+                            .maxLen(2)
+                            .minLen(2)
+                            .build())
+                        .set("firstName", Name::firstName)
+                        .set("lastName", Name::lastName)
+                        .set("payload", payload ->
+                                    Format.toJson(
+                                            faker.<Address>collection()
+                                            .suppliers(faker::address)
+                                            .maxLen(1)
+                                            .minLen(1)
+                                            .build())
+                                    .set("country", Address::country)
+                                    .set("city", Address::city)
+                                    .set("zipcode", Address::zipCode)
+                                    .set("streetAddress", Address::streetAddress)
+                                    .build().generate())
+                        .set("phones", name -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+                        .build()
+                        .generate();
+        System.out.println(json);
+    ```
+
+This will produce json with escaped json payload e.g.:
+```json
+[{"firstName": "Rey", "lastName": "Hilpert", "payload": "[{\"country\": \"Vanuatu\", \"city\": \"Douglasborough\", \"zipcode\": \"78956\", \"streetAddress\": \"15586 DuBuque Circles\"}]", "phones": ["(739) 078-6320", "(530) 089-9967 x167", "422.892.6273 x46644"]},
+{"firstName": "Timmy", "lastName": "Lakin", "payload": "[{\"country\": \"Chile\", \"city\": \"East Frederick\", \"zipcode\": \"07470\", \"streetAddress\": \"425 Hackett Tunnel\"}]", "phones": ["416.215.9044", "700.631.9476", "1-521-484-1096"]}]
+```
 ## YAML
 
 A lightweight YAML generator is now built into Datafaker. 
@@ -101,8 +136,8 @@ The following is an example on how to use it:
     Map<Supplier<String>, Supplier<Object>> map = new LinkedHashMap<>();
     Map<Supplier<String>, Supplier<Object>> address = new LinkedHashMap<>();
     Map<Supplier<String>, Supplier<Object>> phones = new LinkedHashMap<>();
-    phones.put(() -> "worknumbers", () -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get());
-    phones.put(() -> "cellphones", () -> new FakeCollection.Builder<String>().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get());
+    phones.put(() -> "worknumbers", () -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get());
+    phones.put(() -> "cellphones", () -> faker.<String>collection().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get());
     address.put(() -> "city", () -> faker.address().city());
     address.put(() -> "country", () -> faker.address().country());
     address.put(() -> "streetAddress", () -> faker.address().streetAddress());
@@ -127,13 +162,13 @@ attributes using randomly generated data in the following way:
     public static void main(String[] args) {
         Faker faker = new Faker();
 
-        Collection<Xml.XmlNode> address = new FakeCollection.Builder<Xml.XmlNode>()
+        Collection<Xml.XmlNode> address = faker.<Xml.XmlNode>collection()
                 .suppliers(() -> new Xml.XmlNode("address",
                         map(entry("country", faker.address().country()),
                                 entry("city", faker.address().city()), entry("streetAddress", faker.address().streetAddress())), Collections.emptyList()))
                 .maxLen(3).build().get();
 
-        Collection<Xml.XmlNode> persons = new FakeCollection.Builder<Xml.XmlNode>()
+        Collection<Xml.XmlNode> persons = faker.<Xml.XmlNode>collection()
                 .suppliers(() -> new Xml.XmlNode("person",
                         map(entry("firstname", faker.name().firstName()),
                                 entry("lastname", faker.name().lastName())),
@@ -197,13 +232,13 @@ In case you only want to generate XML elements, without any attributes, that pos
 
     ``` java
     Faker faker = new Faker();
-    Collection<Xml.XmlNode> address = new FakeCollection.Builder<Xml.XmlNode>()
+    Collection<Xml.XmlNode> address = faker.<Xml.XmlNode>collection()
             .suppliers(() -> new Xml.XmlNode("address",
                     of(new Xml.XmlNode("country", faker.address().country()),
                             new Xml.XmlNode("city", faker.address().city()),
                             new Xml.XmlNode("streetAddress", faker.address().streetAddress()))))
             .maxLen(4).build().get();
-    Collection<Xml.XmlNode> persons = new FakeCollection.Builder<Xml.XmlNode>()
+    Collection<Xml.XmlNode> persons = faker.<Xml.XmlNode>collection()
             .suppliers(() -> new Xml.XmlNode("person",
                     of(new Xml.XmlNode("firstname", faker.name().firstName()),
                             new Xml.XmlNode("lastname", faker.name().lastName()),

@@ -2,39 +2,37 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HitchhikersGuideToTheGalaxyTest extends AbstractFakerTest {
 
     @Test
     public void character() {
-        assertThat(faker.hitchhikersGuideToTheGalaxy().character(), matchesRegularExpression("^(\\w+(\\.?\\s?'?))+$"));
+        assertThat(faker.hitchhikersGuideToTheGalaxy().character()).matches("^(\\w+(\\.?\\s?'?))+$");
     }
 
     @Test
     public void location() {
-        assertThat(faker.hitchhikersGuideToTheGalaxy().location(), matchesRegularExpression("^(\\w+\\S?\\.?\\s?'?-?)+$"));
+        assertThat(faker.hitchhikersGuideToTheGalaxy().location()).matches("^(\\w+\\S?\\.?\\s?'?-?)+$");
     }
 
     @Test
     public void marvinQuote() {
-        assertFalse(faker.hitchhikersGuideToTheGalaxy().marvinQuote().isEmpty());
+        assertThat(faker.hitchhikersGuideToTheGalaxy().marvinQuote()).isNotEmpty();
     }
 
     @Test
     public void planet() {
-        assertThat(faker.hitchhikersGuideToTheGalaxy().planet(), matchesRegularExpression("^(\\w+-?\\s?)+$"));
+        assertThat(faker.hitchhikersGuideToTheGalaxy().planet()).matches("^(\\w+-?\\s?)+$");
     }
 
     @Test
     public void quote() {
-        assertFalse(faker.hitchhikersGuideToTheGalaxy().quote().isEmpty());
+        assertThat(faker.hitchhikersGuideToTheGalaxy().quote()).isNotEmpty();
     }
 
     @Test
     public void species() {
-        assertThat(faker.hitchhikersGuideToTheGalaxy().species(), matchesRegularExpression("^(\\w+'?\\s?)+$"));
+        assertThat(faker.hitchhikersGuideToTheGalaxy().species()).matches("^(\\w+'?\\s?)+$");
     }
 }

@@ -2,12 +2,12 @@ package net.datafaker.service;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FakerIDNTest {
 
     @Test
     public void toASCIINoError() {
-        assertEquals("hello", FakerIDN.toASCII("hello"));
+        assertThat(FakerIDN.toASCII("hello")).isEqualTo("hello");
     }
 }

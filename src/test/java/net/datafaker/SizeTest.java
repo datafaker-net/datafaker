@@ -2,14 +2,12 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SizeTest extends AbstractFakerTest {
 
     @Test
     public void adjective() {
-        assertThat(faker.size().adjective(), matchesRegularExpression("[a-zA-Z]+(-[a-zA-Z]+)?"));
+        assertThat(faker.size().adjective()).matches("[a-zA-Z]+(-[a-zA-Z]+)?");
     }
-
 }

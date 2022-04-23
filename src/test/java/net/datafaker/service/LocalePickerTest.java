@@ -1,7 +1,6 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
-import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -13,13 +12,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LocalePickerTest extends AbstractFakerTest {
 
@@ -42,10 +35,10 @@ public class LocalePickerTest extends AbstractFakerTest {
     public void testGetAllSuppportedLocales() {
         // Check that directory of locale resources exists
         File resourceDirectory = new File("./src/main/resources");
-        assertTrue(resourceDirectory.exists());
+        assertThat(resourceDirectory).exists();
 
         // Check that list of locales is not empty
-        assertThat(allLocales, not(IsEmptyCollection.empty()));
+        assertThat(allLocales).isNotEmpty();
     }
 
     /**
@@ -64,7 +57,7 @@ public class LocalePickerTest extends AbstractFakerTest {
         Random random2 = new Random(fixedSeed);
         String randomLocale2 = localePicker.getLocaleString(random2);
 
-        assertEquals(randomLocale1, randomLocale2);
+        assertThat(randomLocale1).isEqualTo(randomLocale2);
     }
 
     /**
@@ -75,7 +68,7 @@ public class LocalePickerTest extends AbstractFakerTest {
     public void testGetLocaleString() {
         Random random = new Random();
         String randomLocale = localePicker.getLocaleString(random);
-        assertThat(allLocales, hasItems(randomLocale));
+        assertThat(allLocales).contains(randomLocale);
     }
 
     /**
@@ -95,17 +88,17 @@ public class LocalePickerTest extends AbstractFakerTest {
                 .collect(Collectors.toList());
 
             Collections.sort(allLocales);
-            assertEquals(returnedLocales, allLocales);
+            assertThat(returnedLocales).isEqualTo(allLocales);
         }
     }
 
     @Test
     public void testGetLocale() {
-        assertThat(localePicker.getLocale(), is(not(nullValue())));
+        assertThat(localePicker.getLocale()).isNotNull();
     }
 
     @Test
     public void testGetLocaleWithoutReplacement() {
-        assertThat(localePicker.getLocaleWithoutReplacement(), is(not(nullValue())));
+        assertThat(localePicker.getLocaleWithoutReplacement()).isNotNull();
     }
 }

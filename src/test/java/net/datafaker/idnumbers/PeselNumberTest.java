@@ -5,12 +5,15 @@ import java.time.ZoneId;
 
 import net.datafaker.Faker;
 import net.datafaker.idnumbers.PeselNumber.Gender;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.BDDAssertions.fail;
 
 class PeselNumberTest {
 
@@ -77,7 +80,8 @@ class PeselNumberTest {
         /*
          * When
          */
-        Assertions.assertThrows(IllegalArgumentException.class, () -> peselNumber.get(givenBirthDate, Gender.ANY));
+        assertThatThrownBy(() -> peselNumber.get(givenBirthDate, Gender.ANY))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -101,47 +105,47 @@ class PeselNumberTest {
     }
 
     private void assertBasics(String gotPesel) {
-        Assertions.assertNotNull(gotPesel);
-        Assertions.assertEquals(PESEL_EXPECTED_LENGTH, gotPesel.length());
-        Assertions.assertTrue(gotPesel.chars().allMatch(Character::isDigit));
+        assertThat(gotPesel).isNotNull();
+        assertThat(PESEL_EXPECTED_LENGTH).isEqualTo(gotPesel.length());
+        assertThat(gotPesel.chars().allMatch(Character::isDigit)).isTrue();
     }
 
     private void assertBirthDate(LocalDate givenBirthDate, String gotPesel) {
         final int gotYear = toNumber(gotPesel.charAt(0), gotPesel.charAt(1));
-        Assertions.assertEquals(givenBirthDate.getYear() % 100, gotYear);
+        assertThat(givenBirthDate.getYear() % 100).isEqualTo(gotYear);
 
         final int gotMonth = toNumber(gotPesel.charAt(2), gotPesel.charAt(3));
 
         final int givenYear = givenBirthDate.getYear();
 
         if (givenYear < 1800) {
-            Assertions.fail("Year is before 1800. Test case is broken.");
+            fail("Year is before 1800. Test case is broken.");
         } else if (givenYear < 1900) {
-            Assertions.assertEquals(givenBirthDate.getMonthValue() + 80, gotMonth);
+            assertThat(givenBirthDate.getMonthValue() + 80).isEqualTo(gotMonth);
         } else if (givenYear < 2000) {
-            Assertions.assertEquals(givenBirthDate.getMonthValue(), gotMonth);
+            assertThat(givenBirthDate.getMonthValue()).isEqualTo(gotMonth);
         } else if (givenYear < 2100) {
-            Assertions.assertEquals(givenBirthDate.getMonthValue() + 20, gotMonth);
+            assertThat(givenBirthDate.getMonthValue() + 20).isEqualTo(gotMonth);
         } else if (givenYear < 2200) {
-            Assertions.assertEquals(givenBirthDate.getMonthValue() + 40, gotMonth);
+            assertThat(givenBirthDate.getMonthValue() + 40).isEqualTo(gotMonth);
         } else if (givenYear < 2300) {
-            Assertions.assertEquals(givenBirthDate.getMonthValue() + 60, gotMonth);
+            assertThat(givenBirthDate.getMonthValue() + 60).isEqualTo(gotMonth);
         } else {
             throw new IllegalArgumentException("Year is after 2300. Test case is broken.");
         }
 
         final int gotDay = toNumber(gotPesel.charAt(4), gotPesel.charAt(5));
-        Assertions.assertEquals(givenBirthDate.getDayOfMonth(), gotDay);
+        assertThat(givenBirthDate.getDayOfMonth()).isEqualTo(gotDay);
     }
 
     private void assertGender(Gender givenGender, String gotPesel) {
         final int gotGenderDigit = gotPesel.charAt(9) - '0';
         switch (givenGender) {
             case FEMALE:
-                Assertions.assertEquals(0, gotGenderDigit % 2);
+                assertThat(gotGenderDigit % 2).isEqualTo(0);
                 break;
             case MALE:
-                Assertions.assertEquals(1, gotGenderDigit % 2);
+                assertThat(gotGenderDigit % 2).isEqualTo(1);
                 break;
             default:
             case ANY:
@@ -153,7 +157,7 @@ class PeselNumberTest {
         final int gotSum = (gotPesel.charAt(0) + gotPesel.charAt(4) + gotPesel.charAt(8) + gotPesel.charAt(10)
             + 3 * (gotPesel.charAt(1) + gotPesel.charAt(5) + gotPesel.charAt(9))
             + 7 * (gotPesel.charAt(2) + gotPesel.charAt(6)) + 9 * (gotPesel.charAt(3) + gotPesel.charAt(7))) % 10;
-        Assertions.assertEquals(0, gotSum);
+        assertThat(gotSum).isEqualTo(0);
     }
 
     private int toNumber(char digit2, char digit1) {

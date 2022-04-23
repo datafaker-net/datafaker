@@ -2,23 +2,17 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ApplianceTest extends AbstractFakerTest {
 
     @Test
     public void brand() {
-        assertThat(faker.appliance().brand(), matchesRegularExpression("[A-Za-z .-]+"));
+        assertThat(faker.appliance().brand()).matches("[A-Za-z .-]+");
     }
 
     @Test
     public void equipment() {
-        assertThat(faker.appliance().equipment(), not(is(emptyOrNullString())));
+        assertThat(faker.appliance().equipment()).isNotEmpty();
     }
-
-
 }

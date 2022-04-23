@@ -1,51 +1,93 @@
 package net.datafaker;
 
-import org.junit.jupiter.api.Assertions;
+import net.datafaker.fileformats.Format;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
+import java.util.Random;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FakeCollectionTest extends AbstractFakerTest {
     @Test
     public void generateCollection() {
-        List<String> names = new FakeCollection.Builder<String>()
+        List<String> names = faker.<String>collection()
             .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
             .minLen(3)
             .maxLen(5).build().get();
-        assertThat(names.size(), is(lessThanOrEqualTo(5)));
-        assertThat(names.size(), is(greaterThanOrEqualTo(3)));
+        assertThat(names.size()).isLessThanOrEqualTo(5);
+        assertThat(names.size()).isGreaterThanOrEqualTo(3);
         for (String name : names) {
-            assertThat(name, matchesRegularExpression("[a-zA-Z']+"));
+            assertThat(name).matches("[a-zA-Z']+");
         }
     }
 
     @Test
+    public void generateNullCollection() {
+        List<String> names = faker.<String>collection()
+            .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
+            .nullRate(1d)
+            .minLen(3)
+            .maxLen(5).build().get();
+        assertThat(names.size()).isLessThanOrEqualTo(5);
+        assertThat(names.size()).isGreaterThanOrEqualTo(3);
+        for (String name : names) {
+            assertThat(name).isNull();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, -0.3, 2, 3, Integer.MAX_VALUE, Double.MAX_VALUE})
+    public void illegalNullRate(double nullRate) {
+        assertThatThrownBy(
+            () -> faker.collection()
+                .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
+                .nullRate(nullRate)
+                .minLen(3)
+                .maxLen(5).build().get())
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Null rate should be between 0 and 1");
+    }
+
+    @Test
+    public void generateCollectionWithRepeatableFaker() {
+        Faker seededFaker = new Faker(new Random(10L));
+
+        List<String> names = faker.<String>collection()
+            .faker(seededFaker)
+            .suppliers(() -> seededFaker.name().firstName(), () -> seededFaker.name().lastName())
+            .minLen(1)
+            .maxLen(20).build().get();
+
+        assertThat(names.size()).isEqualTo(14);
+        assertThat(names.get(0)).isEqualTo("Flor");
+        assertThat(names.get(1)).isEqualTo("Brian");
+    }
+
+    @Test
     public void generateCollectionWithDifferentObjects() {
-        List<Object> objects = new FakeCollection.Builder<>()
+        List<Object> objects = faker.collection()
             .suppliers(() -> faker.name().firstName(), () -> faker.random().nextInt(100))
             .maxLen(5).build().get();
-        assertEquals(5, objects.size());
+        assertThat(objects).hasSize(5);
         for (Object object : objects) {
-            assertTrue(object instanceof Integer || object instanceof String);
+            assertThat(object).isInstanceOfAny(Integer.class, String.class);
         }
     }
 
     @Test
     public void checkWrongArguments() {
-        IllegalArgumentException iae = Assertions.assertThrows(IllegalArgumentException.class, () ->
-            new FakeCollection.Builder<String>()
+        assertThatThrownBy(() ->
+            faker.collection()
                 .suppliers(() -> faker.name().firstName())
                 .minLen(10)
-                .maxLen(5).build().get());
-        assertEquals("Max length must be not less than min length and not negative", iae.getMessage());
+                .maxLen(5).build().get())
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Max length must be not less than min length and not negative");
     }
 
     private interface Data {
@@ -128,13 +170,26 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void myTest() {
+    public void differentNumberOfHeadersAndColumns() {
+        assertThatThrownBy(() -> Format.toCsv(
+                faker.<Name>collection()
+                    .suppliers(() -> faker.name())
+                    .minLen(3)
+                    .maxLen(5)
+                    .build())
+            .headers(() -> "firstName", () -> "lastname")
+            .columns(Name::firstName, Name::lastName, Name::fullName).build().get())
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void toCsv() {
         String separator = "$$$";
         int limit = 5;
-        String csv = new FakeCollection.Builder<Data>().minLen(limit).maxLen(limit)
-            .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
-            .build()
-            .toCsv()
+        String csv = Format.toCsv(
+                faker.<Data>collection().minLen(limit).maxLen(limit)
+                    .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
+                    .build())
             .headers(() -> "name", () -> "value", () -> "range", () -> "unit")
             .columns(Data::name, Data::value, Data::range, Data::unit)
             .separator(separator)
@@ -150,7 +205,77 @@ public class FakeCollectionTest extends AbstractFakerTest {
             }
         }
 
-        assertEquals(limit + 1, numberOfLines); // limit + 1 line for header
-        assertEquals((limit + 1) * (4 - 1), numberOfSeparator); // number of lines * (number of columns - 1)
+        assertThat(limit + 1).isEqualTo(numberOfLines); // limit + 1 line for header
+        assertThat((limit + 1) * (4 - 1)).isEqualTo(numberOfSeparator); // number of lines * (number of columns - 1)
+    }
+
+    @Test
+    public void toJson() {
+        int limit = 10;
+        String json = Format.toJson(
+                faker.<Data>collection().minLen(limit).maxLen(limit)
+                    .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
+                    .build())
+            .set("name", Data::name)
+            .set("value", Data::value)
+            .set("range", Data::range)
+            .set("unit", Data::unit)
+            .build()
+            .generate();
+
+        int numberOfLines = 0;
+        for (int i = 0; i < json.length(); i++) {
+            if (json.regionMatches(i, "},", 0, "},".length())) {
+                numberOfLines++;
+            }
+        }
+
+        assertThat(limit - 1).isEqualTo(numberOfLines); // limit - 1 since for the last line there is no comma
+    }
+
+    @Test
+    public void toNestedJson() {
+        final int limit = 2;
+        final String json =
+            Format.toJson(faker.collection()
+                    .suppliers(() -> faker.name())
+                    .maxLen(limit)
+                    .minLen(limit)
+                    .build())
+                .set("primaryAddress", Format.toJson()
+                    .set("country", () -> faker.address().country())
+                    .set("city", () -> faker.address().city())
+                    .set("zipcode", () -> faker.address().zipCode())
+                    .set("streetAddress", () -> faker.address().streetAddress())
+                    .build())
+                .set("secondaryAddresses", Format.toJson(faker.<Address>collection()
+                        .suppliers(() -> faker.address())
+                        .maxLen(1)
+                        .minLen(1)
+                        .build())
+                    .set("country", Address::country)
+                    .set("city", Address::city)
+                    .set("zipcode", Address::zipCode)
+                    .set("streetAddress", Address::streetAddress)
+                    .build())
+                .set("phones", name -> faker.collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+                .build()
+                .generate();
+
+        int numberOfLines = 0;
+        for (int i = 0; i < json.length(); i++) {
+            if (json.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+                numberOfLines++;
+            }
+        }
+        assertThat(limit - 1).isEqualTo(numberOfLines); // limit - 1 since for the last line there is no comma
+    }
+
+    @RepeatedTest(10)
+    public void singletonTest() {
+        int limit = 10;
+        assertThat(faker.<Data>collection().minLen(limit).maxLen(limit)
+            .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
+            .build().singleton()).isNotNull();
     }
 }

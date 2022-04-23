@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -19,15 +20,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.notNullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.reflections.ReflectionUtils.getAllMethods;
 import static org.reflections.ReflectionUtils.withModifier;
 import static org.reflections.ReflectionUtils.withParametersCount;
@@ -38,6 +31,7 @@ import static org.reflections.ReflectionUtils.withReturnType;
  * and that methods return values. The unit tests should ensure what the values returned
  * are correct. These tests just ensure that the methods can be invoked.
  */
+@SuppressWarnings("NewClassNamingConvention")
 public class FakerIT {
     private Faker faker;
     private Locale locale;
@@ -52,7 +46,7 @@ public class FakerIT {
 
     static {
         // 'it' has an empty suffix list so it never returns a value
-        exceptions.put(new Locale("it"), Arrays.asList("Name.suffix"));
+        exceptions.put(new Locale("it"), Collections.singletonList("Name.suffix"));
         exceptions.put(new Locale("es-mx"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("pt"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("uk"), Arrays.asList("Address.stateAbbr", "Address.streetSuffix",
@@ -110,15 +104,16 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.commerce());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.company());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.country());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.crypto());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.demographic());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dessert());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.device());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.disease());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dog());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dragonBall());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dune());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.educator());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.elderScrolls());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.electricalComponents());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.englandfootball());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.esports());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.file());
@@ -129,8 +124,12 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.funnyName());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gameOfThrones());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gender());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gratefulDead());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hacker());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.harryPotter());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hashing());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hearthstone());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.heyArnold());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hipster());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hitchhikersGuideToTheGalaxy());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.hobbit());
@@ -143,10 +142,15 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lebowski());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lordOfTheRings());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lorem());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.matz());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountain());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountaineering());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.music());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.name());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nation());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.natoPhoneticAlphabet());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nigeria());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.overwatch());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.phoneNumber());
@@ -155,10 +159,12 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.princessBride());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.programmingLanguage());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.relationships());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.restaurant());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.rickAndMorty());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.robin());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.rockBand());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.ruPaulDragRace());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.seinfeld());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.shakespeare());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.slackEmoji());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.space());
@@ -167,7 +173,9 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.stock());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.superhero());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.team());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.theItCrowd());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.touhou());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.tron());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.twinPeaks());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.university());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.vehicle());
@@ -175,12 +183,6 @@ public class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.witcher());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.yoda());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.zelda());
-
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.theItCrowd());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.restaurant());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.natoPhoneticAlphabet());
     }
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {
@@ -195,12 +197,10 @@ public class FakerIT {
                 continue;
             }
             final Object returnValue = method.invoke(object);
-            String failureReason = method + " on " + object;
-            assertThat(failureReason, returnValue, is(instanceOf(String.class)));
+            assertThat(returnValue).isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;
-            assertThat(failureReason, returnValueAsString, not(is(emptyOrNullString())));
-            assertThat(failureReason + " is a slash encoded regex", returnValueAsString,
-                not(allOf(startsWith("/"), endsWith("/"))));
+            assertThat(returnValueAsString).isNotEmpty();
+            assertThat(returnValueAsString).startsWith("/");
         }
     }
 
@@ -216,20 +216,20 @@ public class FakerIT {
     @MethodSource("dataParameters")
     public void testExceptionsNotCoveredInAboveTest(Locale locale, Random random) {
         init(locale, random);
-        assertThat(faker.bothify("####???"), is(notNullValue()));
-        assertThat(faker.letterify("????"), is(notNullValue()));
-        assertThat(faker.numerify("####"), is(notNullValue()));
+        assertThat(faker.bothify("####???")).isNotNull();
+        assertThat(faker.letterify("????")).isNotNull();
+        assertThat(faker.numerify("####")).isNotNull();
 
-        assertThat(faker.lorem().paragraph(1), is(notNullValue()));
-        assertThat(faker.lorem().paragraphs(1), is(notNullValue()));
+        assertThat(faker.lorem().paragraph(1)).isNotNull();
+        assertThat(faker.lorem().paragraphs(1)).isNotNull();
 
-        assertThat(faker.lorem().sentence(1), is(notNullValue()));
-        assertThat(faker.lorem().sentences(1), is(notNullValue()));
+        assertThat(faker.lorem().sentence(1)).isNotNull();
+        assertThat(faker.lorem().sentences(1)).isNotNull();
 
-        assertThat(faker.address().streetAddress(), is(notNullValue()));
+        assertThat(faker.address().streetAddress()).isNotNull();
 
-        assertThat(faker.lorem().words(), is(notNullValue()));
-        assertThat(faker.lorem().words(1), is(notNullValue()));
+        assertThat(faker.lorem().words()).isNotNull();
+        assertThat(faker.lorem().words(1)).isNotNull();
     }
 
     private static Stream<Arguments> dataParameters() {

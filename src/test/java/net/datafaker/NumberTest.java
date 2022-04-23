@@ -16,18 +16,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.either;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class NumberTest extends AbstractFakerTest {
 
@@ -44,11 +33,11 @@ public class NumberTest extends AbstractFakerTest {
         Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigit();
-            assertThat(value, is(lessThanOrEqualTo(9)));
-            assertThat(value, is(greaterThanOrEqualTo(0)));
+            assertThat(value).isLessThanOrEqualTo(9);
+            assertThat(value).isGreaterThanOrEqualTo(0);
             nums.add(value);
         }
-        assertThat(nums, contains(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+        assertThat(nums).contains(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
     @Test
@@ -56,25 +45,25 @@ public class NumberTest extends AbstractFakerTest {
         Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigitNotZero();
-            assertThat(value, is(lessThanOrEqualTo(9)));
-            assertThat(value, is(greaterThan(0)));
+            assertThat(value).isLessThanOrEqualTo(9);
+            assertThat(value).isGreaterThan(0);
             nums.add(value);
         }
-        assertThat(nums, contains(1, 2, 3, 4, 5, 6, 7, 8, 9));
+        assertThat(nums).contains(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
     @Test
     public void testRandomNumber() {
         long value = faker.number().randomNumber();
-        assertThat(value, is(lessThan(Long.MAX_VALUE)));
+        assertThat(value).isLessThan(Long.MAX_VALUE);
     }
 
     @Test
     public void testRandomNumberWithSingleDigitStrict() {
         for (int i = 0; i < 100; ++i) {
             long value = faker.number().randomNumber(1, true);
-            assertThat(value, is(lessThan(10L)));
-            assertThat(value, is(greaterThanOrEqualTo(0L)));
+            assertThat(value).isLessThan(10L);
+            assertThat(value).isGreaterThanOrEqualTo(0L);
         }
     }
 
@@ -82,7 +71,7 @@ public class NumberTest extends AbstractFakerTest {
     public void testRandomNumberWithZeroDigitsStrict() {
         for (int i = 0; i < 100; ++i) {
             long value = faker.number().randomNumber(0, true);
-            assertThat(value, is(0L));
+            assertThat(value).isEqualTo(0L);
         }
     }
 
@@ -92,7 +81,7 @@ public class NumberTest extends AbstractFakerTest {
             for (int x = 0; x < 100; ++x) {
                 long value = faker.number().randomNumber(i, true);
                 String stringValue = String.valueOf(value);
-                assertThat(stringValue.length(), is(i));
+                assertThat(stringValue.length()).isEqualTo(i);
             }
         }
     }
@@ -105,7 +94,7 @@ public class NumberTest extends AbstractFakerTest {
                 String strVal = BigDecimal.valueOf(value).stripTrailingZeros().toString();
                 if (strVal.contains(".") && !strVal.contains("+")) {
                     int ind = strVal.indexOf(".");
-                    assertThat(strVal.length() - ind - 1, is(lessThanOrEqualTo(i)));
+                    assertThat(strVal.length() - ind - 1).isLessThanOrEqualTo(i);
                 }
             }
         }
@@ -115,20 +104,20 @@ public class NumberTest extends AbstractFakerTest {
     public void testNumberBetween() {
         for (int i = 1; i < 100; ++i) {
             int v = faker.number().numberBetween(0, i);
-            assertThat(v, is(lessThanOrEqualTo(i)));
-            assertThat(v, is(greaterThanOrEqualTo(0)));
+            assertThat(v).isLessThanOrEqualTo(i);
+            assertThat(v).isGreaterThanOrEqualTo(0);
         }
 
         for (long i = 1L; i < 100L; ++i) {
             long v = faker.number().numberBetween(0, i);
-            assertThat(v, is(lessThanOrEqualTo(i)));
-            assertThat(v, is(greaterThanOrEqualTo(0L)));
+            assertThat(v).isLessThanOrEqualTo(i);
+            assertThat(v).isGreaterThanOrEqualTo(0L);
         }
 
         int min1 = 1;
         long v1 = faker.number().numberBetween(min1, 980000000L);
-        assertThat(v1, is(greaterThan((long) min1)));
-        assertThat(v1, is(lessThan(980000000L)));
+        assertThat(v1).isGreaterThan(min1);
+        assertThat(v1).isLessThan(980000000L);
     }
 
     @RepeatedTest(100)
@@ -136,8 +125,8 @@ public class NumberTest extends AbstractFakerTest {
         long low = 1;
         long high = 10;
         long v = faker.number().numberBetween(low, high);
-        assertThat(v, is(lessThan(high)));
-        assertThat(v, is(greaterThanOrEqualTo(low)));
+        assertThat(v).isLessThan(high);
+        assertThat(v).isGreaterThanOrEqualTo(low);
     }
 
     @RepeatedTest(100)
@@ -145,8 +134,8 @@ public class NumberTest extends AbstractFakerTest {
         int low = 1;
         int high = 10;
         int v = faker.number().numberBetween(low, high);
-        assertThat(v, is(lessThan(high)));
-        assertThat(v, is(greaterThanOrEqualTo(low)));
+        assertThat(v).isLessThan(high);
+        assertThat(v).isGreaterThanOrEqualTo(low);
     }
 
     @Test
@@ -156,11 +145,11 @@ public class NumberTest extends AbstractFakerTest {
         final int upperLimit = 3;
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().numberBetween(lowerLimit, upperLimit);
-            assertThat(value, is(lessThan(upperLimit)));
-            assertThat(value, is(greaterThanOrEqualTo(lowerLimit)));
+            assertThat(value).isLessThan(upperLimit);
+            assertThat(value).isGreaterThanOrEqualTo(lowerLimit);
             nums.add(value);
         }
-        assertThat(nums, contains(0, 1, 2));
+        assertThat(nums).contains(0, 1, 2);
     }
 
     @Test
@@ -170,31 +159,31 @@ public class NumberTest extends AbstractFakerTest {
         final long upperLimit = 3;
         for (int i = 0; i < 1000; ++i) {
             long value = faker.number().numberBetween(lowerLimit, upperLimit);
-            assertThat(value, is(lessThan(upperLimit)));
-            assertThat(value, is(greaterThanOrEqualTo(lowerLimit)));
+            assertThat(value).isLessThan(upperLimit);
+            assertThat(value).isGreaterThanOrEqualTo(lowerLimit);
             nums.add(value);
         }
-        assertThat(nums, contains(0L, 1L, 2L));
+        assertThat(nums).contains(0L, 1L, 2L);
     }
 
     @Test
     public void numberBetweenIntIntZeroMinMax() {
-        assertThat("Calling numberBetween with min==max yields min, with 0",
-            faker.number().numberBetween(0, 0),
-            is(0));
-        assertThat("Calling numberBetween with min==max yields min",
-            faker.number().numberBetween(2, 2),
-            is(2));
+        assertThat(faker.number().numberBetween(0, 0))
+            .as("Calling numberBetween with min==max yields min, with 0")
+            .isEqualTo(0);
+        assertThat(faker.number().numberBetween(2, 2))
+            .as("Calling numberBetween with min==max yields min")
+            .isEqualTo(2);
     }
 
     @Test
     public void numberBetweenLongLongZeroMinMax() {
-        assertThat("Calling numberBetween with min==max yields min, with 0",
-            faker.number().numberBetween(0L, 0L),
-            is(0L));
-        assertThat("Calling numberBetween with min==max yields min",
-            faker.number().numberBetween(2L, 2L),
-            is(2L));
+        assertThat(faker.number().numberBetween(0L, 0L))
+            .as("Calling numberBetween with min==max yields min, with 0")
+            .isEqualTo(0);
+        assertThat(faker.number().numberBetween(2L, 2L))
+            .as("Calling numberBetween with min==max yields min")
+            .isEqualTo(2);
     }
 
     /**
@@ -216,14 +205,12 @@ public class NumberTest extends AbstractFakerTest {
         };
 
         final double percentGreaterThan80Percent = randomizationQualityTest(minMaxRangeToUniquePercentageFunction);
-        assertThat("Percentage of runs > 80% unique is gte 90%",
-            percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
+        assertThat(percentGreaterThan80Percent).isGreaterThanOrEqualTo(percentRunsGtUniquePercentage);
 
         // this covers Issue # 121, the number of times the function is called with the MIN/MAX values here
         // is RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET
         final double extremeRunUniquePercent = minMaxRangeToUniquePercentageFunction.apply(Pair.of((long) Integer.MIN_VALUE, (long) Integer.MAX_VALUE));
-        assertThat("Percentage of extreme runs > 80%",
-            extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
+        assertThat(extremeRunUniquePercent).isGreaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE);
     }
 
     /**
@@ -246,14 +233,12 @@ public class NumberTest extends AbstractFakerTest {
         };
 
         final double percentGreaterThan80Percent = randomizationQualityTest(minMaxRangeToUniquePercentageFunction);
-        assertThat("Percentage of runs > 80% unique is gte 90%",
-            percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
+        assertThat(percentGreaterThan80Percent).isGreaterThanOrEqualTo(percentRunsGtUniquePercentage);
 
         // this covers Issue # 121, the number of times the function is called with the MIN/MAX values here
         // is RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET
         final double extremeRunUniquePercent = minMaxRangeToUniquePercentageFunction.apply(Pair.of((long) Integer.MIN_VALUE, (long) Integer.MAX_VALUE));
-        assertThat("Percentage of extreme runs > 80%",
-            extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
+        assertThat(extremeRunUniquePercent).isGreaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE);
     }
 
     /**
@@ -275,14 +260,12 @@ public class NumberTest extends AbstractFakerTest {
         };
 
         final double percentGreaterThan80Percent = randomizationQualityTest(minMaxRangeToUniquePercentageFunction);
-        assertThat("Percentage of runs > 80% unique is gte 90%",
-            percentGreaterThan80Percent, greaterThanOrEqualTo(percentRunsGtUniquePercentage));
+        assertThat(percentGreaterThan80Percent).isGreaterThanOrEqualTo(percentRunsGtUniquePercentage);
 
         // this covers Issue # 121, the number of times the function is called with the MIN/MAX values here
         // is RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET.
         final double extremeRunUniquePercent = minMaxRangeToUniquePercentageFunction.apply(Pair.of(Long.MIN_VALUE, Long.MAX_VALUE));
-        assertThat("Percentage of extreme runs > 80%",
-            extremeRunUniquePercent, greaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE));
+        assertThat(extremeRunUniquePercent).isGreaterThanOrEqualTo(INDIVIDUAL_RUN_GT_PERCENT_UNIQUE);
     }
 
     @Test
@@ -291,21 +274,21 @@ public class NumberTest extends AbstractFakerTest {
 
         double expected = BigDecimal.valueOf(42).doubleValue();
 
-        assertThat(actual, equalTo(expected));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void testDigit() {
         String digit = faker.number().digit();
 
-        assertThat(digit, matchesRegularExpression("[0-9]"));
+        assertThat(digit).matches("[0-9]");
     }
 
     @Test
     public void testDigits() {
         String digits = faker.number().digits(5);
 
-        assertThat(digits, matchesRegularExpression("[0-9]{5}"));
+        assertThat(digits).matches("[0-9]{5}");
     }
 
     /**
@@ -381,7 +364,7 @@ public class NumberTest extends AbstractFakerTest {
 
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             int count = entry.getValue();
-            assertTrue((mean - count) / mean < 0.2);
+            assertThat((mean - count) / mean).isLessThan(0.2);
         }
     }
 
@@ -404,7 +387,7 @@ public class NumberTest extends AbstractFakerTest {
 
         for (Map.Entry<Long, Integer> entry : map.entrySet()) {
             int count = entry.getValue();
-            assertTrue((mean - count) / mean < 0.2);
+            assertThat((mean - count) / mean).isLessThan(0.2);
         }
 
     }
@@ -424,11 +407,11 @@ public class NumberTest extends AbstractFakerTest {
         int maxInt = minInt + size;
         for (int i = 0; i < 10000; ++i) {
             int value = faker.number().numberBetween(minInt, maxInt);
-            assertThat(value, either(lessThan(maxInt)).or(equalTo(minInt)));
-            assertThat(value, is(greaterThanOrEqualTo(minInt)));
+            assertThat(value).isBetween(minInt, maxInt);
+            assertThat(value).isGreaterThanOrEqualTo(minInt);
             ints.add(value);
         }
-        assertEquals(ints.size(), Math.max(1, size));
+        assertThat(ints).hasSize(Math.max(1, size));
 
         //test whether NumberBetween(long, long) can
         // create all number between min and max(not included)
@@ -437,11 +420,11 @@ public class NumberTest extends AbstractFakerTest {
         long maxLong = minLong + size;
         for (int i = 0; i < 10000; ++i) {
             long value = faker.number().numberBetween(minLong, maxLong);
-            assertThat(value, either(lessThan(maxLong)).or(equalTo(minLong)));
-            assertThat(value, is(greaterThanOrEqualTo(minLong)));
+            assertThat(value).isBetween(minLong, maxLong);
+            assertThat(value).isGreaterThanOrEqualTo(minLong);
             longs.add(value);
         }
-        assertEquals(longs.size(), Math.max(1, size));
+        assertThat(longs).hasSize(Math.max(1, size));
     }
 
     @Test
@@ -462,9 +445,20 @@ public class NumberTest extends AbstractFakerTest {
 
             for (int j = 0; j < 100; j++) {
                 long value = faker.number().numberBetween(min, max);
-                assertThat(value, is(lessThan(max)));
-                assertThat(value, is(greaterThanOrEqualTo(min)));
+                assertThat(value).isLessThan(max);
+                assertThat(value).isGreaterThanOrEqualTo(min);
             }
         }
+    }
+
+    @RepeatedTest(10)
+    public void testPositive() {
+        assertThat(faker.number().positive()).isGreaterThan(0);
+    }
+
+    @RepeatedTest(10)
+    public void testNegative() {
+        assertThat(faker.number().negative()).isLessThan(0);
+
     }
 }

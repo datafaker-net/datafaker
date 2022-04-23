@@ -2,36 +2,32 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StarTrekTest extends AbstractFakerTest {
 
     @Test
     public void character() {
-        assertThat(faker.starTrek().character(), matchesRegularExpression("^(\\w+-?'?\\.?\\s?)+$"));
+        assertThat(faker.starTrek().character()).matches("^(\\w+-?'?\\.?\\s?)+$");
     }
 
     @Test
     public void location() {
-        assertThat(faker.starTrek().location(), matchesRegularExpression("^(\\w+'?\\s?)+$"));
+        assertThat(faker.starTrek().location()).matches("^(\\w+'?\\s?)+$");
     }
 
     @Test
     public void species() {
-        assertThat(faker.starTrek().species(), matchesRegularExpression("^(\\w+-?'?\\s?)+$"));
+        assertThat(faker.starTrek().species()).matches("^(\\w+-?'?\\s?)+$");
     }
 
     @Test
     public void villain() {
-        assertThat(faker.starTrek().villain(), matchesRegularExpression("^(\\w+'?\\.?\\s?)+$"));
+        assertThat(faker.starTrek().villain()).matches("^(\\w+'?\\.?\\s?)+$");
     }
 
     @Test
     public void klingon() {
-        assertThat(faker.starTrek().klingon(), not(is(emptyOrNullString())));
+        assertThat(faker.starTrek().klingon()).isNotEmpty();
     }
 }

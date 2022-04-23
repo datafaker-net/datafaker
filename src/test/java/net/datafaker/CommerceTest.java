@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.DecimalFormatSymbols;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CommerceTest extends AbstractFakerTest {
 
@@ -16,52 +15,47 @@ public class CommerceTest extends AbstractFakerTest {
     private static final String PROMOTION_CODE_REGEX = CAPITALIZED_WORD_REGEX + "(-" + CAPITALIZED_WORD_REGEX + ")*";
 
     @Test
-    public void testColor() {
-        assertThat(faker.commerce().color(), matchesRegularExpression("(\\w+ ?){1,2}"));
-    }
-
-    @Test
     public void testDepartment() {
-        assertThat(faker.commerce().department(), matchesRegularExpression("(\\w+(, | & )?){1,3}"));
+        assertThat(faker.commerce().department()).matches("(\\w+(, | & )?){1,3}");
     }
 
     @Test
     public void testProductName() {
-        assertThat(faker.commerce().productName(), matchesRegularExpression("(\\w+ ?){3,4}"));
+        assertThat(faker.commerce().productName()).matches("(\\w+ ?){3,4}");
     }
 
     @Test
     public void testMaterial() {
-        assertThat(faker.commerce().material(), matchesRegularExpression("\\w+"));
+        assertThat(faker.commerce().material()).matches("\\w+");
     }
 
     @Test
     public void testBrand() {
-        assertThat(faker.commerce().brand(), matchesRegularExpression("\\w+"));
+        assertThat(faker.commerce().brand()).matches("\\w+");
     }
 
     @Test
     public void testVendor() {
-        assertThat(faker.commerce().vendor(), matchesRegularExpression("[A-Za-z'() 0-9-,]+"));
+        assertThat(faker.commerce().vendor()).matches("[A-Za-z'() 0-9-,]+");
     }
 
     @Test
     public void testPrice() {
-        assertThat(faker.commerce().price(), matchesRegularExpression("\\d{1,3}\\" + decimalSeparator + "\\d{2}"));
+        assertThat(faker.commerce().price()).matches("\\d{1,3}\\" + decimalSeparator + "\\d{2}");
     }
 
     @Test
     public void testPriceMinMax() {
-        assertThat(faker.commerce().price(100, 1000), matchesRegularExpression("\\d{3,4}\\" + decimalSeparator + "\\d{2}"));
+        assertThat(faker.commerce().price(100, 1000)).matches("\\d{3,4}\\" + decimalSeparator + "\\d{2}");
     }
 
     @Test
     public void testPromotionCode() {
-        assertThat(faker.commerce().promotionCode(), matchesRegularExpression(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{6}"));
+        assertThat(faker.commerce().promotionCode()).matches(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{6}");
     }
 
     @Test
     public void testPromotionCodeDigits() {
-        assertThat(faker.commerce().promotionCode(3), matchesRegularExpression(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{3}"));
+        assertThat(faker.commerce().promotionCode(3)).matches(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{3}");
     }
 }

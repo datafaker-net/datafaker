@@ -12,14 +12,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class YamlTest {
     @ParameterizedTest
     @MethodSource("generateTestYaml")
     public void simpleYamlTest(Map<Supplier<String>, Supplier<Object>> input, String expected) {
         Yaml yaml = new Yaml(input);
-        assertEquals(expected, yaml.generate());
+        assertThat(yaml.generate()).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestYaml() {

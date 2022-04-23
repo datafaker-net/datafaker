@@ -8,10 +8,10 @@ import java.security.NoSuchAlgorithmException;
 /**
  * @since 0.8.0
  */
-public class Crypto {
+public class Hashing {
     private final Faker faker;
 
-    protected Crypto(Faker faker) {
+    protected Hashing(Faker faker) {
         this.faker = faker;
     }
 

@@ -2,24 +2,22 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OverwatchTest extends AbstractFakerTest {
 
     @Test
     public void hero() {
-        assertThat(faker.overwatch().hero(), matchesRegularExpression("^(\\w+\\.?\\s?)+$"));
+        assertThat(faker.overwatch().hero()).matches("^(\\w+\\.?\\s?)+$");
     }
 
     @Test
     public void location() {
-        assertThat(faker.overwatch().location(), matchesRegularExpression("^(.+'?:?\\s?)+$"));
+        assertThat(faker.overwatch().location()).matches("^(.+'?:?\\s?)+$");
     }
 
     @Test
     public void quote() {
-        assertFalse(faker.overwatch().quote().isEmpty());
+        assertThat(faker.overwatch().quote()).isNotEmpty();
     }
 }

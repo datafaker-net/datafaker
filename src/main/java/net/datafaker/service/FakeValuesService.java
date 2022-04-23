@@ -3,6 +3,7 @@ package net.datafaker.service;
 import com.mifmif.common.regex.Generex;
 import net.datafaker.Faker;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -34,6 +35,7 @@ public class FakeValuesService {
     private static final String DIGITS = "0123456789";
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
+    private static final Map<Locale, FakeValuesInterface> FAKE_VALUES_CACHE = new HashMap<>();
 
     private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
     private final RandomService randomService;
@@ -41,8 +43,6 @@ public class FakeValuesService {
     private final List<Locale> localesChain;
 
     private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
-    private final Map<String, Supplier<String>> expression2function = new WeakHashMap<>();
-    private final Map<String, List<Supplier<String>>> rawExp2function = new WeakHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<String, String> key2Expression = new WeakHashMap<>();
 
@@ -71,19 +71,22 @@ public class FakeValuesService {
 
         localesChain = localeChain(locale);
         for (final Locale l : localesChain) {
-            if (l.equals(Locale.ENGLISH)) {
-                fakeValuesInterfaceMap.putIfAbsent(l, FakeValuesGrouping.getEnglishFakeValueGrouping());
-            } else {
-                fakeValuesInterfaceMap.putIfAbsent(l, new FakeValues(l));
-            }
+            fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
         }
     }
 
+    private FakeValuesInterface getCachedFakeValue(Locale locale) {
+        if (Locale.ENGLISH.equals(locale)) {
+            return FakeValuesGrouping.getEnglishFakeValueGrouping();
+        }
+        return FAKE_VALUES_CACHE.computeIfAbsent(locale, FakeValues::new);
+    }
+
     /**
-     * Allows to add paths to files with custom data. Data should be in YAML format.
+     * Allows adding paths to files with custom data. Data should be in YAML format.
      *
-     * @param locale        the locale for which a path is going to be added.
-     * @param path          path to a file with YAML structure
+     * @param locale the locale for which a path is going to be added.
+     * @param path   path to a file with YAML structure
      * @throws IllegalArgumentException in case of invalid path
      */
     public void addPath(Locale locale, Path path) {
@@ -95,14 +98,11 @@ public class FakeValuesService {
         FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(locale);
         if (existingFakeValues == null) {
             fakeValuesInterfaceMap.putIfAbsent(locale, fakeValues);
-        } else if (existingFakeValues instanceof FakeValuesGrouping) {
-            ((FakeValuesGrouping)fakeValuesInterfaceMap.get(locale)).add(fakeValues);
-        } else if (existingFakeValues instanceof FakeValues) {
-            FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
-            fakeValuesGrouping.add((FakeValues) existingFakeValues);
-            fakeValuesGrouping.add(fakeValues);
         } else {
-            throw new RuntimeException(fakeValues.getClass() + " not supported (please raise an issue)");
+            FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
+            fakeValuesGrouping.add(existingFakeValues);
+            fakeValuesGrouping.add(fakeValues);
+            fakeValuesInterfaceMap.put(locale, fakeValuesGrouping);
         }
     }
 
@@ -401,10 +401,23 @@ public class FakeValuesService {
     }
 
     /**
-     * resolves an expression using the current faker.
+     * Resolves an expression using the current faker.
      */
     public String expression(String expression, Faker faker) {
         return resolveExpression(expression, null, faker);
+    }
+
+    /**
+     * Resolves an expression in file using the current faker.
+     */
+    public String fileExpression(Path path, Faker faker) {
+        try {
+            return Files.readAllLines(path)
+                .stream().map(t -> expression(t, faker))
+                .collect(Collectors.joining(System.lineSeparator()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -419,41 +432,29 @@ public class FakeValuesService {
      * {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, Faker root) {
-        List<Supplier<String>> expressionSuppliers = rawExp2function.get(expression);
-        if (expressionSuppliers == null) {
-            List<String> expressions = splitExpressions(expression);
-            expressionSuppliers = new ArrayList<>(expressions.size());
-            for (int i = 0; i < expressions.size(); i++) {
-                // odd are expressions, even are not expressions, just strings
-                if (i % 2 == 0) {
-                    final int index = i;
-                    expressionSuppliers.add(() -> expressions.get(index));
-                    continue;
-                }
-                String expr = expressions.get(i);
-                final Supplier<String> supplier = expression2function.get(expr);
-                String resolved = supplier == null ? null : supplier.get();
-                if (resolved == null) {
-                    int j = 0;
-                    while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
-                    String directive = expr.substring(0, j);
-                    while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
-                    String arguments = j == expr.length() ? "" : expr.substring(j);
-                    String[] args = splitArguments(arguments);
+        List<String> expressions = splitExpressions(expression);
+        List<Supplier<String>> expressionSuppliers = new ArrayList<>(expressions.size());
+        for (int i = 0; i < expressions.size(); i++) {
+            // odd are expressions, even are not expressions, just strings
+            if (i % 2 == 0) {
+                final int index = i;
+                expressionSuppliers.add(() -> expressions.get(index));
+                continue;
+            }
+            String expr = expressions.get(i);
+            int j = 0;
+            while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
+            String directive = expr.substring(0, j);
+            while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
+            String arguments = j == expr.length() ? "" : expr.substring(j);
+            String[] args = splitArguments(arguments);
 
-                    resolved = resolveExpression(expr, directive, args, current, root);
-                    if (resolved == null) {
-                        throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
-                    }
-                }
-                String r = resolved;
-                expressionSuppliers.add(() -> resolveExpression(r, current, root));
+            String resolved = resolveExpression(expr, directive, args, current, root);
+            if (resolved == null) {
+                throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
             }
-            if (current == null) {
-                rawExp2function.put(expression, expressionSuppliers);
-            }
+            expressionSuppliers.add(() -> resolveExpression(resolved, current, root));
         }
-
         return expressionSuppliers.stream().map(Supplier::get).collect(Collectors.joining());
     }
 
@@ -527,7 +528,7 @@ public class FakeValuesService {
         if (!isDotDirective(directive)) {
             Supplier<String> supplier = resolveFromMethodOn(current, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-                expression2function.put(expression, supplier);
+                //expression2function.put(expression, supplier);
                 return resolved;
             }
         }
@@ -538,7 +539,7 @@ public class FakeValuesService {
         Supplier<String> supplier = () -> safeFetch(simpleDirective, null);
         resolved = supplier.get();
         if (resolved != null) {
-            expression2function.put(expression, supplier);
+           // expression2function.put(expression, supplier);
             return resolved;
         }
 
@@ -546,7 +547,7 @@ public class FakeValuesService {
         if (!isDotDirective(directive)) {
             supplier = resolveFromMethodOn(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-                expression2function.put(expression, supplier);
+         //       expression2function.put(expression, supplier);
                 return resolved;
             }
         }
@@ -555,7 +556,7 @@ public class FakeValuesService {
         if (isDotDirective(directive)) {
             supplier = resolveFakerObjectAndMethod(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-                expression2function.put(expression, supplier);
+               // expression2function.put(expression, supplier);
                 return resolved;
             }
         }
@@ -568,9 +569,6 @@ public class FakeValuesService {
         if (isDotDirective(directive)) {
             supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), null);
             resolved = supplier.get();
-            if (resolved != null) {
-                expression2function.put(expression, supplier);
-            }
         }
 
         return resolved;

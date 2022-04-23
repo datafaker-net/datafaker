@@ -1,8 +1,19 @@
 package net.datafaker.fileformats;
 
+import net.datafaker.FakeCollection;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Json {
@@ -17,7 +28,7 @@ public class Json {
         return generate(map);
     }
 
-    private String generate(Collection<Object> collection) {
+    private static String generate(Collection<Object> collection) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         int i = 0;
@@ -32,7 +43,7 @@ public class Json {
         return sb.toString();
     }
 
-    private void value2String(Object value, StringBuilder sb) {
+    private static void value2String(Object value, StringBuilder sb) {
         if (value == null) {
             sb.append("null");
         } else if (value instanceof Integer
@@ -48,6 +59,8 @@ public class Json {
             sb.append(generate((Collection) value));
         } else if (value.getClass().isArray()) {
             sb.append(generate(Arrays.asList((Object[]) value)));
+        } else if (value instanceof Json) {
+            sb.append(((Json) value).generate());
         } else {
             sb.append("\"");
             for (char c : String.valueOf(value).toCharArray()) {
@@ -57,7 +70,7 @@ public class Json {
         }
     }
 
-    private String generate(Map<Supplier<String>, Supplier<Object>> map) {
+    private static String generate(Map<Supplier<String>, Supplier<Object>> map) {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         Set<String> keys = new HashSet<>();
@@ -127,5 +140,139 @@ public class Json {
         map.put('\u001E', "\\u001E");
         map.put('\u001F', "\\u001F");
         return Collections.unmodifiableMap(map);
+    }
+
+    public static class JsonBuilder {
+        private final Map<Supplier<String>, Supplier<Object>> map = new LinkedHashMap<>();
+
+        public JsonBuilder set(String key, Supplier<Object> value) {
+            map.put(() -> key, value);
+            return this;
+        }
+
+        public JsonBuilder set(Supplier<String> key, Supplier<Object> value) {
+            map.put(key, value);
+            return this;
+        }
+
+        public Json build() {
+            return new Json(map);
+        }
+    }
+
+    public static class JsonFromCollectionBuilder<T> {
+        private final Map<Function<T, String>, Function<T, Object>> map = new LinkedHashMap<>();
+        private final FakeCollection<T> collection;
+
+        public JsonFromCollectionBuilder(FakeCollection<T> collection) {
+            this.collection = collection;
+        }
+
+        public JsonFromCollectionBuilder<T> set(String key, Function<T, Object> value) {
+            map.put(t -> key, value);
+            return this;
+        }
+
+        public JsonFromCollectionBuilder<T> set(Function<T, String> key, Function<T, Object> value) {
+            map.put(key, value);
+            return this;
+        }
+
+        public JsonFromCollectionBuilder<T> set(String key, Json value) {
+            map.put(t -> key, t -> value);
+            return this;
+        }
+
+        public JsonFromCollectionBuilder<T> set(String key, JsonForFakeCollection value) {
+            map.put(t -> key, t -> value);
+            return this;
+        }
+
+        public JsonForFakeCollection<T> build() {
+            return new JsonForFakeCollection<>(collection, map);
+        }
+    }
+
+    public static class JsonForFakeCollection<T> {
+        private final Map<Function<T, String>, Function<T, Object>> map;
+        private final FakeCollection<T> collection;
+
+        public JsonForFakeCollection(FakeCollection<T> collection, Map<Function<T, String>, Function<T, Object>> map) {
+            this.map = map;
+            this.collection = collection;
+        }
+
+        public String generate() {
+            StringBuilder sb = new StringBuilder();
+            List<T> col = collection.get();
+            if (col == null) {
+                return null;
+            } else if (col.isEmpty()) {
+                return "[]";
+            } else {
+                sb.append("[");
+                for (int i = 0; i < col.size(); i++) {
+                    sb.append(generate(col.get(i), map));
+                    if (i < col.size() - 1) {
+                        sb.append(",").append(System.lineSeparator());
+                    }
+                }
+                sb.append("]");
+            }
+            return sb.toString();
+        }
+
+        private String generate(T record, Map<Function<T, String>, Function<T, Object>> map) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("{");
+            Set<String> keys = new HashSet<>();
+            for (Map.Entry<Function<T, String>, Function<T, Object>> entry : map.entrySet()) {
+                String key = entry.getKey().apply(record);
+                if (!keys.add(key)) continue;
+                if (keys.size() > 1) {
+                    sb.append(", ");
+                }
+                sb.append("\"");
+                for (char c : key.toCharArray()) {
+                    sb.append(ESCAPING_MAP.getOrDefault(c, c + ""));
+                }
+                sb.append("\": ");
+                Object value = entry.getValue().apply(record);
+                if (value instanceof JsonForFakeCollection) {
+                    sb.append(((JsonForFakeCollection<?>) value).generate());
+                } else if (value instanceof Collection) {
+                    sb.append(Json.generate((Collection) value));
+                } else if (value.getClass().isArray()) {
+                    sb.append(Json.generate(Arrays.asList((Object[]) value)));
+                } else if (value instanceof Json) {
+                    sb.append(((Json) value).generate());
+                } else {
+                    value2String(record, value, sb);
+                }
+            }
+            sb.append("}");
+            return sb.toString();
+        }
+
+        private void value2String(T record, Object value, StringBuilder sb) {
+            if (value == null) {
+                sb.append("null");
+            } else if (value instanceof Integer
+                || value instanceof Long
+                || value instanceof Short
+                || value instanceof BigInteger
+                || value instanceof Boolean
+                || (value instanceof BigDecimal && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
+                sb.append(value);
+            } else if (value instanceof Map) {
+                sb.append(generate(record, (Map<Function<T, String>, Function<T, Object>>) value));
+            } else {
+                sb.append("\"");
+                for (char c : String.valueOf(value).toCharArray()) {
+                    sb.append(ESCAPING_MAP.getOrDefault(c, c + ""));
+                }
+                sb.append("\"");
+            }
+        }
     }
 }

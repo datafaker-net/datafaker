@@ -1,36 +1,34 @@
 package net.datafaker;
 
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.emptyOrNullString;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SubscriptionTest extends AbstractFakerTest {
 
     @Test
     public void plans() {
-        assertThat(faker.subscription().plans(), not(is(emptyOrNullString())));
+        assertThat(faker.subscription().plans()).isNotEmpty();
     }
 
     @Test
     public void statuses() {
-        assertThat(faker.subscription().statuses(), not(is(emptyOrNullString())));
+        assertThat(faker.subscription().statuses()).isNotEmpty();
     }
 
     @Test
     public void paymentMethods() {
-        assertThat(faker.subscription().paymentMethods(), not(is(emptyOrNullString())));
+        assertThat(faker.subscription().paymentMethods()).isNotEmpty();
     }
 
     @Test
     public void subscriptionTerms() {
-        assertThat(faker.subscription().subscriptionTerms(), not(is(emptyOrNullString())));
+        assertThat(faker.subscription().subscriptionTerms()).isNotEmpty();
     }
 
     @Test
     public void paymentTerms() {
-        assertThat(faker.subscription().paymentTerms(), not(is(emptyOrNullString())));
+        assertThat(faker.subscription().paymentTerms()).isNotEmpty();
     }
 
 }

@@ -3,49 +3,49 @@ package net.datafaker.passportnumbers;
 import net.datafaker.Faker;
 
 public class AmPassportNumber {
-    private static final String[] validCHPatterns = {"[0-9]{8}"};
+    private static final String[] validAMPatterns = {"[0-9]{8}"};
 
     /**
-     * Generates a valid America passport number
+     * Generates a valid American passport number
      *
      * @param faker object faker
-     * @return a valid Chinese passport number
+     * @return a valid American passport number
      */
     public String getValidAm(Faker faker) {
-        String ch = faker.regexify("[0-9A-Z]{8}");
+        String am = faker.regexify("[0-9A-Z]{8}");
 
         boolean isValid = false;
-        for (String validCHPattern : validCHPatterns) {
-            if (ch.matches(validCHPattern)) {
+        for (String validAMPattern : validAMPatterns) {
+            if (am.matches(validAMPattern)) {
                 isValid = true;
                 break;
             }
         }
         if (!isValid) {
-            ch = getValidAm(faker);
+            am = getValidAm(faker);
         }
-        return ch;
+        return am;
     }
 
     /**
-     * Generates a invalid America passport number
+     * Generates an invalid American passport number
      *
      * @param faker object faker
-     * @return a invalid Chinese passport number
+     * @return an invalid American passport number
      */
     public String getInvalidAm(Faker faker) {
-        String ch = faker.regexify("[A-Z0-9]{1,}");
+        String am = faker.regexify("[A-Z0-9]{1,}");
 
         boolean isValid = true;
-        for (String validCHPattern : validCHPatterns) {
-            if (ch.matches(validCHPattern)) {
+        for (String validAMPattern : validAMPatterns) {
+            if (am.matches(validAMPattern)) {
                 continue;
             }
             isValid = false;
         }
         if (isValid) {
-            ch = getInvalidAm(faker);
+            am = getInvalidAm(faker);
         }
-        return ch;
+        return am;
     }
 }

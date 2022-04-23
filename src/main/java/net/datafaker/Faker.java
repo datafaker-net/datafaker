@@ -224,6 +224,14 @@ public class Faker {
         return result;
     }
 
+    /**
+     *
+     * @return builder to build {@code FakeCollection}
+     */
+    public <T> FakeCollection.Builder<T> collection() {
+        return new FakeCollection.Builder<T>().faker(this);
+    }
+
     public Address address() {
         return getProvider(Address.class, () -> new Address(this));
     }
@@ -262,6 +270,10 @@ public class Faker {
 
     public Aviation aviation() {
         return getProvider(Aviation.class, () -> new Aviation(this));
+    }
+
+    public Aws aws() {
+        return getProvider(Aws.class, () -> new Aws(this));
     }
 
     public BackToTheFuture backToTheFuture() {
@@ -358,8 +370,8 @@ public class Faker {
         return getProvider(CPF.class, () -> new CPF(this));
     }
 
-    public Crypto crypto() {
-        return getProvider(Crypto.class, () -> new Crypto(this));
+    public Hashing hashing() {
+        return getProvider(Hashing.class, () -> new Hashing(this));
     }
 
     public CryptoCoin cryptoCoin() {
@@ -384,6 +396,10 @@ public class Faker {
 
     public Dessert dessert() {
         return getProvider(Dessert.class, () -> new Dessert(this));
+    }
+
+    public Device device() {
+        return getProvider(Device.class, () -> new Device(this));
     }
 
     public Dog dog() {
@@ -412,6 +428,10 @@ public class Faker {
 
     public EnglandFootBall englandfootball() {
         return getProvider(EnglandFootBall.class, () -> new EnglandFootBall(this));
+    }
+
+    public ElectricalComponents electricalComponents() {
+        return getProvider(ElectricalComponents.class, () -> new ElectricalComponents(this));
     }
 
     public Esports esports() {
@@ -454,6 +474,10 @@ public class Faker {
         return getProvider(Gender.class, () -> new Gender(this));
     }
 
+    public GratefulDead gratefulDead() {
+        return getProvider(GratefulDead.class, () -> new GratefulDead(this));
+    }
+
     public Hacker hacker() {
         return getProvider(Hacker.class, () -> new Hacker(this));
     }
@@ -464,6 +488,10 @@ public class Faker {
 
     public Hearthstone hearthstone() {
         return getProvider(Hearthstone.class, () -> new Hearthstone(this));
+    }
+
+    public HeyArnold heyArnold() {
+        return getProvider(HeyArnold.class, () -> new HeyArnold(this));
     }
 
     public Hipster hipster() {
@@ -554,6 +582,10 @@ public class Faker {
         return getProvider(Mountain.class, () -> new Mountain(this));
     }
 
+    public Mountaineering mountaineering() {
+        return getProvider(Mountaineering.class, () -> new Mountaineering(this));
+    }
+
     public Music music() {
         return getProvider(Music.class, () -> new Music(this));
     }
@@ -642,6 +674,10 @@ public class Faker {
         return getProvider(Science.class, () -> new Science(this));
     }
 
+    public Seinfeld seinfeld() {
+        return getProvider(Seinfeld.class, () -> new Seinfeld(this));
+    }
+
     public SlackEmoji slackEmoji() {
         return getProvider(SlackEmoji.class, () -> new SlackEmoji(this));
     }
@@ -696,6 +732,10 @@ public class Faker {
 
     public Touhou touhou() {
         return getProvider(Touhou.class, () -> new Touhou(this));
+    }
+
+    public Tron tron() {
+        return getProvider(Tron.class, () -> new Tron(this));
     }
 
     public TwinPeaks twinPeaks() {
@@ -758,4 +798,5 @@ public class Faker {
     public String expression(String expression) {
         return this.fakeValuesService.expression(expression, this);
     }
+
 }

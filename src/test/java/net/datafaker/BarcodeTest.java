@@ -2,28 +2,15 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BarcodeTest extends AbstractFakerTest {
 
     @Test
     public void type() {
-        assertThat(faker.barcode().type(),
-            matchesRegularExpression("(Code(128|39|93))|(E|J)AN(-\\d{1,2})*|Codabar|UCC|UPC(-(A|E))*|IS(B|S)N|ITF|" +
-                "Ames\\sCode|NW-7|Monarch|Code\\s2\\sof\\s7|Rationalized|ANSI\\/AIM BC3-1995|USD-4|" +
-                "GS1 Databar|MSI Plessey"));
-    }
-
-    @Test
-    public void data() {
-        assertThat(faker.barcode().data(), matchesRegularExpression("\\d+"));
-    }
-
-    @Test
-    public void typeAndData() {
-        assertThat(faker.barcode().typeAndData(), matchesRegularExpression("(\\w|\\W)+\\s\\d+$"));
+        assertThat(faker.barcode().type()).matches("(Code(128|39|93))|([EJ])AN(-\\d{1,2})*|Codabar|UCC|UPC(-([AE]))*|IS([BS])N|ITF|" +
+                "Ames\\sCode|NW-7|Monarch|Code\\s2\\sof\\s7|Rationalized|ANSI/AIM BC3-1995|USD-4|" +
+                "GS1 Databar|MSI Plessey");
     }
 
     public static boolean isBarcodeValid(long barcode) {
@@ -41,50 +28,50 @@ public class BarcodeTest extends AbstractFakerTest {
 
     @Test
     public void testEan13() {
-        assertThat(String.valueOf(faker.barcode().ean13()), matchesRegularExpression("[0-9]{13}"));
+        assertThat(String.valueOf(faker.barcode().ean13())).matches("[0-9]{13}");
     }
 
     @Test
     public void testGtin13() {
-        assertThat(String.valueOf(faker.barcode().gtin13()), matchesRegularExpression("[0-9]{13}"));
+        assertThat(String.valueOf(faker.barcode().gtin13())).matches("[0-9]{13}");
     }
 
     @Test
     public void testEan8() {
-        assertThat(String.valueOf(faker.barcode().ean8()), matchesRegularExpression("[0-9]{8}"));
+        assertThat(String.valueOf(faker.barcode().ean8())).matches("[0-9]{8}");
     }
 
     @Test
     public void testGtin8() {
-        assertThat(String.valueOf(faker.barcode().gtin8()), matchesRegularExpression("[0-9]{8}"));
+        assertThat(String.valueOf(faker.barcode().gtin8())).matches("[0-9]{8}");
     }
 
     @Test
     public void testGtin14Length() {
-        assertThat(String.valueOf(faker.barcode().gtin14()), matchesRegularExpression("[0-9]{14}"));
+        assertThat(String.valueOf(faker.barcode().gtin14())).matches("[0-9]{14}");
     }
 
     @Test
     public void testGtin12Length() {
-        assertThat(String.valueOf(faker.barcode().gtin12()), matchesRegularExpression("[0-9]{12}"));
+        assertThat(String.valueOf(faker.barcode().gtin12())).matches("[0-9]{12}");
     }
 
     @Test
     public void testGtin12CheckSum() {
         long barcode = faker.barcode().gtin12();
-        assertThat(BarcodeTest.isBarcodeValid(barcode), equalTo(true));
+        assertThat(BarcodeTest.isBarcodeValid(barcode)).isTrue();
     }
 
     @Test
     public void testGtin14CheckSum() {
         long barcode = faker.barcode().gtin14();
-        assertThat(BarcodeTest.isBarcodeValid(barcode), equalTo(true));
+        assertThat(BarcodeTest.isBarcodeValid(barcode)).isTrue();
     }
 
     @Test
     public void testEan8CheckSum() {
         long barcode = faker.barcode().ean8();
-        assertThat(BarcodeTest.isBarcodeValid(barcode), equalTo(true));
+        assertThat(BarcodeTest.isBarcodeValid(barcode)).isTrue();
     }
 
     @Test
@@ -100,6 +87,6 @@ public class BarcodeTest extends AbstractFakerTest {
                 sum = sum + digit;
         }
 
-        assertThat(String.valueOf(sum).endsWith("0"), equalTo(true));
+        assertThat(String.valueOf(sum)).endsWith("0");
     }
 }

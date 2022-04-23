@@ -4,10 +4,7 @@ import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FinanceTest extends AbstractFakerTest {
 
@@ -19,38 +16,38 @@ public class FinanceTest extends AbstractFakerTest {
 
     private void assertCardLuhnDigit(String creditCard) {
         final String creditCardStripped = creditCard.replaceAll("-", "");
-        assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(creditCardStripped), is(true));
+        assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(creditCardStripped)).isTrue();
     }
 
     @RepeatedTest(10)
     public void nasdaqTicker() {
-        assertThat(faker.finance().nasdaqTicker(), matchesRegularExpression("[A-Z.-]+"));
+        assertThat(faker.finance().nasdaqTicker()).matches("[A-Z.-]+");
     }
 
     @RepeatedTest(10)
     public void nyseTicker() {
-        assertThat(faker.finance().nyseTicker(), matchesRegularExpression("[A-Z.-]+"));
+        assertThat(faker.finance().nyseTicker()).matches("[A-Z.-]+");
     }
 
     @Test
     public void stockMarket() {
-        assertThat(faker.finance().stockMarket(), matchesRegularExpression("[A-Z.-]+"));
+        assertThat(faker.finance().stockMarket()).matches("[A-Z.-]+");
     }
 
 
     @Test
     public void bic() {
-        assertThat(faker.finance().bic(), matchesRegularExpression("([A-Z]){4}([A-Z]){2}([0-9A-Z]){2}([0-9A-Z]{3})?"));
+        assertThat(faker.finance().bic()).matches("([A-Z]){4}([A-Z]){2}([0-9A-Z]){2}([0-9A-Z]{3})?");
     }
 
     @RepeatedTest(100)
     public void iban() {
-        assertThat(faker.finance().iban(), matchesRegularExpression("[A-Z]{2}\\p{Alnum}{13,30}"));
+        assertThat(faker.finance().iban()).matches("[A-Z]{2}\\p{Alnum}{13,30}");
     }
 
     @Test
     public void ibanWithCountryCode() {
-        assertThat(faker.finance().iban("DE"), matchesRegularExpression("DE\\d{20}"));
+        assertThat(faker.finance().iban("DE")).matches("DE\\d{20}");
     }
 
     @Test
@@ -66,6 +63,6 @@ public class FinanceTest extends AbstractFakerTest {
         final String givenCountryCode = "CR";
         final Faker faker = new Faker();
         final String ibanFaker = faker.finance().iban(givenCountryCode).toUpperCase(faker.getLocale());
-        assertTrue(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker));
+        assertThat(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker)).isTrue();
     }
 }

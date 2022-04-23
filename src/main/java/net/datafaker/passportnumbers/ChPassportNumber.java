@@ -30,10 +30,10 @@ public class ChPassportNumber {
     }
 
     /**
-     * Generates a invalid Chinese passport number
+     * Generates an invalid Chinese passport number
      *
      * @param faker object faker
-     * @return a invalid Chinese passport number
+     * @return an invalid Chinese passport number
      */
     public String getInvalidCh(Faker faker) {
         String ch = faker.regexify("[A-Z0-9]{1,}");

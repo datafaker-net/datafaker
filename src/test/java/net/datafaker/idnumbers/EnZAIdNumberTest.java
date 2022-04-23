@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /*
  * This file was used to test the issue #566 by SE_CHWJ
@@ -19,26 +17,27 @@ public class EnZAIdNumberTest {
     public void testExistSsn() {
         EnZAIdNumber idNumber = new EnZAIdNumber();
 
-        assertThat(idNumber.validSsn("9202204720085"), is(false));
-        assertThat(idNumber.validSsn("foo2204720082"), is(false));
-        assertThat(idNumber.validSsn("9232454720082"), is(false));
+        assertThat(idNumber.validSsn("9202204720085")).isFalse();
+        assertThat(idNumber.validSsn("foo2204720082")).isFalse();
+        assertThat(idNumber.validSsn("9232454720082")).isFalse();
 
-        assertThat(idNumber.validSsn("9202204720083"), is(true));
-        assertThat(idNumber.validSsn("8801235111088"), is(true));
+        assertThat(idNumber.validSsn("9202204720083")).isTrue();
+        assertThat(idNumber.validSsn("8801235111088")).isTrue();
     }
 
     @RepeatedTest(100)
     public void testFakerSsn() {
         EnZAIdNumber idNumber = new EnZAIdNumber();
         final Faker f = new Faker(new Locale("en-ZA"));
-        assertThat(idNumber.validSsn(f.idNumber().valid()), is(true));
-        assertThat(idNumber.validSsn(f.idNumber().invalid()), is(false));
+
+        assertThat(idNumber.validSsn(f.idNumber().valid())).isTrue();
+        assertThat(idNumber.validSsn(f.idNumber().invalid())).isFalse();
     }
 
     @RepeatedTest(100)
     public void testSsnFormat() {
         final Faker f = new Faker(new Locale("en-ZA"));
-        assertThat(f.idNumber().valid(), matchesRegularExpression("\\d{10}[01][8]\\d{1}"));
-        assertThat(f.idNumber().invalid(), matchesRegularExpression("\\d{10}[01][8]\\d{1}"));
+        assertThat(f.idNumber().valid()).matches("\\d{10}[01][8]\\d");
+        assertThat(f.idNumber().invalid()).matches("\\d{10}[01][8]\\d");
     }
 }

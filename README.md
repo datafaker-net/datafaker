@@ -28,7 +28,7 @@ In the pom.xml, add the following fragment to the `dependencies` section:
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -36,13 +36,14 @@ For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:1.2.0'
+    implementation 'net.datafaker:datafaker:1.3.0'
 }
 
 ```
 
-You can also use the snapshot version (`1.3.0-SNAPSHOT`), which automatically gets published 
-after every push to the master branch of this repository.
+You can also use the snapshot version (`1.4.0-SNAPSHOT`), which automatically gets published 
+after every push to the master branch of this repository. Binary repository URL for snapshots download is
+https://s01.oss.sonatype.org/content/repositories/snapshots/.
 
 In your Java code:
 
@@ -122,6 +123,7 @@ Providers
 * Durations
 * Educator
 * EnglandFootBall
+* ElectricalComponents
 * Esports
 * File
 * Finance

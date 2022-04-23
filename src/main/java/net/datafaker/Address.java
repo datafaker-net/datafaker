@@ -97,22 +97,6 @@ public class Address {
         return faker.fakeValuesService().resolve("address.state_abbr", this, faker);
     }
 
-    /**
-     * @deprecated Use faker.name.firstName instead
-     */
-    @Deprecated
-    public String firstName() {
-        return faker.name().firstName();
-    }
-
-    /**
-     * @deprecated Use faker.name.lastName instead
-     */
-    @Deprecated
-    public String lastName() {
-        return faker.name().lastName();
-    }
-
     public String latitude() {
         return String.format(faker.getLocale(), "%.8g", (faker.random().nextDouble() * 180) - 90);
     }

@@ -8,12 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CodeTest extends AbstractFakerTest {
 
@@ -24,7 +19,7 @@ public class CodeTest extends AbstractFakerTest {
         String isbn10 = faker.code().isbn10();
 
         assertIsValidISBN10(isbn10);
-        assertThat(isbn10, not(containsString("-")));
+        assertThat(isbn10).doesNotContain("-");
     }
 
     @RepeatedTest(100)
@@ -32,7 +27,7 @@ public class CodeTest extends AbstractFakerTest {
         String isbn13 = faker.code().isbn13();
 
         assertIsValidISBN13(isbn13);
-        assertThat(isbn13, not(containsString("-")));
+        assertThat(isbn13).doesNotContain("-");
     }
 
     @RepeatedTest(100)
@@ -40,12 +35,9 @@ public class CodeTest extends AbstractFakerTest {
         final String isbn10NoSep = faker.code().isbn10(false);
         final String isbn10Sep = faker.code().isbn10(true);
 
-        assertThat(isbn10NoSep + " is not null", isbn10NoSep, is(not(nullValue())));
-        assertThat(isbn10NoSep + " has length of 10", isbn10NoSep.length(), is(10));
+        assertThat(isbn10NoSep).hasSize(10);
         assertIsValidISBN10(isbn10NoSep);
-
-        assertThat(isbn10Sep + " is not null", isbn10Sep, is(not(nullValue())));
-        assertThat(isbn10Sep + " has length of 13", isbn10Sep.length(), is(13));
+        assertThat(isbn10Sep).hasSize(13);
         assertIsValidISBN10(isbn10Sep);
     }
 
@@ -54,21 +46,19 @@ public class CodeTest extends AbstractFakerTest {
         final String isbn13NoSep = faker.code().isbn13(false);
         final String isbn13Sep = faker.code().isbn13(true);
 
-        assertThat(isbn13NoSep + " is not null", isbn13NoSep, is(not(nullValue())));
-        assertThat(isbn13NoSep + " has length of 13", isbn13NoSep.length(), is(13));
+        assertThat(isbn13NoSep).hasSize(13);
         assertIsValidISBN13(isbn13NoSep);
 
-        assertThat(isbn13Sep + " is not null", isbn13Sep, is(not(nullValue())));
-        assertThat(isbn13Sep + " has length of 17", isbn13Sep.length(), is(17));
+        assertThat(isbn13Sep).hasSize(17);
         assertIsValidISBN13(isbn13Sep);
     }
 
     private void assertIsValidISBN10(String isbn10) {
-        assertThat(isbn10 + " is valid", ISBN_VALIDATOR.isValidISBN10(isbn10), is(true));
+        assertThat(ISBN_VALIDATOR.isValidISBN10(isbn10)).describedAs(isbn10 + " is valid").isTrue();
     }
 
     private void assertIsValidISBN13(String isbn13) {
-        assertThat(isbn13 + " is valid", ISBN_VALIDATOR.isValidISBN13(isbn13), is(true));
+        assertThat(ISBN_VALIDATOR.isValidISBN13(isbn13)).describedAs(isbn13 + " is valid").isTrue();
     }
 
     @RepeatedTest(100)
@@ -78,67 +68,63 @@ public class CodeTest extends AbstractFakerTest {
         final String isbn10Sep = faker.code().isbn10(true);
         final String isbn13Sep = faker.code().isbn13(true);
 
-        assertThat("Uses overridden expressions from test.yml",
-            isbn10Sep,
-            matchesRegularExpression("9971-\\d-\\d{4}-(\\d|X)"));
+        assertThat(isbn10Sep).matches("9971-\\d-\\d{4}-(\\d|X)");
 
-        assertThat("Uses overridden expressions from test.yml",
-            isbn13Sep,
-            matchesRegularExpression("(333|444)-9971-\\d-\\d{4}-\\d"));
+        assertThat(isbn13Sep).matches("(333|444)-9971-\\d-\\d{4}-\\d");
     }
 
     @Test
     public void asin() {
-        assertThat(faker.code().asin(), matchesRegularExpression("B000([A-Z]|\\d){6}"));
+        assertThat(faker.code().asin()).matches("B000([A-Z]|\\d){6}");
     }
 
     @Test
     public void imei() {
         String imei = faker.code().imei();
 
-        assertThat(imei, matchesRegularExpression("\\A[\\d\\.\\:\\-\\s]+\\z"));
-        assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(imei), is(true));
+        assertThat(imei).matches("\\A[\\d.:\\-\\s]+\\z");
+        assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(imei)).isTrue();
     }
 
     @Test
     public void ean8() {
-        assertThat(faker.code().ean8(), matchesRegularExpression("\\d{8}"));
+        assertThat(faker.code().ean8()).matches("\\d{8}");
     }
 
     @Test
     public void gtin8() {
-        assertThat(faker.code().gtin8(), matchesRegularExpression("\\d{8}"));
+        assertThat(faker.code().gtin8()).matches("\\d{8}");
     }
 
     @Test
     public void ean13() {
         String ean13 = faker.code().ean13();
-        assertThat(ean13, matchesRegularExpression("\\d{13}"));
-        assertThat(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(ean13), is(true));
+        assertThat(ean13).matches("\\d{13}");
+        assertThat(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(ean13)).isTrue();
     }
 
     @Test
     public void gtin13() {
         String gtin13 = faker.code().gtin13();
-        assertThat(gtin13, matchesRegularExpression("\\d{13}"));
-        assertThat(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(gtin13), is(true));
+        assertThat(gtin13).matches("\\d{13}");
+        assertThat(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(gtin13)).isTrue();
     }
 
     @Test
     public void isbnGs1() {
         String isbnGs1 = faker.code().isbnGs1();
-        assertThat(isbnGs1, matchesRegularExpression("978|979"));
+        assertThat(isbnGs1).matches("978|979");
     }
 
     @Test
     public void isbnGroup() {
         String isbnGroup = faker.code().isbnGroup();
-        assertThat(isbnGroup, matchesRegularExpression("0|1"));
+        assertThat(isbnGroup).matches("[01]");
     }
 
     @RepeatedTest(100)
     public void isbnRegistrant() {
         String isbnRegistrant = faker.code().isbnRegistrant();
-        assertThat(isbnRegistrant, matchesRegularExpression("[0-9]{1,7}-[0-9]{1,6}"));
+        assertThat(isbnRegistrant).matches("[0-9]{1,7}-[0-9]{1,6}");
     }
 }

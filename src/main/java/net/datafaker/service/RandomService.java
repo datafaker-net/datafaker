@@ -1,13 +1,9 @@
 package net.datafaker.service;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 public class RandomService {
-    private static final Random SHARED_RANDOM = ThreadLocalRandom.current();
+    private static final Random SHARED_RANDOM = new Random();
     private final Random random;
 
     /**
@@ -33,25 +29,8 @@ public class RandomService {
         return random.nextInt(n);
     }
 
-    public int nextInt(int min, int max) {
-        if (min == max) return min;
-        return ThreadLocalRandom.current().nextInt(min, max);
-    }
-
-    public IntStream ints() {
-        return ThreadLocalRandom.current().ints();
-    }
-
-    public IntStream ints(long size) {
-        return ThreadLocalRandom.current().ints(size);
-    }
-
-    public IntStream ints(long size, int min, int max) {
-        return ThreadLocalRandom.current().ints(size, min, max);
-    }
-
-    public IntStream ints(int min, int max) {
-        return ThreadLocalRandom.current().ints(min, max);
+    public Integer nextInt(int min, int max) {
+        return random.nextInt((max - min) + 1) + min;
     }
 
     @SuppressWarnings("unused")
@@ -63,29 +42,23 @@ public class RandomService {
         return random.nextLong();
     }
 
+    // lifted from http://stackoverflow.com/questions/2546078/java-random-long-number-in-0-x-n-range
     public long nextLong(long n) {
-        return ThreadLocalRandom.current().nextLong(n);
+        if (n <= 0) {
+            throw new IllegalArgumentException("bound must be positive");
+        }
+
+        long bits, val;
+        do {
+            long randomLong = random.nextLong();
+            bits = (randomLong << 1) >>> 1;
+            val = bits % n;
+        } while (bits - val + (n - 1) < 0L);
+        return val;
     }
 
     public long nextLong(long min, long max) {
-        if (min == max) return min;
-        return ThreadLocalRandom.current().nextLong(min, max);
-    }
-
-    public LongStream longs() {
-        return ThreadLocalRandom.current().longs();
-    }
-
-    public LongStream longs(long size) {
-        return ThreadLocalRandom.current().longs(size);
-    }
-
-    public LongStream longs(long size, long min, long max) {
-        return ThreadLocalRandom.current().longs(size, min, max);
-    }
-
-    public LongStream longs(long min, long max) {
-        return ThreadLocalRandom.current().longs(min, max);
+        return min + (long) (nextDouble() * (max - min));
     }
 
     public double nextDouble() {
@@ -93,24 +66,7 @@ public class RandomService {
     }
 
     public double nextDouble(double min, double max) {
-        if (min == max) return min;
-        return ThreadLocalRandom.current().nextDouble(min, max);
-    }
-
-    public DoubleStream doubles() {
-        return ThreadLocalRandom.current().doubles();
-    }
-
-    public DoubleStream doubles(long size) {
-        return ThreadLocalRandom.current().doubles(size);
-    }
-
-    public DoubleStream doubles(long size, double min, double max) {
-        return ThreadLocalRandom.current().doubles(size, min, max);
-    }
-
-    public DoubleStream doubles(double min, double max) {
-        return ThreadLocalRandom.current().doubles(min, max);
+        return min + (nextDouble() * (max - min));
     }
 
     public boolean nextBoolean() {

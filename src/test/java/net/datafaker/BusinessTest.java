@@ -2,23 +2,22 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.IsStringWithContents.isStringWithContents;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BusinessTest extends AbstractFakerTest {
     @Test
     public void creditCardNumber() {
-        assertThat(faker.business().creditCardNumber(), isStringWithContents());
+        assertThat(faker.business().creditCardNumber()).isNotEmpty();
     }
 
     @Test
     public void creditCardType() {
-        assertThat(faker.business().creditCardType(), isStringWithContents());
+        assertThat(faker.business().creditCardType()).isNotEmpty();
     }
 
     @Test
     public void creditCardExpiry() {
-        assertThat(faker.business().creditCardExpiry(), isStringWithContents());
+        assertThat(faker.business().creditCardExpiry()).isNotEmpty();
     }
 
 }

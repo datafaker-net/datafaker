@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * @since 0.8.0
- */
 public class Lorem {
     private final Faker faker;
 
@@ -31,14 +28,14 @@ public class Lorem {
     }
 
     public String characters(int minimumLength, int maximumLength) {
-        return characters(faker.random().nextInt(minimumLength, maximumLength + 1), false);
+        return characters(faker.random().nextInt(minimumLength, maximumLength), false);
     }
 
     public String characters(int minimumLength, int maximumLength, boolean includeUppercase) {
         if (minimumLength == maximumLength) {
             return characters(minimumLength, includeUppercase);
         } else {
-            return characters(faker.random().nextInt(minimumLength, maximumLength + 1), includeUppercase);
+            return characters(faker.random().nextInt(minimumLength, maximumLength), includeUppercase);
         }
     }
 
@@ -46,7 +43,7 @@ public class Lorem {
         if (minimumLength == maximumLength) {
             return characters(minimumLength, includeUppercase, includeDigit);
         } else {
-            return characters(faker.random().nextInt(minimumLength, maximumLength + 1), includeUppercase, includeDigit);
+            return characters(faker.random().nextInt(minimumLength, maximumLength), includeUppercase, includeDigit);
         }
     }
 
@@ -60,7 +57,7 @@ public class Lorem {
 
     public String characters(int minimumLength, int maximumLength,
                              boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        return characters(faker.random().nextInt(minimumLength, maximumLength + 1),
+        return characters(faker.random().nextInt(minimumLength, maximumLength),
             includeUppercase, includeSpecial, includeDigit);
     }
 
@@ -106,7 +103,6 @@ public class Lorem {
         int cnt = 0;
         if (includeUppercase) {
             char theUpper = Character.toUpperCase(letters[faker.random().nextInt(letters.length)]);
-            if (cnt > fixedNumberOfCharacters - 1) return "";
             buffer[cnt++] = theUpper;
 
         }
@@ -131,7 +127,7 @@ public class Lorem {
                 randomCharacter = specialAndLetter[faker.random().nextInt(specialAndLetter.length)];
             } else if (!includeSpecial && includeDigit) {
                 randomCharacter = characters[faker.random().nextInt(characters.length)];
-            } else if (!includeSpecial && !includeDigit) {
+            } else if (!includeSpecial) {
                 randomCharacter = letters[faker.random().nextInt(letters.length)];
             } else {                                            //includeSpecial && includeDigit
                 randomCharacter = all[faker.random().nextInt(all.length)];

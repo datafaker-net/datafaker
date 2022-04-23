@@ -2,14 +2,12 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AquaTeenHungerForceTest extends AbstractFakerTest {
 
     @Test
     public void character() {
-        assertThat(faker.aquaTeenHungerForce().character(), matchesRegularExpression("[A-Za-z .]+"));
+        assertThat(faker.aquaTeenHungerForce().character()).matches("[A-Za-z .]+");
     }
-
 }

@@ -2,13 +2,12 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CoinTest extends AbstractFakerTest {
 
     @Test
     public void coinFlip() {
-        assertThat(faker.coin().flip(), matchesRegularExpression("\\w+"));
+        assertThat(faker.coin().flip()).matches("\\w+");
     }
 }

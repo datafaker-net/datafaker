@@ -7,8 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * The purpose of these tests is to ensure that the Locales have been properly configured
@@ -42,10 +41,8 @@ public class UkLocalDirectivesTest {
             startsWithFemPrefix |= streetName.startsWith(femPrefix);
         }
 
-        assertThat("the streetname starts with a fem or masc prefix",
-            startsWithFemPrefix || startsWithMascPrefix,
-            is(true));
+        assertThat(startsWithFemPrefix || startsWithMascPrefix)
+            .as("the streetname starts with a fem or masc prefix")
+            .isTrue();
     }
-
-
 }

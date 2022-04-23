@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RandomFakerTest extends AbstractFakerTest {
 
@@ -28,7 +27,7 @@ public class RandomFakerTest extends AbstractFakerTest {
 
         resetRandomSeed();
         final String secondInvocation = faker.numerify("###");
-        assertThat(firstInvocation, is(secondInvocation));
+        assertThat(firstInvocation).isEqualTo(secondInvocation);
     }
 
     @Test
@@ -38,7 +37,7 @@ public class RandomFakerTest extends AbstractFakerTest {
 
         resetRandomSeed();
         final String secondInvocation = faker.letterify("???");
-        assertThat(firstInvocation, is(secondInvocation));
+        assertThat(firstInvocation).isEqualTo(secondInvocation);
     }
 
     @Test
@@ -48,7 +47,7 @@ public class RandomFakerTest extends AbstractFakerTest {
 
         resetRandomSeed();
         final String secondInvocation = faker.name().name();
-        assertThat(firstInvocation, is(secondInvocation));
+        assertThat(firstInvocation).isEqualTo(secondInvocation);
     }
 
     @Test
@@ -58,7 +57,7 @@ public class RandomFakerTest extends AbstractFakerTest {
 
         resetRandomSeed();
         final String secondInvocation = faker.internet().emailAddress();
-        assertThat(firstInvocation, is(secondInvocation));
+        assertThat(firstInvocation).isEqualTo(secondInvocation);
     }
 
     private void resetRandomSeed() {

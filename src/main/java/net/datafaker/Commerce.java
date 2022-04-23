@@ -17,14 +17,6 @@ public class Commerce {
         decimalFormatSymbols = new DecimalFormatSymbols(faker.getLocale());
     }
 
-    /**
-     * @deprecated Use faker.color.name instead
-     */
-    @Deprecated
-    public String color() {
-        return faker.fakeValuesService().resolve("color.name", this, faker);
-    }
-
     public String department() {
         int numberOfDepartments = Math.max(faker.random().nextInt(4), 1);
         SortedSet<String> departments = new TreeSet<>();

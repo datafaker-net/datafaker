@@ -2,34 +2,32 @@ package net.datafaker;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
+import static org.assertj.core.api.Assertions.assertThat;
 
 class NigeriaTest extends AbstractFakerTest {
 
     @Test
     public void places() {
-        assertThat(faker.nigeria().places(), not(is(emptyOrNullString())));
+        assertThat(faker.nigeria().places()).isNotEmpty();
     }
 
     @Test
     void food() {
-        assertThat(faker.nigeria().food(), not(is(emptyOrNullString())));
+        assertThat(faker.nigeria().food()).isNotEmpty();
     }
 
     @Test
     void names() {
-        assertThat(faker.nigeria().name(), not(is(emptyOrNullString())));
+        assertThat(faker.nigeria().name()).isNotEmpty();
     }
 
     @Test
     void schools() {
-        assertThat(faker.nigeria().schools(), not(is(emptyOrNullString())));
+        assertThat(faker.nigeria().schools()).isNotEmpty();
     }
 
     @Test
     void celebrities() {
-        assertThat(faker.nigeria().celebrities(), not(is(emptyOrNullString())));
+        assertThat(faker.nigeria().celebrities()).isNotEmpty();
     }
 }

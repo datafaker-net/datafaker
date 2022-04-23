@@ -2,6 +2,7 @@ package net.datafaker;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
@@ -311,20 +312,38 @@ public class DateAndTime {
      * @throws IllegalArgumentException if the {@code unit} is invalid.
      */
     public Duration duration(long max, String unit) {
-        return duration(0, max, str2unit(unit));
+        return duration(0, max, str2durationUnit(unit));
     }
 
     /**
      * Generates a random Duration between min and max.
      *
-     * @param min  the maximum value
-     * @param max  the minimal value
+     * @param min  the minimal value
+     * @param max  the maximum value
      * @param unit the temporal unit (day or shorter than a day)
      * @return a random Duration between {@code min} inclusive and {@code max} exclusive if {@code max} greater {@code min}.
      * @throws IllegalArgumentException if the {@code unit} is invalid.
      */
     public Duration duration(long min, long max, String unit) {
-        return generateDuration(faker.random().nextLong(min, max), str2unit(unit));
+        return generateDuration(faker.random().nextLong(min, max), str2durationUnit(unit));
+    }
+
+    /**
+     * Generates a random Period between min and max.
+     *
+     * @param min  the minimal value
+     * @param max  the maximum value
+     * @return a random Period between {@code min} inclusive and {@code max} inclusive if {@code max} greater {@code min}.
+     * @throws IllegalArgumentException if the {@code min} is greater than {@code max}.
+     */
+    public Period period(Period min, Period max) {
+        if (max.minus(min).isNegative()) {
+            throw new IllegalArgumentException("Max period(" + max + ") should be not less than min (" + min + ")");
+        }
+        return Period.of(
+            faker.random().nextInt(min.getYears(), max.getYears() + 1),
+            faker.random().nextInt(min.getMonths(), max.getMonths() + 1),
+            faker.random().nextInt(min.getDays(), max.getDays() + 1));
     }
 
     /**
@@ -334,7 +353,7 @@ public class DateAndTime {
      * @return converts unit to ChronoUnit.
      * @throws IllegalArgumentException if the {@code unit} is invalid.
      */
-    public static ChronoUnit str2unit(String unit) {
+    static ChronoUnit str2durationUnit(String unit) {
         if (unit == null || unit.trim().isEmpty()) {
             throw new IllegalArgumentException("Illegal duration unit '" + unit + "'");
         }

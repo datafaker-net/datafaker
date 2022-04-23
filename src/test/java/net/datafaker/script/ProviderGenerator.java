@@ -1,7 +1,7 @@
 package net.datafaker.script;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -23,7 +23,7 @@ public class ProviderGenerator {
     public void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("todo.yml"));
+        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("tron.todo.yml"));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
@@ -60,7 +60,7 @@ public class ProviderGenerator {
         System.out.println("package net.datafaker;");
         System.out.println();
         System.out.println("/**");
-        System.out.println(" * @since 1.3.0");
+        System.out.println(" * @since 1.4.0");
         System.out.println(" */");
         System.out.println("public class " + className + " {");
         System.out.println();
@@ -91,10 +91,7 @@ public class ProviderGenerator {
         System.out.println("package net.datafaker;");
         System.out.println();
         System.out.println("import org.junit.jupiter.api.Test;");
-        System.out.println("import static org.hamcrest.MatcherAssert.assertThat;");
-        System.out.println("import static org.hamcrest.Matchers.is;");
-        System.out.println("import static org.hamcrest.Matchers.not;");
-        System.out.println("import static org.hamcrest.Matchers.emptyOrNullString;");
+        System.out.println("import static org.assertj.core.api.AssertionsForClassTypes.assertThat;");
 
         System.out.println();
         System.out.println("public class " + className + "Test extends AbstractFakerTest {");
@@ -105,7 +102,7 @@ public class ProviderGenerator {
 
             System.out.println("    @Test");
             System.out.println("    public void " + testMethodName + "() {");
-            System.out.println("        assertThat(faker." + methodName + "()." + testMethodName + "(), not(is(emptyOrNullString())));");
+            System.out.println("        assertThat(faker." + methodName + "()." + testMethodName + "()).isNotEmpty();");
             System.out.println("    }");
             System.out.println();
         }
