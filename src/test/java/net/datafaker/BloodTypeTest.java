@@ -1,7 +1,5 @@
 package net.datafaker;
 
-
-
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +14,7 @@ public class BloodTypeTest extends AbstractFakerTest {
 
     @Test
     public void rh_types() {
-        assertThat(faker.bloodtype().rh_types()).matches("[A-Za-z\\+\\-]+");
+        assertThat(faker.bloodtype().rh_types()).matches("[A-Za-z+-]+");
     }
 
     @Test
