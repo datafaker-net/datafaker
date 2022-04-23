@@ -83,6 +83,7 @@ faker.expression("#{options.option '23','2','5','$','%','*'}"); // *
 faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}"); // 61 327 08:11:45
 ```
 also more examples at https://www.datafaker.net/documentation/expressions/
+
 ### Collections
 ```java
 Faker faker = new Faker();
@@ -123,6 +124,8 @@ String json = Format.toJson(
               .set("lastName", Name::lastName)
               .build()
               .generate();
+// [{"firstName": "Oleta", "lastName": "Toy"},
+// {"firstName": "Gerard", "lastName": "Windler"}]
 ```
 More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/file-formats/
 

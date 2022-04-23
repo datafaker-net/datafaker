@@ -1,6 +1,8 @@
 package net.datafaker.fileformats;
 
 import net.datafaker.AbstractFakerTest;
+import net.datafaker.Faker;
+import net.datafaker.Name;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -73,5 +75,20 @@ public class CsvTest extends AbstractFakerTest {
             "\"1,2,3\",\"The \"\"fabulous\"\" artist\"" + System.lineSeparator();
 
         assertThat(csv).isEqualTo(expected);
+    }
+
+    @Test
+    void test() {
+        Faker faker = new Faker();
+        String json = Format.toJson(
+                faker.<Name>collection()
+                    .suppliers(faker::name)
+                    .maxLen(2)
+                    .build())
+            .set("firstName", Name::firstName)
+            .set("lastName", Name::lastName)
+            .build()
+            .generate();
+        System.out.println(json);
     }
 }
