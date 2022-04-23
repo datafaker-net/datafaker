@@ -94,6 +94,7 @@ Providers
 * Barcode
 * Basketball
 * Beer
+* Blood Type
 * Bojack Horseman
 * Book
 * Bool

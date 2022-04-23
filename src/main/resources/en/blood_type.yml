@@ -1,0 +1,6 @@
+en:
+  faker:
+    blood_type:
+      abo_types: ["A", "B", "AB", "O"]
+      rh_types: ["Rh+", "Rh-"]
+      p_types: ["P1", "P2", "Pk1", "Pk2"]

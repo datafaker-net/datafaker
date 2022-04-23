@@ -44,6 +44,7 @@ public class EnFile {
         "bank.yml",
         "basketball.yml",
         "beer.yml",
+        "blood_type.yml",
         "bojack_horseman.yml",
         "book.yml",
         "bossa_nova.yml",
