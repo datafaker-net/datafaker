@@ -198,6 +198,7 @@ public class EnFile {
         "volleyball.yml",
 //            "venture_bros.yml",
 //            "verbs.yml",
+        "weapon.yml",
         "weather.yml",
         "witcher.yml",
         "kaamelott.yml",

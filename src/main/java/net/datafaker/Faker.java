@@ -752,6 +752,10 @@ public class Faker {
         return getProvider(Volleyball.class, () -> new Volleyball(this));
     }
 
+    public Weapon weapon() {
+        return getProvider(Weapon.class, () -> new Weapon(this));
+    }
+
     public Weather weather() {
         return getProvider(Weather.class, () -> new Weather(this));
     }
