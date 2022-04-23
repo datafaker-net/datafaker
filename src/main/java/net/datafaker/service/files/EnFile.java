@@ -81,7 +81,7 @@ public class EnFile {
         "dune.yml",
         "educator.yml",
         "elder_scrolls.yml",
-//            "electrical_components.yml",
+        "electrical_components.yml",
         "esport.yml",
         "englandfootball.yml",
 //            "fallout.yml",
