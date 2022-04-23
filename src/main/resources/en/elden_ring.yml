@@ -1,8 +1,8 @@
 en:
   faker:
     elden_ring:
-      location: ["LIMGRAVE","WEEPING PENISULA", "LIURNIA OF THE LAKES","CAELID","AlTUS PLATEAU","MT.GELMIR","DRAGONBARROW","MOUNTAINTOPS OF THE GIANTS","CONSECRATED SNOWFIELD"]
+      location: ["Limgrave","Weeping Penisula", "Liurnia Of The Lakes","Caelid","Altus Plateau","MT.Gelmir","Dragonbarrow","Mountaintops Of The Giants","Consecrated Snowfield"]
       weapon: ["Dagger","Cinquedea","Short Sword","Sword of Night and Flame","Claymore","Dark Moon Greatsword","Grafted Blade Greatsword","Rapier","Carian Glintstone Staff"]
       skill: ["Lion's Claw","Impaling Thrust","Piercing Fang","Spinning Slash","Charge Forth","Stamp","Blood Tax","Repeating Thrust","Wild Strikes","Spinning Strikes","Double Slash","Prelate's Charge"]
-      spell: ["ADULA'S MOONBLADE","CANNON OF HAIMA","COLLAPSING STARS","COMET","GLINTSTONE COMETSHARD","GREAT ORACULAR BUBBLE","LORETTA'S MASTERY","RANNI'S DARK MOON"]
-      NPC: ["SORCERESS SELLEN","SMITHING MASTER HEWG","SORCERER ROGIER","D","RENNALA","RENNA","FIA","IRINA","QUEEN MARIKA"]
+      spell: ["Adula's Moonblade","Cannon Of Haima","Collapsing Stars","Comet","Glintstone Cometshard","Great Oracular Bubble","Loretta's Mastery","Ranni's Dark Moon"]
+      NPC: ["Sorceress Sellen","Smithing Master Hewg","Sorcerer Rogier","D","Rennala","Renna","Fia","Irina","Queen Marika"]
