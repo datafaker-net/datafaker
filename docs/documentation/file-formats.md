@@ -23,13 +23,14 @@ An example can be found below:
 === "Java"
 
     ``` java
-    System.out.println(new Csv.CsvBuilder()
-            .columns(Csv.Column.of("first_name", () -> faker.name().firstName()),
+        System.out.println(
+            Format.toCsv(
+                    Csv.Column.of("first_name", () -> faker.name().firstName()),
                     Csv.Column.of("last_name", () -> faker.name().lastName()),
                     Csv.Column.of("address", () -> faker.address().streetAddress()))
-            .header(true)
-            .separator(" ; ")
-            .limit(5).build().get());
+                .header(true)
+                .separator(" ; ")
+                .limit(5).build().get());
     ```
 
 Executing the above will result in something similar to the below:
