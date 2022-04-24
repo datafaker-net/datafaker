@@ -26,7 +26,7 @@ public class EldenRingTest extends AbstractFakerTest{
     }
 
     @Test
-    public void NPC() {
-        assertThat(faker.eldenRing().NPC()).matches("[A-Za-z ]+");
+    public void npc() {
+        assertThat(faker.eldenRing().npc()).matches("[A-Za-z ]+");
     }
 }

@@ -23,7 +23,7 @@ public class EldenRing {
         return faker.resolve("elden_ring.spell");
     }
 
-    public String NPC(){
-        return faker.resolve("elden_ring.NPC");
+    public String npc(){
+        return faker.resolve("elden_ring.npc");
     }
 }
