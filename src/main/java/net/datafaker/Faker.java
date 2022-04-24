@@ -296,6 +296,8 @@ public class Faker {
         return getProvider(Beer.class, () -> new Beer(this));
     }
 
+    public BloodType bloodtype(){return getProvider(BloodType.class, () -> new BloodType(this));}
+
     public BojackHorseman bojackHorseman() {
         return getProvider(BojackHorseman.class, () -> new BojackHorseman(this));
     }
