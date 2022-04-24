@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * Implementation based on the definition at
- * https://en.wikipedia.org/wiki/South_African_identity_card
+ * <a href="https://en.wikipedia.org/wiki/South_African_identity_card">https://en.wikipedia.org/wiki/South_African_identity_card</a>
  */
 
 public class EnZAIdNumber {

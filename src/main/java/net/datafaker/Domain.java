@@ -54,7 +54,7 @@ public class Domain {
     }
 
     /**
-     * Full domain string. Such as www.example.com.uk
+     * Full domain string. Such as <a href="www.example.com.uk">www.example.com.uk</a>
      *
      * @param name the company name
      * @return the full domain name

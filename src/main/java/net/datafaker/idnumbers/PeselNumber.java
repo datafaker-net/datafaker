@@ -7,8 +7,8 @@ import net.datafaker.Faker;
 
 /**
  * Implementation based on the definition at
- * https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000510 and the
- * description at https://en.wikipedia.org/wiki/PESEL
+ * <a href="https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000510">https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000510</a> and the
+ * description at <a href="https://en.wikipedia.org/wiki/PESEL">https://en.wikipedia.org/wiki/PESEL</a>
  */
 public class PeselNumber {
 

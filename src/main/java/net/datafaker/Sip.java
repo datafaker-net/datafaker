@@ -20,7 +20,7 @@ public class Sip {
     }
 
     /**
-     * The various SIP methods are listed in https://en.wikipedia.org/wiki/Session_Initiation_Protocol.
+     * The various SIP methods are listed in <a href="https://en.wikipedia.org/wiki/Session_Initiation_Protocol">https://en.wikipedia.org/wiki/Session_Initiation_Protocol</a>.
      *
      * @return a SIP method String, e.g. {@code INVITE}.
      */
@@ -29,8 +29,8 @@ public class Sip {
     }
 
     /**
-     * Content types are based on https://tools.ietf.org/html/rfc5621 and
-     * https://tools.ietf.org/html/rfc3261.
+     * Content types are based on <a href="https://tools.ietf.org/html/rfc5621">https://tools.ietf.org/html/rfc5621</a> and
+     * <a href="https://tools.ietf.org/html/rfc3261">https://tools.ietf.org/html/rfc3261</a>.
      *
      * @return a SIP content-type declaration String, e.g. {@code application/sdp}
      */
@@ -58,9 +58,9 @@ public class Sip {
 
     /**
      * Proviosional code, the various response codes are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
-     * @return a 3 digit SIP provisioan response code between 100 and 199 int, e.g. {@code 180}.
+     * @return a 3 digit SIP provision response code between 100 and 199 int, e.g. {@code 180}.
      */
     public int provisionalResponseCode() {
         return Integer.parseInt(faker.resolve("sip.response.codes.provisional"));
@@ -68,7 +68,7 @@ public class Sip {
 
     /**
      * Success code, the various response codes are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a 3 digit SIP success response code between 200 and 299 int, e.g. {@code 200}.
      */
@@ -78,7 +78,7 @@ public class Sip {
 
     /**
      * Redirection code, the various response codes are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a 3 digit SIP redirection response code between 300 and 399 int, e.g. {@code 301}.
      */
@@ -88,7 +88,7 @@ public class Sip {
 
     /**
      * Client error code, the various response codes are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a 3 digit SIP client error response code between 400 and 499 int, e.g. {@code 486}.
      */
@@ -98,7 +98,7 @@ public class Sip {
 
     /**
      * Server error code, the various response codes are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a 3 digit SIP server error response code between 500 and 599 int, e.g. {@code 503}.
      */
@@ -108,7 +108,7 @@ public class Sip {
 
     /**
      * Global error code, the various response codes are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a 3 digit SIP global error response code between 600 and 699 int, e.g. {@code 608}.
      */
@@ -118,7 +118,7 @@ public class Sip {
 
     /**
      * Proviosional phrase, the various response phrases are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a SIP provisional response phrase String, e.g. {@code Ringing}.
      */
@@ -128,7 +128,7 @@ public class Sip {
 
     /**
      * Success phrase, the various response phrases are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a SIP success response phrase String, e.g. {@code OK}.
      */
@@ -138,7 +138,7 @@ public class Sip {
 
     /**
      * Redirection phrase, the various response phrases are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a SIP redirection response phrase String, e.g. {@code Moved Permanently}.
      */
@@ -148,7 +148,7 @@ public class Sip {
 
     /**
      * Client error phrase, the various response phrases are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a SIP client error response phrase String, e.g. {@code Busy Here}.
      */
@@ -158,7 +158,7 @@ public class Sip {
 
     /**
      * Server error phrase, the various response phrases are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a SIP server erro response phrase String, e.g. {@code Service Unavailable}.
      */
@@ -168,7 +168,7 @@ public class Sip {
 
     /**
      * Server error phrase, the various response phrases are listed in
-     * https://en.wikipedia.org/wiki/List_of_SIP_response_codes.
+     * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a SIP global error response phrase String, e.g. {@code Rejected}.
      */
@@ -177,7 +177,7 @@ public class Sip {
     }
 
     /**
-     * Body example of SDP type can be found in https://tools.ietf.org/html/rfc5621.
+     * Body example of SDP type can be found in <a href="https://tools.ietf.org/html/rfc5621">https://tools.ietf.org/html/rfc5621</a>.
      *
      * @return a fake SDP type SIP body String.
      */
@@ -192,7 +192,7 @@ public class Sip {
     }
 
     /**
-     * Body example of SDP type can be found in https://tools.ietf.org/html/rfc5621.
+     * Body example of SDP type can be found in <a href="https://tools.ietf.org/html/rfc5621">https://tools.ietf.org/html/rfc5621</a>.
      *
      * @return a fake SDP type SIP body byte array.
      */

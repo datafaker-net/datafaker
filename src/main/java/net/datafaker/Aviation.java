@@ -22,7 +22,7 @@ public class Aviation {
 
     /**
      * Returns an airport ICAO code.
-     * See also: https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_A
+     * See also: <a href="https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_A">https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_A</a>
      */
     public String airport() {
         return faker.fakeValuesService().fetchString("aviation.airport");
@@ -30,7 +30,7 @@ public class Aviation {
 
     /**
      * Provides a METAR weather report.
-     * Have a look at https://en.wikipedia.org/wiki/METAR
+     * Have a look at <a href="https://en.wikipedia.org/wiki/METAR">https://en.wikipedia.org/wiki/METAR</a>
      */
     public String METAR() {
         return faker.fakeValuesService().fetchString("aviation.metar");

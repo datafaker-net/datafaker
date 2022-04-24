@@ -32,7 +32,7 @@ public class Twitter {
      * @param forward    to determined if the returned date is later (or before) the given date.
      * @param base       the base date given as a start point.
      * @param constrains used to constrain the returned date range.
-     * @return a new date later (or before) the base date with respect to the constrain (no later/earlier than the constrain).
+     * @return a new date later (or before) the base date with respect to the constraint (no later/earlier than the constrain).
      */
     public Date createdTime(boolean forward, Date base, Date constrains) {
         final RandomService random = faker.random();
@@ -48,7 +48,7 @@ public class Twitter {
      *
      * @param expectedLength the expected length of the twitter id. Should be greater or equals to 6 and
      *                       less than or equals to 25.
-     * @return a new Twiiter ID consists of purely numbers.
+     * @return a new Twitter ID consists of purely numbers.
      */
     public String twitterId(int expectedLength) {
         if (expectedLength <= 6 || expectedLength >= 25) {

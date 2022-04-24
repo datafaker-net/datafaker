@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  * Implementation based on the definition at
- * https://en.wikipedia.org/wiki/Unique_Population_Registry_Code
+ * <a href="https://en.wikipedia.org/wiki/Unique_Population_Registry_Code">https://en.wikipedia.org/wiki/Unique_Population_Registry_Code</a>
  */
 public class EsMXIdNumber {
 
