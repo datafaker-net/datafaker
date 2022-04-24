@@ -2,8 +2,9 @@ package net.datafaker;
 
 /**
  * This is the class generates random stream of Movie
+ *
  * @author ak-maker
- * */
+ */
 public class OscarMovie {
     /**
      * The faker instance for generating random names of things.
@@ -14,17 +15,19 @@ public class OscarMovie {
      */
     private final String year;
     /**
-     * The choice instance eis used for randomly choose the the
+     * The choice instance eis used for randomly choose the
      * first/second/third movie of that year.
      */
     private final String choice;
     /**
-     * Part of the string to reslove
+     * Part of the string to resolve
      */
     private final String str;
+
     /**
      * This is the constructor initialize faker and two other
      * variable for random generation.
+     *
      * @param faker faker The Faker instance for generating random names of things.
      */
     protected OscarMovie(final Faker faker) {
@@ -37,26 +40,27 @@ public class OscarMovie {
     /**
      * @return year
      */
-    public String getYear(){
+    public String getYear() {
         return year;
     }
 
     /**
      * @return choice
      */
-    public String getChoice(){
+    public String getChoice() {
         return choice;
     }
 
     /**
      * @return str
      */
-    public String getStr(){
+    public String getStr() {
         return str;
     }
 
     /**
      * This method generates random actor
+     *
      * @return random actor from OscarMovie.yml
      */
     public String actor() {
@@ -65,6 +69,7 @@ public class OscarMovie {
 
     /**
      * This method generates random movieName
+     *
      * @return random movieName from OscarMovie.yml
      */
     public String movieName() {
@@ -73,13 +78,16 @@ public class OscarMovie {
 
     /**
      * This method generates random quote
+     *
      * @return random quote from OscarMovie.yml
      */
     public String quote() {
         return faker.resolve(str.concat(".quote"));
     }
+
     /**
      * This method generates random character
+     *
      * @return random character from OscarMovie.yml
      */
     public String character() {
@@ -87,7 +95,8 @@ public class OscarMovie {
     }
 
     /**
-     * This method enerates random releaseDate
+     * This method generates random releaseDate
+     *
      * @return random releaseDate from OscarMovie.yml
      */
     public String releaseDate() {
