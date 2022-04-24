@@ -1,9 +1,10 @@
 package net.datafaker.fileformats;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.Faker;
 import net.datafaker.Name;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,18 +78,53 @@ public class CsvTest extends AbstractFakerTest {
         assertThat(csv).isEqualTo(expected);
     }
 
-    @Test
-    void test() {
-        Faker faker = new Faker();
-        String json = Format.toJson(
+    @ParameterizedTest
+    @ValueSource(ints = {0, 2, 3, 10, 20, 100})
+    public void testLimitForCsv(int limit) {
+        String csv = Format.toCsv(
                 faker.<Name>collection()
-                    .suppliers(faker::name)
-                    .maxLen(2)
+                    .suppliers(() -> faker.name())
+                    .maxLen(limit + 1)
                     .build())
-            .set("firstName", Name::firstName)
-            .set("lastName", Name::lastName)
-            .build()
-            .generate();
-        System.out.println(json);
+            .headers(() -> "firstName", () -> "lastname")
+            .columns(Name::firstName, Name::lastName)
+            .separator(" : ")
+            .header(false)
+            .limit(limit)
+            .build().get();
+
+        int numberOfLines = 0;
+        for (int i = 0; i < csv.length(); i++) {
+            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+                numberOfLines++;
+            }
+        }
+
+        assertThat(numberOfLines).isEqualTo(limit);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 2, 3, 10, 20, 100})
+    public void testLimitForCollection(int limit) {
+        String csv = Format.toCsv(
+                faker.<Name>collection()
+                    .suppliers(() -> faker.name())
+                    .maxLen(limit)
+                    .build())
+            .headers(() -> "firstName", () -> "lastname")
+            .columns(Name::firstName, Name::lastName)
+            .separator(" : ")
+            .header(false)
+            .limit(limit + 1)
+            .build().get();
+
+        int numberOfLines = 0;
+        for (int i = 0; i < csv.length(); i++) {
+            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+                numberOfLines++;
+            }
+        }
+
+        assertThat(numberOfLines).isEqualTo(limit);
     }
 }

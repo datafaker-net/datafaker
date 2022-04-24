@@ -25,7 +25,7 @@ public class Csv<T> {
         this.quote = quote;
         this.withHeader = withHeader;
         this.columns = columns;
-        this.limit = limit;
+        this.limit = limit == -1 && collection == null ? 10 : limit;
     }
 
     public String get() {
@@ -38,7 +38,7 @@ public class Csv<T> {
         }
 
         List<T> res = collection == null ? null : collection.get();
-        for (int line = 0; line < (res == null ? limit : res.size()); line++) {
+        for (int line = 0; line < (res == null ? limit : limit != -1 ? Math.min(limit, res.size()) : res.size()); line++) {
             int rowNum = line;
             addLine(sb, integer -> columns.get(integer).getValue(res == null || res.isEmpty() ? null : res.get(rowNum)));
         }
@@ -157,7 +157,7 @@ public class Csv<T> {
             for (int i = 0; i < (columnValues == null ? 0 : columnValues.length); i++) {
                 cols.add(CollectionColumn.of(headers == null ? null : headers[i], columnValues[i]));
             }
-            return new Csv<>(collection, getSeparator(), getQuote(), isWithHeader(), cols, collection == null ? getLimit() : -1);
+            return new Csv<>(collection, getSeparator(), getQuote(), isWithHeader(), cols, getLimit());
         }
     }
 
@@ -165,7 +165,7 @@ public class Csv<T> {
     public static abstract class CsvBuilder {
         private String separator = ",";
         private char quote = '"';
-        private int limit = 10;
+        private int limit = -1;
         private boolean withHeader = true;
 
         public <T extends CsvBuilder> T header(boolean withHeader) {

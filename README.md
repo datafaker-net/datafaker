@@ -103,11 +103,13 @@ more examples about that at https://www.datafaker.net/documentation/collections/
 #### csv
 ```java
 String csv = Format.toCsv(
-                Csv.Column.of("first_name", () -> faker.name().firstName()),
-                Csv.Column.of("last_name", () -> faker.name().lastName()))
-            .header(true)
-            .separator(" ; ")
-            .limit(2).build().get(); 
+                 faker.<Name>collection()
+                     .suppliers(() -> faker.name())
+                     .build())
+                 .headers(() -> "firstName", () -> "lastname")
+                 .columns(Name::firstName, Name::lastName)
+                 .separator(" ; ")
+                 .limit(2).build().get();
 // "first_name" ; "last_name"
 // "Kimberely" ; "Considine"
 // "Mariela" ; "Krajcik"
