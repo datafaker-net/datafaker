@@ -1,7 +1,7 @@
 package net.datafaker;
 
 /**
- * Generate random components of basketall game, e.g. teams, coaches, positions and players.
+ * Generate random components of basketball game, e.g. teams, coaches, positions and players.
  *
  * @author unknown and irakatz
  * @since 0.8.0

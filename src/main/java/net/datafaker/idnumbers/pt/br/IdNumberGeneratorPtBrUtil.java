@@ -8,7 +8,7 @@ public final class IdNumberGeneratorPtBrUtil {
     }
 
     /**
-     * https://en.wikipedia.org/wiki/CNPJ
+     * <a href="https://en.wikipedia.org/wiki/CNPJ">https://en.wikipedia.org/wiki/CNPJ</a>
      *
      * @param formatted a cnpj (un)formatted
      * @param valid     a cnpj (in)valid
@@ -51,7 +51,7 @@ public final class IdNumberGeneratorPtBrUtil {
     }
 
     /**
-     * https://en.wikipedia.org/wiki/CPF_number
+     * <a href="https://en.wikipedia.org/wiki/CPF_number">https://en.wikipedia.org/wiki/CPF_number</a>
      *
      * @param formatted a CPF (un)formatted
      * @param valid     a CPF (in)valid

@@ -22,37 +22,34 @@ public class Aws {
     }
 
     public String acmARN() {
-        return new StringBuilder("arn:aws:acm:")
-            .append(region())
-            .append(":")
-            .append(accountId())
-            .append(":certificate/")
-            .append(UUID.randomUUID())
-            .toString();
+        return "arn:aws:acm:" +
+            region() +
+            ":" +
+            accountId() +
+            ":certificate/" +
+            UUID.randomUUID();
     }
 
     public String albARN() {
-        return new StringBuilder("arn:aws:elasticloadbalancing:")
-            .append(region())
-            .append(":")
-            .append(accountId())
-            .append(":loadbalancer/app/")
-            .append(appName())
-            .append("/")
-            .append(randHex())
-            .toString();
+        return "arn:aws:elasticloadbalancing:" +
+            region() +
+            ":" +
+            accountId() +
+            ":loadbalancer/app/" +
+            appName() +
+            "/" +
+            randHex();
     }
 
     public String albTargetGroupARN() {
-        return new StringBuilder("arn:aws:elasticloadbalancing:")
-            .append(region())
-            .append(":")
-            .append(accountId())
-            .append(":targetgroup/")
-            .append(appName())
-            .append("/")
-            .append(randHex())
-            .toString();
+        return "arn:aws:elasticloadbalancing:" +
+            region() +
+            ":" +
+            accountId() +
+            ":targetgroup/" +
+            appName() +
+            "/" +
+            randHex();
     }
 
     public String route53ZoneId() {

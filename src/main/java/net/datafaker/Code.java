@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * ISBN Rules : https://en.wikipedia.org/wiki/International_Standard_Book_Number
+ * ISBN Rules : <a href="https://en.wikipedia.org/wiki/International_Standard_Book_Number">https://en.wikipedia.org/wiki/International_Standard_Book_Number</a>
  *
  * @since 0.8.0
  */
