@@ -10,7 +10,7 @@ public class OscarMovieTest extends AbstractFakerTest {
     @Test
     public void actor() {
         assertThat(faker.oscarMovie().actor())
-            .is(CONDITION_FUNCTION.apply(c -> Character.isLetter(c) || c == ' ' || c == '.' || c == '-' || c == '(' || c == ')'));
+            .is(CONDITION_FUNCTION.apply(c -> Character.isLetter(c) || c == ' ' || c == '.' || c == '-' || c == '(' || c == ')' || c == '\''));
     }
 
     //CS304 (manually written) Issue link: https://github.com/DiUS/java-faker/issues/712 https://github.com/DiUS/java-faker/issues/713
