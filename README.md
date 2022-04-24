@@ -6,12 +6,12 @@ Data Faker
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![codecov](https://codecov.io/gh/datafaker-net/datafaker/branch/master/graph/badge.svg?token=FJ6EXMUTFD)](https://codecov.io/gh/datafaker-net/datafaker)
 
-This library is a modern port of [java-faker](https://github.com/DiUS/java-faker), built on Java 8, 
-with up to date libraries and several newly added Fake Generators. 
+This library is a modern port of [java-faker](https://github.com/DiUS/java-faker), built on Java 8,
+with up to date libraries and several newly added Fake Generators.
 
 This library generates fake data, similar to other fake data generators, such as:
 
-* Ruby's [faker](https://github.com/stympy/faker) gem 
+* Ruby's [faker](https://github.com/stympy/faker) gem
 * Perl's [Data::Faker](https://metacpan.org/pod/Data::Faker) library
 * Python [faker](https://faker.readthedocs.io/en/master/) package
 * PHP [faker](https://fakerphp.github.io/) library
@@ -41,10 +41,11 @@ dependencies {
 
 ```
 
-You can also use the snapshot version (`1.4.0-SNAPSHOT`), which automatically gets published 
+You can also use the snapshot version (`1.4.0-SNAPSHOT`), which automatically gets published
 after every push to the master branch of this repository. Binary repository URL for snapshots download is
 https://s01.oss.sonatype.org/content/repositories/snapshots/.
 
+### Get started
 In your Java code:
 
 ```java
@@ -68,6 +69,68 @@ val lastName = faker.name().lastName() // Barton
 
 val streetAddress = faker.address().streetAddress() // 60018 Sawayn Brooks Suite 449
 ```
+
+### Expressions
+
+```java
+Faker faker = new Faker();
+faker.expression("#{letterify 'test????test'}"); // testqwastest
+faker.expression("#{numerify '#test#'}"); // 3test5
+faker.expression("#{templatify 'test','t','q','@'}"); // @esq
+faker.expression("#{examplify 'test'}"); // ghjk
+faker.expression("#{regexify '[a-z]{4,10}'}"); // wbevoa
+faker.expression("#{options.option '23','2','5','$','%','*'}"); // *
+faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}"); // 61 327 08:11:45
+```
+also more examples at https://www.datafaker.net/documentation/expressions/
+
+### Collections
+```java
+Faker faker = new Faker();
+List<String> names = faker.<String>collection()
+                         .suppliers(
+                              () -> faker.name().firstName(),
+                              () -> faker.name().lastName())
+                         .minLen(3)
+                         .maxLen(5)
+                         .build().get();
+System.out.println(names);
+// [Skiles, O'Connell, Lorenzo, West]
+```
+more examples about that at https://www.datafaker.net/documentation/collections/
+
+### File formats
+#### csv
+```java
+String csv = Format.toCsv(
+                Csv.Column.of("first_name", () -> faker.name().firstName()),
+                Csv.Column.of("last_name", () -> faker.name().lastName()))
+            .header(true)
+            .separator(" ; ")
+            .limit(2).build().get(); 
+// "first_name" ; "last_name"
+// "Kimberely" ; "Considine"
+// "Mariela" ; "Krajcik"
+```
+#### json
+```java
+Faker faker = new Faker();
+String json = Format.toJson(
+                  faker.<Name>collection()
+                  .suppliers(faker::name)
+                  .maxLen(2)
+                  .build())
+              .set("firstName", Name::firstName)
+              .set("lastName", Name::lastName)
+              .build()
+              .generate();
+// [{"firstName": "Oleta", "lastName": "Toy"},
+// {"firstName": "Gerard", "lastName": "Windler"}]
+```
+More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/file-formats/
+
+### Custom provider
+Add your own custom provider in your app following steps from https://www.datafaker.net/documentation/custom-providers/
 
 Documentation
 -----
