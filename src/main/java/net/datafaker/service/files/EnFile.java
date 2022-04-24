@@ -147,6 +147,7 @@ public class EnFile {
 //            "opera.yml",
         "nigeria.yml",
         "overwatch.yml",
+        "OscarMovie.yml",
 //            "parks_and_rec.yml",
 //            "phish.yml",
         "phone_number.yml",
@@ -224,7 +225,6 @@ public class EnFile {
         new EnFile("phone_number.yml", "cell_phone"), // load phone number again with a different path
         new EnFile("resident_evil.yml", "games"),
         new EnFile("hearthstone.yml", "games"));
-
     private static final List<EnFile> ALL_FILES;
 
     static {

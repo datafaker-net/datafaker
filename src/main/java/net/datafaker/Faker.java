@@ -616,6 +616,8 @@ public class Faker {
         return getProvider(Overwatch.class, () -> new Overwatch(this));
     }
 
+    public OscarMovie oscarMovie(){return getProvider(OscarMovie.class, () -> new OscarMovie(this));}
+
     public Passport passport() {
         return getProvider(Passport.class, () -> new Passport(this));
     }

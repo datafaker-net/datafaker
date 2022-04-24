@@ -158,6 +158,7 @@ Providers
 * Number
 * Options
 * Overwatch
+* OscarMovie  
 * Passport
 * PhoneNumber
 * Photography
