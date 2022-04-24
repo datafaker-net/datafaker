@@ -82,6 +82,7 @@ public class EnFile {
         "dumb_and_dumber.yml",
         "dune.yml",
         "educator.yml",
+        "elden_ring.yml",
         "elder_scrolls.yml",
         "electrical_components.yml",
         "esport.yml",

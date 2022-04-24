@@ -186,6 +186,7 @@ Providers
 * Dune
 * Durations
 * Educator
+* EldenRing
 * EnglandFootBall
 * ElectricalComponents
 * Esports
