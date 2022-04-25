@@ -106,7 +106,7 @@ String csv = Format.toCsv(
                  faker.<Name>collection()
                      .suppliers(() -> faker.name())
                      .build())
-                 .headers(() -> "firstName", () -> "lastname")
+                 .headers(() -> "first_name", () -> "last_name")
                  .columns(Name::firstName, Name::lastName)
                  .separator(" ; ")
                  .limit(2).build().get();
