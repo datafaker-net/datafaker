@@ -203,7 +203,6 @@ public class FakerIT {
             assertThat(returnValue).isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;
             assertThat(returnValueAsString).isNotEmpty();
-            assertThat(returnValueAsString).startsWith("/");
         }
     }
 

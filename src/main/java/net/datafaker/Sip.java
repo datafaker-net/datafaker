@@ -160,7 +160,7 @@ public class Sip {
      * Server error phrase, the various response phrases are listed in
      * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
-     * @return a SIP server erro response phrase String, e.g. {@code Service Unavailable}.
+     * @return a SIP server error response phrase String, e.g. {@code Service Unavailable}.
      */
     public String serverErrorResponsePhrase() {
         return faker.resolve("sip.response.phrases.serverError");

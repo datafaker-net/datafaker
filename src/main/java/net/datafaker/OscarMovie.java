@@ -1,27 +1,16 @@
 package net.datafaker;
 
 /**
- * This is the class generates random stream of Movie
+ * The Academy Awards, popularly known as the Oscars, are awards for artistic and technical merit in the film industry.
  *
  * @author ak-maker
  */
 public class OscarMovie {
-    /**
-     * The faker instance for generating random names of things.
-     */
+
     private final Faker faker;
-    /**
-     * The year instance is used for randomly choose the year (from 2013 to 2022)
-     */
     private final String year;
-    /**
-     * The choice instance eis used for randomly choose the
-     * first/second/third movie of that year.
-     */
     private final String choice;
-    /**
-     * Part of the string to resolve
-     */
+
     private final String str;
 
     /**
@@ -32,9 +21,9 @@ public class OscarMovie {
      */
     protected OscarMovie(final Faker faker) {
         this.faker = faker;
-        this.year = this.faker.resolve("OscarMovie.year.years");
-        this.choice = this.faker.resolve("OscarMovie.year.choice");
-        this.str = "OscarMovie.".concat(year).concat(".").concat(choice);
+        this.year = this.faker.resolve("oscar_movie.year.years");
+        this.choice = this.faker.resolve("oscar_movie.year.choice");
+        this.str = "oscar_movie.".concat(year).concat(".").concat(choice);
     }
 
     /**
@@ -52,52 +41,45 @@ public class OscarMovie {
     }
 
     /**
-     * @return str
-     */
-    public String getStr() {
-        return str;
-    }
-
-    /**
      * This method generates random actor
      *
-     * @return random actor from OscarMovie.yml
+     * @return random actor
      */
     public String actor() {
         return faker.resolve(str.concat(".actor"));
     }
 
     /**
-     * This method generates random movieName
+     * This method generates a random movie name
      *
-     * @return random movieName from OscarMovie.yml
+     * @return random movieName
      */
     public String movieName() {
         return faker.resolve(str.concat(".movieName"));
     }
 
     /**
-     * This method generates random quote
+     * This method generates a random quote
      *
-     * @return random quote from OscarMovie.yml
+     * @return random quote
      */
     public String quote() {
         return faker.resolve(str.concat(".quote"));
     }
 
     /**
-     * This method generates random character
+     * This method generates a random character
      *
-     * @return random character from OscarMovie.yml
+     * @return random character
      */
     public String character() {
         return faker.resolve(str.concat(".character"));
     }
 
     /**
-     * This method generates random releaseDate
+     * This method generates a random release date
      *
-     * @return random releaseDate from OscarMovie.yml
+     * @return random releaseDate
      */
     public String releaseDate() {
         return faker.resolve(str.concat(".releaseDate"));

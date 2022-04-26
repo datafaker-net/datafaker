@@ -150,7 +150,7 @@ public class EnFile {
 //            "opera.yml",
         "nigeria.yml",
         "overwatch.yml",
-        "OscarMovie.yml",
+        "oscar_movie.yml",
 //            "parks_and_rec.yml",
 //            "phish.yml",
         "phone_number.yml",

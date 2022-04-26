@@ -1,40 +1,35 @@
 package net.datafaker;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Strings.isNullOrEmpty;
 
 public class OscarMovieTest extends AbstractFakerTest {
-    //CS304 (manually written) Issue link: https://github.com/DiUS/java-faker/issues/712 https://github.com/DiUS/java-faker/issues/713
-    @Test
+
+    @RepeatedTest(100)
     public void actor() {
-        assertThat(faker.oscarMovie().actor())
-            .is(CONDITION_FUNCTION.apply(c -> Character.isLetter(c) || c == ' ' || c == '.' || c == '-' || c == '(' || c == ')' || c == '\''));
+        assertThat(faker.oscarMovie().actor()).matches("[\\p{L} .()-]+");
     }
 
-    //CS304 (manually written) Issue link: https://github.com/DiUS/java-faker/issues/712 https://github.com/DiUS/java-faker/issues/713
     @Test
     public void movieName() {
         assertThat(isNullOrEmpty(faker.oscarMovie().movieName())).isFalse();
     }
 
-    //CS304 (manually written) Issue link: https://github.com/DiUS/java-faker/issues/712 https://github.com/DiUS/java-faker/issues/713
     @Test
     public void quote() {
         assertThat(isNullOrEmpty(faker.oscarMovie().quote())).isFalse();
     }
 
-    //CS304 (manually written) Issue link: https://github.com/DiUS/java-faker/issues/712 https://github.com/DiUS/java-faker/issues/713
-    @Test
+    @RepeatedTest(100)
     public void character() {
-        assertThat(faker.oscarMovie().character())
-            .is(CONDITION_FUNCTION.apply(c -> Character.isLetter(c) || c == ' ' || c == '.' || c == '-' || c == '\''));
+        assertThat(faker.oscarMovie().actor()).matches("[\\p{L} .()-]+");
     }
 
-    //CS304 (manually written) Issue link: https://github.com/DiUS/java-faker/issues/712 https://github.com/DiUS/java-faker/issues/713
-    @Test
+    @RepeatedTest(100)
     public void releaseDate() {
-        assertThat(faker.oscarMovie().releaseDate()).matches("[A-Za-z,0-9\\-.() ]+");
+        assertThat(faker.oscarMovie().releaseDate()).matches("[A-Za-z,0-9 ]+");
     }
 }
