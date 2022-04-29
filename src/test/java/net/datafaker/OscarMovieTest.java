@@ -10,7 +10,8 @@ public class OscarMovieTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     public void actor() {
-        assertThat(faker.oscarMovie().actor()).matches("[\\p{L} .()-]+");
+        assertThat(faker.oscarMovie().actor())
+            .is(CONDITION_FUNCTION.apply(c -> Character.isLetter(c) || c == ' ' || c == '.' || c == '-' || c == '(' || c == ')' || c == '\''));
     }
 
     @Test
@@ -25,7 +26,8 @@ public class OscarMovieTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     public void character() {
-        assertThat(faker.oscarMovie().actor()).matches("[\\p{L} .()-]+");
+        assertThat(faker.oscarMovie().character())
+            .is(CONDITION_FUNCTION.apply(c -> Character.isLetter(c) || c == ' ' || c == '.' || c == '-' || c == '\''));
     }
 
     @RepeatedTest(100)
