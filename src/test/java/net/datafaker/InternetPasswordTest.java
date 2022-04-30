@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class InternetPasswordTest extends AbstractFakerTest {
+class InternetPasswordTest extends AbstractFakerTest {
     @Test
-    public void testPassword1000() {
+    void testPassword1000() {
         final Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
         final Pattern digitPattern = Pattern.compile("[0-9]");
         for (int i = 0; i < 1000; i++) {
@@ -26,7 +26,7 @@ public class InternetPasswordTest extends AbstractFakerTest {
     }
 
     @Test
-    public void passwordSpecial() {
+    void passwordSpecial() {
         boolean check = true;
         for (int i = 0; i < 10; i++) {
             String password = faker.internet().password(8, 16, true, true, true);
@@ -42,7 +42,7 @@ public class InternetPasswordTest extends AbstractFakerTest {
     }
 
     @Test
-    public void passwordMix() {
+    void passwordMix() {
         boolean check = true;
         for (int i = 0; i < 10; i++) {
             String password = faker.internet().password(8, 16, true, true, true);

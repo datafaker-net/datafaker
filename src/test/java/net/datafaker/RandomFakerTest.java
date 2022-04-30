@@ -7,7 +7,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RandomFakerTest extends AbstractFakerTest {
+class RandomFakerTest extends AbstractFakerTest {
 
     private static final int CONSTANT_SEED_VALUE = 10;
     private Faker faker;
@@ -21,7 +21,7 @@ public class RandomFakerTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testNumerifyRandomnessCanBeControlled() {
+    void testNumerifyRandomnessCanBeControlled() {
         resetRandomSeed();
         final String firstInvocation = faker.numerify("###");
 
@@ -31,7 +31,7 @@ public class RandomFakerTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testLetterifyRandomnessCanBeControlled() {
+    void testLetterifyRandomnessCanBeControlled() {
         resetRandomSeed();
         final String firstInvocation = faker.letterify("???");
 
@@ -41,7 +41,7 @@ public class RandomFakerTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testNameRandomnessCanBeControlled() {
+    void testNameRandomnessCanBeControlled() {
         resetRandomSeed();
         final String firstInvocation = faker.name().name();
 
@@ -51,7 +51,7 @@ public class RandomFakerTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testEmailRandomnessCanBeControlled() {
+    void testEmailRandomnessCanBeControlled() {
         resetRandomSeed();
         final String firstInvocation = faker.internet().emailAddress();
 

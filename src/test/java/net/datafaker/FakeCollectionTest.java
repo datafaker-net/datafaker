@@ -12,9 +12,9 @@ import java.util.Random;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class FakeCollectionTest extends AbstractFakerTest {
+class FakeCollectionTest extends AbstractFakerTest {
     @Test
-    public void generateCollection() {
+    void generateCollection() {
         List<String> names = faker.<String>collection()
             .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
             .minLen(3)
@@ -27,7 +27,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void generateNullCollection() {
+    void generateNullCollection() {
         List<String> names = faker.<String>collection()
             .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
             .nullRate(1d)
@@ -42,7 +42,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @ValueSource(doubles = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, -0.3, 2, 3, Integer.MAX_VALUE, Double.MAX_VALUE})
-    public void illegalNullRate(double nullRate) {
+    void illegalNullRate(double nullRate) {
         assertThatThrownBy(
             () -> faker.collection()
                 .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
@@ -54,7 +54,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void generateCollectionWithRepeatableFaker() {
+    void generateCollectionWithRepeatableFaker() {
         Faker seededFaker = new Faker(new Random(10L));
 
         List<String> names = faker.<String>collection()
@@ -69,7 +69,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void generateCollectionWithDifferentObjects() {
+    void generateCollectionWithDifferentObjects() {
         List<Object> objects = faker.collection()
             .suppliers(() -> faker.name().firstName(), () -> faker.random().nextInt(100))
             .maxLen(5).build().get();
@@ -80,7 +80,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void checkWrongArguments() {
+    void checkWrongArguments() {
         assertThatThrownBy(() ->
             faker.collection()
                 .suppliers(() -> faker.name().firstName())
@@ -170,7 +170,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void differentNumberOfHeadersAndColumns() {
+    void differentNumberOfHeadersAndColumns() {
         assertThatThrownBy(() -> Format.toCsv(
                 faker.<Name>collection()
                     .suppliers(() -> faker.name())
@@ -183,7 +183,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void toCsv() {
+    void toCsv() {
         String separator = "$$$";
         int limit = 5;
         String csv = Format.toCsv(
@@ -210,7 +210,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void toJson() {
+    void toJson() {
         int limit = 10;
         String json = Format.toJson(
                 faker.<Data>collection().minLen(limit).maxLen(limit)
@@ -234,7 +234,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    public void toNestedJson() {
+    void toNestedJson() {
         final int limit = 2;
         final String json =
             Format.toJson(faker.collection()
@@ -272,7 +272,7 @@ public class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(10)
-    public void singletonTest() {
+    void singletonTest() {
         int limit = 10;
         assertThat(faker.<Data>collection().minLen(limit).maxLen(limit)
             .suppliers(BloodPressure::new, Glucose::new, Temperature::new)

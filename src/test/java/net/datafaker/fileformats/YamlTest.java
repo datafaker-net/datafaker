@@ -14,10 +14,10 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class YamlTest {
+class YamlTest {
     @ParameterizedTest
     @MethodSource("generateTestYaml")
-    public void simpleYamlTest(Map<Supplier<String>, Supplier<Object>> input, String expected) {
+    void simpleYamlTest(Map<Supplier<String>, Supplier<Object>> input, String expected) {
         Yaml yaml = new Yaml(input);
         assertThat(yaml.generate()).isEqualTo(expected);
     }

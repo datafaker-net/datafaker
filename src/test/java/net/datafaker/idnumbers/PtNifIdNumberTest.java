@@ -9,7 +9,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PtNifIdNumberTest extends AbstractFakerTest {
+class PtNifIdNumberTest extends AbstractFakerTest {
 
     private Faker ptFaker;
 
@@ -19,19 +19,19 @@ public class PtNifIdNumberTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void testInValid() {
+    void testInValid() {
         PtNifIdNumber idNumber = new PtNifIdNumber();
         assertThat(idNumber.getInvalid(ptFaker)).matches("[0-9]{9,10}");
     }
 
     @RepeatedTest(100)
-    public void testValid() {
+    void testValid() {
         PtNifIdNumber idNumber = new PtNifIdNumber();
         assertThat(idNumber.getValid(ptFaker)).matches("[0-9]{9,10}");
     }
 
     @RepeatedTest(100)
-    public void testValidWithFaker() {
+    void testValidWithFaker() {
         assertThat(ptFaker.idNumber().valid()).matches("[0-9]{9,10}");
     }
 

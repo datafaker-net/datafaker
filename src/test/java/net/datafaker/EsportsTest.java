@@ -4,30 +4,30 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EsportsTest extends AbstractFakerTest {
+class EsportsTest extends AbstractFakerTest {
 
     @Test
-    public void player() {
+    void player() {
         assertThat(faker.esports().player()).matches("(\\w|.)+");
     }
 
     @Test
-    public void team() {
+    void team() {
         assertThat(faker.esports().team()).matches("((\\w|.)+ ?)+");
     }
 
     @Test
-    public void event() {
+    void event() {
         assertThat(faker.esports().event()).matches("(\\w+ ?)+");
     }
 
     @Test
-    public void league() {
+    void league() {
         assertThat(faker.esports().league()).matches("\\w+");
     }
 
     @Test
-    public void game() {
+    void game() {
         assertThat(faker.esports().game()).matches("([\\w:.]+ ?)+");
     }
 }

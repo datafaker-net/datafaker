@@ -6,11 +6,11 @@ import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DurationTest extends AbstractFakerTest {
+class DurationTest extends AbstractFakerTest {
     final int DURATION_IS_EQUAL = 0;
 
     @Test
-    public void testDurationSeconds() {
+    void testDurationSeconds() {
         final long maxSeconds = 55;
         Duration randomDuration = faker.duration().atMostSeconds(maxSeconds);
         Duration lowerBound = Duration.ofSeconds(0);
@@ -21,7 +21,7 @@ public class DurationTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testDurationMinutes() {
+    void testDurationMinutes() {
         final long maxMins = 45;
         Duration randomDuration = faker.duration().atMostMinutes(maxMins);
         Duration lowerBound = Duration.ofMinutes(0);
@@ -32,7 +32,7 @@ public class DurationTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testDurationHours() {
+    void testDurationHours() {
         final long maxHours = 35;
         Duration randomDuration = faker.duration().atMostHours(maxHours);
         Duration lowerBound = Duration.ofHours(0);
@@ -43,7 +43,7 @@ public class DurationTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testDurationDays() {
+    void testDurationDays() {
         final long maxDays = 40;
         Duration randomDuration = faker.duration().atMostDays(maxDays);
         Duration lowerBound = Duration.ofDays(0);

@@ -4,30 +4,30 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class VolleyballTest extends AbstractFakerTest {
+class VolleyballTest extends AbstractFakerTest {
 
     @Test
-    public void team() {
+    void team() {
         assertThat(faker.volleyball().team()).isNotEmpty();
     }
 
     @Test
-    public void player() {
+    void player() {
         assertThat(faker.volleyball().player()).isNotEmpty();
     }
 
     @Test
-    public void coach() {
+    void coach() {
         assertThat(faker.volleyball().coach()).isNotEmpty();
     }
 
     @Test
-    public void position() {
+    void position() {
         assertThat(faker.volleyball().position()).isNotEmpty();
     }
 
     @Test
-    public void formation() {
+    void formation() {
         assertThat(faker.volleyball().formation()).isNotEmpty();
     }
 

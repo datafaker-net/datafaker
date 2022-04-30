@@ -4,35 +4,35 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HitchhikersGuideToTheGalaxyTest extends AbstractFakerTest {
+class HitchhikersGuideToTheGalaxyTest extends AbstractFakerTest {
 
     @Test
-    public void character() {
+    void character() {
         assertThat(faker.hitchhikersGuideToTheGalaxy().character()).matches("^(\\w+(\\.?\\s?'?))+$");
     }
 
     @Test
-    public void location() {
+    void location() {
         assertThat(faker.hitchhikersGuideToTheGalaxy().location()).matches("^(\\w+\\S?\\.?\\s?'?-?)+$");
     }
 
     @Test
-    public void marvinQuote() {
+    void marvinQuote() {
         assertThat(faker.hitchhikersGuideToTheGalaxy().marvinQuote()).isNotEmpty();
     }
 
     @Test
-    public void planet() {
+    void planet() {
         assertThat(faker.hitchhikersGuideToTheGalaxy().planet()).matches("^(\\w+-?\\s?)+$");
     }
 
     @Test
-    public void quote() {
+    void quote() {
         assertThat(faker.hitchhikersGuideToTheGalaxy().quote()).isNotEmpty();
     }
 
     @Test
-    public void species() {
+    void species() {
         assertThat(faker.hitchhikersGuideToTheGalaxy().species()).matches("^(\\w+'?\\s?)+$");
     }
 }

@@ -11,10 +11,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /*
  * This file was used to test the issue #566 by SE_CHWJ
  */
-public class EnZAIdNumberTest {
+class EnZAIdNumberTest {
 
     @Test
-    public void testExistSsn() {
+    void testExistSsn() {
         EnZAIdNumber idNumber = new EnZAIdNumber();
 
         assertThat(idNumber.validSsn("9202204720085")).isFalse();
@@ -26,7 +26,7 @@ public class EnZAIdNumberTest {
     }
 
     @RepeatedTest(100)
-    public void testFakerSsn() {
+    void testFakerSsn() {
         EnZAIdNumber idNumber = new EnZAIdNumber();
         final Faker f = new Faker(new Locale("en-ZA"));
 
@@ -35,7 +35,7 @@ public class EnZAIdNumberTest {
     }
 
     @RepeatedTest(100)
-    public void testSsnFormat() {
+    void testSsnFormat() {
         final Faker f = new Faker(new Locale("en-ZA"));
         assertThat(f.idNumber().valid()).matches("\\d{10}[01][8]\\d");
         assertThat(f.idNumber().invalid()).matches("\\d{10}[01][8]\\d");

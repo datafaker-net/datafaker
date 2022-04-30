@@ -4,25 +4,25 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ShakespeareTest extends AbstractFakerTest {
+class ShakespeareTest extends AbstractFakerTest {
 
     @Test
-    public void testHamletQuote() {
+    void testHamletQuote() {
         assertThat(faker.shakespeare().hamletQuote()).isNotEmpty();
     }
 
     @Test
-    public void testAsYouLikeItQuote() {
+    void testAsYouLikeItQuote() {
         assertThat(faker.shakespeare().asYouLikeItQuote()).isNotEmpty();
     }
 
     @Test
-    public void testKingRichardIIIQuote() {
+    void testKingRichardIIIQuote() {
         assertThat(faker.shakespeare().kingRichardIIIQuote()).isNotEmpty();
     }
 
     @Test
-    public void testRomeoAndJulietQuote() {
+    void testRomeoAndJulietQuote() {
         assertThat(faker.shakespeare().romeoAndJulietQuote()).isNotEmpty();
     }
 }

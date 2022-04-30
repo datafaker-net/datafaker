@@ -10,23 +10,23 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
-public class NameTest extends AbstractFakerTest {
+class NameTest extends AbstractFakerTest {
 
     @Spy
     private Faker mockedFaker;
 
     @Test
-    public void testName() {
+    void testName() {
         assertThat(faker.name().name()).matches("([\\w']+\\.?( )?){2,3}");
     }
 
     @Test
-    public void testNameWithMiddle() {
+    void testNameWithMiddle() {
         assertThat(faker.name().nameWithMiddle()).matches("([\\w']+\\.?( )?){3,4}");
     }
 
     @Test
-    public void testNameWithMiddleDoesNotHaveRepeatedName() {
+    void testNameWithMiddleDoesNotHaveRepeatedName() {
         int theSameNameCnt = 0;
         int total = 100;
         for (int i = 0; i < total; i++) {
@@ -40,12 +40,12 @@ public class NameTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testFullName() {
+    void testFullName() {
         assertThat(faker.name().fullName()).matches("([\\w']+\\.?( )?){2,4}");
     }
 
     @Test
-    public void testFullNameArabic() {
+    void testFullNameArabic() {
         Faker localFaker = new Faker(new Locale("ar"));
 
         for (int i = 0; i < 25; i++) {
@@ -54,37 +54,37 @@ public class NameTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testFirstName() {
+    void testFirstName() {
         assertThat(faker.name().firstName()).matches("\\w+");
     }
 
     @Test
-    public void testLastName() {
+    void testLastName() {
         assertThat(faker.name().lastName()).matches("[A-Za-z']+");
     }
 
     @Test
-    public void testPrefix() {
+    void testPrefix() {
         assertThat(faker.name().prefix()).matches("\\w+\\.?");
     }
 
     @Test
-    public void testSuffix() {
+    void testSuffix() {
         assertThat(faker.name().suffix()).matches("\\w+\\.?");
     }
 
     @Test
-    public void testTitle() {
+    void testTitle() {
         assertThat(faker.name().title()).matches("(\\w+\\.?( )?){3}");
     }
 
     @RepeatedTest(100)
-    public void testUsername() {
+    void testUsername() {
         assertThat(faker.name().username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
     @Test
-    public void testUsernameWithSpaces() {
+    void testUsernameWithSpaces() {
         final Name name = Mockito.spy(new Name(mockedFaker));
         doReturn("Compound Name").when(name).firstName();
         doReturn(name).when(mockedFaker).name();
@@ -92,7 +92,7 @@ public class NameTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testBloodGroup() {
+    void testBloodGroup() {
         assertThat(faker.name().bloodGroup()).matches("(A|B|AB|O)[+-]");
     }
 

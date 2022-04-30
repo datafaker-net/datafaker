@@ -5,44 +5,44 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FileTest extends AbstractFakerTest {
+class FileTest extends AbstractFakerTest {
 
     @RepeatedTest(10)
-    public void testExtension() {
+    void testExtension() {
         assertThat(faker.file().extension())
             .matches("(flac|mp3|wav|bmp|gif|jpeg|jpg|png|tiff|css|csv|html|js|json|txt|mp4|avi|mov|webm|doc|docx|xls|xlsx|ppt|pptx|odt|ods|odp|pages|numbers|key|pdf)");
     }
 
     @RepeatedTest(10)
-    public void testMimeTypeFormat() {
+    void testMimeTypeFormat() {
         assertThat(faker.file().mimeType()).matches(".+/.+");
     }
 
     @RepeatedTest(10)
-    public void testFileName() {
+    void testFileName() {
         assertThat(faker.file().fileName()).matches("([a-z\\-_]+)([\\\\/])([a-z\\-_]+)\\.([a-z0-9]+)");
     }
 
     @Test
-    public void testFileNameSpecifyExtension() {
+    void testFileNameSpecifyExtension() {
         assertThat(faker.file().fileName(null, null, "txt", null))
             .matches("([a-z\\-_]+)([\\\\/])([a-z\\-_]+)\\.txt");
     }
 
     @Test
-    public void testFileNameSpecifyDir() {
+    void testFileNameSpecifyDir() {
         assertThat(faker.file().fileName("my_dir", null, null, null))
             .matches("my_dir([\\\\/])([a-z\\-_]+)\\.([a-z0-9]+)");
     }
 
     @Test
-    public void testFileNameSpecifySeparator() {
+    void testFileNameSpecifySeparator() {
         assertThat(faker.file().fileName(null, null, null, "\\"))
             .matches("([a-z\\-_]+)\\\\([a-z\\-_]+)\\.([a-z0-9]+)");
     }
 
     @Test
-    public void testFileNameSpecifyName() {
+    void testFileNameSpecifyName() {
         assertThat(faker.file().fileName(null, "da_name", null, null))
             .matches("([a-z\\-_]+)([\\\\/])da_name\\.([a-z0-9]+)");
     }

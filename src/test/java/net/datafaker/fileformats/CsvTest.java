@@ -11,10 +11,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CsvTest extends AbstractFakerTest {
+class CsvTest extends AbstractFakerTest {
 
     @Test
-    public void csvTest() {
+    void csvTest() {
         String separator = "@@@";
         int limit = 20;
         String csv = Format.toCsv(Csv.Column.of("first_name", () -> faker.name().firstName()),
@@ -38,7 +38,7 @@ public class CsvTest extends AbstractFakerTest {
     }
 
     @Test
-    public void csvTestWithQuotes() {
+    void csvTestWithQuotes() {
         String separator = "$$$";
         int limit = 20;
         List<Csv.Column> columns = new ArrayList<>();
@@ -64,7 +64,7 @@ public class CsvTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testCsvWithComma() {
+    void testCsvWithComma() {
         String csv = Format.toCsv(
                 Csv.Column.of("values", () -> "1,2,3"),
                 Csv.Column.of("title", () -> "The \"fabulous\" artist"))
@@ -80,7 +80,7 @@ public class CsvTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 3, 10, 20, 100})
-    public void testLimitForCsv(int limit) {
+    void testLimitForCsv(int limit) {
         String csv = Format.toCsv(
                 faker.<Name>collection()
                     .suppliers(() -> faker.name())
@@ -105,7 +105,7 @@ public class CsvTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 3, 10, 20, 100})
-    public void testLimitForCollection(int limit) {
+    void testLimitForCollection(int limit) {
         String csv = Format.toCsv(
                 faker.<Name>collection()
                     .suppliers(() -> faker.name())

@@ -4,40 +4,40 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AviationTest extends AbstractFakerTest {
+class AviationTest extends AbstractFakerTest {
 
     @Test
-    public void airport() {
+    void airport() {
         assertThat(faker.aviation().airport()).matches("\\w{4}");
     }
 
     @Test
-    public void aircraft() {
+    void aircraft() {
         assertThat(faker.aviation().aircraft()).isNotEmpty();
     }
 
     @Test
-    public void metar() {
+    void metar() {
         assertThat(faker.aviation().METAR()).isNotEmpty();
     }
 
     @Test
-    public void flight_ICAO() {
+    void flight_ICAO() {
         assertThat(faker.aviation().flight("ICAO")).matches("[A-Z]{3}[0-9]+");
     }
 
     @Test
-    public void flight_IATA() {
+    void flight_IATA() {
         assertThat(faker.aviation().flight("IATA")).matches("[A-Z]{2}[0-9]+");
     }
 
     @Test
-    public void flight_default() {
+    void flight_default() {
         assertThat(faker.aviation().flight()).matches("[A-Z]{2}[0-9]+");
     }
 
     @Test
-    public void airline() {
+    void airline() {
         assertThat(faker.aviation().airline()).isNotEmpty();
     }
 }

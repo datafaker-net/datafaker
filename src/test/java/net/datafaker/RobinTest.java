@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RobinTest extends AbstractFakerTest {
+class RobinTest extends AbstractFakerTest {
 
     @Test
-    public void quote() {
+    void quote() {
         assertThat(faker.robin().quote()).matches("^(\\w+\\.?-?'?\\s?)+(\\(?)?(\\w+\\s?\\.?)+(\\))?$");
     }
 }

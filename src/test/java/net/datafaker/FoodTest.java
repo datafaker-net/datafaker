@@ -4,40 +4,40 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FoodTest extends AbstractFakerTest {
+class FoodTest extends AbstractFakerTest {
 
     @Test
-    public void ingredient() {
+    void ingredient() {
         assertThat(faker.food().ingredient()).matches("[A-Za-z- ]+");
     }
 
     @Test
-    public void spice() {
+    void spice() {
         assertThat(faker.food().spice()).matches("[A-Za-z1-9- ]+");
     }
 
     @Test
-    public void dish() {
+    void dish() {
         assertThat(faker.food().dish()).matches("\\P{Cc}+");
     }
 
     @Test
-    public void fruit() {
+    void fruit() {
         assertThat(faker.food().fruit()).matches("[A-Za-z1-9- ]+");
     }
 
     @Test
-    public void vegetable() {
+    void vegetable() {
         assertThat(faker.food().vegetable()).matches("[A-Za-z1-9- ]+");
     }
 
     @Test
-    public void sushi() {
+    void sushi() {
         assertThat(faker.food().sushi()).matches("[A-Za-z1-9- ]+");
     }
 
     @Test
-    public void measurement() {
+    void measurement() {
         assertThat(faker.food().measurement()).matches("([A-Za-z1-9/ ]+){2}");
     }
 }

@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-public class RelationshipTest extends AbstractFakerTest {
+class RelationshipTest extends AbstractFakerTest {
 
     private Faker mockFaker;
 
@@ -22,56 +22,56 @@ public class RelationshipTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void anyTest() {
+    void anyTest() {
         assertThat(faker.relationships().any()).isNotEmpty();
     }
 
     @Test
-    public void directTest() {
+    void directTest() {
         assertThat(faker.relationships().direct()).isNotEmpty();
     }
 
     @Test
-    public void extendedTest() {
+    void extendedTest() {
         assertThat(faker.relationships().extended()).isNotEmpty();
     }
 
     @Test
-    public void inLawTest() {
+    void inLawTest() {
         assertThat(faker.relationships().inLaw()).isNotEmpty();
     }
 
     @Test
-    public void spouseTest() {
+    void spouseTest() {
         assertThat(faker.relationships().spouse()).isNotEmpty();
     }
 
     @Test
-    public void parentTest() {
+    void parentTest() {
         assertThat(faker.relationships().parent()).isNotEmpty();
     }
 
     @Test
-    public void siblingTest() {
+    void siblingTest() {
         assertThat(faker.relationships().sibling()).isNotEmpty();
     }
 
     @Test
-    public void anyWithIllegalArgumentExceptionThrown() {
+    void anyWithIllegalArgumentExceptionThrown() {
         when(mockFaker.random()).thenThrow(new IllegalArgumentException());
         assertThatThrownBy(() -> new Relationship(mockFaker).any())
             .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    public void anyWithSecurityExceptionThrown() {
+    void anyWithSecurityExceptionThrown() {
         when(mockFaker.random()).thenThrow(new SecurityException());
         assertThatThrownBy(() -> new Relationship(mockFaker).any())
             .isInstanceOf(SecurityException.class);
     }
 
     @Test
-    public void anyWithIllegalAccessExceptionThrown() {
+    void anyWithIllegalAccessExceptionThrown() {
         when(mockFaker.random()).then(invocationOnMock -> {
             throw new IllegalAccessException();
         });
@@ -81,7 +81,7 @@ public class RelationshipTest extends AbstractFakerTest {
     }
 
     @Test
-    public void anyWithInvocationTargetExceptionThrown() {
+    void anyWithInvocationTargetExceptionThrown() {
         when(mockFaker.random()).then(invocationOnMock -> {
             throw new InvocationTargetException(new Exception());
         });

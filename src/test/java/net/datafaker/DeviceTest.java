@@ -4,25 +4,25 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DeviceTest extends AbstractFakerTest {
+class DeviceTest extends AbstractFakerTest {
 
     @Test
-    public void modelName() {
+    void modelName() {
         assertThat(faker.device().modelName()).isNotEmpty();
     }
 
     @Test
-    public void platform() {
+    void platform() {
         assertThat(faker.device().platform()).isNotEmpty();
     }
 
     @Test
-    public void manufacturer() {
+    void manufacturer() {
         assertThat(faker.device().manufacturer()).isNotEmpty();
     }
 
     @Test
-    public void serial() {
+    void serial() {
         assertThat(faker.device().serial()).isNotEmpty();
     }
 }

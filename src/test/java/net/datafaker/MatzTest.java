@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MatzTest extends AbstractFakerTest {
+class MatzTest extends AbstractFakerTest {
 
     @Test
-    public void quote() {
+    void quote() {
         assertThat(faker.matz().quote()).isNotEmpty();
     }
 }

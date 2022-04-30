@@ -6,7 +6,7 @@ import java.text.DecimalFormatSymbols;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CommerceTest extends AbstractFakerTest {
+class CommerceTest extends AbstractFakerTest {
 
     private static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols(getFaker().getLocale()).getDecimalSeparator();
 
@@ -15,47 +15,47 @@ public class CommerceTest extends AbstractFakerTest {
     private static final String PROMOTION_CODE_REGEX = CAPITALIZED_WORD_REGEX + "(-" + CAPITALIZED_WORD_REGEX + ")*";
 
     @Test
-    public void testDepartment() {
+    void testDepartment() {
         assertThat(faker.commerce().department()).matches("(\\w+(, | & )?){1,3}");
     }
 
     @Test
-    public void testProductName() {
+    void testProductName() {
         assertThat(faker.commerce().productName()).matches("(\\w+ ?){3,4}");
     }
 
     @Test
-    public void testMaterial() {
+    void testMaterial() {
         assertThat(faker.commerce().material()).matches("\\w+");
     }
 
     @Test
-    public void testBrand() {
+    void testBrand() {
         assertThat(faker.commerce().brand()).matches("\\w+");
     }
 
     @Test
-    public void testVendor() {
+    void testVendor() {
         assertThat(faker.commerce().vendor()).matches("[A-Za-z'() 0-9-,]+");
     }
 
     @Test
-    public void testPrice() {
+    void testPrice() {
         assertThat(faker.commerce().price()).matches("\\d{1,3}\\" + DECIMAL_SEPARATOR + "\\d{2}");
     }
 
     @Test
-    public void testPriceMinMax() {
+    void testPriceMinMax() {
         assertThat(faker.commerce().price(100, 1000)).matches("\\d{3,4}\\" + DECIMAL_SEPARATOR + "\\d{2}");
     }
 
     @Test
-    public void testPromotionCode() {
+    void testPromotionCode() {
         assertThat(faker.commerce().promotionCode()).matches(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{6}");
     }
 
     @Test
-    public void testPromotionCodeDigits() {
+    void testPromotionCodeDigits() {
         assertThat(faker.commerce().promotionCode(3)).matches(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{3}");
     }
 }

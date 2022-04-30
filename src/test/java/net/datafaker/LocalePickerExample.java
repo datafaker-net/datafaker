@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class LocalePickerExample {
+class LocalePickerExample {
 
     /**
      * Example to illustrate use of LocalePicker to randomly select

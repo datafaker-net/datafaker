@@ -1,6 +1,5 @@
 package net.datafaker.service;
 
-import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,50 +15,50 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 
-public class FakeValuesTest {
+class FakeValuesTest {
 
     private static final String PATH = "address";
     private FakeValues fakeValues;
 
     @BeforeEach
-    public void before() {
+    void before() {
         fakeValues = new FakeValues(Locale.ENGLISH, "address.yml", PATH);
     }
 
     @Test
-    public void supportsPathIsTrueWithTheSameValueAsThePath() {
+    void supportsPathIsTrueWithTheSameValueAsThePath() {
         assertThat(fakeValues.supportsPath(PATH)).isTrue();
     }
 
     @Test
-    public void supportsPathIsFalseWhenValueIsNotTheSame() {
+    void supportsPathIsFalseWhenValueIsNotTheSame() {
         assertThat(fakeValues.supportsPath("dog")).isFalse();
     }
 
     @Test
-    public void getAValueReturnsAValue() {
+    void getAValueReturnsAValue() {
         assertThat(fakeValues.get(PATH)).isNotNull();
     }
 
     @Test
-    public void getAValueDoesNotReturnAValue() {
+    void getAValueDoesNotReturnAValue() {
         assertThat(fakeValues.get("dog")).isNull();
     }
 
     @Test
-    public void getAValueWithANonEnglishFile() {
+    void getAValueWithANonEnglishFile() {
         FakeValues frenchFakeValues = new FakeValues(Locale.FRENCH);
         assertThat(frenchFakeValues.get(PATH)).isNotNull();
     }
 
     @Test
-    public void getAValueForHebrewLocale() {
+    void getAValueForHebrewLocale() {
         FakeValues hebrew = new FakeValues(new Locale("iw"));
         assertThat(hebrew.get(PATH)).isNotNull();
     }
 
     @Test
-    public void getAValueFromALocaleThatCantBeLoaded() {
+    void getAValueFromALocaleThatCantBeLoaded() {
         FakeValues fakeValues = new FakeValues(new Locale("nothing"));
         assertThat(fakeValues.get(PATH)).isNull();
     }

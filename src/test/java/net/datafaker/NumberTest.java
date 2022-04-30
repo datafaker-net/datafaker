@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NumberTest extends AbstractFakerTest {
+class NumberTest extends AbstractFakerTest {
 
     public static final int RANDOMIZATION_QUALITY_RANGE_END = 1000;
     public static final int RANDOMIZATION_QUALITY_RANGE_STEP = 25;
@@ -29,7 +29,7 @@ public class NumberTest extends AbstractFakerTest {
     final double percentRunsGtUniquePercentage = 0.90;
 
     @Test
-    public void testRandomDigit() {
+    void testRandomDigit() {
         Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigit();
@@ -41,7 +41,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testRandomDigitNotZero() {
+    void testRandomDigitNotZero() {
         Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigitNotZero();
@@ -53,13 +53,13 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testRandomNumber() {
+    void testRandomNumber() {
         long value = faker.number().randomNumber();
         assertThat(value).isLessThan(Long.MAX_VALUE);
     }
 
     @Test
-    public void testRandomNumberWithSingleDigitStrict() {
+    void testRandomNumberWithSingleDigitStrict() {
         for (int i = 0; i < 100; ++i) {
             long value = faker.number().randomNumber(1, true);
             assertThat(value).isLessThan(10L);
@@ -68,7 +68,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testRandomNumberWithZeroDigitsStrict() {
+    void testRandomNumberWithZeroDigitsStrict() {
         for (int i = 0; i < 100; ++i) {
             long value = faker.number().randomNumber(0, true);
             assertThat(value).isEqualTo(0L);
@@ -76,7 +76,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testRandomNumberWithGivenDigitsStrict() {
+    void testRandomNumberWithGivenDigitsStrict() {
         for (int i = 1; i < 9; ++i) {
             for (int x = 0; x < 100; ++x) {
                 long value = faker.number().randomNumber(i, true);
@@ -87,7 +87,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testRandomDouble() {
+    void testRandomDouble() {
         for (int i = 1; i < 5; ++i) {
             for (int x = 0; x < 100; ++x) {
                 double value = faker.number().randomDouble(i, 1, 1000);
@@ -101,7 +101,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testNumberBetween() {
+    void testNumberBetween() {
         for (int i = 1; i < 100; ++i) {
             int v = faker.number().numberBetween(0, i);
             assertThat(v).isLessThanOrEqualTo(i);
@@ -121,7 +121,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void testLongNumberBetweenRepeated() {
+    void testLongNumberBetweenRepeated() {
         long low = 1;
         long high = 10;
         long v = faker.number().numberBetween(low, high);
@@ -130,7 +130,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void testIntNumberBetweenRepeated() {
+    void testIntNumberBetweenRepeated() {
         int low = 1;
         int high = 10;
         int v = faker.number().numberBetween(low, high);
@@ -139,7 +139,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testNumberBetweenOneAndThree() {
+    void testNumberBetweenOneAndThree() {
         Set<Integer> nums = new HashSet<>();
         final int lowerLimit = 0;
         final int upperLimit = 3;
@@ -153,7 +153,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testLongBetweenOneAndThree() {
+    void testLongBetweenOneAndThree() {
         Set<Long> nums = new HashSet<>();
         final long lowerLimit = 0;
         final long upperLimit = 3;
@@ -167,7 +167,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void numberBetweenIntIntZeroMinMax() {
+    void numberBetweenIntIntZeroMinMax() {
         assertThat(faker.number().numberBetween(0, 0))
             .as("Calling numberBetween with min==max yields min, with 0")
             .isEqualTo(0);
@@ -177,7 +177,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void numberBetweenLongLongZeroMinMax() {
+    void numberBetweenLongLongZeroMinMax() {
         assertThat(faker.number().numberBetween(0L, 0L))
             .as("Calling numberBetween with min==max yields min, with 0")
             .isEqualTo(0);
@@ -196,7 +196,7 @@ public class NumberTest extends AbstractFakerTest {
      * This isn't perfect but it ensures a pretty good degree of uniqueness in the random number generation.
      */
     @Test
-    public void randomDoubleRandomizationQuality() {
+    void randomDoubleRandomizationQuality() {
         Function<Pair<Long, Long>, Double> minMaxRangeToUniquePercentageFunction = minMax -> {
             final int min = minMax.getLeft().intValue(), max = minMax.getRight().intValue();
             long numbersToGet = calculateNumbersToGet(min, max);
@@ -223,7 +223,7 @@ public class NumberTest extends AbstractFakerTest {
      * This isn't perfect but it ensures a pretty good degree of uniqueness in the random number generation.
      */
     @Test
-    public void numberBetweenIntIntRandomizationQuality() {
+    void numberBetweenIntIntRandomizationQuality() {
         Function<Pair<Long, Long>, Double> minMaxRangeToUniquePercentageFunction = minMax -> {
             final int min = minMax.getLeft().intValue();
             final int max = minMax.getRight().intValue();
@@ -251,7 +251,7 @@ public class NumberTest extends AbstractFakerTest {
      * This isn't perfect but it ensures a pretty good degree of uniqueness in the random number generation.
      */
     @Test
-    public void numberBetweenLongLongRandomizationQuality() {
+    void numberBetweenLongLongRandomizationQuality() {
         Function<Pair<Long, Long>, Double> minMaxRangeToUniquePercentageFunction = minMax -> {
             final long min = minMax.getLeft(), max = minMax.getRight();
             long numbersToGet = calculateNumbersToGet(min, max);
@@ -269,7 +269,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testRandomDoubleMaxEqualsMin() {
+    void testRandomDoubleMaxEqualsMin() {
         double actual = faker.number().randomDouble(1, 42, 42);
 
         double expected = BigDecimal.valueOf(42).doubleValue();
@@ -278,14 +278,14 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testDigit() {
+    void testDigit() {
         String digit = faker.number().digit();
 
         assertThat(digit).matches("[0-9]");
     }
 
     @Test
-    public void testDigits() {
+    void testDigits() {
         String digits = faker.number().digits(5);
 
         assertThat(digits).matches("[0-9]{5}");
@@ -346,7 +346,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testIntNumberBetweenQuality() {
+    void testIntNumberBetweenQuality() {
         //test whether the fake number made by numberBetween(int min, int max)
         // is not randomly and evenly distributed
         // (The difference between the average is less than 10%)
@@ -369,7 +369,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testLongNumberBetweenQuality() {
+    void testLongNumberBetweenQuality() {
         //test whether the fake number made by numberBetween(long min, long max)
         // is not randomly and evenly distributed
         // (The difference between the average is less than 10%)
@@ -393,7 +393,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testNumberBetweenContain() {
+    void testNumberBetweenContain() {
 
         Set<Integer> ints = new HashSet<>();
         Set<Long> longs = new HashSet<>();
@@ -428,7 +428,7 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testNumberBetweenBorder() {
+    void testNumberBetweenBorder() {
 
         Random random = new Random();
 
@@ -452,12 +452,12 @@ public class NumberTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(10)
-    public void testPositive() {
+    void testPositive() {
         assertThat(faker.number().positive()).isGreaterThan(0);
     }
 
     @RepeatedTest(10)
-    public void testNegative() {
+    void testNegative() {
         assertThat(faker.number().negative()).isLessThan(0);
 
     }

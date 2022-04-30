@@ -6,13 +6,13 @@ import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class CPFTest extends AbstractFakerTest {
+class CPFTest extends AbstractFakerTest {
 
     /**
      * A valid CPF is either a real number or a generated valid number.
      */
     @RepeatedTest(100)
-    public void isValidCPF() {
+    void isValidCPF() {
         assertThat(isCPFValid(faker.cpf().valid())).isTrue();
     }
 
@@ -20,7 +20,7 @@ public class CPFTest extends AbstractFakerTest {
      * A invalid CPF is that dos not meet the requirements of the algorithm
      */
     @RepeatedTest(100)
-    public void isInvalidCPF() {
+    void isInvalidCPF() {
         assertThat(isCPFValid(faker.cpf().invalid())).isFalse();
     }
 
@@ -29,7 +29,7 @@ public class CPFTest extends AbstractFakerTest {
      * Eg: 111.111.111-11
      */
     @RepeatedTest(100)
-    public void formattedCPF() {
+    void formattedCPF() {
         final String cpfExpression = "(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)";
 
         assertThat(faker.cpf().valid()).matches(cpfExpression);

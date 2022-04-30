@@ -4,25 +4,25 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NationTest extends AbstractFakerTest {
+class NationTest extends AbstractFakerTest {
 
     @Test
-    public void nationality() {
+    void nationality() {
         assertThat(faker.nation().nationality()).matches("\\P{Cc}+");
     }
 
     @Test
-    public void language() {
+    void language() {
         assertThat(faker.nation().language()).matches("[A-Za-z ]+");
     }
 
     @Test
-    public void capitalCity() {
+    void capitalCity() {
         assertThat(faker.nation().capitalCity()).matches("[A-Za-z .'()-]+");
     }
 
     @Test
-    public void flag() {
+    void flag() {
         String flag = faker.nation().flag();
 
         // all utf8 emoji flags are at least 4 characters long and start with the same char
@@ -31,12 +31,12 @@ public class NationTest extends AbstractFakerTest {
     }
 
     @Test
-    public void isoLanguage() {
+    void isoLanguage() {
         assertThat(faker.nation().isoLanguage()).matches("[a-z]{2}");
     }
 
     @Test
-    public void isoCountry() {
+    void isoCountry() {
         assertThat(faker.nation().isoCountry()).matches("[A-Z]{2}");
     }
 }

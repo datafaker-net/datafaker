@@ -10,12 +10,12 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CodeTest extends AbstractFakerTest {
+class CodeTest extends AbstractFakerTest {
 
     private static final ISBNValidator ISBN_VALIDATOR = ISBNValidator.getInstance(false);
 
     @RepeatedTest(100)
-    public void isbn10DefaultIsNoSeparator() {
+    void isbn10DefaultIsNoSeparator() {
         String isbn10 = faker.code().isbn10();
 
         assertIsValidISBN10(isbn10);
@@ -23,7 +23,7 @@ public class CodeTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void isbn13DefaultIsNoSeparator() {
+    void isbn13DefaultIsNoSeparator() {
         String isbn13 = faker.code().isbn13();
 
         assertIsValidISBN13(isbn13);
@@ -31,7 +31,7 @@ public class CodeTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void testIsbn10() {
+    void testIsbn10() {
         final String isbn10NoSep = faker.code().isbn10(false);
         final String isbn10Sep = faker.code().isbn10(true);
 
@@ -42,7 +42,7 @@ public class CodeTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void testIsbn13() {
+    void testIsbn13() {
         final String isbn13NoSep = faker.code().isbn13(false);
         final String isbn13Sep = faker.code().isbn13(true);
 
@@ -62,7 +62,7 @@ public class CodeTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void testOverrides() {
+    void testOverrides() {
         Faker faker = new Faker(new Locale("test"));
 
         final String isbn10Sep = faker.code().isbn10(true);
@@ -74,12 +74,12 @@ public class CodeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void asin() {
+    void asin() {
         assertThat(faker.code().asin()).matches("B000([A-Z]|\\d){6}");
     }
 
     @Test
-    public void imei() {
+    void imei() {
         String imei = faker.code().imei();
 
         assertThat(imei).matches("\\A[\\d.:\\-\\s]+\\z");
@@ -87,43 +87,43 @@ public class CodeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void ean8() {
+    void ean8() {
         assertThat(faker.code().ean8()).matches("\\d{8}");
     }
 
     @Test
-    public void gtin8() {
+    void gtin8() {
         assertThat(faker.code().gtin8()).matches("\\d{8}");
     }
 
     @Test
-    public void ean13() {
+    void ean13() {
         String ean13 = faker.code().ean13();
         assertThat(ean13).matches("\\d{13}");
         assertThat(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(ean13)).isTrue();
     }
 
     @Test
-    public void gtin13() {
+    void gtin13() {
         String gtin13 = faker.code().gtin13();
         assertThat(gtin13).matches("\\d{13}");
         assertThat(EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(gtin13)).isTrue();
     }
 
     @Test
-    public void isbnGs1() {
+    void isbnGs1() {
         String isbnGs1 = faker.code().isbnGs1();
         assertThat(isbnGs1).matches("978|979");
     }
 
     @Test
-    public void isbnGroup() {
+    void isbnGroup() {
         String isbnGroup = faker.code().isbnGroup();
         assertThat(isbnGroup).matches("[01]");
     }
 
     @RepeatedTest(100)
-    public void isbnRegistrant() {
+    void isbnRegistrant() {
         String isbnRegistrant = faker.code().isbnRegistrant();
         assertThat(isbnRegistrant).matches("[0-9]{1,7}-[0-9]{1,6}");
     }

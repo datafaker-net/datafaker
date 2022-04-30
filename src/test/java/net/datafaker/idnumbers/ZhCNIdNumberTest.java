@@ -8,10 +8,10 @@ import java.util.Locale;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ZhCNIdNumberTest extends AbstractFakerTest {
+class ZhCNIdNumberTest extends AbstractFakerTest {
 
     @RepeatedTest(10)
-    public void testValidChineseIdNumber() {
+    void testValidChineseIdNumber() {
         Faker faker = new Faker(new Locale("zh_CN"));
         String idNumber = faker.idNumber().valid();
         boolean isSatisfied = idNumber.length() == 18;
@@ -33,7 +33,7 @@ public class ZhCNIdNumberTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(10)
-    public void testChecksumOfChineseIdNumber() {
+    void testChecksumOfChineseIdNumber() {
         Faker faker = new Faker(new Locale("zh_CN"));
         String s = faker.idNumber().valid();
         boolean isSatisfied = true;
@@ -63,7 +63,7 @@ public class ZhCNIdNumberTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void testValidZhCnIdNumber() {
+    void testValidZhCnIdNumber() {
         ZhCnIdNumber id = new ZhCnIdNumber();
         String idNumber = id.getValidSsn(faker);
         boolean isSatisfied = idNumber.length() == 18;

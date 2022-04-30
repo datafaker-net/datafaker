@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LocalePickerTest extends AbstractFakerTest {
+class LocalePickerTest extends AbstractFakerTest {
 
     private LocalePicker localePicker;
     private List<String> allLocales;
@@ -23,7 +23,7 @@ public class LocalePickerTest extends AbstractFakerTest {
      * Initialize tests by instantiating a LocalePicker object and list of all supported locales
      */
     @BeforeEach
-    public void init() {
+    void init() {
         localePicker = new LocalePicker();
         allLocales = localePicker.getAllSupportedLocales();
     }
@@ -32,7 +32,7 @@ public class LocalePickerTest extends AbstractFakerTest {
      * Test to check that list of all locales support is loaded
      */
     @Test
-    public void testGetAllSuppportedLocales() {
+    void testGetAllSuppportedLocales() {
         // Check that directory of locale resources exists
         File resourceDirectory = new File("./src/main/resources");
         assertThat(resourceDirectory).exists();
@@ -47,7 +47,7 @@ public class LocalePickerTest extends AbstractFakerTest {
      * should have deterministic results.
      */
     @Test
-    public void testGetLocaleStringRandom() {
+    void testGetLocaleStringRandom() {
         // Check that we get the same locale when using pseudorandom number generator with a fixed seed
         final long fixedSeed = 5;
 
@@ -65,7 +65,7 @@ public class LocalePickerTest extends AbstractFakerTest {
      * locale is within the set of all supported locales
      */
     @RepeatedTest(100)
-    public void testGetLocaleString() {
+    void testGetLocaleString() {
         Random random = new Random();
         String randomLocale = localePicker.getLocaleString(random);
         assertThat(allLocales).contains(randomLocale);
@@ -77,7 +77,7 @@ public class LocalePickerTest extends AbstractFakerTest {
      * It ensures that all the locales supported are represented once.
      */
     @Test
-    public void testGetLocaleStringWithoutReplacement() {
+    void testGetLocaleStringWithoutReplacement() {
         Random random = new Random();
 
         // loop through all supported locales
@@ -93,12 +93,12 @@ public class LocalePickerTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testGetLocale() {
+    void testGetLocale() {
         assertThat(localePicker.getLocale()).isNotNull();
     }
 
     @Test
-    public void testGetLocaleWithoutReplacement() {
+    void testGetLocaleWithoutReplacement() {
         assertThat(localePicker.getLocaleWithoutReplacement()).isNotNull();
     }
 }

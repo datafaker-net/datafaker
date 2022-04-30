@@ -3,16 +3,16 @@ package net.datafaker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-public class DomainTest extends AbstractFakerTest {
+class DomainTest extends AbstractFakerTest {
 
     @Test
-    public void testFirstLevelDomainNotNull() {
+    void testFirstLevelDomainNotNull() {
         String ret = faker.domain().firstLevelDomain("example");
         assert (ret != null);
     }
 
     @Test
-    public void testFirstLevelDomain() {
+    void testFirstLevelDomain() {
         String[] components = faker.domain().firstLevelDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);
@@ -20,13 +20,13 @@ public class DomainTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testSecondLevelDomainNotNull() {
+    void testSecondLevelDomainNotNull() {
         String ret = faker.domain().secondLevelDomain("example");
         assert (ret != null);
     }
 
     @Test
-    public void testSecondLevelDomain() {
+    void testSecondLevelDomain() {
         String[] components = faker.domain().secondLevelDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);
@@ -35,13 +35,13 @@ public class DomainTest extends AbstractFakerTest {
 
 
     @Test
-    public void testFullDomainNotNull() {
+    void testFullDomainNotNull() {
         String ret = faker.domain().fullDomain("example");
         assert (ret != null);
     }
 
     @Test
-    public void testFullDomain() {
+    void testFullDomain() {
         String[] components = faker.domain().fullDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);
@@ -49,13 +49,13 @@ public class DomainTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(10)
-    public void testValidDomainNotNull() {
+    void testValidDomainNotNull() {
         String ret = faker.domain().validDomain("example");
         assert (ret != null);
     }
 
     @Test
-    public void testValidDomain() {
+    void testValidDomain() {
         String[] components = faker.domain().validDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);

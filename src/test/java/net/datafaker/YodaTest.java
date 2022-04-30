@@ -7,10 +7,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Luka Obradovic (luka@vast.com)
  */
-public class YodaTest extends AbstractFakerTest {
+class YodaTest extends AbstractFakerTest {
 
     @Test
-    public void quote() {
+    void quote() {
         assertThat(faker.yoda().quote()).isNotEmpty();
     }
 }

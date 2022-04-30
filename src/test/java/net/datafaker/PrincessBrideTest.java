@@ -4,14 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PrincessBrideTest extends AbstractFakerTest {
+class PrincessBrideTest extends AbstractFakerTest {
     @Test
-    public void character() {
+    void character() {
         assertThat(faker.princessBride().character()).matches("[A-Za-z .-]+");
     }
 
     @Test
-    public void quote() {
+    void quote() {
         assertThat(faker.princessBride().quote()).isNotEmpty();
     }
 }

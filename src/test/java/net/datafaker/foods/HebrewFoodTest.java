@@ -8,37 +8,37 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HebrewFoodTest {
+class HebrewFoodTest {
     public final String matchHebrewFood = "[\\u0590-\\u05FF ']+";
     public static Faker food;
 
     @BeforeEach
-    public void before() {
+    void before() {
         food = new Faker(new Locale("he"));
     }
 
     @Test
-    public void hebrewIngredient() {
+    void hebrewIngredient() {
         assertThat(food.food().ingredient()).matches(matchHebrewFood);
     }
 
     @Test
-    public void hebrewFruit() {
+    void hebrewFruit() {
         assertThat(food.food().fruit()).matches(matchHebrewFood);
     }
 
     @Test
-    public void hebrewVegetable() {
+    void hebrewVegetable() {
         assertThat(food.food().vegetable()).matches(matchHebrewFood);
     }
 
     @Test
-    public void hebrewSpice() {
+    void hebrewSpice() {
         assertThat(food.food().spice()).matches(matchHebrewFood);
     }
 
     @Test
-    public void hebrewSushi() {
+    void hebrewSushi() {
         assertThat(food.food().sushi()).matches(matchHebrewFood);
     }
 }

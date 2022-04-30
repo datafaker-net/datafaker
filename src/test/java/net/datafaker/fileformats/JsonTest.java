@@ -15,10 +15,10 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.fail;
 
-public class JsonTest {
+class JsonTest {
     @ParameterizedTest
     @MethodSource("generateTestJson")
-    public void simpleJsonTest(Map<Object, Supplier<Object>> input, String expected) {
+    void simpleJsonTest(Map<Object, Supplier<Object>> input, String expected) {
         Json.JsonBuilder builder = new Json.JsonBuilder();
         for (Map.Entry<Object, Supplier<Object>> entry: input.entrySet()) {
             if (entry.getKey() instanceof String) {

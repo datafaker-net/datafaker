@@ -12,10 +12,10 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class XmlTest {
+class XmlTest {
     @ParameterizedTest
     @MethodSource("generateTestXmlPretty")
-    public void xmlPrettyTest(Xml.XmlNode xmlNode, String expected) {
+    void xmlPrettyTest(Xml.XmlNode xmlNode, String expected) {
         Xml xml = new Xml(xmlNode);
         assertThat(xml.generate(true)).isEqualTo(expected);
     }
@@ -37,7 +37,7 @@ public class XmlTest {
 
     @ParameterizedTest
     @MethodSource("generateTestXml")
-    public void xmlTest(Xml.XmlNode xmlNode, String expected) {
+    void xmlTest(Xml.XmlNode xmlNode, String expected) {
         Xml xml = new Xml(xmlNode);
         assertThat(xml.generate()).isEqualTo(expected);
     }

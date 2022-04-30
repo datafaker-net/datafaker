@@ -14,7 +14,7 @@ import java.util.Random;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class AddressTest extends AbstractFakerTest {
+class AddressTest extends AbstractFakerTest {
 
     private static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols(getFaker().getLocale()).getDecimalSeparator();
     public static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
@@ -27,19 +27,19 @@ public class AddressTest extends AbstractFakerTest {
     }, "Is a number");
 
     @Test
-    public void testStreetAddressStartsWithNumber() {
+    void testStreetAddressStartsWithNumber() {
         final String streetAddressNumber = faker.address().streetAddress();
         assertThat(streetAddressNumber).matches("[0-9]+ .+");
     }
 
     @Test
-    public void testStreetAddressIsANumber() {
+    void testStreetAddressIsANumber() {
         final String streetAddressNumber = faker.address().streetAddressNumber();
         assertThat(streetAddressNumber).matches("[0-9]+");
     }
 
     @RepeatedTest(100)
-    public void testLatitude() {
+    void testLatitude() {
         String latStr = faker.address().latitude().replace(DECIMAL_SEPARATOR, '.');
         assertThat(latStr).is(IS_A_NUMBER);
         Double lat = Double.valueOf(latStr);
@@ -48,7 +48,7 @@ public class AddressTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void testLongitude() {
+    void testLongitude() {
         String longStr = faker.address().longitude().replace(DECIMAL_SEPARATOR, '.');
         assertThat(longStr).is(IS_A_NUMBER);
         Double lon = Double.valueOf(longStr);
@@ -57,7 +57,7 @@ public class AddressTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testLocaleLatitude() {
+    void testLocaleLatitude() {
         Faker engFaker = new Faker(Locale.ENGLISH);
         String engLatStr = engFaker.address().latitude();
         assertThat(engLatStr).matches("-?\\d{1,3}\\.\\d+");
@@ -68,7 +68,7 @@ public class AddressTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testLocaleLongitude() {
+    void testLocaleLongitude() {
         Faker engFaker = new Faker(Locale.ENGLISH);
         String engLatStr = engFaker.address().longitude();
         assertThat(engLatStr).matches("-?\\d{1,3}\\.\\d+");
@@ -79,42 +79,42 @@ public class AddressTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testTimeZone() {
+    void testTimeZone() {
         assertThat(faker.address().timeZone()).matches("[A-Za-z_]+/[A-Za-z_]+[/A-Za-z_]*");
     }
 
     @Test
-    public void testState() {
+    void testState() {
         assertThat(faker.address().state()).matches("[A-Za-z ]+");
     }
 
     @Test
-    public void testCity() {
+    void testCity() {
         assertThat(faker.address().city()).matches("[A-Za-z'() ]+");
     }
 
     @Test
-    public void testCityName() {
+    void testCityName() {
         assertThat(faker.address().cityName()).matches("[A-Za-z'() ]+");
     }
 
     @Test
-    public void testCountry() {
+    void testCountry() {
         assertThat(faker.address().country()).matches("[A-Za-z\\- &.,'()\\d]+");
     }
 
     @Test
-    public void testCountryCode() {
+    void testCountryCode() {
         assertThat(faker.address().countryCode()).matches("[A-Za-z ]+");
     }
 
     @Test
-    public void testStreetAddressIncludeSecondary() {
+    void testStreetAddressIncludeSecondary() {
         assertThat(faker.address().streetAddress(true)).isNotEmpty();
     }
 
     @Test
-    public void testCityWithLocaleFranceAndSeed() {
+    void testCityWithLocaleFranceAndSeed() {
         long seed = 1L;
         Faker firstFaker = new Faker(Locale.FRANCE, new Random(seed));
         Faker secondFaker = new Faker(Locale.FRANCE, new Random(seed));
@@ -122,24 +122,24 @@ public class AddressTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testFullAddress() {
+    void testFullAddress() {
         assertThat(faker.address().fullAddress()).isNotEmpty();
     }
 
     @Test
-    public void testZipCodeByState() {
+    void testZipCodeByState() {
         final Faker localFaker = new Faker(new Locale("en-US"));
         assertThat(localFaker.address().zipCodeByState(localFaker.address().stateAbbr())).matches("[0-9]{5}");
     }
 
     @Test
-    public void testHungarianZipCodeByState() {
+    void testHungarianZipCodeByState() {
         final Faker localFaker = new Faker(new Locale("hu"));
         assertThat(localFaker.address().zipCodeByState(localFaker.address().stateAbbr())).matches("[0-9]{4}");
     }
 
     @Test
-    public void testCountyByZipCode() {
+    void testCountyByZipCode() {
         final Faker localFaker = new Faker(new Locale("en-US"));
         assertThat(localFaker.address().countyByZipCode("47732")).isNotEmpty();
     }
@@ -155,44 +155,44 @@ public class AddressTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testStreetPrefix() {
+    void testStreetPrefix() {
         assertThat(faker.address().streetPrefix()).isNotEmpty();
     }
 
     @Test
-    public void testStreetSuffix() {
+    void testStreetSuffix() {
         assertThat(faker.address().streetSuffix()).isNotEmpty();
     }
 
     @Test
-    public void testCityPrefix() {
+    void testCityPrefix() {
         assertThat(faker.address().cityPrefix()).isNotEmpty();
     }
 
     @Test
-    public void testCitySuffix() {
+    void testCitySuffix() {
         assertThat(faker.address().citySuffix()).isNotEmpty();
     }
 
     @RepeatedTest(10)
-    public void testMailbox() {
+    void testMailbox() {
         assertThat(faker.address().mailBox()).matches("PO Box [0-9]{2,4}");
     }
 
     @Test
-    public void testZipIsFiveChars() {
+    void testZipIsFiveChars() {
         final Faker localFaker = new Faker(new Locale("en-us"));
         assertThat(localFaker.address().zipCode().length()).isEqualTo(5);
     }
 
     @Test
-    public void testZipPlus4IsTenChars() {
+    void testZipPlus4IsTenChars() {
         final Faker localFaker = new Faker(new Locale("en-us"));
         assertThat(localFaker.address().zipCodePlus4().length()).isEqualTo(10);  // includes dash
     }
 
     @Test
-    public void testZipPlus4IsNineDigits() {
+    void testZipPlus4IsNineDigits() {
         final Faker localFaker = new Faker(new Locale("en-us"));
         final String[] zipCodeParts = localFaker.address().zipCodePlus4().split("-");
         assertThat(zipCodeParts[0]).matches("[0-9]{5}");

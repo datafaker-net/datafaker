@@ -4,19 +4,19 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BusinessTest extends AbstractFakerTest {
+class BusinessTest extends AbstractFakerTest {
     @Test
-    public void creditCardNumber() {
+    void creditCardNumber() {
         assertThat(faker.business().creditCardNumber()).isNotEmpty();
     }
 
     @Test
-    public void creditCardType() {
+    void creditCardType() {
         assertThat(faker.business().creditCardType()).isNotEmpty();
     }
 
     @Test
-    public void creditCardExpiry() {
+    void creditCardExpiry() {
         assertThat(faker.business().creditCardExpiry()).isNotEmpty();
     }
 

@@ -4,25 +4,25 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MusicTest extends AbstractFakerTest {
+class MusicTest extends AbstractFakerTest {
 
     @Test
-    public void instrument() {
+    void instrument() {
         assertThat(faker.music().instrument()).matches("\\w+ ?\\w+");
     }
 
     @Test
-    public void key() {
+    void key() {
         assertThat(faker.music().key()).matches("([A-Z])+([b#])?");
     }
 
     @Test
-    public void chord() {
+    void chord() {
         assertThat(faker.music().chord()).matches("([A-Z])+([b#])?+(-?[a-zA-Z0-9]{0,4})");
     }
 
     @Test
-    public void genre() {
+    void genre() {
         assertThat(faker.music().genre()).matches("[[ -]?\\w+]+");
     }
 }

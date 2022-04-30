@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class NigeriaTest extends AbstractFakerTest {
 
     @Test
-    public void places() {
+    void places() {
         assertThat(faker.nigeria().places()).isNotEmpty();
     }
 

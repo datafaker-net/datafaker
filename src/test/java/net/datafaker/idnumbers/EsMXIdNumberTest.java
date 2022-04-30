@@ -7,10 +7,10 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EsMXIdNumberTest {
+class EsMXIdNumberTest {
 
     @RepeatedTest(100)
-    public void testValidMXSsn() {
+    void testValidMXSsn() {
         final Faker f = new Faker(new Locale("es-MX"));
         assertThat(f.idNumber().valid()).matches("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
             "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d");
@@ -19,7 +19,7 @@ public class EsMXIdNumberTest {
     }
 
     @RepeatedTest(100)
-    public void testInvalidMXSsn() {
+    void testInvalidMXSsn() {
         final Faker f = new Faker(new Locale("es-MX"));
         assertThat(f.idNumber().validEsMXSsn()).matches("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
             "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d");

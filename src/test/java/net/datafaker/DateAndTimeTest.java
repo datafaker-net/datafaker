@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * @author pmiklos
  */
-public class DateAndTimeTest extends AbstractFakerTest {
+class DateAndTimeTest extends AbstractFakerTest {
 
     @Test
-    public void testFutureDate() {
+    void testFutureDate() {
         Date now = new Date();
         for (int i = 0; i < 1000; i++) {
             Date future = faker.date().future(1, TimeUnit.SECONDS, now);
@@ -35,7 +35,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testFutureDateWithMinimum() {
+    void testFutureDateWithMinimum() {
         final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
             Date future = faker.date().future(5, 4, TimeUnit.SECONDS);
@@ -46,7 +46,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testPastDateWithMinimum() {
+    void testPastDateWithMinimum() {
         final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
             Date past = faker.date().past(5, 4, TimeUnit.SECONDS);
@@ -57,7 +57,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testPastDateWithReferenceDate() {
+    void testPastDateWithReferenceDate() {
         Date now = new Date();
 
         for (int i = 0; i < 1000; i++) {
@@ -68,14 +68,14 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testPastDate() {
+    void testPastDate() {
         Date now = new Date();
         Date past = faker.date().past(100, TimeUnit.SECONDS);
         assertThat(past.getTime()).isLessThan(now.getTime());
     }
 
     @Test
-    public void testBetween() {
+    void testBetween() {
         Date now = new Date();
         Date then = new Date(now.getTime() + 1000);
 
@@ -87,7 +87,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testBetweenThenLargerThanNow() {
+    void testBetweenThenLargerThanNow() {
         Date now = new Date();
         Date then = new Date(now.getTime() + 1000);
         assertThatThrownBy(() -> faker.date().between(then, now))
@@ -96,7 +96,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testBirthday() {
+    void testBirthday() {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
         int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
@@ -111,7 +111,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testBirthdayWithAges() {
+    void testBirthdayWithAges() {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
         int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
@@ -130,13 +130,13 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void birthdayWithMask() {
+    void birthdayWithMask() {
         String pattern = "YYYY MM.dd";
         DateTimeFormatter.ofPattern(pattern).parse(faker.date().birthday(1, 50, pattern));
     }
 
     @Test
-    public void futureWithMask() {
+    void futureWithMask() {
         String pattern = "YYYY MM.dd mm:hh:ss";
         DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(1, TimeUnit.HOURS, pattern));
         DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(20, 1, TimeUnit.HOURS, pattern));
@@ -144,7 +144,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void pastWithMask() {
+    void pastWithMask() {
         String pattern = "YYYY MM.dd mm:hh:ss";
         DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(1, TimeUnit.DAYS, pattern));
         DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(20, 1, TimeUnit.DAYS, pattern));
@@ -153,14 +153,14 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"null", "", "month", "year", "week"})
-    public void invalidDuration(String invalid) {
+    void invalidDuration(String invalid) {
         assertThatThrownBy(() -> faker.date().duration(faker.random().nextLong(), invalid))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
     @MethodSource("generateDurationsWithMinMax")
-    public void durationTest(long minValue, long maxValue, ChronoUnit unit) {
+    void durationTest(long minValue, long maxValue, ChronoUnit unit) {
         Duration generated = faker.date().duration(minValue, maxValue, unit);
         Duration min = Duration.of(minValue, unit);
         Duration max = Duration.of(maxValue, unit);
@@ -173,7 +173,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("generateDurationsWithMaxOnly")
-    public void durationTest(long maxValue, ChronoUnit unit) {
+    void durationTest(long maxValue, ChronoUnit unit) {
         Duration generated = faker.date().duration(maxValue, unit);
         Duration max = Duration.of(maxValue, unit);
         assertThat(max.compareTo(generated) > 0 || maxValue == 0)
@@ -183,7 +183,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("generateDurationsFromStringWithMinMax")
-    public void durationTest(long minValue, long maxValue, String unit) {
+    void durationTest(long minValue, long maxValue, String unit) {
         Duration generated = faker.date().duration(minValue, maxValue, unit);
         Duration min = Duration.of(minValue, DateAndTime.str2durationUnit(unit));
         Duration max = Duration.of(maxValue, DateAndTime.str2durationUnit(unit));
@@ -195,7 +195,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("generateDurationsFromStringWithMaxOnly")
-    public void durationTest(long maxValue, String unit) {
+    void durationTest(long maxValue, String unit) {
         Duration generated = faker.date().duration(maxValue, unit);
         Duration max = Duration.of(maxValue, DateAndTime.str2durationUnit(unit));
         assertThat(max.compareTo(generated) > 0 || maxValue == 0).as("Duration must be lower than max value").isTrue();
@@ -203,7 +203,7 @@ public class DateAndTimeTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("generatePeriod")
-    public void maxLessThanMinPeriod(Period min, Period max) {
+    void maxLessThanMinPeriod(Period min, Period max) {
         assertThatThrownBy(() -> faker.date().period(min, max))
             .isInstanceOf(IllegalArgumentException.class);
     }

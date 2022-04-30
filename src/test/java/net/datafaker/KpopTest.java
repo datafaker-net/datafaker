@@ -5,35 +5,35 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class KpopTest extends AbstractFakerTest {
+class KpopTest extends AbstractFakerTest {
 
     @Test
-    public void iGroups() {
+    void iGroups() {
         assertThat(faker.kpop().iGroups()).isNotEmpty();
     }
 
     @Test
-    public void iiGroups() {
+    void iiGroups() {
         assertThat(faker.kpop().iiGroups()).isNotEmpty();
     }
 
     @Test
-    public void iiiGroups() {
+    void iiiGroups() {
         assertThat(faker.kpop().iiiGroups()).isNotEmpty();
     }
 
     @Test
-    public void girlGroups() {
+    void girlGroups() {
         assertThat(faker.kpop().girlGroups()).isNotEmpty();
     }
 
     @Test
-    public void boyBands() {
+    void boyBands() {
         assertThat(faker.kpop().boyBands()).isNotEmpty();
     }
 
     @Test
-    public void solo() {
+    void solo() {
         assertThat(faker.kpop().solo()).isNotEmpty();
     }
 

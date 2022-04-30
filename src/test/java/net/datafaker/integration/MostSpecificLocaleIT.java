@@ -14,20 +14,20 @@ import static org.assertj.core.api.Assertions.assertThat;
  * and that methods return values. The unit tests should ensure what the values returned
  * are correct. These tests just ensure that the methods can be invoked.
  */
-public class MostSpecificLocaleIT {
+class MostSpecificLocaleIT {
 
     private FakeValuesService en;
     private FakeValuesService en_US;
 
     @BeforeEach
-    public void setupFakers() {
+    void setupFakers() {
         en = new FakeValuesService(new Locale("en"), null);
         en_US = new FakeValuesService(new Locale("en", "US"), null);
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void resolvesTheMostSpecificLocale() {
+    void resolvesTheMostSpecificLocale() {
         final List<String> enDefaultCountries = (List<String>) en.fetchObject("address.default_country");
         final List<String> enUsDefaultCountries = (List<String>) en_US.fetchObject("address.default_country");
 

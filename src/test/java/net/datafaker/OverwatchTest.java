@@ -4,20 +4,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OverwatchTest extends AbstractFakerTest {
+class OverwatchTest extends AbstractFakerTest {
 
     @Test
-    public void hero() {
+    void hero() {
         assertThat(faker.overwatch().hero()).matches("^(\\w+\\.?\\s?)+$");
     }
 
     @Test
-    public void location() {
+    void location() {
         assertThat(faker.overwatch().location()).matches("^(.+'?:?\\s?)+$");
     }
 
     @Test
-    public void quote() {
+    void quote() {
         assertThat(faker.overwatch().quote()).isNotEmpty();
     }
 }

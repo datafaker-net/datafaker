@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ProviderGenerator {
+class ProviderGenerator {
 
     public static void main(String[] args) throws FileNotFoundException {
         new ProviderGenerator().generateProvider();
@@ -62,7 +62,7 @@ public class ProviderGenerator {
         System.out.println("/**");
         System.out.println(" * @since 1.4.0");
         System.out.println(" */");
-        System.out.println("public class " + className + " {");
+        System.out.println("class " + className + " {");
         System.out.println();
         System.out.println("    private final Faker faker;");
         System.out.println();
@@ -94,7 +94,7 @@ public class ProviderGenerator {
         System.out.println("import static org.assertj.core.api.AssertionsForClassTypes.assertThat;");
 
         System.out.println();
-        System.out.println("public class " + className + "Test extends AbstractFakerTest {");
+        System.out.println("class " + className + "Test extends AbstractFakerTest {");
         System.out.println();
 
         for (String string : strings) {

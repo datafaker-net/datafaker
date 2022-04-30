@@ -14,10 +14,10 @@ import java.util.Map;
 /**
  * These tests use System.out.printlns because the error rate is quite high.
  */
-public class PhoneNumberValidityFinderTest {
+class PhoneNumberValidityFinderTest {
 
     @Test
-    public void testAllCellPhoneForLocale() throws NumberParseException {
+    void testAllCellPhoneForLocale() throws NumberParseException {
         String language = "en";
         String region = "GB";
         Faker localFaker = new Faker(new Locale(language, region));
@@ -40,7 +40,7 @@ public class PhoneNumberValidityFinderTest {
     }
 
     @Test
-    public void testValidNumber() throws NumberParseException {
+    void testValidNumber() throws NumberParseException {
         String phoneNumber = "0140 123456";
         String region = "SE";
 
@@ -50,7 +50,7 @@ public class PhoneNumberValidityFinderTest {
     }
 
     @Test
-    public void testAllPhoneNumbers() {
+    void testAllPhoneNumbers() {
         List<String> allSupportedLocales = new LocalePicker().getAllSupportedLocales();
         Map<Locale, Integer> errorCounts = new HashMap<>();
 

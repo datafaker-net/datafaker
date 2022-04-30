@@ -12,65 +12,65 @@ import java.util.Random;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class FakerTest extends AbstractFakerTest {
+class FakerTest extends AbstractFakerTest {
 
     @Test
-    public void examplifyUppercaseLetters() {
+    void examplifyUppercaseLetters() {
         assertThat(faker.examplify("ABC")).matches("[A-Z]{3}");
     }
 
     @Test
-    public void examplifyLowercaseLetters() {
+    void examplifyLowercaseLetters() {
         assertThat(faker.examplify("abc")).matches("[a-z]{3}");
     }
 
     @Test
-    public void examplifyNumbers() {
+    void examplifyNumbers() {
         assertThat(faker.examplify("489321")).matches("[0-9]{6}");
     }
 
     @Test
-    public void examplifyMixed() {
+    void examplifyMixed() {
         assertThat(faker.examplify("abc123ABC1zzz")).matches("[a-z]{3}[0-9]{3}[A-Z]{3}[0-9][a-z]{3}");
     }
 
     @Test
-    public void examplifyWithSpacesAndSpecialCharacters() {
+    void examplifyWithSpacesAndSpecialCharacters() {
         assertThat(faker.examplify("The number 4!")).matches("[A-Z][a-z]{2} [a-z]{6} [0-9]!");
     }
 
     @Test
-    public void bothifyShouldGenerateLettersAndNumbers() {
+    void bothifyShouldGenerateLettersAndNumbers() {
         assertThat(faker.bothify("????##@gmail.com")).matches("\\w{4}\\d{2}@gmail.com");
     }
 
     @Test
-    public void letterifyShouldGenerateLetters() {
+    void letterifyShouldGenerateLetters() {
         assertThat(faker.bothify("????")).matches("\\w{4}");
     }
 
     @Test
-    public void letterifyShouldGenerateUpperCaseLetters() {
+    void letterifyShouldGenerateUpperCaseLetters() {
         assertThat(faker.bothify("????", true)).matches("[A-Z]{4}");
     }
 
     @Test
-    public void letterifyShouldLeaveNonSpecialCharactersAlone() {
+    void letterifyShouldLeaveNonSpecialCharactersAlone() {
         assertThat(faker.bothify("ABC????DEF")).matches("ABC\\w{4}DEF");
     }
 
     @Test
-    public void numerifyShouldGenerateNumbers() {
+    void numerifyShouldGenerateNumbers() {
         assertThat(faker.numerify("####")).matches("\\d{4}");
     }
 
     @Test
-    public void numerifyShouldLeaveNonSpecialCharactersAlone() {
+    void numerifyShouldLeaveNonSpecialCharactersAlone() {
         assertThat(faker.numerify("####123")).matches("\\d{4}123");
     }
 
     @Test
-    public void templatify() {
+    void templatify() {
         assertThat(faker.templatify("12??34", '?', "тест", "test", "测试测试").length()).isEqualTo(12);
         assertThat(faker.templatify("12??34",
             Collections.singletonMap('1', new String[]{"тест", "test", "测试测试"})).length()).isEqualTo(9);
@@ -79,90 +79,90 @@ public class FakerTest extends AbstractFakerTest {
     }
 
     @Test
-    public void regexifyShouldGenerateNumbers() {
+    void regexifyShouldGenerateNumbers() {
         assertThat(faker.regexify("\\d")).matches("\\d");
     }
 
     @Test
-    public void regexifyShouldGenerateLetters() {
+    void regexifyShouldGenerateLetters() {
         assertThat(faker.regexify("\\w")).matches("\\w");
     }
 
     @Test
-    public void regexifyShouldGenerateAlternations() {
+    void regexifyShouldGenerateAlternations() {
         assertThat(faker.regexify("(a|b)")).matches("([ab])");
     }
 
     @Test
-    public void regexifyShouldGenerateBasicCharacterClasses() {
+    void regexifyShouldGenerateBasicCharacterClasses() {
         assertThat(faker.regexify("(aeiou)")).matches("(aeiou)");
     }
 
     @Test
-    public void regexifyShouldGenerateCharacterClassRanges() {
+    void regexifyShouldGenerateCharacterClassRanges() {
         assertThat(faker.regexify("[a-z]")).matches("[a-z]");
     }
 
     @Test
-    public void regexifyShouldGenerateMultipleCharacterClassRanges() {
+    void regexifyShouldGenerateMultipleCharacterClassRanges() {
         assertThat(faker.regexify("[a-z1-9]")).matches("[a-z1-9]");
     }
 
     @Test
-    public void regexifyShouldGenerateSingleCharacterQuantifiers() {
+    void regexifyShouldGenerateSingleCharacterQuantifiers() {
         assertThat(faker.regexify("a*b+c?")).matches("a*b+c?");
     }
 
     @Test
-    public void regexifyShouldGenerateBracketsQuantifiers() {
+    void regexifyShouldGenerateBracketsQuantifiers() {
         assertThat(faker.regexify("a{2}")).matches("a{2}");
     }
 
     @Test
-    public void regexifyShouldGenerateMinMaxQuantifiers() {
+    void regexifyShouldGenerateMinMaxQuantifiers() {
         assertThat(faker.regexify("a{2,3}")).matches("a{2,3}");
     }
 
     @Test
-    public void regexifyShouldGenerateBracketsQuantifiersOnBasicCharacterClasses() {
+    void regexifyShouldGenerateBracketsQuantifiersOnBasicCharacterClasses() {
         assertThat(faker.regexify("[aeiou]{2,3}")).matches("[aeiou]{2,3}");
     }
 
     @Test
-    public void regexifyShouldGenerateBracketsQuantifiersOnCharacterClassRanges() {
+    void regexifyShouldGenerateBracketsQuantifiersOnCharacterClassRanges() {
         assertThat(faker.regexify("[a-z]{2,3}")).matches("[a-z]{2,3}");
     }
 
     @Test
-    public void regexifyShouldGenerateBracketsQuantifiersOnAlternations() {
+    void regexifyShouldGenerateBracketsQuantifiersOnAlternations() {
         assertThat(faker.regexify("(a|b){2,3}")).matches("([ab]){2,3}");
     }
 
     @Test
-    public void regexifyShouldGenerateEscapedCharacters() {
+    void regexifyShouldGenerateEscapedCharacters() {
         assertThat(faker.regexify("\\.\\*\\?\\+")).matches("\\.\\*\\?\\+");
     }
 
     @Test
-    public void badExpressionTooManyArgs() {
+    void badExpressionTooManyArgs() {
         assertThatThrownBy(() -> faker.expression("#{regexify 'a','a'}"))
             .isInstanceOf(RuntimeException.class);
     }
 
     @Test
-    public void badExpressionTooFewArgs() {
+    void badExpressionTooFewArgs() {
         assertThatThrownBy(() -> faker.expression("#{regexify}"))
             .isInstanceOf(RuntimeException.class);
     }
 
     @Test
-    public void badExpressionCouldntCoerce() {
+    void badExpressionCouldntCoerce() {
         assertThatThrownBy(() -> faker.expression("#{number.number_between 'x','10'}"))
             .isInstanceOf(RuntimeException.class);
     }
 
     @Test
-    public void expression() {
+    void expression() {
         assertThat(faker.expression("#{options.option 'a','b','c','d'}")).matches("([abcd])");
         assertThat(faker.expression("#{options.option '12','345','89','54321'}")).matches("(12|345|89|54321)");
         assertThat(faker.expression("#{regexify '(a|b){2,3}'}")).matches("([ab]){2,3}");
@@ -181,12 +181,12 @@ public class FakerTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    public void numberBetweenRepeated() {
+    void numberBetweenRepeated() {
         assertThat(faker.expression("#{number.number_between '1','10'}")).matches("[1-9]");
     }
 
     @Test
-    public void regexifyShouldGenerateSameValueForFakerWithSameSeed() {
+    void regexifyShouldGenerateSameValueForFakerWithSameSeed() {
         long seed = 1L;
         String regex = "\\d";
 
@@ -197,12 +197,12 @@ public class FakerTest extends AbstractFakerTest {
     }
 
     @Test
-    public void resolveShouldReturnValueThatExists() {
+    void resolveShouldReturnValueThatExists() {
         assertThat(faker.resolve("address.city_prefix")).isNotEmpty();
     }
 
     @Test
-    public void resolveShouldThrowExceptionWhenPropertyDoesntExist() {
+    void resolveShouldThrowExceptionWhenPropertyDoesntExist() {
         assertThatThrownBy(() -> faker.resolve("address.nothing"))
             .isInstanceOf(RuntimeException.class);
     }
@@ -212,7 +212,7 @@ public class FakerTest extends AbstractFakerTest {
      */
     @ParameterizedTest
     @ValueSource(strings = {"#{regexify '[a-z]{5}[A-Z]{5}'}", "#{Address.city}"})
-    public void datafaker87(String expression) {
+    void datafaker87(String expression) {
         int n = 10;
         int counter = 0;
         for (int i = 0; i < n; i++) {
@@ -227,7 +227,7 @@ public class FakerTest extends AbstractFakerTest {
     }
 
     @Test
-    public void fakerInstanceCanBeAcquiredViaUtilityMethods() {
+    void fakerInstanceCanBeAcquiredViaUtilityMethods() {
         assertThat(Faker.instance()).isInstanceOf(Faker.class);
         assertThat(Faker.instance(Locale.CANADA)).isInstanceOf(Faker.class);
         assertThat(Faker.instance(new Random(1))).isInstanceOf(Faker.class);

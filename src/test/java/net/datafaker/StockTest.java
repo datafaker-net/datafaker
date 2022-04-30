@@ -4,15 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StockTest extends AbstractFakerTest {
+class StockTest extends AbstractFakerTest {
 
     @Test
-    public void testNasdaq() {
+    void testNasdaq() {
         assertThat(faker.stock().nsdqSymbol()).isNotEmpty();
     }
 
     @Test
-    public void testNYSE() {
+    void testNYSE() {
         assertThat(faker.stock().nyseSymbol()).isNotEmpty();
     }
 

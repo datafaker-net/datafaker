@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MarketingTest extends AbstractFakerTest {
+class MarketingTest extends AbstractFakerTest {
 
     @Test
-    public void buzzwords() {
+    void buzzwords() {
         assertThat(faker.marketing().buzzwords()).isNotEmpty();
     }
 

@@ -4,20 +4,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UniversityTest extends AbstractFakerTest {
+class UniversityTest extends AbstractFakerTest {
 
     @Test
-    public void testName() {
+    void testName() {
         assertThat(faker.university().name()).matches("[A-Za-z'() ]+");
     }
 
     @Test
-    public void testPrefix() {
+    void testPrefix() {
         assertThat(faker.university().prefix()).matches("\\w+");
     }
 
     @Test
-    public void testSuffix() {
+    void testSuffix() {
         assertThat(faker.university().suffix()).matches("\\w+");
     }
 }

@@ -6,45 +6,45 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ElderScrollsTest extends AbstractFakerTest {
+class ElderScrollsTest extends AbstractFakerTest {
 
     @Test
-    public void testCity() {
+    void testCity() {
         assertThat(faker.elderScrolls().city()).isNotEmpty();
     }
 
     @Test
-    public void testCreature() {
+    void testCreature() {
         assertThat(faker.elderScrolls().creature()).isNotEmpty();
     }
 
     @Test
-    public void testDragon() {
+    void testDragon() {
         assertThat(faker.elderScrolls().dragon()).isNotEmpty();
     }
 
     @Test
-    public void testFirstName() {
+    void testFirstName() {
         assertThat(faker.elderScrolls().firstName()).isNotEmpty();
     }
 
     @Test
-    public void testLastName() {
+    void testLastName() {
         assertThat(faker.elderScrolls().lastName()).isNotEmpty();
     }
 
     @Test
-    public void testRace() {
+    void testRace() {
         assertThat(faker.elderScrolls().race()).isNotEmpty();
     }
 
     @Test
-    public void testRegion() {
+    void testRegion() {
         assertThat(faker.elderScrolls().region()).isNotEmpty();
     }
 
     @Test
-    public void testQuote() {
+    void testQuote() {
         assertThat(faker.elderScrolls().quote()).isNotEmpty();
     }
 }

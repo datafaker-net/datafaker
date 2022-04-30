@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DragonBallTest extends AbstractFakerTest {
+class DragonBallTest extends AbstractFakerTest {
 
     @Test
-    public void character() {
+    void character() {
         assertThat(faker.dragonBall().character()).matches("^(\\w+\\.?\\s?-?)+$");
     }
 }

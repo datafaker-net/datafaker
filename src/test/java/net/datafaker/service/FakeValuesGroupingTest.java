@@ -7,26 +7,26 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FakeValuesGroupingTest {
+class FakeValuesGroupingTest {
 
     private FakeValuesGrouping fakeValuesGrouping;
     private FakeValues addressValues;
 
     @BeforeEach
-    public void before() {
+    void before() {
         fakeValuesGrouping = new FakeValuesGrouping();
         addressValues = new FakeValues(Locale.ENGLISH, "address.yml", "address");
         fakeValuesGrouping.add(addressValues);
     }
 
     @Test
-    public void handlesOneFakeValue() {
+    void handlesOneFakeValue() {
         assertThat(fakeValuesGrouping.get("address")).isEqualTo(addressValues.get("address"));
         assertThat(fakeValuesGrouping.get("address")).isNotNull();
     }
 
     @Test
-    public void handlesMultipleFakeValues() {
+    void handlesMultipleFakeValues() {
         FakeValues catValues = new FakeValues(Locale.ENGLISH, "cat.yml", "creature");
         fakeValuesGrouping.add(catValues);
 

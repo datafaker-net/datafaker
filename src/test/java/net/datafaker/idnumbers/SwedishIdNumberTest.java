@@ -4,17 +4,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SwedishIdNumberTest {
+class SwedishIdNumberTest {
 
     @Test
-    public void valid() {
+    void valid() {
         SvSEIdNumber idNumber = new SvSEIdNumber();
         assertThat(idNumber.validSwedishSsn("670919-9530")).isTrue();
         assertThat(idNumber.validSwedishSsn("811228-9874")).isTrue();
     }
 
     @Test
-    public void invalid() {
+    void invalid() {
         SvSEIdNumber idNumber = new SvSEIdNumber();
         assertThat(idNumber.validSwedishSsn("8112289873")).isFalse();
         assertThat(idNumber.validSwedishSsn("foo228-9873")).isFalse();

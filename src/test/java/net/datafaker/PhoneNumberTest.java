@@ -10,7 +10,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PhoneNumberTest extends AbstractFakerTest {
+class PhoneNumberTest extends AbstractFakerTest {
     private static final Faker US_FAKER = new Faker(new Locale("en_US"));
     private static final Faker SE_FAKER = new Faker(new Locale("sv_SE"));
     private static final Faker CZ_FAKER = new Faker(new Locale("cs_CZ"));
@@ -21,7 +21,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
     private final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
 
     @Test
-    public void testCellPhone_enUS() {
+    void testCellPhone_enUS() {
         final Faker f = new Faker(Locale.US);
         String cellPhone = f.phoneNumber().cellPhone();
         assertThat(cellPhone).matches("\\(?\\d+\\)?([- .]\\d+){1,3}");
@@ -29,7 +29,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
 
 
     @RepeatedTest(100)
-    public void testAllCellPhone_enUS() throws NumberParseException {
+    void testAllCellPhone_enUS() throws NumberParseException {
         String phoneNumber = US_FAKER.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "US");
         assertThat(util.isValidNumberForRegion(proto, "US")).as(phoneNumber).isTrue();
@@ -37,7 +37,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
 
 
     @RepeatedTest(100)
-    public void testAllCellPhone_svSE() throws NumberParseException {
+    void testAllCellPhone_svSE() throws NumberParseException {
         String phoneNumber = SE_FAKER.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "SE");
         assertThat(util.isValidNumberForRegion(proto, "SE")).as(phoneNumber).isTrue();
@@ -45,7 +45,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
 
 
     @RepeatedTest(100)
-    public void testAllCellPhone_csCZ() throws NumberParseException {
+    void testAllCellPhone_csCZ() throws NumberParseException {
         String phoneNumber = CZ_FAKER.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "CZ");
         assertThat(util.isValidNumberForRegion(proto, "CZ")).as(phoneNumber).isTrue();
@@ -53,7 +53,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
 
 
     @Test
-    public void testAllCellPhone_enGB() throws NumberParseException {
+    void testAllCellPhone_enGB() throws NumberParseException {
 
         int errorCount = 0;
         for (int i = 0; i < 100; i++) {
@@ -70,7 +70,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
 
 
     @Test
-    public void testAllCellPhone_nbNO() throws NumberParseException {
+    void testAllCellPhone_nbNO() throws NumberParseException {
         int errorCount = 0;
 
         for (int i = 0; i < 1000; i++) {
@@ -88,14 +88,14 @@ public class PhoneNumberTest extends AbstractFakerTest {
 
 
     @RepeatedTest(100)
-    public void testAllCellPhone_nl() throws NumberParseException {
+    void testAllCellPhone_nl() throws NumberParseException {
         String phoneNumber = NL_FAKER.phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "NL");
         assertThat(util.isValidNumberForRegion(proto, "NL")).as(phoneNumber).isTrue();
     }
 
     @Test
-    public void testPhone_esMx() {
+    void testPhone_esMx() {
         final Faker f = new Faker(new Locale("es_MX"));
         for (int i = 0; i < 100; i++) {
             assertThat(f.phoneNumber().cellPhone()).matches("(044 )?\\(?\\d+\\)?([- .]\\d+){1,3}");
@@ -104,7 +104,7 @@ public class PhoneNumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testPhone_CA() {
+    void testPhone_CA() {
         final Locale[] locales = new Locale[]{Locale.CANADA, new Locale("ca")};
         for (Locale locale : locales) {
             final Faker f = new Faker(locale);
@@ -120,27 +120,27 @@ public class PhoneNumberTest extends AbstractFakerTest {
     }
 
     @Test
-    public void testCellPhone() {
+    void testCellPhone() {
         assertThat(faker.phoneNumber().cellPhone()).matches("\\(?\\d+\\)?([- .]\\d+){1,3}");
     }
 
     @Test
-    public void testPhoneNumber() {
+    void testPhoneNumber() {
         assertThat(faker.phoneNumber().phoneNumber()).matches("\\(?\\d+\\)?([- .]x?\\d+){1,5}");
     }
 
     @Test
-    public void testExtension() {
+    void testExtension() {
         assertThat(faker.phoneNumber().extension()).matches("\\d{4}");
     }
 
     @Test
-    public void testSubscriberNumber() {
+    void testSubscriberNumber() {
         assertThat(faker.phoneNumber().subscriberNumber()).matches("\\d{4}");
     }
 
     @Test
-    public void testSubscriberNumberWithLength() {
+    void testSubscriberNumberWithLength() {
         assertThat(faker.phoneNumber().subscriberNumber(10)).matches("\\d{10}");
     }
 }

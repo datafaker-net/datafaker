@@ -4,20 +4,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class SeinfeldTest extends AbstractFakerTest {
+class SeinfeldTest extends AbstractFakerTest {
 
     @Test
-    public void character() {
+    void character() {
         assertThat(faker.seinfeld().character()).isNotEmpty();
     }
 
     @Test
-    public void quote() {
+    void quote() {
         assertThat(faker.seinfeld().quote()).isNotEmpty();
     }
 
     @Test
-    public void business() {
+    void business() {
         assertThat(faker.seinfeld().business()).isNotEmpty();
     }
 

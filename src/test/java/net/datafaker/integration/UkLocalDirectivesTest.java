@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * and that methods return values. The unit tests should ensure what the values returned
  * are correct. These tests just ensure that the methods can be invoked.
  */
-public class UkLocalDirectivesTest {
+class UkLocalDirectivesTest {
 
     /**
      * uk is interesting in that it has feminine and masculine prefixes for street names.  the feminine
@@ -23,7 +23,7 @@ public class UkLocalDirectivesTest {
      * child objects.
      */
     @Test
-    public void resolvesDirectivesOnlyInYmlFile() {
+    void resolvesDirectivesOnlyInYmlFile() {
         final Locale uk = new Locale("uk");
 
         final String streetName = new Faker(uk).address().streetName();

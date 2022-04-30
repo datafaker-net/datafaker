@@ -4,15 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HorseTest extends AbstractFakerTest {
+class HorseTest extends AbstractFakerTest {
 
     @Test
-    public void name() {
+    void name() {
         assertThat(faker.horse().name()).isNotEmpty();
     }
 
     @Test
-    public void breed() {
+    void breed() {
         assertThat(faker.horse().breed()).isNotEmpty();
     }
 

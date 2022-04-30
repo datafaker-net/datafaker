@@ -32,7 +32,7 @@ import static org.reflections.ReflectionUtils.withReturnType;
  * are correct. These tests just ensure that the methods can be invoked.
  */
 @SuppressWarnings("NewClassNamingConvention")
-public class FakerIT {
+class FakerIT {
     private Faker faker;
     private Locale locale;
 
@@ -73,7 +73,7 @@ public class FakerIT {
 
     @ParameterizedTest
     @MethodSource("dataParameters")
-    public void testAllFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
+    void testAllFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
         init(locale, random);
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker);
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.address());
@@ -216,7 +216,7 @@ public class FakerIT {
 
     @ParameterizedTest
     @MethodSource("dataParameters")
-    public void testExceptionsNotCoveredInAboveTest(Locale locale, Random random) {
+    void testExceptionsNotCoveredInAboveTest(Locale locale, Random random) {
         init(locale, random);
         assertThat(faker.bothify("####???")).isNotNull();
         assertThat(faker.letterify("????")).isNotNull();

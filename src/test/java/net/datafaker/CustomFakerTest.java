@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * This is a demo of how to create a custom faker and register a custom faker in it.
  */
-public class CustomFakerTest {
+class CustomFakerTest {
     public static class MyCustomFaker extends Faker {
         public Insect insect() {
             return getProvider(Insect.class, () -> new Insect(this));
@@ -56,37 +56,37 @@ public class CustomFakerTest {
     }
 
     @Test
-    public void addNullExistingPath() {
+    void addNullExistingPath() {
         assertThatThrownBy(() -> new Faker().addPath(Locale.ENGLISH, null))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    public void addNonExistingPath() {
+    void addNonExistingPath() {
         assertThatThrownBy(() -> new Faker().addPath(Locale.ENGLISH, Paths.get("non-existing-file")))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
     @RepeatedTest(10)
-    public void insectTest() {
+    void insectTest() {
         MyCustomFaker myFaker = new MyCustomFaker();
         assertThat(myFaker.insect().nextInsectName()).matches("[A-Za-z ]+");
     }
 
     @RepeatedTest(10)
-    public void insectTestExpression() {
+    void insectTestExpression() {
         MyCustomFaker myFaker = new MyCustomFaker();
         assertThat(myFaker.expression("#{Insect.nextInsectName}")).matches("[A-Za-z ]+");
     }
 
     @RepeatedTest(10)
-    public void insectAntTestExpressionFromFile() {
+    void insectAntTestExpressionFromFile() {
         MyCustomFaker myFaker = new MyCustomFaker();
         assertThat(myFaker.insectFromFile().ant()).matches("[A-Za-z ]+");
     }
 
     @RepeatedTest(10)
-    public void insectBeeTestExpressionFromFile() {
+    void insectBeeTestExpressionFromFile() {
         MyCustomFaker myFaker = new MyCustomFaker();
         assertThat(myFaker.insectFromFile().bee()).endsWith("bee");
     }

@@ -4,30 +4,30 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SubscriptionTest extends AbstractFakerTest {
+class SubscriptionTest extends AbstractFakerTest {
 
     @Test
-    public void plans() {
+    void plans() {
         assertThat(faker.subscription().plans()).isNotEmpty();
     }
 
     @Test
-    public void statuses() {
+    void statuses() {
         assertThat(faker.subscription().statuses()).isNotEmpty();
     }
 
     @Test
-    public void paymentMethods() {
+    void paymentMethods() {
         assertThat(faker.subscription().paymentMethods()).isNotEmpty();
     }
 
     @Test
-    public void subscriptionTerms() {
+    void subscriptionTerms() {
         assertThat(faker.subscription().subscriptionTerms()).isNotEmpty();
     }
 
     @Test
-    public void paymentTerms() {
+    void paymentTerms() {
         assertThat(faker.subscription().paymentTerms()).isNotEmpty();
     }
 

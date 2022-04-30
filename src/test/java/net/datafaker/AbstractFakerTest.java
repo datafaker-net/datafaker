@@ -38,7 +38,7 @@ public class AbstractFakerTest {
     }
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         faker = getFaker();
     }
 

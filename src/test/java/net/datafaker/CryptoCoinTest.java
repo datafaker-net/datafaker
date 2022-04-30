@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CryptoCoinTest extends AbstractFakerTest {
+class CryptoCoinTest extends AbstractFakerTest {
 
     @Test
-    public void coin() {
+    void coin() {
         assertThat(faker.cryptoCoin().coin()).isNotEmpty();
     }
 }

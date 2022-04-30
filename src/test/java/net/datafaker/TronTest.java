@@ -4,55 +4,55 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class TronTest extends AbstractFakerTest {
+class TronTest extends AbstractFakerTest {
 
     @Test
-    public void characters() {
+    void characters() {
         assertThat(faker.tron().character()).isNotEmpty();
     }
 
     @Test
-    public void character() {
+    void character() {
         assertThat(faker.tron().character(Tron.Character.USER)).isNotEmpty();
     }
 
     @Test
-    public void games() {
+    void games() {
         assertThat(faker.tron().game()).isNotEmpty();
     }
 
     @Test
-    public void locations() {
+    void locations() {
         assertThat(faker.tron().location()).isNotEmpty();
     }
 
     @Test
-    public void quotes() {
+    void quotes() {
         assertThat(faker.tron().quote()).isNotNull();
     }
 
     @Test
-    public void quote() {
+    void quote() {
         assertThat(faker.tron().quote(Tron.Quote.DR_WALTER_GIBBS)).isNotNull();
     }
 
     @Test
-    public void taglines() {
+    void taglines() {
         assertThat(faker.tron().tagline()).isNotEmpty();
     }
 
     @Test
-    public void vehicles() {
+    void vehicles() {
         assertThat(faker.tron().vehicle()).isNotEmpty();
     }
 
     @Test
-    public void alternateCharacterSpellings() {
+    void alternateCharacterSpellings() {
         assertThat(faker.tron().alternateCharacterSpelling()).isNotEmpty();
     }
 
     @Test
-    public void alternateCharacterSpelling() {
+    void alternateCharacterSpelling() {
         assertThat(faker.tron().alternateCharacterSpelling(Tron.AlternateCharacterSpelling.DR_LORA_BAINES)).isNotEmpty();
     }
 

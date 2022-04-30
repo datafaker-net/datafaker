@@ -5,58 +5,58 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PhotographyTest extends AbstractFakerTest {
+class PhotographyTest extends AbstractFakerTest {
 
     @Test
-    public void testAperture() {
+    void testAperture() {
         final String value = faker.photography().aperture();
         assertThat(value).startsWith("f");
     }
 
     @Test
-    public void testTerm() {
+    void testTerm() {
         final String value = faker.photography().term();
         assertNonNullOrEmpty(value);
     }
 
     @Test
-    public void brand() {
+    void brand() {
         final String value = faker.photography().brand();
         assertNonNullOrEmpty(value);
     }
 
     @Test
-    public void camera() {
+    void camera() {
         final String value = faker.photography().camera();
         assertNonNullOrEmpty(value);
     }
 
     @Test
-    public void lens() {
+    void lens() {
         final String value = faker.photography().lens();
         assertNonNullOrEmpty(value);
     }
 
     @Test
-    public void genre() {
+    void genre() {
         final String value = faker.photography().genre();
         assertNonNullOrEmpty(value);
     }
 
     @Test
-    public void imageTag() {
+    void imageTag() {
         final String value = faker.photography().imageTag();
         assertNonNullOrEmpty(value);
     }
 
     @RepeatedTest(7)
-    public void shutter() {
+    void shutter() {
         final String value = faker.photography().shutter();
         assertThat(value).matches("\\d+/?\\d*");
     }
 
     @RepeatedTest(7)
-    public void iso() {
+    void iso() {
         final String value = faker.photography().iso();
         assertThat(value).matches("\\d+");
     }

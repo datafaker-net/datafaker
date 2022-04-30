@@ -7,10 +7,10 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Issue194SlashFormatRegexIT {
+class Issue194SlashFormatRegexIT {
 
     @Test
-    public void enGBZipCodeReturnsProperRegexifiedValue() {
+    void enGBZipCodeReturnsProperRegexifiedValue() {
         final Locale uk = new Locale("en-GB");
 
         final String postalCode = new Faker(uk).address().zipCode();
@@ -19,7 +19,7 @@ public class Issue194SlashFormatRegexIT {
     }
 
     @Test
-    public void enCAZipCodeReturnsProperRegexifiedValue() {
+    void enCAZipCodeReturnsProperRegexifiedValue() {
         final Locale uk = new Locale("en-CA");
 
         final String postalCode = new Faker(uk).address().zipCode();
@@ -28,7 +28,7 @@ public class Issue194SlashFormatRegexIT {
     }
 
     @Test
-    public void viZipCodeReturnsProperRegexifiedValue() {
+    void viZipCodeReturnsProperRegexifiedValue() {
         final Locale uk = new Locale("vi");
 
         final String postalCode = new Faker(uk).address().zipCode();

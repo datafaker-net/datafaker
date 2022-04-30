@@ -4,30 +4,30 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StarTrekTest extends AbstractFakerTest {
+class StarTrekTest extends AbstractFakerTest {
 
     @Test
-    public void character() {
+    void character() {
         assertThat(faker.starTrek().character()).matches("^(\\w+-?'?\\.?\\s?)+$");
     }
 
     @Test
-    public void location() {
+    void location() {
         assertThat(faker.starTrek().location()).matches("^(\\w+'?\\s?)+$");
     }
 
     @Test
-    public void species() {
+    void species() {
         assertThat(faker.starTrek().species()).matches("^(\\w+-?'?\\s?)+$");
     }
 
     @Test
-    public void villain() {
+    void villain() {
         assertThat(faker.starTrek().villain()).matches("^(\\w+'?\\.?\\s?)+$");
     }
 
     @Test
-    public void klingon() {
+    void klingon() {
         assertThat(faker.starTrek().klingon()).isNotEmpty();
     }
 }

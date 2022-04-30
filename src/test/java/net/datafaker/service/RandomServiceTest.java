@@ -17,18 +17,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * @author pmiklos
  */
-public class RandomServiceTest extends AbstractFakerTest {
+class RandomServiceTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
-    public void testPositiveBoundariesOnly(RandomService randomService) {
+    void testPositiveBoundariesOnly(RandomService randomService) {
         assertThatThrownBy( () -> randomService.nextLong(0L))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
-    public void testLongWithinBoundary(RandomService randomService) {
+    void testLongWithinBoundary(RandomService randomService) {
         assertThat(randomService.nextLong(1)).isEqualTo(0L);
 
         for (int i = 1; i < 10; i++) {
@@ -38,14 +38,14 @@ public class RandomServiceTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
-    public void testLongMaxBoundary(RandomService randomService) {
+    void testLongMaxBoundary(RandomService randomService) {
         assertThat(randomService.nextLong(Long.MAX_VALUE)).isGreaterThan(0L);
         assertThat(randomService.nextLong(Long.MAX_VALUE)).isLessThan(Long.MAX_VALUE);
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
-    public void testIntInRange(RandomService randomService) {
+    void testIntInRange(RandomService randomService) {
         final Condition<Integer> lessThanOrEqual = new Condition<>(t -> t <= 5, "should be less than or equal 5");
         final Condition<Integer> greaterThanOrEqual = new Condition<>(t -> t >= -5, "should be greater than or equal -5");
         for (int i = 1; i < 100; i++) {
@@ -55,7 +55,7 @@ public class RandomServiceTest extends AbstractFakerTest {
     }
 
     @Test
-    public void predictableRandomRange() {
+    void predictableRandomRange() {
         RandomService randomService = new RandomService(new Random(10));
 
         int i1 = randomService.nextInt();
@@ -85,7 +85,7 @@ public class RandomServiceTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
-    public void testDoubleInRange(RandomService randomService) {
+    void testDoubleInRange(RandomService randomService) {
         final Condition<Double> lessThanOrEqual = new Condition<>(t -> t <= 5d, "should be less than or equal 5");
         final Condition<Double> greaterThanOrEqual = new Condition<>(t -> t >= -5d, "should be greater than or equal -5");
         for (int i = 1; i < 100; i++) {
@@ -95,7 +95,7 @@ public class RandomServiceTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
-    public void testLongInRange(RandomService randomService) {
+    void testLongInRange(RandomService randomService) {
         final Condition<Long> lessThanOrEqual = new Condition<>(t -> t <= 5_000_000_000L, "should be less than or equal 5_000_000_000L");
         final Condition<Long> greaterThanOrEqual = new Condition<>(t -> t >= -5_000_000_000L, "should be greater than or equal -5_000_000_000L");
         for (int i = 1; i < 1_000; i++) {
@@ -105,13 +105,13 @@ public class RandomServiceTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
-    public void testHex(RandomService randomService) {
+    void testHex(RandomService randomService) {
         assertThat(randomService.hex(8)).matches("^[0-9A-F]{8}$");
     }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
-    public void testDefaultHex(RandomService randomService) {
+    void testDefaultHex(RandomService randomService) {
         assertThat(randomService.hex()).matches("^[0-9A-F]{8}$");
     }
 

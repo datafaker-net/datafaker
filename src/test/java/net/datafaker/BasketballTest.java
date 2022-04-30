@@ -4,25 +4,25 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BasketballTest extends AbstractFakerTest {
+class BasketballTest extends AbstractFakerTest {
 
     @Test
-    public void testPositions() {
+    void testPositions() {
         assertThat(faker.basketball().positions()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    public void testTeams() {
+    void testTeams() {
         assertThat(faker.basketball().teams()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    public void testCoaches() {
+    void testCoaches() {
         assertThat(faker.basketball().coaches()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    public void testPlayers() {
+    void testPlayers() {
         assertThat(faker.basketball().players()).matches("[\\p{L}'()., 0-9-’]+");
     }
 }

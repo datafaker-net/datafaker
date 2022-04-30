@@ -7,13 +7,13 @@ import static java.lang.Integer.parseInt;
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCNPJValid;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CNPJTest extends AbstractFakerTest {
+class CNPJTest extends AbstractFakerTest {
 
     /**
      * A valid CNPJ is either a real number or a generated valid number.
      */
     @RepeatedTest(1000)
-    public void isValidCNPJ() {
+    void isValidCNPJ() {
         CNPJ cnpj = faker.cnpj();
         assertThat(isCNPJValid(cnpj.valid())).describedAs("Current value " + cnpj).isTrue();
     }
@@ -22,13 +22,13 @@ public class CNPJTest extends AbstractFakerTest {
      * A invalid CNPJ is that does not meet the requirements of the algorithm
      */
     @RepeatedTest(1000)
-    public void isInvalidCNPJ() {
+    void isInvalidCNPJ() {
         CNPJ cnpj = faker.cnpj();
         assertThat(isCNPJValid(cnpj.invalid())).describedAs("Current value " + cnpj).isFalse();
     }
 
     @Test
-    public void valid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
+    void valid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
         String cnpj = faker.cnpj().valid(true, true);
         String branch = cnpj.substring(11, 15);
 
@@ -44,7 +44,7 @@ public class CNPJTest extends AbstractFakerTest {
     }
 
     @Test
-    public void invalid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
+    void invalid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
         String cnpj = faker.cnpj().invalid(true, true);
         String branch = cnpj.substring(11, 15);
 
@@ -64,7 +64,7 @@ public class CNPJTest extends AbstractFakerTest {
      * Eg: 11.111.111/0001-11
      */
     @Test
-    public void formattedCNPJ() {
+    void formattedCNPJ() {
         final String cnpjExpression = "(^\\d{2}\\x2E\\d{3}\\x2E\\d{3}\\x2F\\d{4}\\x2D\\d{2}$)";
 
         assertThat(faker.cnpj().valid()).matches(cnpjExpression);
