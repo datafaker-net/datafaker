@@ -1,0 +1,5 @@
+en-PH:
+  faker:
+    internet:
+      domain_suffix: [com, ph, com.ph]
+      free_email: [yahoo.com, gmail.com, aol.com]
