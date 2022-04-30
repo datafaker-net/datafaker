@@ -62,7 +62,7 @@ public class Address {
     }
 
     public String countyByZipCode(String postCode) {
-        return faker.fakeValuesService().resolve("address.county_by_postcode." + postCode, this, faker);
+        return faker.fakeValuesService().resolve("address.county_by_postcode." + postCode, this, faker, () -> "County are not configured for postcode " + postCode);
     }
 
     public String streetSuffix() {

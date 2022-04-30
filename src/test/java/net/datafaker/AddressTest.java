@@ -3,16 +3,20 @@ package net.datafaker;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AddressTest extends AbstractFakerTest {
 
-    private static final char decimalSeparator = new DecimalFormatSymbols(faker.getLocale()).getDecimalSeparator();
+    private static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols(getFaker().getLocale()).getDecimalSeparator();
     public static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
             Double.valueOf(s);
@@ -36,7 +40,7 @@ public class AddressTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     public void testLatitude() {
-        String latStr = faker.address().latitude().replace(decimalSeparator, '.');
+        String latStr = faker.address().latitude().replace(DECIMAL_SEPARATOR, '.');
         assertThat(latStr).is(IS_A_NUMBER);
         Double lat = Double.valueOf(latStr);
         assertThat(lat).isGreaterThanOrEqualTo(-90.0);
@@ -45,7 +49,7 @@ public class AddressTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     public void testLongitude() {
-        String longStr = faker.address().longitude().replace(decimalSeparator, '.');
+        String longStr = faker.address().longitude().replace(DECIMAL_SEPARATOR, '.');
         assertThat(longStr).is(IS_A_NUMBER);
         Double lon = Double.valueOf(longStr);
         assertThat(lon).isGreaterThanOrEqualTo(-180.0);
@@ -138,6 +142,16 @@ public class AddressTest extends AbstractFakerTest {
     public void testCountyByZipCode() {
         final Faker localFaker = new Faker(new Locale("en-US"));
         assertThat(localFaker.address().countyByZipCode("47732")).isNotEmpty();
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {"1", "asd", "qwe", "wrong"})
+    void testCountyForWrongZipCode(String zipCode) {
+        final Faker localFaker = new Faker(new Locale("en-US"));
+        assertThatThrownBy(() -> localFaker.address().countyByZipCode(zipCode))
+            .isInstanceOf(RuntimeException.class)
+            .hasMessage("County are not configured for postcode " + zipCode);
     }
 
     @Test

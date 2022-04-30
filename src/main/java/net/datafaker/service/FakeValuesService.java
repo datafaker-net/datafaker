@@ -378,13 +378,24 @@ public class FakeValuesService {
     }
 
     /**
-     * Resolves a key to a method on an object.
+     * Resolves a key to a method on an object or throws an exception.
      * <p>
      * #{hello} with result in a method call to current.hello();
      * <p>
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
     public String resolve(String key, Object current, Faker root) {
+        return resolve(key, current, root, () -> key + " resulted in null expression");
+    }
+
+    /**
+     * Resolves a key to a method on an object or throws an exception with specified message.
+     * <p>
+     * #{hello} with result in a method call to current.hello();
+     * <p>
+     * #{Person.hello_someone} will result in a method call to person.helloSomeone();
+     */
+    public String resolve(String key, Object current, Faker root, Supplier<String> exceptionMessage) {
         String expression = root == null ? key2Expression.get(key) : null;
         if (expression == null) {
             expression = safeFetch(key, null);
@@ -394,7 +405,7 @@ public class FakeValuesService {
         }
 
         if (expression == null) {
-            throw new RuntimeException(key + " resulted in null expression");
+            throw new RuntimeException(exceptionMessage.get());
         }
 
         return resolveExpression(expression, current, root);

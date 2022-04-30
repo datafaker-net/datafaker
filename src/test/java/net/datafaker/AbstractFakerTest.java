@@ -39,6 +39,10 @@ public class AbstractFakerTest {
 
     @BeforeAll
     public static void setup() {
-        faker = new Faker();
+        faker = getFaker();
+    }
+
+    protected static Faker getFaker() {
+        return faker == null ? new Faker() : faker;
     }
 }
