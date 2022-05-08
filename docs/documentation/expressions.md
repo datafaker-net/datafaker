@@ -65,7 +65,7 @@ faker.expression("#{options.option 'ABC','2','5','$'}"); // could give $
 faker.expression("#{options.option '23','2','5','$','%','*'}"); // could give *
 ```
 ## Csv
-This is available since 1.3.0
+This is available since 1.4.0
 
 The expression will return generated csv based on input parameters
 ```java
