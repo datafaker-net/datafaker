@@ -164,6 +164,7 @@ class FakerTest extends AbstractFakerTest {
     @Test
     void expression() {
         assertThat(faker.expression("#{options.option 'a','b','c','d'}")).matches("([abcd])");
+        assertThat(faker.expression("#{options.option ''''}")).matches("(')");
         assertThat(faker.expression("#{options.option '12','345','89','54321'}")).matches("(12|345|89|54321)");
         assertThat(faker.expression("#{regexify '(a|b){2,3}'}")).matches("([ab]){2,3}");
         assertThat(faker.expression("#{regexify '\\.\\*\\?\\+'}")).matches("\\.\\*\\?\\+");

@@ -485,11 +485,11 @@ public class FakeValuesService {
             String arguments = j == expr.length() ? "" : expr.substring(j);
             String[] args = splitArguments(arguments);
 
-            String resolved = resolveExpression(expr, directive, args, current, root);
+            Object resolved = resolveExpression(expr, directive, args, current, root);
             if (resolved == null) {
                 throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
             }
-            expressionSuppliers.add(() -> resolveExpression(resolved, current, root));
+            expressionSuppliers.add(() -> resolveExpression(Objects.toString(resolved), current, root));
         }
         return expressionSuppliers.stream().map(Supplier::get).collect(Collectors.joining());
     }
@@ -503,8 +503,13 @@ public class FakeValuesService {
         boolean argsStarted = false;
         for (int i = 0; i < arguments.length(); i++) {
             if (argsStarted) {
-                if (arguments.charAt(i) == '\'') {
-                    result.add(arguments.substring(start, i));
+                int cnt = 0;
+                while (i < arguments.length() && arguments.charAt(i) == '\'') {
+                    cnt++;
+                    i++;
+                }
+                if (cnt % 2 == 1) {
+                    result.add(arguments.substring(start, i - 1).replaceAll("''", "'"));
                     argsStarted = false;
                 }
             } else if (arguments.charAt(i) == '\'') {
@@ -551,18 +556,18 @@ public class FakeValuesService {
      *
      * @return null if unable to resolve
      */
-    private String resolveExpression(String expression, String directive, String[] args, Object current, Faker root) {
+    private Object resolveExpression(String expression, String directive, String[] args, Object current, Faker root) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
         final String simpleDirective = (isDotDirective(directive) || current == null)
             ? directive
             : classNameToYamlName(current) + "." + directive;
 
-        String resolved;
+        Object resolved;
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
         // #{ssn_valid} on IdNumber
         if (!isDotDirective(directive)) {
-            Supplier<String> supplier = resolveFromMethodOn(current, directive, args);
+            Supplier<Object> supplier = resolveFromMethodOn(current, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 //expression2function.put(expression, supplier);
                 return resolved;
@@ -572,7 +577,7 @@ public class FakeValuesService {
         // simple fetch of a value from the yaml file. the directive may have been mutated
         // such that if the current yml object is car: and directive is #{wheel} then
         // car.wheel will be looked up in the YAML file.
-        Supplier<String> supplier = () -> safeFetch(simpleDirective, null);
+        Supplier<Object> supplier = () -> safeFetch(simpleDirective, null);
         resolved = supplier.get();
         if (resolved != null) {
            // expression2function.put(expression, supplier);
@@ -655,7 +660,7 @@ public class FakeValuesService {
      * {@link net.datafaker.Name} then this method would return {@link net.datafaker.Name#firstName()}.  Returns null if the directive is nested
      * (i.e. has a '.') or the method doesn't exist on the <em>obj</em> object.
      */
-    private Supplier<String> resolveFromMethodOn(Object obj, String directive, String[] args) {
+    private Supplier<Object> resolveFromMethodOn(Object obj, String directive, String[] args) {
         if (obj == null) {
             return null;
         }
@@ -676,7 +681,7 @@ public class FakeValuesService {
      *
      * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
      */
-    private Supplier<String> resolveFakerObjectAndMethod(Faker faker, String key, String[] args) {
+    private Supplier<Object> resolveFakerObjectAndMethod(Faker faker, String key, String[] args) {
         int index = key.indexOf('.');
         final String[] classAndMethod;
         if (index == -1) {
@@ -708,9 +713,9 @@ public class FakeValuesService {
         }
     }
 
-    private String invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
+    private Object invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
         try {
-            return string(accessor.invoke(objectWithMethodToInvoke));
+            return accessor.invoke(objectWithMethodToInvoke);
         } catch (Exception e) {
             LOG.fine(e.getMessage());
             return null;
