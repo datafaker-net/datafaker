@@ -2,6 +2,8 @@ package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
 import net.datafaker.Faker;
+import net.datafaker.fileformats.Csv;
+import net.datafaker.fileformats.Format;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -429,6 +431,37 @@ public class FakeValuesService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Generates csv based on input column expressions and number of lines.
+     * This method uses default separator, quote and always prints header.
+     */
+    public String csv(int limit, String ... columnExpressions) {
+        if (columnExpressions.length % 2 != 0) {
+            throw new IllegalArgumentException("Total number of column names and column values should be even");
+        }
+        Csv.Column[] columns = new Csv.Column[columnExpressions.length / 2];
+        for(int i = 0; i < columnExpressions.length; i += 2) {
+            final int index = i;
+            columns[i / 2] = Csv.Column.of(() -> columnExpressions[index], () -> columnExpressions[index + 1]);
+        }
+        return Format.toCsv(columns).limit(limit).build().get();
+    }
+
+    /**
+     * Generates csv based on input.
+     */
+    public String csv(String delimiter, char quote, boolean withHeader, int limit, String ... columnExpressions) {
+        if (columnExpressions.length % 2 != 0) {
+            throw new IllegalArgumentException("Total number of column names and column values should be even");
+        }
+        Csv.Column[] columns = new Csv.Column[columnExpressions.length / 2];
+        for(int i = 0; i < columnExpressions.length; i += 2) {
+            final int index = i;
+            columns[i / 2] = Csv.Column.of(() -> columnExpressions[index], () -> columnExpressions[index + 1]);
+        }
+        return Format.toCsv(columns).separator(delimiter).quote(quote).header(withHeader).limit(limit).build().get();
     }
 
     /**

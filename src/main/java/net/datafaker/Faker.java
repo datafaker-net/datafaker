@@ -195,6 +195,49 @@ public class Faker {
         return fakeValuesService().templatify(string, optionsMap);
     }
 
+    /**
+     * Returns a string with generated csv based number of lines and column expressions.
+     * This method will use comma as default delimiter, always prints header and double quote as default quote.
+     *
+     * <p>
+     * For example, it could generate
+     * "name_column","last_name_column"
+     * "Sabrina","Kihn"
+     *
+     * for expression {@code faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");}
+     *
+     * @param limit             Number of lines
+     * @param columnExpressions Even number of expressions.
+     *                          The odd numbers args are used for columns names, and even for column values.
+     * @return Generated string
+     */
+    public String csv(int limit, String ... columnExpressions) {
+        return fakeValuesService().csv(limit, columnExpressions);
+    }
+
+    /**
+     * Returns a string with generated csv based number of lines and column expressions.
+     *
+     * <p>
+     * For example, it could generate
+     * "Thad" ### "Crist"
+     * "Kathryne" ### "Wuckert"
+     * "Sybil" ### "Connelly"
+     *
+     * for expression {@code faker.expression("#{csv ' ### ','"','false','3','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");}
+     *
+     * @param separator         Delimiter to use
+     * @param quote             Quote to use
+     * @param withHeader        Print header or not
+     * @param limit             Number of lines
+     * @param columnExpressions Even number of expressions.
+     *                          The odd numbers args are used for columns names, and even for column values.
+     * @return Generated string
+     */
+    public String csv(String separator, char quote, boolean withHeader, int limit, String ... columnExpressions) {
+        return fakeValuesService().csv(separator, quote, withHeader, limit, columnExpressions);
+    }
+
     public RandomService random() {
         return this.randomService;
     }

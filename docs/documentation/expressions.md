@@ -64,7 +64,19 @@ Faker faker = new Faker();
 faker.expression("#{options.option 'ABC','2','5','$'}"); // could give $
 faker.expression("#{options.option '23','2','5','$','%','*'}"); // could give *
 ```
+## Csv
+This is available since 1.3.0
 
+The expression will return generated csv based on input parameters
+```java
+faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
+// "name_column","last_name_column"
+// "Sabrina","Kihn"
+faker.expression("#{csv ' ### ','"','false','3','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
+// "Thad" ### "Crist"
+// "Kathryne" ### "Wuckert"
+// "Sybil" ### "Connelly"
+```
 ## Others
 It is possible to call methods returning string values and taking primitive or string args via expressions e.g.
 ```java

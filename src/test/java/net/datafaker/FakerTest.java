@@ -180,6 +180,30 @@ class FakerTest extends AbstractFakerTest {
             .matches("[0-9]{2} [0-9]{3} [0-9]{2}:[0-9]{2}:[0-9]{2}");
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {0, 2, 3, 10, 20, 100})
+    void testLimitForCsvExpression(int limit) {
+        String csvFullExpression = faker.expression("#{csv ';','\"','false','" + limit + "','first_name','#{Name.first_name}','last_name','#{Name.last_name}'}");
+        String csvShortExpression = faker.expression("#{csv '" + limit + "','first_name','#{Name.first_name}','last_name','#{Name.last_name}'}");
+
+        int numberOfLinesFull = 0;
+        int numberOfLinesShort = 0;
+        for (int i = 0; i < csvFullExpression.length(); i++) {
+            if (csvFullExpression.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+                numberOfLinesFull++;
+            }
+        }
+
+        for (int i = 0; i < csvShortExpression.length(); i++) {
+            if (csvShortExpression.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+                numberOfLinesShort++;
+            }
+        }
+
+        assertThat(numberOfLinesFull).isEqualTo(limit);
+        assertThat(numberOfLinesShort).isEqualTo(limit + 1); // + header
+    }
+
     @RepeatedTest(100)
     void numberBetweenRepeated() {
         assertThat(faker.expression("#{number.number_between '1','10'}")).matches("[1-9]");

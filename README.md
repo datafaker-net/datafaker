@@ -81,6 +81,9 @@ faker.expression("#{examplify 'test'}"); // ghjk
 faker.expression("#{regexify '[a-z]{4,10}'}"); // wbevoa
 faker.expression("#{options.option '23','2','5','$','%','*'}"); // *
 faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}"); // 61 327 08:11:45
+faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
+// "name_column","last_name_column"
+// "Sabrina","Kihn"
 ```
 also more examples at https://www.datafaker.net/documentation/expressions/
 
