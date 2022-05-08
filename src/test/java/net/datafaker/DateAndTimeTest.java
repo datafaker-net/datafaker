@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +27,7 @@ class DateAndTimeTest extends AbstractFakerTest {
 
     @Test
     void testFutureDate() {
-        Date now = new Date();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
         for (int i = 0; i < 1000; i++) {
             Date future = faker.date().future(1, TimeUnit.SECONDS, now);
             assertThat(future.getTime()).isGreaterThan(now.getTime());
@@ -76,8 +77,8 @@ class DateAndTimeTest extends AbstractFakerTest {
 
     @Test
     void testBetween() {
-        Date now = new Date();
-        Date then = new Date(now.getTime() + 1000);
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Timestamp then = new Timestamp(System.currentTimeMillis() + 1000);
 
         for (int i = 0; i < 1000; i++) {
             Date date = faker.date().between(now, then);
@@ -88,8 +89,8 @@ class DateAndTimeTest extends AbstractFakerTest {
 
     @Test
     void testBetweenThenLargerThanNow() {
-        Date now = new Date();
-        Date then = new Date(now.getTime() + 1000);
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Timestamp then = new Timestamp(System.currentTimeMillis() + 1000);
         assertThatThrownBy(() -> faker.date().between(then, now))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Invalid date range, the upper bound date is before the lower bound.");
@@ -104,7 +105,7 @@ class DateAndTimeTest extends AbstractFakerTest {
         long to = new GregorianCalendar(currentYear - 18, currentMonth, currentDay).getTime().getTime();
 
         for (int i = 0; i < 5000; i++) {
-            Date birthday = faker.date().birthday();
+            Timestamp birthday = faker.date().birthday();
             assertThat(birthday.getTime()).isLessThan(to);
             assertThat(birthday.getTime()).isGreaterThanOrEqualTo(from);
         }
@@ -123,7 +124,7 @@ class DateAndTimeTest extends AbstractFakerTest {
             long from = new GregorianCalendar(currentYear - maxAge, currentMonth, currentDay).getTime().getTime();
             long to = new GregorianCalendar(currentYear - minAge, currentMonth, currentDay).getTime().getTime();
 
-            Date birthday = faker.date().birthday(minAge, maxAge);
+            Timestamp birthday = faker.date().birthday(minAge, maxAge);
             assertThat(birthday.getTime()).isLessThanOrEqualTo(to);
             assertThat(birthday.getTime()).isGreaterThanOrEqualTo(from);
         }

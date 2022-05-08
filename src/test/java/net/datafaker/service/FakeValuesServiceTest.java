@@ -263,7 +263,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void futureDateExpression() throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
 
         Date now = new Date();
         Date nowPlus10Days = new Date(now.getTime() + MILLIS_IN_A_DAY * 10);
@@ -276,7 +276,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void pastDateExpression() throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
 
         Date now = new Date();
         Date nowMinus5Hours = new Date(now.getTime() - MILLIS_IN_AN_HOUR * 5);

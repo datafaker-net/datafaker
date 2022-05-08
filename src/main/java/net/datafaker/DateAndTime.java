@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Period;
@@ -33,9 +34,8 @@ public class DateAndTime {
      * @param unit   the time unit.
      * @return a future date from now.
      */
-    public Date future(int atMost, TimeUnit unit) {
-        Date now = new Date();
-        Date aBitLaterThanNow = new Date(now.getTime() + 1000);
+    public Timestamp future(int atMost, TimeUnit unit) {
+        Timestamp aBitLaterThanNow = new Timestamp(System.currentTimeMillis() + 1000);
         return future(atMost, unit, aBitLaterThanNow);
     }
 
@@ -60,9 +60,8 @@ public class DateAndTime {
      * @param unit    the time unit.
      * @return a future date from now, with a minimum time.
      */
-    public Date future(int atMost, int minimum, TimeUnit unit) {
-        Date now = new Date();
-        Date minimumDate = new Date(now.getTime() + unit.toMillis(minimum));
+    public Timestamp future(int atMost, int minimum, TimeUnit unit) {
+        Timestamp minimumDate = new Timestamp(System.currentTimeMillis() + unit.toMillis(minimum));
         return future(atMost - minimum, unit, minimumDate);
     }
 
@@ -88,13 +87,13 @@ public class DateAndTime {
      * @param referenceDate the future date relative to this date.
      * @return a future date relative to {@code referenceDate}.
      */
-    public Date future(int atMost, TimeUnit unit, Date referenceDate) {
+    public Timestamp future(int atMost, TimeUnit unit, Date referenceDate) {
         long upperBound = unit.toMillis(atMost);
 
         long futureMillis = referenceDate.getTime();
         futureMillis += 1 + faker.random().nextLong(upperBound - 1);
 
-        return new Date(futureMillis);
+        return new Timestamp(futureMillis);
     }
 
     /**
@@ -118,9 +117,8 @@ public class DateAndTime {
      * @param unit   the time unit.
      * @return a past date from now.
      */
-    public Date past(int atMost, TimeUnit unit) {
-        Date now = new Date();
-        Date aBitEarlierThanNow = new Date(now.getTime() - 1000);
+    public Timestamp past(int atMost, TimeUnit unit) {
+        Timestamp aBitEarlierThanNow = new Timestamp(System.currentTimeMillis() - 1000);
         return past(atMost, unit, aBitEarlierThanNow);
     }
 
@@ -145,9 +143,8 @@ public class DateAndTime {
      * @param unit    the time unit.
      * @return a past date from now.
      */
-    public Date past(int atMost, int minimum, TimeUnit unit) {
-        Date now = new Date();
-        Date minimumDate = new Date(now.getTime() - unit.toMillis(minimum));
+    public Timestamp past(int atMost, int minimum, TimeUnit unit) {
+        Timestamp minimumDate = new Timestamp(System.currentTimeMillis() - unit.toMillis(minimum));
         return past(atMost - minimum, unit, minimumDate);
     }
 
@@ -172,13 +169,13 @@ public class DateAndTime {
      * @param referenceDate the past date relative to this date.
      * @return a past date relative to {@code referenceDate}.
      */
-    public Date past(int atMost, TimeUnit unit, Date referenceDate) {
+    public Timestamp past(int atMost, TimeUnit unit, Date referenceDate) {
         long upperBound = unit.toMillis(atMost);
 
         long futureMillis = referenceDate.getTime();
         futureMillis -= 1 + faker.random().nextLong(upperBound - 1);
 
-        return new Date(futureMillis);
+        return new Timestamp(futureMillis);
     }
 
     /**
@@ -202,7 +199,7 @@ public class DateAndTime {
      * @return a random date between {@code from} and {@code to}.
      * @throws IllegalArgumentException if the {@code to} date represents an earlier date than {@code from} date.
      */
-    public Date between(Date from, Date to) throws IllegalArgumentException {
+    public Timestamp between(Timestamp from, Timestamp to) throws IllegalArgumentException {
         if (to.before(from)) {
             throw new IllegalArgumentException("Invalid date range, the upper bound date is before the lower bound.");
         }
@@ -212,7 +209,7 @@ public class DateAndTime {
         }
 
         long offsetMillis = faker.random().nextLong(to.getTime() - from.getTime());
-        return new Date(from.getTime() + offsetMillis);
+        return new Timestamp(from.getTime() + offsetMillis);
     }
 
     /**
@@ -224,7 +221,7 @@ public class DateAndTime {
      * @return a string representation of a random date between {@code from} and {@code to}.
      * @throws IllegalArgumentException if the {@code to} date represents an earlier date than {@code from} date.
      */
-    public String between(Date from, Date to, String pattern) throws IllegalArgumentException {
+    public String between(Timestamp from, Timestamp to, String pattern) throws IllegalArgumentException {
         return toString(between(from, to), pattern);
     }
 
@@ -233,7 +230,7 @@ public class DateAndTime {
      *
      * @return a random birthday between 65 and 18 years ago from now.
      */
-    public Date birthday() {
+    public Timestamp birthday() {
         return birthday(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE);
     }
 
@@ -255,14 +252,14 @@ public class DateAndTime {
      * @return a random birthday between {@code minAge} and {@code maxAge} years ago from now.
      * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
      */
-    public Date birthday(int minAge, int maxAge) {
+    public Timestamp birthday(int minAge, int maxAge) {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
         int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         Calendar from = new GregorianCalendar(currentYear - maxAge, currentMonth, currentDay);
         Calendar to = new GregorianCalendar(currentYear - minAge, currentMonth, currentDay);
 
-        return between(from.getTime(), to.getTime());
+        return between(new Timestamp(from.getTime().getTime()), new Timestamp(to.getTime().getTime()));
     }
 
     /**
