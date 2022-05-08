@@ -438,15 +438,7 @@ public class FakeValuesService {
      * This method uses default separator, quote and always prints header.
      */
     public String csv(int limit, String ... columnExpressions) {
-        if (columnExpressions.length % 2 != 0) {
-            throw new IllegalArgumentException("Total number of column names and column values should be even");
-        }
-        Csv.Column[] columns = new Csv.Column[columnExpressions.length / 2];
-        for(int i = 0; i < columnExpressions.length; i += 2) {
-            final int index = i;
-            columns[i / 2] = Csv.Column.of(() -> columnExpressions[index], () -> columnExpressions[index + 1]);
-        }
-        return Format.toCsv(columns).limit(limit).build().get();
+        return csv(Csv.DEFAULT_SEPARATOR, Csv.DEFAULT_QUOTE, true, limit, columnExpressions);
     }
 
     /**

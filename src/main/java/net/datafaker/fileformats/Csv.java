@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Csv<T> {
+    public static final char DEFAULT_QUOTE = '"';
+    public static final String DEFAULT_SEPARATOR = ",";
+
     private final FakeCollection<T> collection;
     private final String separator;
     private final char quote;
@@ -163,8 +166,8 @@ public class Csv<T> {
 
 
     public static abstract class CsvBuilder {
-        private String separator = ",";
-        private char quote = '"';
+        private String separator = DEFAULT_SEPARATOR;
+        private char quote = DEFAULT_QUOTE;
         private int limit = -1;
         private boolean withHeader = true;
 
