@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.fileformats.Json;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.RandomService;
 
@@ -236,6 +237,14 @@ public class Faker {
      */
     public String csv(String separator, char quote, boolean withHeader, int limit, String ... columnExpressions) {
         return fakeValuesService().csv(separator, quote, withHeader, limit, columnExpressions);
+    }
+
+    public Json json(String... fieldExpressions) {
+        return fakeValuesService().json(fieldExpressions);
+    }
+
+    public Json jsona(String... fieldExpressions) {
+        return fakeValuesService().jsona(fieldExpressions);
     }
 
     public RandomService random() {

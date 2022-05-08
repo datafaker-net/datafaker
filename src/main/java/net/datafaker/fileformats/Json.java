@@ -62,11 +62,17 @@ public class Json {
         } else if (value instanceof Json) {
             sb.append(((Json) value).generate());
         } else {
-            sb.append("\"");
+            String val = String.valueOf(value);
+            boolean toWrap = !val.startsWith("#{json");
+            if (toWrap) {
+                sb.append("\"");
+            }
             for (char c : String.valueOf(value).toCharArray()) {
                 sb.append(ESCAPING_MAP.getOrDefault(c, c + ""));
             }
-            sb.append("\"");
+            if (toWrap) {
+                sb.append("\"");
+            }
         }
     }
 
@@ -274,5 +280,10 @@ public class Json {
                 sb.append("\"");
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return map == null ? null : generate();
     }
 }

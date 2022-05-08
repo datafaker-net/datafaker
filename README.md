@@ -84,6 +84,8 @@ faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}"); // 61 327 08:11:45
 faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
 // "name_column","last_name_column"
 // "Sabrina","Kihn"
+faker.expression("#{json 'person','#{json ''first_name'',''#{Name.first_name}'',''last_name'',''#{Name.last_name}''}','address','#{json ''country'',''#{Address.country}'',''city'',''#{Address.city}''}'}");
+// {"person": {"first_name": "Barbie", "last_name": "Durgan"}, "address": {"country": "Albania", "city": "East Catarinahaven"}}
 ```
 also more examples at https://www.datafaker.net/documentation/expressions/
 

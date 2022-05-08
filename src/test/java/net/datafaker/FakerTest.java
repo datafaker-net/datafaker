@@ -181,6 +181,20 @@ class FakerTest extends AbstractFakerTest {
             .matches("[0-9]{2} [0-9]{3} [0-9]{2}:[0-9]{2}:[0-9]{2}");
     }
 
+    @Test
+    void jsonExpressionTest() {
+        assertThat(faker.expression("#{json 'person','#{json ''first_name'',''#{Name.first_name}'',''last_name'',''#{Name.last_name}''}','address','#{json ''country'',''#{Address.country}'',''city'',''#{Address.city}''}'}"))
+            .contains("\"address\": {\"country\":");
+
+        assertThat(
+            faker.expression("#{jsona '-1','person'," +
+                "'#{json ''first_name'',''#{Name.first_name}'',''last_name'',''#{Name.last_name}''}'," +
+                " '2','addesses'," +
+                "'#{json ''address''," +
+                "''#{json ''''country'''',''''#{Address.country}'''',''''city'''',''''#{Address.city}''''}''}'}"))
+            .contains("\"addesses\": [{\"address\": {\"country\": ");
+    }
+
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 3, 10, 20, 100})
     void testLimitForCsvExpression(int limit) {

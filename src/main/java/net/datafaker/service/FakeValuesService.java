@@ -4,6 +4,7 @@ import com.mifmif.common.regex.Generex;
 import net.datafaker.Faker;
 import net.datafaker.fileformats.Csv;
 import net.datafaker.fileformats.Format;
+import net.datafaker.fileformats.Json;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -437,23 +438,61 @@ public class FakeValuesService {
      * Generates csv based on input column expressions and number of lines.
      * This method uses default separator, quote and always prints header.
      */
-    public String csv(int limit, String ... columnExpressions) {
+    public String csv(int limit, String... columnExpressions) {
         return csv(Csv.DEFAULT_SEPARATOR, Csv.DEFAULT_QUOTE, true, limit, columnExpressions);
     }
 
     /**
      * Generates csv based on input.
      */
-    public String csv(String delimiter, char quote, boolean withHeader, int limit, String ... columnExpressions) {
+    public String csv(String delimiter, char quote, boolean withHeader, int limit, String... columnExpressions) {
         if (columnExpressions.length % 2 != 0) {
             throw new IllegalArgumentException("Total number of column names and column values should be even");
         }
         Csv.Column[] columns = new Csv.Column[columnExpressions.length / 2];
-        for(int i = 0; i < columnExpressions.length; i += 2) {
+        for (int i = 0; i < columnExpressions.length; i += 2) {
             final int index = i;
             columns[i / 2] = Csv.Column.of(() -> columnExpressions[index], () -> columnExpressions[index + 1]);
         }
         return Format.toCsv(columns).separator(delimiter).quote(quote).header(withHeader).limit(limit).build().get();
+    }
+
+    /**
+     * Generates json based on input.
+     */
+    public Json json(String... fieldExpressions) {
+        if (fieldExpressions.length % 2 != 0) {
+            throw new IllegalArgumentException("Total number of field names and field values should be even");
+        }
+        Json.JsonBuilder jsonBuilder = new Json.JsonBuilder();
+        for (int i = 0; i < fieldExpressions.length; i += 2) {
+            final int index = i;
+            jsonBuilder.set(fieldExpressions[index], () -> fieldExpressions[index + 1]);
+        }
+        return jsonBuilder.build();
+    }
+
+    /**
+     * Generates json based on input.
+     */
+    public Json jsona(String... fieldExpressions) {
+        if (fieldExpressions.length % 3 != 0) {
+            throw new IllegalArgumentException("Total number of field names and field values should be dividable by 3");
+        }
+        Json.JsonBuilder jsonBuilder = new Json.JsonBuilder();
+
+        for (int i = 0; i < fieldExpressions.length; i += 3) {
+            final int index = i;
+            if (fieldExpressions[i] != null && Integer.parseInt(fieldExpressions[index]) > 0) {
+                Object[] objects = new Object[Integer.parseInt(fieldExpressions[index])];
+                Arrays.fill(objects, fieldExpressions[index + 2]);
+                jsonBuilder.set(fieldExpressions[index + 1], () -> objects).build();
+            } else {
+                jsonBuilder.set(fieldExpressions[index + 1], () -> fieldExpressions[index + 2]);
+            }
+        }
+
+        return jsonBuilder.build();
     }
 
     /**
@@ -580,7 +619,7 @@ public class FakeValuesService {
         Supplier<Object> supplier = () -> safeFetch(simpleDirective, null);
         resolved = supplier.get();
         if (resolved != null) {
-           // expression2function.put(expression, supplier);
+            // expression2function.put(expression, supplier);
             return resolved;
         }
 
@@ -588,7 +627,7 @@ public class FakeValuesService {
         if (!isDotDirective(directive)) {
             supplier = resolveFromMethodOn(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-         //       expression2function.put(expression, supplier);
+                //       expression2function.put(expression, supplier);
                 return resolved;
             }
         }
@@ -597,7 +636,7 @@ public class FakeValuesService {
         if (isDotDirective(directive)) {
             supplier = resolveFakerObjectAndMethod(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-               // expression2function.put(expression, supplier);
+                // expression2function.put(expression, supplier);
                 return resolved;
             }
         }
