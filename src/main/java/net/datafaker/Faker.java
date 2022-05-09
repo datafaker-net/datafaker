@@ -792,6 +792,10 @@ public class Faker {
         return getProvider(TheItCrowd.class, () -> new TheItCrowd(this));
     }
 
+    public Time time() {
+        return getProvider(Time.class, () -> new Time(this));
+    }
+
     public Touhou touhou() {
         return getProvider(Touhou.class, () -> new Touhou(this));
     }
