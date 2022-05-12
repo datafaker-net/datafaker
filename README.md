@@ -251,6 +251,7 @@ Providers
 * StarTrek
 * Stock
 * Superhero
+* Tea
 * Team
 * Touhou
 * TwinPeaks
