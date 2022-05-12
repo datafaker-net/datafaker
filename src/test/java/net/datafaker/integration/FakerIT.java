@@ -174,6 +174,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.starTrek());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.stock());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.superhero());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.tea());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.team());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.theItCrowd());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.touhou());

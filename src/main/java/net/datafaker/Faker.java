@@ -784,6 +784,10 @@ public class Faker {
         return getProvider(SuperMario.class, () -> new SuperMario(this));
     }
 
+    public Tea tea() {
+        return getProvider(Tea.class, () -> new Tea(this));
+    }
+
     public Team team() {
         return getProvider(Team.class, () -> new Team(this));
     }
