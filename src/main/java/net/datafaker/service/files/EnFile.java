@@ -54,6 +54,7 @@ public class EnFile {
         "brooklyn_nine_nine.yml",
         "buffy.yml",
         "business.yml",
+        "camera.yml",
 //            "cannabis.yml",
         "chuck_norris.yml",
         "code.yml",
