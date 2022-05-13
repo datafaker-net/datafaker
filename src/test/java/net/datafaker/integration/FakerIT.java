@@ -98,6 +98,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.breakingBad());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.buffy());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.business());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.camera());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.cat());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.chuckNorris());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.coin());

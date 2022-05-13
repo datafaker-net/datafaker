@@ -386,6 +386,10 @@ public class Faker {
         return getProvider(Business.class, () -> new Business(this));
     }
 
+    public Camera camera() {
+        return getProvider(Camera.class, () -> new Camera(this));
+    }
+
     public Cat cat() {
         return getProvider(Cat.class, () -> new Cat(this));
     }
