@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 
 public class FakeValuesService {
     private static final Pattern LOCALE = Pattern.compile("[-_]");
-    private static final Pattern A_TO_Z = Pattern.compile("([A-Z])");
     private static final String DIGITS = "0123456789";
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
@@ -688,9 +687,19 @@ public class FakeValuesService {
      * @return a yaml style name like 'phone_number' from a java style name like 'PhoneNumber'
      */
     private String javaNameToYamlName(String expression) {
-        return A_TO_Z.matcher(expression).replaceAll("_$1")
-            .substring(1)
-            .toLowerCase();
+        StringBuilder sb = new StringBuilder(expression.length());
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+            if (Character.isUpperCase(c)) {
+                if (sb.length() > 0) {
+                    sb.append("_");
+                }
+                sb.append(Character.toLowerCase(c));
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
 
