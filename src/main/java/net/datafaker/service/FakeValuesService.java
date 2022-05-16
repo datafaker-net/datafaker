@@ -47,6 +47,8 @@ public class FakeValuesService {
     private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<String, String> key2Expression = new WeakHashMap<>();
+    private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
+    private final Map<String, String[]> key2splittedKey = new WeakHashMap<>();
 
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
@@ -231,6 +233,10 @@ public class FakeValuesService {
     }
 
     private String[] split(String string) {
+        String[] result = key2splittedKey.get(string);
+        if (result != null) {
+            return result;
+        }
         int size = 0;
         char splitChar = '.';
         for (int i = 0; i < string.length(); i++) {
@@ -238,7 +244,7 @@ public class FakeValuesService {
                 size++;
             }
         }
-        String[] result = new String[size + 1];
+        result = new String[size + 1];
         char[] chars = string.toCharArray();
         int start = 0;
         int j = 0;
@@ -251,6 +257,7 @@ public class FakeValuesService {
             }
         }
         result[j] = String.valueOf(chars, start, chars.length - start);
+        key2splittedKey.put(string, result);
         return result;
     }
 
@@ -532,9 +539,13 @@ public class FakeValuesService {
         return expressionSuppliers.stream().map(Supplier::get).collect(Collectors.joining());
     }
 
-    private static String[] splitArguments(String arguments) {
+    private String[] splitArguments(String arguments) {
         if (arguments == null || arguments.length() == 0) {
             return EMPTY_ARRAY;
+        }
+        String[] res = args2splittedArgs.get(arguments);
+        if (res != null) {
+            return res;
         }
         List<String> result = new ArrayList<>();
         int start = 0;
@@ -555,7 +566,8 @@ public class FakeValuesService {
                 start = i + 1;
             }
         }
-        return result.toArray(EMPTY_ARRAY);
+        args2splittedArgs.put(arguments, result.toArray(EMPTY_ARRAY));
+        return args2splittedArgs.get(arguments);
     }
 
     private static List<String> splitExpressions(String expression) {
