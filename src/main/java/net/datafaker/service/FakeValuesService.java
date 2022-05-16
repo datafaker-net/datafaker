@@ -45,6 +45,7 @@ public class FakeValuesService {
     private final List<Locale> localesChain;
 
     private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
+    private final Map<Class<?>, Constructor<?>> class2constructorCache = new IdentityHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<String, String> key2Expression = new WeakHashMap<>();
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
@@ -860,7 +861,19 @@ public class FakeValuesService {
                     }
                 } else {
                     if (isVarArg) {
-                        final Constructor<?> ctor = toType.getConstructor(String.class);
+                        Constructor<?> ctor = class2constructorCache.get(toType);
+                        if (ctor == null) {
+                            for (Constructor<?> c : toType.getConstructors()) {
+                                if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == String.class) {
+                                    ctor = toType.getConstructor(String.class);
+                                    class2constructorCache.put(toType, ctor);
+                                    break;
+                                }
+                            }
+                        }
+                        if (ctor == null) {
+                            return null;
+                        }
                         coercedArgument = Array.newInstance(toType, args.length - i);
                         for (int j = i; j < args.length; j++) {
                             Array.set(coercedArgument, j - i, ctor.newInstance(args[j]));
