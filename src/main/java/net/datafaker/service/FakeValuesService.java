@@ -925,7 +925,7 @@ public class FakeValuesService {
         PRIMITIVE_WRAPPER_MAP.put(Long.TYPE, Long.class);
         PRIMITIVE_WRAPPER_MAP.put(Double.TYPE, Double.class);
         PRIMITIVE_WRAPPER_MAP.put(Float.TYPE, Float.class);
-        PRIMITIVE_WRAPPER_MAP.put(Void.TYPE, Void.TYPE);
+        PRIMITIVE_WRAPPER_MAP.put(Void.TYPE, Void.class);
     }
 
     public static Class<?> primitiveToWrapper(final Class<?> cls) {
