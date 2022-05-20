@@ -121,7 +121,9 @@ es-AR:
         - "#{first_name} #{last_name} #{last_name}"
 
     phone_number:
-      formats: ['9##-###-###', '9##.###.###', '9## ### ###', '9########']
+      formats:
+        - "##########"
+
     cell_phone:
       formats: ['6##-###-###', '6##.###.###', '6## ### ###', '6########']
     music:

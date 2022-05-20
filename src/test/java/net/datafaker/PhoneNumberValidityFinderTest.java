@@ -39,6 +39,12 @@ class PhoneNumberValidityFinderTest {
     }
 
     @Test
+    void generateExample() {
+        Phonenumber.PhoneNumber exampleNumber = PhoneNumberUtil.getInstance().getExampleNumber("AR");
+        System.out.println(exampleNumber);
+    }
+
+    @Test
     void testValidNumber() throws NumberParseException {
         String phoneNumber = "0140 123456";
         String region = "SE";

@@ -5,3 +5,18 @@ no-NO:
         # Source: https://www.nordea.com/Images/37-48872/Func_Spec_Credit_Advice.pdf
         check_digit_method: kidmod10
         pattern: '\d{24}#'
+
+    phone_number:
+      formats:
+        - "2#######"
+        - "3#######"
+        - "50######"
+        - "51######"
+        - "52######"
+        - "53######"
+        - "54######"
+        - "55######"
+        - "56######"
+        - "57######"
+        - "6#######"
+        - "7#######"
