@@ -40,8 +40,6 @@ public class Dune {
     }
 
     public enum Quote {
-        @Deprecated // Remove in 1.5.0
-        GUILD_NAIVGATOR("guild_navigator"),
         GUILD_NAVIGATOR("guild_navigator"),
         EMPEROR("emperor"),
         PAUL("paul"),
