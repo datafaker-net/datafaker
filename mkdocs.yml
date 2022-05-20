@@ -107,6 +107,7 @@ nav:
 #      - Changes: changelog/index.md
 #      - How to upgrade: upgrade.md
   - Releases:
+    - 1.5.0-SNAPSHOT: releases/1.5.0-SNAPSHOT.md
     - 1.4.0: releases/1.4.0.md
     - 1.3.0: releases/1.3.0.md
     - 1.2.0: releases/1.2.0.md
