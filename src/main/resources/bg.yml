@@ -40,5 +40,17 @@ bg:
         - "#{female_first_name} #{female_middle_name} #{female_last_name}"
         - "#{female_last_name} #{female_first_name} #{female_middle_name}"
 
+    phone_number:
+
+      formats:
+        - "02#######"
+        - "03#######"
+        - "04#######"
+        - "05#######"
+        - "06#######"
+        - "07#######"
+        - "08#######"
+        - "09#######"
+
     cell_phone:
       formats: ['088#######', '087#######', '089#######']
