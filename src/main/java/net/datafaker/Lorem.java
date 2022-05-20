@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * @since 0.8.0
+ */
 public class Lorem {
     private final Faker faker;
 

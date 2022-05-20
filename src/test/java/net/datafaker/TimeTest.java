@@ -16,8 +16,9 @@ public class TimeTest extends AbstractFakerTest {
         LocalTime now = LocalTime.now();
         for (int i = 0; i < 1000; i++) {
             long future = faker.time().future(1, ChronoUnit.SECONDS);
-            assertThat(LocalTime.ofNanoOfDay(future)).isAfter(now);
-            assertThat(LocalTime.ofNanoOfDay(future)).isBefore(now.plus(10, ChronoUnit.SECONDS));
+            assertThat(LocalTime.ofNanoOfDay(future))
+                .isAfter(now)
+                .isBefore(now.plus(10, ChronoUnit.SECONDS));
         }
     }
 
@@ -26,9 +27,10 @@ public class TimeTest extends AbstractFakerTest {
         LocalTime now = LocalTime.now();
         for (int i = 0; i < 1000; i++) {
             long future = faker.time().future(5, 4, ChronoUnit.SECONDS);
-            assertThat(LocalTime.ofNanoOfDay(future)).isAfter(now);
-            assertThat(LocalTime.ofNanoOfDay(future)).isBefore(now.plus(10, ChronoUnit.SECONDS));
-            assertThat(LocalTime.ofNanoOfDay(future)).isAfter(now.plus(1, ChronoUnit.SECONDS));
+            assertThat(LocalTime.ofNanoOfDay(future))
+                .isAfter(now)
+                .isBefore(now.plus(10, ChronoUnit.SECONDS))
+                .isAfter(now.plus(1, ChronoUnit.SECONDS));
         }
     }
 
@@ -37,9 +39,10 @@ public class TimeTest extends AbstractFakerTest {
         LocalTime now = LocalTime.now();
         for (int i = 0; i < 1000; i++) {
             long past = faker.time().past(5, 4, ChronoUnit.SECONDS);
-            assertThat(LocalTime.ofNanoOfDay(past)).isBefore(now);
-            assertThat(LocalTime.ofNanoOfDay(past)).isAfter(now.minus(6, ChronoUnit.SECONDS));
-            assertThat(LocalTime.ofNanoOfDay(past)).isBefore(now.minus(2, ChronoUnit.SECONDS));
+            assertThat(LocalTime.ofNanoOfDay(past))
+                .isBefore(now)
+                .isAfter(now.minus(6, ChronoUnit.SECONDS))
+                .isBefore(now.minus(2, ChronoUnit.SECONDS));
         }
     }
 
@@ -57,8 +60,9 @@ public class TimeTest extends AbstractFakerTest {
 
         for (int i = 0; i < 1000; i++) {
             long time = faker.time().between(now, then);
-            assertThat(LocalTime.ofNanoOfDay(time)).isBefore(then);
-            assertThat(LocalTime.ofNanoOfDay(time)).isAfter(now);
+            assertThat(LocalTime.ofNanoOfDay(time))
+                .isBefore(then)
+                .isAfter(now);
         }
     }
 

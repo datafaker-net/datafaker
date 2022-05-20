@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class VehicleTest extends AbstractFakerTest {
 
     private static final String WORD_MATCH = "\\w+\\.?";
-    private static final String WORDS_MATCH = "^[a-zA-Z0-9_/ -]*$";
+    private static final String WORDS_MATCH = "^[a-zA-Z\\d_/ -]*$";
     private static final String INTERNATIONAL_WORDS_MATCH = "\\P{Cc}+";
 
     @RepeatedTest(10)
@@ -82,37 +82,44 @@ class VehicleTest extends AbstractFakerTest {
     @Test
     void testCarOptions() {
         List<String> carOptions = faker.vehicle().carOptions();
-        assertThat(carOptions.size()).isGreaterThanOrEqualTo(5);
-        assertThat(carOptions.size()).isLessThanOrEqualTo(10);
+        assertThat(carOptions)
+            .hasSizeGreaterThanOrEqualTo(5)
+            .hasSizeLessThanOrEqualTo(10);
     }
 
     @Test
     void testCarOptionsMinMax() {
         List<String> carOptions = faker.vehicle().carOptions(11, 12);
-        assertThat(carOptions.size()).isGreaterThanOrEqualTo(11);
-        assertThat(carOptions.size()).isLessThanOrEqualTo(12);
+
+        assertThat(carOptions)
+            .hasSizeGreaterThanOrEqualTo(11)
+            .hasSizeLessThanOrEqualTo(12);
+
         assertThat(carOptions.get(0)).isNotNull();
     }
 
     @Test
     void testStandardSpecsMinMax() {
         List<String> standardSpecs = faker.vehicle().standardSpecs(13, 14);
-        assertThat(standardSpecs.size()).isGreaterThanOrEqualTo(13);
-        assertThat(standardSpecs.size()).isLessThanOrEqualTo(14);
+
+        assertThat(standardSpecs)
+            .hasSizeGreaterThanOrEqualTo(13)
+            .hasSizeLessThanOrEqualTo(14);
     }
 
     @Test
     void testStandardSpecs() {
         List<String> standardSpecs = faker.vehicle().standardSpecs();
-        assertThat(standardSpecs.size()).isGreaterThanOrEqualTo(5);
-        assertThat(standardSpecs.size()).isLessThanOrEqualTo(10);
+
+        assertThat(standardSpecs)
+            .hasSizeGreaterThanOrEqualTo(5)
+            .hasSizeLessThanOrEqualTo(10);
     }
 
     @Test
     void testDoor() {
         assertThat(faker.vehicle().doors()).matches("\\d");
     }
-
 
     @Test
     void testLicensePlate() {

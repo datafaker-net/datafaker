@@ -760,6 +760,10 @@ public class Faker {
         return getProvider(Size.class, () -> new Size(this));
     }
 
+    public SoulKnight soulKnight() {
+        return getProvider(SoulKnight.class, () -> new SoulKnight(this));
+    }
+
     public Space space() {
         return getProvider(Space.class, () -> new Space(this));
     }

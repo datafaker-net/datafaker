@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 1.4.0
+ */
 public class BloodType {
     private final Faker faker;
 

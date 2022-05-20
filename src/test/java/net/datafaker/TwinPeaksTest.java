@@ -14,7 +14,7 @@ class TwinPeaksTest extends AbstractFakerTest {
 
     @Test
     void location() {
-        assertThat(faker.twinPeaks().location()).matches("^[A-Za-z0-9'&,\\- ]+$");
+        assertThat(faker.twinPeaks().location()).matches("^[A-Za-z\\d'&,\\- ]+$");
     }
 
     @Test

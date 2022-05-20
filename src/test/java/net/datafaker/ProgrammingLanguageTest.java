@@ -8,7 +8,7 @@ class ProgrammingLanguageTest extends AbstractFakerTest {
 
     @Test
     void name() {
-        assertThat(faker.programmingLanguage().name()).matches("[A-Za-z0-9 :,.+*()#/–\\-@πéöü'′!]+");
+        assertThat(faker.programmingLanguage().name()).matches("[A-Za-z\\d :,.+*()#/–\\-@πéöü'′!]+");
     }
 
     @Test

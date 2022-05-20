@@ -15,6 +15,7 @@ class SuperMarioTest extends AbstractFakerTest {
     void games() {
         assertThat(faker.superMario().games()).isNotEmpty();
     }
+
     @Test
     void locations() {
         assertThat(faker.superMario().locations()).isNotEmpty();

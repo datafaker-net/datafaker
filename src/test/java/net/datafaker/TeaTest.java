@@ -8,7 +8,7 @@ class TeaTest extends AbstractFakerTest {
 
     @Test
     void testVariety() {
-        assertThat(faker.tea().variety()).matches("^(?:[A-Z]['.\\-a-z]+[\\s-])*(?:[A-Z]['.\\-a-z]+)$");
+        assertThat(faker.tea().variety()).matches("^(?:[A-Z]['.\\-a-z]+[\\s-])*[A-Z]['.\\-a-z]+$");
     }
 
     @Test

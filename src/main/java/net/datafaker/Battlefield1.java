@@ -5,6 +5,7 @@ package net.datafaker;
  * A class for generating random value of Battlefield1 contents
  *
  * @author coolestjj
+ * @since 1.4.0
  */
 
 public class Battlefield1 {

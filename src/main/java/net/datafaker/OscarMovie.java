@@ -4,6 +4,7 @@ package net.datafaker;
  * The Academy Awards, popularly known as the Oscars, are awards for artistic and technical merit in the film industry.
  *
  * @author ak-maker
+ * @since 1.4.0
  */
 public class OscarMovie {
 

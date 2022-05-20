@@ -177,6 +177,7 @@ public class EnFile {
 //            "sonic_the_hedgehog.yml",
 //            "source.yml",
 //            "south_park.yml",
+        "soul_knight.yml",
         "space.yml",
         "starcraft.yml",
         "star_trek.yml",

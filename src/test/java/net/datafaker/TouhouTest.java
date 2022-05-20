@@ -30,7 +30,7 @@ class TouhouTest extends AbstractFakerTest {
     @RepeatedTest(100)
     void testGameName() {
         String s = faker.touhou().gameName();
-        assertThat(s).matches("[a-zA-Z0-9 \\-'\\.]+");
+        assertThat(s).matches("[a-zA-Z0-9 \\-'.]+");
     }
 
 }

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * These tests use System.out.printlns because the error rate is quite high.
  */
@@ -22,7 +24,6 @@ class PhoneNumberValidityFinderTest {
         String region = "GB";
         Faker localFaker = new Faker(new Locale(language, region));
         PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        System.out.println(util.getExampleNumber(region));
 
         int errorCount = 0;
         for (int i = 0; i < 100; i++) {
@@ -30,13 +31,11 @@ class PhoneNumberValidityFinderTest {
             Phonenumber.PhoneNumber proto = util.parse(phoneNumber, region);
 
             if (!util.isValidNumber(proto)) {
-                System.out.println(i + ": " + phoneNumber);
                 errorCount++;
             }
         }
 
         System.out.println("Error count: " + errorCount);
-
     }
 
     @Test
@@ -46,7 +45,7 @@ class PhoneNumberValidityFinderTest {
 
         PhoneNumberUtil util = PhoneNumberUtil.getInstance();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, region);
-        System.out.println(util.isValidNumber(proto));
+        assertThat(util.isValidNumber(proto)).isTrue();
     }
 
     @Test

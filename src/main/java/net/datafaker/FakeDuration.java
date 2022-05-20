@@ -3,8 +3,6 @@ package net.datafaker;
 import java.time.Duration;
 
 /**
- *
- *
  * @since 0.8.0
  */
 public class FakeDuration {

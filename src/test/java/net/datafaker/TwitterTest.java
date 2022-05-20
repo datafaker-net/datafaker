@@ -62,7 +62,7 @@ class TwitterTest extends AbstractFakerTest {
         int wordMaxLength = 5;
         String text = faker.twitter().text(null, sentenceMaxLength, wordMaxLength);
         String[] textwords = text.split(" ");
-        assertThat(textwords.length).isLessThanOrEqualTo(sentenceMaxLength);
+        assertThat(textwords).hasSizeLessThanOrEqualTo(sentenceMaxLength);
     }
 
     @Test
@@ -92,21 +92,21 @@ class TwitterTest extends AbstractFakerTest {
     @Test
     void username() {
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().userName()).matches("[a-zA-Z0-9_\\-\u4e00-\u9fa5]+");
+            assertThat(faker.twitter().userName()).matches("[a-zA-Z\\d_\\-\u4e00-\u9fa5]+");
         }
     }
 
     @Test
     void userId() {
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().userId()).matches("[0-9]+");
+            assertThat(faker.twitter().userId()).matches("\\d+");
         }
     }
 
     @Test
     void linkTestRules() {
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().getLink("John", 6)).matches("[A-Za-z0-9.:/]+");
+            assertThat(faker.twitter().getLink("John", 6)).matches("[A-Za-z\\d.:/]+");
         }
     }
 

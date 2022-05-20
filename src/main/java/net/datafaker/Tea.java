@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 1.4.0
+ */
 public class Tea {
 
     private final Faker faker;

@@ -13,7 +13,7 @@ class SipTest extends AbstractFakerTest {
 
     @Test
     void contentType_returnLowerCaseTwoWordsSepereatedBySlashMinimum3And4Chars() {
-        assertThat(faker.sip().contentType()).matches("^[a-z]{4,}[/]{1,}[a-z0-9-]{3,}$");
+        assertThat(faker.sip().contentType()).matches("^[a-z]{4,}/+[a-z\\d-]{3,}$");
     }
 
     @Test
@@ -92,7 +92,7 @@ class SipTest extends AbstractFakerTest {
     void bodyString_returnAValidSdpBodyString() {
         String[] sut = faker.sip().bodyString().split("\n");
 
-        assertThat(sut.length).isEqualTo(7);
+        assertThat(sut).hasSize(7);
 
         assertThat(sut[0]).isEqualTo("v=0");
 

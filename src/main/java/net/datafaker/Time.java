@@ -4,6 +4,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * @since 1.4.0
+ */
 public class Time {
 
     private final Faker faker;
