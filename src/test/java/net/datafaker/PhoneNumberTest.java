@@ -17,6 +17,7 @@ class PhoneNumberTest extends AbstractFakerTest {
     private static final Faker GB_FAKER = new Faker(new Locale("en_GB"));
     private static final Faker NO_FAKER = new Faker(new Locale("nb_NO"));
     private static final Faker NL_FAKER = new Faker(new Locale("nl_NL"));
+    private static final Faker PH_FAKER = new Faker(new Locale("en_PH"));
 
     private final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
 
@@ -117,6 +118,13 @@ class PhoneNumberTest extends AbstractFakerTest {
                         canadianAreaCode, canadianAreaCode));
             }
         }
+    }
+
+    @RepeatedTest(100)
+    void testAllCellPhone_enPh() throws NumberParseException {
+        String phoneNumber = PH_FAKER.phoneNumber().phoneNumber();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "PH");
+        assertThat(util.isValidNumberForRegion(proto, "PH")).as(phoneNumber).isTrue();
     }
 
     @Test
