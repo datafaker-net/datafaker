@@ -305,6 +305,7 @@ Supported Locales
 * en-UG
 * en-US
 * en-ZA
+* en-PH
 * es
 * es-MX
 * fa
