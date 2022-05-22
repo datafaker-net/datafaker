@@ -212,6 +212,7 @@ Providers
 * Hipster
 * HitchhikersGuideToTheGalaxy
 * Hobbit
+* House
 * HowIMetYourMother
 * IdNumber
 * Internet

@@ -578,6 +578,10 @@ public class Faker {
         return getProvider(Horse.class, () -> new Horse(this));
     }
 
+    public House house() {
+        return getProvider(House.class, () -> new House(this));
+    }
+
     public HowIMetYourMother howIMetYourMother() {
         return getProvider(HowIMetYourMother.class, () -> new HowIMetYourMother(this));
     }
