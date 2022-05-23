@@ -20,7 +20,7 @@ faker.expression("#{numerify '####'}"); // could give e.g. 1234
 ```
 
 ##Bothify
-Applies both letterify and bothify e.g.
+Applies both letterify and numerify e.g.
 ```java
 Faker faker = new Faker();
 faker.expression("#{bothify '?#?#?#?#'}"); // could give a1b2c3d4
