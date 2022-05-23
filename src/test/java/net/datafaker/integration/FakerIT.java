@@ -184,6 +184,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.twinPeaks());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.university());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.vehicle());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.verb());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.weather());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.witcher());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.yoda());
