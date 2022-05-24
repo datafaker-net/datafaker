@@ -836,6 +836,10 @@ public class Faker {
         return getProvider(Vehicle.class, () -> new Vehicle(this));
     }
 
+    public Verb verb() {
+        return getProvider(Verb.class, () -> new Verb(this));
+    }
+
     public Volleyball volleyball() {
         return getProvider(Volleyball.class, () -> new Volleyball(this));
     }

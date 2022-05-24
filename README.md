@@ -260,6 +260,7 @@ Providers
 * Twitter
 * University
 * Vehicle
+* Verb
 * Weather
 * Witcher
 * Yoda
