@@ -506,6 +506,10 @@ public class Faker {
         return getProvider(FakeDuration.class, () -> new FakeDuration(this));
     }
 
+    public FamousLastWords famousLastWords() {
+        return getProvider(FamousLastWords.class, () -> new FamousLastWords(this));
+    }
+
     public File file() {
         return getProvider(File.class, () -> new File(this));
     }

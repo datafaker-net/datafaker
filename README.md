@@ -198,6 +198,7 @@ Providers
 * EnglandFootBall
 * ElectricalComponents
 * Esports
+* Famous Last Words
 * File
 * Finance
 * Food
