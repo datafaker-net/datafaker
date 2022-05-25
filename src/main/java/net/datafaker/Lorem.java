@@ -2,7 +2,8 @@ package net.datafaker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import static net.datafaker.internal.helper.WordUtils.capitalize;
 
 /**
  * @since 0.8.0
@@ -205,11 +206,6 @@ public class Lorem {
     public String sentence(int wordCount, int randomWordsToAdd) {
         int numberOfWordsToAdd = randomWordsToAdd == 0 ? 0 : faker.random().nextInt(randomWordsToAdd);
         return capitalize(String.join(" ", words(wordCount + numberOfWordsToAdd)) + ".");
-    }
-
-    private static String capitalize(String input) {
-        if (input == null) return null;
-        return input.substring(0, 1).toUpperCase(Locale.ROOT) + input.substring(1);
     }
 
     public List<String> sentences(int sentenceCount) {
