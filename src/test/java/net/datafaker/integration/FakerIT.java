@@ -119,6 +119,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.electricalComponents());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.englandfootball());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.esports());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.famousLastWords());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.file());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.finance());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.food());
