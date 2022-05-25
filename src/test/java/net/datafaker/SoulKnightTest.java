@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SoulKnightTest extends AbstractFakerTest{
 
-    public static final String SOUL_KNIGHT_VALUE_REGEX = "[a-zA-Z\\d\\-. /()']+";
+    public static final String SOUL_KNIGHT_VALUE_REGEX = "[a-zA-Z\\d\\-. /():']+";
 
     @Test
     public void charactersTest(){
