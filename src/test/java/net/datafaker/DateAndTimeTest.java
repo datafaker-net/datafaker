@@ -8,7 +8,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
@@ -30,8 +32,8 @@ class DateAndTimeTest extends AbstractFakerTest {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         for (int i = 0; i < 1000; i++) {
             Date future = faker.date().future(1, TimeUnit.SECONDS, now);
-            assertThat(future.getTime()).isGreaterThan(now.getTime());
-            assertThat(future.getTime()).isLessThan(now.getTime() + 1000);
+            assertThat(future.getTime()).isGreaterThan(now.getTime())
+                .isLessThan(now.getTime() + 1000);
         }
     }
 
@@ -40,9 +42,9 @@ class DateAndTimeTest extends AbstractFakerTest {
         final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
             Date future = faker.date().future(5, 4, TimeUnit.SECONDS);
-            assertThat(future.getTime()).isGreaterThan(now.getTime());
-            assertThat(future.getTime()).isLessThan(now.getTime() + 5500);
-            assertThat(future.getTime()).isGreaterThan(now.getTime() + 3500);
+            assertThat(future.getTime()).isGreaterThan(now.getTime())
+                .isLessThan(now.getTime() + 5500)
+                .isGreaterThan(now.getTime() + 3500);
         }
     }
 
@@ -51,9 +53,9 @@ class DateAndTimeTest extends AbstractFakerTest {
         final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
             Date past = faker.date().past(5, 4, TimeUnit.SECONDS);
-            assertThat(past.getTime()).isLessThan(now.getTime());
-            assertThat(past.getTime()).isGreaterThan(now.getTime() - 5500);
-            assertThat(past.getTime()).isLessThan(now.getTime() - 3500);
+            assertThat(past.getTime()).isLessThan(now.getTime())
+                .isGreaterThan(now.getTime() - 5500)
+                .isLessThan(now.getTime() - 3500);
         }
     }
 
@@ -63,8 +65,8 @@ class DateAndTimeTest extends AbstractFakerTest {
 
         for (int i = 0; i < 1000; i++) {
             Date past = faker.date().past(1, TimeUnit.SECONDS, now);
-            assertThat(past.getTime()).isLessThan(now.getTime());
-            assertThat(past.getTime()).isGreaterThan(now.getTime() - 1000);
+            assertThat(past.getTime()).isLessThan(now.getTime())
+                .isGreaterThan(now.getTime() - 1000);
         }
     }
 
@@ -82,8 +84,8 @@ class DateAndTimeTest extends AbstractFakerTest {
 
         for (int i = 0; i < 1000; i++) {
             Date date = faker.date().between(now, then);
-            assertThat(date.getTime()).isLessThan(then.getTime());
-            assertThat(date.getTime()).isGreaterThanOrEqualTo(now.getTime());
+            assertThat(date.getTime()).isLessThan(then.getTime())
+                .isGreaterThanOrEqualTo(now.getTime());
         }
     }
 
@@ -106,27 +108,27 @@ class DateAndTimeTest extends AbstractFakerTest {
 
         for (int i = 0; i < 5000; i++) {
             Timestamp birthday = faker.date().birthday();
-            assertThat(birthday.getTime()).isLessThan(to);
-            assertThat(birthday.getTime()).isGreaterThanOrEqualTo(from);
+            assertThat(birthday.getTime()).isLessThan(to)
+                .isGreaterThanOrEqualTo(from);
         }
     }
 
     @Test
     void testBirthdayWithAges() {
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
-        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        LocalDateTime nw = LocalDateTime.now();
 
         for (int i = 0; i < 5000; i++) {
             int minAge = faker.number().numberBetween(1, 99);
             int maxAge = faker.number().numberBetween(minAge, 100);
 
-            long from = new GregorianCalendar(currentYear - maxAge, currentMonth, currentDay).getTime().getTime();
-            long to = new GregorianCalendar(currentYear - minAge, currentMonth, currentDay).getTime().getTime();
+            LocalDateTime from = LocalDateTime.of(nw.getYear() - maxAge, nw.getMonth(), nw.getDayOfMonth(), 0, 0, 0);
+            LocalDateTime to = LocalDateTime.of(nw.getYear() - minAge, nw.getMonth(), nw.getDayOfMonth(), 0, 0, 0);
 
             Timestamp birthday = faker.date().birthday(minAge, maxAge);
-            assertThat(birthday.getTime()).isLessThanOrEqualTo(to);
-            assertThat(birthday.getTime()).isGreaterThanOrEqualTo(from);
+
+            assertThat(birthday)
+                .isBetween(Timestamp.from(from.toInstant(ZoneId.systemDefault().getRules().getOffset(from))),
+                Timestamp.from(to.toInstant(ZoneId.systemDefault().getRules().getOffset(to))), true, true);
         }
     }
 
