@@ -6,7 +6,7 @@ public class Mbti {
 
     public Mbti(final Faker faker) {
         this.faker = faker;
-        choice = faker.resolve("mbti.choice");
+        this.choice = this.faker.resolve("mbti.choice");
     }
 
     public String type() {
