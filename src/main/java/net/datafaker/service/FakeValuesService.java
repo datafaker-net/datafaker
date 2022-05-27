@@ -51,6 +51,8 @@ public class FakeValuesService {
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
     private final Map<String, String[]> key2splittedKey = new WeakHashMap<>();
 
+    private final Map<String, Object> key2fetchedObject = new WeakHashMap<>();
+
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
      * 'en_US' would resolve in the following order:
@@ -212,9 +214,12 @@ public class FakeValuesService {
      *            dot. E.g. name.first_name
      */
     public Object fetchObject(String key) {
-        String[] path = split(key);
+        Object result = key2fetchedObject.get(key);
+        if (result != null) {
+            return result;
+        }
 
-        Object result = null;
+        String[] path = split(key);
         for (Locale locale : localesChain) {
             Object currentValue = fakeValuesInterfaceMap.get(locale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
@@ -230,6 +235,7 @@ public class FakeValuesService {
                 break;
             }
         }
+        key2fetchedObject.put(key, result);
         return result;
     }
 
