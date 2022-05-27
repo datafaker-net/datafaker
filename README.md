@@ -158,8 +158,10 @@ Providers
 * Appliance
 * Aqua Teen Hunger Force
 * Artist
+* Australia
 * Avatar
 * Aviation
+* AWS
 * Babylon5
 * Back To The Future
 * Barcode
@@ -172,6 +174,8 @@ Providers
 * Bool
 * Bossa Nova
 * Breaking Bad
+* BrooklynNineNine
+* Buffy
 * Business
 * CNPJ [Brazilian National Registry of Legal Entities](https://en.wikipedia.org/wiki/CNPJ)
 * CPF [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number)
@@ -183,10 +187,14 @@ Providers
 * Color
 * Commerce
 * Company
+* Country
+* CreditCardType
 * Crypto
+* Currency
 * DateAndTime
 * Demographic
 * Dessert
+* Device
 * Disease
 * Dog
 * Domain
@@ -195,8 +203,9 @@ Providers
 * Durations
 * Educator
 * EldenRing
-* EnglandFootBall
+* ElderScrolls
 * ElectricalComponents
+* EnglandFootBall
 * Esports
 * Famous Last Words
 * File
@@ -207,62 +216,85 @@ Providers
 * FunnyName
 * GameOfThrones
 * Gender
+* GratefulDead
 * Hacker
 * HarryPotter
+* Hashing
 * Heartstone
+* HeyArnold
 * Hipster
 * HitchhikersGuideToTheGalaxy
 * Hobbit
+* Hobby
+* Horse
 * House
 * HowIMetYourMother
 * IdNumber
 * Internet
 * Job
 * Kaamelott
+* K-pop (Korean popular music)
 * LeagueOfLegends
 * Lebowski
 * LordOfTheRings
 * Lorem
+* Marketing
 * Matz
+* MBTI
+* Medical
+* Military
 * Minecraft
 * Mood
 * Mountains
+* Mountaineering
 * Music
 * Name
 * Nation
+* Nato Phonetic Alphabet
 * Nigeria
 * Number
 * Options
+* OscarMovie
 * Overwatch
-* OscarMovie  
 * Passport
 * PhoneNumber
 * Photography
 * Pokemon
 * Princess Bride
+* Programming Language
 * Relationship Terms
 * Resident Evil
+* Restaurant
 * RickAndMorty
 * Robin
 * RockBand
 * RuPaul's Drag Race
+* Science
+* Seinfeld
 * Shakespeare
 * Sip
+* Size
 * SlackEmoji
 * SoulKnight
 * Space
 * StarCraft
 * StarTrek
 * Stock
+* Subscription
 * Superhero
+* SuperMario
 * Tea
 * Team
+* TheItCrowd
+* Time
 * Touhou
+* Tron
 * TwinPeaks
 * Twitter
 * University
 * Vehicle
 * Verb
+* Volleyball
 * Weather
 * Witcher
 * Yoda
