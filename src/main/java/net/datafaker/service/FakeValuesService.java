@@ -531,7 +531,7 @@ public class FakeValuesService {
             String arguments = j == expr.length() ? "" : expr.substring(j);
             String[] args = splitArguments(arguments);
 
-            Object resolved = resolveExpression(expr, directive, args, current, root);
+            Object resolved = resolveExpression(directive, args, current, root);
             if (resolved == null) {
                 throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
             }
@@ -607,7 +607,7 @@ public class FakeValuesService {
      *
      * @return null if unable to resolve
      */
-    private Object resolveExpression(String expression, String directive, String[] args, Object current, Faker root) {
+    private Object resolveExpression(String directive, String[] args, Object current, Faker root) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
         final String simpleDirective = (isDotDirective(directive) || current == null)
