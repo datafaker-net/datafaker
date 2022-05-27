@@ -29,6 +29,20 @@ public class Name {
     }
 
     /**
+     * A multipart name possibly with es character ñ, composed of an optional prefix, a firstname and a lastname
+     * or other possible variances based on locale.  Examples:
+     * <ul>
+     *     <li>James Jones Jr.</li>
+     *     <li>Julie Ibañez</li>
+     * </ul>
+     *
+     * @return a random name with given and family names and an optional suffix.
+     */
+    public String nameEs() {
+        return faker.fakeValuesService().resolve("name.name_es", this, faker);
+    }
+
+    /**
      * A multipart name composed of an optional prefix, a given and family name,
      * another 'firstname' for the middle name and an optional suffix such as Jr.
      * Examples:
@@ -69,6 +83,15 @@ public class Name {
      */
     public String lastName() {
         return faker.fakeValuesService().resolve("name.last_name", this, faker);
+    }
+
+    /**
+     * Returns a random last name with ñ for es or es-mx language
+     *
+     * @return a random last name with ñ
+     */
+    public String lastNameEs() {
+        return faker.fakeValuesService().resolve("name.last_name_es", this, faker);
     }
 
     /**

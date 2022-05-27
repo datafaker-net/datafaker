@@ -21,6 +21,11 @@ class NameTest extends AbstractFakerTest {
     }
 
     @Test
+    void testNameEs() {
+        assertThat(faker.name().nameEs()).matches("([\\w']+\\.?( )?){2,3}");
+    }
+
+    @Test
     void testNameWithMiddle() {
         assertThat(faker.name().nameWithMiddle()).matches("([\\w']+\\.?( )?){3,4}");
     }
@@ -61,6 +66,11 @@ class NameTest extends AbstractFakerTest {
     @Test
     void testLastName() {
         assertThat(faker.name().lastName()).matches("[A-Za-z']+");
+    }
+
+    @Test
+    void testLastNameEs(){
+        assertThat(faker.name().lastNameEs()).matches("[A-Za-zñ']+");
     }
 
     @Test
