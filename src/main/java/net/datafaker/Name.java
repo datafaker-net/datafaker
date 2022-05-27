@@ -1,14 +1,9 @@
 package net.datafaker;
 
-import java.util.Locale;
-import java.util.regex.Pattern;
-
 /**
  * @since 0.8.0
  */
 public class Name {
-
-    private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
     private final Faker faker;
 
     /**
@@ -128,13 +123,16 @@ public class Name {
      */
     public String username() {
 
-        String username = String.join("",
-            SINGLE_QUOTE.matcher(firstName()).replaceAll("").toLowerCase(Locale.ROOT),
-            ".",
-            SINGLE_QUOTE.matcher(lastName()).replaceAll("").toLowerCase(Locale.ROOT)
-        );
-
-        return username.replaceAll("\\s+", "");
+        StringBuilder result = new StringBuilder();
+        final String firstName = firstName().toLowerCase(faker.getLocale()) + "." + lastName().toLowerCase(faker.getLocale());
+        for (int i = 0; i < firstName.length(); i++) {
+            final char c = firstName.charAt(i);
+            if (c == '\'' || Character.isWhitespace(c)) {
+                continue;
+            }
+            result.append(c);
+        }
+        return result.toString();
     }
 
     /**
