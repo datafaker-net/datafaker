@@ -19,8 +19,7 @@ class FakeCollectionTest extends AbstractFakerTest {
             .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())
             .minLen(3)
             .maxLen(5).build().get();
-        assertThat(names.size()).isLessThanOrEqualTo(5);
-        assertThat(names.size()).isGreaterThanOrEqualTo(3);
+        assertThat(names).hasSizeBetween(3, 5);
         for (String name : names) {
             assertThat(name).matches("[a-zA-Z']+");
         }
@@ -33,8 +32,7 @@ class FakeCollectionTest extends AbstractFakerTest {
             .nullRate(1d)
             .minLen(3)
             .maxLen(5).build().get();
-        assertThat(names.size()).isLessThanOrEqualTo(5);
-        assertThat(names.size()).isGreaterThanOrEqualTo(3);
+        assertThat(names).hasSizeBetween(3, 5);
         for (String name : names) {
             assertThat(name).isNull();
         }
@@ -63,7 +61,7 @@ class FakeCollectionTest extends AbstractFakerTest {
             .minLen(1)
             .maxLen(20).build().get();
 
-        assertThat(names.size()).isEqualTo(14);
+        assertThat(names).hasSize(14);
         assertThat(names.get(0)).isEqualTo("Flor");
         assertThat(names.get(1)).isEqualTo("Brian");
     }
@@ -268,7 +266,7 @@ class FakeCollectionTest extends AbstractFakerTest {
                 numberOfLines++;
             }
         }
-        assertThat(limit - 1).isEqualTo(numberOfLines); // limit - 1 since for the last line there is no comma
+        assertThat(numberOfLines).isEqualTo(limit - 1); // limit - 1 since for the last line there is no comma
     }
 
     @RepeatedTest(10)

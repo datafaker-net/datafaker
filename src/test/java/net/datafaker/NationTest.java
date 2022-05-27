@@ -26,7 +26,7 @@ class NationTest extends AbstractFakerTest {
         String flag = faker.nation().flag();
 
         // all utf8 emoji flags are at least 4 characters long and start with the same char
-        assertThat(flag.length()).isGreaterThanOrEqualTo(4);
+        assertThat(flag).hasSizeGreaterThanOrEqualTo(4);
         assertThat(flag.charAt(0)).isEqualTo('\uD83C');
     }
 

@@ -61,6 +61,7 @@ class XmlTest {
         return new AbstractMap.SimpleEntry<>(key, value);
     }
 
+    @SafeVarargs
     private static Map<String, String> map(Map.Entry<String, String>... entries) {
         Map<String, String> map = new LinkedHashMap<>();
         for (Map.Entry<String, String> entry : entries) {

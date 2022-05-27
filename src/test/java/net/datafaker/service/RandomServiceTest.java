@@ -39,8 +39,7 @@ class RandomServiceTest extends AbstractFakerTest {
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     void testLongMaxBoundary(RandomService randomService) {
-        assertThat(randomService.nextLong(Long.MAX_VALUE)).isGreaterThan(0L);
-        assertThat(randomService.nextLong(Long.MAX_VALUE)).isLessThan(Long.MAX_VALUE);
+        assertThat(randomService.nextLong(Long.MAX_VALUE)).isStrictlyBetween(0L, Long.MAX_VALUE);
     }
 
     @ParameterizedTest

@@ -27,8 +27,7 @@ class HearthstoneTest extends AbstractFakerTest {
     @Test
     void battlegroundsScoreTest() {
         int score = faker.hearthstone().battlegroundsScore();
-        assertThat(score).isLessThanOrEqualTo(16000);
-        assertThat(score).isGreaterThanOrEqualTo(0);
+        assertThat(score).isBetween(0, 16000);
     }
 
     @Test

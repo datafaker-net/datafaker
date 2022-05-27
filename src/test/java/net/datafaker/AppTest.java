@@ -18,6 +18,6 @@ class AppTest extends AbstractFakerTest {
 
     @Test
     void testAuthor() {
-        assertThat(faker.app().author()).matches("([\\w']+[-&,\\.]? ?){2,9}");
+        assertThat(faker.app().author()).matches("([\\w']+[-&,.]? ?){2,9}");
     }
 }

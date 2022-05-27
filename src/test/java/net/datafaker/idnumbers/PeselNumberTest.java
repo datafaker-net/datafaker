@@ -105,8 +105,7 @@ class PeselNumberTest {
     }
 
     private void assertBasics(String gotPesel) {
-        assertThat(gotPesel).isNotNull();
-        assertThat(PESEL_EXPECTED_LENGTH).isEqualTo(gotPesel.length());
+        assertThat(gotPesel).hasSize(PESEL_EXPECTED_LENGTH);
         assertThat(gotPesel.chars().allMatch(Character::isDigit)).isTrue();
     }
 

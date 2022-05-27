@@ -47,8 +47,8 @@ class LoremTest extends AbstractFakerTest {
         final List<String> min = results.stream().filter(x -> x.length() == 1).collect(Collectors.toList());
         final List<String> max = results.stream().filter(x -> x.length() == 10).collect(Collectors.toList());
 
-        assertThat(min.size()).isGreaterThan(0);
-        assertThat(max.size()).isGreaterThan(0);
+        assertThat(min).isNotEmpty();
+        assertThat(max).isNotEmpty();
     }
 
     @Test
@@ -146,7 +146,7 @@ class LoremTest extends AbstractFakerTest {
 
     @Test
     void testWords() {
-        assertThat(faker.lorem().words().size()).isGreaterThanOrEqualTo(1);
+        assertThat(faker.lorem().words()).isNotEmpty();
     }
 
     @RepeatedTest(10)

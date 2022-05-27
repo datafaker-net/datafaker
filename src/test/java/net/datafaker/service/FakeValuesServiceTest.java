@@ -270,8 +270,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
         Date date = dateFormat.parse(fakeValuesService.expression("#{date.future '10','TimeUnit.DAYS'}", faker));
 
-        assertThat(date.getTime()).isGreaterThan(now.getTime());
-        assertThat(date.getTime()).isLessThan(nowPlus10Days.getTime());
+        assertThat(date.getTime()).isStrictlyBetween(now.getTime(), nowPlus10Days.getTime());
     }
 
     @Test
@@ -283,8 +282,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
         Date date = dateFormat.parse(fakeValuesService.expression("#{date.past '5','TimeUnit.HOURS'}", faker));
 
-        assertThat(date.getTime()).isGreaterThan(nowMinus5Hours.getTime());
-        assertThat(date.getTime()).isLessThan(now.getTime());
+        assertThat(date.getTime()).isStrictlyBetween(nowMinus5Hours.getTime(), now.getTime());
     }
 
     @Test

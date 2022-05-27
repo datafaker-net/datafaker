@@ -43,8 +43,7 @@ class AddressTest extends AbstractFakerTest {
         String latStr = faker.address().latitude().replace(DECIMAL_SEPARATOR, '.');
         assertThat(latStr).is(IS_A_NUMBER);
         Double lat = Double.valueOf(latStr);
-        assertThat(lat).isGreaterThanOrEqualTo(-90.0);
-        assertThat(lat).isLessThanOrEqualTo(90.0);
+        assertThat(lat).isBetween(-90.0, 90.0);
     }
 
     @RepeatedTest(100)
@@ -52,8 +51,7 @@ class AddressTest extends AbstractFakerTest {
         String longStr = faker.address().longitude().replace(DECIMAL_SEPARATOR, '.');
         assertThat(longStr).is(IS_A_NUMBER);
         Double lon = Double.valueOf(longStr);
-        assertThat(lon).isGreaterThanOrEqualTo(-180.0);
-        assertThat(lon).isLessThanOrEqualTo(180.0);
+        assertThat(lon).isBetween(-180.0, 180.0);
     }
 
     @Test
@@ -182,13 +180,13 @@ class AddressTest extends AbstractFakerTest {
     @Test
     void testZipIsFiveChars() {
         final Faker localFaker = new Faker(new Locale("en-us"));
-        assertThat(localFaker.address().zipCode().length()).isEqualTo(5);
+        assertThat(localFaker.address().zipCode()).hasSize(5);
     }
 
     @Test
     void testZipPlus4IsTenChars() {
         final Faker localFaker = new Faker(new Locale("en-us"));
-        assertThat(localFaker.address().zipCodePlus4().length()).isEqualTo(10);  // includes dash
+        assertThat(localFaker.address().zipCodePlus4()).hasSize(10);  // includes dash
     }
 
     @Test

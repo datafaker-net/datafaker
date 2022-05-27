@@ -71,11 +71,11 @@ class FakerTest extends AbstractFakerTest {
 
     @Test
     void templatify() {
-        assertThat(faker.templatify("12??34", '?', "тест", "test", "测试测试").length()).isEqualTo(12);
+        assertThat(faker.templatify("12??34", '?', "тест", "test", "测试测试")).hasSize(12);
         assertThat(faker.templatify("12??34",
-            Collections.singletonMap('1', new String[]{"тест", "test", "测试测试"})).length()).isEqualTo(9);
+            Collections.singletonMap('1', new String[]{"тест", "test", "测试测试"}))).hasSize(9);
         assertThat(faker.templatify("12??34",
-            Collections.singletonMap('1', new String[]{""})).length()).isEqualTo(5);
+            Collections.singletonMap('1', new String[]{""}))).hasSize(5);
     }
 
     @Test

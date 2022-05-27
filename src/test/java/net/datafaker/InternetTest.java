@@ -269,11 +269,11 @@ class InternetTest extends AbstractFakerTest {
         for (int i = 0; i < 1000; i++) {
             try {
                 String addr = faker.internet().getPublicIpV4Address().getHostAddress();
-                assertThat(addr.matches(tenDot)).isFalse();
-                assertThat(addr.matches(oneTwoSeven)).isFalse();
-                assertThat(addr.matches(oneSixNine)).isFalse();
-                assertThat(addr.matches(oneNineTwo)).isFalse();
-                assertThat(addr.matches(oneSevenTwo)).isFalse();
+                assertThat(addr).doesNotMatch(tenDot)
+                    .doesNotMatch(oneTwoSeven)
+                    .doesNotMatch(oneSixNine)
+                    .doesNotMatch(oneNineTwo)
+                    .doesNotMatch(oneSevenTwo);
             } catch (UnknownHostException e) {
                 fail("Failed with", e);
             }
