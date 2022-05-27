@@ -22,7 +22,7 @@ class NameTest extends AbstractFakerTest {
 
     @Test
     void testFirstNameWithGender() {
-        assertThat(faker.name().nameWithGender()).matches("([\\w,']+\\.?( )?)");
+        assertThat(faker.name().nameWithGender()).matches("([A-Za-z,' ]+)");
     }
 
     @Test
