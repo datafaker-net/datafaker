@@ -21,6 +21,11 @@ class NameTest extends AbstractFakerTest {
     }
 
     @Test
+    void testFirstNameWithGender() {
+        assertThat(faker.name().nameWithGender()).matches("([\\w,']+\\.?( )?)");
+    }
+
+    @Test
     void testNameWithMiddle() {
         assertThat(faker.name().nameWithMiddle()).matches("([\\w']+\\.?( )?){3,4}");
     }

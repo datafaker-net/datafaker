@@ -29,6 +29,20 @@ public class Name {
     }
 
     /**
+     * A multipart name composed of a firstname and a lastname and the gender according to first name.
+     * Examples:
+     * <ul>
+     *     <li>James Jones, male</li>
+     *     <li>Julie Johnson, female</li>
+     * </ul>
+     *
+     * @return a random name with first name and last name and the gender according to first name.
+     */
+    public String nameWithGender() {
+        return faker.fakeValuesService().resolve("name.first_name_with_gender", this, faker);
+    }
+
+    /**
      * A multipart name composed of an optional prefix, a given and family name,
      * another 'firstname' for the middle name and an optional suffix such as Jr.
      * Examples:
