@@ -249,6 +249,7 @@ Providers
 * Shakespeare
 * Sip
 * SlackEmoji
+* SoulKnight
 * Space
 * StarCraft
 * StarTrek
