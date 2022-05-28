@@ -442,7 +442,7 @@ public class Faker {
         return getProvider(Currency.class, () -> new Currency(this));
     }
 
-    public DarkSoul darkSoul{
+    public DarkSoul darkSoul(){
         return getProvider(DarkSoul.class, () -> new DarkSoul(this));
     }
 
