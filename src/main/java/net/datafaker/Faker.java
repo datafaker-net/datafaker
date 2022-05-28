@@ -442,6 +442,10 @@ public class Faker {
         return getProvider(Currency.class, () -> new Currency(this));
     }
 
+    public DarkSoul darkSoul{
+        return getProvider(DarkSoul.class, () -> new DarkSoul(this));
+    }
+
     public DateAndTime date() {
         return getProvider(DateAndTime.class, () -> new DateAndTime(this));
     }
@@ -632,10 +636,6 @@ public class Faker {
 
     public Matz matz() {
         return getProvider(Matz.class, () -> new Matz(this));
-    }
-
-    public DarkSoul darkSoul{
-        return getProvider(DarkSoul.class, () -> new DarkSoul(this));
     }
 
     public Mbti mbti() {return getProvider(Mbti.class, () -> new Mbti(this));}
