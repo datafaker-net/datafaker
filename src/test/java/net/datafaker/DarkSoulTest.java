@@ -16,10 +16,6 @@ class DarkSouleTest extends AbstractFakerTest {
         assertThat(faker.darkSoul().covenants()).matches("[A-Za-z ']+");
     }
     @Test
-    void testWeapon() {
-        assertThat(faker.darkSoul().weapon()).matches("[A-Za-z ']+");
-    }
-    @Test
     void testShield() {
         assertThat(faker.darkSoul().shield()).matches("[A-Za-z ']+");
     }
