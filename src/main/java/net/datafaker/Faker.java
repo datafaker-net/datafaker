@@ -634,6 +634,10 @@ public class Faker {
         return getProvider(Matz.class, () -> new Matz(this));
     }
 
+    public DarkSoul darkSoul{
+        return getProvider(DarkSoul.class, () -> new DarkSoul(this));
+    }
+
     public Mbti mbti() {return getProvider(Mbti.class, () -> new Mbti(this));}
 
     public Medical medical() {
