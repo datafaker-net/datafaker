@@ -24,7 +24,7 @@ public class DarkSoul {
     }
 
     public String weapon(){
-        return faker.fakeValuesService().resolve("darkSoul.weapon", this, faker);
+        return faker.fakeValuesService().resolve("darkSoul.weapons", this, faker);
     }
 
     public String shield(){
