@@ -72,6 +72,7 @@ public class EnFile {
 //            "culture_series.yml",
         "currency.yml",
 //            "dc_comics.yml",
+        "darkSoul.yml",
         "demographic.yml",
         "dessert.yml",
         "device.yml",
