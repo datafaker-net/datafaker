@@ -390,6 +390,10 @@ public class Faker {
         return getProvider(Camera.class, () -> new Camera(this));
     }
 
+    public Cannabis cannabis() {
+        return getProvider(Cannabis.class, () -> new Cannabis(this));
+    }
+
     public Cat cat() {
         return getProvider(Cat.class, () -> new Cat(this));
     }
