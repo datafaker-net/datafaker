@@ -5,10 +5,8 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -325,12 +323,11 @@ class NumberTest extends AbstractFakerTest {
      */
     private <T> double uniquePercentageOfResults(long iterations, Callable<T> callable) {
         try {
-            List<T> values = new ArrayList<>();
+            Set<T> values = new HashSet<>();
             for (long i = 0; i < iterations; i++) {
                 values.add(callable.call());
             }
-            long setSize = new HashSet<>(values).size();
-            return (double) setSize / (double) values.size();
+            return (double) values.size() / (double) iterations;
         } catch (Exception e) {
             throw new RuntimeException("error in uniquePercentageOfResults", e);
         }
@@ -340,7 +337,7 @@ class NumberTest extends AbstractFakerTest {
      * given a range, what is the number of values to get within that range for the randomization quality tests.
      */
     private long calculateNumbersToGet(long min, long max) {
-        long numbersToGet = Math.min((max - min) / 4, RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET);
+        long numbersToGet = Math.min(max / 4 - min / 4, RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET);
         if (numbersToGet == 0) numbersToGet = RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET;
         return numbersToGet;
     }
