@@ -430,6 +430,10 @@ public class Faker {
         return getProvider(Company.class, () -> new Company(this));
     }
 
+    public Construction construction() {
+        return getProvider(Construction.class, () -> new Construction(this));
+    }
+
     public Country country() {
         return getProvider(Country.class, () -> new Country(this));
     }
