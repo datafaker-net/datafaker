@@ -538,6 +538,10 @@ public class Faker {
         return getProvider(Food.class, () -> new Food(this));
     }
 
+    public Football football() {
+        return getProvider(Football.class, () -> new Football(this));
+    }
+
     public Formula1 formula1() {
         return getProvider(Formula1.class, () -> new Formula1(this));
     }
