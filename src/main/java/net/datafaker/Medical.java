@@ -36,14 +36,4 @@ public class Medical {
         String regex = faker.fakeValuesService().resolve("medical.procedure_code.icd10", this, faker);
         return faker.regexify(regex);
     }
-
-
-    /**
-     * Returns a blood group such as O−, O+, A-, A+, B-, B+, AB-, AB+
-     *
-     * @return a blood group such as O−, O+, A-, A+, B-, B+, AB-, AB+
-     */
-    public String bloodGroup() {
-        return faker.fakeValuesService().resolve("medical.blood_group", this, faker);
-    }
 }

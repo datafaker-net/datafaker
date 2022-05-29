@@ -15,7 +15,7 @@ public class BloodType {
      *
      * @return a string of ABO blood type
      */
-    public String abo_types() {
+    public String aboTypes() {
         return faker.fakeValuesService().fetchString("blood_type.abo_types");
     }
 
@@ -24,7 +24,7 @@ public class BloodType {
      *
      * @return a string of Rh blood type
      */
-    public String rh_types() {
+    public String rhTypes() {
         return faker.fakeValuesService().fetchString("blood_type.rh_types");
     }
 
@@ -33,7 +33,17 @@ public class BloodType {
      *
      * @return a string of P blood type
      */
-    public String p_types() {
+    public String pTypes() {
         return faker.fakeValuesService().fetchString("blood_type.p_types");
+    }
+
+
+    /**
+     * Returns a blood group such as O−, O+, A-, A+, B-, B+, AB-, AB+
+     *
+     * @return a blood group such as O−, O+, A-, A+, B-, B+, AB-, AB+
+     */
+    public String bloodGroup() {
+        return faker.fakeValuesService().resolve("blood_type.blood_group", this, faker);
     }
 }

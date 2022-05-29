@@ -30,11 +30,6 @@ class MedicalTest extends AbstractFakerTest {
     }
 
     @Test
-    void testBloodGroup() {
-        assertThat(faker.medical().bloodGroup()).matches("(A|B|AB|O)[+-]");
-    }
-
-    @Test
     void testDiagnosisCodeUS() {
         // will use icd-10-cm - https://www.johndcook.com/blog/2019/05/05/regex_icd_codes/
         Faker faker = new Faker(Locale.US);
