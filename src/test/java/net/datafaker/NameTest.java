@@ -91,9 +91,4 @@ class NameTest extends AbstractFakerTest {
         assertThat(mockedFaker.name().username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
-    @Test
-    void testBloodGroup() {
-        assertThat(faker.name().bloodGroup()).matches("(A|B|AB|O)[+-]");
-    }
-
 }

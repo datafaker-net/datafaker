@@ -134,13 +134,4 @@ public class Name {
         }
         return result.toString();
     }
-
-    /**
-     * Returns a blood group such as O−, O+, A-, A+, B-, B+, AB-, AB+
-     *
-     * @return a blood group such as O−, O+, A-, A+, B-, B+, AB-, AB+
-     */
-    public String bloodGroup() {
-        return faker.fakeValuesService().resolve("name.blood_group", this, faker);
-    }
 }

@@ -9,3 +9,4 @@ en:
         icd10: "[A-Z][0-9]{1,2}(\\.[0-9])?"
       procedure_code:
         icd10: "[a-hj-np-zA-HJ-NP-Z0-9]{7}"
+      blood_group: [O-, O+, A-, A+, B-, B+, AB-, AB+]
