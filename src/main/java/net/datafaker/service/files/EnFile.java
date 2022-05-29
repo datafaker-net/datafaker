@@ -58,7 +58,7 @@ public class EnFile {
         "cannabis.yml",
         "chuck_norris.yml",
         "code.yml",
-//            "coffee.yml",
+        "coffee.yml",
         "coin.yml",
         "color.yml",
         "commerce.yml",

@@ -410,6 +410,10 @@ public class Faker {
         return getProvider(Code.class, () -> new Code(this));
     }
 
+    public Coffee coffee() {
+        return getProvider(Coffee.class, () -> new Coffee(this));
+    }
+
     public Coin coin() {
         return getProvider(Coin.class, () -> new Coin(this));
     }
