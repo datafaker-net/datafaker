@@ -1,25 +1,27 @@
 package net.datafaker;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class DarkSouleTest extends AbstractFakerTest {
+class DarkSoulTest extends AbstractFakerTest {
 
-    @Test
+    @RepeatedTest(10)
     void testClasses() {
         assertThat(faker.darkSoul().classes()).matches("[A-Za-z ']+");
     }
 
-    @Test
+    @RepeatedTest(10)
     void testCovenants() {
         assertThat(faker.darkSoul().covenants()).matches("[A-Za-z ']+");
     }
-    @Test
+
+    @RepeatedTest(10)
     void testShield() {
         assertThat(faker.darkSoul().shield()).matches("[A-Za-z ']+");
     }
-    @Test
+
+    @RepeatedTest(10)
     void testStats() {
         assertThat(faker.darkSoul().stats()).matches("[A-Za-z ']+");
     }

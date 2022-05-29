@@ -1,6 +1,8 @@
 package net.datafaker;
 
 
+import java.util.Locale;
+
 /**
  * @since 1.5.0
  */
@@ -16,8 +18,12 @@ class Coffee {
         return faker.fakeValuesService().resolve("coffee.country", this, faker);
     }
 
-    public String regions() {
-        return faker.fakeValuesService().resolve("coffee.regions", this, faker);
+    public String region() {
+        return region(faker.options().option(Coffee.Country.class));
+    }
+
+    public String region(Coffee.Country country) {
+        return faker.fakeValuesService().resolve("coffee.regions." + country.name().toLowerCase(Locale.ROOT), this, faker);
     }
 
     public String variety() {
@@ -52,4 +58,24 @@ class Coffee {
         return faker.fakeValuesService().resolve("coffee.blend_name", this, faker);
     }
 
+    public enum Country {
+        BRAZIL,
+        COLOMBIA,
+        SUMATRA,
+        ETHIOPIA,
+        HONDURAS,
+        KENYA,
+        UGANDA,
+        MEXICO,
+        GUATEMALA,
+        NICARAGUA,
+        COSTA_RICA,
+        TANZANIA,
+        EL_SALVADOR,
+        RWANDA,
+        BURUNDI,
+        PANAMA,
+        YEMEN,
+        INDIA
+    }
 }

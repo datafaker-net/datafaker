@@ -12,8 +12,13 @@ class CoffeeTest extends AbstractFakerTest {
     }
 
     @Test
-    public void regions() {
-        assertThat(faker.coffee().regions()).isNotEmpty();
+    public void region() {
+        assertThat(faker.coffee().region()).isNotEmpty();
+    }
+
+    @Test
+    public void regionBrazil() {
+        assertThat(faker.coffee().region(Coffee.Country.BRAZIL)).isNotEmpty();
     }
 
     @Test
