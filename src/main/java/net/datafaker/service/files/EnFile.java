@@ -105,7 +105,7 @@ public class EnFile {
         "gender.yml",
 //            "ghostbusters.yml",
         "grateful_dead.yml",
-//            "greek_philosophers.yml",
+        "greek_philosophers.yml",
         "hacker.yml",
         "half_life.yml",
         "harry_potter.yml",

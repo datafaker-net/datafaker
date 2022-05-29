@@ -217,6 +217,7 @@ Providers
 * GameOfThrones
 * Gender
 * GratefulDead
+* Greek Philosopher
 * Hacker
 * HarryPotter
 * Hashing

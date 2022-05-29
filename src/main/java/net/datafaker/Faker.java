@@ -566,6 +566,10 @@ public class Faker {
         return getProvider(GratefulDead.class, () -> new GratefulDead(this));
     }
 
+    public GreekPhilosopher greekPhilosopher() {
+        return getProvider(GreekPhilosopher.class, () -> new GreekPhilosopher(this));
+    }
+
     public Hacker hacker() {
         return getProvider(Hacker.class, () -> new Hacker(this));
     }
