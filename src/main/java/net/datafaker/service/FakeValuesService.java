@@ -52,6 +52,11 @@ public class FakeValuesService {
     private final Map<String, String[]> key2splittedKey = new WeakHashMap<>();
 
     private final Map<String, Object> key2fetchedObject = new WeakHashMap<>();
+    private final Map<String, String> name2yaml = new WeakHashMap<>();
+
+    private final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new WeakHashMap<>();
+
+    private static final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
 
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
@@ -543,7 +548,11 @@ public class FakeValuesService {
             }
             expressionSuppliers.add(() -> resolveExpression(Objects.toString(resolved), current, root));
         }
-        return expressionSuppliers.stream().map(Supplier::get).collect(Collectors.joining());
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < expressionSuppliers.size(); i++) {
+            result.append(expressionSuppliers.get(i).get());
+        }
+        return result.toString();
     }
 
     private String[] splitArguments(String arguments) {
@@ -578,7 +587,11 @@ public class FakeValuesService {
     }
 
     private static List<String> splitExpressions(String expression) {
-        List<String> result = new ArrayList<>();
+        List<String> result = EXPRESSION_2_SPLITTED.get(expression);
+        if (result != null) {
+            return result;
+        }
+        result = new ArrayList<>();
         boolean isExpression = false;
         int start = 0;
         int quoteCnt = 0;
@@ -599,6 +612,7 @@ public class FakeValuesService {
             }
         }
         result.add(start < expression.length() ? expression.substring(start) : "");
+        EXPRESSION_2_SPLITTED.put(expression, result);
         return result;
     }
 
@@ -706,7 +720,17 @@ public class FakeValuesService {
      * @return a yaml style name like 'phone_number' from a java style name like 'PhoneNumber'
      */
     private String javaNameToYamlName(String expression) {
-        StringBuilder sb = new StringBuilder(expression.length());
+        String result = name2yaml.get(expression);
+        if (result != null) {
+            return result;
+        }
+        int cnt = 0;
+        for (int i = 0; i < expression.length(); i++) {
+            if (Character.isUpperCase(expression.charAt(i))) {
+                cnt++;
+            }
+        }
+        StringBuilder sb = new StringBuilder(expression.length() + cnt);
         for (int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
             if (Character.isUpperCase(c)) {
@@ -718,7 +742,9 @@ public class FakeValuesService {
                 sb.append(c);
             }
         }
-        return sb.toString();
+        result = sb.toString();
+        name2yaml.put(expression, result);
+        return result;
     }
 
 
@@ -732,7 +758,17 @@ public class FakeValuesService {
             return null;
         }
         try {
-            final MethodAndCoercedArgs accessor = accessor(obj, directive, args);
+            Class<?> clazz = obj.getClass();
+            final MethodAndCoercedArgs accessor;
+            if (mapOfMethodAndCoercedArgs.get(clazz) == null || mapOfMethodAndCoercedArgs.get(clazz).get(directive) == null || mapOfMethodAndCoercedArgs.get(clazz).get(directive).get(args) == null) {
+                accessor = accessor(obj.getClass(), directive, args);
+                mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
+                mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(directive, new WeakHashMap<>());
+                mapOfMethodAndCoercedArgs.get(clazz).get(directive).put(args, accessor);
+            } else {
+                accessor = mapOfMethodAndCoercedArgs.get(clazz).get(directive).get(args);
+            }
+
             return (accessor == null)
                 ? () -> null
                 : () -> invokeAndToString(accessor, obj);
@@ -758,15 +794,34 @@ public class FakeValuesService {
         }
 
         try {
-            String fakerMethodName = removeChars(classAndMethod[0], '_');
-            MethodAndCoercedArgs fakerAccessor = accessor(faker, fakerMethodName, EMPTY_ARRAY);
+            String fakerMethodName = removeUnderscoreChars(classAndMethod[0]);
+            Class<?> fakerClass = faker.getClass();
+            final MethodAndCoercedArgs fakerAccessor;
+            if (mapOfMethodAndCoercedArgs.get(fakerClass) == null || mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName) == null || mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName).get(EMPTY_ARRAY) == null) {
+                fakerAccessor = accessor(fakerClass, fakerMethodName, EMPTY_ARRAY);
+                mapOfMethodAndCoercedArgs.putIfAbsent(fakerClass, new WeakHashMap<>());
+                mapOfMethodAndCoercedArgs.get(fakerClass).putIfAbsent(fakerMethodName, new WeakHashMap<>());
+                mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName).put(EMPTY_ARRAY, fakerAccessor);
+            } else {
+                fakerAccessor = mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName).get(EMPTY_ARRAY);
+            }
+
             if (fakerAccessor == null) {
                 LOG.fine("Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
             }
             Object objectWithMethodToInvoke = fakerAccessor.invoke(faker);
-            String nestedMethodName = removeChars(classAndMethod[1], '_');
-            final MethodAndCoercedArgs accessor = accessor(objectWithMethodToInvoke, nestedMethodName, args);
+            String nestedMethodName = removeUnderscoreChars(classAndMethod[1]);
+            Class<?> objectWithMethodClass = objectWithMethodToInvoke.getClass();
+            final MethodAndCoercedArgs accessor;
+            if (mapOfMethodAndCoercedArgs.get(objectWithMethodClass) == null || mapOfMethodAndCoercedArgs.get(objectWithMethodClass).get(nestedMethodName) == null || mapOfMethodAndCoercedArgs.get(objectWithMethodClass).get(nestedMethodName).get(args) == null) {
+                accessor = accessor(objectWithMethodClass, nestedMethodName, args);
+                mapOfMethodAndCoercedArgs.putIfAbsent(objectWithMethodClass, new WeakHashMap<>());
+                mapOfMethodAndCoercedArgs.get(objectWithMethodClass).putIfAbsent(nestedMethodName, new WeakHashMap<>());
+                mapOfMethodAndCoercedArgs.get(objectWithMethodClass).get(nestedMethodName).put(args, accessor);
+            } else {
+                accessor = accessor(objectWithMethodClass, nestedMethodName, args);
+            }
             if (accessor == null) {
                 throw new Exception("Can't find method on "
                     + objectWithMethodToInvoke.getClass().getSimpleName()
@@ -793,10 +848,9 @@ public class FakeValuesService {
     /**
      * Find an accessor by name ignoring case.
      */
-    private MethodAndCoercedArgs accessor(Object onObject, String name, String[] args) {
-        LOG.log(Level.FINE, () -> "Find accessor named " + name + " on " + onObject.getClass().getSimpleName() + " with args " + Arrays.toString(args));
+    private MethodAndCoercedArgs accessor(Class<?> clazz, String name, String[] args) {
+        LOG.log(Level.FINE, () -> "Find accessor named " + name + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
 
-        final Class<?> clazz = onObject.getClass();
         if (!class2methodsCache.containsKey(clazz)) {
             Map<String, Collection<Method>> methodMap = new HashMap<>();
             for (Method m : clazz.getMethods()) {
@@ -818,21 +872,21 @@ public class FakeValuesService {
         }
 
         if (name.contains("_")) {
-            return accessor(onObject, removeChars(name, '_'), args);
+            return accessor(clazz, removeUnderscoreChars(name), args);
         }
         return null;
     }
 
-    private static String removeChars(String string, char char2remove) {
+    private static String removeUnderscoreChars(String string) {
         char[] res = string.toCharArray();
         int offset = 0;
         int length = 0;
         for (int i = string.length() - 1; i >= offset; i--) {
-            while (i > offset && string.charAt(i - offset) == char2remove) {
+            while (i > offset && string.charAt(i - offset) == '_') {
                 offset++;
             }
             res[i] = res[i - offset];
-            if (res[i] != char2remove) {
+            if (res[i] != '_') {
                 length++;
             }
         }
