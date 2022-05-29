@@ -12,19 +12,19 @@ public class DarkSoul {
     }
 
     public String stats(){
-        return faker.fakeValuesService().resolve("darkSoul.stats", this, faker);
+        return faker.fakeValuesService().resolve("dark_soul.stats", this, faker);
     }
 
     public String covenants(){
-        return faker.fakeValuesService().resolve("darkSoul.covenants", this, faker);
+        return faker.fakeValuesService().resolve("dark_soul.covenants", this, faker);
     }
 
     public String classes(){
-        return faker.fakeValuesService().resolve("darkSoul.classes", this, faker);
+        return faker.fakeValuesService().resolve("dark_soul.classes", this, faker);
     }
 
     public String shield(){
-        return faker.fakeValuesService().resolve("darkSoul.shield", this, faker);
+        return faker.fakeValuesService().resolve("dark_soul.shield", this, faker);
     }
 
 }
