@@ -150,6 +150,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lorem());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.matz());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.measurement());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountain());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountaineering());
