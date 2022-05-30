@@ -132,7 +132,7 @@ public class EnFile {
 //            "markdown.yml",
         "marketing.yml",
         "matz.yml",
-//            "measurement.yml",
+        "measurement.yml",
         "mbti.yml",
         "medical.yml",
         "michael_scott.yml",

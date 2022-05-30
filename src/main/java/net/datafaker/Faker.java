@@ -660,6 +660,10 @@ public class Faker {
 
     public Mbti mbti() {return getProvider(Mbti.class, () -> new Mbti(this));}
 
+    public Measurement measurement() {
+        return getProvider(Measurement.class, () -> new Measurement(this));
+    }
+
     public Medical medical() {
         return getProvider(Medical.class, () -> new Medical(this));
     }
