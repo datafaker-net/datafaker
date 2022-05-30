@@ -730,6 +730,10 @@ public class FakeValuesService {
                 cnt++;
             }
         }
+        if (cnt == 0) {
+            name2yaml.put(expression, expression);
+            return expression;
+        }
         StringBuilder sb = new StringBuilder(expression.length() + cnt);
         for (int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
@@ -878,6 +882,9 @@ public class FakeValuesService {
     }
 
     private static String removeUnderscoreChars(String string) {
+        if (string.indexOf('_') == -1) {
+            return string;
+        }
         char[] res = string.toCharArray();
         int offset = 0;
         int length = 0;
