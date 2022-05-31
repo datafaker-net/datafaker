@@ -54,7 +54,7 @@ public class FakeValuesService {
     private final Map<String, Object> key2fetchedObject = new WeakHashMap<>();
     private final Map<String, String> name2yaml = new WeakHashMap<>();
 
-    private final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new WeakHashMap<>();
+    private final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new IdentityHashMap<>();
 
     private static final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
 
