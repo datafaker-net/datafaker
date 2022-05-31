@@ -525,13 +525,18 @@ public class FakeValuesService {
      * {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, Faker root) {
+        if (expression.indexOf('}') == -1 || !expression.contains("#{")) {
+            return expression;
+        }
         List<String> expressions = splitExpressions(expression);
         List<Supplier<String>> expressionSuppliers = new ArrayList<>(expressions.size());
         for (int i = 0; i < expressions.size(); i++) {
             // odd are expressions, even are not expressions, just strings
             if (i % 2 == 0) {
                 final int index = i;
-                expressionSuppliers.add(() -> expressions.get(index));
+                if (!expressions.get(index).isEmpty()) {
+                    expressionSuppliers.add(() -> expressions.get(index));
+                }
                 continue;
             }
             String expr = expressions.get(i);
@@ -611,7 +616,9 @@ public class FakeValuesService {
                 i++;
             }
         }
-        result.add(start < expression.length() ? expression.substring(start) : "");
+        if (start < expression.length()) {
+            result.add(expression.substring(start));
+        }
         EXPRESSION_2_SPLITTED.put(expression, result);
         return result;
     }
@@ -630,6 +637,9 @@ public class FakeValuesService {
     private Object resolveExpression(String directive, String[] args, Object current, Faker root) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
+        if (directive.trim().isEmpty()) {
+            return directive;
+        }
         final boolean dotDirective = isDotDirective(directive);
         final String simpleDirective = (dotDirective || current == null)
             ? directive
