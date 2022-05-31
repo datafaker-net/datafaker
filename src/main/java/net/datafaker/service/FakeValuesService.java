@@ -775,7 +775,7 @@ public class FakeValuesService {
         try {
             Class<?> clazz = obj.getClass();
             final MethodAndCoercedArgs accessor;
-            if (mapOfMethodAndCoercedArgs.get(clazz) == null || mapOfMethodAndCoercedArgs.get(clazz).get(directive) == null || mapOfMethodAndCoercedArgs.get(clazz).get(directive).get(args) == null) {
+            if (mapOfMethodAndCoercedArgs.get(clazz) == null || mapOfMethodAndCoercedArgs.get(clazz).get(directive) == null || !mapOfMethodAndCoercedArgs.get(clazz).get(directive).containsKey(args)) {
                 accessor = accessor(obj.getClass(), directive, args);
                 mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
                 mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(directive, new WeakHashMap<>());
