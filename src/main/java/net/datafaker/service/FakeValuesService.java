@@ -587,8 +587,9 @@ public class FakeValuesService {
                 start = i + 1;
             }
         }
-        args2splittedArgs.put(arguments, result.toArray(EMPTY_ARRAY));
-        return args2splittedArgs.get(arguments);
+        final String[] resultArray = result.toArray(EMPTY_ARRAY);
+        args2splittedArgs.put(arguments, resultArray);
+        return resultArray;
     }
 
     private static List<String> splitExpressions(String expression) {
@@ -775,7 +776,7 @@ public class FakeValuesService {
         try {
             Class<?> clazz = obj.getClass();
             final MethodAndCoercedArgs accessor;
-            if (mapOfMethodAndCoercedArgs.get(clazz) == null || mapOfMethodAndCoercedArgs.get(clazz).get(directive) == null || !mapOfMethodAndCoercedArgs.get(clazz).get(directive).containsKey(args)) {
+            if (!mapOfMethodAndCoercedArgs.containsKey(clazz) || !mapOfMethodAndCoercedArgs.get(clazz).containsKey(directive) || !mapOfMethodAndCoercedArgs.get(clazz).get(directive).containsKey(args)) {
                 accessor = accessor(obj.getClass(), directive, args);
                 mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
                 mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(directive, new WeakHashMap<>());
