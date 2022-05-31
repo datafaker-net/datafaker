@@ -168,6 +168,7 @@ Providers
 * Basketball
 * Battlefield1  
 * Beer
+* Big Bang Theory
 * Blood Type
 * Bojack Horseman
 * Book

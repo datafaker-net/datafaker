@@ -352,6 +352,10 @@ public class Faker {
         return getProvider(Beer.class, () -> new Beer(this));
     }
 
+    public BigBangTheory bigBangTheory() {
+        return getProvider(BigBangTheory.class, () -> new BigBangTheory(this));
+    }
+
     public BloodType bloodtype(){return getProvider(BloodType.class, () -> new BloodType(this));}
 
     public BojackHorseman bojackHorseman() {
