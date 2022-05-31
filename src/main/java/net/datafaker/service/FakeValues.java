@@ -7,10 +7,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,9 +100,11 @@ public class FakeValues implements FakeValuesInterface {
             try (InputStream stream = getClass().getResourceAsStream(path)) {
                 if (stream != null) {
                     result = readFromStream(stream);
+                    enrichMapWithJavaNames(result);
                 } else {
                     try (InputStream stream2 = getClass().getClassLoader().getResourceAsStream(path)) {
                         result = readFromStream(stream2);
+                        enrichMapWithJavaNames(result);
                     } catch (Exception e) {
                         LOG.log(Level.SEVERE, "Exception: ", e);
                     }
@@ -114,6 +118,40 @@ public class FakeValues implements FakeValuesInterface {
             }
         }
         return null;
+    }
+
+    private void enrichMapWithJavaNames(Map<String, Object> result) {
+        if (result != null) {
+            Set<String> set = new HashSet<>();
+            for (Map.Entry<String, Object> entry : result.entrySet()) {
+                final String key = entry.getKey();
+                if (key.indexOf('_') != -1) {
+                    set.add(key);
+                }
+            }
+            for (String str: set) {
+                result.put(toJavaNames(str), result.get(str));
+            }
+        }
+    }
+
+    private static String toJavaNames(String string) {
+        if (string == null || string.isEmpty()) {
+            return string;
+        }
+        StringBuilder res = new StringBuilder(string.length());
+        for (int i = 0; i < string.length(); i++) {
+            char c = string.charAt(i);
+            if (i == 0 && Character.isLetter(c)) {
+                res.append(Character.toUpperCase(c));
+            } else if (c == '_' && i < string.length() + 1 && Character.isLetter(string.charAt(i + 1))) {
+                res.append(Character.toUpperCase(string.charAt(i + 1)));
+                i++;
+            } else {
+                res.append(c);
+            }
+        }
+        return res.toString();
     }
 
     private Map<String, Object> readFromStream(InputStream stream) {

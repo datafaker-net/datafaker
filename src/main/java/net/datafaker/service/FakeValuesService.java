@@ -630,14 +630,15 @@ public class FakeValuesService {
     private Object resolveExpression(String directive, String[] args, Object current, Faker root) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
-        final String simpleDirective = (isDotDirective(directive) || current == null)
+        final boolean dotDirective = isDotDirective(directive);
+        final String simpleDirective = (dotDirective || current == null)
             ? directive
             : classNameToYamlName(current) + "." + directive;
 
         Object resolved;
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
         // #{ssn_valid} on IdNumber
-        if (!isDotDirective(directive)) {
+        if (!dotDirective) {
             Supplier<Object> supplier = resolveFromMethodOn(current, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 //expression2function.put(expression, supplier);
@@ -656,7 +657,7 @@ public class FakeValuesService {
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
-        if (!isDotDirective(directive)) {
+        if (!dotDirective) {
             supplier = resolveFromMethodOn(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 //       expression2function.put(expression, supplier);
@@ -665,7 +666,7 @@ public class FakeValuesService {
         }
 
         // Resolve Faker Object method references like #{ClassName.method_name}
-        if (isDotDirective(directive)) {
+        if (dotDirective) {
             supplier = resolveFakerObjectAndMethod(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 // expression2function.put(expression, supplier);
@@ -678,8 +679,8 @@ public class FakeValuesService {
         // thru the normal resolution above, but if we will can't resolve it, we once again do a 'safeFetch' as we
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
-        if (isDotDirective(directive)) {
-            supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), null);
+        if (dotDirective) {
+            supplier = () -> safeFetch(directive, null);
             resolved = supplier.get();
         }
 
@@ -706,7 +707,7 @@ public class FakeValuesService {
     }
 
     private boolean isDotDirective(String directive) {
-        return directive.contains(".");
+        return directive.indexOf('.') != -1;
     }
 
     /**
@@ -853,19 +854,23 @@ public class FakeValuesService {
      * Find an accessor by name ignoring case.
      */
     private MethodAndCoercedArgs accessor(Class<?> clazz, String name, String[] args) {
-        LOG.log(Level.FINE, () -> "Find accessor named " + name + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
-
-        if (!class2methodsCache.containsKey(clazz)) {
-            Map<String, Collection<Method>> methodMap = new HashMap<>();
-            for (Method m : clazz.getMethods()) {
+        final String finalName = name;
+        LOG.log(Level.FINE, () -> "Find accessor named " + finalName + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
+        name = removeUnderscoreChars(name);
+        final Collection<Method> methods;
+        if (class2methodsCache.containsKey(clazz)) {
+            methods = class2methodsCache.get(clazz).getOrDefault(name.toLowerCase(Locale.ROOT), Collections.emptyList());
+        } else {
+            Method[] classMethods = clazz.getMethods();
+            Map<String, Collection<Method>> methodMap = new HashMap<>(classMethods.length);
+            for (Method m : classMethods) {
                 final String key = m.getName().toLowerCase(Locale.ROOT);
                 methodMap.computeIfAbsent(key, k -> new ArrayList<>());
                 methodMap.get(key).add(m);
             }
             class2methodsCache.put(clazz, methodMap);
+            methods = methodMap.get(name.toLowerCase(Locale.ROOT));
         }
-        final Collection<Method> methods =
-            class2methodsCache.get(clazz).getOrDefault(name.toLowerCase(Locale.ROOT), Collections.emptyList());
         for (Method m : methods) {
             if (m.getParameterTypes().length == args.length || m.getParameterTypes().length < args.length && m.isVarArgs()) {
                 final Object[] coercedArguments = coerceArguments(m, args);
@@ -873,10 +878,6 @@ public class FakeValuesService {
                     return new MethodAndCoercedArgs(m, coercedArguments);
                 }
             }
-        }
-
-        if (name.contains("_")) {
-            return accessor(clazz, removeUnderscoreChars(name), args);
         }
         return null;
     }
