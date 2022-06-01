@@ -26,6 +26,9 @@ class AddressTest extends AbstractFakerTest {
         return true;
     }, "Is a number");
 
+    public static final String LAT_LON_REGEX = "-?\\d{1,2}.\\d{5,10},-?\\d{1,3}.\\d{5,10}+";
+    public static final String LON_LAT_REGEX = "-?\\d{1,3}.\\d{5,10}+,-?\\d{1,2}.\\d{5,10}";
+
     @Test
     void testStreetAddressStartsWithNumber() {
         final String streetAddressNumber = faker.address().streetAddress();
@@ -54,26 +57,18 @@ class AddressTest extends AbstractFakerTest {
         assertThat(lon).isBetween(-180.0, 180.0);
     }
 
-    @Test
+    @RepeatedTest(10)
     void testLocaleLatitude() {
         Faker engFaker = new Faker(Locale.ENGLISH);
         String engLatStr = engFaker.address().latitude();
         assertThat(engLatStr).matches("-?\\d{1,3}\\.\\d+");
-
-        Faker ruFaker = new Faker(new Locale("ru"));
-        String rusLatStr = ruFaker.address().latitude();
-        assertThat(rusLatStr).matches("-?\\d{1,3},\\d+");
     }
 
-    @Test
+    @RepeatedTest(10)
     void testLocaleLongitude() {
         Faker engFaker = new Faker(Locale.ENGLISH);
         String engLatStr = engFaker.address().longitude();
         assertThat(engLatStr).matches("-?\\d{1,3}\\.\\d+");
-
-        Faker ruFaker = new Faker(new Locale("ru"));
-        String rusLatStr = ruFaker.address().longitude();
-        assertThat(rusLatStr).matches("-?\\d{1,3},\\d+");
     }
 
     @Test
@@ -195,6 +190,30 @@ class AddressTest extends AbstractFakerTest {
         final String[] zipCodeParts = localFaker.address().zipCodePlus4().split("-");
         assertThat(zipCodeParts[0]).matches("[0-9]{5}");
         assertThat(zipCodeParts[1]).matches("[0-9]{4}");
+    }
+
+    @RepeatedTest(100)
+    void testLatLonEnUs() {
+        final Faker localFaker = new Faker(new Locale("en-us"));
+        assertThat(localFaker.address().latLon()).matches(LAT_LON_REGEX);
+    }
+
+    @RepeatedTest(100)
+    void testLatLonNl() {
+        final Faker localFaker = new Faker(new Locale("nl-nl"));
+        assertThat(localFaker.address().latLon()).matches(LAT_LON_REGEX);
+    }
+
+    @RepeatedTest(100)
+    void testLonLatEnUs() {
+        final Faker localFaker = new Faker(new Locale("en-us"));
+        assertThat(localFaker.address().lonLat()).matches(LON_LAT_REGEX);
+    }
+
+    @RepeatedTest(100)
+    void testLonLatNl() {
+        final Faker localFaker = new Faker(new Locale("nl-nl"));
+        assertThat(localFaker.address().lonLat()).matches(LON_LAT_REGEX);
     }
 
 }
