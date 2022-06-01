@@ -26,8 +26,8 @@ class AddressTest extends AbstractFakerTest {
         return true;
     }, "Is a number");
 
-    public static final String LAT_LON_REGEX = "-?\\d{1,2}.\\d{5,8},-?\\d{1,3}.\\d{5,8}+";
-    public static final String LON_LAT_REGEX = "-?\\d{1,3}.\\d{5,8}+,-?\\d{1,2}.\\d{5,8}";
+    public static final String LAT_LON_REGEX = "-?\\d{1,2}.\\d{5,10},-?\\d{1,3}.\\d{5,10}+";
+    public static final String LON_LAT_REGEX = "-?\\d{1,3}.\\d{5,10}+,-?\\d{1,2}.\\d{5,10}";
 
     @Test
     void testStreetAddressStartsWithNumber() {
@@ -57,26 +57,18 @@ class AddressTest extends AbstractFakerTest {
         assertThat(lon).isBetween(-180.0, 180.0);
     }
 
-    @Test
+    @RepeatedTest(10)
     void testLocaleLatitude() {
         Faker engFaker = new Faker(Locale.ENGLISH);
         String engLatStr = engFaker.address().latitude();
         assertThat(engLatStr).matches("-?\\d{1,3}\\.\\d+");
-
-        Faker ruFaker = new Faker(new Locale("ru"));
-        String rusLatStr = ruFaker.address().latitude();
-        assertThat(rusLatStr).matches("-?\\d{1,3},\\d+");
     }
 
-    @Test
+    @RepeatedTest(10)
     void testLocaleLongitude() {
         Faker engFaker = new Faker(Locale.ENGLISH);
         String engLatStr = engFaker.address().longitude();
         assertThat(engLatStr).matches("-?\\d{1,3}\\.\\d+");
-
-        Faker ruFaker = new Faker(new Locale("ru"));
-        String rusLatStr = ruFaker.address().longitude();
-        assertThat(rusLatStr).matches("-?\\d{1,3},\\d+");
     }
 
     @Test
