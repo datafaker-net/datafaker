@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import java.util.Locale;
+
 /**
  * @since 0.8.0
  */
@@ -97,12 +99,32 @@ public class Address {
         return faker.fakeValuesService().resolve("address.state_abbr", this, faker);
     }
 
+    /**
+     * @return Returns the latitude, a number between -90 to 90.
+     */
     public String latitude() {
-        return String.format(faker.getLocale(), "%.8g", (faker.random().nextDouble() * 180) - 90);
+        return String.format(Locale.ROOT, "%.8g", (faker.random().nextDouble() * 180) - 90);
     }
 
+    /**
+     * @return Returns the longitude, a number between -180 and 180
+     */
     public String longitude() {
-        return String.format(faker.getLocale(), "%.8g", (faker.random().nextDouble() * 360) - 180);
+        return String.format(Locale.ROOT, "%.8g", (faker.random().nextDouble() * 360) - 180);
+    }
+
+    /**
+     * @return Returns the lat/lon coordinates formatted as lat,lon.
+     */
+    public String latLon() {
+        return latitude() + "," + longitude();
+
+    }
+    /**
+     * @return Returns the lat/lon coordinates formatted as lon,lat.
+     */
+    public String lonLat() {
+        return longitude() + "," + latitude();
     }
 
     public String timeZone() {
