@@ -198,6 +198,7 @@ Providers
 * Device
 * Disease
 * Dog
+* DcComics
 * Domain
 * DragonBall
 * Dune
