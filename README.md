@@ -194,7 +194,6 @@ Providers
 * Currency
 * DateAndTime
 * Demographic
-* DcComics
 * Dessert
 * Device
 * Disease
