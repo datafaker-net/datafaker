@@ -277,6 +277,7 @@ Providers
 * Shakespeare
 * Sip
 * Size
+* Simpsons
 * SlackEmoji
 * SoulKnight
 * Space

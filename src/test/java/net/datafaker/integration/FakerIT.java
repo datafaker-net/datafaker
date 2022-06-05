@@ -175,6 +175,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.seinfeld());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.shakespeare());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.slackEmoji());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.simpsons());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.space());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.starCraft());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.starTrek());

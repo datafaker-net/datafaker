@@ -802,6 +802,10 @@ public class Faker {
         return getProvider(Size.class, () -> new Size(this));
     }
 
+    public Simpsons simpsons() {
+        return getProvider(Simpsons.class, () -> new Simpsons(this));
+    }
+
     public SoulKnight soulKnight() {
         return getProvider(SoulKnight.class, () -> new SoulKnight(this));
     }
