@@ -110,6 +110,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.demographic());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dessert());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.device());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dcComics());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.disease());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dog());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dragonBall());
