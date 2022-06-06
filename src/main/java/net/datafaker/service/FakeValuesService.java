@@ -528,14 +528,13 @@ public class FakeValuesService {
         if (expression.indexOf('}') == -1 || !expression.contains("#{")) {
             return expression;
         }
-        List<String> expressions = splitExpressions(expression);
-        List<Supplier<String>> expressionSuppliers = new ArrayList<>(expressions.size());
+        final List<String> expressions = splitExpressions(expression);
+        final StringBuilder result = new StringBuilder(expressions.size() * expression.length());
         for (int i = 0; i < expressions.size(); i++) {
             // odd are expressions, even are not expressions, just strings
             if (i % 2 == 0) {
-                final int index = i;
-                if (!expressions.get(index).isEmpty()) {
-                    expressionSuppliers.add(() -> expressions.get(index));
+                if (!expressions.get(i).isEmpty()) {
+                    result.append(expressions.get(i));
                 }
                 continue;
             }
@@ -544,18 +543,14 @@ public class FakeValuesService {
             while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
             String directive = expr.substring(0, j);
             while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
-            String arguments = j == expr.length() ? "" : expr.substring(j);
-            String[] args = splitArguments(arguments);
+            final String arguments = j == expr.length() ? "" : expr.substring(j);
+            final String[] args = splitArguments(arguments);
 
-            Object resolved = resolveExpression(directive, args, current, root);
+            final Object resolved = resolveExpression(directive, args, current, root);
             if (resolved == null) {
                 throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
             }
-            expressionSuppliers.add(() -> resolveExpression(Objects.toString(resolved), current, root));
-        }
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < expressionSuppliers.size(); i++) {
-            result.append(expressionSuppliers.get(i).get());
+            result.append(resolveExpression(Objects.toString(resolved), current, root));
         }
         return result.toString();
     }
@@ -597,7 +592,13 @@ public class FakeValuesService {
         if (result != null) {
             return result;
         }
-        result = new ArrayList<>();
+        int cnt = 0;
+        for (int i = 0; i < expression.length(); i++) {
+            if (expression.charAt(i) == '}') {
+                cnt++;
+            }
+        }
+        result = new ArrayList<>(2 * cnt + 1);
         boolean isExpression = false;
         int start = 0;
         int quoteCnt = 0;
@@ -884,7 +885,7 @@ public class FakeValuesService {
         }
         for (Method m : methods) {
             if (m.getParameterTypes().length == args.length || m.getParameterTypes().length < args.length && m.isVarArgs()) {
-                final Object[] coercedArguments = coerceArguments(m, args);
+                final Object[] coercedArguments = args.length == 0 ? EMPTY_ARRAY : coerceArguments(m, args);
                 if (coercedArguments != null) {
                     return new MethodAndCoercedArgs(m, coercedArguments);
                 }
