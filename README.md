@@ -194,6 +194,7 @@ Providers
 * Currency
 * DateAndTime
 * Demographic
+* Departed
 * Dessert
 * Device
 * Disease
