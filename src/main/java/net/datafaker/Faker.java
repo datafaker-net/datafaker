@@ -474,6 +474,10 @@ public class Faker {
         return getProvider(Demographic.class, () -> new Demographic(this));
     }
 
+    public Departed departed() {
+        return getProvider(Departed.class, () -> new Departed(this));
+    }
+
     public Dessert dessert() {
         return getProvider(Dessert.class, () -> new Dessert(this));
     }

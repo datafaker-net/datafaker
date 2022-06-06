@@ -108,6 +108,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.company());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.country());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.demographic());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.departed());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dessert());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.device());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.disease());
