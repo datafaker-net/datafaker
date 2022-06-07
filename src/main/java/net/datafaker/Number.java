@@ -127,7 +127,7 @@ public class Number {
     }
 
     public String digits(int count) {
-        final StringBuilder tmp = new StringBuilder();
+        final StringBuilder tmp = new StringBuilder(count);
         for (int i = 0; i < count; i++) {
             tmp.append(randomDigit());
         }

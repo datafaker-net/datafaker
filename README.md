@@ -92,13 +92,11 @@ also more examples at https://www.datafaker.net/documentation/expressions/
 ### Collections
 ```java
 Faker faker = new Faker();
-List<String> names = faker.<String>collection()
-                         .suppliers(
+List<String> names = faker.collection(
                               () -> faker.name().firstName(),
                               () -> faker.name().lastName())
-                         .minLen(3)
-                         .maxLen(5)
-                         .build().get();
+                         .len(3, 5)
+                         .generate();
 System.out.println(names);
 // [Skiles, O'Connell, Lorenzo, West]
 ```
@@ -107,14 +105,11 @@ more examples about that at https://www.datafaker.net/documentation/collections/
 ### File formats
 #### csv
 ```java
-String csv = Format.toCsv(
-                 faker.<Name>collection()
-                     .suppliers(() -> faker.name())
-                     .build())
-                 .headers(() -> "first_name", () -> "last_name")
-                 .columns(Name::firstName, Name::lastName)
-                 .separator(" ; ")
-                 .limit(2).build().get();
+String csv = Format.toCsv(faker.collection(faker::name).build())
+                .headers(() -> "first_name", () -> "last_name")
+                .columns(Name::firstName, Name::lastName)
+                .separator(" ; ")
+                .limit(2).build().get();
 // "first_name" ; "last_name"
 // "Kimberely" ; "Considine"
 // "Mariela" ; "Krajcik"
@@ -123,8 +118,7 @@ String csv = Format.toCsv(
 ```java
 Faker faker = new Faker();
 String json = Format.toJson(
-                  faker.<Name>collection()
-                  .suppliers(faker::name)
+                faker.collection(faker::name)
                   .maxLen(2)
                   .build())
               .set("firstName", Name::firstName)

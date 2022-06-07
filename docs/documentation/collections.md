@@ -9,13 +9,11 @@ For example, the following code will generate a list of first and last names wit
 
     ``` java 
     List<String> names = 
-        faker.<String>collection()
-            .suppliers(
+        faker.collection(
                 () -> faker.name().firstName(), 
                 () -> faker.name().lastName())
-            .minLen(3)
-            .maxLen(5)
-            .build().get();
+            .len(3, 5)
+            .generate();
     ```
 
 A list can also contain different types:
@@ -23,13 +21,12 @@ A list can also contain different types:
 === "Java"
 
     ``` java 
-    List<Object> objects = 
-        faker.collection()
-            .suppliers(
-                () -> faker.name().firstName(), 
+    List<Object> objects =
+        faker.<Object>collection(
+                () -> faker.name().firstName(),
                 () -> faker.random().nextInt(100))
             .maxLen(5)
-            .build().get();
+            .generate();
     ```
 
 With usage of `nullRate` it is possible to specify how often it should contain null values.
@@ -38,14 +35,13 @@ By default, it's value is 0, i.e. no null values will be generated.
 === "Java"
 
     ``` java 
-    List<Object> objects = 
-        faker.collection()
-            .suppliers(
-                () -> faker.name().firstName(), 
+    List<Object> objects =
+        faker.<Object>collection(
+                () -> faker.name().firstName(),
                 () -> faker.random().nextInt(100))
             .nullRate(1)
             .maxLen(5)
-            .build().get();
+            .generate();
     ```
 will generate a collection where every value is null.
 And to generate a collection with only about 30% values of null `nullRate(0.3)` will do it
@@ -53,12 +49,11 @@ And to generate a collection with only about 30% values of null `nullRate(0.3)` 
 === "Java"
 
     ``` java 
-    List<Object> objects = 
-        faker.collection()
-            .suppliers(
-                () -> faker.name().firstName(), 
+    List<Object> objects =
+        faker.<Object>collection(
+                () -> faker.name().firstName(),
                 () -> faker.random().nextInt(100))
             .nullRate(0.3)
             .maxLen(5)
-            .build().get();
+            .generate();
     ```

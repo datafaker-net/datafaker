@@ -26,6 +26,28 @@ class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
+    void generateSequence() {
+        List<String> digits = faker
+            .collection(() -> faker.number().digit())
+            .len(3, 10).generate();
+        assertThat(digits).hasSizeBetween(3, 10);
+        for (String digit : digits) {
+            assertThat(digit).matches("\\d");
+        }
+    }
+
+    @Test
+    void generateSequence5() {
+        List<String> digits = faker
+            .collection(() -> faker.number().digit())
+            .len(5).generate();
+        assertThat(digits).hasSize(5);
+        for (String digit : digits) {
+            assertThat(digit).matches("\\d");
+        }
+    }
+
+    @Test
     void generateNullCollection() {
         List<String> names = faker.<String>collection()
             .suppliers(() -> faker.name().firstName(), () -> faker.name().lastName())

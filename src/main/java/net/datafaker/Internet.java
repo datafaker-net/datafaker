@@ -302,7 +302,7 @@ public class Internet {
      * @return a IPV6 address.
      */
     public InetAddress getIpV6Address() throws UnknownHostException {
-        final StringBuilder tmp = new StringBuilder();
+        final StringBuilder tmp = new StringBuilder(2 * 8 + 7);
         for (int i = 0; i < 8; i++) {
             if (i > 0) {
                 tmp.append(":");

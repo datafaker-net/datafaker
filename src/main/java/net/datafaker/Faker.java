@@ -6,6 +6,7 @@ import net.datafaker.service.RandomService;
 
 import java.nio.file.Path;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -282,6 +283,15 @@ public class Faker {
      */
     public <T> FakeCollection.Builder<T> collection() {
         return new FakeCollection.Builder<T>().faker(this);
+    }
+
+    @SafeVarargs
+    public final <T> FakeCollection.Builder<T> collection(Supplier<T>... suppliers) {
+        return new FakeCollection.Builder<>(suppliers).faker(this);
+    }
+
+    public final <T> FakeCollection.Builder<T> collection(List<Supplier<T>> suppliers) {
+        return new FakeCollection.Builder<>(suppliers).faker(this);
     }
 
     public Address address() {
