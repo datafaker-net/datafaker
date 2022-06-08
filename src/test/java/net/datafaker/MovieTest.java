@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MovieTest extends AbstractFakerTest {
 
     @RepeatedTest(50)
-    void testName() {
+    void testQuote() {
         assertThat(faker.movie().quote()).matches("^[a-zA-Z ,'’.?]+$");
     }
 }
