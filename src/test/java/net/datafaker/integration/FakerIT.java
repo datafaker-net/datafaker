@@ -156,6 +156,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountain());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountaineering());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.movie());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.music());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.name());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nation());
