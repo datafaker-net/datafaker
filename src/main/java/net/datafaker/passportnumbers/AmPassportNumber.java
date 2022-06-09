@@ -2,8 +2,10 @@ package net.datafaker.passportnumbers;
 
 import net.datafaker.Faker;
 
+import java.util.regex.Pattern;
+
 public class AmPassportNumber {
-    private static final String[] validAMPatterns = {"[0-9]{8}"};
+    private static final Pattern[] VALID_AM_PATTERNS = {Pattern.compile("\\d{8}")};
 
     /**
      * Generates a valid American passport number
@@ -15,8 +17,8 @@ public class AmPassportNumber {
         String am = faker.regexify("[0-9A-Z]{8}");
 
         boolean isValid = false;
-        for (String validAMPattern : validAMPatterns) {
-            if (am.matches(validAMPattern)) {
+        for (Pattern validAMPattern : VALID_AM_PATTERNS) {
+            if (validAMPattern.matcher(am).matches()) {
                 isValid = true;
                 break;
             }
@@ -37,8 +39,8 @@ public class AmPassportNumber {
         String am = faker.regexify("[A-Z0-9]{1,}");
 
         boolean isValid = true;
-        for (String validAMPattern : validAMPatterns) {
-            if (am.matches(validAMPattern)) {
+        for (Pattern validAMPattern : VALID_AM_PATTERNS) {
+            if (validAMPattern.matcher(am).matches()) {
                 continue;
             }
             isValid = false;

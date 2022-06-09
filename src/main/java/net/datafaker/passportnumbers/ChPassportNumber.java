@@ -2,10 +2,12 @@ package net.datafaker.passportnumbers;
 
 import net.datafaker.Faker;
 
+import java.util.regex.Pattern;
+
 public class ChPassportNumber {
-    private static final String[] validCHPatterns = {
-        "E[0-9][0-9]{7}",
-        "G[0-9]{8}"};
+    private static final Pattern[] validCHPatterns = {
+        Pattern.compile("E\\d\\d{7}"),
+        Pattern.compile("G\\d{8}")};
 
     /**
      * Generates a valid Chinese passport number
@@ -17,8 +19,8 @@ public class ChPassportNumber {
         String ch = faker.regexify("[A-Z][0-9A-Z][0-9]{7}");
 
         boolean isValid = false;
-        for (String validCHPattern : validCHPatterns) {
-            if (ch.matches(validCHPattern)) {
+        for (Pattern validCHPattern : validCHPatterns) {
+            if (validCHPattern.matcher(ch).matches()) {
                 isValid = true;
                 break;
             }
@@ -39,8 +41,8 @@ public class ChPassportNumber {
         String ch = faker.regexify("[A-Z0-9]{1,}");
 
         boolean isValid = true;
-        for (String validCHPattern : validCHPatterns) {
-            if (ch.matches(validCHPattern)) {
+        for (Pattern validCHPattern : validCHPatterns) {
+            if (validCHPattern.matcher(ch).matches()) {
                 continue;
             }
             isValid = false;
