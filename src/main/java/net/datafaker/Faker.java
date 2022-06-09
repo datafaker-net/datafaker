@@ -88,7 +88,11 @@ public class Faker {
         return new Faker(locale, random);
     }
 
-    Locale getLocale() {
+    /**
+     * Returns the internal locale being used, or the ROOT locale if no locale has been set.
+     * @return Returns locale being used
+     */
+    public Locale getLocale() {
         return fakeValuesService.getLocalesChain().isEmpty() || fakeValuesService.getLocalesChain().get(0) == null
             ? Locale.ROOT : fakeValuesService.getLocalesChain().get(0);
     }
