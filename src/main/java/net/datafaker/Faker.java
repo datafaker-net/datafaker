@@ -9,7 +9,6 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 import java.util.function.Supplier;
 
 /**
@@ -28,15 +27,15 @@ public class Faker {
     }
 
     public Faker(Locale locale) {
-        this(locale, (Random) null);
+        this(locale, new RandomService());
     }
 
-    public Faker(Random random) {
-        this(Locale.ENGLISH, random);
+    public Faker(long seed) {
+        this(Locale.ENGLISH, seed);
     }
 
-    public Faker(Locale locale, Random random) {
-        this(locale, new RandomService(random));
+    public Faker(Locale locale, long seed) {
+        this(locale, new RandomService(seed));
     }
 
     public Faker(Locale locale, RandomService randomService) {
@@ -68,24 +67,24 @@ public class Faker {
     }
 
     /**
-     * Constructs Faker instance with provided {@link Random}.
+     * Constructs Faker instance with provided {@link long}.
      *
-     * @param random - {@link Random}
-     * @return {@link Faker#Faker(Random)}
+     * @param seed - {@link long}
+     * @return {@link Faker#Faker(long)}
      */
-    public static Faker instance(Random random) {
-        return new Faker(random);
+    public static Faker instance(long seed) {
+        return new Faker(seed);
     }
 
     /**
-     * Constructs Faker instance with provided {@link Locale} and {@link Random}.
+     * Constructs Faker instance with provided {@link Locale} and {@link long}.
      *
      * @param locale - {@link Locale}
-     * @param random - {@link Random}
-     * @return {@link Faker#Faker(Locale, Random)}
+     * @param seed - {@link long}
+     * @return {@link Faker#Faker(Locale, long)}
      */
-    public static Faker instance(Locale locale, Random random) {
-        return new Faker(locale, random);
+    public static Faker instance(Locale locale, long seed) {
+        return new Faker(locale, seed);
     }
 
     /**

@@ -75,7 +75,7 @@ class FakeCollectionTest extends AbstractFakerTest {
 
     @Test
     void generateCollectionWithRepeatableFaker() {
-        Faker seededFaker = new Faker(new Random(10L));
+        Faker seededFaker = new Faker(10L);
 
         List<String> names = faker.<String>collection()
             .faker(seededFaker)
