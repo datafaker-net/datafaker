@@ -39,22 +39,24 @@ public class FakeValuesService {
     private static final Logger LOG = Logger.getLogger("faker");
     private static final Map<Locale, FakeValuesInterface> FAKE_VALUES_CACHE = new HashMap<>();
 
-    private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
+    private static final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
+    private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
     private final RandomService randomService;
+    private Locale currentLocale;
 
-    private final List<Locale> localesChain;
+    private final Map<Locale, List<Locale>> locale2localesChain;
 
-    private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
-    private final Map<Class<?>, Constructor<?>> class2constructorCache = new IdentityHashMap<>();
+    private static final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
+    private static final Map<Class<?>, Constructor<?>> class2constructorCache = new IdentityHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
-    private final Map<String, String> key2Expression = new WeakHashMap<>();
+    private final Map<Locale, Map<String, String>> key2Expression = new WeakHashMap<>();
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
     private final Map<String, String[]> key2splittedKey = new WeakHashMap<>();
 
-    private final Map<String, Object> key2fetchedObject = new WeakHashMap<>();
+    private final Map<Locale, Map<String, Object>> key2fetchedObject = new WeakHashMap<>();
     private final Map<String, String> name2yaml = new WeakHashMap<>();
 
-    private final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new IdentityHashMap<>();
+    private static final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new IdentityHashMap<>();
 
     private static final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
 
@@ -79,16 +81,23 @@ public class FakeValuesService {
             throw new IllegalArgumentException("locale is required");
         }
         this.randomService = randomService;
-        locale = normalizeLocale(locale);
+        this.locale2localesChain = new HashMap<>();
+        setCurrentLocale(locale);
+    }
 
-        localesChain = localeChain(locale);
-        for (final Locale l : localesChain) {
+    public void setCurrentLocale(Locale locale) {
+        currentLocale = normalizeLocale(locale);
+        if (locale2localesChain.containsKey(currentLocale)) {
+            return;
+        }
+        locale2localesChain.put(currentLocale, localeChain(currentLocale));
+        for (final Locale l : locale2localesChain.get(currentLocale)) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
         }
     }
 
     private FakeValuesInterface getCachedFakeValue(Locale locale) {
-        if (Locale.ENGLISH.equals(locale)) {
+        if (DEFAULT_LOCALE.equals(locale)) {
             return FakeValuesGrouping.getEnglishFakeValueGrouping();
         }
         return FAKE_VALUES_CACHE.computeIfAbsent(locale, FakeValues::new);
@@ -126,18 +135,18 @@ public class FakeValuesService {
      * @return a list of {@link Locale} instances
      */
     protected List<Locale> localeChain(Locale from) {
-        if (Locale.ENGLISH.equals(from)) {
-            return Collections.singletonList(Locale.ENGLISH);
+        if (DEFAULT_LOCALE.equals(from)) {
+            return Collections.singletonList(DEFAULT_LOCALE);
         }
 
         final Locale normalized = normalizeLocale(from);
 
         final List<Locale> chain = new ArrayList<>(3);
         chain.add(normalized);
-        if (!"".equals(normalized.getCountry()) && !Locale.ENGLISH.getLanguage().equals(normalized.getLanguage())) {
+        if (!"".equals(normalized.getCountry()) && !DEFAULT_LOCALE.getLanguage().equals(normalized.getLanguage())) {
             chain.add(new Locale(normalized.getLanguage()));
         }
-        chain.add(Locale.ENGLISH); // default
+        chain.add(DEFAULT_LOCALE); // default
         return chain;
     }
 
@@ -157,7 +166,11 @@ public class FakeValuesService {
     }
 
     public List<Locale> getLocalesChain() {
-        return localesChain;
+        return locale2localesChain.get(currentLocale);
+    }
+
+    public Locale getCurrentLocale() {
+        return currentLocale;
     }
 
     /**
@@ -219,13 +232,23 @@ public class FakeValuesService {
      *            dot. E.g. name.first_name
      */
     public Object fetchObject(String key) {
-        Object result = key2fetchedObject.get(key);
+        Object result = null;
+        for (Locale locale: locale2localesChain.get(currentLocale)) {
+            // exclude default locale from cache checks
+            if (locale.equals(DEFAULT_LOCALE) && locale2localesChain.get(currentLocale).size() > 1) {
+                continue;
+            }
+            if (key2fetchedObject.get(locale) != null && (result = key2fetchedObject.get(locale).get(key)) != null) {
+                break;
+            }
+        }
         if (result != null) {
             return result;
         }
 
         String[] path = split(key);
-        for (Locale locale : localesChain) {
+        Locale local2Add = null;
+        for (Locale locale : locale2localesChain.get(currentLocale)) {
             Object currentValue = fakeValuesInterfaceMap.get(locale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
@@ -237,10 +260,14 @@ public class FakeValuesService {
             }
             result = currentValue;
             if (result != null) {
+                local2Add = locale;
+                key2fetchedObject.putIfAbsent(local2Add, new HashMap<>());
                 break;
             }
         }
-        key2fetchedObject.put(key, result);
+        if (local2Add != null) {
+            key2fetchedObject.get(local2Add).put(key, result);
+        }
         return result;
     }
 
@@ -417,11 +444,12 @@ public class FakeValuesService {
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
     public String resolve(String key, Object current, Faker root, Supplier<String> exceptionMessage) {
-        String expression = root == null ? key2Expression.get(key) : null;
+        String expression = root == null ? key2Expression.get(currentLocale).get(key) : null;
         if (expression == null) {
             expression = safeFetch(key, null);
             if (root == null) {
-                key2Expression.put(key, expression);
+                key2Expression.putIfAbsent(currentLocale, new HashMap<>());
+                key2Expression.get(currentLocale).put(key, expression);
             }
         }
 

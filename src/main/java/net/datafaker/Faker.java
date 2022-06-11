@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
 /**
@@ -95,6 +96,21 @@ public class Faker {
     public Locale getLocale() {
         return fakeValuesService.getLocalesChain().isEmpty() || fakeValuesService.getLocalesChain().get(0) == null
             ? Locale.ROOT : fakeValuesService.getLocalesChain().get(0);
+    }
+
+    public <T> T doWith(Callable<T> callable, Locale locale) {
+        final Locale current = fakeValuesService.getCurrentLocale();
+        T result;
+        try {
+            fakeValuesService.setCurrentLocale(locale);
+            result = callable.call();
+            return result;
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            fakeValuesService.setCurrentLocale(current);
+        }
+
     }
 
     /**
