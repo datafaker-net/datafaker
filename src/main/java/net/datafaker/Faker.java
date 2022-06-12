@@ -96,6 +96,21 @@ public class Faker {
             ? Locale.ROOT : fakeValuesService.getLocalesChain().get(0);
     }
 
+    public <T> T doWith(Callable<T> callable, Locale locale) {
+        final Locale current = fakeValuesService.getCurrentLocale();
+        T result;
+        try {
+            fakeValuesService.setCurrentLocale(locale);
+            result = callable.call();
+            return result;
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            fakeValuesService.setCurrentLocale(current);
+        }
+
+    }
+
     /**
      * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive.
      * <p>
