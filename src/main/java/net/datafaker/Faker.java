@@ -506,6 +506,7 @@ public class Faker {
 
     public DcComics dcComics () {
         return getProvider(DcComics.class, () -> new DcComics(this));
+    }
   
     public Departed departed() {
         return getProvider(Departed.class, () -> new Departed(this));
