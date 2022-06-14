@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class FakeCollection<T> {
@@ -41,11 +40,24 @@ public class FakeCollection<T> {
     }
 
     public static class Builder<T> {
-        private final List<Supplier<T>> suppliers = new ArrayList<>();
+        private final List<Supplier<T>> suppliers;
         private int minLength = -1; // negative means same as maxLength
         private int maxLength = 10;
         private double nullRate = 0d;
         private Faker faker;
+
+        public Builder() {
+            suppliers = new ArrayList<>();
+        }
+
+        public Builder(List<Supplier<T>> list) {
+            suppliers = new ArrayList<>(list);
+        }
+
+        @SafeVarargs
+        public Builder(Supplier<T>... elems) {
+            suppliers = new ArrayList<>(Arrays.asList(elems));
+        }
 
         public Builder<T> faker(Faker faker) {
             this.faker = faker;
@@ -59,6 +71,16 @@ public class FakeCollection<T> {
 
         public Builder<T> maxLen(int maxLength) {
             this.maxLength = maxLength;
+            return this;
+        }
+
+        public Builder<T> len(int length) {
+            return len(length, length);
+        }
+
+        public Builder<T> len(int minLength, int maxLength) {
+            this.maxLength = maxLength;
+            this.minLength = minLength;
             return this;
         }
 
@@ -91,6 +113,10 @@ public class FakeCollection<T> {
             }
 
             return new FakeCollection<>(suppliers, minLength, maxLength, randomService, nullRate);
+        }
+
+        public List<T> generate() {
+            return build().get();
         }
     }
 }

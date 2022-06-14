@@ -95,8 +95,8 @@ public class Finance {
     private static String calculateIbanChecksum(String countryCode, String basicBankAccountNumber) {
         String basis = basicBankAccountNumber + countryCode + "00";
 
-        StringBuilder sb = new StringBuilder();
-        char[] characters = basis.toLowerCase().toCharArray();
+        final char[] characters = basis.toLowerCase().toCharArray();
+        final StringBuilder sb = new StringBuilder(characters.length);
         for (char c : characters) {
             if (Character.isLetter(c)) {
                 sb.append((c - 'a') + 10);
@@ -113,7 +113,7 @@ public class Finance {
         if (inputString.length() >= length) {
             return inputString;
         }
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(length);
         while (sb.length() < length - inputString.length()) {
             sb.append('0');
         }

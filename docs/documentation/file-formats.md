@@ -54,28 +54,24 @@ It's also possible to generate JSON output:
     ``` java
     Faker faker = new Faker();
     String json = Format.toJson(
-                    faker.<Name>collection()
-                        .suppliers(() -> faker.name())
-                        .maxLen(2)
-                        .minLen(2)
-                        .build())
-                    .set("firstName", Name::firstName)
-                    .set("lastName", Name::lastName)
-                    .set("address",
-                        Format.toJson(
-                            faker.<Address>collection()
-                                .suppliers(() -> faker.address())
-                                .maxLen(1)
-                                .minLen(1)
-                                .build())
-                        .set("country", Address::country)
-                        .set("city", Address::city)
-                        .set("zipcode", Address::zipCode)
-                        .set("streetAddress", Address::streetAddress)
-                        .build())
-                    .set("phones", name -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
-                    .build()
-                    .generate();
+                faker.collection(faker::name)
+                    .len(2)
+                    .build())
+            .set("firstName", Name::firstName)
+            .set("lastName", Name::lastName)
+            .set("address",
+                Format.toJson(
+                        faker.collection(faker::address)
+                            .len(1)
+                            .build())
+                    .set("country", Address::country)
+                    .set("city", Address::city)
+                    .set("zipcode", Address::zipCode)
+                    .set("streetAddress", Address::streetAddress)
+                    .build())
+            .set("phones", name -> faker.collection(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+            .build()
+            .generate();
         System.out.println(json);
     ```
 
@@ -93,28 +89,24 @@ Another example with json payload
     ``` java
         Faker faker = new Faker();
         String json = Format.toJson(
-                        faker.<Name>collection().faker(faker)
-                            .suppliers(faker::name)
-                            .maxLen(2)
-                            .minLen(2)
+                faker.collection(faker::name).faker(faker)
+                    .len(2)
+                    .build())
+            .set("firstName", Name::firstName)
+            .set("lastName", Name::lastName)
+            .set("payload", payload ->
+                Format.toJson(
+                        faker.collection(faker::address)
+                            .len(1)
                             .build())
-                        .set("firstName", Name::firstName)
-                        .set("lastName", Name::lastName)
-                        .set("payload", payload ->
-                                    Format.toJson(
-                                            faker.<Address>collection()
-                                            .suppliers(faker::address)
-                                            .maxLen(1)
-                                            .minLen(1)
-                                            .build())
-                                    .set("country", Address::country)
-                                    .set("city", Address::city)
-                                    .set("zipcode", Address::zipCode)
-                                    .set("streetAddress", Address::streetAddress)
-                                    .build().generate())
-                        .set("phones", name -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
-                        .build()
-                        .generate();
+                    .set("country", Address::country)
+                    .set("city", Address::city)
+                    .set("zipcode", Address::zipCode)
+                    .set("streetAddress", Address::streetAddress)
+                    .build().generate())
+            .set("phones", name -> faker.collection(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+            .build()
+            .generate();
         System.out.println(json);
     ```
 

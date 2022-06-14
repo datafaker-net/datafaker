@@ -2,12 +2,15 @@ package net.datafaker;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author CharlotteE67
  */
+@Execution(ExecutionMode.CONCURRENT)
 class PassportTest extends AbstractFakerTest {
 
     @Test
@@ -34,8 +37,8 @@ class PassportTest extends AbstractFakerTest {
 
     @Test
     void testChInValid() {
-        assertThat(faker.passport().chInvalid().matches("E[0-9A-HJ-NP-Z][0-9]{7}")
-            && faker.passport().chInvalid().matches("G[0-9]{8}")).isFalse();
+        assertThat(faker.passport().chInvalid().matches("E[\\dA-HJ-NP-Z]\\d{7}")
+            && faker.passport().chInvalid().matches("G\\d{8}")).isFalse();
     }
 
     @Test
@@ -45,7 +48,7 @@ class PassportTest extends AbstractFakerTest {
 
     @Test
     void testAmValid() {
-        assertThat(faker.passport().amValid().matches("[0-9]{8}")).isTrue();
+        assertThat(faker.passport().amValid()).matches("\\d{8}");
     }
 
     @Test
@@ -55,7 +58,7 @@ class PassportTest extends AbstractFakerTest {
 
     @Test
     void testAmInValid() {
-        assertThat(faker.passport().amInvalid().matches("[0-9]{8}")).isFalse();
+        assertThat(faker.passport().amInvalid()).doesNotMatch("\\d{8}");
     }
 
     @Test

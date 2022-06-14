@@ -108,6 +108,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.company());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.country());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.demographic());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.departed());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dessert());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.device());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dcComics());
@@ -156,6 +157,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountain());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.mountaineering());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.movie());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.music());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.name());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nation());

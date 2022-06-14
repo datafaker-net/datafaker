@@ -6,9 +6,11 @@ import net.datafaker.service.RandomService;
 
 import java.nio.file.Path;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
 /**
@@ -87,9 +89,28 @@ public class Faker {
         return new Faker(locale, random);
     }
 
-    Locale getLocale() {
+    /**
+     * Returns the internal locale being used, or the ROOT locale if no locale has been set.
+     * @return Returns locale being used
+     */
+    public Locale getLocale() {
         return fakeValuesService.getLocalesChain().isEmpty() || fakeValuesService.getLocalesChain().get(0) == null
             ? Locale.ROOT : fakeValuesService.getLocalesChain().get(0);
+    }
+
+    public <T> T doWith(Callable<T> callable, Locale locale) {
+        final Locale current = fakeValuesService.getCurrentLocale();
+        T result;
+        try {
+            fakeValuesService.setCurrentLocale(locale);
+            result = callable.call();
+            return result;
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            fakeValuesService.setCurrentLocale(current);
+        }
+
     }
 
     /**
@@ -284,6 +305,15 @@ public class Faker {
         return new FakeCollection.Builder<T>().faker(this);
     }
 
+    @SafeVarargs
+    public final <T> FakeCollection.Builder<T> collection(Supplier<T>... suppliers) {
+        return new FakeCollection.Builder<>(suppliers).faker(this);
+    }
+
+    public final <T> FakeCollection.Builder<T> collection(List<Supplier<T>> suppliers) {
+        return new FakeCollection.Builder<>(suppliers).faker(this);
+    }
+
     public Address address() {
         return getProvider(Address.class, () -> new Address(this));
     }
@@ -476,6 +506,9 @@ public class Faker {
 
     public DcComics dcComics () {
         return getProvider(DcComics.class, () -> new DcComics(this));
+  
+    public Departed departed() {
+        return getProvider(Departed.class, () -> new Departed(this));
     }
 
     public Dessert dessert() {
@@ -694,6 +727,10 @@ public class Faker {
 
     public Mountaineering mountaineering() {
         return getProvider(Mountaineering.class, () -> new Mountaineering(this));
+    }
+
+    public Movie movie() {
+        return getProvider(Movie.class, () -> new Movie(this));
     }
 
     public Music music() {

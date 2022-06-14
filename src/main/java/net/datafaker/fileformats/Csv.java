@@ -41,9 +41,15 @@ public class Csv<T> {
         }
 
         List<T> res = collection == null ? null : collection.get();
-        for (int line = 0; line < (res == null ? limit : limit != -1 ? Math.min(limit, res.size()) : res.size()); line++) {
+        final int initialLength = sb.length();
+        int maxLength = 0;
+        final int totalLines = (res == null ? limit : limit != -1 ? Math.min(limit, res.size()) : res.size());
+        for (int line = 0; line < totalLines; line++) {
             int rowNum = line;
+            int current = sb.length();
             addLine(sb, integer -> columns.get(integer).getValue(res == null || res.isEmpty() ? null : res.get(rowNum)));
+            maxLength = Math.max(maxLength, sb.length() - current);
+            sb.ensureCapacity(initialLength + maxLength * totalLines);
         }
         return sb.toString();
     }

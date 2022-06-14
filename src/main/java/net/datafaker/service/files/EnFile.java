@@ -75,6 +75,7 @@ public class EnFile {
         "dc_comics.yml",
         "dark_soul.yml",
         "demographic.yml",
+        "departed.yml",
         "dessert.yml",
         "device.yml",
         "disease.yml",
