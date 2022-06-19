@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * @since 0.8.0
  */
@@ -7,8 +9,7 @@ public class Name {
     private final Faker faker;
 
     /**
-     * Internal constructor, not to be used by clients.  Instances of {@link Name} should be accessed via
-     * {@link Faker#name()}.
+     * Internal constructor, not to be used by clients.
      */
     protected Name(Faker faker) {
         this.faker = faker;

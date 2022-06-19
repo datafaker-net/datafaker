@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * A class for generating random value of ResidentEvil series.
  *
@@ -30,20 +32,20 @@ public class ResidentEvil {
      * @return A random equipment string of ResidentEvil series, which includes weapons and other items.
      */
     public String equipment() {
-        return faker.fakeValuesService().resolve("games.resident_evil.equipments", this, faker);
+        return faker.resolve("games.resident_evil.equipments");
     }
 
     /**
      * @return A random location string of ResidentEvil series.
      */
     public String location() {
-        return faker.fakeValuesService().resolve("games.resident_evil.locations", this, faker);
+        return faker.resolve("games.resident_evil.locations");
     }
 
     /**
      * @return A random creature string of ResidentEvil series.
      */
     public String creature() {
-        return faker.fakeValuesService().resolve("games.resident_evil.creatures", this, faker);
+        return faker.resolve("games.resident_evil.creatures");
     }
 }

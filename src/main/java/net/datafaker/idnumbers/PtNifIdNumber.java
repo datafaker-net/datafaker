@@ -1,6 +1,7 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.Faker;
+import net.datafaker.core.Faker;
+import net.datafaker.Number;
 
 /**
  * Portuguese VAT identification number (NIF)
@@ -18,7 +19,8 @@ public class PtNifIdNumber {
         {"45", "70", "71", "72", "74", "75", "77", "79", "90", "91", "98", "99"};
 
     public String getInvalid(final Faker faker) {
-        String digits = faker.number().digits(8);
+        Number numberProvider = faker.getProvider(Number.class, () -> new Number(faker));
+        String digits = numberProvider.digits(8);
         int digitSum = calculateDigitSum(digits);
         // by adding 5 to a valid checksum, we should invalidate
         // by having the wrong checksum or just the wrong number of digits
@@ -27,14 +29,16 @@ public class PtNifIdNumber {
 
     public String getValid(final Faker faker) {
         String digits;
+        Number numberProvider = faker.getProvider(Number.class, () -> new Number(faker));
+
         if (faker.random().nextBoolean()) {
-            int i = faker.number().numberBetween(0, validFirstDigits.length - 1);
+            int i = numberProvider.numberBetween(0, validFirstDigits.length - 1);
             char firstDigit = validFirstDigits[i];
-            digits = firstDigit + faker.number().digits(7);
+            digits = firstDigit + numberProvider.digits(7);
         } else {
-            int i = faker.number().numberBetween(0, validFirstDoubleDigits.length - 1);
+            int i = numberProvider.numberBetween(0, validFirstDoubleDigits.length - 1);
             String firstDoubleDigit = validFirstDoubleDigits[i];
-            digits = firstDoubleDigit + faker.number().digits(6);
+            digits = firstDoubleDigit + numberProvider.digits(6);
         }
         int digitSum = calculateDigitSum(digits);
         return digits + digitSum;

@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * @since 0.8.0
  */
@@ -10,9 +12,11 @@ public class Music {
     private static final String[] CHORD_TYPES = new String[]{"", "maj", "6", "maj7", "m", "m7", "-7", "7", "dom7", "dim", "dim7", "m7b5"};
 
     private final Faker faker;
+    private final Options options;
 
-    protected Music(Faker faker) {
+    public Music(Faker faker) {
         this.faker = faker;
+        this.options = faker.getProvider(Options.class, () -> new Options(faker));
     }
 
     public String instrument() {
@@ -20,11 +24,11 @@ public class Music {
     }
 
     public String key() {
-        return faker.options().option(KEYS) + faker.options().option(KEY_VARIANTS);
+        return options.option(KEYS) + options.option(KEY_VARIANTS);
     }
 
     public String chord() {
-        return key() + faker.options().option(CHORD_TYPES);
+        return key() + options.option(CHORD_TYPES);
     }
 
     public String genre() {

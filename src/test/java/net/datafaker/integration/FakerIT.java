@@ -58,14 +58,14 @@ class FakerIT {
         exceptions.put(new Locale("pt", "Br", "x2"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
     }
 
-    private void init(Locale locale, Long seed) {
+    private void init(Locale locale, Random random) {
         this.locale = locale;
-        if (locale != null && seed != null) {
-            faker = new Faker(locale, seed);
+        if (locale != null && random != null) {
+            faker = new Faker(locale, random);
         } else if (locale != null) {
             faker = new Faker(locale);
-        } else if (seed != null) {
-            faker = new Faker(seed);
+        } else if (random != null) {
+            faker = new Faker(random);
         } else {
             faker = new Faker();
         }
@@ -73,8 +73,8 @@ class FakerIT {
 
     @ParameterizedTest
     @MethodSource("dataParameters")
-    void testAllFakerMethodsThatReturnStrings(Locale locale, Long seed) throws Exception {
-        init(locale, seed);
+    void testAllFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
+        init(locale, random);
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker);
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.address());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.ancient());
@@ -227,8 +227,8 @@ class FakerIT {
 
     @ParameterizedTest
     @MethodSource("dataParameters")
-    void testExceptionsNotCoveredInAboveTest(Locale locale, Long seed) {
-        init(locale, seed);
+    void testExceptionsNotCoveredInAboveTest(Locale locale, Random random) {
+        init(locale, random);
         assertThat(faker.bothify("####???")).isNotNull();
         assertThat(faker.letterify("????")).isNotNull();
         assertThat(faker.numerify("####")).isNotNull();
@@ -247,12 +247,12 @@ class FakerIT {
 
     private static Stream<Arguments> dataParameters() {
         List<Arguments> arguments = new ArrayList<>();
-        arguments.add(Arguments.of(Locale.ENGLISH, new Random().nextLong()));
+        arguments.add(Arguments.of(Locale.ENGLISH, new Random()));
         arguments.add(Arguments.of(new Locale("pt-BR"), null));
         arguments.add(Arguments.of(new Locale("pt-br"), null));
         arguments.add(Arguments.of(new Locale("Pt_br"), null));
         arguments.add(Arguments.of(new Locale("pt", "Br", "x2"), null));
-        arguments.add(Arguments.of(null, new Random().nextLong()));
+        arguments.add(Arguments.of(null, new Random()));
         arguments.add(Arguments.of(null, null));
 
         String[] ymlFiles = new File("./src/main/resources").list();

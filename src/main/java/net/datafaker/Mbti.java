@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 public class Mbti {
     private final Faker faker;
     private final String choice;

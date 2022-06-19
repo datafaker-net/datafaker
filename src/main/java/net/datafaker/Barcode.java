@@ -1,13 +1,17 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * @since 0.9.0
  */
 public class Barcode {
     private final Faker faker;
+    private final Number numberProvider;
 
     public Barcode(Faker faker) {
         this.faker = faker;
+        numberProvider = faker.getProvider(Number.class, () -> new Number(faker));
     }
 
     public long ean13() {
@@ -49,16 +53,16 @@ public class Barcode {
         long first = 0;
         switch (length) {
             case 13:
-                first = this.faker.number().randomNumber(12, true);
+                first = numberProvider.randomNumber(12, true);
                 break;
             case 8:
-                first = this.faker.number().randomNumber(7, true);
+                first = numberProvider.randomNumber(7, true);
                 break;
             case 14:
-                first = this.faker.number().randomNumber(13, true);
+                first = numberProvider.randomNumber(13, true);
                 break;
             case 12:
-                first = this.faker.number().randomNumber(11, true);
+                first = numberProvider.randomNumber(11, true);
                 break;
         }
         char[] array = String.valueOf(first).toCharArray();

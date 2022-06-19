@@ -1,6 +1,8 @@
 package net.datafaker;
 
 
+import net.datafaker.core.Faker;
+
 import java.util.Locale;
 
 /**
@@ -9,9 +11,11 @@ import java.util.Locale;
 class Coffee {
 
     private final Faker faker;
+    private final Options optionsProvider;
 
     protected Coffee(Faker faker) {
         this.faker = faker;
+        optionsProvider = faker.getProvider(Options.class, () -> new Options(faker));
     }
 
     public String country() {
@@ -19,7 +23,7 @@ class Coffee {
     }
 
     public String region() {
-        return region(faker.options().option(Coffee.Country.class));
+        return region(optionsProvider.option(Coffee.Country.class));
     }
 
     public String region(Coffee.Country country) {

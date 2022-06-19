@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 import java.util.UUID;
 
 /**
@@ -8,9 +10,11 @@ import java.util.UUID;
 public class Aws {
 
     private final Faker faker;
+    private final App appProvider;
 
     protected Aws(Faker faker) {
         this.faker = faker;
+        this.appProvider = faker.getProvider(App.class, () -> new App(faker));
     }
 
     public String region() {
@@ -69,7 +73,7 @@ public class Aws {
     }
 
     private String appName() {
-        return faker.app().name().toLowerCase().replaceAll("\\W+", "");
+        return appProvider.name().toLowerCase().replaceAll("\\W+", "");
     }
 
     private String randHex() {

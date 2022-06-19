@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * issue for: https://github.com/datafaker-net/datafaker/issues/159
  *

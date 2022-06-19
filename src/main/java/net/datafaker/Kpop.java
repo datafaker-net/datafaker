@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * K-pop, short for Korean popular music, is a genre of music originating in South Korea as part of South Korean culture.
  *

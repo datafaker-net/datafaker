@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Seinfeld is an American sitcom television series created by Larry David and Jerry Seinfeld.
  *

@@ -1,14 +1,18 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * @since 0.8.0
  */
 public class Dune {
 
     private final Faker faker;
+    private final Options options;
 
     protected Dune(Faker faker) {
         this.faker = faker;
+        this.options = faker.getProvider(Options.class, () -> new Options(faker));
     }
 
     public String character() {
@@ -24,7 +28,7 @@ public class Dune {
     }
 
     public String quote() {
-        return quote(faker.options().option(Dune.Quote.class));
+        return quote(options.option(Dune.Quote.class));
     }
 
     public String quote(Quote quote) {
@@ -32,7 +36,7 @@ public class Dune {
     }
 
     public String saying() {
-        return saying(faker.options().option(Dune.Saying.class));
+        return saying(options.option(Dune.Saying.class));
     }
 
     public String saying(Saying saying) {

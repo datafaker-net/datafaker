@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.SortedSet;
@@ -11,10 +13,12 @@ import java.util.TreeSet;
 public class Commerce {
     private final Faker faker;
     private final DecimalFormatSymbols decimalFormatSymbols;
+    private final Number numberProvider;
 
     protected Commerce(Faker faker) {
         this.faker = faker;
         decimalFormatSymbols = new DecimalFormatSymbols(faker.getLocale());
+        numberProvider = faker.getProvider(Number.class, () -> new Number(faker));
     }
 
     public String department() {
@@ -71,6 +75,6 @@ public class Commerce {
     public String promotionCode(int digits) {
         return String.join(faker.resolve("commerce.promotion_code.adjective"),
             faker.resolve("commerce.promotion_code.noun"),
-            faker.number().digits(digits));
+            numberProvider.digits(digits));
     }
 }

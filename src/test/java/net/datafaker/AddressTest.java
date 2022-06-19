@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -112,14 +113,19 @@ class AddressTest extends AbstractFakerTest {
     @Test
     void testCityWithLocaleFranceAndSeed() {
         long seed = 1L;
-        Faker firstFaker = new Faker(Locale.FRANCE, seed);
-        Faker secondFaker = new Faker(Locale.FRANCE, seed);
+        Faker firstFaker = new Faker(Locale.FRANCE, new Random(seed));
+        Faker secondFaker = new Faker(Locale.FRANCE, new Random(seed));
         assertThat(firstFaker.address().city()).isEqualTo(secondFaker.address().city());
     }
 
     @Test
     void testFullAddress() {
         assertThat(faker.address().fullAddress()).isNotEmpty();
+    }
+
+    @Test
+    void testStreetName() {
+        assertThat(faker.address().streetName()).isNotEmpty();
     }
 
     @Test

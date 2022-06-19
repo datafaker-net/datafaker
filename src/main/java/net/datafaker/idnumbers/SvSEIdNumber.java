@@ -1,10 +1,10 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.Faker;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import net.datafaker.core.Faker;
 
 /**
  * Implementation based on the definition at

@@ -1,6 +1,8 @@
 package net.datafaker;
 
 
+import net.datafaker.core.Faker;
+
 /**
  * A class for generating random value of soul Knight
  *

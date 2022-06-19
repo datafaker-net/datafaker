@@ -1,8 +1,9 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.Faker;
+import java.util.Arrays;
+import java.util.List;
 
-import java.util.*;
+import net.datafaker.core.Faker;
 
 /**
  * Implementation based on the definition at

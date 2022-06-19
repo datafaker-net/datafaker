@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -11,9 +13,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class Sip {
     private final Faker faker;
     private final int[] portPool = new int[5001];
+    private final Name nameProvider;
+    private final Internet internetProvider;
 
     public Sip(final Faker faker) {
         this.faker = faker;
+        this.nameProvider = faker.getProvider(Name.class, () -> new Name(faker));
+        this.internetProvider = faker.getProvider(Internet.class, () -> new Internet(faker));
+
         for (int i = 0; i < portPool.length; i++) {
             portPool[i] = 40000 + 2 * i;
         }
@@ -183,9 +190,9 @@ public class Sip {
      */
     public String bodyString() {
         return "v=0\n" +
-            "o=" + faker.name().firstName() + " " + faker.internet().uuid() + " IN IP4 " + faker.internet().domainName() + "\n" +
+            "o=" + nameProvider.firstName() + " " + internetProvider.uuid() + " IN IP4 " + internetProvider.domainName() + "\n" +
             "s=-\n" +
-            "c=IN IP4 " + faker.internet().ipV4Address() + "\n" +
+            "c=IN IP4 " + internetProvider.ipV4Address() + "\n" +
             "t=0 0\n" +
             "m=audio " + rtpPort() + " RTP/AVP 0\n" +
             "a=rtpmap:0 PCMU/8000";
@@ -206,6 +213,6 @@ public class Sip {
      * @return a valid name address String, e.g. {@code <sip:fakeName@10.1.2.3:5060>}.
      */
     public String nameAddress() {
-        return "<sip:" + faker.name().firstName() + "@" + faker.internet().ipV4Address() + ":" + messagingPort() + ">";
+        return "<sip:" + nameProvider.firstName() + "@" + internetProvider.ipV4Address() + ":" + messagingPort() + ">";
     }
 }

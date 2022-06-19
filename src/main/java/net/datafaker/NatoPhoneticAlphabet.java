@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * The NATO phonetic alphabet is the most widely used radiotelephone spelling alphabet.
  *

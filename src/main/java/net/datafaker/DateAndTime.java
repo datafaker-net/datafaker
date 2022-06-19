@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;

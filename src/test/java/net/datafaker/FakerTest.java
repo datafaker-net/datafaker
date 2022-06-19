@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -229,8 +230,8 @@ class FakerTest extends AbstractFakerTest {
         long seed = 1L;
         String regex = "\\d";
 
-        String firstResult = new Faker(seed).regexify(regex);
-        String secondResult = new Faker(seed).regexify(regex);
+        String firstResult = new Faker(new Random(seed)).regexify(regex);
+        String secondResult = new Faker(new Random(seed)).regexify(regex);
 
         assertThat(secondResult).isEqualTo(firstResult);
     }
@@ -269,8 +270,8 @@ class FakerTest extends AbstractFakerTest {
     void fakerInstanceCanBeAcquiredViaUtilityMethods() {
         assertThat(Faker.instance()).isInstanceOf(Faker.class);
         assertThat(Faker.instance(Locale.CANADA)).isInstanceOf(Faker.class);
-        assertThat(Faker.instance(1)).isInstanceOf(Faker.class);
-        assertThat(Faker.instance(Locale.CHINA, 2)).isInstanceOf(Faker.class);
+        assertThat(Faker.instance(new Random(1))).isInstanceOf(Faker.class);
+        assertThat(Faker.instance(Locale.CHINA, new Random(2))).isInstanceOf(Faker.class);
     }
 
     @Test

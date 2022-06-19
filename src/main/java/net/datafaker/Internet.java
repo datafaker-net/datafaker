@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
 import net.datafaker.service.FakerIDN;
 import net.datafaker.service.RandomService;
 
@@ -20,13 +21,17 @@ public class Internet {
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
     private static final Pattern COLON = Pattern.compile(":");
     private final Faker faker;
+    private final Name nameProvider;
+    private final Lorem loremProvider;
 
     protected Internet(Faker faker) {
         this.faker = faker;
+        this.nameProvider = faker.getProvider(Name.class, () -> new Name(faker));
+        this.loremProvider = faker.getProvider(Lorem.class, () -> new Lorem(faker));
     }
 
     public String emailAddress() {
-        return emailAddress(faker.name().username());
+        return emailAddress(nameProvider.username());
     }
 
     public String emailAddress(String localPart) {
@@ -34,7 +39,7 @@ public class Internet {
     }
 
     public String safeEmailAddress() {
-        return safeEmailAddress(faker.name().username());
+        return safeEmailAddress(nameProvider.username());
     }
 
     public String safeEmailAddress(String localPart) {
@@ -60,7 +65,7 @@ public class Internet {
     }
 
     public String domainWord() {
-        return FakerIDN.toASCII(SINGLE_QUOTE.matcher(faker.name().lastName().toLowerCase()).replaceAll(""));
+        return FakerIDN.toASCII(SINGLE_QUOTE.matcher(nameProvider.lastName().toLowerCase()).replaceAll(""));
     }
 
     public String domainSuffix() {
@@ -72,7 +77,7 @@ public class Internet {
             "www",
             ".",
             FakerIDN.toASCII(
-                SINGLE_QUOTE.matcher(faker.name().firstName().toLowerCase()).replaceAll("") +
+                SINGLE_QUOTE.matcher(nameProvider.firstName().toLowerCase()).replaceAll("") +
                     "-" +
                     domainWord()
             ),
@@ -147,7 +152,7 @@ public class Internet {
     }
 
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        return faker.lorem().characters(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
+        return loremProvider.characters(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
 
     /**
@@ -328,7 +333,7 @@ public class Internet {
      * @return a slug using '_' as the word separator and two {@link Lorem} words as the values
      */
     public String slug() {
-        return slug(faker.lorem().words(2), "_");
+        return slug(loremProvider.words(2), "_");
     }
 
     /**
@@ -341,7 +346,7 @@ public class Internet {
             ? "_"
             : glueOrNull;
         final List<String> words = wordsOrNull == null
-            ? faker.lorem().words(2)
+            ? loremProvider.words(2)
             : wordsOrNull;
 
         final StringBuilder slug = new StringBuilder();

@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -9,7 +11,7 @@ import java.math.RoundingMode;
 public class Number {
     private final Faker faker;
 
-    protected Number(Faker faker) {
+    public Number(Faker faker) {
         this.faker = faker;
     }
 

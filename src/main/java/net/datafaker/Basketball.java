@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Generate random components of basketball game, e.g. teams, coaches, positions and players.
  *

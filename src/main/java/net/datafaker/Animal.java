@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
 import net.datafaker.internal.helper.WordUtils;
 
 /**
