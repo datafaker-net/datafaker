@@ -9,10 +9,10 @@ public class Avatar {
 
     protected Avatar(Faker faker) {
         this.faker = faker;
-        this.baseUrl = "https://s3.amazonaws.com/uifaces/faces/twitter/";
+        this.baseUrl = "https://robohash.org/";
     }
 
     public String image() {
-        return baseUrl + faker.fakeValuesService().resolve("internet.avatar", this, faker);
+        return baseUrl + faker.fakeValuesService().regexify("[a-z]{8}") + ".png";
     }
 }
