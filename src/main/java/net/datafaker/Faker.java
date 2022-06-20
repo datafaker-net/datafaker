@@ -310,6 +310,10 @@ public class Faker extends BaseFaker {
         return getProvider(Demographic.class, () -> new Demographic(this));
     }
 
+    public DcComics dcComics () {
+        return getProvider(DcComics.class, () -> new DcComics(this));
+    }
+  
     public Departed departed() {
         return getProvider(Departed.class, () -> new Departed(this));
     }
