@@ -80,7 +80,7 @@ class InternetTest extends AbstractFakerTest {
 
     @Test
     void testAvatar() {
-        assertThat(faker.internet().avatar()).matches("http.*/[^/]+/128.jpg$");
+        assertThat(faker.internet().avatar()).matches("^https://robohash.org/[a-z]{8}.png$");
     }
 
     @Test

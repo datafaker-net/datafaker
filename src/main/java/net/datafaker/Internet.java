@@ -82,15 +82,11 @@ public class Internet {
     }
 
     /**
-     * Generates a random avatar url based on a collection of profile pictures of real people. All this avatar have been
-     * authorized by its awesome users to be used on live websites (not just mockups). For more information, please
-     * visit: <a href="http://uifaces.com/authorized">http://uifaces.com/authorized</a>
-     *
-     * @return an url to a random avatar image.
-     * @see <a href="http://uifaces.com/authorized">Authorized UI Faces</a>
+     * @deprecated use faker.avatar.image() instead
      */
+    @Deprecated
     public String avatar() {
-        return "https://s3.amazonaws.com/uifaces/faces/twitter/" + faker.fakeValuesService().resolve("internet.avatar", this, faker);
+        return faker.avatar().image();
     }
 
     /**
