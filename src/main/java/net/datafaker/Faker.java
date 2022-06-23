@@ -110,8 +110,39 @@ public class Faker {
         } finally {
             fakeValuesService.setCurrentLocale(current);
         }
-
     }
+
+    public <T> T doWith(Callable<T> callable, long seed) {
+        final RandomService current = fakeValuesService.getCurrentRandomService();
+        T result;
+        try {
+            fakeValuesService.setCurrentRandomService(new RandomService(new Random(seed)));
+            result = callable.call();
+            return result;
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            fakeValuesService.setCurrentRandomService(current);
+        }
+    }
+
+    public <T> T doWith(Callable<T> callable, Locale locale, long seed) {
+        final Locale currentLocale = fakeValuesService.getCurrentLocale();
+        final RandomService currentRandomService = fakeValuesService.getCurrentRandomService();
+        T result;
+        try {
+            fakeValuesService.setCurrentRandomService(new RandomService(new Random(seed)));
+            fakeValuesService.setCurrentLocale(locale);
+            result = callable.call();
+            return result;
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            fakeValuesService.setCurrentRandomService(currentRandomService);
+            fakeValuesService.setCurrentLocale(currentLocale);
+        }
+    }
+
 
     /**
      * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive.
