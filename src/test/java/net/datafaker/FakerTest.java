@@ -277,12 +277,38 @@ class FakerTest extends AbstractFakerTest {
     @Test
     void differentLocalesTest() {
         Callable<String> stringCallable = () -> faker.name().firstName();
-        faker.name().firstName();
         faker.doWith(stringCallable, new Locale("ru_RU"));
         faker.doWith(stringCallable, Locale.GERMAN);
         faker.doWith(stringCallable, Locale.SIMPLIFIED_CHINESE);
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.doWith(stringCallable ,new Locale("ru_RU"))).matches("[а-яА-ЯЁё ]+");
+            assertThat(faker.doWith(stringCallable, new Locale("ru_RU"))).matches("[а-яА-ЯЁё ]+");
         }
+    }
+
+    @Test
+    void differentSeeds() {
+        Callable<String> stringCallable = () -> faker.name().firstName();
+
+        assertThat(faker.doWith(stringCallable, 123))
+            .isEqualTo(faker.doWith(stringCallable, 123));
+        assertThat(faker.doWith(stringCallable, 987))
+            .isNotEqualTo(faker.doWith(stringCallable, 123))
+            .isEqualTo(faker.doWith(stringCallable, 987));
+
+        assertThatThrownBy(
+            () -> faker.doWith(() -> {
+                throw new Exception();
+            }, 123))
+            .isInstanceOf(RuntimeException.class);
+        assertThat(faker.doWith(stringCallable, Locale.CANADA, 123))
+            .isEqualTo(faker.doWith(stringCallable, Locale.CANADA, 123));
+        assertThat(faker.doWith(stringCallable, Locale.CANADA, 987))
+            .isNotEqualTo(faker.doWith(stringCallable, Locale.CANADA, 123))
+            .isEqualTo(faker.doWith(stringCallable, Locale.CANADA, 987));
+        assertThatThrownBy(
+            () -> faker.doWith(() -> {
+                throw new Exception();
+            }, Locale.ENGLISH, 123))
+            .isInstanceOf(RuntimeException.class);
     }
 }

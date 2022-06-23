@@ -42,7 +42,7 @@ public class FakeValuesService {
 
     private static final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
     private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
-    private final RandomService randomService;
+    private RandomService currentRandomService;
     private Locale currentLocale;
 
     private final Map<Locale, List<Locale>> locale2localesChain;
@@ -81,12 +81,18 @@ public class FakeValuesService {
         if (locale == null) {
             throw new IllegalArgumentException("locale is required");
         }
-        this.randomService = randomService;
+        this.currentRandomService = randomService;
         this.locale2localesChain = new HashMap<>();
         setCurrentLocale(locale);
     }
 
+    public void setCurrentRandomService(RandomService randomService) {
+        Objects.requireNonNull(randomService);
+        this.currentRandomService = randomService;
+    }
+
     public void setCurrentLocale(Locale locale) {
+        Objects.requireNonNull(locale);
         currentLocale = normalizeLocale(locale);
         if (locale2localesChain.containsKey(currentLocale)) {
             return;
@@ -174,6 +180,10 @@ public class FakeValuesService {
         return currentLocale;
     }
 
+    public RandomService getCurrentRandomService() {
+        return currentRandomService;
+    }
+
     /**
      * Fetch a random value from an array item specified by the key
      */
@@ -183,7 +193,7 @@ public class FakeValuesService {
         if (o instanceof ArrayList)
             valuesArray = (ArrayList<?>) o;
         return valuesArray == null || valuesArray.isEmpty()
-            ? null : valuesArray.get(randomService.nextInt(valuesArray.size()));
+            ? null : valuesArray.get(getCurrentRandomService().nextInt(valuesArray.size()));
     }
 
     /**
@@ -218,7 +228,7 @@ public class FakeValuesService {
             if (values.size() == 0) {
                 return defaultIfNull;
             }
-            return values.get(randomService.nextInt(values.size()));
+            return values.get(getCurrentRandomService().nextInt(values.size()));
         } else if (isSlashDelimitedRegex(o.toString())) {
             return String.format("#{regexify '%s'}", trimRegexSlashes(o.toString()));
         } else {
@@ -310,7 +320,7 @@ public class FakeValuesService {
         char[] res = new char[numberString.length()];
         for (int i = 0; i < numberString.length(); i++) {
             if (numberString.charAt(i) == '#') {
-                res[i] = DIGITS.charAt(randomService.nextInt(10));
+                res[i] = DIGITS.charAt(getCurrentRandomService().nextInt(10));
             } else {
                 res[i] = numberString.charAt(i);
             }
@@ -342,7 +352,7 @@ public class FakeValuesService {
         Generex generex = expression2generex.get(regex);
         if (generex == null) {
             generex = new Generex(regex);
-            generex.setSeed(randomService.nextLong());
+            generex.setSeed(getCurrentRandomService().nextLong());
             expression2generex.put(regex, generex);
         }
         return generex.random();
@@ -361,7 +371,7 @@ public class FakeValuesService {
             if (Character.isLetter(chars[i])) {
                 chars[i] = letterify("?", Character.isUpperCase(chars[i])).charAt(0);
             } else if (Character.isDigit(chars[i])) {
-                chars[i] = DIGITS.charAt(randomService.nextInt(10));
+                chars[i] = DIGITS.charAt(getCurrentRandomService().nextInt(10));
             }
         }
 
@@ -407,7 +417,7 @@ public class FakeValuesService {
             if (optionsMap.containsKey(letterString.charAt(i))) {
                 final String[] options = optionsMap.get(letterString.charAt(i));
                 Objects.requireNonNull(options, "Array with available options should be non null");
-                sb.append(options[randomService.nextInt(options.length)]);
+                sb.append(options[getCurrentRandomService().nextInt(options.length)]);
             } else {
                 sb.append(letterString.charAt(i));
             }
@@ -419,7 +429,7 @@ public class FakeValuesService {
         final char[] res = letterString.toCharArray();
         for (int i = 0; i < letterString.length(); i++) {
             if (letterString.charAt(i) == '?') {
-                res[i] = (char) (baseChar + randomService.nextInt(26)); // a-z
+                res[i] = (char) (baseChar + getCurrentRandomService().nextInt(26)); // a-z
             }
         }
 
