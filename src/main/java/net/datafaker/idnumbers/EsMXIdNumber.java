@@ -2,7 +2,8 @@ package net.datafaker.idnumbers;
 
 import net.datafaker.Faker;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Implementation based on the definition at
@@ -10,14 +11,28 @@ import java.util.*;
  */
 public class EsMXIdNumber {
 
-    private final String[] consonant = {"B", "C", "C", "D", "F",
+    private static final String[] CHA = new String[]{
+        "HEFA560427MVZRRL04",
+        "DKEM193827HDQWEF05",
+        "KAKS142444HNSSFAW6",
+        "KSDF414424HNSDFAW6",
+        "AKDF414424MSDSFAW6",
+        "ADKF144424MNSDFCD6",
+        "MYDF144424MDNFAW37",
+        "AKKS414424MDAFDFW6",
+        "WKDF144244HSDCNFA2",
+        "AKSK414244HSDATT56",
+        "QWDF414424HNSDVAW4",
+        "AKDF144424MDEFVFA1"
+    };
+    private static final String[] CONSONANT = {"B", "C", "C", "D", "F",
         "G", "H", "J", "K", "L", "L", "M", "N", "N",
         "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"
     };
 
-    private final String[] vowel = {"A", "E", "I", "O", "U"};
+    private static final String[] VOWEL = {"A", "E", "I", "O", "U"};
 
-    private final String[] states = {"AG", "BC", "BS", "CM", "CS",
+    private static final String[] STATES = {"AG", "BC", "BS", "CM", "CS",
         "CH", "CO", "CL", "DF", "DG", "GT", "GR",
         "HG", "JA", "EM", "MI", "MO", "NA", "NL",
         "OA", "PU", "QT", "QR", "SL", "SI", "SO",
@@ -34,19 +49,19 @@ public class EsMXIdNumber {
 
         String sex = new String[]{"H", "M"}[faker.random().nextInt(2)];
         String birthDay = getBirthday(faker);
-        String state = states[faker.random().nextInt(33)];
+        String state = faker.options().option(STATES);
 
-        String c1 = consonant[faker.random().nextInt(24)];
-        String c2 = consonant[faker.random().nextInt(24)];
-        String c3 = consonant[faker.random().nextInt(24)];
+        String c1 = faker.options().option(CONSONANT);
+        String c2 = faker.options().option(CONSONANT);
+        String c3 = faker.options().option(CONSONANT);
 
-        String v1 = vowel[faker.random().nextInt(5)];
-        String v2 = vowel[faker.random().nextInt(5)];
-        String v3 = vowel[faker.random().nextInt(5)];
-        String v4 = vowel[faker.random().nextInt(5)];
+        String v1 = faker.options().option(VOWEL);
+        String v2 = faker.options().option(VOWEL);
+        String v3 = faker.options().option(VOWEL);
+        String v4 = faker.options().option(VOWEL);
 
         String ranNum = (Integer.parseInt(birthDay.substring(0, 4)) <= 1999) ?
-            "0" : consonant[faker.random().nextInt(24)];
+            "0" : faker.options().option(CONSONANT);
 
         String ssn = c1 + v1 + c2 + c3 + birthDay.substring(2, 8) + sex + state + v2 + v3 + v4 + ranNum;
         ssn = ssn + getChecksum(ssn);
@@ -61,21 +76,7 @@ public class EsMXIdNumber {
      * @return A invalid MEX CURP.
      */
     public String getWrong(Faker faker) {
-        String[] cha = {
-            "HEFA560427MVZRRL04",
-            "DKEM193827HDQWEF05",
-            "KAKS142444HNSSFAW6",
-            "KSDF414424HNSDFAW6",
-            "AKDF414424MSDSFAW6",
-            "ADKF144424MNSDFCD6",
-            "MYDF144424MDNFAW37",
-            "AKKS414424MDAFDFW6",
-            "WKDF144244HSDCNFA2",
-            "AKSK414244HSDATT56",
-            "QWDF414424HNSDVAW4",
-            "AKDF144424MDEFVFA1"
-        };
-        return cha[faker.random().nextInt(12)];
+        return faker.options().option(CHA);
     }
 
     /**

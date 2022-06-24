@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class EnZAIdNumber {
 
-    private static final String[] validPattern = {"##########08#", "##########18#"};
+    private static final String[] VALID_PATTERN = {"##########08#", "##########18#"};
 
     /**
      * Generate a valid social security number on faker
@@ -40,7 +40,7 @@ public class EnZAIdNumber {
      */
     public String getInValidSsn(Faker f) {
 
-        String ssn = f.numerify(validPattern[f.random().nextInt(2)]);
+        String ssn = f.numerify(f.options().option(VALID_PATTERN));
         while (validSsn(ssn)) {
             String pattern = getPattern(f);
             ssn = f.numerify(pattern);
@@ -55,7 +55,7 @@ public class EnZAIdNumber {
      * @return a fixed format numeric string
      */
     private String getPattern(Faker faker) {
-        return validPattern[faker.random().nextInt(2)];
+        return faker.options().option(VALID_PATTERN);
     }
 
     /**

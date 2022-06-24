@@ -13,8 +13,8 @@ import net.datafaker.Faker;
  */
 public class PtNifIdNumber {
 
-    private static final Character[] validFirstDigits = {'1', '2', '3', '5', '6', '8'};
-    private static final String[] validFirstDoubleDigits =
+    private static final Character[] VALID_FIRST_DIGITS = {'1', '2', '3', '5', '6', '8'};
+    private static final String[] VALID_FIRST_DOUBLE_DIGITS =
         {"45", "70", "71", "72", "74", "75", "77", "79", "90", "91", "98", "99"};
 
     public String getInvalid(final Faker faker) {
@@ -28,12 +28,10 @@ public class PtNifIdNumber {
     public String getValid(final Faker faker) {
         String digits;
         if (faker.random().nextBoolean()) {
-            int i = faker.number().numberBetween(0, validFirstDigits.length - 1);
-            char firstDigit = validFirstDigits[i];
+            final char firstDigit = faker.options().option(VALID_FIRST_DIGITS);
             digits = firstDigit + faker.number().digits(7);
         } else {
-            int i = faker.number().numberBetween(0, validFirstDoubleDigits.length - 1);
-            String firstDoubleDigit = validFirstDoubleDigits[i];
+            final String firstDoubleDigit = faker.options().option(VALID_FIRST_DOUBLE_DIGITS);
             digits = firstDoubleDigit + faker.number().digits(6);
         }
         int digitSum = calculateDigitSum(digits);

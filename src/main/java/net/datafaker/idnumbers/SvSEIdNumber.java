@@ -13,7 +13,7 @@ import java.util.Date;
  * <a href="https://en.wikipedia.org/wiki/Personal_identity_number_">https://en.wikipedia.org/wiki/Personal_identity_number_</a>(Sweden)
  */
 public class SvSEIdNumber {
-    private static final String[] validPatterns = {"######-####", "######+####"};
+    private static final String[] VALID_PATTERNS = {"######-####", "######+####"};
 
     public String getValidSsn(Faker f) {
         String candidate = "";
@@ -36,7 +36,7 @@ public class SvSEIdNumber {
     }
 
     private String getPattern(Faker faker) {
-        return validPatterns[faker.random().nextInt(2)];
+        return faker.options().option(VALID_PATTERNS);
     }
 
     boolean validSwedishSsn(String ssn) {
