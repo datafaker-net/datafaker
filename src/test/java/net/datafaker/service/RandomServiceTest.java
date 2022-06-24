@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.allOf;
@@ -55,7 +54,7 @@ class RandomServiceTest extends AbstractFakerTest {
 
     @Test
     void predictableRandomRange() {
-        RandomService randomService = new RandomService(new Random(10));
+        RandomService randomService = new RandomService(10);
 
         int i1 = randomService.nextInt();
         int i2 = randomService.nextInt(100);
@@ -116,7 +115,7 @@ class RandomServiceTest extends AbstractFakerTest {
 
     private static Stream<Arguments> randomServiceProvider() {
         return Stream.of(
-            Arguments.of(new RandomService(), new RandomService(new Random()))
+            Arguments.of(new RandomService())
         );
     }
 }

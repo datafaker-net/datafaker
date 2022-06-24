@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers.pt.br;
 
-import net.datafaker.Faker;
+import net.datafaker.core.Faker;
 
 public final class IdNumberGeneratorPtBrUtil {
 

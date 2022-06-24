@@ -1,8 +1,8 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.Faker;
-
 import java.util.regex.Pattern;
+
+import net.datafaker.core.Faker;
 
 public class EnIdNumber {
     private static final Pattern[] INVALID_SSN_PATTERNS = {
@@ -22,9 +22,11 @@ public class EnIdNumber {
                 break;
             }
         }
+
         if (!isValid) {
             ssn = getValidSsn(f);
         }
+        
         return ssn;
     }
 }

@@ -1,11 +1,11 @@
 package net.datafaker.service;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Locale;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 public class LocalePicker {
 

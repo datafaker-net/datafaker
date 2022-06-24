@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.Faker;
+import net.datafaker.core.Faker;
 import net.datafaker.service.RandomService;
 
 import java.util.HashMap;

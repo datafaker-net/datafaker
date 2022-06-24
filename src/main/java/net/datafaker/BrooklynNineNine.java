@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Brooklyn Nine-Nine is an American police procedural comedy television series.
  *

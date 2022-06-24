@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Military ranks.
  *

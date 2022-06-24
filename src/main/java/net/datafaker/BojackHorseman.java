@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Generate random parts in BojackHorseman.
  *

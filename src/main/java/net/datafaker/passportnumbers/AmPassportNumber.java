@@ -1,6 +1,6 @@
 package net.datafaker.passportnumbers;
 
-import net.datafaker.Faker;
+import net.datafaker.core.Faker;
 
 import java.util.regex.Pattern;
 

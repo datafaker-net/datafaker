@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Nigeria, officially the Federal Republic of Nigeria, is a country in West Africa.
  *

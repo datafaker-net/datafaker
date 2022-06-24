@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -9,10 +11,10 @@ import java.security.NoSuchAlgorithmException;
  * @since 0.8.0
  */
 public class Hashing {
-    private final Faker faker;
+    private final Lorem lorem;
 
     protected Hashing(Faker faker) {
-        this.faker = faker;
+        this.lorem = faker.getProvider(Lorem.class, () -> new Lorem(faker));
     }
 
     public String md2() {
@@ -42,7 +44,7 @@ public class Hashing {
     private String generateString(String algorithm) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
-            String characters = faker.lorem().characters();
+            String characters = lorem.characters();
             messageDigest.update(characters.getBytes(StandardCharsets.UTF_8), 0, characters.length());
             return new BigInteger(1, messageDigest.digest()).toString(16);
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {

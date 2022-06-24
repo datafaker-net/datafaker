@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Breaking Bad is an American neo-Western crime drama television series.
  * <p>

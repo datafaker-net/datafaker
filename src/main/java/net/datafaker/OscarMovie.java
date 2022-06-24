@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * The Academy Awards, popularly known as the Oscars, are awards for artistic and technical merit in the film industry.
  *

@@ -2,22 +2,21 @@ package net.datafaker.service;
 
 import java.util.Random;
 
-public class RandomService {
-    private static final Random SHARED_RANDOM = new Random();
-    private final Random random;
+public class RandomService {    
+    private final Random random = new Random();
+    private final long seed;
 
     /**
      * Uses a default shared random.
      */
     public RandomService() {
-        this(SHARED_RANDOM);
+        seed = random.nextLong();
+        random.setSeed(seed);
     }
 
-    /**
-     * @param random If null is passed in, a default Random is assigned
-     */
-    public RandomService(Random random) {
-        this.random = random != null ? random : SHARED_RANDOM;
+    public RandomService(long seed) {
+        this.seed = seed;
+        random.setSeed(seed);
     }
 
     @SuppressWarnings("unused")
@@ -95,5 +94,14 @@ public class RandomService {
 
     public Random getRandomInternal() {
         return random;
+    }
+
+    /**
+     * getSeed
+     * 
+     * @return returns the seed used by the pseudo-random generator associated with this RandomService
+     */
+    public long getSeed(){
+        return seed;
     }
 }

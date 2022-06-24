@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Tron is a 1982 American science fiction action-adventure film.
  *
@@ -8,13 +10,15 @@ package net.datafaker;
 public class Tron {
 
     private final Faker faker;
+    private final Options options;
 
     protected Tron(Faker faker) {
         this.faker = faker;
+        this.options = faker.getProvider(Options.class, () -> new Options(faker));
     }
 
     public String character() {
-        return character(faker.options().option(Character.class));
+        return character(options.option(Character.class));
     }
 
     public String character(Character character) {
@@ -30,7 +34,7 @@ public class Tron {
     }
 
     public String quote() {
-        return quote(faker.options().option(Tron.Quote.class));
+        return quote(options.option(Tron.Quote.class));
     }
 
     public String quote(Tron.Quote quote) {
@@ -46,7 +50,7 @@ public class Tron {
     }
 
     public String alternateCharacterSpelling() {
-        return alternateCharacterSpelling(faker.options().option(Tron.AlternateCharacterSpelling.class));
+        return alternateCharacterSpelling(options.option(Tron.AlternateCharacterSpelling.class));
     }
 
     public String alternateCharacterSpelling(AlternateCharacterSpelling alternateCharacterSpelling) {

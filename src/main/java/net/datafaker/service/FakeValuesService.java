@@ -1,7 +1,7 @@
 package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
-import net.datafaker.Faker;
+import net.datafaker.core.Faker;
 import net.datafaker.fileformats.Csv;
 import net.datafaker.fileformats.Format;
 import net.datafaker.fileformats.Json;
@@ -720,7 +720,7 @@ public class FakeValuesService {
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
         if (dotDirective) {
-            supplier = () -> safeFetch(directive, null);
+            supplier = () -> safeFetch(directive.toLowerCase(), null);
             resolved = supplier.get();
         }
 

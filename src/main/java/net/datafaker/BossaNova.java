@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Bossa nova is a style of samba developed in the late 1950s and early 1960s in Rio de Janeiro, Brazil.
  * It is mainly characterized by a "different beat" that altered the harmonies with the introduction of

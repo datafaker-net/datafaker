@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.stream.Stream;
 public class Options {
     private final Faker faker;
 
-    protected Options(Faker faker) {
+    public Options(Faker faker) {
         this.faker = faker;
     }
 

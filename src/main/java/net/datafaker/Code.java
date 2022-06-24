@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -18,9 +20,13 @@ public class Code {
 
     private static final Pattern HYPHEN = Pattern.compile("-");
     private final Faker faker;
+    private final Number numberProvider;
+    private final Options optionsProvider;
 
     protected Code(Faker faker) {
         this.faker = faker;
+        numberProvider = faker.getProvider(Number.class, () -> new Number(faker));
+        optionsProvider = faker.getProvider(Options.class, () -> new Options(faker));
     }
 
     /**
@@ -65,17 +71,17 @@ public class Code {
         int ct = faker.random().nextInt(6) + 1;
         switch (ct) {
             case 6:
-                return faker.number().numberBetween(0, 1) + faker.number().digit() + "-" + faker.number().digits(6);
+                return numberProvider.numberBetween(0, 1) + numberProvider.digit() + "-" + numberProvider.digits(6);
             case 5:
-                return faker.number().numberBetween(200, 699) + "-" + faker.number().digits(5);
+                return numberProvider.numberBetween(200, 699) + "-" + numberProvider.digits(5);
             case 4:
-                return faker.number().numberBetween(7000, 8499) + "-" + faker.number().digits(4);
+                return numberProvider.numberBetween(7000, 8499) + "-" + numberProvider.digits(4);
             case 3:
-                return faker.number().numberBetween(85000, 89999) + "-" + faker.number().digits(3);
+                return numberProvider.numberBetween(85000, 89999) + "-" + numberProvider.digits(3);
             case 2:
-                return faker.number().numberBetween(900000, 949999) + "-" + faker.number().digits(2);
+                return numberProvider.numberBetween(900000, 949999) + "-" + numberProvider.digits(2);
             case 1:
-                return faker.number().numberBetween(9500000, 9999999) + "-" + faker.number().digits(1);
+                return numberProvider.numberBetween(9500000, 9999999) + "-" + numberProvider.digits(1);
             default:
                 throw new IllegalStateException("Invalid random " + ct);
         }
@@ -165,13 +171,13 @@ public class Code {
         int len = str.length;
 
         // Fill in the first two values of the string based with the specified prefix.
-        String arr = faker.options().option(REPORTING_BODY_IDENTIFIERS);
+        String arr = optionsProvider.option(REPORTING_BODY_IDENTIFIERS);
         str[0] = arr.charAt(0);
         str[1] = arr.charAt(1);
 
         // Fill all the remaining numbers except for the last one with random values.
         for (int i = 2; i < len - 1; i++) {
-            str[i] = Character.forDigit(faker.number().numberBetween(0, 9), 10);
+            str[i] = Character.forDigit(numberProvider.numberBetween(0, 9), 10);
         }
 
         // Calculate the Luhn checksum of the values thus far

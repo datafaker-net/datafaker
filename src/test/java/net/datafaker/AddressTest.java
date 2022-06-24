@@ -124,6 +124,11 @@ class AddressTest extends AbstractFakerTest {
     }
 
     @Test
+    void testStreetName() {
+        assertThat(faker.address().streetName()).isNotEmpty();
+    }
+
+    @Test
     void testZipCodeByState() {
         final Faker localFaker = new Faker(new Locale("en-US"));
         assertThat(localFaker.address().zipCodeByState(localFaker.address().stateAbbr())).matches("[0-9]{5}");

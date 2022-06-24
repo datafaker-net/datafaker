@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Mountaineering, or alpinism, is the set of outdoor activities that involves ascending tall mountains.
  *

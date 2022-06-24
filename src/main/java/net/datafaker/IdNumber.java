@@ -1,8 +1,6 @@
 package net.datafaker;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-
+import net.datafaker.core.Faker;
 import net.datafaker.idnumbers.EnIdNumber;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.EsMXIdNumber;
@@ -14,14 +12,19 @@ import net.datafaker.idnumbers.PtNifIdNumber;
 import net.datafaker.idnumbers.SvSEIdNumber;
 import net.datafaker.idnumbers.ZhCnIdNumber;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 /**
  * @since 0.8.0
  */
 public class IdNumber {
     private final Faker faker;
+    private final DateAndTime dateAndTime;
 
     protected IdNumber(Faker faker) {
         this.faker = faker;
+        this.dateAndTime = faker.getProvider(DateAndTime.class, () -> new DateAndTime(faker));
     }
 
     public String valid() {
@@ -134,7 +137,7 @@ public class IdNumber {
      * @return A valid PESEL number
      */
     public String peselNumber() {
-        return peselNumber(faker.date().birthday(0, 100).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+        return peselNumber(dateAndTime.birthday(0, 100).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
             Gender.ANY);
     }
 

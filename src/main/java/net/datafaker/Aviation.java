@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Generates aviation related strings.
  *
@@ -8,9 +10,11 @@ package net.datafaker;
 public class Aviation {
 
     private final Faker faker;
+    private final Number numberProvider;
 
     protected Aviation(Faker faker) {
         this.faker = faker;
+        this.numberProvider = faker.getProvider(Number.class, () -> new Number(faker));
     }
 
     /**
@@ -48,7 +52,7 @@ public class Aviation {
         } else {
             airline = faker.fakeValuesService().fetchString("aviation.IATA_airline");
         }
-        int number = faker.number().numberBetween(0, 9999);
+        int number = numberProvider.numberBetween(0, 9999);
         return airline + number;
     }
 

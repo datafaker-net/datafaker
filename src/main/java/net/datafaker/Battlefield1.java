@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * CS304 Issue link: <a href="https://github.com/DiUS/java-faker/issues/711">https://github.com/DiUS/java-faker/issues/711</a>
  * A class for generating random value of Battlefield1 contents

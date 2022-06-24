@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -175,7 +177,7 @@ public class Lorem {
     }
 
     public String word() {
-        return faker.fakeValuesService().resolve("lorem.words", this, faker);
+        return faker.resolve("lorem.words");
     }
 
     /**

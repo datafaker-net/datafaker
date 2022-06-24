@@ -356,7 +356,6 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void FakeValuesServiceWithNullLocaleTest() {
-        RandomService r = new RandomService();
         assertThatThrownBy(() -> new FakeValuesService(null, new RandomService()))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("locale is required");

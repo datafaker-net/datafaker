@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * The Grateful Dead was an American rock band formed in 1965 in Palo Alto, California.
  * The band is known for its eclectic style, which fused elements of rock, folk, country, jazz, bluegrass, blues and rock.

@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
-import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -75,7 +74,7 @@ class FakeCollectionTest extends AbstractFakerTest {
 
     @Test
     void generateCollectionWithRepeatableFaker() {
-        Faker seededFaker = new Faker(new Random(10L));
+        Faker seededFaker = new Faker(10L);
 
         List<String> names = faker.<String>collection()
             .faker(seededFaker)

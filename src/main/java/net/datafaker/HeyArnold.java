@@ -1,5 +1,7 @@
 package net.datafaker;
 
+import net.datafaker.core.Faker;
+
 /**
  * Hey Arnold! is an American animated comedy television series created by Craig Bartlett.
  *
