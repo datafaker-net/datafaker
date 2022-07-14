@@ -644,6 +644,10 @@ public class Faker {
         return getProvider(Hobby.class, () -> new Hobby(this));
     }
 
+    public Hololive hololive() {
+        return getProvider(Hololive.class, () -> new Hololive(this));
+    }
+
     public Horse horse() {
         return getProvider(Horse.class, () -> new Horse(this));
     }

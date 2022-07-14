@@ -119,6 +119,7 @@ public class EnFile {
         "hitchhikers_guide_to_the_galaxy.yml",
         "hobbit.yml",
         "hobby.yml",
+        "hololive.yml",
         "house.yml",
         "how_i_met_your_mother.yml",
         "id_number.yml",
