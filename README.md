@@ -218,7 +218,7 @@ Providers
 * Hacker
 * HarryPotter
 * Hashing
-* Heartstone
+* Hearthstone
 * HeyArnold
 * Hipster
 * HitchhikersGuideToTheGalaxy
