@@ -532,6 +532,10 @@ public class Faker {
         return getProvider(DragonBall.class, () -> new DragonBall(this));
     }
 
+    public DrivingLicense drivingLicense() {
+        return getProvider(DrivingLicense.class, () -> new DrivingLicense(this));
+    }
+
     public Dune dune() {
         return getProvider(Dune.class, () -> new Dune(this));
     }

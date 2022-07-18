@@ -115,6 +115,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.disease());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dog());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dragonBall());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.drivingLicense());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dune());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.educator());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.eldenRing());
