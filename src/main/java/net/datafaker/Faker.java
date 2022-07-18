@@ -604,6 +604,10 @@ public class Faker {
         return getProvider(Gender.class, () -> new Gender(this));
     }
 
+    public Ghostbusters ghostbusters() {
+        return getProvider(Ghostbusters.class, () -> new Ghostbusters(this));
+    }
+
     public GratefulDead gratefulDead() {
         return getProvider(GratefulDead.class, () -> new GratefulDead(this));
     }
