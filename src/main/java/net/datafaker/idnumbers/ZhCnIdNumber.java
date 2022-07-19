@@ -27,9 +27,12 @@ public class ZhCnIdNumber {
     public String getValidSsn(Faker faker) {
         final RandomService random = faker.random();
         String s = "";
+        RandomService rand = faker.random();
+        String pickedLocation = faker.options().option(LOCATIONS);
+        s += pickedLocation;
         long date;
         try {
-            String startTime = "1900-01-01";
+            String startTime = "1930-01-01";
             String endTime = "2020-12-31";
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -41,15 +44,12 @@ public class ZhCnIdNumber {
         }
         String pickedDate = new SimpleDateFormat("yyyyMMdd").format(date);
         s += pickedDate;
-        RandomService rand = faker.random();
-        String pickedLocation = faker.options().option(LOCATIONS);
-        s += pickedLocation;
-        int pickedSequence1 = rand.nextInt(10);
-        int pickedSequence2 = rand.nextInt(10);
-        int pickedSequence3 = rand.nextInt(10);
-        s += pickedSequence1;
-        s += pickedSequence2;
-        s += pickedSequence3;
+        int orderCode1 = rand.nextInt(10);
+        int orderCode2 = rand.nextInt(10);
+        int orderCode3 = rand.nextInt(10);
+        s += orderCode1;
+        s += orderCode2;
+        s += orderCode3;
         int count = 0;
         count += (s.charAt(0) - '0') * 7;
         count += (s.charAt(1) - '0') * 9;
@@ -76,5 +76,4 @@ public class ZhCnIdNumber {
         }
         return s;
     }
-
 }
