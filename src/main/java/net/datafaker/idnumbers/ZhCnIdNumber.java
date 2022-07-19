@@ -32,7 +32,7 @@ public class ZhCnIdNumber {
         s += pickedLocation;
         long date;
         try {
-            String startTime = "1900-01-01";
+            String startTime = "1930-01-01";
             String endTime = "2020-12-31";
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
