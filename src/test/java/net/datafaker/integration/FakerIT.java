@@ -147,6 +147,7 @@ class FakerIT {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.house());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.howIMetYourMother());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.idNumber());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.industrySegments());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.internet());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.job());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.kaamelott());

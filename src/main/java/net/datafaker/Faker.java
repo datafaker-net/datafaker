@@ -672,6 +672,10 @@ public class Faker {
         return getProvider(IdNumber.class, () -> new IdNumber(this));
     }
 
+    public IndustrySegments industrySegments() {
+        return getProvider(IndustrySegments.class, () -> new IndustrySegments(this));
+    }
+
     public Internet internet() {
         return getProvider(Internet.class, () -> new Internet(this));
     }
