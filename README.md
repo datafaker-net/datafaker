@@ -230,6 +230,7 @@ Providers
 * House
 * HowIMetYourMother
 * IdNumber
+* Industry Segments
 * Internet
 * Job
 * Kaamelott

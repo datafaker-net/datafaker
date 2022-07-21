@@ -124,7 +124,7 @@ public class EnFile {
         "house.yml",
         "how_i_met_your_mother.yml",
         "id_number.yml",
-//            "industry_segments.yml",
+        "industry_segments.yml",
         "internet.yml",
 //            "invoice.yml",
         "job.yml",
