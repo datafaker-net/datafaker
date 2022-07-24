@@ -468,6 +468,10 @@ public class Faker {
         return getProvider(Construction.class, () -> new Construction(this));
     }
 
+    public Money money() {
+        return getProvider(Money.class, () -> new Money(this));
+    }
+
     public Country country() {
         return getProvider(Country.class, () -> new Country(this));
     }
