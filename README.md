@@ -246,6 +246,7 @@ Providers
 * Medical
 * Military
 * Minecraft
+* Money
 * Mood
 * Mountains
 * Mountaineering
