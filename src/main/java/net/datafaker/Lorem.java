@@ -19,7 +19,7 @@ public class Lorem extends AbstractProvider {
     }
 
     public char character(boolean includeUppercase) {
-        return characters(1, includeUppercase).charAt(0);
+        return characters(includeUppercase ? 2 : 1, includeUppercase).charAt(0);
     }
 
     public String characters() {
@@ -34,132 +34,39 @@ public class Lorem extends AbstractProvider {
         return characters(faker.random().nextInt(minimumLength, maximumLength), false);
     }
 
+    @Deprecated // use net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int minimumLength, int maximumLength, boolean includeUppercase) {
-        if (minimumLength == maximumLength) {
-            return characters(minimumLength, includeUppercase);
-        } else {
-            return characters(faker.random().nextInt(minimumLength, maximumLength), includeUppercase);
-        }
+        return characters(minimumLength, maximumLength, includeUppercase, false);
     }
 
+    @Deprecated // net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeDigit) {
-        if (minimumLength == maximumLength) {
-            return characters(minimumLength, includeUppercase, includeDigit);
-        } else {
-            return characters(faker.random().nextInt(minimumLength, maximumLength), includeUppercase, includeDigit);
-        }
+        return characters(minimumLength, maximumLength, includeUppercase, false, includeDigit);
     }
 
     public String characters(int fixedNumberOfCharacters) {
         return characters(fixedNumberOfCharacters, false);
     }
 
+    @Deprecated // use net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int fixedNumberOfCharacters, boolean includeUppercase) {
-        return characters(fixedNumberOfCharacters, includeUppercase, true);
+        return faker.internet().password(fixedNumberOfCharacters, fixedNumberOfCharacters, includeUppercase);
     }
 
+    @Deprecated // use net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int minimumLength, int maximumLength,
                              boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        return characters(faker.random().nextInt(minimumLength, maximumLength),
-            includeUppercase, includeSpecial, includeDigit);
+        return faker.internet().password(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
 
-
     public String characters(int fixedNumberOfCharacters, boolean includeUppercase, boolean includeDigit) {
-        if (fixedNumberOfCharacters < 1) {
-            return "";
-        }
-        char[] buffer = new char[fixedNumberOfCharacters];
-        for (int i = 0; i < buffer.length; i++) {
-            char randomCharacter;
-
-            if (includeDigit) {
-                randomCharacter = characters[faker.random().nextInt(characters.length)];
-            } else {
-                randomCharacter = letters[faker.random().nextInt(letters.length)];
-            }
-
-            if (includeUppercase && faker.bool().bool()) {
-                randomCharacter = Character.toUpperCase(randomCharacter);
-            }
-            buffer[i] = randomCharacter;
-        }
-        return new String(buffer);
+        return characters(fixedNumberOfCharacters, includeUppercase, false, includeDigit);
     }
 
     public String characters(int fixedNumberOfCharacters,
                              boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-
-        if (fixedNumberOfCharacters < 1)
-            return "";
-
-        char[] buffer = new char[fixedNumberOfCharacters];
-        char[] special = new char[]{'!', '@', '#', '$', '%', '^', '&', '*'};
-        char[] number = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-        char[] all = new char[special.length + characters.length];
-        System.arraycopy(special, 0, all, 0, special.length);
-        System.arraycopy(characters, 0, all, special.length, characters.length);
-        char[] specialAndLetter = new char[special.length + letters.length];
-        System.arraycopy(special, 0, specialAndLetter, 0, special.length);
-        System.arraycopy(letters, 0, specialAndLetter, special.length, letters.length);
-
-        int cnt = 0;
-        if (includeUppercase) {
-            char theUpper = Character.toUpperCase(letters[faker.random().nextInt(letters.length)]);
-            buffer[cnt++] = theUpper;
-
-        }
-
-        if (includeSpecial) {
-            char theSpecial = special[faker.random().nextInt(special.length)];
-            if (cnt > fixedNumberOfCharacters - 1) return "";
-            buffer[cnt++] = theSpecial;
-        }
-
-        if (includeDigit) {
-            char theNum = number[faker.random().nextInt(number.length)];
-            if (cnt > fixedNumberOfCharacters - 1) return "";
-            buffer[cnt++] = theNum;
-        }
-
-
-        for (int i = cnt; i < buffer.length; i++) {
-            char randomCharacter;
-
-            if (includeSpecial && !includeDigit) {
-                randomCharacter = specialAndLetter[faker.random().nextInt(specialAndLetter.length)];
-            } else if (!includeSpecial && includeDigit) {
-                randomCharacter = characters[faker.random().nextInt(characters.length)];
-            } else if (!includeSpecial) {
-                randomCharacter = letters[faker.random().nextInt(letters.length)];
-            } else {                                            //includeSpecial && includeDigit
-                randomCharacter = all[faker.random().nextInt(all.length)];
-            }
-
-            if (includeUppercase && faker.bool().bool()) {
-                randomCharacter = Character.toUpperCase(randomCharacter);
-            }
-            buffer[i] = randomCharacter;
-        }
-
-        shuffle(buffer);
-        return String.valueOf(buffer);
+        return faker.internet().password(fixedNumberOfCharacters, fixedNumberOfCharacters, includeUppercase, includeSpecial, includeDigit);
     }
-
-    private void shuffle(char[] buffer) {
-        int length = buffer.length;
-        for (int i = length; i > 0; i--) {
-            int randInd = faker.random().nextInt(i);
-            swap(buffer, randInd, i - 1);
-        }
-    }
-
-    private void swap(char[] a, int i, int j) {
-        char temp = a[i];
-        a[i] = a[j];
-        a[j] = temp;
-    }
-
 
     public List<String> words(int num) {
         List<String> returnList = new ArrayList<>();
@@ -274,20 +181,4 @@ public class Lorem extends AbstractProvider {
 
         return sentence.substring(0, fixedLength);
     }
-
-    static {
-        StringBuilder builder = new StringBuilder(36);
-        for (char character = 'a'; character <= 'z'; character++) {
-            builder.append(character);
-        }
-        letters = builder.toString().toCharArray();
-        for (char number = '0'; number <= '9'; number++) {
-            builder.append(number);
-        }
-        characters = builder.toString().toCharArray();
-    }
-
-    private static final char[] letters;
-    private static final char[] characters;
-
 }

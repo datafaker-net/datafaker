@@ -13,6 +13,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import static net.datafaker.Password.DEFAULT_SPECIAL;
+import static net.datafaker.Password.DIGITS;
+import static net.datafaker.Password.EN_LOWERCASE;
+import static net.datafaker.Password.EN_UPPERCASE;
+
 /**
  * @since 0.8.0
  */
@@ -142,7 +147,15 @@ public class Internet extends AbstractProvider {
     }
 
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        return faker.lorem().characters(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
+        Password.PasswordSymbolsBuilder builder =
+            Password.PasswordSymbolsBuilder.builder()
+                .with(EN_LOWERCASE);
+        if (includeUppercase) builder = builder.with(EN_UPPERCASE, 1);
+        if (includeSpecial) builder = builder.with(DEFAULT_SPECIAL, 1);
+        if (includeDigit) builder = builder.with(DIGITS, 1);
+        return faker.password().password(builder.withMinLength(minimumLength)
+            .withMaxLength(maximumLength)
+            .build());
     }
 
     /**
@@ -256,7 +269,7 @@ public class Internet extends AbstractProvider {
     public InetAddress getPublicIpV4Address() throws UnknownHostException {
         final RandomService r = faker.random();
 
-        final byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte)169, (byte)192, (byte)172};
+        final byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
 
         byte first = (byte) r.nextInt(256),
             second = (byte) r.nextInt(256),

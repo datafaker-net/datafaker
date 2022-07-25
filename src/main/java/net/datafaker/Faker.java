@@ -796,6 +796,10 @@ public class Faker {
         return getProvider(Passport.class, () -> new Passport(this));
     }
 
+    public Password password() {
+        return getProvider(Password.class, () -> new Password(this));
+    }
+
     public PhoneNumber phoneNumber() {
         return getProvider(PhoneNumber.class, () -> new PhoneNumber(this));
     }
