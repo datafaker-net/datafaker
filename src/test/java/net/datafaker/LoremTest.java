@@ -1,14 +1,20 @@
 package net.datafaker;
 
 import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import static net.datafaker.Lorem.DIGITS;
+import static net.datafaker.Lorem.LOWERCASE;
+import static net.datafaker.Lorem.UPPERCASE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class LoremTest extends AbstractFakerTest {
@@ -113,7 +119,7 @@ class LoremTest extends AbstractFakerTest {
     @Test
     void testCharactersMinimumMaximumLengthIncludeUppercaseIncludeDigit() {
         assertThat(faker.lorem().characters(1, 10, false, false)).matches("[a-zA-Z]{1,10}");
-        assertThat(faker.lorem().characters(1, 10, true, true)).matches("[a-zA-Z\\d]{1,10}");
+        assertThat(faker.lorem().characters(2, 10, true, true)).matches("[a-zA-Z\\d]{1,10}");
     }
 
     @Test
@@ -182,5 +188,81 @@ class LoremTest extends AbstractFakerTest {
         String paragraph = faker.lorem().paragraph(1);
         int matches = StringUtils.countMatches(paragraph, ".");
         assertThat(matches).isBetween(1, 3);
+    }
+
+    @Test
+    void everyPasswordShouldContainLowerCaseUpperCaseAndDigit() {
+        int count = 0;
+        Map<String, Integer> passwordSymbolsMap = Lorem.PasswordSymbolsBuilder.builder()
+            .with(LOWERCASE, 1)
+            .with(UPPERCASE, 1)
+            .with(DIGITS, 1).build();
+        while (count++ < 10000) {
+            String password = faker.lorem().characters(6, 10, passwordSymbolsMap, false);
+            assertThat(password).is(new Condition<>(pw -> {
+                    for (int i = 0; i < pw.length(); i++) {
+                        if (Character.isLowerCase(pw.charAt(i))) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }, "contains lower case"))
+                .is(new Condition<>(pw -> {
+                    for (int i = 0; i < pw.length(); i++) {
+                        if (Character.isUpperCase(pw.charAt(i))) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }, "contains upper case"))
+                .is(new Condition<>(pw -> {
+                    for (int i = 0; i < pw.length(); i++) {
+                        if (Character.isDigit(pw.charAt(i))) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }, "contains upper case"));
+        }
+    }
+
+    @Test
+    void passwordShouldContain3RULowerCaseAnd5CustomSpecialSymbols() {
+        final String ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+        final String customSpecialSymbols = "!@#$%^&*;'][{}";
+        final int ruCnt = 3;
+        final int specSmbCnt = 5;
+        Map<String, Integer> passwordSymbolsMap = Lorem.PasswordSymbolsBuilder.builder()
+            .with(ruLowerCase, ruCnt)
+            .with(customSpecialSymbols, specSmbCnt).build();
+        for (int i = 0; i < 100; i++) {
+            final String pass = faker.lorem().characters(ruCnt + specSmbCnt, 10, passwordSymbolsMap, false);
+            assertThat(pass).matches(s -> {
+                int j = 0;
+                int curRuCnt = 0;
+                while (j < s.length() && curRuCnt < ruCnt) {
+                    if (ruLowerCase.indexOf(s.charAt(j++)) >= 0) curRuCnt++;
+                }
+                return curRuCnt >= ruCnt;
+            }).matches(s -> {
+                int j = 0;
+                int curSpecSmbCnt = 0;
+                while (j < s.length() && curSpecSmbCnt < specSmbCnt) {
+                    if (customSpecialSymbols.indexOf(s.charAt(j++)) >= 0) curSpecSmbCnt++;
+                }
+                return curSpecSmbCnt >= specSmbCnt;
+            });
+        }
+    }
+
+    @Test
+    void exceptionIfLengthIsShorterThanNumberOfRequiredSymbols() {
+        Map<String, Integer> passwordSymbolsMap = Lorem.PasswordSymbolsBuilder.builder()
+            .with(LOWERCASE, 1)
+            .with(UPPERCASE, 1)
+            .with(DIGITS, 1).build();
+        Assertions.assertThatThrownBy(() ->
+                faker.lorem().characters(1, 1, passwordSymbolsMap, true))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 }

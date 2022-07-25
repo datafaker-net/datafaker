@@ -1,7 +1,11 @@
 package net.datafaker;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static net.datafaker.internal.helper.WordUtils.capitalize;
 
@@ -9,6 +13,39 @@ import static net.datafaker.internal.helper.WordUtils.capitalize;
  * @since 0.8.0
  */
 public class Lorem {
+    public static final String LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
+    public static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String DIGITS = "0123456789";
+    public static final String DEFAULT_SPECIAL = "!@#$%^&*";
+
+    public static class PasswordSymbolsBuilder {
+        private final Map<String, Integer> map = new HashMap<>();
+
+        private PasswordSymbolsBuilder() {
+        }
+
+        public static PasswordSymbolsBuilder builder() {
+            return new PasswordSymbolsBuilder();
+        }
+
+        public PasswordSymbolsBuilder with(String listOfSymbols, int times) {
+            if (times < 0) {
+                throw new IllegalArgumentException("times should be non-negative");
+            }
+            map.put(listOfSymbols, times);
+            return this;
+        }
+
+        public Map<String, Integer> build() {
+            return Collections.unmodifiableMap(map);
+        }
+    }
+
+    public static final Map<String, Integer> LOWER_UPPER_DIGIT_SPECIAL_AT_LEAST_ONES =
+        PasswordSymbolsBuilder.builder().with(LOWERCASE, 1)
+            .with(UPPERCASE, 1)
+            .with(DIGITS, 1)
+            .with(DEFAULT_SPECIAL, 1).build();
     private final Faker faker;
 
     protected Lorem(Faker faker) {
@@ -35,116 +72,86 @@ public class Lorem {
         return characters(faker.random().nextInt(minimumLength, maximumLength), false);
     }
 
+    @Deprecated // use net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int minimumLength, int maximumLength, boolean includeUppercase) {
-        if (minimumLength == maximumLength) {
-            return characters(minimumLength, includeUppercase);
-        } else {
-            return characters(faker.random().nextInt(minimumLength, maximumLength), includeUppercase);
-        }
+        return characters(minimumLength, maximumLength, includeUppercase, false);
     }
 
+    @Deprecated // net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeDigit) {
-        if (minimumLength == maximumLength) {
-            return characters(minimumLength, includeUppercase, includeDigit);
-        } else {
-            return characters(faker.random().nextInt(minimumLength, maximumLength), includeUppercase, includeDigit);
-        }
+        return characters(minimumLength, maximumLength, includeUppercase, false, includeDigit);
     }
 
     public String characters(int fixedNumberOfCharacters) {
         return characters(fixedNumberOfCharacters, false);
     }
 
+    @Deprecated // use net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int fixedNumberOfCharacters, boolean includeUppercase) {
-        return characters(fixedNumberOfCharacters, includeUppercase, true);
+        PasswordSymbolsBuilder passwordSymbolsBuilder =
+            PasswordSymbolsBuilder.builder().with(LOWERCASE, 0)
+                .with(DIGITS, 0); // 0 to keep old behavior
+        if (includeUppercase) {
+            passwordSymbolsBuilder.with(UPPERCASE, 1);
+        }
+        return characters(fixedNumberOfCharacters, passwordSymbolsBuilder.build(), false);
     }
 
+    @Deprecated // use net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int minimumLength, int maximumLength,
                              boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        return characters(faker.random().nextInt(minimumLength, maximumLength),
-            includeUppercase, includeSpecial, includeDigit);
+        return characters(faker.random().nextInt(minimumLength, maximumLength), includeUppercase, includeSpecial, includeDigit);
     }
 
+    public String characters(int minimumLength, int maximumLength, Map<String, Integer> listOfSymbolSets, boolean throwIfLengthSmall) {
+        return characters(faker.random().nextInt(minimumLength, maximumLength), listOfSymbolSets, throwIfLengthSmall);
+    }
 
-    public String characters(int fixedNumberOfCharacters, boolean includeUppercase, boolean includeDigit) {
-        if (fixedNumberOfCharacters < 1) {
-            return "";
+    public String characters(int fixedNumberOfCharacters, Map<String, Integer> listOfSymbolSets, boolean throwIfLengthSmall) {
+        final Map<String, Integer> requiredOnly = listOfSymbolSets.entrySet().stream()
+            .filter(t -> t.getValue() > 0).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        final int minSize = requiredOnly.values().stream().reduce(0, Integer::sum);
+        if (fixedNumberOfCharacters < minSize) {
+            if (throwIfLengthSmall) {
+                throw new IllegalArgumentException("The length should be not smaller than number of required symbols");
+            } else {
+                return "";
+            }
         }
         char[] buffer = new char[fixedNumberOfCharacters];
-        for (int i = 0; i < buffer.length; i++) {
-            char randomCharacter;
-
-            if (includeDigit) {
-                randomCharacter = characters[faker.random().nextInt(characters.length)];
-            } else {
-                randomCharacter = letters[faker.random().nextInt(letters.length)];
+        int idx = 0;
+        for (Map.Entry<String, Integer> entry : requiredOnly.entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                buffer[idx++] = entry.getKey().charAt(faker.random().nextInt(entry.getKey().length()));
             }
-
-            if (includeUppercase && faker.bool().bool()) {
-                randomCharacter = Character.toUpperCase(randomCharacter);
-            }
-            buffer[i] = randomCharacter;
         }
-        return new String(buffer);
+        final List<String> keys = new ArrayList<>(listOfSymbolSets.keySet());
+        while (idx < fixedNumberOfCharacters) {
+            final int index = faker.random().nextInt(keys.size());
+            buffer[idx++] = keys.get(index).charAt(faker.random().nextInt(keys.get(index).length()));
+        }
+        shuffle(buffer);
+        return String.valueOf(buffer);
+    }
+
+    public String characters(int fixedNumberOfCharacters, boolean includeUppercase, boolean includeDigit) {
+        return characters(fixedNumberOfCharacters, includeUppercase, false, includeDigit);
     }
 
     public String characters(int fixedNumberOfCharacters,
                              boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
 
-        if (fixedNumberOfCharacters < 1)
-            return "";
-
-        char[] buffer = new char[fixedNumberOfCharacters];
-        char[] special = new char[]{'!', '@', '#', '$', '%', '^', '&', '*'};
-        char[] number = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-        char[] all = new char[special.length + characters.length];
-        System.arraycopy(special, 0, all, 0, special.length);
-        System.arraycopy(characters, 0, all, special.length, characters.length);
-        char[] specialAndLetter = new char[special.length + letters.length];
-        System.arraycopy(special, 0, specialAndLetter, 0, special.length);
-        System.arraycopy(letters, 0, specialAndLetter, special.length, letters.length);
-
-        int cnt = 0;
+        PasswordSymbolsBuilder builder = PasswordSymbolsBuilder.builder().with(LOWERCASE, 0); //0 to keep old behavior
         if (includeUppercase) {
-            char theUpper = Character.toUpperCase(letters[faker.random().nextInt(letters.length)]);
-            buffer[cnt++] = theUpper;
-
+            builder.with(UPPERCASE, 1);
         }
-
-        if (includeSpecial) {
-            char theSpecial = special[faker.random().nextInt(special.length)];
-            if (cnt > fixedNumberOfCharacters - 1) return "";
-            buffer[cnt++] = theSpecial;
-        }
-
         if (includeDigit) {
-            char theNum = number[faker.random().nextInt(number.length)];
-            if (cnt > fixedNumberOfCharacters - 1) return "";
-            buffer[cnt++] = theNum;
+            builder.with(DIGITS, 1);
         }
-
-
-        for (int i = cnt; i < buffer.length; i++) {
-            char randomCharacter;
-
-            if (includeSpecial && !includeDigit) {
-                randomCharacter = specialAndLetter[faker.random().nextInt(specialAndLetter.length)];
-            } else if (!includeSpecial && includeDigit) {
-                randomCharacter = characters[faker.random().nextInt(characters.length)];
-            } else if (!includeSpecial) {
-                randomCharacter = letters[faker.random().nextInt(letters.length)];
-            } else {                                            //includeSpecial && includeDigit
-                randomCharacter = all[faker.random().nextInt(all.length)];
-            }
-
-            if (includeUppercase && faker.bool().bool()) {
-                randomCharacter = Character.toUpperCase(randomCharacter);
-            }
-            buffer[i] = randomCharacter;
+        if (includeSpecial) {
+            builder.with(DEFAULT_SPECIAL, 1);
         }
-
-        shuffle(buffer);
-        return String.valueOf(buffer);
+        return characters(fixedNumberOfCharacters, builder.build(), false);
     }
 
     private void shuffle(char[] buffer) {
@@ -275,20 +282,4 @@ public class Lorem {
 
         return sentence.substring(0, fixedLength);
     }
-
-    static {
-        StringBuilder builder = new StringBuilder(36);
-        for (char character = 'a'; character <= 'z'; character++) {
-            builder.append(character);
-        }
-        letters = builder.toString().toCharArray();
-        for (char number = '0'; number <= '9'; number++) {
-            builder.append(number);
-        }
-        characters = builder.toString().toCharArray();
-    }
-
-    private static final char[] letters;
-    private static final char[] characters;
-
 }
