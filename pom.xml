@@ -62,8 +62,8 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git://github.com/datafaker-net/datafaker.git</connection>
-        <developerConnection>scm:git:git@github.com:datafaker-net/datafaker.git</developerConnection>
+        <connection>scm:git:https://github.com/datafaker-net/datafaker.git</connection>
+        <developerConnection>scm:git:https://github.com/datafaker-net/datafaker.git</developerConnection>
         <url>https://github.com/datafaker-net/datafaker</url>
     </scm>
     <parent>
