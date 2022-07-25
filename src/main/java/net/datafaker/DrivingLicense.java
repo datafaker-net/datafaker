@@ -2,6 +2,9 @@ package net.datafaker;
 
 import java.util.Locale;
 
+/**
+ * @since 1.5.0
+ */
 public class DrivingLicense {
 
     private final Faker faker;

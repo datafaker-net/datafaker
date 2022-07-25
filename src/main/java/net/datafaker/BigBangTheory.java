@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 1.5.0
+ */
 public class BigBangTheory {
 
     private final Faker faker;

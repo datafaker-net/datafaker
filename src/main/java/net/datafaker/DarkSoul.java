@@ -3,6 +3,7 @@ package net.datafaker;
 /**
  * issue for: https://github.com/datafaker-net/datafaker/issues/159
  *
+ * @since 1.5.0
  * @author SickDawn
  */
 public class DarkSoul {

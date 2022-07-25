@@ -1,5 +1,10 @@
 package net.datafaker;
 
+/**
+ * Myers-Briggs Type Indicator
+ *
+ * @since 1.5.0
+ */
 public class Mbti {
     private final Faker faker;
     private final String choice;
