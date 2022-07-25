@@ -34,6 +34,18 @@ class AddressTest extends AbstractFakerTest {
     public static final Pattern LON_LAT_REGEX = Pattern.compile("-?\\d{1,3}.\\d{5,10}+,-?\\d{1,2}.\\d{5,10}");
 
     @Test
+    void testStreetName() {
+        final Faker faker = new Faker();
+        assertThat(faker.address().streetName()).isNotEmpty();
+    }
+
+    @Test
+    void testBulgarianStreetName() {
+        final Faker localFaker = new Faker(new Locale("bg"));
+        assertThat(localFaker.address().streetName()).isNotEmpty();
+    }
+
+    @Test
     void testStreetAddressStartsWithNumber() {
         final String streetAddressNumber = faker.address().streetAddress();
         assertThat(streetAddressNumber).matches("[0-9]+ .+");
