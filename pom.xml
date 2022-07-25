@@ -64,7 +64,7 @@
     <scm>
         <connection>scm:git:git://github.com/datafaker-net/datafaker.git</connection>
         <developerConnection>scm:git:git@github.com:datafaker-net/datafaker.git</developerConnection>
-        <url>git://github.com/datafaker-net/datafaker.git</url>
+        <url>https://github.com/datafaker-net/datafaker</url>
     </scm>
     <parent>
         <groupId>org.sonatype.oss</groupId>
