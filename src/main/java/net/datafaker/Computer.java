@@ -21,11 +21,7 @@ public class Computer {
     }
 
     public String operatingSystem() {
-        List<String> operatingSystems = new ArrayList<>();
-        operatingSystems.add("linux");
-        operatingSystems.add("macos");
-        operatingSystems.add("windows");
-        return faker.resolve("computer.os." + operatingSystems.get(faker.random().nextInt(0, 2)));
+        return faker.resolve("computer.os." + faker.options().option("linux", "macos", "windows"));
     }
 
     public String linux() {
