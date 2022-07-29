@@ -1,9 +1,5 @@
 package net.datafaker;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Computer {
 
     private final Faker faker;
