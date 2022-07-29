@@ -65,6 +65,7 @@ public class EnFile {
         "commerce.yml",
 //            "community.yml",
         "company.yml",
+        "computer.yml",
 //        "compass.yml",
         "construction.yml",
 //            "cosmere.yml",

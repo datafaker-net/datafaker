@@ -182,6 +182,7 @@ Providers
 * Color
 * Commerce
 * Company
+* Computer
 * Country
 * CreditCardType
 * Crypto
