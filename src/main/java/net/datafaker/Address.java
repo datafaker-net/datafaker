@@ -117,14 +117,28 @@ public class Address {
      * @return Returns the lat/lon coordinates formatted as lat,lon.
      */
     public String latLon() {
-        return latitude() + "," + longitude();
-
+        return latLon(",");
     }
+
+    /**
+     * @return Returns the lat/lon coordinates formatted as lat delimiter lon.
+     */
+    public String latLon(String delimiter) {
+        return latitude() + delimiter + longitude();
+    }
+
     /**
      * @return Returns the lat/lon coordinates formatted as lon,lat.
      */
     public String lonLat() {
-        return longitude() + "," + latitude();
+        return lonLat(",");
+    }
+
+    /**
+     * @return Returns the lat/lon coordinates formatted as lon delimiter lat.
+     */
+    public String lonLat(String delimiter) {
+        return longitude() + delimiter + latitude();
     }
 
     public String timeZone() {
