@@ -10,6 +10,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Random;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +22,7 @@ class AddressTest extends AbstractFakerTest {
     private static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols(getFaker().getLocale()).getDecimalSeparator();
     private static final Faker US_FAKER = new Faker(new Locale("en-us"));
     private static final Faker NL_FAKER = new Faker(new Locale("nl-nl"));
+    private static final Faker RU_FAKER = new Faker(new Locale("ru-ru"));
 
     public static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
@@ -30,8 +33,15 @@ class AddressTest extends AbstractFakerTest {
         return true;
     }, "Is a number");
 
-    public static final Pattern LAT_LON_REGEX = Pattern.compile("-?\\d{1,2}.\\d{5,10},-?\\d{1,3}.\\d{5,10}+");
-    public static final Pattern LON_LAT_REGEX = Pattern.compile("-?\\d{1,3}.\\d{5,10}+,-?\\d{1,2}.\\d{5,10}");
+    public static final BiFunction<String, String, Pattern> BI_LAT_LON_REGEX =
+        (decimalDelimiter, delimiter) ->
+            Pattern.compile("-?\\d{1,2}" + decimalDelimiter + "\\d{5,10}" + delimiter + "-?\\d{1,3}" + decimalDelimiter + "\\d{5,10}+");
+
+    public static final BiFunction<String, String, Pattern> BI_LON_LAT_REGEX =
+        (decimalDelimiter, delimiter) ->
+            Pattern.compile("-?\\d{1,3}" + decimalDelimiter + "\\d{5,10}+" + delimiter + "-?\\d{1,2}" + decimalDelimiter + "\\d{5,10}");
+
+    private final static Function<Locale, String> ESCAPED_DECIMAL_SEPARATOR = t -> "\\" + new DecimalFormatSymbols(t).getDecimalSeparator();
 
     @Test
     void testStreetName() {
@@ -210,22 +220,37 @@ class AddressTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testLatLonEnUs() {
-        assertThat(US_FAKER.address().latLon()).matches(LAT_LON_REGEX);
+        assertThat(US_FAKER.address().latLon())
+            .matches(BI_LAT_LON_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(US_FAKER.getLocale()), ","));
     }
 
     @RepeatedTest(100)
     void testLatLonNl() {
-        assertThat(NL_FAKER.address().latLon()).matches(LAT_LON_REGEX);
+        assertThat(NL_FAKER.address().latLon())
+            .matches(BI_LAT_LON_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(NL_FAKER.getLocale()), ","));
     }
 
     @RepeatedTest(100)
     void testLonLatEnUs() {
-        assertThat(US_FAKER.address().lonLat()).matches(LON_LAT_REGEX);
+        assertThat(US_FAKER.address().lonLat())
+            .matches(BI_LON_LAT_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(US_FAKER.getLocale()), ","));
     }
 
     @RepeatedTest(100)
     void testLonLatNl() {
-        assertThat(NL_FAKER.address().lonLat()).matches(LON_LAT_REGEX);
+        assertThat(NL_FAKER.address().lonLat())
+            .matches(BI_LON_LAT_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(NL_FAKER.getLocale()), ","));
     }
 
+    @Test
+    void testLonLatRU() {
+        assertThat(RU_FAKER.address().lonLat(";"))
+            .matches(BI_LON_LAT_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(RU_FAKER.getLocale()), ";"));
+    }
+
+    @Test
+    void testLatLonRU() {
+        assertThat(RU_FAKER.address().latLon(";"))
+            .matches(BI_LAT_LON_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(RU_FAKER.getLocale()), ";"));
+    }
 }

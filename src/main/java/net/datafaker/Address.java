@@ -1,7 +1,5 @@
 package net.datafaker;
 
-import java.util.Locale;
-
 /**
  * @since 0.8.0
  */
@@ -103,14 +101,14 @@ public class Address {
      * @return Returns the latitude, a number between -90 to 90.
      */
     public String latitude() {
-        return String.format(Locale.ROOT, "%.8f", (faker.random().nextDouble() * 180) - 90);
+        return String.format(faker.getLocale(), "%.8f", (faker.random().nextDouble() * 180) - 90);
     }
 
     /**
      * @return Returns the longitude, a number between -180 and 180
      */
     public String longitude() {
-        return String.format(Locale.ROOT, "%.8f", (faker.random().nextDouble() * 360) - 180);
+        return String.format(faker.getLocale(), "%.8f", (faker.random().nextDouble() * 360) - 180);
     }
 
     /**
