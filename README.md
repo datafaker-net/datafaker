@@ -156,11 +156,11 @@ Providers
 * Avatar
 * Aviation
 * AWS
-* Babylon5
+* Babylon 5
 * Back To The Future
 * Barcode
 * Basketball
-* Battlefield1  
+* Battlefield 1  
 * Beer
 * Big Bang Theory
 * Blood Type
@@ -169,14 +169,14 @@ Providers
 * Bool
 * Bossa Nova
 * Breaking Bad
-* BrooklynNineNine
+* Brooklyn Nine-Nine
 * Buffy
 * Business
 * CNPJ [Brazilian National Registry of Legal Entities](https://en.wikipedia.org/wiki/CNPJ)
 * CPF [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number)
 * Camera
 * Cat
-* ChuckNorris
+* Chuck Norris
 * Code
 * Coin
 * Color
@@ -184,27 +184,27 @@ Providers
 * Company
 * Computer
 * Country
-* CreditCardType
+* Credit Card Type
 * Crypto
 * Currency
-* DateAndTime
+* Date and Time
 * Demographic
 * Departed
 * Dessert
 * Device
 * Disease
 * Dog
-* DcComics
+* DC Comics
 * Domain
-* DragonBall
+* Dragon Ball
 * Driving License
 * Dune
 * Durations
 * Educator
-* EldenRing
-* ElderScrolls
-* ElectricalComponents
-* EnglandFootBall
+* Elden Ring
+* Elder Scrolls
+* Electrical Components
+* England Football
 * Esports
 * Famous Last Words
 * File
@@ -212,33 +212,33 @@ Providers
 * Food
 * Formula 1 (:racing_car:)
 * Friends
-* FunnyName
-* GameOfThrones
+* Funny Name
+* Game Of Thrones
 * Gender
 * Ghostbusters
-* GratefulDead
+* Grateful Dead
 * Greek Philosopher
 * Hacker
-* HarryPotter
+* Harry Potter
 * Hashing
 * Hearthstone
-* HeyArnold
+* Hey Arnold
 * Hipster
-* HitchhikersGuideToTheGalaxy
+* Hitchhiker's Guide To The Galaxy
 * Hobbit
 * Hobby
 * Horse
 * House
-* HowIMetYourMother
+* How I Met Your Mother
 * IdNumber
 * Industry Segments
 * Internet
 * Job
 * Kaamelott
 * K-pop (Korean popular music)
-* LeagueOfLegends
+* League Of Legends
 * Lebowski
-* LordOfTheRings
+* Lord Of The Rings
 * Lorem
 * Marketing
 * Matz
@@ -259,10 +259,10 @@ Providers
 * Nigeria
 * Number
 * Options
-* OscarMovie
+* Oscar Movie
 * Overwatch
 * Passport
-* PhoneNumber
+* Phone Number
 * Photography
 * Pokemon
 * Princess Bride
@@ -270,9 +270,9 @@ Providers
 * Relationship Terms
 * Resident Evil
 * Restaurant
-* RickAndMorty
+* Rick and Morty
 * Robin
-* RockBand
+* Rock Band
 * RuPaul's Drag Race
 * Science
 * Seinfeld
@@ -280,22 +280,22 @@ Providers
 * Sip
 * Size
 * Simpsons
-* SlackEmoji
-* SoulKnight
+* Slack Emoji
+* Soul Knight
 * Space
 * StarCraft
 * StarTrek
 * Stock
 * Subscription
 * Superhero
-* SuperMario
+* Super Mario
 * Tea
 * Team
-* TheItCrowd
+* The IT Crowd
 * Time
 * Touhou
 * Tron
-* TwinPeaks
+* Twin Peaks
 * Twitter
 * University
 * Vehicle
