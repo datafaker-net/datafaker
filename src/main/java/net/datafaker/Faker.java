@@ -464,6 +464,10 @@ public class Faker {
         return getProvider(Company.class, () -> new Company(this));
     }
 
+    public Computer computer() {
+        return getProvider(Computer.class, () -> new Computer(this));
+    }
+
     public Construction construction() {
         return getProvider(Construction.class, () -> new Construction(this));
     }
