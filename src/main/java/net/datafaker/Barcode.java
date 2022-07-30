@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 0.9.0
  */
-public class Barcode {
-    private final Faker faker;
+public class Barcode extends AbstractProvider {
 
     public Barcode(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public long ean13() {

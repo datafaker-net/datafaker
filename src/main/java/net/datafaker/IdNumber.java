@@ -17,19 +17,18 @@ import net.datafaker.idnumbers.ZhCnIdNumber;
 /**
  * @since 0.8.0
  */
-public class IdNumber {
-    private final Faker faker;
+public class IdNumber extends AbstractProvider {
 
     protected IdNumber(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String valid() {
-        return faker.fakeValuesService().resolve("id_number.valid", this, faker);
+        return faker.fakeValuesService().resolve("id_number.valid", this);
     }
 
     public String invalid() {
-        return faker.numerify(faker.fakeValuesService().resolve("id_number.invalid", this, faker));
+        return faker.numerify(faker.fakeValuesService().resolve("id_number.invalid", this));
     }
 
     public String ssnValid() {

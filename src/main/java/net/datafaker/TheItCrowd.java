@@ -3,28 +3,26 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class TheItCrowd {
-
-    private final Faker faker;
+public class TheItCrowd extends AbstractProvider {
 
     protected TheItCrowd(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String actors() {
-        return faker.fakeValuesService().resolve("the_it_crowd.actors", this, faker);
+        return faker.fakeValuesService().resolve("the_it_crowd.actors", this);
     }
 
     public String characters() {
-        return faker.fakeValuesService().resolve("the_it_crowd.characters", this, faker);
+        return faker.fakeValuesService().resolve("the_it_crowd.characters", this);
     }
 
     public String emails() {
-        return faker.fakeValuesService().resolve("the_it_crowd.emails", this, faker);
+        return faker.fakeValuesService().resolve("the_it_crowd.emails", this);
     }
 
     public String quotes() {
-        return faker.fakeValuesService().resolve("the_it_crowd.quotes", this, faker);
+        return faker.fakeValuesService().resolve("the_it_crowd.quotes", this);
     }
 
 }

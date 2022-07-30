@@ -3,15 +3,14 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Color {
-    private final Faker faker;
+public class Color extends AbstractProvider {
 
     protected Color(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("color.name", this, faker);
+        return faker.fakeValuesService().resolve("color.name", this);
     }
 
     public String hex() {

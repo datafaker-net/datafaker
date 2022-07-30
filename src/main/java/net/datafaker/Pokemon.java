@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Pokemon {
-
-    private final Faker faker;
+public class Pokemon extends AbstractProvider {
 
     protected Pokemon(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {

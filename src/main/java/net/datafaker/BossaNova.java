@@ -7,18 +7,17 @@ package net.datafaker;
  *
  * @since 1.0.0
  */
-public class BossaNova {
-    private final Faker faker;
+public class BossaNova extends AbstractProvider {
 
     protected BossaNova(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String artist() {
-        return faker.fakeValuesService().resolve("bossa_nova.artists", this, faker);
+        return faker.fakeValuesService().resolve("bossa_nova.artists", this);
     }
 
     public String song() {
-        return faker.fakeValuesService().resolve("bossa_nova.songs", this, faker);
+        return faker.fakeValuesService().resolve("bossa_nova.songs", this);
     }
 }

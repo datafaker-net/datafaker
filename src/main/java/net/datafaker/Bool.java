@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Bool {
-    private final Faker faker;
+public class Bool extends AbstractProvider {
 
     protected Bool(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public boolean bool() {

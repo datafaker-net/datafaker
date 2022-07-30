@@ -7,12 +7,10 @@ import java.time.temporal.ChronoUnit;
 /**
  * @since 1.4.0
  */
-public class Time {
-
-    private final Faker faker;
+public class Time extends AbstractProvider {
 
     protected Time(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

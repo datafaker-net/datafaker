@@ -8,12 +8,11 @@ import java.util.TreeSet;
 /**
  * @since 0.8.0
  */
-public class Commerce {
-    private final Faker faker;
+public class Commerce extends AbstractProvider {
     private final DecimalFormatSymbols decimalFormatSymbols;
 
     protected Commerce(Faker faker) {
-        this.faker = faker;
+        super(faker);
         decimalFormatSymbols = new DecimalFormatSymbols(faker.getLocale());
     }
 
@@ -21,7 +20,7 @@ public class Commerce {
         int numberOfDepartments = Math.max(faker.random().nextInt(4), 1);
         SortedSet<String> departments = new TreeSet<>();
         while (departments.size() < numberOfDepartments) {
-            departments.add(faker.fakeValuesService().resolve("commerce.department", this, faker));
+            departments.add(faker.fakeValuesService().resolve("commerce.department", this));
         }
         if (departments.size() > 1) {
             String lastDepartment = departments.last();
@@ -34,22 +33,22 @@ public class Commerce {
 
     public String productName() {
         return String.join(" ",
-            faker.fakeValuesService().resolve("commerce.product_name.adjective", this, faker),
-            faker.fakeValuesService().resolve("commerce.product_name.material", this, faker),
-            faker.fakeValuesService().resolve("commerce.product_name.product", this, faker)
+            faker.fakeValuesService().resolve("commerce.product_name.adjective", this),
+            faker.fakeValuesService().resolve("commerce.product_name.material", this),
+            faker.fakeValuesService().resolve("commerce.product_name.product", this)
         );
     }
 
     public String material() {
-        return faker.fakeValuesService().resolve("commerce.product_name.material", this, faker);
+        return faker.fakeValuesService().resolve("commerce.product_name.material", this);
     }
 
     public String brand() {
-        return faker.fakeValuesService().resolve("commerce.brand", this, faker);
+        return faker.fakeValuesService().resolve("commerce.brand", this);
     }
 
     public String vendor() {
-        return faker.fakeValuesService().resolve("commerce.vendor", this, faker);
+        return faker.fakeValuesService().resolve("commerce.vendor", this);
     }
 
     /**

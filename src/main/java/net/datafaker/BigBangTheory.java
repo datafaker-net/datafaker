@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class BigBangTheory {
-
-    private final Faker faker;
+public class BigBangTheory extends AbstractProvider {
 
     protected BigBangTheory(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,7 +15,7 @@ public class BigBangTheory {
      * @return a string of Big Bang Theory's character's name.
      */
     public String character() {
-        return faker.fakeValuesService().resolve("big_bang_theory.characters", this, faker);
+        return faker.fakeValuesService().resolve("big_bang_theory.characters", this);
     }
 
     /**
@@ -26,6 +24,6 @@ public class BigBangTheory {
      * @return a string of Big Bang Theory's character's quote.
      */
     public String quote() {
-        return faker.fakeValuesService().resolve("big_bang_theory.quotes", this, faker);
+        return faker.fakeValuesService().resolve("big_bang_theory.quotes", this);
     }
 }

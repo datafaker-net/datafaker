@@ -3,7 +3,7 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Shakespeare {
+public class Shakespeare extends AbstractProvider {
 
     private static final String[] hamletQuotes = {
         "To be, or not to be: that is the question.",
@@ -58,11 +58,8 @@ public class Shakespeare {
         "See, how she leans her cheek upon her hand! O that I were a glove upon that hand, that I might touch that cheek!.",
         "Not stepping o'er the bounds of modesty."};
 
-
-    private final Faker faker;
-
     protected Shakespeare(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String hamletQuote() {

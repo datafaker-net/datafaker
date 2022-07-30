@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Friends {
-    private final Faker faker;
+public class Friends extends AbstractProvider {
 
     protected Friends(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {

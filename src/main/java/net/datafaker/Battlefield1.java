@@ -8,9 +8,7 @@ package net.datafaker;
  * @since 1.4.0
  */
 
-public class Battlefield1 {
-
-    private final Faker faker;
+public class Battlefield1 extends AbstractProvider {
 
     /**
      * Create a constructor for Battlefield1.
@@ -18,7 +16,7 @@ public class Battlefield1 {
      * @param faker The Faker instance for generating random names of things.
      */
     protected Battlefield1(final Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

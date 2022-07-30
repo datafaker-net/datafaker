@@ -5,17 +5,15 @@ package net.datafaker;
  *
  * @since 0.8.0
  */
-public class Weather {
+public class Weather extends AbstractProvider {
 
     private static final int DEFAULT_MIN_TEMP_C = -30;
     private static final int DEFAULT_MAX_TEMP_C = 38;
     private static final int DEFAULT_MIN_TEMP_F = -22;
     private static final int DEFAULT_MAX_TEMP_F = 100;
 
-    private final Faker faker;
-
     protected Weather(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

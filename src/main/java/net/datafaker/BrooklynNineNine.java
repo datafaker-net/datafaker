@@ -5,20 +5,18 @@ package net.datafaker;
  *
  * @since 1.3.0
  */
-public class BrooklynNineNine {
-
-    private final Faker faker;
+public class BrooklynNineNine extends AbstractProvider {
 
     protected BrooklynNineNine(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String characters() {
-        return faker.fakeValuesService().resolve("brooklyn_nine_nine.characters", this, faker);
+        return faker.fakeValuesService().resolve("brooklyn_nine_nine.characters", this);
     }
 
     public String quotes() {
-        return faker.fakeValuesService().resolve("brooklyn_nine_nine.quotes", this, faker);
+        return faker.fakeValuesService().resolve("brooklyn_nine_nine.quotes", this);
     }
 
 }

@@ -8,11 +8,10 @@ import static net.datafaker.internal.helper.WordUtils.capitalize;
 /**
  * @since 0.8.0
  */
-public class Lorem {
-    private final Faker faker;
+public class Lorem extends AbstractProvider {
 
     protected Lorem(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public char character() {
@@ -175,7 +174,7 @@ public class Lorem {
     }
 
     public String word() {
-        return faker.fakeValuesService().resolve("lorem.words", this, faker);
+        return faker.fakeValuesService().resolve("lorem.words", this);
     }
 
     /**

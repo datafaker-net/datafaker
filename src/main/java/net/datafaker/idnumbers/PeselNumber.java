@@ -21,7 +21,6 @@ public class PeselNumber {
     }
 
     public PeselNumber(Faker faker) {
-        super();
         this.faker = faker;
     }
 

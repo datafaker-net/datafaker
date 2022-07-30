@@ -3,22 +3,21 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Overwatch {
-    private final Faker faker;
+public class Overwatch extends AbstractProvider {
 
     protected Overwatch(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String hero() {
-        return faker.fakeValuesService().resolve("games.overwatch.heroes", this, faker);
+        return faker.fakeValuesService().resolve("games.overwatch.heroes", this);
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("games.overwatch.locations", this, faker);
+        return faker.fakeValuesService().resolve("games.overwatch.locations", this);
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("games.overwatch.quotes", this, faker);
+        return faker.fakeValuesService().resolve("games.overwatch.quotes", this);
     }
 }

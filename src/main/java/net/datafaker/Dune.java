@@ -3,24 +3,22 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Dune {
-
-    private final Faker faker;
+public class Dune extends AbstractProvider {
 
     protected Dune(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("dune.characters", this, faker);
+        return faker.fakeValuesService().resolve("dune.characters", this);
     }
 
     public String title() {
-        return faker.fakeValuesService().resolve("dune.titles", this, faker);
+        return faker.fakeValuesService().resolve("dune.titles", this);
     }
 
     public String planet() {
-        return faker.fakeValuesService().resolve("dune.planets", this, faker);
+        return faker.fakeValuesService().resolve("dune.planets", this);
     }
 
     public String quote() {
@@ -28,7 +26,7 @@ public class Dune {
     }
 
     public String quote(Quote quote) {
-        return faker.fakeValuesService().resolve("dune.quotes." + quote.yamlKey, this, faker);
+        return faker.fakeValuesService().resolve("dune.quotes." + quote.yamlKey, this);
     }
 
     public String saying() {
@@ -36,7 +34,7 @@ public class Dune {
     }
 
     public String saying(Saying saying) {
-        return faker.fakeValuesService().resolve("dune.sayings." + saying.yamlKey, this, faker);
+        return faker.fakeValuesService().resolve("dune.sayings." + saying.yamlKey, this);
     }
 
     public enum Quote {

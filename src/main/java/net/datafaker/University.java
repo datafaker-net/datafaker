@@ -3,22 +3,21 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class University {
-    private final Faker faker;
+public class University extends AbstractProvider {
 
     protected University(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("university.name", this, faker);
+        return faker.fakeValuesService().resolve("university.name", this);
     }
 
     public String prefix() {
-        return faker.fakeValuesService().resolve("university.prefix", this, faker);
+        return faker.fakeValuesService().resolve("university.prefix", this);
     }
 
     public String suffix() {
-        return faker.fakeValuesService().resolve("university.suffix", this, faker);
+        return faker.fakeValuesService().resolve("university.suffix", this);
     }
 }

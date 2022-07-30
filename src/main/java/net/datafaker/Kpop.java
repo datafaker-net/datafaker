@@ -5,36 +5,34 @@ package net.datafaker;
  *
  * @since 1.3.0
  */
-public class Kpop {
-
-    private final Faker faker;
+public class Kpop extends AbstractProvider {
 
     protected Kpop(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String iGroups() {
-        return faker.fakeValuesService().resolve("kpop.i_groups", this, faker);
+        return faker.fakeValuesService().resolve("kpop.i_groups", this);
     }
 
     public String iiGroups() {
-        return faker.fakeValuesService().resolve("kpop.ii_groups", this, faker);
+        return faker.fakeValuesService().resolve("kpop.ii_groups", this);
     }
 
     public String iiiGroups() {
-        return faker.fakeValuesService().resolve("kpop.iii_groups", this, faker);
+        return faker.fakeValuesService().resolve("kpop.iii_groups", this);
     }
 
     public String girlGroups() {
-        return faker.fakeValuesService().resolve("kpop.girl_groups", this, faker);
+        return faker.fakeValuesService().resolve("kpop.girl_groups", this);
     }
 
     public String boyBands() {
-        return faker.fakeValuesService().resolve("kpop.boy_bands", this, faker);
+        return faker.fakeValuesService().resolve("kpop.boy_bands", this);
     }
 
     public String solo() {
-        return faker.fakeValuesService().resolve("kpop.solo", this, faker);
+        return faker.fakeValuesService().resolve("kpop.solo", this);
     }
 
 }

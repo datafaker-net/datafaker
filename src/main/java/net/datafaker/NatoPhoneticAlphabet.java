@@ -5,16 +5,14 @@ package net.datafaker;
  *
  * @since 1.2.0
  */
-public class NatoPhoneticAlphabet {
-
-    private final Faker faker;
+public class NatoPhoneticAlphabet extends AbstractProvider {
 
     protected NatoPhoneticAlphabet(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String codeWord() {
-        return faker.fakeValuesService().resolve("nato_phonetic_alphabet.code_word", this, faker);
+        return faker.fakeValuesService().resolve("nato_phonetic_alphabet.code_word", this);
     }
 
 }

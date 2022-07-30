@@ -3,14 +3,13 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Robin {
-    private final Faker faker;
+public class Robin extends AbstractProvider {
 
     protected Robin(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("robin.quotes", this, faker);
+        return faker.fakeValuesService().resolve("robin.quotes", this);
     }
 }

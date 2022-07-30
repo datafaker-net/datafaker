@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Departed {
-
-    private final Faker faker;
+public class Departed extends AbstractProvider {
 
     protected Departed(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,7 +15,7 @@ public class Departed {
      * @return a string of actor's name from The Departed.
      */
     public String actor() {
-        return faker.fakeValuesService().resolve("departed.actors", this, faker);
+        return faker.fakeValuesService().resolve("departed.actors", this);
     }
 
     /**
@@ -26,7 +24,7 @@ public class Departed {
      * @return a string of character's name from The Departed.
      */
     public String character() {
-        return faker.fakeValuesService().resolve("departed.characters", this, faker);
+        return faker.fakeValuesService().resolve("departed.characters", this);
     }
 
     /**
@@ -35,6 +33,6 @@ public class Departed {
      * @return a string of quote from The Departed.
      */
     public String quote() {
-        return faker.fakeValuesService().resolve("departed.quotes", this, faker);
+        return faker.fakeValuesService().resolve("departed.quotes", this);
     }
 }

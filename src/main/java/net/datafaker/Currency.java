@@ -3,19 +3,17 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Currency {
-
-    private final Faker faker;
+public class Currency extends AbstractProvider {
 
     public Currency(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("currency.name", this, faker);
+        return faker.fakeValuesService().resolve("currency.name", this);
     }
 
     public String code() {
-        return faker.fakeValuesService().resolve("currency.code", this, faker);
+        return faker.fakeValuesService().resolve("currency.code", this);
     }
 }

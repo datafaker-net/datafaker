@@ -5,24 +5,22 @@ package net.datafaker;
  *
  * @since 1.4.0
  */
-public class HeyArnold {
-
-    private final Faker faker;
+public class HeyArnold extends AbstractProvider {
 
     protected HeyArnold(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String characters() {
-        return faker.fakeValuesService().resolve("hey_arnold.characters", this, faker);
+        return faker.fakeValuesService().resolve("hey_arnold.characters", this);
     }
 
     public String locations() {
-        return faker.fakeValuesService().resolve("hey_arnold.locations", this, faker);
+        return faker.fakeValuesService().resolve("hey_arnold.locations", this);
     }
 
     public String quotes() {
-        return faker.fakeValuesService().resolve("hey_arnold.quotes", this, faker);
+        return faker.fakeValuesService().resolve("hey_arnold.quotes", this);
     }
 
 }

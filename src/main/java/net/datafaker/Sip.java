@@ -8,12 +8,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @author TomerFi
  * @since 0.8.0
  */
-public class Sip {
-    private final Faker faker;
+public class Sip extends AbstractProvider {
+    
     private final int[] portPool = new int[5001];
 
     public Sip(final Faker faker) {
-        this.faker = faker;
+        super(faker);
         for (int i = 0; i < portPool.length; i++) {
             portPool[i] = 40000 + 2 * i;
         }

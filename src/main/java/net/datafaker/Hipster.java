@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Hipster {
-    private final Faker faker;
+public class Hipster extends AbstractProvider {
 
     protected Hipster(final Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String word() {

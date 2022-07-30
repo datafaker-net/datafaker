@@ -5,12 +5,10 @@ package net.datafaker;
  *
  * @since 1.4.0
  */
-public class Tron {
-
-    private final Faker faker;
+public class Tron extends AbstractProvider {
 
     protected Tron(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {
@@ -18,15 +16,15 @@ public class Tron {
     }
 
     public String character(Character character) {
-        return faker.fakeValuesService().resolve("tron.characters." + character.yamlKey, this, faker);
+        return faker.fakeValuesService().resolve("tron.characters." + character.yamlKey, this);
     }
 
     public String game() {
-        return faker.fakeValuesService().resolve("tron.games", this, faker);
+        return faker.fakeValuesService().resolve("tron.games", this);
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("tron.locations", this, faker);
+        return faker.fakeValuesService().resolve("tron.locations", this);
     }
 
     public String quote() {
@@ -34,15 +32,15 @@ public class Tron {
     }
 
     public String quote(Tron.Quote quote) {
-        return faker.fakeValuesService().resolve("tron.quotes." + quote.yamlKey, this, faker);
+        return faker.fakeValuesService().resolve("tron.quotes." + quote.yamlKey, this);
     }
 
     public String tagline() {
-        return faker.fakeValuesService().resolve("tron.taglines", this, faker);
+        return faker.fakeValuesService().resolve("tron.taglines", this);
     }
 
     public String vehicle() {
-        return faker.fakeValuesService().resolve("tron.vehicles", this, faker);
+        return faker.fakeValuesService().resolve("tron.vehicles", this);
     }
 
     public String alternateCharacterSpelling() {
@@ -50,7 +48,7 @@ public class Tron {
     }
 
     public String alternateCharacterSpelling(AlternateCharacterSpelling alternateCharacterSpelling) {
-        return faker.fakeValuesService().resolve("tron.alternate_character_spellings." + alternateCharacterSpelling.yamlKey, this, faker);
+        return faker.fakeValuesService().resolve("tron.alternate_character_spellings." + alternateCharacterSpelling.yamlKey, this);
     }
 
     public enum AlternateCharacterSpelling {

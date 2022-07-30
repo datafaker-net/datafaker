@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class DcComics {
-
-    private final Faker faker;
+public class DcComics extends AbstractProvider {
 
     public DcComics(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String hero() {

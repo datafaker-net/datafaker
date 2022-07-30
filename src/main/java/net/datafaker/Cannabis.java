@@ -3,50 +3,49 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-class Cannabis {
-    private final Faker faker;
+public class Cannabis extends AbstractProvider {
 
     protected Cannabis(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String strains() {
-        return faker.fakeValuesService().resolve("cannabis.strains", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.strains", this);
     }
 
     public String cannabinoidAbbreviations() {
-        return faker.fakeValuesService().resolve("cannabis.cannabinoid_abbreviations", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.cannabinoid_abbreviations", this);
     }
 
     public String cannabinoids() {
-        return faker.fakeValuesService().resolve("cannabis.cannabinoids", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.cannabinoids", this);
     }
 
     public String terpenes() {
-        return faker.fakeValuesService().resolve("cannabis.terpenes", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.terpenes", this);
     }
 
     public String medicalUses() {
-        return faker.fakeValuesService().resolve("cannabis.medical_uses", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.medical_uses", this);
     }
 
     public String healthBenefits() {
-        return faker.fakeValuesService().resolve("cannabis.health_benefits", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.health_benefits", this);
     }
 
     public String categories() {
-        return faker.fakeValuesService().resolve("cannabis.categories", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.categories", this);
     }
 
     public String types() {
-        return faker.fakeValuesService().resolve("cannabis.types", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.types", this);
     }
 
     public String buzzwords() {
-        return faker.fakeValuesService().resolve("cannabis.buzzwords", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.buzzwords", this);
     }
 
     public String brands() {
-        return faker.fakeValuesService().resolve("cannabis.brands", this, faker);
+        return faker.fakeValuesService().resolve("cannabis.brands", this);
     }
 }

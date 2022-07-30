@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 0.9.0
  */
-public class Babylon5 {
-    private final Faker faker;
+public class Babylon5 extends AbstractProvider {
 
     protected Babylon5(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {

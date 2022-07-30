@@ -6,20 +6,18 @@ package net.datafaker;
  *
  * @since 1.4.0
  */
-public class GratefulDead {
-
-    private final Faker faker;
+public class GratefulDead extends AbstractProvider {
 
     protected GratefulDead(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String players() {
-        return faker.fakeValuesService().resolve("grateful_dead.players", this, faker);
+        return faker.fakeValuesService().resolve("grateful_dead.players", this);
     }
 
     public String songs() {
-        return faker.fakeValuesService().resolve("grateful_dead.songs", this, faker);
+        return faker.fakeValuesService().resolve("grateful_dead.songs", this);
     }
 
 }

@@ -6,11 +6,10 @@ import net.datafaker.passportnumbers.ChPassportNumber;
 /**
  * @since 0.9.0
  */
-public class Passport {
-    private final Faker faker;
+public class Passport extends AbstractProvider {
 
     protected Passport(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String chValid() {

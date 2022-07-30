@@ -21,12 +21,11 @@ Create a custom provider of data:
 === "Java"
 
     ``` java
-    public static class Insect {
+    public static class Insect extends AbstractProvider {
         private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
-        private final Faker faker;
 
         public Insect(Faker faker) {
-            this.faker = faker;
+            super(faker);
         }
 
         public String nextInsectName() {
@@ -83,12 +82,11 @@ First, create the custom provider which loads the data from a file:
 === "Java"
 
     ``` java
-    public static class InsectFromFile {
+    public static class InsectFromFile extends AbstractProvider {
         private static final String KEY = "insectsfromfile";
-        private final Faker faker;
-
+        
         public InsectFromFile(Faker faker) {
-            this.faker = faker;
+            super(faker);
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
         }

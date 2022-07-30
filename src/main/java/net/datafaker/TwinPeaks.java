@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class TwinPeaks {
-    private final Faker faker;
+public class TwinPeaks extends AbstractProvider {
 
     protected TwinPeaks(final Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {

@@ -1,11 +1,9 @@
 package net.datafaker;
 
-public class Computer {
-
-    private final Faker faker;
+public class Computer extends AbstractProvider {
 
     protected Computer(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String type() {

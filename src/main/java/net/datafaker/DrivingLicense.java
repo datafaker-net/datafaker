@@ -5,12 +5,10 @@ import java.util.Locale;
 /**
  * @since 1.5.0
  */
-public class DrivingLicense {
-
-    private final Faker faker;
+public class DrivingLicense extends AbstractProvider {
 
     protected DrivingLicense(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String drivingLicense(String stateAbbreviation) {

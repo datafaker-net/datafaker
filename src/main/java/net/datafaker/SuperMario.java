@@ -3,24 +3,22 @@ package net.datafaker;
 /**
  * @since 1.3.0
  */
-public class SuperMario {
-
-    private final Faker faker;
+public class SuperMario extends AbstractProvider {
 
     protected SuperMario(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String characters() {
-        return faker.fakeValuesService().resolve("games.super_mario.characters", this, faker);
+        return faker.fakeValuesService().resolve("games.super_mario.characters", this);
     }
 
     public String games() {
-        return faker.fakeValuesService().resolve("games.super_mario.games", this, faker);
+        return faker.fakeValuesService().resolve("games.super_mario.games", this);
     }
 
     public String locations() {
-        return faker.fakeValuesService().resolve("games.super_mario.locations", this, faker);
+        return faker.fakeValuesService().resolve("games.super_mario.locations", this);
     }
 
 }

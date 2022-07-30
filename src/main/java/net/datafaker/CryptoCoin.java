@@ -3,16 +3,14 @@ package net.datafaker;
 /**
  * @since 1.3.0
  */
-public class CryptoCoin {
-
-    private final Faker faker;
+public class CryptoCoin extends AbstractProvider {
 
     protected CryptoCoin(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String coin() {
-        return faker.fakeValuesService().resolve("crypto_coin.coin", this, faker);
+        return faker.fakeValuesService().resolve("crypto_coin.coin", this);
     }
 
 }

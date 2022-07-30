@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class GreekPhilosopher {
-
-    private final Faker faker;
+public class GreekPhilosopher extends AbstractProvider {
 
     protected GreekPhilosopher(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,7 +15,7 @@ public class GreekPhilosopher {
      * @return a string of greek philosopher's name.
      */
     public String name() {
-        return faker.fakeValuesService().resolve("greek_philosophers.names", this, faker);
+        return faker.fakeValuesService().resolve("greek_philosophers.names", this);
     }
 
     /**
@@ -26,6 +24,6 @@ public class GreekPhilosopher {
      * @return a string of greek philosopher's quote.
      */
     public String quote() {
-        return faker.fakeValuesService().resolve("greek_philosophers.quotes", this, faker);
+        return faker.fakeValuesService().resolve("greek_philosophers.quotes", this);
     }
 }

@@ -3,14 +3,13 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class FunnyName {
-    private final Faker faker;
+public class FunnyName extends AbstractProvider {
 
     protected FunnyName(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("funny_name.name", this, faker);
+        return faker.fakeValuesService().resolve("funny_name.name", this);
     }
 }

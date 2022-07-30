@@ -5,12 +5,10 @@ package net.datafaker;
  *
  * @since 1.0.0
  */
-public class RuPaulDragRace {
-
-    private final Faker faker;
+public class RuPaulDragRace extends AbstractProvider {
 
     protected RuPaulDragRace(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String queen() {

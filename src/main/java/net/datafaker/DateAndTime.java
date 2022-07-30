@@ -19,14 +19,12 @@ import java.util.concurrent.TimeUnit;
  * @author pmiklos
  * @since 0.8.0
  */
-public class DateAndTime {
+public class DateAndTime extends AbstractProvider {
     private static final int DEFAULT_MIN_AGE = 18;
     private static final int DEFAULT_MAX_AGE = 65;
 
-    private final Faker faker;
-
     protected DateAndTime(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

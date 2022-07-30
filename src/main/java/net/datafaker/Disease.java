@@ -5,8 +5,7 @@ package net.datafaker;
  *
  * @since 0.8.0
  */
-public class Disease {
-    private final Faker faker;
+public class Disease extends AbstractProvider {
 
     /**
      * Create a constructor for Disease
@@ -14,7 +13,7 @@ public class Disease {
      * @param faker The Faker instance for generating random, different kinds of disease, e.g. the internal disease.
      */
     protected Disease(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -23,7 +22,7 @@ public class Disease {
      * @return An internal disease
      */
     public String internalDisease() {
-        return faker.fakeValuesService().resolve("disease.internal_disease", this, faker);
+        return faker.fakeValuesService().resolve("disease.internal_disease", this);
     }
 
     /**
@@ -32,7 +31,7 @@ public class Disease {
      * @return A neurology disease
      */
     public String neurology() {
-        return faker.fakeValuesService().resolve("disease.neurology", this, faker);
+        return faker.fakeValuesService().resolve("disease.neurology", this);
     }
 
     /**
@@ -41,7 +40,7 @@ public class Disease {
      * @return A surgery disease
      */
     public String surgery() {
-        return faker.fakeValuesService().resolve("disease.surgery", this, faker);
+        return faker.fakeValuesService().resolve("disease.surgery", this);
     }
 
     /**
@@ -50,7 +49,7 @@ public class Disease {
      * @return A paediatrics disease
      */
     public String paediatrics() {
-        return faker.fakeValuesService().resolve("disease.paediatrics", this, faker);
+        return faker.fakeValuesService().resolve("disease.paediatrics", this);
     }
 
     /**
@@ -59,7 +58,7 @@ public class Disease {
      * @return A gynecology and obstetrics disease
      */
     public String gynecologyAndObstetrics() {
-        return faker.fakeValuesService().resolve("disease.gynecology_and_obstetrics", this, faker);
+        return faker.fakeValuesService().resolve("disease.gynecology_and_obstetrics", this);
     }
 
     /**
@@ -68,7 +67,7 @@ public class Disease {
      * @return A ophthalmology and otorhinolaryngology disease
      */
     public String ophthalmologyAndOtorhinolaryngology() {
-        return faker.fakeValuesService().resolve("disease.ophthalmology_and_otorhinolaryngology", this, faker);
+        return faker.fakeValuesService().resolve("disease.ophthalmology_and_otorhinolaryngology", this);
     }
 
     /**
@@ -77,7 +76,7 @@ public class Disease {
      * @return A dermatolory disease
      */
     public String dermatolory() {
-        return faker.fakeValuesService().resolve("disease.dermatolory", this, faker);
+        return faker.fakeValuesService().resolve("disease.dermatolory", this);
     }
 
 }

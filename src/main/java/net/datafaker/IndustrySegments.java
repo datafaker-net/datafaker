@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class IndustrySegments {
-
-    private final Faker faker;
+public class IndustrySegments extends AbstractProvider {
 
     protected IndustrySegments(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String industry() {

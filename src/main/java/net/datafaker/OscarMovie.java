@@ -6,9 +6,8 @@ package net.datafaker;
  * @author ak-maker
  * @since 1.4.0
  */
-public class OscarMovie {
+public class OscarMovie extends AbstractProvider {
 
-    private final Faker faker;
     private final String year;
     private final String choice;
 
@@ -21,7 +20,7 @@ public class OscarMovie {
      * @param faker faker The Faker instance for generating random names of things.
      */
     protected OscarMovie(final Faker faker) {
-        this.faker = faker;
+        super(faker);
         this.year = this.faker.resolve("oscar_movie.year.years");
         this.choice = this.faker.resolve("oscar_movie.year.choice");
         this.str = "oscar_movie.".concat(year).concat(".").concat(choice);

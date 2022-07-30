@@ -5,18 +5,17 @@ package net.datafaker;
  *
  * @since 1.1.0
  */
-public class Mountain {
-    private final Faker faker;
+public class Mountain extends AbstractProvider {
 
     protected Mountain(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("mountain.name", this, faker);
+        return faker.fakeValuesService().resolve("mountain.name", this);
     }
 
     public String range() {
-        return faker.fakeValuesService().resolve("mountain.range", this, faker);
+        return faker.fakeValuesService().resolve("mountain.range", this);
     }
 }

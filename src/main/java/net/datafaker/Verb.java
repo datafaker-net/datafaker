@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Verb {
-
-    private final Faker faker;
+public class Verb extends AbstractProvider {
 
     protected Verb(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,7 +15,7 @@ public class Verb {
      * @return a string of base form of a verb.
      */
     public String base() {
-        return faker.fakeValuesService().resolve("verbs.base", this, faker);
+        return faker.fakeValuesService().resolve("verbs.base", this);
     }
 
     /**
@@ -26,7 +24,7 @@ public class Verb {
      * @return a string of verb in past tense.
      */
     public String past() {
-        return faker.fakeValuesService().resolve("verbs.past", this, faker);
+        return faker.fakeValuesService().resolve("verbs.past", this);
     }
 
     /**
@@ -35,7 +33,7 @@ public class Verb {
      * @return a string of verb in past participle tense.
      */
     public String pastParticiple() {
-        return faker.fakeValuesService().resolve("verbs.past_participle", this, faker);
+        return faker.fakeValuesService().resolve("verbs.past_participle", this);
     }
 
     /**
@@ -44,7 +42,7 @@ public class Verb {
      * @return a string of verb in simple present tense.
      */
     public String simplePresent() {
-        return faker.fakeValuesService().resolve("verbs.simple_present", this, faker);
+        return faker.fakeValuesService().resolve("verbs.simple_present", this);
     }
 
     /**
@@ -53,6 +51,6 @@ public class Verb {
      * @return a string of verb in -ing form.
      */
     public String ingForm() {
-        return faker.fakeValuesService().resolve("verbs.ing_form", this, faker);
+        return faker.fakeValuesService().resolve("verbs.ing_form", this);
     }
 }

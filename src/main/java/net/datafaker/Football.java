@@ -3,32 +3,30 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-class Football {
-
-    private final Faker faker;
+public class Football extends AbstractProvider {
 
     protected Football(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String teams() {
-        return faker.fakeValuesService().resolve("football.teams", this, faker);
+        return faker.fakeValuesService().resolve("football.teams", this);
     }
 
     public String players() {
-        return faker.fakeValuesService().resolve("football.players", this, faker);
+        return faker.fakeValuesService().resolve("football.players", this);
     }
 
     public String coaches() {
-        return faker.fakeValuesService().resolve("football.coaches", this, faker);
+        return faker.fakeValuesService().resolve("football.coaches", this);
     }
 
     public String competitions() {
-        return faker.fakeValuesService().resolve("football.competitions", this, faker);
+        return faker.fakeValuesService().resolve("football.competitions", this);
     }
 
     public String positions() {
-        return faker.fakeValuesService().resolve("football.positions", this, faker);
+        return faker.fakeValuesService().resolve("football.positions", this);
     }
 
 }

@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.4.0
  */
-public class Tea {
-
-    private final Faker faker;
+public class Tea extends AbstractProvider {
 
     protected Tea(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,7 +15,7 @@ public class Tea {
      * @return a string of tea variety.
      */
     public String variety() {
-        return faker.fakeValuesService().resolve("tea.variety." + type().toLowerCase(), this, faker);
+        return faker.fakeValuesService().resolve("tea.variety." + type().toLowerCase(), this);
     }
 
     /**
@@ -26,6 +24,6 @@ public class Tea {
      * @return a string of tea type.
      */
     public String type() {
-        return faker.fakeValuesService().resolve("tea.type", this, faker);
+        return faker.fakeValuesService().resolve("tea.type", this);
     }
 }

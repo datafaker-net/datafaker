@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 1.4.0
  */
-public class EldenRing {
-    private final Faker faker;
+public class EldenRing extends AbstractProvider {
 
     protected EldenRing(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String location() {

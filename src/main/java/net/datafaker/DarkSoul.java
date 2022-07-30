@@ -1,32 +1,31 @@
 package net.datafaker;
 
 /**
- * issue for: https://github.com/datafaker-net/datafaker/issues/159
+ * issue for: <a href="https://github.com/datafaker-net/datafaker/issues/159">159</a>
  *
  * @since 1.5.0
  * @author SickDawn
  */
-public class DarkSoul {
-    private final Faker faker;
+public class DarkSoul extends AbstractProvider {
 
     public DarkSoul(final Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String stats() {
-        return faker.fakeValuesService().resolve("dark_soul.stats", this, faker);
+        return faker.fakeValuesService().resolve("dark_soul.stats", this);
     }
 
     public String covenants() {
-        return faker.fakeValuesService().resolve("dark_soul.covenants", this, faker);
+        return faker.fakeValuesService().resolve("dark_soul.covenants", this);
     }
 
     public String classes() {
-        return faker.fakeValuesService().resolve("dark_soul.classes", this, faker);
+        return faker.fakeValuesService().resolve("dark_soul.classes", this);
     }
 
     public String shield() {
-        return faker.fakeValuesService().resolve("dark_soul.shield", this, faker);
+        return faker.fakeValuesService().resolve("dark_soul.shield", this);
     }
 
 }

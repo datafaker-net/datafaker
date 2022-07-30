@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Hololive {
-    private final Faker faker;
+public class Hololive extends AbstractProvider {
 
     protected Hololive(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String talent() {

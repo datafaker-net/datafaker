@@ -8,11 +8,10 @@ import java.util.Arrays;
 /**
  * @since 0.8.0
  */
-public class Relationship {
-    private final Faker faker;
+public class Relationship extends AbstractProvider {
 
     protected Relationship(final Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String direct() {

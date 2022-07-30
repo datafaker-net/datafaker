@@ -8,13 +8,12 @@ import java.util.Locale;
 /**
  * @since 0.8.0
  */
-public class Vehicle {
-    private final Faker faker;
+public class Vehicle extends AbstractProvider {
 
     static final String VIN_REGEX = "([A-HJ-NPR-Z0-9]){3}[A-HJ-NPR-Z0-9]{5}[A-HJ-NPR-Z0-9]{1}[A-HJ-NPR-Z0-9]{1}[A-HJ-NPR-Z0-0]{1}[A-HJ-NPR-Z0-9]{1}\\d{5}";
 
     public Vehicle(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String vin() {
@@ -114,7 +113,7 @@ public class Vehicle {
             return null;
         }
 
-        String licensePlatesByState = faker.fakeValuesService().resolve("vehicle.license_plate_by_state." + stateAbbreviation, this, faker);
+        String licensePlatesByState = faker.fakeValuesService().resolve("vehicle.license_plate_by_state." + stateAbbreviation, this);
         return licensePlatesByState == null ? null : faker.regexify(faker.bothify(licensePlatesByState)).toUpperCase(Locale.ROOT);
     }
 }

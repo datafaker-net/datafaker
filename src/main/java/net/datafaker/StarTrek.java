@@ -3,30 +3,29 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class StarTrek {
-    private final Faker faker;
+public class StarTrek extends AbstractProvider {
 
     protected StarTrek(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("star_trek.character", this, faker);
+        return faker.fakeValuesService().resolve("star_trek.character", this);
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("star_trek.location", this, faker);
+        return faker.fakeValuesService().resolve("star_trek.location", this);
     }
 
     public String species() {
-        return faker.fakeValuesService().resolve("star_trek.species", this, faker);
+        return faker.fakeValuesService().resolve("star_trek.species", this);
     }
 
     public String villain() {
-        return faker.fakeValuesService().resolve("star_trek.villain", this, faker);
+        return faker.fakeValuesService().resolve("star_trek.villain", this);
     }
 
     public String klingon() {
-        return faker.fakeValuesService().resolve("star_trek.klingon", this, faker);
+        return faker.fakeValuesService().resolve("star_trek.klingon", this);
     }
 }

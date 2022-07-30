@@ -10,26 +10,24 @@ import java.util.Locale;
 /**
  * @since 0.8.0
  */
-public class Nation {
+public class Nation extends AbstractProvider {
 
     private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 
-    private final Faker faker;
-
     protected Nation(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String nationality() {
-        return faker.fakeValuesService().resolve("nation.nationality", this, faker);
+        return faker.fakeValuesService().resolve("nation.nationality", this);
     }
 
     public String language() {
-        return faker.fakeValuesService().resolve("nation.language", this, faker);
+        return faker.fakeValuesService().resolve("nation.language", this);
     }
 
     public String capitalCity() {
-        return faker.fakeValuesService().resolve("nation.capital_city", this, faker);
+        return faker.fakeValuesService().resolve("nation.capital_city", this);
     }
 
     public String flag() {

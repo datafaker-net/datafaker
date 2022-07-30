@@ -5,12 +5,12 @@ package net.datafaker;
  *
  * @since 1.5.0
  */
-public class Mbti {
-    private final Faker faker;
+public class Mbti extends AbstractProvider {
+    
     private final String choice;
 
     public Mbti(final Faker faker) {
-        this.faker = faker;
+        super(faker);
         this.choice = this.faker.resolve("mbti.choice");
     }
 

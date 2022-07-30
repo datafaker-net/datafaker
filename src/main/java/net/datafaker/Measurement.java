@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Measurement {
-
-    private final Faker faker;
+public class Measurement extends AbstractProvider {
 
     protected Measurement(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,7 +15,7 @@ public class Measurement {
      * @return a string of height measurement.
      */
     public String height() {
-        return faker.fakeValuesService().resolve("measurement.height", this, faker);
+        return faker.fakeValuesService().resolve("measurement.height", this);
     }
 
     /**
@@ -26,7 +24,7 @@ public class Measurement {
      * @return a string of length measurement.
      */
     public String length() {
-        return faker.fakeValuesService().resolve("measurement.length", this, faker);
+        return faker.fakeValuesService().resolve("measurement.length", this);
     }
 
     /**
@@ -35,7 +33,7 @@ public class Measurement {
      * @return a string of volume measurement.
      */
     public String volume() {
-        return faker.fakeValuesService().resolve("measurement.volume", this, faker);
+        return faker.fakeValuesService().resolve("measurement.volume", this);
     }
 
     /**
@@ -44,7 +42,7 @@ public class Measurement {
      * @return a string of weight measurement.
      */
     public String weight() {
-        return faker.fakeValuesService().resolve("measurement.weight", this, faker);
+        return faker.fakeValuesService().resolve("measurement.weight", this);
     }
 
     /**
@@ -53,7 +51,7 @@ public class Measurement {
      * @return a string of metric height measurement.
      */
     public String metricHeight() {
-        return faker.fakeValuesService().resolve("measurement.metric_height", this, faker);
+        return faker.fakeValuesService().resolve("measurement.metric_height", this);
     }
 
     /**
@@ -62,7 +60,7 @@ public class Measurement {
      * @return a string of metric length measurement.
      */
     public String metricLength() {
-        return faker.fakeValuesService().resolve("measurement.metric_length", this, faker);
+        return faker.fakeValuesService().resolve("measurement.metric_length", this);
     }
 
     /**
@@ -71,7 +69,7 @@ public class Measurement {
      * @return a string of metric volume measurement.
      */
     public String metricVolume() {
-        return faker.fakeValuesService().resolve("measurement.metric_volume", this, faker);
+        return faker.fakeValuesService().resolve("measurement.metric_volume", this);
     }
 
     /**
@@ -80,6 +78,6 @@ public class Measurement {
      * @return a string of metric weight measurement.
      */
     public String metricWeight() {
-        return faker.fakeValuesService().resolve("measurement.metric_weight", this, faker);
+        return faker.fakeValuesService().resolve("measurement.metric_weight", this);
     }
 }

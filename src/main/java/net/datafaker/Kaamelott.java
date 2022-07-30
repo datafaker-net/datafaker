@@ -3,18 +3,17 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Kaamelott {
-    private final Faker faker;
+public class Kaamelott extends AbstractProvider {
 
     protected Kaamelott(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("kaamelott.characters", this, faker);
+        return faker.fakeValuesService().resolve("kaamelott.characters", this);
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("kaamelott.quotes", this, faker);
+        return faker.fakeValuesService().resolve("kaamelott.quotes", this);
     }
 }

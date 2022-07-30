@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Artist {
-
-    private final Faker faker;
+public class Artist extends AbstractProvider {
 
     protected Artist(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {

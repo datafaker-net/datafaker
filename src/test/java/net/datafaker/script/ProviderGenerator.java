@@ -64,10 +64,10 @@ class ProviderGenerator {
         System.out.println(" */");
         System.out.println("class " + className + " {");
         System.out.println();
-        System.out.println("    private final Faker faker;");
+        System.out.println("    ");
         System.out.println();
         System.out.println("    protected " + className + "(Faker faker) {");
-        System.out.println("        this.faker = faker;");
+        System.out.println("        super(faker);");
         System.out.println("    }");
         System.out.println();
 
@@ -75,7 +75,7 @@ class ProviderGenerator {
             String methodName = StringUtils.uncapitalize(toJavaConvention(string));
 
             System.out.println("    public String " + methodName + "() {\n" +
-                "        return faker.fakeValuesService().resolve(\"" + key + "." + string + "\", this, faker);\n" +
+                "        return faker.fakeValuesService().resolve(\"" + key + "." + string + "\", this);\n" +
                 "    }");
             System.out.println();
         }

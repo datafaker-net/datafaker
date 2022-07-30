@@ -5,32 +5,31 @@ package net.datafaker;
  *
  * @since 1.2.0
  */
-public class Nigeria {
+public class Nigeria extends AbstractProvider {
     private static final String KEY = "nigeria";
-    private final Faker faker;
 
     protected Nigeria(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String places() {
-        return faker.fakeValuesService().resolve(KEY + ".places", this, faker);
+        return faker.fakeValuesService().resolve(KEY + ".places", this);
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve(KEY + ".name", this, faker);
+        return faker.fakeValuesService().resolve(KEY + ".name", this);
     }
 
     public String food() {
-        return faker.fakeValuesService().resolve(KEY + ".food", this, faker);
+        return faker.fakeValuesService().resolve(KEY + ".food", this);
     }
 
     public String schools() {
-        return faker.fakeValuesService().resolve(KEY + ".schools", this, faker);
+        return faker.fakeValuesService().resolve(KEY + ".schools", this);
     }
 
     public String celebrities() {
-        return faker.fakeValuesService().resolve(KEY + ".celebrities", this, faker);
+        return faker.fakeValuesService().resolve(KEY + ".celebrities", this);
     }
 }
 

@@ -5,16 +5,14 @@ import java.util.UUID;
 /**
  * @since 1.3.0
  */
-public class Aws {
-
-    private final Faker faker;
+public class Aws extends AbstractProvider {
 
     protected Aws(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String region() {
-        return faker.fakeValuesService().resolve("aws.regions", this, faker);
+        return faker.fakeValuesService().resolve("aws.regions", this);
     }
 
     public String accountId() {

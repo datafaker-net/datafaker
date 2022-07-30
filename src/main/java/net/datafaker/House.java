@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class House {
-
-    private final Faker faker;
+public class House extends AbstractProvider {
 
     protected House(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,7 +15,7 @@ public class House {
      * @return a string of furniture.
      */
     public String furniture() {
-        return faker.fakeValuesService().resolve("house.furniture", this, faker);
+        return faker.fakeValuesService().resolve("house.furniture", this);
     }
 
     /**
@@ -26,6 +24,6 @@ public class House {
      * @return a string of room.
      */
     public String room() {
-        return faker.fakeValuesService().resolve("house.rooms", this, faker);
+        return faker.fakeValuesService().resolve("house.rooms", this);
     }
 }

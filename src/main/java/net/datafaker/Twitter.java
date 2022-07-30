@@ -14,16 +14,16 @@ import java.util.logging.Logger;
  *
  * @since 0.9.0
  */
-public class Twitter {
+public class Twitter extends AbstractProvider {
 
-    private final Faker faker;
+    
     private final String basicstr = "QabR0cYdZ1efSg2hi3jNOPkTUM4VLlmXK5nJo6WIpHGqF7rEs8tDuC9vwBxAyz";
 
     /**
      * @param faker used as constructor
      */
     protected Twitter(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -129,14 +129,14 @@ public class Twitter {
      * @return Return a user name using the twitter.user_name.
      */
     public String userName() {
-        return faker.fakeValuesService().resolve("twitter.user_name", this, faker);
+        return faker.fakeValuesService().resolve("twitter.user_name", this);
     }
 
     /**
      * @return Return a user id using the twitter.user_name.
      */
     public String userId() {
-        return faker.fakeValuesService().resolve("twitter.user_id", this, faker);
+        return faker.fakeValuesService().resolve("twitter.user_id", this);
     }
 
     /**

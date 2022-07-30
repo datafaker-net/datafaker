@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Ancient {
-
-    private final Faker faker;
+public class Ancient extends AbstractProvider {
 
     protected Ancient(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String god() {

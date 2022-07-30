@@ -3,19 +3,18 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class PhoneNumber {
-    private final Faker faker;
+public class PhoneNumber extends AbstractProvider {
 
     protected PhoneNumber(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String cellPhone() {
-        return faker.numerify(faker.fakeValuesService().resolve("cell_phone.formats", this, faker));
+        return faker.numerify(faker.fakeValuesService().resolve("cell_phone.formats", this));
     }
 
     public String phoneNumber() {
-        return faker.numerify(faker.fakeValuesService().resolve("phone_number.formats", this, faker));
+        return faker.numerify(faker.fakeValuesService().resolve("phone_number.formats", this));
     }
 
     public String extension() {

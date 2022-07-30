@@ -5,15 +5,14 @@ import net.datafaker.internal.helper.WordUtils;
 /**
  * @since 0.8.0
  */
-public class Animal {
-    private final Faker faker;
+public class Animal extends AbstractProvider {
 
     protected Animal(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("creature.animal.name", this, faker);
+        return faker.fakeValuesService().resolve("creature.animal.name", this);
     }
 
     public String scientificName() {
@@ -21,10 +20,10 @@ public class Animal {
     }
 
     public String genus() {
-        return WordUtils.capitalize(faker.fakeValuesService().resolve("creature.animal.genus", this, faker));
+        return WordUtils.capitalize(faker.fakeValuesService().resolve("creature.animal.genus", this));
     }
 
     public String species() {
-        return faker.fakeValuesService().resolve("creature.animal.species", this, faker).toLowerCase();
+        return faker.fakeValuesService().resolve("creature.animal.species", this).toLowerCase();
     }
 }

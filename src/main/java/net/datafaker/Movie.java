@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Movie {
-
-    private final Faker faker;
+public class Movie extends AbstractProvider {
 
     protected Movie(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,6 +15,6 @@ public class Movie {
      * @return a string of quote from a movie.
      */
     public String quote() {
-        return faker.fakeValuesService().resolve("movie.quote", this, faker);
+        return faker.fakeValuesService().resolve("movie.quote", this);
     }
 }

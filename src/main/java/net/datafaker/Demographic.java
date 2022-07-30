@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Demographic {
-
-    private final Faker faker;
+public class Demographic extends AbstractProvider {
 
     protected Demographic(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String race() {

@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 public class Faker {
     private final RandomService randomService;
     private final FakeValuesService fakeValuesService;
-    private final Map<Class<?>, Object> providersMap = new IdentityHashMap<>();
+    private final Map<Class<? extends AbstractProvider>, AbstractProvider> providersMap = new IdentityHashMap<>();
 
     public Faker() {
         this(Locale.ENGLISH);
@@ -288,7 +288,7 @@ public class Faker {
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> T getProvider(Class<T> clazz, Supplier<T> valueSupplier) {
+    public <T extends AbstractProvider> T getProvider(Class<T> clazz, Supplier<T> valueSupplier) {
         T result = (T) providersMap.get(clazz);
         if (result == null) {
             providersMap.putIfAbsent(clazz, valueSupplier.get());

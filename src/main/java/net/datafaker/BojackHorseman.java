@@ -6,8 +6,7 @@ package net.datafaker;
  * @author unknown and irakatz
  * @since 0.8.0
  */
-public class BojackHorseman {
-    private final Faker faker;
+public class BojackHorseman extends AbstractProvider {
 
     /**
      * Create a constructor for BojackHorseman.
@@ -15,7 +14,7 @@ public class BojackHorseman {
      * @param faker The Faker instance for generating random parts in BojackHorseman.
      */
     protected BojackHorseman(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -24,7 +23,7 @@ public class BojackHorseman {
      * @return Characters in BojackHorseman
      */
     public String characters() {
-        return faker.fakeValuesService().resolve("bojack_horseman.characters", this, faker);
+        return faker.fakeValuesService().resolve("bojack_horseman.characters", this);
     }
 
     /**
@@ -33,7 +32,7 @@ public class BojackHorseman {
      * @return Quotes in BojackHorseman
      */
     public String quotes() {
-        return faker.fakeValuesService().resolve("bojack_horseman.quotes", this, faker);
+        return faker.fakeValuesService().resolve("bojack_horseman.quotes", this);
     }
 
     /**
@@ -42,7 +41,7 @@ public class BojackHorseman {
      * @return Tongue twisters in BojackHorseman
      */
     public String tongueTwisters() {
-        return faker.fakeValuesService().resolve("bojack_horseman.tongue_twisters", this, faker);
+        return faker.fakeValuesService().resolve("bojack_horseman.tongue_twisters", this);
     }
 
 }

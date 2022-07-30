@@ -6,11 +6,10 @@ import java.math.RoundingMode;
 /**
  * @since 0.8.0
  */
-public class Number {
-    private final Faker faker;
+public class Number extends AbstractProvider {
 
     protected Number(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

@@ -9,29 +9,28 @@ import java.util.regex.Pattern;
 /**
  * @since 0.8.0
  */
-public class Company {
+public class Company extends AbstractProvider {
 
     private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[.,' ]");
-    private final Faker faker;
 
     protected Company(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("company.name", this, faker);
+        return faker.fakeValuesService().resolve("company.name", this);
     }
 
     public String suffix() {
-        return faker.fakeValuesService().resolve("company.suffix", this, faker);
+        return faker.fakeValuesService().resolve("company.suffix", this);
     }
 
     public String industry() {
-        return faker.fakeValuesService().resolve("company.industry", this, faker);
+        return faker.fakeValuesService().resolve("company.industry", this);
     }
 
     public String profession() {
-        return faker.fakeValuesService().resolve("company.profession", this, faker);
+        return faker.fakeValuesService().resolve("company.profession", this);
     }
 
     public String buzzword() {
@@ -83,7 +82,7 @@ public class Company {
     }
 
     private String domainSuffix() {
-        return faker.fakeValuesService().resolve("internet.domain_suffix", this, faker);
+        return faker.fakeValuesService().resolve("internet.domain_suffix", this);
     }
 
     private String joinSampleOfEachList(List<List<String>> listOfLists) {

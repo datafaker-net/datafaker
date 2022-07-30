@@ -5,16 +5,14 @@ package net.datafaker;
  *
  * @since 1.4.0
  */
-public class Mountaineering {
-
-    private final Faker faker;
+public class Mountaineering extends AbstractProvider {
 
     protected Mountaineering(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String mountaineer() {
-        return faker.fakeValuesService().resolve("mountaineering.mountaineer", this, faker);
+        return faker.fakeValuesService().resolve("mountaineering.mountaineer", this);
     }
 
 }

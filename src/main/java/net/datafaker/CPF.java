@@ -11,12 +11,10 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  * @see <a href="https://en.wikipedia.org/wiki/CPF_number">CPF</a>
  * @since 0.8.0
  */
-public class CPF {
-
-    private final Faker faker;
+public class CPF extends AbstractProvider {
 
     protected CPF(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

@@ -3,15 +3,14 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Name {
-    private final Faker faker;
+public class Name extends AbstractProvider {
 
     /**
      * Internal constructor, not to be used by clients.  Instances of {@link Name} should be accessed via
      * {@link Faker#name()}.
      */
     protected Name(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -25,7 +24,7 @@ public class Name {
      * @return a random name with given and family names and an optional suffix.
      */
     public String name() {
-        return faker.fakeValuesService().resolve("name.name", this, faker);
+        return faker.fakeValuesService().resolve("name.name", this);
     }
 
     /**
@@ -41,7 +40,7 @@ public class Name {
      * @return a random name with a middle name component with optional prefix and suffix
      */
     public String nameWithMiddle() {
-        return faker.fakeValuesService().resolve("name.name_with_middle", this, faker);
+        return faker.fakeValuesService().resolve("name.name_with_middle", this);
     }
 
     /**
@@ -59,7 +58,7 @@ public class Name {
      * @return a 'given' name such as Aaliyah, Aaron, Abagail or Abbey
      */
     public String firstName() {
-        return faker.fakeValuesService().resolve("name.first_name", this, faker);
+        return faker.fakeValuesService().resolve("name.first_name", this);
     }
 
     /**
@@ -68,7 +67,7 @@ public class Name {
      * @return a random last name such as Smith, Jones or Baldwin
      */
     public String lastName() {
-        return faker.fakeValuesService().resolve("name.last_name", this, faker);
+        return faker.fakeValuesService().resolve("name.last_name", this);
     }
 
     /**
@@ -77,7 +76,7 @@ public class Name {
      * @return a name prefix such as Mr., Mrs., Ms., Miss, or Dr.
      */
     public String prefix() {
-        return faker.fakeValuesService().resolve("name.prefix", this, faker);
+        return faker.fakeValuesService().resolve("name.prefix", this);
     }
 
     /**
@@ -86,7 +85,7 @@ public class Name {
      * @return a name suffix such as Jr., Sr., I, II, III, IV, V, MD, DDS, PhD or DVM
      */
     public String suffix() {
-        return faker.fakeValuesService().resolve("name.suffix", this, faker);
+        return faker.fakeValuesService().resolve("name.suffix", this);
     }
 
     /**
@@ -102,9 +101,9 @@ public class Name {
      */
     public String title() {
         return String.join(" ",
-            faker.fakeValuesService().resolve("name.title.descriptor", this, faker),
-            faker.fakeValuesService().resolve("name.title.level", this, faker),
-            faker.fakeValuesService().resolve("name.title.job", this, faker)
+            faker.fakeValuesService().resolve("name.title.descriptor", this),
+            faker.fakeValuesService().resolve("name.title.level", this),
+            faker.fakeValuesService().resolve("name.title.job", this)
         );
     }
 

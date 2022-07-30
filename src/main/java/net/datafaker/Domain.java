@@ -8,8 +8,7 @@ import net.datafaker.service.RandomService;
  *
  * @since 0.9.0
  */
-public class Domain {
-    private final Faker faker;
+public class Domain extends AbstractProvider {
 
     /**
      * Instantiates a new Domain.
@@ -17,7 +16,7 @@ public class Domain {
      * @param faker the faker
      */
     protected Domain(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -27,7 +26,7 @@ public class Domain {
      * @return the
      */
     public String firstLevelDomain(String name) {
-        String top = faker.fakeValuesService().resolve("domain.top", this, faker);
+        String top = faker.fakeValuesService().resolve("domain.top", this);
         return String.join("",
             name,
             ".",
@@ -42,8 +41,8 @@ public class Domain {
      * @return the second level domain with company name
      */
     public String secondLevelDomain(String name) {
-        String top = faker.fakeValuesService().resolve("domain.top", this, faker);
-        String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
+        String top = faker.fakeValuesService().resolve("domain.top", this);
+        String suffix = faker.fakeValuesService().resolve("domain.country", this);
         return String.join("",
             name,
             ".",
@@ -60,9 +59,9 @@ public class Domain {
      * @return the full domain name
      */
     public String fullDomain(String name) {
-        String prefix = faker.fakeValuesService().resolve("domain.prefix", this, faker);
-        String top = faker.fakeValuesService().resolve("domain.top", this, faker);
-        String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
+        String prefix = faker.fakeValuesService().resolve("domain.prefix", this);
+        String top = faker.fakeValuesService().resolve("domain.top", this);
+        String suffix = faker.fakeValuesService().resolve("domain.country", this);
         return String.join("",
             prefix,
             ".",
@@ -87,7 +86,7 @@ public class Domain {
         boolean hasPrefix = random.nextInt(3) == 1;
         boolean hasSuffix = random.nextInt(2) == 1;
 
-        String top = faker.fakeValuesService().resolve("domain.top", this, faker);
+        String top = faker.fakeValuesService().resolve("domain.top", this);
 
         String result = String.join("",
             name,
@@ -96,7 +95,7 @@ public class Domain {
         );
 
         if (hasPrefix) {
-            String prefix = faker.fakeValuesService().resolve("domain.prefix", this, faker);
+            String prefix = faker.fakeValuesService().resolve("domain.prefix", this);
             result = String.join("",
                 prefix,
                 ".",
@@ -105,7 +104,7 @@ public class Domain {
         }
 
         if (hasSuffix) {
-            String suffix = faker.fakeValuesService().resolve("domain.country", this, faker);
+            String suffix = faker.fakeValuesService().resolve("domain.country", this);
             result = String.join("",
                 result,
                 ".",

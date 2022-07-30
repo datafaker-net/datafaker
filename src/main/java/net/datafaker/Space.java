@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Space {
-
-    private final Faker faker;
+public class Space extends AbstractProvider {
 
     protected Space(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String planet() {

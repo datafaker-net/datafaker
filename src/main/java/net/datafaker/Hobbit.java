@@ -3,26 +3,25 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Hobbit {
-    private final Faker faker;
+public class Hobbit extends AbstractProvider {
 
     protected Hobbit(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("hobbit.character", this, faker);
+        return faker.fakeValuesService().resolve("hobbit.character", this);
     }
 
     public String thorinsCompany() {
-        return faker.fakeValuesService().resolve("hobbit.thorins_company", this, faker);
+        return faker.fakeValuesService().resolve("hobbit.thorins_company", this);
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("hobbit.quote", this, faker);
+        return faker.fakeValuesService().resolve("hobbit.quote", this);
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("hobbit.location", this, faker);
+        return faker.fakeValuesService().resolve("hobbit.location", this);
     }
 }

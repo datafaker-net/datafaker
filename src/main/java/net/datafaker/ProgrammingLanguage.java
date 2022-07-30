@@ -3,20 +3,18 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class ProgrammingLanguage {
-
-    private final Faker faker;
+public class ProgrammingLanguage extends AbstractProvider {
 
     public ProgrammingLanguage(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("programming_language.name", this, faker);
+        return faker.fakeValuesService().resolve("programming_language.name", this);
     }
 
     public String creator() {
-        return faker.fakeValuesService().resolve("programming_language.creator", this, faker);
+        return faker.fakeValuesService().resolve("programming_language.creator", this);
     }
 
 }

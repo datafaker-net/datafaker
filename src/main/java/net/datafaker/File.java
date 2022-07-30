@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class File {
-    private final Faker faker;
+public class File extends AbstractProvider {
 
     protected File(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String extension() {

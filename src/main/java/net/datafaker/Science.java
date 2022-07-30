@@ -3,39 +3,38 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Science {
-    private final Faker faker;
+public class Science extends AbstractProvider {
 
     protected Science(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String element() {
-        return faker.fakeValuesService().resolve("science.element", this, faker);
+        return faker.fakeValuesService().resolve("science.element", this);
     }
 
     public String elementSymbol() {
-        return faker.fakeValuesService().resolve("science.element_symbol", this, faker);
+        return faker.fakeValuesService().resolve("science.element_symbol", this);
     }
 
     public String scientist() {
-        return faker.fakeValuesService().resolve("science.scientist", this, faker);
+        return faker.fakeValuesService().resolve("science.scientist", this);
     }
 
     public String tool() {
-        return faker.fakeValuesService().resolve("science.tool", this, faker);
+        return faker.fakeValuesService().resolve("science.tool", this);
     }
 
     public String quark() {
-        return faker.fakeValuesService().resolve("science.particles.quarks", this, faker);
+        return faker.fakeValuesService().resolve("science.particles.quarks", this);
     }
 
     public String leptons() {
-        return faker.fakeValuesService().resolve("science.particles.leptons", this, faker);
+        return faker.fakeValuesService().resolve("science.particles.leptons", this);
     }
 
     public String bosons() {
-        return faker.fakeValuesService().resolve("science.particles.bosons", this, faker);
+        return faker.fakeValuesService().resolve("science.particles.bosons", this);
     }
 
 }

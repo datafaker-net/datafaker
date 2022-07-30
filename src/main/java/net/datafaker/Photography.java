@@ -5,12 +5,10 @@ package net.datafaker;
  *
  * @since 0.8.0
  */
-public class Photography {
-
-    private final Faker faker;
+public class Photography extends AbstractProvider {
 
     protected Photography(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

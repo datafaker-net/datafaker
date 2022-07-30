@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class GameOfThrones {
-
-    private final Faker faker;
+public class GameOfThrones extends AbstractProvider {
 
     protected GameOfThrones(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {

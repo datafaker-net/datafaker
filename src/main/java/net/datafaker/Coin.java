@@ -3,18 +3,16 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Coin {
-
-    private final Faker faker;
+public class Coin extends AbstractProvider {
 
     protected Coin(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
      * @return coin side e.g. "Heads", "Tails".
      */
     public String flip() {
-        return faker.fakeValuesService().resolve("coin.flip", this, faker);
+        return faker.fakeValuesService().resolve("coin.flip", this);
     }
 }

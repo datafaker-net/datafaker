@@ -1,6 +1,7 @@
 package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
+import net.datafaker.AbstractProvider;
 import net.datafaker.Faker;
 import net.datafaker.fileformats.Csv;
 import net.datafaker.fileformats.Format;
@@ -434,6 +435,10 @@ public class FakeValuesService {
      */
     public String resolve(String key, Object current, Faker root) {
         return resolve(key, current, root, () -> key + " resulted in null expression");
+    }
+
+    public String resolve(String key, AbstractProvider provider) {
+        return resolve(key, provider, provider.getFaker(), () -> key + " resulted in null expression");
     }
 
     /**

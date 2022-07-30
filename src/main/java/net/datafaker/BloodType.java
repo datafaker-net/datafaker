@@ -3,11 +3,10 @@ package net.datafaker;
 /**
  * @since 1.4.0
  */
-public class BloodType {
-    private final Faker faker;
+public class BloodType extends AbstractProvider {
 
     protected BloodType(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -44,6 +43,6 @@ public class BloodType {
      * @return a blood group such as O−, O+, A-, A+, B-, B+, AB-, AB+
      */
     public String bloodGroup() {
-        return faker.fakeValuesService().resolve("blood_type.blood_group", this, faker);
+        return faker.fakeValuesService().resolve("blood_type.blood_group", this);
     }
 }

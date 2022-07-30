@@ -3,40 +3,38 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Food {
-
-    private final Faker faker;
+public class Food extends AbstractProvider {
 
     protected Food(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String ingredient() {
-        return faker.fakeValuesService().resolve("food.ingredients", this, faker);
+        return faker.fakeValuesService().resolve("food.ingredients", this);
     }
 
     public String spice() {
-        return faker.fakeValuesService().resolve("food.spices", this, faker);
+        return faker.fakeValuesService().resolve("food.spices", this);
     }
 
     public String dish() {
-        return faker.fakeValuesService().resolve("food.dish", this, faker);
+        return faker.fakeValuesService().resolve("food.dish", this);
     }
 
     public String fruit() {
-        return faker.fakeValuesService().resolve("food.fruits", this, faker);
+        return faker.fakeValuesService().resolve("food.fruits", this);
     }
 
     public String vegetable() {
-        return faker.fakeValuesService().resolve("food.vegetables", this, faker);
+        return faker.fakeValuesService().resolve("food.vegetables", this);
     }
 
     public String sushi() {
-        return faker.fakeValuesService().resolve("food.sushi", this, faker);
+        return faker.fakeValuesService().resolve("food.sushi", this);
     }
 
     public String measurement() {
-        return faker.fakeValuesService().resolve("food.measurement_sizes", this, faker) +
-            " " + faker.fakeValuesService().resolve("food.measurements", this, faker);
+        return faker.fakeValuesService().resolve("food.measurement_sizes", this) +
+            " " + faker.fakeValuesService().resolve("food.measurements", this);
     }
 }

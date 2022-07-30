@@ -16,13 +16,12 @@ import java.util.regex.Pattern;
 /**
  * @since 0.8.0
  */
-public class Internet {
+public class Internet extends AbstractProvider {
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
     private static final Pattern COLON = Pattern.compile(":");
-    private final Faker faker;
 
     protected Internet(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String emailAddress() {
@@ -30,7 +29,7 @@ public class Internet {
     }
 
     public String emailAddress(String localPart) {
-        return emailAddress(localPart, FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.free_email", this, faker)));
+        return emailAddress(localPart, FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.free_email", this)));
     }
 
     public String safeEmailAddress() {
@@ -38,7 +37,7 @@ public class Internet {
     }
 
     public String safeEmailAddress(String localPart) {
-        return emailAddress(localPart, FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.safe_email", this, faker)));
+        return emailAddress(localPart, FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.safe_email", this)));
     }
 
     private String emailAddress(String localPart, String domain) {
@@ -64,7 +63,7 @@ public class Internet {
     }
 
     public String domainSuffix() {
-        return faker.fakeValuesService().resolve("internet.domain_suffix", this, faker);
+        return faker.fakeValuesService().resolve("internet.domain_suffix", this);
     }
 
     public String url() {
@@ -97,7 +96,7 @@ public class Internet {
      * @see <a href="http://lorempixel.com/">lorempixel - Placeholder Images for every case</a>
      */
     public String image() {
-        String[] dimension = faker.fakeValuesService().resolve("internet.image_dimension", this, faker).split("x");
+        String[] dimension = faker.fakeValuesService().resolve("internet.image_dimension", this).split("x");
         if (dimension.length == 0) {
             return "";
         } else {
@@ -118,7 +117,7 @@ public class Internet {
      */
     public String image(Integer width, Integer height, Boolean gray, String text) {
         return String.format("https://lorempixel.com/%s%s/%s/%s/%s",
-            gray ? "g/" : "", width, height, faker.fakeValuesService().resolve("internet.image_category", this, faker),
+            gray ? "g/" : "", width, height, faker.fakeValuesService().resolve("internet.image_category", this),
             (text == null || text.length() == 0) ? "" : text);
     }
 
@@ -371,7 +370,7 @@ public class Internet {
         }
 
         String userAgentKey = "internet.user_agent." + agent.toString();
-        return faker.fakeValuesService().resolve(userAgentKey, this, faker);
+        return faker.fakeValuesService().resolve(userAgentKey, this);
     }
 
     public String userAgentAny() {

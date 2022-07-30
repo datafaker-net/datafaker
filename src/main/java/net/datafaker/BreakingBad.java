@@ -8,18 +8,17 @@ package net.datafaker;
  *
  * @since 1.0.0
  */
-public class BreakingBad {
-    private final Faker faker;
+public class BreakingBad extends AbstractProvider {
 
     protected BreakingBad(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("breaking_bad.characters", this, faker);
+        return faker.fakeValuesService().resolve("breaking_bad.characters", this);
     }
 
     public String episode() {
-        return faker.fakeValuesService().resolve("breaking_bad.episodes", this, faker);
+        return faker.fakeValuesService().resolve("breaking_bad.episodes", this);
     }
 }

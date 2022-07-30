@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Simpsons {
-
-    private final Faker faker;
+public class Simpsons extends AbstractProvider {
 
     public Simpsons(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {

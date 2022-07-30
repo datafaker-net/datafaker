@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.4.0
  */
-public class Camera {
-
-    private final Faker faker;
+public class Camera extends AbstractProvider {
 
     protected Camera(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,7 +15,7 @@ public class Camera {
      * @return a string of camera brand.
      */
     public String brand() {
-        return faker.fakeValuesService().resolve("camera.brand", this, faker);
+        return faker.fakeValuesService().resolve("camera.brand", this);
     }
 
     /**
@@ -26,7 +24,7 @@ public class Camera {
      * @return a string of camera model.
      */
     public String model() {
-        return faker.fakeValuesService().resolve("camera.model", this, faker);
+        return faker.fakeValuesService().resolve("camera.model", this);
     }
 
     /**
@@ -35,6 +33,6 @@ public class Camera {
      * @return a string of camera brand with a model.
      */
     public String brandWithModel() {
-        return faker.fakeValuesService().resolve("camera.brand_with_model", this, faker);
+        return faker.fakeValuesService().resolve("camera.brand_with_model", this);
     }
 }

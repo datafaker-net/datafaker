@@ -6,8 +6,7 @@ package net.datafaker;
  * @author unknown and irakatz
  * @since 0.8.0
  */
-public class Basketball {
-    private final Faker faker;
+public class Basketball extends AbstractProvider {
 
     /**
      * Create a constructor for Basketball.
@@ -15,7 +14,7 @@ public class Basketball {
      * @param faker The Faker instance for generating random, different kinds of disease, e.g. the internal disease.
      */
     protected Basketball(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -24,7 +23,7 @@ public class Basketball {
      * @return Basketball teams
      */
     public String teams() {
-        return faker.fakeValuesService().resolve("basketball.teams", this, faker);
+        return faker.fakeValuesService().resolve("basketball.teams", this);
     }
 
     /**
@@ -33,7 +32,7 @@ public class Basketball {
      * @return Basketball coaches
      */
     public String coaches() {
-        return faker.fakeValuesService().resolve("basketball.coaches", this, faker);
+        return faker.fakeValuesService().resolve("basketball.coaches", this);
     }
 
     /**
@@ -42,7 +41,7 @@ public class Basketball {
      * @return Basketball positions
      */
     public String positions() {
-        return faker.fakeValuesService().resolve("basketball.positions", this, faker);
+        return faker.fakeValuesService().resolve("basketball.positions", this);
     }
 
     /**
@@ -51,6 +50,6 @@ public class Basketball {
      * @return Basketball players
      */
     public String players() {
-        return faker.fakeValuesService().resolve("basketball.players", this, faker);
+        return faker.fakeValuesService().resolve("basketball.players", this);
     }
 }

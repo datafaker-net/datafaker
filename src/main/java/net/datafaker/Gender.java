@@ -5,11 +5,10 @@ package net.datafaker;
  *
  * @since 0.8.0
  */
-public class Gender {
-    private final Faker faker;
+public class Gender extends AbstractProvider {
 
     protected Gender(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

@@ -13,12 +13,10 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  * @see <a href="https://en.wikipedia.org/wiki/CNPJ">CNPJ</a>
  * @since 1.1.0
  */
-public class CNPJ {
-
-    private final Faker faker;
+public class CNPJ extends AbstractProvider {
 
     protected CNPJ(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

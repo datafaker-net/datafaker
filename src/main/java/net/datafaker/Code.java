@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  *
  * @since 0.8.0
  */
-public class Code {
+public class Code extends AbstractProvider {
 
     private static final int[] GTIN_8_CHECK_DIGITS = {3, 1, 3, 1, 3, 1, 3};
     private static final int[] GTIN_13_CHECK_DIGITS = {1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3};
@@ -17,10 +17,9 @@ public class Code {
         = {"01", "10", "30", "33", "35", "44", "45", "49", "50", "51", "52", "53", "54", "86", "91", "98", "99"};
 
     private static final Pattern HYPHEN = Pattern.compile("-");
-    private final Faker faker;
 
     protected Code(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class SlackEmoji {
-
-    private final Faker faker;
+public class SlackEmoji extends AbstractProvider {
 
     protected SlackEmoji(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String people() {
@@ -44,6 +42,6 @@ public class SlackEmoji {
     }
 
     public String emoji() {
-        return faker.fakeValuesService().resolve("slack_emoji.emoji", this, faker);
+        return faker.fakeValuesService().resolve("slack_emoji.emoji", this);
     }
 }

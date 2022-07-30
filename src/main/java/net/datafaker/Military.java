@@ -5,32 +5,30 @@ package net.datafaker;
  *
  * @since 1.2.0
  */
-public class Military {
-
-    private final Faker faker;
+public class Military extends AbstractProvider {
 
     protected Military(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String armyRank() {
-        return faker.fakeValuesService().resolve("military.army_rank", this, faker);
+        return faker.fakeValuesService().resolve("military.army_rank", this);
     }
 
     public String marinesRank() {
-        return faker.fakeValuesService().resolve("military.marines_rank", this, faker);
+        return faker.fakeValuesService().resolve("military.marines_rank", this);
     }
 
     public String navyRank() {
-        return faker.fakeValuesService().resolve("military.navy_rank", this, faker);
+        return faker.fakeValuesService().resolve("military.navy_rank", this);
     }
 
     public String airForceRank() {
-        return faker.fakeValuesService().resolve("military.air_force_rank", this, faker);
+        return faker.fakeValuesService().resolve("military.air_force_rank", this);
     }
 
     public String dodPaygrade() {
-        return faker.fakeValuesService().resolve("military.dod_paygrade", this, faker);
+        return faker.fakeValuesService().resolve("military.dod_paygrade", this);
     }
 
 }

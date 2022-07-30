@@ -7,11 +7,10 @@ package net.datafaker;
  * @author zhou mintao
  * @since 1.4.0
  */
-public class SoulKnight {
-    private final Faker faker;
+public class SoulKnight extends AbstractProvider {
 
     protected SoulKnight(final Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**

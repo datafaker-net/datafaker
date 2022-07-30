@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class FamousLastWords {
-
-    private final Faker faker;
+public class FamousLastWords extends AbstractProvider {
 
     protected FamousLastWords(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -17,6 +15,6 @@ public class FamousLastWords {
      * @return a string of last words.
      */
     public String lastWords() {
-        return faker.fakeValuesService().resolve("famous_last_words.last_words", this, faker);
+        return faker.fakeValuesService().resolve("famous_last_words.last_words", this);
     }
 }

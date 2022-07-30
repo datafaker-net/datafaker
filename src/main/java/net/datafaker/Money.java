@@ -5,12 +5,10 @@ package net.datafaker;
  *
  * @since 1.5.0
  */
-public class Money {
-
-    private final Faker faker;
+public class Money extends AbstractProvider {
 
     public Money(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
@@ -19,7 +17,7 @@ public class Money {
      * @return detailed currency value.
      */
     public String currency() {
-        return faker.fakeValuesService().resolve("money.currency", this, faker);
+        return faker.fakeValuesService().resolve("money.currency", this);
     }
 
     /**
@@ -28,6 +26,6 @@ public class Money {
      * @return currency code.
      */
     public String currencyCode() {
-        return faker.fakeValuesService().resolve("money.code", this, faker);
+        return faker.fakeValuesService().resolve("money.code", this);
     }
 }

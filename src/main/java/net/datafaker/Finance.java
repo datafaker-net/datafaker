@@ -7,25 +7,24 @@ import java.util.regex.Pattern;
 /**
  * @since 0.8.0
  */
-public class Finance {
+public class Finance extends AbstractProvider {
     private static final Pattern NUMBERS = Pattern.compile("[^0-9]");
     private static final Pattern EMPTY_STRING = Pattern.compile("");
-    private final Faker faker;
 
     protected Finance(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String nasdaqTicker() {
-        return faker.fakeValuesService().resolve("finance.ticker.nasdaq", this, faker);
+        return faker.fakeValuesService().resolve("finance.ticker.nasdaq", this);
     }
 
     public String nyseTicker() {
-        return faker.fakeValuesService().resolve("finance.ticker.nyse", this, faker);
+        return faker.fakeValuesService().resolve("finance.ticker.nyse", this);
     }
 
     public String stockMarket() {
-        return faker.fakeValuesService().resolve("finance.stock_market", this, faker);
+        return faker.fakeValuesService().resolve("finance.stock_market", this);
     }
 
     private static final Map<String, String> countryCodeToBasicBankAccountNumberPattern =
@@ -33,7 +32,7 @@ public class Finance {
 
     public String creditCard(CreditCardType creditCardType) {
         final String key = String.format("finance.credit_card.%s", creditCardType.toString().toLowerCase(Locale.ROOT));
-        String value = faker.fakeValuesService().resolve(key, this, faker);
+        String value = faker.fakeValuesService().resolve(key, this);
         final String template = faker.numerify(value);
 
         String[] split = EMPTY_STRING.split(NUMBERS.matcher(template).replaceAll(""));

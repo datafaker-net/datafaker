@@ -3,12 +3,10 @@ package net.datafaker;
 /**
  * @since 0.9.0
  */
-public class Hearthstone {
-
-    private final Faker faker;
+public class Hearthstone extends AbstractProvider {
 
     protected Hearthstone(final Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String mainProfession() {
@@ -16,7 +14,7 @@ public class Hearthstone {
     }
 
     public String mainCharacter() {
-        return faker.fakeValuesService().resolve("games.hearthstone.characters", this, faker);
+        return faker.fakeValuesService().resolve("games.hearthstone.characters", this);
     }
 
     public String mainPattern() {

@@ -3,16 +3,14 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Music {
+public class Music extends AbstractProvider {
 
     private static final String[] KEYS = new String[]{"C", "D", "E", "F", "G", "A", "B"};
     private static final String[] KEY_VARIANTS = new String[]{"b", "#", ""};
     private static final String[] CHORD_TYPES = new String[]{"", "maj", "6", "maj7", "m", "m7", "-7", "7", "dom7", "dim", "dim7", "m7b5"};
 
-    private final Faker faker;
-
     protected Music(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String instrument() {

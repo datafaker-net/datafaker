@@ -10,11 +10,10 @@ import java.util.stream.Stream;
 /**
  * @since 0.8.0
  */
-public class Options {
-    private final Faker faker;
+public class Options extends AbstractProvider {
 
     protected Options(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     /**
