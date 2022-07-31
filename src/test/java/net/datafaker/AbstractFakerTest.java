@@ -1,7 +1,6 @@
 package net.datafaker;
 
 import org.assertj.core.api.Condition;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
 
@@ -23,7 +22,7 @@ public class AbstractFakerTest {
         return true;
     }, "condition");
 
-    protected static Faker faker;
+    protected final Faker faker = new Faker();
 
     @BeforeEach
     public void before() {
@@ -37,12 +36,4 @@ public class AbstractFakerTest {
         }
     }
 
-    @BeforeAll
-    static void setup() {
-        faker = getFaker();
-    }
-
-    protected static Faker getFaker() {
-        return faker == null ? new Faker() : faker;
-    }
 }

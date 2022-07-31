@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AddressTest extends AbstractFakerTest {
 
-    private static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols(getFaker().getLocale()).getDecimalSeparator();
+    private final char decimalSeparator = new DecimalFormatSymbols(faker.getLocale()).getDecimalSeparator();
     private static final Faker US_FAKER = new Faker(new Locale("en-us"));
     private static final Faker NL_FAKER = new Faker(new Locale("nl-nl"));
     private static final Faker RU_FAKER = new Faker(new Locale("ru-ru"));
@@ -69,7 +69,7 @@ class AddressTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testLatitude() {
-        String latStr = faker.address().latitude().replace(DECIMAL_SEPARATOR, '.');
+        String latStr = faker.address().latitude().replace(decimalSeparator, '.');
         assertThat(latStr).is(IS_A_NUMBER);
         Double lat = Double.valueOf(latStr);
         assertThat(lat).isBetween(-90.0, 90.0);
@@ -77,7 +77,7 @@ class AddressTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testLongitude() {
-        String longStr = faker.address().longitude().replace(DECIMAL_SEPARATOR, '.');
+        String longStr = faker.address().longitude().replace(decimalSeparator, '.');
         assertThat(longStr).is(IS_A_NUMBER);
         Double lon = Double.valueOf(longStr);
         assertThat(lon).isBetween(-180.0, 180.0);
