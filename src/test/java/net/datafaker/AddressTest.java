@@ -253,4 +253,11 @@ class AddressTest extends AbstractFakerTest {
         assertThat(RU_FAKER.address().latLon(";"))
             .matches(BI_LAT_LON_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(RU_FAKER.getLocale()), ";"));
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"bg", "ru", "uk", "by"})
+    void nonDefaultLocaleStreetName(String locale) {
+        Faker localFaker = new Faker(new Locale(locale));
+        assertThat(localFaker.address().streetName()).isNotEmpty();
+    }
 }

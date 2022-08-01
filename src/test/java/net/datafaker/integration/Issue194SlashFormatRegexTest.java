@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class Issue194SlashFormatRegexIT {
+class Issue194SlashFormatRegexTest {
 
     @Test
     void enGBZipCodeReturnsProperRegexifiedValue() {

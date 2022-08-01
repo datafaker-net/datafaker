@@ -736,7 +736,7 @@ public class FakeValuesService {
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
         if (dotDirective) {
-            supplier = () -> safeFetch(directive, null);
+            supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), null);
             resolved = supplier.get();
         }
 

@@ -31,8 +31,7 @@ import static org.reflections.ReflectionUtils.withReturnType;
  * and that methods return values. The unit tests should ensure what the values returned
  * are correct. These tests just ensure that the methods can be invoked.
  */
-@SuppressWarnings("NewClassNamingConvention")
-class FakerIT {
+class FakerIntegrationTest {
     private Faker faker;
     private Locale locale;
 
