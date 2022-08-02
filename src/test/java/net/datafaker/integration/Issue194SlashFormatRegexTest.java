@@ -11,7 +11,7 @@ class Issue194SlashFormatRegexTest {
 
     @Test
     void enGBZipCodeReturnsProperRegexifiedValue() {
-        final Locale uk = new Locale("en-GB");
+        final Locale uk = new Locale("en", "GB");
 
         final String postalCode = new Faker(uk).address().zipCode();
 
@@ -20,7 +20,7 @@ class Issue194SlashFormatRegexTest {
 
     @Test
     void enCAZipCodeReturnsProperRegexifiedValue() {
-        final Locale uk = new Locale("en-CA");
+        final Locale uk = new Locale("en", "CA");
 
         final String postalCode = new Faker(uk).address().zipCode();
 
