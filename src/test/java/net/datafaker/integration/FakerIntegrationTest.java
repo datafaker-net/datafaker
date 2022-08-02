@@ -32,7 +32,6 @@ import static org.reflections.ReflectionUtils.withReturnType;
  * are correct. These tests just ensure that the methods can be invoked.
  */
 class FakerIntegrationTest {
-    private Faker faker;
     private Locale locale;
 
     /**
@@ -57,23 +56,23 @@ class FakerIntegrationTest {
         exceptions.put(new Locale("pt", "Br", "x2"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
     }
 
-    private void init(Locale locale, Random random) {
+    private Faker init(Locale locale, Random random) {
         this.locale = locale;
         if (locale != null && random != null) {
-            faker = new Faker(locale, random);
+            return new Faker(locale, random);
         } else if (locale != null) {
-            faker = new Faker(locale);
+            return new Faker(locale);
         } else if (random != null) {
-            faker = new Faker(random);
+            return new Faker(random);
         } else {
-            faker = new Faker();
+            return new Faker();
         }
     }
 
     @ParameterizedTest
     @MethodSource("dataParameters")
     void testAllFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
-        init(locale, random);
+        final Faker faker = init(locale, random);
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker);
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.address());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.ancient());
@@ -233,7 +232,7 @@ class FakerIntegrationTest {
     @ParameterizedTest
     @MethodSource("dataParameters")
     void testExceptionsNotCoveredInAboveTest(Locale locale, Random random) {
-        init(locale, random);
+        final Faker faker = init(locale, random);
         assertThat(faker.bothify("####???")).isNotNull();
         assertThat(faker.letterify("????")).isNotNull();
         assertThat(faker.numerify("####")).isNotNull();
