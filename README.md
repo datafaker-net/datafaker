@@ -317,7 +317,7 @@ Faker faker = new Faker(new Locale("YOUR_LOCALE"));
 For example:
 
 ```java
-new Faker(new Locale("en-us")).address().zipCodeByState("CA"));
+new Faker(new Locale("en", "US")).address().zipCodeByState("CA"));
 ```
 
 Supported Locales

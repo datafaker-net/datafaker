@@ -23,10 +23,9 @@ class TeamTest extends AbstractFakerTest {
         assertThat(faker.team().state()).matches("(\\w+( )?){1,2}");
     }
 
-
     @Test
     void testStateWithZaLocale() {
-        Faker zaFaker = new Faker(new Locale("en-ZA"));
+        Faker zaFaker = new Faker(new Locale("en", "ZA"));
         assertThat(zaFaker.team().state()).isNotEmpty();
     }
 

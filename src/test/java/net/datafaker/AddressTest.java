@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class AddressTest extends AbstractFakerTest {
 
     private final char decimalSeparator = new DecimalFormatSymbols(faker.getLocale()).getDecimalSeparator();
-    private static final Faker US_FAKER = new Faker(new Locale("en-us"));
-    private static final Faker NL_FAKER = new Faker(new Locale("nl-nl"));
-    private static final Faker RU_FAKER = new Faker(new Locale("ru-ru"));
+    private static final Faker US_FAKER = new Faker(new Locale("en", "US"));
+    private static final Faker NL_FAKER = new Faker(new Locale("nl" ,"NL"));
+    private static final Faker RU_FAKER = new Faker(new Locale("ru", "RU"));
 
     public static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
@@ -147,7 +147,7 @@ class AddressTest extends AbstractFakerTest {
 
     @Test
     void testZipCodeByState() {
-        final Faker localFaker = new Faker(new Locale("en-US"));
+        final Faker localFaker = new Faker(new Locale("en", "US"));
         assertThat(localFaker.address().zipCodeByState(localFaker.address().stateAbbr())).matches("[0-9]{5}");
     }
 
@@ -159,7 +159,7 @@ class AddressTest extends AbstractFakerTest {
 
     @Test
     void testCountyByZipCode() {
-        final Faker localFaker = new Faker(new Locale("en-US"));
+        final Faker localFaker = new Faker(new Locale("en", "US"));
         assertThat(localFaker.address().countyByZipCode("47732")).isNotEmpty();
     }
 
@@ -167,7 +167,7 @@ class AddressTest extends AbstractFakerTest {
     @NullSource
     @ValueSource(strings = {"1", "asd", "qwe", "wrong"})
     void testCountyForWrongZipCode(String zipCode) {
-        final Faker localFaker = new Faker(new Locale("en-US"));
+        final Faker localFaker = new Faker(new Locale("en", "US"));
         assertThatThrownBy(() -> localFaker.address().countyByZipCode(zipCode))
             .isInstanceOf(RuntimeException.class)
             .hasMessage("County are not configured for postcode " + zipCode);
@@ -200,19 +200,19 @@ class AddressTest extends AbstractFakerTest {
 
     @Test
     void testZipIsFiveChars() {
-        final Faker localFaker = new Faker(new Locale("en-us"));
+        final Faker localFaker = new Faker(new Locale("en", "US"));
         assertThat(localFaker.address().zipCode()).hasSize(5);
     }
 
     @Test
     void testZipPlus4IsTenChars() {
-        final Faker localFaker = new Faker(new Locale("en-us"));
+        final Faker localFaker = new Faker(new Locale("en", "US"));
         assertThat(localFaker.address().zipCodePlus4()).hasSize(10);  // includes dash
     }
 
     @Test
     void testZipPlus4IsNineDigits() {
-        final Faker localFaker = new Faker(new Locale("en-us"));
+        final Faker localFaker = new Faker(new Locale("en", "US"));
         final String[] zipCodeParts = localFaker.address().zipCodePlus4().split("-");
         assertThat(zipCodeParts[0]).matches("[0-9]{5}");
         assertThat(zipCodeParts[1]).matches("[0-9]{4}");
