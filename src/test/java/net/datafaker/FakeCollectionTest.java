@@ -129,7 +129,7 @@ class FakeCollectionTest extends AbstractFakerTest {
 
         @Override
         public String value() {
-            return faker.random().nextInt(60, 180) + "";
+            return new Faker().random().nextInt(60, 180) + "";
         }
 
         @Override
@@ -152,7 +152,7 @@ class FakeCollectionTest extends AbstractFakerTest {
 
         @Override
         public String value() {
-            return String.format("%.1f", faker.random().nextDouble(3.2, 5.5));
+            return String.format("%.1f", new Faker().random().nextDouble(3.2, 5.5));
         }
 
         @Override
@@ -175,7 +175,7 @@ class FakeCollectionTest extends AbstractFakerTest {
 
         @Override
         public String value() {
-            return faker.random().nextInt(30, 50) + "";
+            return new Faker().random().nextInt(30, 50) + "";
         }
 
         @Override
@@ -193,7 +193,7 @@ class FakeCollectionTest extends AbstractFakerTest {
     void differentNumberOfHeadersAndColumns() {
         assertThatThrownBy(() -> Format.toCsv(
                 faker.<Name>collection()
-                    .suppliers(() -> faker.name())
+                    .suppliers(faker::name)
                     .minLen(3)
                     .maxLen(5)
                     .build())
@@ -258,7 +258,7 @@ class FakeCollectionTest extends AbstractFakerTest {
         final int limit = 2;
         final String json =
             Format.toJson(faker.collection()
-                    .suppliers(() -> faker.name())
+                    .suppliers(faker::name)
                     .maxLen(limit)
                     .minLen(limit)
                     .build())
@@ -269,7 +269,7 @@ class FakeCollectionTest extends AbstractFakerTest {
                     .set("streetAddress", () -> faker.address().streetAddress())
                     .build())
                 .set("secondaryAddresses", Format.toJson(faker.<Address>collection()
-                        .suppliers(() -> faker.address())
+                        .suppliers(faker::address)
                         .maxLen(1)
                         .minLen(1)
                         .build())

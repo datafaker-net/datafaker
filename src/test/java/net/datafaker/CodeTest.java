@@ -16,6 +16,7 @@ class CodeTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void isbn10DefaultIsNoSeparator() {
+        final Faker faker = new Faker();
         String isbn10 = faker.code().isbn10();
 
         assertIsValidISBN10(isbn10);
@@ -24,6 +25,7 @@ class CodeTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void isbn13DefaultIsNoSeparator() {
+        final Faker faker = new Faker();
         String isbn13 = faker.code().isbn13();
 
         assertIsValidISBN13(isbn13);
@@ -32,6 +34,7 @@ class CodeTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testIsbn10() {
+        final Faker faker = new Faker();
         final String isbn10NoSep = faker.code().isbn10(false);
         final String isbn10Sep = faker.code().isbn10(true);
 
@@ -43,6 +46,7 @@ class CodeTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testIsbn13() {
+        final Faker faker = new Faker();
         final String isbn13NoSep = faker.code().isbn13(false);
         final String isbn13Sep = faker.code().isbn13(true);
 

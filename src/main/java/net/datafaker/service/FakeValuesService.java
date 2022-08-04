@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,17 +39,17 @@ public class FakeValuesService {
     private static final String DIGITS = "0123456789";
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
-    private static final Map<Locale, FakeValuesInterface> FAKE_VALUES_CACHE = new HashMap<>();
+    private final Map<Locale, FakeValuesInterface> fakeValuesCache = new HashMap<>();
 
-    private static final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
+    private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
     private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
     private RandomService currentRandomService;
     private Locale currentLocale;
 
     private final Map<Locale, List<Locale>> locale2localesChain;
 
-    private static final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
-    private static final Map<Class<?>, Constructor<?>> class2constructorCache = new IdentityHashMap<>();
+    private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Constructor<?>> class2constructorCache = new ConcurrentHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<Locale, Map<String, String>> key2Expression = new WeakHashMap<>();
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
@@ -107,7 +108,7 @@ public class FakeValuesService {
         if (DEFAULT_LOCALE.equals(locale)) {
             return FakeValuesGrouping.getEnglishFakeValueGrouping();
         }
-        return FAKE_VALUES_CACHE.computeIfAbsent(locale, FakeValues::new);
+        return fakeValuesCache.computeIfAbsent(locale, FakeValues::new);
     }
 
     /**
@@ -735,7 +736,7 @@ public class FakeValuesService {
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
         if (dotDirective) {
-            supplier = () -> safeFetch(directive, null);
+            supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), null);
             resolved = supplier.get();
         }
 
@@ -923,7 +924,7 @@ public class FakeValuesService {
                 methodMap.computeIfAbsent(key, k -> new ArrayList<>());
                 methodMap.get(key).add(m);
             }
-            class2methodsCache.put(clazz, methodMap);
+            class2methodsCache.putIfAbsent(clazz, methodMap);
             methods = methodMap.get(name.toLowerCase(Locale.ROOT));
         }
         for (Method m : methods) {

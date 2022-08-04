@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CommerceTest extends AbstractFakerTest {
 
-    private static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols(getFaker().getLocale()).getDecimalSeparator();
+    private final char decimalSeparator = new DecimalFormatSymbols(faker.getLocale()).getDecimalSeparator();
 
     private static final String CAPITALIZED_WORD_REGEX = "[A-Z][a-z]+";
 
@@ -41,12 +41,12 @@ class CommerceTest extends AbstractFakerTest {
 
     @Test
     void testPrice() {
-        assertThat(faker.commerce().price()).matches("\\d{1,3}\\" + DECIMAL_SEPARATOR + "\\d{2}");
+        assertThat(faker.commerce().price()).matches("\\d{1,3}\\" + decimalSeparator + "\\d{2}");
     }
 
     @Test
     void testPriceMinMax() {
-        assertThat(faker.commerce().price(100, 1000)).matches("\\d{3,4}\\" + DECIMAL_SEPARATOR + "\\d{2}");
+        assertThat(faker.commerce().price(100, 1000)).matches("\\d{3,4}\\" + decimalSeparator + "\\d{2}");
     }
 
     @Test
