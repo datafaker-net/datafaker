@@ -35,4 +35,9 @@ class PassportTest extends AbstractFakerTest {
             .matches("[A-Z][0-9]{7}");
     }
 
+    @RepeatedTest(10)
+    void testValidCanada() {
+        assertThat(new Faker(new Locale("en", "CA")).passport().valid())
+            .hasSize(8);
+    }
 }
