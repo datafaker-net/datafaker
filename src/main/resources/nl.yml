@@ -112,3 +112,6 @@ nl:
       name:
         - "#{University.prefix} #{Name.last_name}"
         - "#{University.prefix} #{Address.city}"
+
+    passport:
+      valid: "[A-NP-Z]{2}[0-9A-NP-Z]{6}[0-9]"

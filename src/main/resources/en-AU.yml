@@ -33,3 +33,6 @@ en-AU:
 #        - "V\\d{2}\\.?\\d{0,2}"
       diagnosis_code:
         icd10: "[A-Z][0-9]{1,2}\\.[0-9]{1,2}"
+
+    passport:
+      valid: "[A-Z][0-9]{7}"
