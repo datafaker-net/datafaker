@@ -206,6 +206,7 @@ Providers
 * Electrical Components
 * England Football
 * Esports
+* Fallout
 * Famous Last Words
 * File
 * Finance

@@ -607,6 +607,10 @@ public class Faker {
         return getProvider(FakeDuration.class, () -> new FakeDuration(this));
     }
 
+    public Fallout fallout() {
+        return getProvider(Fallout.class, () -> new Fallout(this));
+    }
+
     public FamousLastWords famousLastWords() {
         return getProvider(FamousLastWords.class, () -> new FamousLastWords(this));
     }
