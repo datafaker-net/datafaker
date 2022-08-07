@@ -122,6 +122,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.electricalComponents());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.englandfootball());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.esports());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.fallout());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.famousLastWords());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.file());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.finance());
