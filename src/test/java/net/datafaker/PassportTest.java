@@ -9,6 +9,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PassportTest extends AbstractFakerTest {
 
     @RepeatedTest(10)
+    void testDefaultLocale() {
+        assertThat(new Faker().passport().valid())
+            .hasSize(9);
+    }
+
+    @RepeatedTest(10)
     void testValidDutch() {
         assertThat(new Faker(new Locale("nl", "nl")).passport().valid())
             .hasSize(9)
