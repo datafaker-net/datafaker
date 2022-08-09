@@ -6,10 +6,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
@@ -314,6 +311,30 @@ class InternetTest extends AbstractFakerTest {
     @RepeatedTest(10)
     void testSlug() {
         assertThat(faker.internet().slug()).matches("[a-zA-Z]+_[a-zA-Z]+");
+    }
+
+    @Test
+    void testUuidv3ConstantRandomSeed() {
+        final int randomSeed = 42;
+        // Two fakers, same random seed.
+        final Faker faker1 = new Faker(new Random(randomSeed));
+        final Faker faker2 = new Faker(new Random((randomSeed)));
+        // Keep it simple and without loops, three examples should suffice to act as the general case.
+        final String faker1Uuidv3First = faker1.internet().uuidv3();
+        final String faker1Uuidv3Second = faker1.internet().uuidv3();
+        final String faker1Uuidv3Third = faker1.internet().uuidv3();
+        final String faker2Uuidv3First = faker2.internet().uuidv3();
+        final String faker2Uuidv3Second = faker2.internet().uuidv3();
+        final String faker2Uuidv3Third = faker2.internet().uuidv3();
+        // Two different fakers with the same random seed should produce the same uuids.
+        assertThat(faker1Uuidv3First).isEqualTo(faker2Uuidv3First);
+        assertThat(faker1Uuidv3Second).isEqualTo(faker2Uuidv3Second);
+        assertThat(faker1Uuidv3Third).isEqualTo(faker2Uuidv3Third);
+    }
+
+    @RepeatedTest(10)
+    void testUuidv3() {
+        assertThat(faker.internet().uuidv3()).matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
     }
 
     @RepeatedTest(10)

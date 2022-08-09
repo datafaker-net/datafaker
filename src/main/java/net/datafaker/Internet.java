@@ -363,9 +363,19 @@ public class Internet extends AbstractProvider {
     }
 
     /**
+     * Returns a UUID (type 3) as String.
+     * Use this method (instead of {@link #uuid() uuid}) if you are
+     * using a constant random seed and require the same output for different faker instances.     *
+     * @return a uuid as string.
+     */
+    public String uuidv3() { return UUID.nameUUIDFromBytes(faker.random().nextRandomBytes(16)).toString(); }
+
+    /**
      * Returns a UUID (type 4) as String.
-     *
-     * @return A UUID as String.
+     * Imporant: Use {@link #uuidv3() uuidv3} if you are
+     * using a constant random seed and require the same output for different faker instances.
+     * This method generates a random seed each time, regardless of the given random seed.     *
+     * @return a uuid as string.
      */
     public String uuid() {
         return UUID.randomUUID().toString();
