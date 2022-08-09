@@ -73,6 +73,12 @@ public class RandomService {
         return random.nextBoolean();
     }
 
+    public byte[] nextRandomBytes(int numberOfBytes) {
+        final byte[] randomBytes = new byte[numberOfBytes];
+        random.nextBytes(randomBytes);
+        return randomBytes;
+    }
+
     public String hex() {
         return hex(8);
     }
