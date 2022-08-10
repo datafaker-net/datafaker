@@ -47,7 +47,7 @@
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <snakeyaml.version>1.30</snakeyaml.version>
-        <spotless-maven-plugin.version>2.24.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>2.24.1</spotless-maven-plugin.version>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
         <!-- Run tests in Turkish to make sure that they don't depend on
