@@ -63,7 +63,7 @@ public class EnFile {
         "coin.yml",
         "color.yml",
         "commerce.yml",
-//            "community.yml",
+        "community.yml",
         "company.yml",
         "computer.yml",
 //        "compass.yml",

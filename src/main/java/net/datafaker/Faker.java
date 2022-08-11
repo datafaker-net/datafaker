@@ -491,6 +491,10 @@ public class Faker {
         return getProvider(Commerce.class, () -> new Commerce(this));
     }
 
+    public Community community() {
+        return getProvider(Community.class, () -> new Community(this));
+    }
+
     public Company company() {
         return getProvider(Company.class, () -> new Company(this));
     }
