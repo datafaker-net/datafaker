@@ -1,0 +1,11 @@
+en:
+  faker:
+    garments:
+      sizes:  ["XS", "S", "M", "L", "XL", "XXL", "XXXL"]
+      xs: ["XS"]
+      s: ["S"]
+      m: ["M"]
+      l: ["L"]
+      xl: ["XL"]
+      xxl: ["XXL"]
+      xxxl: ["XXXL"]
