@@ -103,6 +103,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.coin());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.color());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.commerce());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.community());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.company());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.computer());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.country());

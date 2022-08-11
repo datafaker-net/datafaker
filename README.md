@@ -181,6 +181,7 @@ Providers
 * Coin
 * Color
 * Commerce
+* Community
 * Company
 * Computer
 * Country
