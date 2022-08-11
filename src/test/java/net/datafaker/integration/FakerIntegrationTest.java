@@ -131,6 +131,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.friends());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.funnyName());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gameOfThrones());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.garmentSize());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gender());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.ghostbusters());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gratefulDead());
