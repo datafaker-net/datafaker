@@ -43,7 +43,27 @@ Executing the above will result in something similar to the below:
 "Wade" ; "Herzog" ; "83108 Willy Road"
 "Marg" ; "Effertz" ; "415 Gene Plaza"
 ```
-    
+
+Another example using a fake collection builder:
+
+=== "Java"
+
+    ``` java
+        System.out.println(
+            Format.toCsv(faker.collection(faker::name).build())
+                .headers(() -> "first_name", () -> "last_name")
+                .columns(Name::firstName, Name::lastName)
+                .separator(" ; ")
+                .limit(2).build().get());
+    ```
+
+The result looks something like this:
+
+```csv
+"first_name" ; "last_name"
+"Jonah" ; "Kovacek"
+"John" ; "Murphy"
+```
 
 ## JSON
 
