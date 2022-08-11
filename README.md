@@ -216,6 +216,7 @@ Providers
 * Friends
 * Funny Name
 * Game Of Thrones
+* Garment Size
 * Gender
 * Ghostbusters
 * Grateful Dead
