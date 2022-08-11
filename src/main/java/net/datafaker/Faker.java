@@ -647,6 +647,10 @@ public class Faker {
         return getProvider(GameOfThrones.class, () -> new GameOfThrones(this));
     }
 
+    public GarmentSize garmentSize() {
+    return getProvider(GarmentSize.class, () -> new GarmentSize(this));
+  }
+
     public Gender gender() {
         return getProvider(Gender.class, () -> new Gender(this));
     }
