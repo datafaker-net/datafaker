@@ -971,6 +971,10 @@ public class Faker {
         return getProvider(Twitter.class, () -> new Twitter(this));
     }
 
+    public Unique unique() {
+        return getProvider(Unique.class, () -> new Unique(this));
+    }
+
     public University university() {
         return getProvider(University.class, () -> new University(this));
     }

@@ -18,3 +18,16 @@ test:
        resolutionWithList:
            - "#{hello}"
            - "#{hello2}"
+    unique:
+      values:
+        - firstValue
+        - secondValue
+        - thirdValue
+        - fourthValue
+        - fifthValue
+      single-value:
+        - theOnlyValue
+      first-same-locale-value:
+        - theSameValue
+      second-same-locale-value:
+        - theSameValue
