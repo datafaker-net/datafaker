@@ -491,6 +491,10 @@ public class Faker {
         return getProvider(Commerce.class, () -> new Commerce(this));
     }
 
+    public Community community() {
+        return getProvider(Community.class, () -> new Community(this));
+    }
+
     public Company company() {
         return getProvider(Company.class, () -> new Company(this));
     }
@@ -607,6 +611,10 @@ public class Faker {
         return getProvider(FakeDuration.class, () -> new FakeDuration(this));
     }
 
+    public Fallout fallout() {
+        return getProvider(Fallout.class, () -> new Fallout(this));
+    }
+
     public FamousLastWords famousLastWords() {
         return getProvider(FamousLastWords.class, () -> new FamousLastWords(this));
     }
@@ -641,6 +649,10 @@ public class Faker {
 
     public GameOfThrones gameOfThrones() {
         return getProvider(GameOfThrones.class, () -> new GameOfThrones(this));
+    }
+
+    public GarmentSize garmentSize() {
+      return getProvider(GarmentSize.class, () -> new GarmentSize(this));
     }
 
     public Gender gender() {

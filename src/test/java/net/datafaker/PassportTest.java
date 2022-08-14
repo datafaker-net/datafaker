@@ -1,78 +1,49 @@
 package net.datafaker;
 
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
+
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author CharlotteE67
- */
-@Execution(ExecutionMode.CONCURRENT)
 class PassportTest extends AbstractFakerTest {
 
-    @Test
-    void testChValid() {
-        String passport = faker.passport().chValid();
-        assertThat(passport.charAt(0) == 'E' || passport.charAt(0) == 'G').isTrue();
-        if (passport.charAt(0) == 'G') {
-            for (int i = 1; i < passport.length(); i++) {
-                assertThat(Character.isDigit(passport.charAt(i))).isTrue();
-            }
-        } else {
-            assertThat(passport.charAt(1) == 'I' || passport.charAt(1) == 'O').isFalse();
-            assertThat(Character.isLetter(passport.charAt(1)) || Character.isDigit(passport.charAt(1))).isTrue();
-            for (int i = 2; i < passport.length(); i++) {
-                assertThat(Character.isDigit(passport.charAt(i))).isTrue();
-            }
-        }
+    @RepeatedTest(10)
+    void testDefaultLocale() {
+        assertThat(new Faker().passport().valid())
+            .hasSize(9);
     }
 
-    @Test
-    void testChValidLength() {
-        assertThat(faker.passport().chValid()).hasSize(9);
+    @RepeatedTest(10)
+    void testValidDutch() {
+        assertThat(new Faker(new Locale("nl", "nl")).passport().valid())
+            .hasSize(9)
+            .doesNotContain("O")
+            .matches(".*?\\d$");
     }
 
-    @Test
-    void testChInValid() {
-        assertThat(faker.passport().chInvalid().matches("E[\\dA-HJ-NP-Z]\\d{7}")
-            && faker.passport().chInvalid().matches("G\\d{8}")).isFalse();
+    @RepeatedTest(10)
+    void testValidChinese() {
+        assertThat(new Faker(new Locale("zh", "CN")).passport().valid())
+            .hasSize(9);
     }
 
-    @Test
-    void testChInValidNotNull() {
-        assertThat(faker.passport().chInvalid()).isNotNull();
+    @RepeatedTest(10)
+    void testValidUnitedStates() {
+        assertThat(new Faker(new Locale("en", "US")).passport().valid())
+            .hasSize(9);
     }
 
-    @Test
-    void testAmValid() {
-        assertThat(faker.passport().amValid()).matches("\\d{8}");
+    @RepeatedTest(10)
+    void testValidAustralia() {
+        assertThat(new Faker(new Locale("en", "AU")).passport().valid())
+            .hasSize(8)
+            .matches("[A-Z][0-9]{7}");
     }
 
-    @Test
-    void testAmValidLength() {
-        assertThat(faker.passport().amValid()).hasSize(8);
-    }
-
-    @Test
-    void testAmInValid() {
-        assertThat(faker.passport().amInvalid()).doesNotMatch("\\d{8}");
-    }
-
-    @Test
-    void testAmInValidNotNull() {
-        assertThat(faker.passport().amInvalid()).isNotNull();
-    }
-
-    @RepeatedTest(100)
-    void testChValidFrequently() {
-        testChValid();
-    }
-
-    @RepeatedTest(100)
-    void testChInValidFrequently() {
-        testChInValid();
+    @RepeatedTest(10)
+    void testValidCanada() {
+        assertThat(new Faker(new Locale("en", "CA")).passport().valid())
+            .hasSize(8);
     }
 }

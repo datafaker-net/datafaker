@@ -88,7 +88,7 @@ class PhoneNumberValidityFinderTest {
 
         // sort by error count
         errorCounts.entrySet().stream()
-            .filter(e -> e.getValue() > 50)
+            .filter(e -> e.getValue() > 35)
             .sorted(Map.Entry.comparingByValue())
             .forEach(System.out::println);
     }

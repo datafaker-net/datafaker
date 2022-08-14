@@ -103,6 +103,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.coin());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.color());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.commerce());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.community());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.company());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.computer());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.country());
@@ -122,6 +123,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.electricalComponents());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.englandfootball());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.esports());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.fallout());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.famousLastWords());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.file());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.finance());
@@ -130,6 +132,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.friends());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.funnyName());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gameOfThrones());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.garmentSize());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gender());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.ghostbusters());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.gratefulDead());
