@@ -4,62 +4,56 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.comments.CommentsCollection;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.google.common.base.Strings;
+import net.datafaker.AbstractProvider;
+import org.reflections.Reflections;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProvidersDocsGenerator {
+import static org.reflections.scanners.Scanners.SubTypes;
 
+public class ProvidersDocsGenerator {
     private static final Pattern pattern = Pattern.compile("\\d\\.\\d\\.\\d");
     private final JavaParser parser = new JavaParser();
 
     // Specify destination of 'providers.md' file
     private final String destinationPlaceOfProvidersFile = "src/test/java/net/datafaker/script/providers.md";
+    private final Reflections reflections = new Reflections("net.datafaker");
+    private final Comparator<Class<?>> providersComparatorBySimpleName = Comparator
+        .comparing(Class::getSimpleName);
+    private final Set<Class<?>> subTypes = new TreeSet<>(providersComparatorBySimpleName);
 
-    // Need to update this list when adding a new class in 'src.main.java.net.datafaker' which is not Faker.
-    // Store files with '.java' extension in order to avoid unnecessary transformation (substring '.java')
-    private final Set<String> fakersToExcludeFromGeneration = new HashSet<>(Arrays.asList("Faker.java", "CreditCardType.java", "AbstractProvider.java", "FakeCollection.java"));
+    // Exclude non-providers from generation
+    private final Set<String> providersToExcludeFromGeneration = new HashSet<>(Arrays.asList("CustomFakerTest", "InsectFromFile", "Insect"));
 
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
         providersDocsGenerator.constructHeaderInProvidersFile();
-        providersDocsGenerator.generateProvidersDocsFile("src/main/java/net/datafaker/");
+        providersDocsGenerator.generateProvidersDocs();
     }
 
-    public void generateProvidersDocsFile(String dirPath) {
-        final File path = new File(dirPath);
+    public void generateProvidersDocs() {
+        fillTreeSet();
 
-        File[] files = path.listFiles();
+        Set<String> fakersWithoutSinceTag = new HashSet<>();
+        for (Class<?> clazz : subTypes) {
+            String name = clazz.getSimpleName();
 
-        StringBuilder providersResultString = new StringBuilder();
-
-        List<String> fakersWithoutSinceTag = new ArrayList<>();
-
-        for (File file : files) {
-            if (Files.isRegularFile(file.toPath())) {
-                String nameOfFile = file.getName();
-
-                if (fakersToExcludeFromGeneration.contains(nameOfFile)) {
-                    continue;
-                }
-
-                String tag;
-                try {
-                    tag = extractTagFromJavadoc(dirPath + nameOfFile, fakersWithoutSinceTag);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-
-                // Remove '.java' extension from file names
-                String fileNameWithoutExtension = nameOfFile.substring(0, nameOfFile.length() - 5);
-                String sinceTag = matchSinceTag(tag);
-                providersResultString.append(fileNameWithoutExtension).append(" ");
-
-                writeProviderToTable(fileNameWithoutExtension, sinceTag);
+            if (providersToExcludeFromGeneration.contains(name)) {
+                continue;
             }
+
+            String tag;
+            try {
+                tag = extractTagFromJavadoc("src/main/java/net/datafaker/" + name + ".java", fakersWithoutSinceTag);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Error in supplied path to provider", e);
+            }
+
+            String sinceTag = matchSinceTag(tag);
+            writeProviderToTable(name, sinceTag);
         }
         System.out.println("Providers without '@since' tag: " + fakersWithoutSinceTag);
     }
@@ -73,7 +67,7 @@ public class ProvidersDocsGenerator {
      * @return Entire first JavaDoc in the class
      * @throws FileNotFoundException
      */
-    private String extractTagFromJavadoc(String filePath, List<String> fakersWithoutSinceTag) throws FileNotFoundException {
+    private String extractTagFromJavadoc(String filePath, Set<String> fakersWithoutSinceTag) throws FileNotFoundException {
         final File file = new File(filePath);
 
         Optional<CommentsCollection> commentsCollection = parser.parse(file).getCommentsCollection();
@@ -169,6 +163,13 @@ public class ProvidersDocsGenerator {
             return comment.group();
         }
         return "";
+    }
+
+    /**
+     * Fills <code>TreeSet<code/> with providers as Class<?>
+     */
+    private void fillTreeSet() {
+        subTypes.addAll(reflections.get(SubTypes.of(AbstractProvider.class).asClass()));
     }
 
     private String addSpaceBetweenNameOfProvider(String providerName) {
