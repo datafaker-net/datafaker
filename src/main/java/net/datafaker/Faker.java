@@ -467,6 +467,10 @@ public class Faker {
         return getProvider(ChuckNorris.class, () -> new ChuckNorris(this));
     }
 
+    public Chiquito chiquito() {
+        return getProvider(Chiquito.class, () -> new Chiquito(this));
+    }
+
     public CNPJ cnpj() {
         return getProvider(CNPJ.class, () -> new CNPJ(this));
     }
