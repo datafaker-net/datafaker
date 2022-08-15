@@ -6,10 +6,7 @@ import com.github.javaparser.ast.comments.JavadocComment;
 import com.google.common.base.Strings;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +20,7 @@ public class ProvidersDocsGenerator {
 
     // Need to update this list when adding a new class in 'src.main.java.net.datafaker' which is not Faker.
     // Store files with '.java' extension in order to avoid unnecessary transformation (substring '.java')
-    private final List<String> fakersToExcludeFromGeneration = new ArrayList<>(Arrays.asList("Faker.java", "CreditCardType.java", "AbstractProvider.java", "FakeCollection.java"));
+    private final Set<String> fakersToExcludeFromGeneration = new HashSet<>(Arrays.asList("Faker.java", "CreditCardType.java", "AbstractProvider.java", "FakeCollection.java"));
 
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
