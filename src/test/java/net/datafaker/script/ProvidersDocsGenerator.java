@@ -97,7 +97,7 @@ public class ProvidersDocsGenerator {
     }
     public String generateColumn(String name, char padSymbol, int length) {
         if (name.length() >= length) return name;
-        return padSymbol + name + Strings.repeat(padSymbol, length - name.length() - 1);
+        return padSymbol + name + Strings.repeat(String.valueOf(padSymbol), length - name.length() - 1);
     }
     /**
      * Writes header and table header to new 'providers.md'
