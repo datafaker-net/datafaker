@@ -6,6 +6,7 @@ import com.github.javaparser.ast.comments.JavadocComment;
 import com.google.common.base.Strings;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,7 +39,7 @@ public class ProvidersDocsGenerator {
         List<String> fakersWithoutSinceTag = new ArrayList<>();
 
         for (File file : files) {
-            if (!file.isDirectory()) {
+            if (Files.isRegularFile(file.toPath())) {
                 String nameOfFile = file.getName();
 
                 if (fakersToExcludeFromGeneration.contains(nameOfFile)) {
