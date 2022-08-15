@@ -53,6 +53,7 @@ public class ProvidersDocsGenerator {
                     throw new RuntimeException(e);
                 }
 
+                // Remove '.java' extension from file names
                 String fileNameWithoutExtension = nameOfFile.substring(0, nameOfFile.length() - 5);
                 String sinceTag = matchSinceTag(tag);
                 providersResultString.append(fileNameWithoutExtension).append(" ");
@@ -60,6 +61,7 @@ public class ProvidersDocsGenerator {
                 writeProviderToTable(fileNameWithoutExtension, sinceTag);
             }
         }
+        System.out.println("Providers without '@since' tag: " + fakersWithoutSinceTag);
     }
 
     /**
