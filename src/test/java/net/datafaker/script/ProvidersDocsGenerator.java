@@ -95,16 +95,22 @@ public class ProvidersDocsGenerator {
 
         return comment;
     }
-
+    public String generateColumn(String name, char padSymbol, int length) {
+        if (name.length() >= length) return name;
+        return padSymbol + name + Strings.repeat(padSymbol, length - name.length() - 1);
+    }
     /**
      * Writes header and table header to new 'providers.md'
      *
      * @see #writeToFile(String)
      */
     private void constructHeaderInProvidersFile() {
+        final int nameColLength = 93;
+        final int descColLength = 132;
+        final int sinceColLength = 7;
         final String header = "# Fake Data Providers\n" + "\n" + "Datafaker comes with the following list of data providers:" + "\n";
-        final String tableHeader = "\n" + "| Name" + Strings.repeat(" ", 88) + "|" + " " + "Description" + Strings.repeat(" ", 120) + "|" + " " + "Since" + " " + "|" + "\n";
-        final String tableHeaderDelimiter = "|" + Strings.repeat("-", 93) + "|" + Strings.repeat("-", 132) + "|" + Strings.repeat("-", 7) + "|";
+        final String tableHeader = "\n|" + generateColumn("Name", ' ', nameColLength) + "|" + generateColumn("Description", ' ', descColLength) + "|" + generateColumn("Since", ' ', sinceColLength) + "|\n";
+        final String tableHeaderDelimiter = "|" + generateColumn("", '-', nameColLength) + "|" + generateColumn("", '-', descColLength)  + "|" + generateColumn("", '-', sinceColLength) + "|";
 
         try {
             writeToFile(header);
