@@ -27,8 +27,6 @@ public class ProvidersDocsGenerator {
 
     // Exclude non-providers from generation
     private final Set<String> providersToExcludeFromGeneration = new HashSet<>(Arrays.asList("CustomFakerTest", "InsectFromFile", "Insect"));
-    // Provider's names which is abbreviation excludes these providers from adding spaces between capitalized letters
-    private final Set<String> providersNameAbbreviation = new HashSet<>(Arrays.asList("CNPJ", "CPF"));
 
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
@@ -185,16 +183,11 @@ public class ProvidersDocsGenerator {
             throw new IllegalArgumentException("Supplied provider's name is empty!");
         }
 
-        // Do not add spaces in abbreviation
-        if (providersNameAbbreviation.contains(providerName)) {
-            return providerName;
-        }
-
         StringBuilder providerBuilder = new StringBuilder();
         providerBuilder.append(providerName.charAt(0));
 
         for (int i = 1; i < providerName.length(); i++) {
-            if (Character.isUpperCase(providerName.charAt(i)) && providerName.charAt(i - 1) != ' ') {
+            if (Character.isUpperCase(providerName.charAt(i)) && Character.isLowerCase(providerName.charAt(i - 1))) {
                 providerBuilder.append(' ');
             }
             providerBuilder.append(providerName.charAt(i));
