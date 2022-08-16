@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import static org.reflections.scanners.Scanners.SubTypes;
 
 public class ProvidersDocsGenerator {
-    private static final Pattern pattern = Pattern.compile("\\d\\.\\d\\.\\d");
+    private static final Pattern pattern = Pattern.compile("\\d\\.\\d+\\.\\d");
     private final JavaParser parser = new JavaParser();
 
     // Specify destination of 'providers.md' file
