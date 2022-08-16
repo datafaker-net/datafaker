@@ -9,7 +9,7 @@ public class MassEffect extends AbstractProvider {
         return faker.resolve("mass-effect.characters");
     }
 
-    public String species() {
+    public String specie() {
         return faker.resolve("mass-effect.species");
     }
 
@@ -17,8 +17,12 @@ public class MassEffect extends AbstractProvider {
         return faker.resolve("mass-effect.cluster");
     }
 
-    public String planets() {
+    public String planet() {
         return faker.resolve("mass-effect.planets");
+    }
+
+    public String quote(){
+        return faker.resolve("mass-effect.quotes");
     }
 
 }

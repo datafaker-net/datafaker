@@ -16,7 +16,7 @@ class MassEffectTest extends AbstractFakerTest {
 
     @Test
     void species() {
-        assertThat(faker.massEffect().species()).isNotEmpty();
+        assertThat(faker.massEffect().specie()).isNotEmpty();
     }
 
     @Test
@@ -26,6 +26,11 @@ class MassEffectTest extends AbstractFakerTest {
 
     @Test
     void planets() {
-        assertThat(faker.massEffect().planets()).isNotEmpty();
+        assertThat(faker.massEffect().planet()).isNotEmpty();
+    }
+
+    @Test
+    void quote(){
+        assertThat(faker.massEffect().quote()).isNotEmpty();
     }
 }
