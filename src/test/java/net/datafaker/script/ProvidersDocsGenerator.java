@@ -27,6 +27,9 @@ public class ProvidersDocsGenerator {
 
     // Exclude non-providers from generation
     private final Set<String> providersToExcludeFromGeneration = new HashSet<>(Arrays.asList("CustomFakerTest", "InsectFromFile", "Insect"));
+    private final int nameColLength = 93;
+    private final int descColLength = 132;
+
 
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
@@ -105,8 +108,6 @@ public class ProvidersDocsGenerator {
      * @see #writeToFile(String)
      */
     private void constructHeaderInProvidersFile() {
-        final int nameColLength = 93;
-        final int descColLength = 132;
         final int sinceColLength = 7;
         final String header = "# Fake Data Providers\n" + "\n" + "Datafaker comes with the following list of data providers:" + "\n";
         final String tableHeader = "\n|" + generateColumn("Name", ' ', nameColLength) + "|" + generateColumn("Description", ' ', descColLength) + "|" + generateColumn("Since", ' ', sinceColLength) + "|\n";
@@ -122,23 +123,13 @@ public class ProvidersDocsGenerator {
     }
 
     private void writeProviderToTable(final String providerName, final String sinceTag) {
-        String inCompleteProviderEntry = "| " + "[" + addSpaceBetweenNameOfProvider(providerName) + "]" +
-            "({{ datafaker.javadoc }}/" + providerName + ".html)";
-        int lengthOfNameSection = inCompleteProviderEntry.length();
-        // Number of chars in 'Name' section, including first '|'.
-        // '|' in front of 'Description' section not included in length
-        final int totalLengthOfNameSection = 94;
-        int lengthOfNameSectionToFill = totalLengthOfNameSection - lengthOfNameSection;
-
-        final String completeNameSection = "\n" + inCompleteProviderEntry + Strings.repeat(" ", lengthOfNameSectionToFill) + "|";
-
-        final String providerDescriptionSectionEntry = Strings.repeat(" ", 132) ;
-
+        String nameEntry = "\n|" + generateColumn("[" + addSpaceBetweenNameOfProvider(providerName) + "]" +
+            "({{ datafaker.javadoc }}/" + providerName + ".html)", ' ', nameColLength) + "|";
+        final String providerDescriptionSectionEntry = Strings.repeat(" ", descColLength) ;
         // Format of `@since tag` should be '#.#.#'
         String providerSinceTagSectionEntry = "|" + " " + sinceTag + " " + "|";
-
         try {
-            writeToFile(completeNameSection + providerDescriptionSectionEntry + providerSinceTagSectionEntry);
+            writeToFile(nameEntry + providerDescriptionSectionEntry + providerSinceTagSectionEntry);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
