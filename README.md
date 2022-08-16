@@ -309,6 +309,7 @@ Providers
 * Witcher
 * Yoda
 * Zelda
+* Mass Effect
 
 Usage with Locales
 -----
