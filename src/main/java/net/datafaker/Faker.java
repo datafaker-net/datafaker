@@ -1019,6 +1019,10 @@ public class Faker {
         return getProvider(Zelda.class, () -> new Zelda(this));
     }
 
+    public MassEffect massEffect() {
+        return getProvider(MassEffect.class, () -> new MassEffect(this));
+    }
+
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this);
     }

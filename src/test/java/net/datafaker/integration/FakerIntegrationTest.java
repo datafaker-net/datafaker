@@ -205,6 +205,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.yoda());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.zelda());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.oscarMovie());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.massEffect());
     }
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {

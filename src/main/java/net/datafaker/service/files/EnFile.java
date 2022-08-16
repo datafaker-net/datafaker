@@ -224,7 +224,8 @@ public class EnFile {
 //        "world_cup.yml",
 //            "world_of_warcraft.yml",
         "yoda.yml",
-        "zelda.yml").map(EnFile::new).collect(Collectors.toList());
+        "zelda.yml",
+        "mass-effect.yml").map(EnFile::new).collect(Collectors.toList());
 
     // files where the search path can't be derived from the filename
     private static final List<EnFile> FILES_WITH_A_DIFFERENT_PATH = Arrays.asList(
