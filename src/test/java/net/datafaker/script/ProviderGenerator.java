@@ -23,7 +23,7 @@ class ProviderGenerator {
     public void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("tron.todo.yml"));
+        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("chiquito.todo.yml"));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
@@ -60,11 +60,9 @@ class ProviderGenerator {
         System.out.println("package net.datafaker;");
         System.out.println();
         System.out.println("/**");
-        System.out.println(" * @since 1.4.0");
+        System.out.println(" * @since 1.6.0");
         System.out.println(" */");
-        System.out.println("class " + className + " {");
-        System.out.println();
-        System.out.println("    ");
+        System.out.println("public class " + className + " extends AbstractProvider {");
         System.out.println();
         System.out.println("    protected " + className + "(Faker faker) {");
         System.out.println("        super(faker);");
