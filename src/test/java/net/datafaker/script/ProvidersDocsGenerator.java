@@ -7,8 +7,18 @@ import com.google.common.base.Strings;
 import net.datafaker.AbstractProvider;
 import org.reflections.Reflections;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +29,7 @@ public class ProvidersDocsGenerator {
     private final JavaParser parser = new JavaParser();
 
     // Specify destination of 'providers.md' file
-    private final String destinationPlaceOfProvidersFile = "src/test/java/net/datafaker/script/providers.md";
+    private static final String DESTINATION_PLACE_OF_PROVIDERS_FILE = "src/test/java/net/datafaker/script/providers.md";
     private final Reflections reflections = new Reflections("net.datafaker");
     private final Comparator<Class<?>> providersComparatorBySimpleName = Comparator
         .comparing(Class::getSimpleName);
@@ -33,11 +43,15 @@ public class ProvidersDocsGenerator {
 
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
-        providersDocsGenerator.constructHeaderInProvidersFile();
-        providersDocsGenerator.generateProvidersDocs();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DESTINATION_PLACE_OF_PROVIDERS_FILE))) {
+            providersDocsGenerator.constructHeaderInProvidersFile(writer);
+            providersDocsGenerator.generateProvidersDocs(writer);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void generateProvidersDocs() {
+    public void generateProvidersDocs(BufferedWriter writer) {
         fillTreeSet();
 
         Set<String> fakersWithoutSinceTag = new HashSet<>();
@@ -56,7 +70,7 @@ public class ProvidersDocsGenerator {
             }
 
             String sinceTag = matchSinceTag(tag);
-            writeProviderToTable(name, sinceTag);
+            writeProviderToTable(writer, name, sinceTag);
         }
         System.out.println("Providers without '@since' tag: " + fakersWithoutSinceTag);
     }
@@ -98,53 +112,52 @@ public class ProvidersDocsGenerator {
 
         return comment;
     }
+
     public String generateColumn(String name, char padSymbol, int length) {
         if (name.length() >= length) return name;
         return padSymbol + name + Strings.repeat(String.valueOf(padSymbol), length - name.length() - 1);
     }
+
     /**
      * Writes header and table header to new 'providers.md'
-     *
-     * @see #writeToFile(String)
      */
-    private void constructHeaderInProvidersFile() {
+    private void constructHeaderInProvidersFile(Writer writer) throws IOException {
         final int sinceColLength = 7;
-        final String header = "# Fake Data Providers\n" + "\n" + "Datafaker comes with the following list of data providers:" + "\n";
-        final String tableHeader = "\n|" + generateColumn("Name", ' ', nameColLength) + "|" + generateColumn("Description", ' ', descColLength) + "|" + generateColumn("Since", ' ', sinceColLength) + "|\n";
-        final String tableHeaderDelimiter = "|" + generateColumn("", '-', nameColLength) + "|" + generateColumn("", '-', descColLength)  + "|" + generateColumn("", '-', sinceColLength) + "|";
+        final String header = "# Fake Data Providers\n"
+            + "\nDatafaker comes with the following list of data providers:" + "\n";
+        final String tableHeader =
+            "\n|" + generateColumn("Name", ' ', nameColLength) + "|"
+                + generateColumn("Description", ' ', descColLength) + "|"
+                + generateColumn("Since", ' ', sinceColLength) + "|\n";
+        final String tableHeaderDelimiter = "|" + generateColumn("", '-', nameColLength) + "|"
+            + generateColumn("", '-', descColLength) + "|"
+            + generateColumn("", '-', sinceColLength) + "|";
 
-        try {
-            writeToFile(header);
-            writeToFile(tableHeader);
-            writeToFile(tableHeaderDelimiter);
-        } catch (IOException e) {
-            throw new RuntimeException("Error on 'providers.md' file creation", e);
-        }
+        writeToFile(writer, header);
+        writeToFile(writer, tableHeader);
+        writeToFile(writer, tableHeaderDelimiter);
     }
 
-    private void writeProviderToTable(final String providerName, final String sinceTag) {
+    private void writeProviderToTable(Writer writer, final String providerName, final String sinceTag) {
         String nameEntry = "\n|" + generateColumn("[" + addSpaceBetweenNameOfProvider(providerName) + "]" +
             "({{ datafaker.javadoc }}/" + providerName + ".html)", ' ', nameColLength) + "|";
-        final String providerDescriptionSectionEntry = Strings.repeat(" ", descColLength) ;
+        final String providerDescriptionSectionEntry = Strings.repeat(" ", descColLength);
         // Format of `@since tag` should be '#.#.#'
         String providerSinceTagSectionEntry = "|" + " " + sinceTag + " " + "|";
         try {
-            writeToFile(nameEntry + providerDescriptionSectionEntry + providerSinceTagSectionEntry);
+            writeToFile(writer, nameEntry + providerDescriptionSectionEntry + providerSinceTagSectionEntry);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * When generating new file, the old one should be removed, because new data will be written in existing one.
-     *
      * @param dataToWrite
      * @throws IOException
      */
-    private void writeToFile(String dataToWrite) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(destinationPlaceOfProvidersFile, true))) {
-            writer.write(dataToWrite);
-        }
+    private void writeToFile(Writer writer, String dataToWrite) throws IOException {
+        writer.write(dataToWrite);
+        writer.flush();
     }
 
     /**
