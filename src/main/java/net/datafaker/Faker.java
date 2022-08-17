@@ -554,7 +554,7 @@ public class Faker {
     public DcComics dcComics () {
         return getProvider(DcComics.class, () -> new DcComics(this));
     }
-  
+
     public Departed departed() {
         return getProvider(Departed.class, () -> new Departed(this));
     }
@@ -765,6 +765,10 @@ public class Faker {
 
     public Marketing marketing() {
         return getProvider(Marketing.class, () -> new Marketing(this));
+    }
+
+    public MassEffect massEffect() {
+        return getProvider(MassEffect.class, () -> new MassEffect(this));
     }
 
     public Matz matz() {
@@ -1019,9 +1023,6 @@ public class Faker {
         return getProvider(Zelda.class, () -> new Zelda(this));
     }
 
-    public MassEffect massEffect() {
-        return getProvider(MassEffect.class, () -> new MassEffect(this));
-    }
 
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this);

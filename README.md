@@ -244,6 +244,7 @@ Providers
 * Lord Of The Rings
 * Lorem
 * Marketing
+* Mass Effect
 * Matz
 * MBTI
 * Measurement
@@ -309,7 +310,6 @@ Providers
 * Witcher
 * Yoda
 * Zelda
-* Mass Effect
 
 Usage with Locales
 -----
