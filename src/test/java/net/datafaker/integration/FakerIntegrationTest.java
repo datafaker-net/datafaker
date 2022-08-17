@@ -159,6 +159,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lordOfTheRings());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lorem());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.massEffect());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.matz());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.measurement());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
@@ -170,6 +171,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nation());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.natoPhoneticAlphabet());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nigeria());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.oscarMovie());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.overwatch());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.phoneNumber());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.photography());
@@ -204,8 +206,6 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.witcher());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.yoda());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.zelda());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.oscarMovie());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.massEffect());
     }
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {
