@@ -58,6 +58,7 @@ public class EnFile {
         "camera.yml",
         "cannabis.yml",
         "chuck_norris.yml",
+        "chiquito.yml",
         "code.yml",
         "coffee.yml",
         "coin.yml",
