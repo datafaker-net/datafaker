@@ -177,6 +177,7 @@ Providers
 * Camera
 * Cat
 * Chuck Norris
+* Clash of Clans
 * Code
 * Coin
 * Color
