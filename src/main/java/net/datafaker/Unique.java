@@ -40,41 +40,31 @@ public class Unique extends AbstractProvider {
 
     private String removeAtIndex(List<String> values, int index) {
         int lastIndex = values.size() - 1;
-        swapValuesAtIndexes(values, index, lastIndex);
+        Collections.swap(values, index, lastIndex);
         return values.remove(lastIndex);
-    }
-
-    private void swapValuesAtIndexes(List<String> values, int firstIndex, int secondIndex) {
-        String firstValue = values.get(firstIndex);
-        values.set(firstIndex, values.get(secondIndex));
-        values.set(secondIndex, firstValue);
     }
 
     private List<String> fetchValues(String key) {
         Object object = faker.fakeValuesService().fetchObject(key);
 
-        try {
-            List<String> values = ((List<?>) object).stream()
-                .filter(this::isValidDatatype)
-                .map(String::valueOf)
-                .collect(Collectors.toList());
-
-            if (values.isEmpty()) {
-                throw noValuesFoundException(key);
-            }
-
-            return values;
-        } catch (Exception e) {
+        if (!(object instanceof List)) {
             throw noValuesFoundException(key);
         }
+
+        List<String> values = ((List<?>) object).stream()
+            .filter(value -> !(value instanceof List))
+            .map(String::valueOf)
+            .collect(Collectors.toList());
+
+        if (values.isEmpty()) {
+            throw noValuesFoundException(key);
+        }
+
+        return values;
     }
 
-    private boolean isValidDatatype(Object value) {
-        return !(value instanceof List);
-    }
-
-    private RuntimeException noValuesFoundException(String key) {
-        return new RuntimeException(String.format(
+    private NoSuchElementException noValuesFoundException(String key) {
+        return new NoSuchElementException(String.format(
             "No values found for key %s",
             key
         ));
