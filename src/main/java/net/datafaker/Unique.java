@@ -1,6 +1,7 @@
 package net.datafaker;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Unique extends AbstractProvider {
 
@@ -21,7 +22,7 @@ public class Unique extends AbstractProvider {
         }
 
         if (values.isEmpty()) {
-            throw new RuntimeException(String.format(
+            throw new NoSuchElementException(String.format(
                 "All possible values have been generated for key %s under locale %s",
                 key,
                 locale
@@ -29,7 +30,7 @@ public class Unique extends AbstractProvider {
         }
 
         int index = faker.random().nextInt(0, values.size() - 1);
-        String value = values.remove(index);
+        String value = removeAtIndex(values, index);
 
         valuesByKey.put(key, values);
         valuesByKeyAndLocale.put(locale, valuesByKey);
@@ -37,24 +38,45 @@ public class Unique extends AbstractProvider {
         return value;
     }
 
-    @SuppressWarnings("unchecked")
+    private String removeAtIndex(List<String> values, int index) {
+        int lastIndex = values.size() - 1;
+        swapValuesAtIndexes(values, index, lastIndex);
+        return values.remove(lastIndex);
+    }
+
+    private void swapValuesAtIndexes(List<String> values, int firstIndex, int secondIndex) {
+        String firstValue = values.get(firstIndex);
+        values.set(firstIndex, values.get(secondIndex));
+        values.set(secondIndex, firstValue);
+    }
+
     private List<String> fetchValues(String key) {
         Object object = faker.fakeValuesService().fetchObject(key);
 
-        if (object == null) {
-            throw new RuntimeException(String.format(
-                "No values found for key %s",
-                key
-            ));
-        }
+        try {
+            List<String> values = ((List<?>) object).stream()
+                .filter(this::isValidDatatype)
+                .map(String::valueOf)
+                .collect(Collectors.toList());
 
-        if (!(object instanceof List)) {
-            throw new RuntimeException(String.format(
-                "Object found for key %s is not in list format",
-                key
-            ));
-        }
+            if (values.isEmpty()) {
+                throw noValuesFoundException(key);
+            }
 
-        return new ArrayList<>((List<String>) object);
+            return values;
+        } catch (Exception e) {
+            throw noValuesFoundException(key);
+        }
+    }
+
+    private boolean isValidDatatype(Object value) {
+        return !(value instanceof List);
+    }
+
+    private RuntimeException noValuesFoundException(String key) {
+        return new RuntimeException(String.format(
+            "No values found for key %s",
+            key
+        ));
     }
 }
