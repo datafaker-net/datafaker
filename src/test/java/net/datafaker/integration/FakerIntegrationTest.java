@@ -100,6 +100,8 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.camera());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.cat());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.chuckNorris());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.clashOfClans());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.chiquito());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.coin());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.color());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.commerce());
