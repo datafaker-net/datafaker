@@ -118,6 +118,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dog());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dragonBall());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.drivingLicense());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dumbAndDumber());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dune());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.educator());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.eldenRing());
