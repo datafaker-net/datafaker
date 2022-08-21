@@ -1,6 +1,6 @@
 en:
   faker:
-    mass-effect:
+    mass_effect:
       characters: [
         "Commander Shepard",
         "Ashley Williams",

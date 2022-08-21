@@ -140,7 +140,7 @@ public class EnFile {
 //            "lovecraft.yml",
 //            "markdown.yml",
         "marketing.yml",
-        "mass-effect.yml",
+        "mass_effect.yml",
         "matz.yml",
         "measurement.yml",
         "mbti.yml",
