@@ -245,6 +245,7 @@ Providers
 * Lord Of The Rings
 * Lorem
 * Marketing
+* Mass Effect
 * Matz
 * MBTI
 * Measurement
