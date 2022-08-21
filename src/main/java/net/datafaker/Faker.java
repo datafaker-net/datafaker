@@ -587,6 +587,10 @@ public class Faker {
         return getProvider(DrivingLicense.class, () -> new DrivingLicense(this));
     }
 
+    public DumbAndDumber dumbAndDumber() {
+        return getProvider(DumbAndDumber.class, () -> new DumbAndDumber(this));
+    }
+
     public Dune dune() {
         return getProvider(Dune.class, () -> new Dune(this));
     }
