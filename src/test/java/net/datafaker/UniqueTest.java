@@ -7,7 +7,8 @@ import org.mockito.Mockito;
 import java.util.*;
 
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 class UniqueTest {
@@ -39,11 +40,9 @@ class UniqueTest {
         results.add(faker.unique().fetchFromYaml(key));
         results.add(faker.unique().fetchFromYaml(key));
 
-        assertEquals(5, results.size());
-        assertTrue(
-            results.containsAll(defaultValues),
-            String.format("\nExpected : Result set containing the following values: %s\nActual   : %s\n", defaultValues, results)
-        );
+        assertThat(results)
+            .hasSize(5)
+            .containsAll(defaultValues);
 
         verify(randomService).nextInt(0, 4);
         verify(randomService).nextInt(0, 3);
@@ -57,13 +56,9 @@ class UniqueTest {
     public void fetchFromYaml_shouldThrowExceptionWhenAllPossibleValuesHaveBeenReturned() {
         String key = "unique.single-value";
 
-        assertEquals("theOnlyValue", faker.unique().fetchFromYaml(key));
-        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> faker.unique().fetchFromYaml(key));
-
-        assertEquals(
-            "All possible values have been generated for key unique.single-value under locale test",
-            exception.getMessage()
-        );
+        assertThat(faker.unique().fetchFromYaml(key)).isEqualTo("theOnlyValue");
+        assertThatThrownBy(() -> faker.unique().fetchFromYaml(key))
+            .hasMessage("All possible values have been generated for key unique.single-value under locale test");
     }
 
     @Test
@@ -73,32 +68,29 @@ class UniqueTest {
 
         String expectedValue = "theSameValue";
 
-        assertEquals(expectedValue, faker.unique().fetchFromYaml(firstKey));
-        assertEquals(expectedValue, faker.unique().fetchFromYaml(secondKey));
+        assertThat(faker.unique().fetchFromYaml(firstKey)).isEqualTo(expectedValue);
+        assertThat(faker.unique().fetchFromYaml(secondKey)).isEqualTo(expectedValue);
         faker.fakeValuesService().setCurrentLocale(new Locale("test_otherlocale"));
-        assertEquals(expectedValue, faker.unique().fetchFromYaml(firstKey));
-        assertEquals(expectedValue, faker.unique().fetchFromYaml(secondKey));
+        assertThat(faker.unique().fetchFromYaml(firstKey)).isEqualTo(expectedValue);
+        assertThat(faker.unique().fetchFromYaml(secondKey)).isEqualTo(expectedValue);
     }
 
     @Test
     public void fetchFromYaml_shouldThrowExceptionWhenNoValuesFoundForKey() {
-        Exception exception = assertThrows(Exception.class, () -> faker.unique().fetchFromYaml("unique.nonexistent-values"));
-
-        assertEquals("No values found for key unique.nonexistent-values", exception.getMessage());
+        assertThatThrownBy(() -> faker.unique().fetchFromYaml("unique.nonexistent-values"))
+            .hasMessage("No values found for key unique.nonexistent-values");
     }
 
     @Test
     public void fetchFromYaml_shouldThrowExceptionWhenNonListValueFoundForKey() {
-        Exception exception = assertThrows(Exception.class, () -> faker.unique().fetchFromYaml("unique"));
-
-        assertEquals("No values found for key unique", exception.getMessage());
+        assertThatThrownBy(() -> faker.unique().fetchFromYaml("unique"))
+            .hasMessage("No values found for key unique");
     }
 
     @Test
     public void fetchFromYaml_shouldThrowExceptionWhenListOfListsFoundForKey() {
-        Exception exception = assertThrows(Exception.class, () -> faker.unique().fetchFromYaml("unique.list-of-lists"));
-
-        assertEquals("No values found for key unique.list-of-lists", exception.getMessage());
+        assertThatThrownBy(() -> faker.unique().fetchFromYaml("unique.list-of-lists"))
+            .hasMessage("No values found for key unique.list-of-lists");
     }
 
     @Test
@@ -111,31 +103,25 @@ class UniqueTest {
 
         String result = faker.fakeValuesService().fetchString(key);
 
-        assertTrue(
-            defaultValues.contains(result),
-            String.format("\nExpected : one of the following values: %s\nActual   : %s\n", defaultValues, result)
-        );
+        assertThat(defaultValues).contains(result);
     }
 
     @Test
     public void fetchFromYaml_shouldConvertIntegersToStrings() {
-        String result = faker.unique().fetchFromYaml("unique.valid-integer");
-
-        assertEquals("123", result);
+        assertThat(faker.unique().fetchFromYaml("unique.valid-integer"))
+            .isEqualTo("123");
     }
 
     @Test
     public void fetchFromYaml_shouldConvertDecimalsToStrings() {
-        String result = faker.unique().fetchFromYaml("unique.valid-decimal");
-
-        assertEquals("12.34", result);
+        assertThat(faker.unique().fetchFromYaml("unique.valid-decimal"))
+            .isEqualTo("12.34");
     }
 
     @Test
     public void fetchFromYaml_shouldConvertBooleansToStrings() {
-        String result = faker.unique().fetchFromYaml("unique.valid-boolean");
-
-        assertEquals("true", result);
+        assertThat(faker.unique().fetchFromYaml("unique.valid-boolean"))
+            .isEqualTo("true");
     }
 
 }
