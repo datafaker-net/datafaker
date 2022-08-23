@@ -180,3 +180,14 @@ de:
       ]
       catch_phrases_TODO: []
       quotes_TODO: []
+    vehicle:
+      license_plate_base: [
+         "? ?? #", "?? ?? #", "??? ?? #", 
+         "? ?? ##", "?? ?? ##", "??? ?? ##", 
+         "? ?? ###", "?? ?? ###", "??? ?? ###", 
+         "? ?? ####", "?? ?? ####", "??? ?? ####"
+       ]
+      license_plate:
+        - "#{vehicle.license_plate_base}"
+        - "#{vehicle.license_plate_base}E"
+        - "#{vehicle.license_plate_base}H"
