@@ -22,4 +22,8 @@ en-IND:
     company:
       suffix: [Pvt Ltd, Limited, Ltd, and Sons, Corp, Group, Brothers]
     phone_number:
-      formats: ['+91###-###-####', '+91##########', '+91-###-#######']
+      area_code_2: ['79', '80']
+      area_code_3: ['731', '621', '612', '641', '657', '712', '721', '724', '751', '761', '821', '831', '836', '870', '891']
+      formats:
+        - "+91-#{PhoneNumber.area_code_2}-####-####"
+        - "+91-#{PhoneNumber.area_code_3}-###-####"
