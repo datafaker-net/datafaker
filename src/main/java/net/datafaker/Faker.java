@@ -635,6 +635,10 @@ public class Faker {
         return getProvider(File.class, () -> new File(this));
     }
 
+    public FinalSpace finalSpace() {
+        return getProvider(FinalSpace.class, () -> new FinalSpace(this));
+    }
+
     public Finance finance() {
         return getProvider(Finance.class, () -> new Finance(this));
     }
