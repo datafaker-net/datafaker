@@ -4,6 +4,12 @@ import net.datafaker.Faker;
 
 public class StarWars {
     private final Faker faker;
+    
+    private final String[] CHARACTERS = new String[]{"admiral_ackbar", "ahsoka_tano", "anakin_skywalker", "asajj_ventress",
+            "bendu", "boba_fett", "c_3po", "count_dooku", "darth_caedus", "darth_vader", "emperor_palpatine", "finn",
+            "general_hux", "grand_admiral_thrawn", "grand_moff_tarkin", "greedo", "hans_solo", "jabba_the_hutt",
+            "jar_jar_binks", "k_2so", "kylo_ren", "lando_calrissian", "leia_organa", "luke_skywalker", "mace_windu",
+            "maz_kanata", "obi_wan_kenobi", "padme_amidala", "qui_gon_jinn", "rey", "shmi_skywalker", "yoda"};
 
     protected StarWars(Faker faker) {
         this.faker = faker;
@@ -18,7 +24,7 @@ public class StarWars {
     }
 
     public String quotes() {
-        return faker.fakeValuesService().resolve("star_wars.quotes", this, faker);
+        return faker.fakeValuesService().resolve("star_wars.quotes." + CHARACTERS[faker.random().nextInt(CHARACTERS.length)], this, faker);
     }
 
     public String vehicles() {
@@ -42,6 +48,6 @@ public class StarWars {
     }
 
     public String alternateCharacterSpelling() {
-        return faker.fakeValuesService().resolve("star_wars.alternate_character_spellings", this, faker);
+        return faker.fakeValuesService().resolve("star_wars.alternate_character_spellings." + CHARACTERS[faker.random().nextInt(CHARACTERS.length)], this, faker);
     }
 }
