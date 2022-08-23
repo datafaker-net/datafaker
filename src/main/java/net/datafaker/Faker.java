@@ -950,6 +950,10 @@ public class Faker {
     public StarTrek starTrek() {
         return getProvider(StarTrek.class, () -> new StarTrek(this));
     }
+    
+    public StarWars starWars() { 
+        return getProvider(StarWars.class, () -> new StarWars(this)); 
+    }
 
     public Stock stock() {
         return getProvider(Stock.class, () -> new Stock(this));
