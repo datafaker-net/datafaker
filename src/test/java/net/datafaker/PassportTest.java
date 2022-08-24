@@ -50,7 +50,6 @@ class PassportTest extends AbstractFakerTest {
     @RepeatedTest(10)
     void testValidUnitedKingdom() {
         assertThat(new Faker(new Locale("en", "GB")).passport().valid())
-            .matches("[0-9]{9}")
             .hasSize(9);
     }
 }
