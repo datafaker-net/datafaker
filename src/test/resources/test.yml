@@ -18,3 +18,25 @@ test:
        resolutionWithList:
            - "#{hello}"
            - "#{hello2}"
+    unique:
+      values:
+        - firstValue
+        - secondValue
+        - thirdValue
+        - fourthValue
+        - fifthValue
+      single-value:
+        - theOnlyValue
+      first-same-locale-value:
+        - theSameValue
+      second-same-locale-value:
+        - theSameValue
+      list-of-lists:
+        - ["firstValue", "secondValue"]
+        - ["thirdValue", "fourthValue"]
+      valid-integer:
+        - 123
+      valid-decimal:
+        - 12.34
+      valid-boolean:
+        - true
