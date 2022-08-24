@@ -12,14 +12,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CodeTest extends AbstractFakerTest {
 
-    private static final ISBNValidator ISBN_VALIDATOR = ISBNValidator.getInstance(false);
-
     @RepeatedTest(100)
     void isbn10DefaultIsNoSeparator() {
         final Faker faker = new Faker();
         String isbn10 = faker.code().isbn10();
 
-        assertIsValidISBN10(isbn10);
+        final ISBNValidator isbnValidator = ISBNValidator.getInstance(false);
+        assertIsValidISBN10(isbn10, isbnValidator);
         assertThat(isbn10).doesNotContain("-");
     }
 
@@ -28,7 +27,8 @@ class CodeTest extends AbstractFakerTest {
         final Faker faker = new Faker();
         String isbn13 = faker.code().isbn13();
 
-        assertIsValidISBN13(isbn13);
+        final ISBNValidator isbnValidator = ISBNValidator.getInstance(false);
+        assertIsValidISBN13(isbn13, isbnValidator);
         assertThat(isbn13).doesNotContain("-");
     }
 
@@ -37,11 +37,12 @@ class CodeTest extends AbstractFakerTest {
         final Faker faker = new Faker();
         final String isbn10NoSep = faker.code().isbn10(false);
         final String isbn10Sep = faker.code().isbn10(true);
+        final ISBNValidator isbnValidator = ISBNValidator.getInstance(false);
 
         assertThat(isbn10NoSep).hasSize(10);
-        assertIsValidISBN10(isbn10NoSep);
+        assertIsValidISBN10(isbn10NoSep, isbnValidator);
         assertThat(isbn10Sep).hasSize(13);
-        assertIsValidISBN10(isbn10Sep);
+        assertIsValidISBN10(isbn10Sep, isbnValidator);
     }
 
     @RepeatedTest(100)
@@ -49,20 +50,21 @@ class CodeTest extends AbstractFakerTest {
         final Faker faker = new Faker();
         final String isbn13NoSep = faker.code().isbn13(false);
         final String isbn13Sep = faker.code().isbn13(true);
+        final ISBNValidator isbnValidator = ISBNValidator.getInstance(false);
 
         assertThat(isbn13NoSep).hasSize(13);
-        assertIsValidISBN13(isbn13NoSep);
+        assertIsValidISBN13(isbn13NoSep, isbnValidator);
 
         assertThat(isbn13Sep).hasSize(17);
-        assertIsValidISBN13(isbn13Sep);
+        assertIsValidISBN13(isbn13Sep, isbnValidator);
     }
 
-    private void assertIsValidISBN10(String isbn10) {
-        assertThat(ISBN_VALIDATOR.isValidISBN10(isbn10)).describedAs(isbn10 + " is valid").isTrue();
+    private void assertIsValidISBN10(String isbn10, ISBNValidator isbnValidator) {
+        assertThat(isbnValidator.isValidISBN10(isbn10)).describedAs(isbn10 + " is valid").isTrue();
     }
 
-    private void assertIsValidISBN13(String isbn13) {
-        assertThat(ISBN_VALIDATOR.isValidISBN13(isbn13)).describedAs(isbn13 + " is valid").isTrue();
+    private void assertIsValidISBN13(String isbn13, ISBNValidator isbnValidator) {
+        assertThat(isbnValidator.isValidISBN13(isbn13)).describedAs(isbn13 + " is valid").isTrue();
     }
 
     @RepeatedTest(100)

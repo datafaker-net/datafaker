@@ -558,7 +558,7 @@ public class Faker {
     public DcComics dcComics () {
         return getProvider(DcComics.class, () -> new DcComics(this));
     }
-  
+
     public Departed departed() {
         return getProvider(Departed.class, () -> new Departed(this));
     }
@@ -585,6 +585,10 @@ public class Faker {
 
     public DrivingLicense drivingLicense() {
         return getProvider(DrivingLicense.class, () -> new DrivingLicense(this));
+    }
+
+    public DumbAndDumber dumbAndDumber() {
+        return getProvider(DumbAndDumber.class, () -> new DumbAndDumber(this));
     }
 
     public Dune dune() {
@@ -629,6 +633,10 @@ public class Faker {
 
     public File file() {
         return getProvider(File.class, () -> new File(this));
+    }
+
+    public FinalSpace finalSpace() {
+        return getProvider(FinalSpace.class, () -> new FinalSpace(this));
     }
 
     public Finance finance() {
@@ -769,6 +777,10 @@ public class Faker {
 
     public Marketing marketing() {
         return getProvider(Marketing.class, () -> new Marketing(this));
+    }
+
+    public MassEffect massEffect() {
+        return getProvider(MassEffect.class, () -> new MassEffect(this));
     }
 
     public Matz matz() {
@@ -1026,6 +1038,7 @@ public class Faker {
     public Zelda zelda() {
         return getProvider(Zelda.class, () -> new Zelda(this));
     }
+
 
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this);

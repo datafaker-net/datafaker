@@ -1,6 +1,9 @@
 package net.datafaker.integration;
 
+import net.datafaker.AbstractProvider;
+import net.datafaker.Address;
 import net.datafaker.Faker;
+import net.datafaker.Name;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -11,8 +14,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -32,7 +35,6 @@ import static org.reflections.ReflectionUtils.withReturnType;
  * are correct. These tests just ensure that the methods can be invoked.
  */
 class FakerIntegrationTest {
-    private Locale locale;
 
     /**
      * a collection of Locales -> Exceptions.
@@ -40,24 +42,33 @@ class FakerIntegrationTest {
      * methods return a non blank string. But pt city_prefix is blank ,but the test shouldn't fail. So we add put
      * exceptions like this into this collection.
      */
-    private static final Map<Locale, List<String>> exceptions = new HashMap<>();
+    private static final Map<Locale, SkippedMethods> exceptions = new HashMap<>();
 
     static {
         // 'it' has an empty suffix list so it never returns a value
-        exceptions.put(new Locale("it"), Collections.singletonList("Name.suffix"));
-        exceptions.put(new Locale("es-mx"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
-        exceptions.put(new Locale("pt"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
-        exceptions.put(new Locale("uk"), Arrays.asList("Address.stateAbbr", "Address.streetSuffix",
-            "Address.cityPrefix", "Address.citySuffix"));
-        exceptions.put(new Locale("pt-BR"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
-        exceptions.put(new Locale("pt-br"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
-        exceptions.put(new Locale("Pt_br"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
-        exceptions.put(new Locale("pT_Br"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
-        exceptions.put(new Locale("pt", "Br", "x2"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
+        exceptions.put(new Locale("it"), SkippedMethods.of(Name.class, "suffix"));
+        exceptions.put(new Locale("es", "mx"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
+        exceptions.put(new Locale("pt"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
+        exceptions.put(new Locale("uk"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix", "stateAbbr", "streetSuffix"));
+        exceptions.put(new Locale("pt-BR"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
+        exceptions.put(new Locale("pt-br"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
+        exceptions.put(new Locale("Pt_br"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
+        exceptions.put(new Locale("pT_Br"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
+        exceptions.put(new Locale("pt", "Br", "x2"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
+    }
+
+    private static class SkippedMethods {
+        private final Map<Class, Set<String>> class2methodNames = new HashMap<>();
+
+        public static SkippedMethods of(Class clazz, String ... methodNames) {
+            SkippedMethods sm = new SkippedMethods();
+            sm.class2methodNames.putIfAbsent(clazz, new HashSet<>());
+            sm.class2methodNames.get(clazz).addAll(Arrays.asList(methodNames));
+            return sm;
+        }
     }
 
     private Faker init(Locale locale, Random random) {
-        this.locale = locale;
         if (locale != null && random != null) {
             return new Faker(locale, random);
         } else if (locale != null) {
@@ -118,6 +129,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dog());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dragonBall());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.drivingLicense());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dumbAndDumber());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.dune());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.educator());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.eldenRing());
@@ -128,6 +140,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.fallout());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.famousLastWords());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.file());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.finalSpace());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.finance());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.food());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.formula1());
@@ -160,6 +173,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lordOfTheRings());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lorem());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.massEffect());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.matz());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.measurement());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.military());
@@ -171,6 +185,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nation());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.natoPhoneticAlphabet());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.nigeria());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.oscarMovie());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.overwatch());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.phoneNumber());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.photography());
@@ -205,10 +220,15 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.witcher());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.yoda());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.zelda());
-        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.oscarMovie());
     }
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {
+        final Locale locale;
+        if (object instanceof Faker) {
+            locale = ((Faker) object).getLocale();
+        } else {
+            locale = ((AbstractProvider) object).getFaker().getLocale();
+        }
         @SuppressWarnings("unchecked")
         Set<Method> methodsThatReturnStrings = getAllMethods(object.getClass(),
             withModifier(Modifier.PUBLIC),
@@ -216,22 +236,21 @@ class FakerIntegrationTest {
             withParametersCount(0));
 
         for (Method method : methodsThatReturnStrings) {
-            if (isExcepted(object, method)) {
+            if (isExcepted(object, method, locale)) {
                 continue;
             }
             final Object returnValue = method.invoke(object);
-            assertThat(returnValue).isInstanceOf(String.class);
+            assertThat(returnValue).as("For method " + object.getClass() + "#" + method.getName() + "value is '" + returnValue + "'").isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;
-            assertThat(returnValueAsString).isNotEmpty();
+            assertThat(returnValueAsString).as("For method " + object.getClass() + "#" + method.getName()).isNotEmpty();
         }
     }
 
-    private boolean isExcepted(Object object, Method method) {
-        final List<String> classDotMethod = exceptions.get(this.locale);
-        if (classDotMethod == null) {
-            return false;
+    private boolean isExcepted(Object object, Method method, Locale locale) {
+        if (exceptions.containsKey(locale) && exceptions.get(locale).class2methodNames.containsKey(object.getClass())) {
+            return exceptions.get(locale).class2methodNames.get(object.getClass()).contains(method.getName());
         }
-        return classDotMethod.contains(object.getClass().getSimpleName() + "." + method.getName());
+        return false;
     }
 
     @ParameterizedTest

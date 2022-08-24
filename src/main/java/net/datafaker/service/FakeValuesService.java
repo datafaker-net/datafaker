@@ -27,7 +27,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,8 +47,8 @@ public class FakeValuesService {
 
     private final Map<Locale, List<Locale>> locale2localesChain;
 
-    private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new ConcurrentHashMap<>();
-    private final Map<Class<?>, Constructor<?>> class2constructorCache = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
+    private final Map<Class<?>, Constructor<?>> class2constructorCache = new IdentityHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<Locale, Map<String, String>> key2Expression = new WeakHashMap<>();
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
@@ -58,9 +57,9 @@ public class FakeValuesService {
     private final Map<Locale, Map<String, Object>> key2fetchedObject = new WeakHashMap<>();
     private final Map<String, String> name2yaml = new WeakHashMap<>();
 
-    private static final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new IdentityHashMap<>();
+    private final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new IdentityHashMap<>();
 
-    private static final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
+    private final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
 
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
@@ -631,7 +630,7 @@ public class FakeValuesService {
         return resultArray;
     }
 
-    private static List<String> splitExpressions(String expression) {
+    private List<String> splitExpressions(String expression) {
         List<String> result = EXPRESSION_2_SPLITTED.get(expression);
         if (result != null) {
             return result;

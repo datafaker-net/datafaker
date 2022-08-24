@@ -70,6 +70,25 @@ val lastName = faker.name().lastName() // Barton
 val streetAddress = faker.address().streetAddress() // 60018 Sawayn Brooks Suite 449
 ```
 
+JShell
+```
+# from project root folder
+jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
+|  Welcome to JShell -- Version 17.0.4
+|  For an introduction type: /help intro
+
+jshell> import net.datafaker.Faker;
+
+jshell> var faker = new Faker();
+faker ==> net.datafaker.Faker@c4437c4
+
+jshell> faker.address().city();
+$3 ==> "Brittneymouth"
+
+jshell> faker.name().fullName();
+$5 ==> "Vernie Schmidt"
+```
+
 ### Expressions
 
 ```java
@@ -114,6 +133,32 @@ String csv = Format.toCsv(faker.collection(faker::name).build())
 // "Kimberely" ; "Considine"
 // "Mariela" ; "Krajcik"
 ```
+JShell
+```
+# from project root folder
+jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
+|  Welcome to JShell -- Version 17.0.4
+|  For an introduction type: /help intro
+
+jshell> import net.datafaker.Faker;
+
+jshell> import net.datafaker.fileformats.Format;
+
+jshell> import net.datafaker.Name;
+
+jshell> var faker = new Faker();
+faker ==> net.datafaker.Faker@c4437c4
+
+jshell> System.out.println(Format.toCsv(faker.collection(faker::name).build())
+   ...>                 .headers(() -> "first_name", () -> "last_name")
+   ...>                 .columns(Name::firstName, Name::lastName)
+   ...>                 .separator(" ; ")
+   ...>                 .limit(2).build().get());
+"first_name" ; "last_name"
+"Lisa" ; "Crooks"
+"Lakita" ; "Powlowski"
+```
+
 #### json
 ```java
 Faker faker = new Faker();
@@ -200,6 +245,7 @@ Providers
 * Domain
 * Dragon Ball
 * Driving License
+* Dumb and Dumber
 * Dune
 * Durations
 * Educator
@@ -211,6 +257,7 @@ Providers
 * Fallout
 * Famous Last Words
 * File
+* Final Space
 * Finance
 * Food
 * Formula 1 (:racing_car:)
@@ -245,6 +292,7 @@ Providers
 * Lord Of The Rings
 * Lorem
 * Marketing
+* Mass Effect
 * Matz
 * MBTI
 * Measurement
