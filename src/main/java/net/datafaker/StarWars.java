@@ -1,7 +1,5 @@
 package net.datafaker;
 
-import net.datafaker.Faker;
-
 public class StarWars {
     private final Faker faker;
     
