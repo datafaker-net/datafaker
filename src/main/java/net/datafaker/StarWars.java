@@ -1,4 +1,4 @@
-package de.bund.bka.hwa.Faker;
+package net.datafaker;
 
 import net.datafaker.Faker;
 
