@@ -23,7 +23,6 @@ public class StarWars extends AbstractProvider {
     public String quotes() {
         return faker.fakeValuesService().resolve("star_wars.quotes." + CHARACTERS[faker.random().nextInt(CHARACTERS.length)], this, faker);
     }
-
     public String vehicles() {
         return faker.fakeValuesService().resolve("star_wars.vehicles", this, faker);
     }
