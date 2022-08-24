@@ -2,7 +2,7 @@ package net.datafaker;
 
 
 /**
- * A class for generating random value of soul Knight
+ * A class for generating random values for Soul Knight.
  *
  * @author zhou mintao
  * @since 1.4.0

@@ -1,5 +1,10 @@
 package net.datafaker;
 
+/**
+ * Generates different attributes related to computers, such as operating systems, types and platforms.
+ *
+ * @since 1.5.0
+ */
 public class Computer extends AbstractProvider {
 
     protected Computer(Faker faker) {

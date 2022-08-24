@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -25,11 +26,12 @@ import java.util.regex.Pattern;
 import static org.reflections.scanners.Scanners.SubTypes;
 
 public class ProvidersDocsGenerator {
-    private static final Pattern pattern = Pattern.compile("@since\\s+\\d\\.\\d+\\.\\d");
+    private static final Pattern sincePattern = Pattern.compile("@since\\s+\\d\\.\\d+\\.\\d");
+    private static final Pattern descriptionPatterns = Pattern.compile(".* \\* ([A-Z].+)");
     private final JavaParser parser = new JavaParser();
 
     // Specify destination of 'providers.md' file
-    private static final String DESTINATION_PLACE_OF_PROVIDERS_FILE = "src/test/java/net/datafaker/script/providers.md";
+    private static final String DESTINATION_PLACE_OF_PROVIDERS_FILE = "target/test-classes/providers.md";
     private final Reflections reflections = new Reflections("net.datafaker");
     private final Comparator<Class<?>> providersComparatorBySimpleName = Comparator
         .comparing(Class::getSimpleName);
@@ -37,9 +39,10 @@ public class ProvidersDocsGenerator {
 
     // Exclude non-providers from generation
     private final Set<String> providersToExcludeFromGeneration = new HashSet<>(Arrays.asList("CustomFakerTest", "InsectFromFile", "Insect"));
+
+    // TODO: get rid of this
     private final int nameColLength = 93;
     private final int descColLength = 132;
-
 
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
@@ -52,7 +55,7 @@ public class ProvidersDocsGenerator {
     }
 
     public void generateProvidersDocs(BufferedWriter writer) {
-        fillTreeSet();
+        subTypes.addAll(reflections.get(SubTypes.of(AbstractProvider.class).asClass()));
 
         Set<String> fakersWithoutSinceTag = new HashSet<>();
         for (Class<?> clazz : subTypes) {
@@ -62,15 +65,11 @@ public class ProvidersDocsGenerator {
                 continue;
             }
 
-            String tag;
-            try {
-                tag = extractTagFromJavadoc("src/main/java/net/datafaker/" + name + ".java", fakersWithoutSinceTag);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Error in supplied path to provider", e);
-            }
+            String comment =  extractCommentFromJavadoc("src/main/java/net/datafaker/" + name + ".java", fakersWithoutSinceTag);
 
-            String sinceTag = matchSinceTag(tag);
-            writeProviderToTable(writer, name, sinceTag);
+            String sinceTag = extractSinceVersion(comment);
+            String description = extractDescription(comment);
+            writeProviderToTable(writer, name, sinceTag, description);
         }
         System.out.println("Providers without '@since' tag: " + fakersWithoutSinceTag);
     }
@@ -79,38 +78,41 @@ public class ProvidersDocsGenerator {
      * The implementation assumes that the JavaDoc with the '@since' tag
      * will always be at the very beginning of a class.
      *
-     * @param filePath                              Path to the Faker(provider) to be searched
-     * @param fakersWithoutSinceTag                 List in which add Faker's names that don't have '@since' tag
+     * @param filePath              Path to the Faker(provider) to be searched
+     * @param fakersWithoutSinceTag List in which add Faker's names that don't have '@since' tag
      * @return Entire first JavaDoc in the class
-     * @throws FileNotFoundException
      */
-    private String extractTagFromJavadoc(String filePath, Set<String> fakersWithoutSinceTag) throws FileNotFoundException {
-        final File file = new File(filePath);
+    private String extractCommentFromJavadoc(String filePath, Set<String> fakersWithoutSinceTag)  {
+        try {
+            final File file = new File(filePath);
 
-        Optional<CommentsCollection> commentsCollection = parser.parse(file).getCommentsCollection();
+            Optional<CommentsCollection> commentsCollection = parser.parse(file).getCommentsCollection();
 
-        if (!commentsCollection.isPresent()) {
-            fakersWithoutSinceTag.add(filePath);
-            return "";
+            if (!commentsCollection.isPresent()) {
+                fakersWithoutSinceTag.add(filePath);
+                return "";
+            }
+
+            Optional<JavadocComment> javadocComments = commentsCollection.get().getJavadocComments()
+                .stream()
+                .findFirst();
+
+            if (!javadocComments.isPresent()) {
+                fakersWithoutSinceTag.add(filePath);
+                return "";
+            }
+
+            String comment = javadocComments.get().getContent();
+            boolean isComment = comment.contains("@since");
+
+            if (!isComment) {
+                fakersWithoutSinceTag.add(filePath);
+            }
+
+            return comment;
+        } catch (FileNotFoundException e) {
+            throw new UncheckedIOException(e);
         }
-
-        Optional<JavadocComment> javadocComments = commentsCollection.get().getJavadocComments()
-            .stream()
-            .findFirst();
-
-        if (!javadocComments.isPresent()) {
-            fakersWithoutSinceTag.add(filePath);
-            return "";
-        }
-
-        String comment = javadocComments.get().getContent();
-        boolean isComment = comment.contains("@since");
-
-        if (!isComment) {
-            fakersWithoutSinceTag.add(filePath);
-        }
-
-        return comment;
     }
 
     public String generateColumn(String name, char padSymbol, int length) {
@@ -125,10 +127,10 @@ public class ProvidersDocsGenerator {
         final int sinceColLength = 7;
         final String header = "# Fake Data Providers\n"
             + "\nDatafaker comes with the following list of data providers:" + "\n";
-        final String tableHeader =
-            "\n|" + generateColumn("Name", ' ', nameColLength) + "|"
-                + generateColumn("Description", ' ', descColLength) + "|"
-                + generateColumn("Since", ' ', sinceColLength) + "|\n";
+        final String tableHeader = "\n|"
+            + generateColumn("Name", ' ', nameColLength) + "|"
+            + generateColumn("Description", ' ', descColLength) + "|"
+            + generateColumn("Since", ' ', sinceColLength) + "|\n";
         final String tableHeaderDelimiter = "|" + generateColumn("", '-', nameColLength) + "|"
             + generateColumn("", '-', descColLength) + "|"
             + generateColumn("", '-', sinceColLength) + "|";
@@ -138,48 +140,55 @@ public class ProvidersDocsGenerator {
         writeToFile(writer, tableHeaderDelimiter);
     }
 
-    private void writeProviderToTable(Writer writer, final String providerName, final String sinceTag) {
+    private void writeProviderToTable(Writer writer, String providerName, String sinceTag, String description) {
         String nameEntry = "\n|" + generateColumn("[" + addSpaceBetweenNameOfProvider(providerName) + "]" +
             "({{ datafaker.javadoc }}/" + providerName + ".html)", ' ', nameColLength) + "|";
-        final String providerDescriptionSectionEntry = Strings.repeat(" ", descColLength);
-        // Format of `@since tag` should be '#.#.#'
+
+        String providerDescriptionSectionEntry = description.isEmpty() ? " " : description;
         String providerSinceTagSectionEntry = "|" + " " + sinceTag + " " + "|";
+
+        writeToFile(writer, nameEntry + providerDescriptionSectionEntry + providerSinceTagSectionEntry);
+    }
+
+    private void writeToFile(Writer writer, String dataToWrite)  {
         try {
-            writeToFile(writer, nameEntry + providerDescriptionSectionEntry + providerSinceTagSectionEntry);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            writer.write(dataToWrite);
+            writer.flush();
+        } catch(IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
     /**
-     * @param dataToWrite
-     * @throws IOException
-     */
-    private void writeToFile(Writer writer, String dataToWrite) throws IOException {
-        writer.write(dataToWrite);
-        writer.flush();
-    }
-
-    /**
-     * Gets tag from JavaDoc comment
+     * Gets since version from JavaDoc comment
      *
-     * @param javaDocComment            JavaDoc Comment which contains tag
+     * @param javaDocComment JavaDoc Comment which contains tag
      * @return tag in format "#.#.#". # - number
      */
-    private String matchSinceTag(String javaDocComment) {
-        Matcher comment = pattern.matcher(javaDocComment);
+    private String extractSinceVersion(String javaDocComment) {
+        Matcher comment = sincePattern.matcher(javaDocComment);
 
         if (comment.find()) {
             return comment.group().substring("@since".length()).trim();
+        } else {
+            return "";
         }
-        return "";
     }
 
     /**
-     * Fills <code>TreeSet<code/> with providers as Class<?>
+     * Gets since version from JavaDoc comment
+     *
+     * @param javaDocComment JavaDoc Comment which contains tag
+     * @return tag in format "#.#.#". # - number
      */
-    private void fillTreeSet() {
-        subTypes.addAll(reflections.get(SubTypes.of(AbstractProvider.class).asClass()));
+    private String extractDescription(String javaDocComment) {
+        Matcher comment = descriptionPatterns.matcher(javaDocComment);
+
+        if (comment.find()) {
+            return comment.group(1).trim();
+        } else {
+            return "";
+        }
     }
 
     private String addSpaceBetweenNameOfProvider(String providerName) {
