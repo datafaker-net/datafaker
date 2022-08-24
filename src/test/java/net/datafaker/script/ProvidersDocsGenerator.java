@@ -20,14 +20,14 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.reflections.scanners.Scanners.SubTypes;
 
 public class ProvidersDocsGenerator {
-    private static final Pattern sincePattern = Pattern.compile("@since\\s+\\d\\.\\d+\\.\\d");
-    private static final Pattern descriptionPatterns = Pattern.compile(".* \\* ([A-Z].+)");
     private final JavaParser parser = new JavaParser();
 
     // Specify destination of 'providers.md' file
@@ -40,36 +40,29 @@ public class ProvidersDocsGenerator {
     // Exclude non-providers from generation
     private final Set<String> providersToExcludeFromGeneration = new HashSet<>(Arrays.asList("CustomFakerTest", "InsectFromFile", "Insect"));
 
-    // TODO: get rid of this
-    private final int nameColLength = 93;
-    private final int descColLength = 132;
-
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DESTINATION_PLACE_OF_PROVIDERS_FILE))) {
             providersDocsGenerator.constructHeaderInProvidersFile(writer);
             providersDocsGenerator.generateProvidersDocs(writer);
+            writer.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void generateProvidersDocs(BufferedWriter writer) {
-        subTypes.addAll(reflections.get(SubTypes.of(AbstractProvider.class).asClass()));
+    public void generateProvidersDocs(BufferedWriter writer) throws IOException {
+        subTypes.addAll(
+            reflections.get(SubTypes.of(AbstractProvider.class).asClass())
+                .stream().filter(t -> !providersToExcludeFromGeneration.contains(t.getSimpleName()))
+                .collect(Collectors.toSet()));
 
         Set<String> fakersWithoutSinceTag = new HashSet<>();
         for (Class<?> clazz : subTypes) {
             String name = clazz.getSimpleName();
 
-            if (providersToExcludeFromGeneration.contains(name)) {
-                continue;
-            }
-
-            String comment =  extractCommentFromJavadoc("src/main/java/net/datafaker/" + name + ".java", fakersWithoutSinceTag);
-
-            String sinceTag = extractSinceVersion(comment);
-            String description = extractDescription(comment);
-            writeProviderToTable(writer, name, sinceTag, description);
+            String comment = extractCommentFromJavadoc("src/main/java/net/datafaker/" + name + ".java", fakersWithoutSinceTag);
+            writer.write(Column.generateRow(' ', name, comment));
         }
         System.out.println("Providers without '@since' tag: " + fakersWithoutSinceTag);
     }
@@ -86,7 +79,8 @@ public class ProvidersDocsGenerator {
         try {
             final File file = new File(filePath);
 
-            Optional<CommentsCollection> commentsCollection = parser.parse(file).getCommentsCollection();
+            Optional<CommentsCollection> commentsCollection =
+                parser.parse(file).getCommentsCollection();
 
             if (!commentsCollection.isPresent()) {
                 fakersWithoutSinceTag.add(filePath);
@@ -115,96 +109,100 @@ public class ProvidersDocsGenerator {
         }
     }
 
-    public String generateColumn(String name, char padSymbol, int length) {
-        if (name.length() >= length) return name;
-        return padSymbol + name + Strings.repeat(String.valueOf(padSymbol), length - name.length() - 1);
-    }
-
     /**
      * Writes header and table header to new 'providers.md'
      */
     private void constructHeaderInProvidersFile(Writer writer) throws IOException {
-        final int sinceColLength = 7;
         final String header = "# Fake Data Providers\n"
-            + "\nDatafaker comes with the following list of data providers:" + "\n";
-        final String tableHeader = "\n|"
-            + generateColumn("Name", ' ', nameColLength) + "|"
-            + generateColumn("Description", ' ', descColLength) + "|"
-            + generateColumn("Since", ' ', sinceColLength) + "|\n";
-        final String tableHeaderDelimiter = "|" + generateColumn("", '-', nameColLength) + "|"
-            + generateColumn("", '-', descColLength) + "|"
-            + generateColumn("", '-', sinceColLength) + "|";
+            + "\nDatafaker comes with the following list of data providers:" + "\n\n";
 
-        writeToFile(writer, header);
-        writeToFile(writer, tableHeader);
-        writeToFile(writer, tableHeaderDelimiter);
+        writer.write(header);
+        writer.write(Column.generateHeaderRow(' '));
+        writer.write(Column.generateEmptyRow('-'));
     }
 
-    private void writeProviderToTable(Writer writer, String providerName, String sinceTag, String description) {
-        String nameEntry = "\n|" + generateColumn("[" + addSpaceBetweenNameOfProvider(providerName) + "]" +
-            "({{ datafaker.javadoc }}/" + providerName + ".html)", ' ', nameColLength) + "|";
+    private enum Column {
+        NAME("Name", 93),
+        DESCRIPTION("Description", 132, Pattern.compile(".* \\* ([A-Z].+)"), comment -> comment.group(1).trim()),
+        SINCE("Since", 7, Pattern.compile("@since\\s+\\d\\.\\d+\\.\\d"), comment -> comment.group().substring("@since".length()).trim());
 
-        String providerDescriptionSectionEntry = description.isEmpty() ? " " : description;
-        String providerSinceTagSectionEntry = "|" + " " + sinceTag + " " + "|";
+        private final String columnName;
+        private final int length;
+        private final Pattern pattern2extract;
+        private final Function<Matcher, String> extractor;
 
-        writeToFile(writer, nameEntry + providerDescriptionSectionEntry + providerSinceTagSectionEntry);
-    }
-
-    private void writeToFile(Writer writer, String dataToWrite)  {
-        try {
-            writer.write(dataToWrite);
-            writer.flush();
-        } catch(IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    /**
-     * Gets since version from JavaDoc comment
-     *
-     * @param javaDocComment JavaDoc Comment which contains tag
-     * @return tag in format "#.#.#". # - number
-     */
-    private String extractSinceVersion(String javaDocComment) {
-        Matcher comment = sincePattern.matcher(javaDocComment);
-
-        if (comment.find()) {
-            return comment.group().substring("@since".length()).trim();
-        } else {
-            return "";
-        }
-    }
-
-    /**
-     * Gets since version from JavaDoc comment
-     *
-     * @param javaDocComment JavaDoc Comment which contains tag
-     * @return tag in format "#.#.#". # - number
-     */
-    private String extractDescription(String javaDocComment) {
-        Matcher comment = descriptionPatterns.matcher(javaDocComment);
-
-        if (comment.find()) {
-            return comment.group(1).trim();
-        } else {
-            return "";
-        }
-    }
-
-    private String addSpaceBetweenNameOfProvider(String providerName) {
-        if (providerName.isEmpty()) {
-            throw new IllegalArgumentException("Supplied provider's name is empty!");
+        Column(String columnName, int length, Pattern pattern2extract, Function<Matcher, String> extractor) {
+            this.columnName = columnName;
+            this.length = length;
+            this.pattern2extract = pattern2extract;
+            this.extractor = extractor;
         }
 
-        StringBuilder providerBuilder = new StringBuilder();
-        providerBuilder.append(providerName.charAt(0));
+        Column(String columnName, int length) {
+            this(columnName, length, null, null);
+        }
 
-        for (int i = 1; i < providerName.length(); i++) {
-            if (Character.isUpperCase(providerName.charAt(i)) && Character.isLowerCase(providerName.charAt(i - 1))) {
-                providerBuilder.append(' ');
+        public static String generateEmptyRow(char padSymbol) {
+            return generateBaseHeaderRow(padSymbol, i -> "");
+        }
+
+        public static String generateHeaderRow(char padSymbol) {
+            return generateBaseHeaderRow(padSymbol, i -> values()[i].columnName);
+        }
+
+        private static String generateBaseHeaderRow(char padSymbol, Function<Integer, String> int2Name) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("|");
+            for (int i = 0; i < values().length; i++) {
+                sb.append(generateColumn(int2Name.apply(i), padSymbol, values()[i].length));
+                sb.append("|");
             }
-            providerBuilder.append(providerName.charAt(i));
+            return sb.append("\n").toString();
         }
-        return providerBuilder.toString();
+
+        public static String generateRow(char padSymbol, String clazzName, String javaDocComment) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("|").append(generateColumn(getName(clazzName), padSymbol, NAME.length)).append("|");
+            for (int i = 1; i < values().length; i++) {
+                sb.append(generateColumn(values()[i].getValue(javaDocComment), padSymbol, values()[i].length));
+                sb.append("|");
+            }
+            return sb.append("\n").toString();
+        }
+
+        public static String generateColumn(String name, char padSymbol, int length) {
+            if (name.length() >= length) return name;
+            return padSymbol + name + Strings.repeat(String.valueOf(padSymbol), length - name.length() - 1);
+        }
+
+        public String getValue(String javaDocComment) {
+            Matcher comment = pattern2extract.matcher(javaDocComment);
+
+            if (comment.find()) {
+                return extractor.apply(comment);
+            }
+            return "";
+        }
+
+        public static String getName(String clazzName) {
+            return "[" + addSpaceBetweenNameOfProvider(clazzName) + "]({{ datafaker.javadoc }}/" + clazzName + ".html)";
+        }
+
+        private static String addSpaceBetweenNameOfProvider(String providerName) {
+            if (providerName.isEmpty()) {
+                throw new IllegalArgumentException("Supplied provider's name is empty!");
+            }
+
+            StringBuilder providerBuilder = new StringBuilder();
+            providerBuilder.append(providerName.charAt(0));
+
+            for (int i = 1; i < providerName.length(); i++) {
+                if (Character.isUpperCase(providerName.charAt(i)) && Character.isLowerCase(providerName.charAt(i - 1))) {
+                    providerBuilder.append(' ');
+                }
+                providerBuilder.append(providerName.charAt(i));
+            }
+            return providerBuilder.toString();
+        }
     }
 }
