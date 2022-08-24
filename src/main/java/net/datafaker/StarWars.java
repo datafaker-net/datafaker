@@ -17,7 +17,7 @@ public class StarWars extends AbstractProvider {
     }
 
     public String callSign() {
-        return faker.fakeValuesService().resolve("star_wars.call_sign", this, faker);
+        return faker.numerify(faker.fakeValuesService().resolve("star_wars.call_sign", this, faker));
     }
 
     public String quotes() {
