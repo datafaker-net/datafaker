@@ -1,8 +1,7 @@
 package net.datafaker;
 
-public class StarWars {
-    private final Faker faker;
-    
+public class StarWars extends AbstractProvider {
+
     private final String[] CHARACTERS = new String[]{"admiral_ackbar", "ahsoka_tano", "anakin_skywalker", "asajj_ventress",
             "bendu", "boba_fett", "c_3po", "count_dooku", "darth_caedus", "darth_vader", "emperor_palpatine", "finn",
             "general_hux", "grand_admiral_thrawn", "grand_moff_tarkin", "greedo", "hans_solo", "jabba_the_hutt",
@@ -10,7 +9,7 @@ public class StarWars {
             "maz_kanata", "obi_wan_kenobi", "padme_amidala", "qui_gon_jinn", "rey", "shmi_skywalker", "yoda"};
 
     protected StarWars(Faker faker) {
-        this.faker = faker;
+        super(faker);
     }
 
     public String character() {
