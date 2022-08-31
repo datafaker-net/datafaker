@@ -136,7 +136,6 @@ public class EnFile {
         "job.yml",
         "kpop.yml",
         "lebowski.yml",
-        "locale.yml",
         "lord_of_the_rings.yml",
         "lorem.yml",
 //            "lovecraft.yml",
