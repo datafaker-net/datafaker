@@ -170,6 +170,7 @@ class FakerIntegrationTest {
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.kaamelott());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.leagueOfLegends());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lebowski());
+        testAllMethodsThatReturnStringsActuallyReturnStrings(faker.localeFaker());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lordOfTheRings());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.lorem());
         testAllMethodsThatReturnStringsActuallyReturnStrings(faker.marketing());

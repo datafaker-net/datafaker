@@ -289,6 +289,7 @@ Providers
 * K-pop (Korean popular music)
 * League Of Legends
 * Lebowski
+* Locale
 * Lord Of The Rings
 * Lorem
 * Marketing

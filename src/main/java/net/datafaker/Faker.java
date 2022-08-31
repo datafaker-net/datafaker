@@ -759,6 +759,10 @@ public class Faker {
         return getProvider(Kpop.class, () -> new Kpop(this));
     }
 
+    public LocaleFaker localeFaker() {
+        return getProvider(LocaleFaker.class, () -> new LocaleFaker(this));
+    }
+
     public Lebowski lebowski() {
         return getProvider(Lebowski.class, () -> new Lebowski(this));
     }
