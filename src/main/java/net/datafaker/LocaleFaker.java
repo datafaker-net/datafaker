@@ -1,7 +1,5 @@
 package net.datafaker;
 
-import net.datafaker.service.RandomService;
-
 import java.text.DateFormat;
 import java.util.Locale;
 
