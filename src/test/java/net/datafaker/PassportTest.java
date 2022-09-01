@@ -46,4 +46,10 @@ class PassportTest extends AbstractFakerTest {
         assertThat(new Faker(new Locale("en", "CA")).passport().valid())
             .hasSize(8);
     }
+
+    @RepeatedTest(10)
+    void testValidUnitedKingdom() {
+        assertThat(new Faker(new Locale("en", "GB")).passport().valid())
+            .hasSize(9);
+    }
 }

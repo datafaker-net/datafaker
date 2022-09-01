@@ -46,8 +46,9 @@
         <mockito-core.version>4.7.0</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
-        <snakeyaml.version>1.30</snakeyaml.version>
-        <spotless-maven-plugin.version>2.24.1</spotless-maven-plugin.version>
+        <javaparser.version>3.24.4</javaparser.version>
+        <snakeyaml.version>1.31</snakeyaml.version>
+        <spotless-maven-plugin.version>2.25.0</spotless-maven-plugin.version>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
         <!-- Run tests in Turkish to make sure that they don't depend on
@@ -135,6 +136,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.javaparser</groupId>
+            <artifactId>javaparser-symbol-solver-core</artifactId>
+            <version>${javaparser.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
