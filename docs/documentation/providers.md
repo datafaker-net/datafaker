@@ -4,138 +4,178 @@ Datafaker comes with the following list of data providers:
 
 | Name                                                                                        | Description                                                                                                                        | Since |
 |---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|-------|
-| [Address]({{ datafaker.javadoc }}/Address.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Ancient]({{ datafaker.javadoc }}/Ancient.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Animal]({{ datafaker.javadoc }}/Animal.html)                                               |                                                                                                                                    | 0.8.0 |
-| [App]({{ datafaker.javadoc }}/App.html)                                                     |                                                                                                                                    | 0.8.0 |
-| [Appliance]({{ datafaker.javadoc }}/Appliance.html)                                         |                                                                                                                                    | 1.0.0 |
-| [Aqua Teen Hunger Force]({{ datafaker.javadoc }}/AquaTeenHungerForce.html)                  |                                                                                                                                    | 0.8.0 |
-| [Artist]({{ datafaker.javadoc }}/Artist.html)                                               |                                                                                                                                    | 0.8.0 |
-| [Avatar]({{ datafaker.javadoc }}/Avatar.html)                                               |                                                                                                                                    | 0.8.0 |
-| [Aviation]({{ datafaker.javadoc }}/Aviation.html)                                           |                                                                                                                                    | 0.8.0 |
-| [AWS]({{ datafaker.javadoc }}/AWS.html)                                                     |                                                                                                                                    | 1.3.0 |
-| [Babylon 5]({{ datafaker.javadoc }}/Babylon5.html)                                          |                                                                                                                                    | 0.9.0 |
-| [Back To The Future]({{ datafaker.javadoc }}/BackToTheFuture.html)                          |                                                                                                                                    | 0.8.0 |
-| [Barcode]({{ datafaker.javadoc }}/Barcode.html)                                             |                                                                                                                                    | 0.9.0 |
-| [Basketball]({{ datafaker.javadoc }}/Basketball.html)                                       |                                                                                                                                    | 0.8.0 |
-| [Battlefield 1]({{ datafaker.javadoc }}Battlefield1.html)                                   |                                                                                                                                    | 1.4.0 |
-| [Beer]({{ datafaker.javadoc }}/Beer.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Blood Type]({{ datafaker.javadoc }}/BloodType.html)                                        |                                                                                                                                    | 1.4.0 |
-| [Bojack Horseman]({{ datafaker.javadoc }}/BojackHorseman.html)                              |                                                                                                                                    | 0.8.0 |
-| [Book]({{ datafaker.javadoc }}/Book.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Bool]({{ datafaker.javadoc }}/Bool.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Bossa Nova]({{ datafaker.javadoc }}/BossaNova.html)                                        |                                                                                                                                    | 1.0.0 |
-| [BreakingBad]({{ datafaker.javadoc }}/BreakingBad.html)                                     |                                                                                                                                    | 1.0.0 |
-| [Brooklyn Nine Nine]({{ datafaker.javadoc }}/BrooklynNineNine.html)                         |                                                                                                                                    | 1.3.0 |
-| [Business]({{ datafaker.javadoc }}/Business.html)                                           |                                                                                                                                    | 0.8.0 |
-| [CNPJ]({{ datafaker.javadoc }}/CNPJ.html)                                                   | [Cadastro Nacional da Pessoa Jurídica in Portuguese, or 'National Registry of Legal Entities'](https://en.wikipedia.org/wiki/CNPJ) | 1.1.0 |
-| [CPF]({{ datafaker.javadoc }}/CPF.html)                                                     | [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number)                                  | 0.8.0 |
-| [Camera]({{ datafaker.javadoc }}/Camera.html)                                               |                                                                                                                                    | 1.4.0 |
-| [Cat]({{ datafaker.javadoc }}/Cat.html)                                                     |                                                                                                                                    | 0.8.0 |
-| [Chuck Norris]({{ datafaker.javadoc }}/ChuckNorris.html)                                    |                                                                                                                                    | 0.8.0 |
-| [Code]({{ datafaker.javadoc }}/Code.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Coin]({{ datafaker.javadoc }}/Coin.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Color]({{ datafaker.javadoc }}/Color.html)                                                 |                                                                                                                                    | 0.8.0 |
-| [Commerce]({{ datafaker.javadoc }}/Commerce.html)                                           |                                                                                                                                    | 0.8.0 |
-| [Company]({{ datafaker.javadoc }}/Company.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Crypto Coin]({{ datafaker.javadoc }}/CryptoCoin.html)                                      |                                                                                                                                    | 1.3.0 |
-| [Date And Time]({{ datafaker.javadoc }}/DateAndTime.html)                                   |                                                                                                                                    | 0.8.0 |
-| [Demographic]({{ datafaker.javadoc }}/Demographic.html)                                     |                                                                                                                                    | 0.8.0 |
-| [Dessert]({{ datafaker.javadoc }}/Dessert.html)                                             |                                                                                                                                    | 0.9.0 |
-| [Device]({{ datafaker.javadoc }}/Device.html)                                               |                                                                                                                                    | 1.4.0 |
-| [Disease]({{ datafaker.javadoc }}/Disease.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Dog]({{ datafaker.javadoc }}/Dog.html)                                                     |                                                                                                                                    | 0.8.0 |
-| [Domain]({{ datafaker.javadoc }}/Domain.html)                                               |                                                                                                                                    | 0.9.0 |
-| [Dragon Ball]({{ datafaker.javadoc }}/DragonBall.html)                                      |                                                                                                                                    | 0.8.0 |
-| [Dune]({{ datafaker.javadoc }}/Dune.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Durations]({{ datafaker.javadoc }}/Durations.html)                                         |                                                                                                                                    | 0.9.0 |
-| [Educator]({{ datafaker.javadoc }}/Educator.html)                                           |                                                                                                                                    | 0.8.0 |
-| [Elden Ring]({{ datafaker.javadoc }}/EldenRing.html)                                        |                                                                                                                                    | 1.4.0 |
-| [Electrical Components]({{ datafaker.javadoc }}/ElectricalComponents.html)                  |                                                                                                                                    | 1.4.0 |
-| [England FootBall]({{ datafaker.javadoc }}/EnglandFootBall.html)                            |                                                                                                                                    | 0.9.0 |
-| [Esports]({{ datafaker.javadoc }}/Esports.html)                                             |                                                                                                                                    | 0.8.0 |
-| [File]({{ datafaker.javadoc }}/File.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Finance]({{ datafaker.javadoc }}/Finance.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Food]({{ datafaker.javadoc }}/Food.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Friends]({{ datafaker.javadoc }}/Friends.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Funny Name]({{ datafaker.javadoc }}/FunnyName.html)                                        |                                                                                                                                    | 0.8.0 |
-| [Game Of Thrones]({{ datafaker.javadoc }}/GameOfThrones.html)                               |                                                                                                                                    | 0.8.0 |
-| [Gender]({{ datafaker.javadoc }}/Gender.html)                                               |                                                                                                                                    | 0.8.0 |
-| [Grateful Dead]({{ datafaker.javadoc }}/GratefulDead.html)                                  |                                                                                                                                    | 1.4.0 |
-| [Hacker]({{ datafaker.javadoc }}/Hacker.html)                                               |                                                                                                                                    | 0.8.0 |
-| [Harry Potter]({{ datafaker.javadoc }}/HarryPotter.html)                                    |                                                                                                                                    | 0.8.0 |
-| [Hashing]({{ datafaker.javadoc }}/Hashing.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Heartstone]({{ datafaker.javadoc }}/Heartstone.html)                                       |                                                                                                                                    | 0.9.0 |
-| [Hey Arnold]({{ datafaker.javadoc }}/Hey Arnold.html)                                       |                                                                                                                                    | 1.4.0 |
-| [Hipster]({{ datafaker.javadoc }}/Hipster.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Hitchhikers Guide To The Galaxy]({{ datafaker.javadoc }}/HitchhikersGuideToTheGalaxy.html) |                                                                                                                                    | 0.8.0 |
-| [Hobbit]({{ datafaker.javadoc }}/Hobbit.html)                                               |                                                                                                                                    | 0.8.0 |
-| [Hobby]({{ datafaker.javadoc }}/Hobby.html)                                                 |                                                                                                                                    | 1.3.0 |
-| [Horse]({{ datafaker.javadoc }}/Horse.html)                                                 |                                                                                                                                    | 1.3.0 |
-| [How I Met Your Mother]({{ datafaker.javadoc }}/HowIMetYourMother.html)                     |                                                                                                                                    | 0.8.0 |
-| [IdNumber]({{ datafaker.javadoc }}/IdNumber.html)                                           |                                                                                                                                    | 0.8.0 |
-| [Internet]({{ datafaker.javadoc }}/Internet.html)                                           |                                                                                                                                    | 0.8.0 |
-| [Job]({{ datafaker.javadoc }}/Job.html)                                                     |                                                                                                                                    | 0.8.0 |
-| [Kaamelott]({{ datafaker.javadoc }}/Kaamelott.html)                                         |                                                                                                                                    | 0.8.0 |
-| [K Pop]({{ datafaker.javadoc }}/Kpop.html)                                                  |                                                                                                                                    | 1.3.0 |
-| [League Of Legends]({{ datafaker.javadoc }}/LeagueOfLegends.html)                           |                                                                                                                                    | 0.8.0 |
-| [Lebowski]({{ datafaker.javadoc }}/Lebowski.html)                                           |                                                                                                                                    | 0.8.0 |
-| [Lord Of The Rings]({{ datafaker.javadoc }}/LordOfTheRings.html)                            |                                                                                                                                    | 0.8.0 |
-| [Lorem]({{ datafaker.javadoc }}/Lorem.html)                                                 |                                                                                                                                    | 0.8.0 |
-| [Matz]({{ datafaker.javadoc }}/Matz.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Marketing]({{ datafaker.javadoc }}/Marketing.html)                                         |                                                                                                                                    | 1.2.0 |
-| [Medical]({{ datafaker.javadoc }}/Medical.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Military]({{ datafaker.javadoc }}/Military.html)                                           |                                                                                                                                    | 1.2.0 |
-| [Minecraft]({{ datafaker.javadoc }}/Minecraft.html)                                         |                                                                                                                                    | 0.9.0 |
-| [Mood]({{ datafaker.javadoc }}/Mood.html)                                                   |                                                                                                                                    | 0.9.0 |
-| [Mountaineering]({{ datafaker.javadoc }}/Mountaineering.html)                               |                                                                                                                                    | 1.4.0 |
-| [Mountains]({{ datafaker.javadoc }}/Mountains.html)                                         | Support for mountains and mountain ranges                                                                                          | 1.1.0 |
-| [Music]({{ datafaker.javadoc }}/Music.html)                                                 |                                                                                                                                    | 0.8.0 |
-| [Name]({{ datafaker.javadoc }}/Name.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Nation]({{ datafaker.javadoc }}/Nation.html)                                               |                                                                                                                                    | 0.8.0 |
-| [Nato Phonetic Alphabet]({{ datafaker.javadoc }}/NatoPhoneticAlphabet.html)                 |                                                                                                                                    | 1.2.0 |
-| [Number]({{ datafaker.javadoc }}/Number.html)                                               |                                                                                                                                    | 0.8.0 |
-| [Oscar Movie]({{ datafaker.javadoc }}/OscarMovie.html)                                      |                                                                                                                                    | 1.4.0 |
-| [Options]({{ datafaker.javadoc }}/Options.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Overwatch]({{ datafaker.javadoc }}/Overwatch.html)                                         |                                                                                                                                    | 0.8.0 |
-| [Passport]({{ datafaker.javadoc }}/Passport.html)                                           |                                                                                                                                    | 0.9.0 |
-| [Password]({{ datafaker.javadoc }}/Password.html)                                           |                                                                                                                                    | 1.6.0 |
-| [Phone Number]({{ datafaker.javadoc }}/PhoneNumber.html)                                    |                                                                                                                                    | 0.8.0 |
-| [Photography]({{ datafaker.javadoc }}/Photography.html)                                     |                                                                                                                                    | 0.8.0 |
-| [Pokemon]({{ datafaker.javadoc }}/Pokemon.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Princess Bride]({{ datafaker.javadoc }}/PrincessBride.html)                                |                                                                                                                                    | 0.8.0 |
-| [Relationship Terms]({{ datafaker.javadoc }}/RelationshipTerms.html)                        |                                                                                                                                    | 0.8.0 |
-| [Resident Evil]({{ datafaker.javadoc }}/Resident.html)                                      |                                                                                                                                    | 0.9.0 |
-| [Restaurant]({{ datafaker.javadoc }}/Restaurant.html)                                       |                                                                                                                                    | 1.2.0 |
-| [Rick And Morty]({{ datafaker.javadoc }}/RickAndMorty.html)                                 |                                                                                                                                    | 0.8.0 |
-| [Robin]({{ datafaker.javadoc }}/Robin.html)                                                 |                                                                                                                                    | 0.8.0 |
-| [RockBand]({{ datafaker.javadoc }}/RockBand.html)                                           |                                                                                                                                    | 0.8.0 |
-| [RuPaul's Drag Race]({{ datafaker.javadoc }}/RuPaulDragRace.html)                           |                                                                                                                                    | 1.0.0 |
-| [Seinfeld]({{ datafaker.javadoc }}/Seinfeld.html)                                           |                                                                                                                                    | 1.4.0 |
-| [Shakespeare]({{ datafaker.javadoc }}/Shakespeare.html)                                     |                                                                                                                                    | 0.8.0 |
-| [Sip]({{ datafaker.javadoc }}/Sip.html)                                                     |                                                                                                                                    | 0.8.0 |
-| [Slack Emoji]({{ datafaker.javadoc }}/SlackEmoji.html)                                      |                                                                                                                                    | 0.8.0 |
-| [Soul Knight]({{ datafaker.javadoc }}/SoulKnight.html)                                      |                                                                                                                                    | 1.4.0 |
-| [Space]({{ datafaker.javadoc }}/Space.html)                                                 |                                                                                                                                    | 0.8.0 |
-| [StarCraft]({{ datafaker.javadoc }}/StarCraft.html)                                         |                                                                                                                                    | 0.8.0 |
-| [Star Trek]({{ datafaker.javadoc }}/StarTrek.html)                                          |                                                                                                                                    | 0.8.0 |
-| [Stock]({{ datafaker.javadoc }}/Stock.html)                                                 |                                                                                                                                    | 0.8.0 |
-| [Superhero]({{ datafaker.javadoc }}/Superhero.html)                                         |                                                                                                                                    | 0.8.0 |
-| [Subscription]({{ datafaker.javadoc }}/Subscription.html)                                   |                                                                                                                                    | 1.3.0 |
-| [Super Mario]({{ datafaker.javadoc }}/SuperMario.html)                                      |                                                                                                                                    | 1.3.0 |
-| [Tea]({{ datafaker.javadoc }}/Tea.html)                                                     |                                                                                                                                    | 1.4.0 |
-| [Team]({{ datafaker.javadoc }}/Team.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [The IT Crowd]({{ datafaker.javadoc }}/TheItCrowd.html)                                     |                                                                                                                                    | 1.2.0 |
-| [Time]({{ datafaker.javadoc }}/Time.html)                                                   |                                                                                                                                    | 1.4.0 |
-| [Touhou]({{ datafaker.javadoc }}/Touhou.html)                                               |                                                                                                                                    | 0.9.0 |
-| [Tron]({{ datafaker.javadoc }}/Tron.html)                                                   |                                                                                                                                    | 1.4.0 |
-| [Twin Peaks]({{ datafaker.javadoc }}/TwinPeaks.html)                                        |                                                                                                                                    | 0.8.0 |
-| [Twitter]({{ datafaker.javadoc }}/Twitter.html)                                             |                                                                                                                                    | 0.9.0 |
-| [University]({{ datafaker.javadoc }}/University.html)                                       |                                                                                                                                    | 0.8.0 |
-| [Vehicle]({{ datafaker.javadoc }}/Vehicle.html)                                             |                                                                                                                                    | 0.9.0 |
-| [Volleyball]({{ datafaker.javadoc }}/Volleyball.html)                                       |                                                                                                                                    | 1.3.0 |
-| [Weather]({{ datafaker.javadoc }}/Weather.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Witcher]({{ datafaker.javadoc }}/Witcher.html)                                             |                                                                                                                                    | 0.8.0 |
-| [Yoda]({{ datafaker.javadoc }}/Yoda.html)                                                   |                                                                                                                                    | 0.8.0 |
-| [Zelda]({{ datafaker.javadoc }}/Zelda.html)                                                 |                                                                                                                                    | 0.8.0 |
-
+| [Address]({{ datafaker.javadoc }}/Address.html)                                             | | 0.8.0 |
+| [Ancient]({{ datafaker.javadoc }}/Ancient.html)                                             | | 0.8.0 |
+| [Animal]({{ datafaker.javadoc }}/Animal.html)                                               | | 0.8.0 |
+| [App]({{ datafaker.javadoc }}/App.html)                                                     | | 0.8.0 |
+| [Appliance]({{ datafaker.javadoc }}/Appliance.html)                                         | | 1.0.0 |
+| [Aqua Teen Hunger Force]({{ datafaker.javadoc }}/AquaTeenHungerForce.html)                  | | 0.8.0 |
+| [Artist]({{ datafaker.javadoc }}/Artist.html)                                               | | 0.8.0 |
+| [Australia]({{ datafaker.javadoc }}/Australia.html)                                         | | 1.2.0 |
+| [Avatar]({{ datafaker.javadoc }}/Avatar.html)                                               | | 0.8.0 |
+| [Aviation]({{ datafaker.javadoc }}/Aviation.html)                                           |Generates aviation related strings.| 0.8.0 |
+| [Aws]({{ datafaker.javadoc }}/Aws.html)                                                     | | 1.3.0 |
+| [Babylon5]({{ datafaker.javadoc }}/Babylon5.html)                                           | | 0.9.0 |
+| [Back To The Future]({{ datafaker.javadoc }}/BackToTheFuture.html)                          | | 0.8.0 |
+| [Barcode]({{ datafaker.javadoc }}/Barcode.html)                                             | | 0.9.0 |
+| [Basketball]({{ datafaker.javadoc }}/Basketball.html)                                       |Generate random components of basketball game, e.g. teams, coaches, positions and players.| 0.8.0 |
+| [Battlefield1]({{ datafaker.javadoc }}/Battlefield1.html)                                   |A class for generating random value of Battlefield1 contents.| 1.4.0 |
+| [Beer]({{ datafaker.javadoc }}/Beer.html)                                                   | | 0.8.0 |
+| [Big Bang Theory]({{ datafaker.javadoc }}/BigBangTheory.html)                               | | 1.5.0 |
+| [Blood Type]({{ datafaker.javadoc }}/BloodType.html)                                        | | 1.4.0 |
+| [Bojack Horseman]({{ datafaker.javadoc }}/BojackHorseman.html)                              |Generate random parts in BojackHorseman.| 0.8.0 |
+| [Book]({{ datafaker.javadoc }}/Book.html)                                                   | | 0.8.0 |
+| [Bool]({{ datafaker.javadoc }}/Bool.html)                                                   | | 0.8.0 |
+| [Bossa Nova]({{ datafaker.javadoc }}/BossaNova.html)                                        |Bossa nova is a style of samba developed in the late 1950s and early 1960s in Rio de Janeiro, Brazil.| 1.0.0 |
+| [Breaking Bad]({{ datafaker.javadoc }}/BreakingBad.html)                                    |Breaking Bad is an American neo-Western crime drama television series.| 1.0.0 |
+| [Brooklyn Nine Nine]({{ datafaker.javadoc }}/BrooklynNineNine.html)                         |Brooklyn Nine-Nine is an American police procedural comedy television series.| 1.3.0 |
+| [Buffy]({{ datafaker.javadoc }}/Buffy.html)                                                 | | 0.8.0 |
+| [Business]({{ datafaker.javadoc }}/Business.html)                                           | | 0.8.0 |
+| [CNPJ]({{ datafaker.javadoc }}/CNPJ.html)                                                   |The Brazil National Registry of Legal Entities number (CNPJ) is a company identification number that must be obtained from the Department of Federal Revenue prior to the start of any business activities.| 1.1.0 |
+| [CPF]({{ datafaker.javadoc }}/CPF.html)                                                     |The CPF number (Cadastro de Pessoas Físicas, [sepeˈɛfi]; Portuguese for "Natural Persons Register")| 0.8.0 |
+| [Camera]({{ datafaker.javadoc }}/Camera.html)                                               | | 1.4.0 |
+| [Cannabis]({{ datafaker.javadoc }}/Cannabis.html)                                           | | 1.5.0 |
+| [Cat]({{ datafaker.javadoc }}/Cat.html)                                                     | | 0.8.0 |
+| [Chiquito]({{ datafaker.javadoc }}/Chiquito.html)                                           | | 1.6.0 |
+| [Chuck Norris]({{ datafaker.javadoc }}/ChuckNorris.html)                                    | | 0.8.0 |
+| [Clash Of Clans]({{ datafaker.javadoc }}/ClashOfClans.html)                                 | | 1.6.0 |
+| [Code]({{ datafaker.javadoc }}/Code.html)                                                   |Generates codes such as ISBN, gin, ean and others.| 0.8.0 |
+| [Coffee]({{ datafaker.javadoc }}/Coffee.html)                                               | | 1.5.0 |
+| [Coin]({{ datafaker.javadoc }}/Coin.html)                                                   | | 0.8.0 |
+| [Color]({{ datafaker.javadoc }}/Color.html)                                                 | | 0.8.0 |
+| [Commerce]({{ datafaker.javadoc }}/Commerce.html)                                           | | 0.8.0 |
+| [Community]({{ datafaker.javadoc }}/Community.html)                                         |Community is an American television sitcom created by Dan Harmon.| 1.6.0 |
+| [Company]({{ datafaker.javadoc }}/Company.html)                                             | | 0.8.0 |
+| [Computer]({{ datafaker.javadoc }}/Computer.html)                                           |Generates different attributes related to computers, such as operating systems, types and platforms.| 1.5.0 |
+| [Construction]({{ datafaker.javadoc }}/Construction.html)                                   | | 1.5.0 |
+| [Country]({{ datafaker.javadoc }}/Country.html)                                             | | 0.8.0 |
+| [Crypto Coin]({{ datafaker.javadoc }}/CryptoCoin.html)                                      | | 1.3.0 |
+| [Currency]({{ datafaker.javadoc }}/Currency.html)                                           | | 0.8.0 |
+| [Dark Soul]({{ datafaker.javadoc }}/DarkSoul.html)                                          | | 1.5.0 |
+| [Date And Time]({{ datafaker.javadoc }}/DateAndTime.html)                                   |A generator of random dates.| 0.8.0 |
+| [Dc Comics]({{ datafaker.javadoc }}/DcComics.html)                                          | | 1.5.0 |
+| [Demographic]({{ datafaker.javadoc }}/Demographic.html)                                     | | 0.8.0 |
+| [Departed]({{ datafaker.javadoc }}/Departed.html)                                           | | 1.5.0 |
+| [Dessert]({{ datafaker.javadoc }}/Dessert.html)                                             | | 0.9.0 |
+| [Device]({{ datafaker.javadoc }}/Device.html)                                               | | 1.4.0 |
+| [Disease]({{ datafaker.javadoc }}/Disease.html)                                             |Generate random, different kinds of disease.| 0.8.0 |
+| [Dog]({{ datafaker.javadoc }}/Dog.html)                                                     | | 0.8.0 |
+| [Domain]({{ datafaker.javadoc }}/Domain.html)                                               |A domain name generator.| 0.9.0 |
+| [Dragon Ball]({{ datafaker.javadoc }}/DragonBall.html)                                      | | 0.8.0 |
+| [Driving License]({{ datafaker.javadoc }}/DrivingLicense.html)                              | | 1.5.0 |
+| [Dumb And Dumber]({{ datafaker.javadoc }}/DumbAndDumber.html)                               | | 1.6.0 |
+| [Dune]({{ datafaker.javadoc }}/Dune.html)                                                   | | 0.8.0 |
+| [Educator]({{ datafaker.javadoc }}/Educator.html)                                           | | 0.8.0 |
+| [Elden Ring]({{ datafaker.javadoc }}/EldenRing.html)                                        | | 1.4.0 |
+| [Elder Scrolls]({{ datafaker.javadoc }}/ElderScrolls.html)                                  | | 0.8.0 |
+| [Electrical Components]({{ datafaker.javadoc }}/ElectricalComponents.html)                  | | 1.4.0 |
+| [England Foot Ball]({{ datafaker.javadoc }}/EnglandFootBall.html)                           | | 0.9.0 |
+| [Esports]({{ datafaker.javadoc }}/Esports.html)                                             | | 0.8.0 |
+| [Fake Duration]({{ datafaker.javadoc }}/FakeDuration.html)                                  | | 0.8.0 |
+| [Fallout]({{ datafaker.javadoc }}/Fallout.html)                                             |Fallout: A Post Nuclear Role Playing Game is a 1997 role-playing video game developed and published by Interplay Productions.| 1.6.0 |
+| [Famous Last Words]({{ datafaker.javadoc }}/FamousLastWords.html)                           | | 1.5.0 |
+| [File]({{ datafaker.javadoc }}/File.html)                                                   | | 0.8.0 |
+| [Final Space]({{ datafaker.javadoc }}/FinalSpace.html)                                      |Final Space is an adult animated space opera comedy drama television series.| 1.6.0 |
+| [Finance]({{ datafaker.javadoc }}/Finance.html)                                             | | 0.8.0 |
+| [Food]({{ datafaker.javadoc }}/Food.html)                                                   | | 0.8.0 |
+| [Football]({{ datafaker.javadoc }}/Football.html)                                           | | 1.5.0 |
+| [Formula1]({{ datafaker.javadoc }}/Formula1.html)                                           | | 1.2.0 |
+| [Friends]({{ datafaker.javadoc }}/Friends.html)                                             | | 0.8.0 |
+| [Funny Name]({{ datafaker.javadoc }}/FunnyName.html)                                        | | 0.8.0 |
+| [Game Of Thrones]({{ datafaker.javadoc }}/GameOfThrones.html)                               | | 0.8.0 |
+| [Garment Size]({{ datafaker.javadoc }}/GarmentSize.html)                                    |This class is used to generate garments sizes randomly.| 1.6.0 |
+| [Gender]({{ datafaker.javadoc }}/Gender.html)                                               |This class is used to generate gender randomly.| 0.8.0 |
+| [Ghostbusters]({{ datafaker.javadoc }}/Ghostbusters.html)                                   | | 1.5.0 |
+| [Grateful Dead]({{ datafaker.javadoc }}/GratefulDead.html)                                  |The Grateful Dead was an American rock band formed in 1965 in Palo Alto, California.| 1.4.0 |
+| [Greek Philosopher]({{ datafaker.javadoc }}/GreekPhilosopher.html)                          | | 1.5.0 |
+| [Hacker]({{ datafaker.javadoc }}/Hacker.html)                                               | | 0.8.0 |
+| [Harry Potter]({{ datafaker.javadoc }}/HarryPotter.html)                                    | | 0.8.0 |
+| [Hashing]({{ datafaker.javadoc }}/Hashing.html)                                             | | 0.8.0 |
+| [Hearthstone]({{ datafaker.javadoc }}/Hearthstone.html)                                     | | 0.9.0 |
+| [Hey Arnold]({{ datafaker.javadoc }}/HeyArnold.html)                                        |Hey Arnold! is an American animated comedy television series created by Craig Bartlett.| 1.4.0 |
+| [Hipster]({{ datafaker.javadoc }}/Hipster.html)                                             | | 0.8.0 |
+| [Hitchhikers Guide To The Galaxy]({{ datafaker.javadoc }}/HitchhikersGuideToTheGalaxy.html) | | 0.8.0 |
+| [Hobbit]({{ datafaker.javadoc }}/Hobbit.html)                                               | | 0.8.0 |
+| [Hobby]({{ datafaker.javadoc }}/Hobby.html)                                                 | | 1.3.0 |
+| [Hololive]({{ datafaker.javadoc }}/Hololive.html)                                           | | 1.5.0 |
+| [Horse]({{ datafaker.javadoc }}/Horse.html)                                                 | | 1.3.0 |
+| [House]({{ datafaker.javadoc }}/House.html)                                                 | | 1.5.0 |
+| [How IMet Your Mother]({{ datafaker.javadoc }}/HowIMetYourMother.html)                      | | 0.8.0 |
+| [Id Number]({{ datafaker.javadoc }}/IdNumber.html)                                          | | 0.8.0 |
+| [Industry Segments]({{ datafaker.javadoc }}/IndustrySegments.html)                          | | 1.5.0 |
+| [Internet]({{ datafaker.javadoc }}/Internet.html)                                           | | 0.8.0 |
+| [Job]({{ datafaker.javadoc }}/Job.html)                                                     | | 0.8.0 |
+| [Kaamelott]({{ datafaker.javadoc }}/Kaamelott.html)                                         | | 0.8.0 |
+| [Kpop]({{ datafaker.javadoc }}/Kpop.html)                                                   |K-pop, short for Korean popular music, is a genre of music originating in South Korea as part of South Korean culture.| 1.3.0 |
+| [League Of Legends]({{ datafaker.javadoc }}/LeagueOfLegends.html)                           | | 0.8.0 |
+| [Lebowski]({{ datafaker.javadoc }}/Lebowski.html)                                           | | 0.8.0 |
+| [Lord Of The Rings]({{ datafaker.javadoc }}/LordOfTheRings.html)                            | | 0.8.0 |
+| [Lorem]({{ datafaker.javadoc }}/Lorem.html)                                                 | | 0.8.0 |
+| [Marketing]({{ datafaker.javadoc }}/Marketing.html)                                         |Generates marketing buzzwords.| 1.2.0 |
+| [Mass Effect]({{ datafaker.javadoc }}/MassEffect.html)                                      |Mass Effect is a military science fiction media franchise.| 1.6.0 |
+| [Matz]({{ datafaker.javadoc }}/Matz.html)                                                   | | 0.8.0 |
+| [Mbti]({{ datafaker.javadoc }}/Mbti.html)                                                   |Myers-Briggs Type Indicator| 1.5.0 |
+| [Measurement]({{ datafaker.javadoc }}/Measurement.html)                                     | | 1.5.0 |
+| [Medical]({{ datafaker.javadoc }}/Medical.html)                                             | | 0.8.0 |
+| [Military]({{ datafaker.javadoc }}/Military.html)                                           |Military ranks.| 1.2.0 |
+| [Minecraft]({{ datafaker.javadoc }}/Minecraft.html)                                         | | 0.9.0 |
+| [Money]({{ datafaker.javadoc }}/Money.html)                                                 |Support for different kind of money currencies.| 1.5.0 |
+| [Mood]({{ datafaker.javadoc }}/Mood.html)                                                   | | 0.9.0 |
+| [Mountain]({{ datafaker.javadoc }}/Mountain.html)                                           |A generator for Mountain names and ranges.| 1.1.0 |
+| [Mountaineering]({{ datafaker.javadoc }}/Mountaineering.html)                               |Mountaineering, or alpinism, is the set of outdoor activities that involves ascending tall mountains.| 1.4.0 |
+| [Movie]({{ datafaker.javadoc }}/Movie.html)                                                 | | 1.5.0 |
+| [Music]({{ datafaker.javadoc }}/Music.html)                                                 | | 0.8.0 |
+| [Name]({{ datafaker.javadoc }}/Name.html)                                                   | | 0.8.0 |
+| [Nation]({{ datafaker.javadoc }}/Nation.html)                                               | | 0.8.0 |
+| [Nato Phonetic Alphabet]({{ datafaker.javadoc }}/NatoPhoneticAlphabet.html)                 |The NATO phonetic alphabet is the most widely used radiotelephone spelling alphabet.| 1.2.0 |
+| [Nigeria]({{ datafaker.javadoc }}/Nigeria.html)                                             |Nigeria, officially the Federal Republic of Nigeria, is a country in West Africa.| 1.2.0 |
+| [Number]({{ datafaker.javadoc }}/Number.html)                                               | | 0.8.0 |
+| [Options]({{ datafaker.javadoc }}/Options.html)                                             | | 0.8.0 |
+| [Oscar Movie]({{ datafaker.javadoc }}/OscarMovie.html)                                      |The Academy Awards, popularly known as the Oscars, are awards for artistic and technical merit in the film industry.| 1.4.0 |
+| [Overwatch]({{ datafaker.javadoc }}/Overwatch.html)                                         | | 0.8.0 |
+| [Passport]({{ datafaker.javadoc }}/Passport.html)                                           | | 0.9.0 |
+| [Password]({{ datafaker.javadoc }}/Password.html)                                           | | 1.6.0 |
+| [Phone Number]({{ datafaker.javadoc }}/PhoneNumber.html)                                    | | 0.8.0 |
+| [Photography]({{ datafaker.javadoc }}/Photography.html)                                     |Provides photography related strings.| 0.8.0 |
+| [Pokemon]({{ datafaker.javadoc }}/Pokemon.html)                                             | | 0.8.0 |
+| [Princess Bride]({{ datafaker.javadoc }}/PrincessBride.html)                                | | 0.8.0 |
+| [Programming Language]({{ datafaker.javadoc }}/ProgrammingLanguage.html)                    | | 0.8.0 |
+| [Relationship]({{ datafaker.javadoc }}/Relationship.html)                                   | | 0.8.0 |
+| [Resident Evil]({{ datafaker.javadoc }}/ResidentEvil.html)                                  |A class for generating random value of ResidentEvil series.| 0.9.0 |
+| [Restaurant]({{ datafaker.javadoc }}/Restaurant.html)                                       | | 1.2.0 |
+| [Rick And Morty]({{ datafaker.javadoc }}/RickAndMorty.html)                                 | | 0.8.0 |
+| [Robin]({{ datafaker.javadoc }}/Robin.html)                                                 | | 0.8.0 |
+| [Rock Band]({{ datafaker.javadoc }}/RockBand.html)                                          | | 0.8.0 |
+| [Ru Paul Drag Race]({{ datafaker.javadoc }}/RuPaulDragRace.html)                            |RuPaul's Drag Race is a reality competition series produced by World of Wonder for the Logo TV Network.| 1.0.0 |
+| [Science]({{ datafaker.javadoc }}/Science.html)                                             | | 0.8.0 |
+| [Seinfeld]({{ datafaker.javadoc }}/Seinfeld.html)                                           |Seinfeld is an American sitcom television series created by Larry David and Jerry Seinfeld.| 1.4.0 |
+| [Shakespeare]({{ datafaker.javadoc }}/Shakespeare.html)                                     | | 0.8.0 |
+| [Simpsons]({{ datafaker.javadoc }}/Simpsons.html)                                           | | 1.5.0 |
+| [Sip]({{ datafaker.javadoc }}/Sip.html)                                                     |Faker class for generating Session Initiation Protocol (SIP) related data.| 0.8.0 |
+| [Size]({{ datafaker.javadoc }}/Size.html)                                                   | | 0.8.0 |
+| [Slack Emoji]({{ datafaker.javadoc }}/SlackEmoji.html)                                      | | 0.8.0 |
+| [Soul Knight]({{ datafaker.javadoc }}/SoulKnight.html)                                      |A class for generating random values for Soul Knight.| 1.4.0 |
+| [Space]({{ datafaker.javadoc }}/Space.html)                                                 | | 0.8.0 |
+| [Star Craft]({{ datafaker.javadoc }}/StarCraft.html)                                        | | 0.8.0 |
+| [Star Trek]({{ datafaker.javadoc }}/StarTrek.html)                                          | | 0.8.0 |
+| [Stock]({{ datafaker.javadoc }}/Stock.html)                                                 | | 0.8.0 |
+| [Subscription]({{ datafaker.javadoc }}/Subscription.html)                                   | | 1.3.0 |
+| [Super Mario]({{ datafaker.javadoc }}/SuperMario.html)                                      | | 1.3.0 |
+| [Superhero]({{ datafaker.javadoc }}/Superhero.html)                                         | | 0.8.0 |
+| [Tea]({{ datafaker.javadoc }}/Tea.html)                                                     | | 1.4.0 |
+| [Team]({{ datafaker.javadoc }}/Team.html)                                                   | | 0.8.0 |
+| [The It Crowd]({{ datafaker.javadoc }}/TheItCrowd.html)                                     | | 0.8.0 |
+| [Time]({{ datafaker.javadoc }}/Time.html)                                                   | | 1.4.0 |
+| [Touhou]({{ datafaker.javadoc }}/Touhou.html)                                               | | 0.9.0 |
+| [Tron]({{ datafaker.javadoc }}/Tron.html)                                                   |Tron is a 1982 American science fiction action-adventure film.| 1.4.0 |
+| [Twin Peaks]({{ datafaker.javadoc }}/TwinPeaks.html)                                        | | 0.8.0 |
+| [Twitter]({{ datafaker.javadoc }}/Twitter.html)                                             |Creates fake Twitter messages.| 0.9.0 |
+| [Unique]({{ datafaker.javadoc }}/Unique.html)                                               |This class contains methods that ensure uniqueness across separate invocations.| 1.6.0 |
+| [University]({{ datafaker.javadoc }}/University.html)                                       | | 0.8.0 |
+| [Vehicle]({{ datafaker.javadoc }}/Vehicle.html)                                             | | 0.8.0 |
+| [Verb]({{ datafaker.javadoc }}/Verb.html)                                                   | | 1.5.0 |
+| [Volleyball]({{ datafaker.javadoc }}/Volleyball.html)                                       | | 1.3.0 |
+| [Weather]({{ datafaker.javadoc }}/Weather.html)                                             |A generator for weather data.| 0.8.0 |
+| [Witcher]({{ datafaker.javadoc }}/Witcher.html)                                             | | 0.8.0 |
+| [Yoda]({{ datafaker.javadoc }}/Yoda.html)                                                   | | 0.8.0 |
+| [Zelda]({{ datafaker.javadoc }}/Zelda.html)                                                 | | 0.8.0 |

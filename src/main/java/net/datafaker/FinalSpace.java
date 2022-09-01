@@ -1,5 +1,10 @@
 package net.datafaker;
 
+/**
+ * Final Space is an adult animated space opera comedy drama television series.
+ *
+ * @since 1.6.0
+ */
 public class FinalSpace extends AbstractProvider {
 
     protected FinalSpace(Faker faker) {

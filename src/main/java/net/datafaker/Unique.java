@@ -4,8 +4,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This class contains methods that ensure uniqueness across separate invocations. This can be helpful for unit tests
- * and automated tests where certain values need to be different.
+ * This class contains methods that ensure uniqueness across separate invocations.
+ *
+ * This can be helpful for unit tests and automated tests where certain values need to be different.
+ *
+ * @since 1.6.0
  */
 public class Unique extends AbstractProvider {
 

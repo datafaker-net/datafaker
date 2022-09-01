@@ -1,20 +1,13 @@
 package net.datafaker;
 
 /**
- * CS304 Issue link: <a href="https://github.com/DiUS/java-faker/issues/711">https://github.com/DiUS/java-faker/issues/711</a>
- * A class for generating random value of Battlefield1 contents
+ * A class for generating random value of Battlefield1 contents.
  *
  * @author coolestjj
  * @since 1.4.0
  */
-
 public class Battlefield1 extends AbstractProvider {
 
-    /**
-     * Create a constructor for Battlefield1.
-     *
-     * @param faker The Faker instance for generating random names of things.
-     */
     protected Battlefield1(final Faker faker) {
         super(faker);
     }

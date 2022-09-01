@@ -3,6 +3,7 @@ package net.datafaker;
 /**
  * This class is used to generate garments sizes randomly.
  *
+ * @since 1.6.0
  */
 
 public class GarmentSize extends AbstractProvider {

@@ -3,12 +3,7 @@ package net.datafaker;
 import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
 
 /**
- * CNPJ: The Federal Government interest in simplifying its registration procedures on companies appears in the mid-90's,
- * but it was only in 1998, through the SRF Normative Instruction No. 27, that the CNPJ (short for Cadastro Nacional da
- * Pessoa Jurídica in Portuguese, or 'National Registry of Legal Entities') was created, replacing the former system,
- * CGC (short for Cadastro Geral de Contribuintes in Portuguese, or 'General Taxpayers Registry').
- * At the end of 2003 it gained a new impulse by sharing and integrating registration data and fiscal information between States and the Union.
- * In 2009 the MEI (Microempreendedor Individual in Portuguese, or 'Individual Microentrepreneur') was created to supply market demand.
+ * The Brazil National Registry of Legal Entities number (CNPJ) is a company identification number that must be obtained from the Department of Federal Revenue prior to the start of any business activities.
  *
  * @see <a href="https://en.wikipedia.org/wiki/CNPJ">CNPJ</a>
  * @since 1.1.0

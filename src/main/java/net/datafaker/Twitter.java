@@ -9,14 +9,13 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
+/**
  * Creates fake Twitter messages.
  *
  * @since 0.9.0
  */
 public class Twitter extends AbstractProvider {
 
-    
     private final String basicstr = "QabR0cYdZ1efSg2hi3jNOPkTUM4VLlmXK5nJo6WIpHGqF7rEs8tDuC9vwBxAyz";
 
     /**

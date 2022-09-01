@@ -5,7 +5,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * ISBN Rules : <a href="https://en.wikipedia.org/wiki/International_Standard_Book_Number">https://en.wikipedia.org/wiki/International_Standard_Book_Number</a>
+ * Generates codes such as ISBN, gin, ean and others.
+ *
+ * For ISBN Rules, see <a href="https://en.wikipedia.org/wiki/International_Standard_Book_Number">https://en.wikipedia.org/wiki/International_Standard_Book_Number</a>.
  *
  * @since 0.8.0
  */
