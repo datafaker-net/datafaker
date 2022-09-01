@@ -1,5 +1,8 @@
 package net.datafaker;
 
+/**
+ * @since 1.6.0
+ */
 public class StarWars extends AbstractProvider {
 
     private final String[] CHARACTERS = new String[]{"admiral_ackbar", "ahsoka_tano", "anakin_skywalker", "asajj_ventress",
