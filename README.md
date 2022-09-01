@@ -175,6 +175,16 @@ String json = Format.toJson(
 ```
 More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/file-formats/
 
+### Unique Values
+```java
+Faker faker = new Faker();
+
+// The values returned in the following lines will never be the same.
+String firstUniqueInstrument = faker.unique().fetchFromYaml("music.instruments"); // "Flute"
+String secondUniqueInstrument = faker.unique().fetchFromYaml("music.instruments"); // "Clarinet"
+```
+More examples can be found in https://www.datafaker.net/documentation/unique-values
+
 ### Custom provider
 Add your own custom provider in your app following steps from https://www.datafaker.net/documentation/custom-providers/
 
