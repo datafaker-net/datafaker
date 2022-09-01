@@ -14,7 +14,7 @@ Unique values can be retrieved from the YAML files by key, if the key references
     String secondUniqueInstrument = faker.unique().fetchFromYaml("music.instruments"); // "Clarinet"
     ```
 
-Note: Unique values are based on key and locale, so it's possible to get the same value if the locale is manually changed or if two different keys contain the same values.
+Note: Unique values are based on key and locale, so it's possible to get the same value if the locale is manually changed or if two different keys contain the same value.
 
 If all possible values have been returned, an exception will be thrown.
 
@@ -22,9 +22,9 @@ If all possible values have been returned, an exception will be thrown.
 
     ``` java 
     Faker faker = new Faker();
-    String firstUniqueInstrument = faker.unique().fetchFromYaml("name.first_name"); // "Ukelele"
+    String firstUniqueInstrument = faker.unique().fetchFromYaml("music.instruments"); // "Ukelele"
     ...
-    String nthUniqueInstrument = faker.unique().fetchFromYaml("name.first_name"); // throws NoSuchElementException
+    String nthUniqueInstrument = faker.unique().fetchFromYaml("music.instruments"); // throws NoSuchElementException
     ```
 
 Any non-string values will be converted.
