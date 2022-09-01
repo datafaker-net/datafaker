@@ -190,7 +190,7 @@ Add your own custom provider in your app following steps from https://www.datafa
 
 Documentation
 -----
-https://www.datafaker.net/documentation/providers/
+[Getting started](https://www.datafaker.net/documentation/getting-started/).
 
 
 Contributions
@@ -199,6 +199,8 @@ See [CONTRIBUTING.md](https://github.com/datafaker-net/datafaker/blob/master/CON
 
 Providers
 -----
+[Full list of providers](https://www.datafaker.net/documentation/providers/).
+
 
 * Address
 * Ancient
