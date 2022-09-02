@@ -1039,6 +1039,8 @@ public class Faker {
         return getProvider(Yoda.class, () -> new Yoda(this));
     }
 
+    public Visa visa() { return getProvider(Visa.class, () -> new Visa(this)); }
+
     public Zelda zelda() {
         return getProvider(Zelda.class, () -> new Zelda(this));
     }
