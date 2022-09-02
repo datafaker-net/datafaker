@@ -369,6 +369,7 @@ Providers
 * Weather
 * Witcher
 * Yoda
+* Visa
 * Zelda
 
 Usage with Locales
