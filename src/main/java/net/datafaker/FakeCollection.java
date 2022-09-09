@@ -106,7 +106,7 @@ public class FakeCollection<T> {
             minLength = minLength < 0 ? maxLength : minLength;
 
             RandomService randomService;
-            if(faker == null) {
+            if (faker == null) {
                 randomService = new RandomService();
             } else {
                 randomService = faker.random();

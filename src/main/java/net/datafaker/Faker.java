@@ -91,6 +91,7 @@ public class Faker {
 
     /**
      * Returns the internal locale being used, or the ROOT locale if no locale has been set.
+     *
      * @return Returns locale being used
      */
     public Locale getLocale() {
@@ -256,7 +257,7 @@ public class Faker {
      * For example, it could generate
      * "name_column","last_name_column"
      * "Sabrina","Kihn"
-     *
+     * <p>
      * for expression {@code faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");}
      *
      * @param limit             Number of lines
@@ -264,7 +265,7 @@ public class Faker {
      *                          The odd numbers args are used for columns names, and even for column values.
      * @return Generated string
      */
-    public String csv(int limit, String ... columnExpressions) {
+    public String csv(int limit, String... columnExpressions) {
         return fakeValuesService().csv(limit, columnExpressions);
     }
 
@@ -276,7 +277,7 @@ public class Faker {
      * "Thad" ### "Crist"
      * "Kathryne" ### "Wuckert"
      * "Sybil" ### "Connelly"
-     *
+     * <p>
      * for expression {@code faker.expression("#{csv ' ### ','"','false','3','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");}
      *
      * @param separator         Delimiter to use
@@ -287,7 +288,7 @@ public class Faker {
      *                          The odd numbers args are used for columns names, and even for column values.
      * @return Generated string
      */
-    public String csv(String separator, char quote, boolean withHeader, int limit, String ... columnExpressions) {
+    public String csv(String separator, char quote, boolean withHeader, int limit, String... columnExpressions) {
         return fakeValuesService().csv(separator, quote, withHeader, limit, columnExpressions);
     }
 
@@ -310,8 +311,8 @@ public class Faker {
     /**
      * Allows to add paths to files with custom data. Data should be in YAML format.
      *
-     * @param locale        the locale for which a path is going to be added.
-     * @param path          path to a file with YAML structure
+     * @param locale the locale for which a path is going to be added.
+     * @param path   path to a file with YAML structure
      * @throws IllegalArgumentException in case of invalid path
      */
     public void addPath(Locale locale, Path path) {
@@ -329,7 +330,6 @@ public class Faker {
     }
 
     /**
-     *
      * @return builder to build {@code FakeCollection}
      */
     public <T> FakeCollection.Builder<T> collection() {
@@ -417,7 +417,9 @@ public class Faker {
         return getProvider(BigBangTheory.class, () -> new BigBangTheory(this));
     }
 
-    public BloodType bloodtype(){return getProvider(BloodType.class, () -> new BloodType(this));}
+    public BloodType bloodtype() {
+        return getProvider(BloodType.class, () -> new BloodType(this));
+    }
 
     public BojackHorseman bojackHorseman() {
         return getProvider(BojackHorseman.class, () -> new BojackHorseman(this));
@@ -539,7 +541,7 @@ public class Faker {
         return getProvider(Currency.class, () -> new Currency(this));
     }
 
-    public DarkSoul darkSoul(){
+    public DarkSoul darkSoul() {
         return getProvider(DarkSoul.class, () -> new DarkSoul(this));
     }
 
@@ -555,7 +557,7 @@ public class Faker {
         return getProvider(Demographic.class, () -> new Demographic(this));
     }
 
-    public DcComics dcComics () {
+    public DcComics dcComics() {
         return getProvider(DcComics.class, () -> new DcComics(this));
     }
 
@@ -668,7 +670,7 @@ public class Faker {
     }
 
     public GarmentSize garmentSize() {
-      return getProvider(GarmentSize.class, () -> new GarmentSize(this));
+        return getProvider(GarmentSize.class, () -> new GarmentSize(this));
     }
 
     public Gender gender() {
@@ -787,7 +789,9 @@ public class Faker {
         return getProvider(Matz.class, () -> new Matz(this));
     }
 
-    public Mbti mbti() {return getProvider(Mbti.class, () -> new Mbti(this));}
+    public Mbti mbti() {
+        return getProvider(Mbti.class, () -> new Mbti(this));
+    }
 
     public Measurement measurement() {
         return getProvider(Measurement.class, () -> new Measurement(this));
@@ -853,7 +857,9 @@ public class Faker {
         return getProvider(Overwatch.class, () -> new Overwatch(this));
     }
 
-    public OscarMovie oscarMovie(){return getProvider(OscarMovie.class, () -> new OscarMovie(this));}
+    public OscarMovie oscarMovie() {
+        return getProvider(OscarMovie.class, () -> new OscarMovie(this));
+    }
 
     public Passport passport() {
         return getProvider(Passport.class, () -> new Passport(this));
@@ -954,9 +960,9 @@ public class Faker {
     public StarTrek starTrek() {
         return getProvider(StarTrek.class, () -> new StarTrek(this));
     }
-    
-    public StarWars starWars() { 
-        return getProvider(StarWars.class, () -> new StarWars(this)); 
+
+    public StarWars starWars() {
+        return getProvider(StarWars.class, () -> new StarWars(this));
     }
 
     public Stock stock() {

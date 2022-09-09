@@ -244,7 +244,7 @@ public class FakeValuesService {
      */
     public Object fetchObject(String key) {
         Object result = null;
-        for (Locale locale: locale2localesChain.get(currentLocale)) {
+        for (Locale locale : locale2localesChain.get(currentLocale)) {
             // exclude default locale from cache checks
             if (locale.equals(DEFAULT_LOCALE) && locale2localesChain.get(currentLocale).size() > 1) {
                 continue;

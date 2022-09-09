@@ -17,15 +17,15 @@ public class EldenRing extends AbstractProvider {
         return faker.resolve("elden_ring.weapon");
     }
 
-    public String skill(){
+    public String skill() {
         return faker.resolve("elden_ring.skill");
     }
 
-    public String spell(){
+    public String spell() {
         return faker.resolve("elden_ring.spell");
     }
 
-    public String npc(){
+    public String npc() {
         return faker.resolve("elden_ring.npc");
     }
 }

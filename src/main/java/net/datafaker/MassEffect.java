@@ -26,7 +26,7 @@ public class MassEffect extends AbstractProvider {
         return faker.resolve("mass_effect.planets");
     }
 
-    public String quote(){
+    public String quote() {
         return faker.resolve("mass_effect.quotes");
     }
 

@@ -6,7 +6,7 @@ package net.datafaker;
  * @since 1.5.0
  */
 public class Mbti extends AbstractProvider {
-    
+
     private final String choice;
 
     public Mbti(final Faker faker) {
@@ -30,9 +30,13 @@ public class Mbti extends AbstractProvider {
         return faker.resolve("mbti.".concat(choice).concat(".personage"));
     }
 
-    public String merit(){return faker.resolve("mbti.".concat(choice).concat(".merit"));}
+    public String merit() {
+        return faker.resolve("mbti.".concat(choice).concat(".merit"));
+    }
 
-    public String weakness(){return faker.resolve("mbti.".concat(choice).concat(".weakness"));}
+    public String weakness() {
+        return faker.resolve("mbti.".concat(choice).concat(".weakness"));
+    }
 
 
 }

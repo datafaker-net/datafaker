@@ -113,5 +113,4 @@ public class LocalePicker {
         String pickedLocale = getLocaleStringWithoutReplacement(this.random);
         return new Locale(pickedLocale);
     }
-
 }
