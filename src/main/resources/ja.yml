@@ -156,6 +156,9 @@ ja:
       name_with_middle:
         - "#{first_name} #{last_name} #{last_name}"
 
+    passport:
+      valid: "[MT][A-Z][0-9]{7}"
+
     phone_number:
       formats: ['0####-#-####', '0###-##-####', '0##-###-####', '0#-####-####']
 
