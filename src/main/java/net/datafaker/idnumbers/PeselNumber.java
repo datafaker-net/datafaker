@@ -1,9 +1,10 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.Faker;
+
 import java.time.LocalDate;
 import java.util.Optional;
 
-import net.datafaker.Faker;
 
 /**
  * Implementation based on the definition at

@@ -1,8 +1,5 @@
 package net.datafaker;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-
 import net.datafaker.idnumbers.EnIdNumber;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.EsMXIdNumber;
@@ -13,6 +10,9 @@ import net.datafaker.idnumbers.PeselNumber.Gender;
 import net.datafaker.idnumbers.PtNifIdNumber;
 import net.datafaker.idnumbers.SvSEIdNumber;
 import net.datafaker.idnumbers.ZhCnIdNumber;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 /**
  * @since 0.8.0
