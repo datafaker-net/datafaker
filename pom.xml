@@ -339,6 +339,25 @@
                     <argLine>${surefire.argline}</argLine>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.32</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <sourceDirectories>src/main/java</sourceDirectories>
+                    <testSourceDirectories>src/test/java</testSourceDirectories>
+                    <includeResources>false</includeResources>
+                    <includeTestResources>false</includeTestResources>
+                    <configLocation>src/checkstyle/checks.xml</configLocation>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
