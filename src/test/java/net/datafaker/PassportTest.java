@@ -52,4 +52,11 @@ class PassportTest extends AbstractFakerTest {
         assertThat(new Faker(new Locale("en", "GB")).passport().valid())
             .hasSize(9);
     }
+
+    @RepeatedTest(10)
+    void testValidJapan() {
+        assertThat(new Faker(new Locale("ja")).passport().valid())
+            .hasSize(9)
+            .matches("[MT][A-Z][0-9]{7}");
+    }
 }
