@@ -4,9 +4,7 @@
         "http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
 <module name="Checker">
     <module name="FileTabCharacter"/>
-    <module name="NewlineAtEndOfFile">
-        <property name="lineSeparator" value="lf"/>
-    </module>
+    <module name="NewlineAtEndOfFile"/>
     <!--
         <module name="RegexpMultiline">
             <property name="format" value="\r" />
@@ -38,8 +36,6 @@
             <property name="message" value="Whitespace character before closing parenthesis" />
         </module>
     -->
-
-    <!--    <module name="SuppressWarningsFilter" />-->
 
     <module name="TreeWalker">
         <module name="SuppressWarningsHolder"/>
