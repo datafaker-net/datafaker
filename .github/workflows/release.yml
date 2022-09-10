@@ -1,7 +1,7 @@
-name: Publish package to the Maven Central Repository
+name: Release non-snapshot package to the Maven Central Repository
 on:
-  push:
-    branches: [ master ]
+  release:
+    types: [created]
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -11,7 +11,7 @@ jobs:
           echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import --no-tty --batch --yes
         env:
           GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v3
         with:
@@ -22,7 +22,7 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Publish package
-        run: ./mvnw --batch-mode deploy
+        run: ./mvnw --batch-mode release:prepare release:perform
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
