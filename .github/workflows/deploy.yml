@@ -12,6 +12,8 @@ jobs:
         env:
           GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
       - uses: actions/checkout@v3
+        with:
+          ref: 'master'
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v3
         with:
