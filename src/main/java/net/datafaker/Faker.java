@@ -1,12 +1,15 @@
 package net.datafaker;
 
+import net.datafaker.fakers.BaseFaker;
+import net.datafaker.fakers.MovieFaker;
+import net.datafaker.fakers.SportFaker;
+import net.datafaker.fakers.VideoGameFaker;
 import net.datafaker.fileformats.Json;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.RandomService;
 
 import java.nio.file.Path;
 import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -19,7 +22,7 @@ import java.util.function.Supplier;
  *
  * @author ren
  */
-public class Faker {
+public class Faker implements BaseFaker, MovieFaker, SportFaker, VideoGameFaker {
     private final RandomService randomService;
     private final FakeValuesService fakeValuesService;
     private final Map<Class<? extends AbstractProvider>, AbstractProvider> providersMap = new IdentityHashMap<>();
@@ -54,8 +57,8 @@ public class Faker {
      *
      * @return {@link Faker#Faker()}
      */
-    public static Faker instance() {
-        return new Faker();
+    public static <T extends Faker> T instance() {
+        return (T) new Faker();
     }
 
     /**
@@ -64,8 +67,8 @@ public class Faker {
      * @param locale - {@link Locale}
      * @return {@link Faker#Faker(Locale)}
      */
-    public static Faker instance(Locale locale) {
-        return new Faker(locale);
+    public static <T extends Faker> T instance(Locale locale) {
+        return (T) new Faker(locale);
     }
 
     /**
@@ -74,8 +77,8 @@ public class Faker {
      * @param random - {@link Random}
      * @return {@link Faker#Faker(Random)}
      */
-    public static Faker instance(Random random) {
-        return new Faker(random);
+    public static <T extends Faker> T instance(Random random) {
+        return (T) new Faker(random);
     }
 
     /**
@@ -85,8 +88,8 @@ public class Faker {
      * @param random - {@link Random}
      * @return {@link Faker#Faker(Locale, Random)}
      */
-    public static Faker instance(Locale locale, Random random) {
-        return new Faker(locale, random);
+    public static <T extends Faker> T instance(Locale locale, Random random) {
+        return (T) new Faker(locale, random);
     }
 
     /**
@@ -326,23 +329,6 @@ public class Faker {
             result = (T) providersMap.get(clazz);
         }
         return result;
-    }
-
-    /**
-     *
-     * @return builder to build {@code FakeCollection}
-     */
-    public <T> FakeCollection.Builder<T> collection() {
-        return new FakeCollection.Builder<T>().faker(this);
-    }
-
-    @SafeVarargs
-    public final <T> FakeCollection.Builder<T> collection(Supplier<T>... suppliers) {
-        return new FakeCollection.Builder<>(suppliers).faker(this);
-    }
-
-    public final <T> FakeCollection.Builder<T> collection(List<Supplier<T>> suppliers) {
-        return new FakeCollection.Builder<>(suppliers).faker(this);
     }
 
     public Address address() {
@@ -1048,23 +1034,6 @@ public class Faker {
         return this.fakeValuesService.resolve(key, this, this);
     }
 
-    /**
-     * Allows the evaluation of native YML expressions to allow you to build your
-     * own.
-     * <p>
-     * The following are valid expressions:
-     * <ul>
-     * <li>#{regexify '(a|b){2,3}'}</li>
-     * <li>#{regexify '\\.\\*\\?\\+'}</li>
-     * <li>#{bothify '????','false'}</li>
-     * <li>#{Name.first_name} #{Name.first_name} #{Name.last_name}</li>
-     * <li>#{number.number_between '1','10'}</li>
-     * </ul>
-     *
-     * @param expression (see examples above)
-     * @return the evaluated string expression
-     * @throws RuntimeException if unable to evaluate the expression
-     */
     public String expression(String expression) {
         return this.fakeValuesService.expression(expression, this);
     }

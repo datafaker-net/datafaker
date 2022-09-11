@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.fakers.BaseFaker;
 import net.datafaker.service.RandomService;
 
 import java.util.ArrayList;
@@ -59,8 +60,8 @@ public class FakeCollection<T> {
             suppliers = new ArrayList<>(Arrays.asList(elems));
         }
 
-        public Builder<T> faker(Faker faker) {
-            this.faker = faker;
+        public Builder<T> faker(BaseFaker faker) {
+            this.faker = (Faker) faker;
             return this;
         }
 

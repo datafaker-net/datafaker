@@ -268,10 +268,10 @@ class FakerTest extends AbstractFakerTest {
 
     @Test
     void fakerInstanceCanBeAcquiredViaUtilityMethods() {
-        assertThat(Faker.instance()).isInstanceOf(Faker.class);
-        assertThat(Faker.instance(Locale.CANADA)).isInstanceOf(Faker.class);
-        assertThat(Faker.instance(new Random(1))).isInstanceOf(Faker.class);
-        assertThat(Faker.instance(Locale.CHINA, new Random(2))).isInstanceOf(Faker.class);
+        assertThat(Faker.<Faker>instance()).isInstanceOf(Faker.class);
+        assertThat(Faker.<Faker>instance(Locale.CANADA)).isInstanceOf(Faker.class);
+        assertThat(Faker.<Faker>instance(new Random(1))).isInstanceOf(Faker.class);
+        assertThat(Faker.<Faker>instance(Locale.CHINA, new Random(2))).isInstanceOf(Faker.class);
     }
 
     @Test
