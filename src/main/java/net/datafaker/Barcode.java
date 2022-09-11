@@ -34,55 +34,59 @@ public class Barcode extends AbstractProvider {
     }
 
     private static int roundToHighestMultiplyOfTen(int number) {
-        if (number % 10 == 0)
-            return number;
-        else {
+        if (number % 10 == 0) {
+          return number;
+        } else {
             int ones = number % 10;
             int add = 10 - ones;
             return number + add;
         }
-
     }
 
     private long ean(int length) {
-        long first = 0;
+        long first_part = 0;
         switch (length) {
-            case 13:
-                first = this.faker.number().randomNumber(12, true);
-                break;
             case 8:
-                first = this.faker.number().randomNumber(7, true);
-                break;
-            case 14:
-                first = this.faker.number().randomNumber(13, true);
-                break;
             case 12:
-                first = this.faker.number().randomNumber(11, true);
+            case 13:
+            case 14:
+                first_part = this.faker.number().randomNumber(length - 1, true);
                 break;
         }
-        char[] array = String.valueOf(first).toCharArray();
         int odd = 0;
         int even = 0;
-        for (int i = 0; i < array.length; i++) {
-            int digit = Integer.parseInt(String.valueOf(array[i]));
-            if ((i + 1) % 2 == 0)
-                even += digit;
-            else
-                odd += digit;
+        long number = first_part;
+        int i = 0;
+        while (number > 0) {
+            i++;
+            if (i % 2 == 1) {
+                odd += number % 10;
+            } else {
+                even += number % 10;
+            }
+
+            number /= 10;
+        }
+        if (i % 2 == 0) {
+            int tmp = even;
+            even = odd;
+            odd = tmp;
         }
         int var = 0;
 
         if (length == 13) {
-            var = (even * 3) + odd;
-        }
-        if (length == 8 || length == 14 || length == 12) {
-            var = (odd * 3) + even;
+            var = odd + even + (even << 1);
+        } else if (length == 8 || length == 14 || length == 12) {
+            var = odd + even + (odd << 1);
         }
 
         int rounded = roundToHighestMultiplyOfTen((var));
         int checkDigit = rounded - var;
-
-        return Long.parseLong(first + String.valueOf(checkDigit));
+        int product = 10;
+        while (product <= checkDigit) {
+            product *= 10;
+        }
+        return first_part * product + checkDigit;
     }
 
     public String type() {
