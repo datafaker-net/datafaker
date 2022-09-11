@@ -560,12 +560,10 @@ public class FakeValuesService {
      * processes a expression in the style #{X.y} using the current objects as the 'current' location
      * within the yml file (or the {@link Faker} object hierarchy as it were).
      * <p>
-     * #{Address.streetName} would get resolved to {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}
      * #{address.street} would get resolved to the YAML like locale: faker: address: street:
      * Combinations are supported as well: "#{x} #{y}"
      * <p>
      * Recursive templates are supported.  if "#{x}" resolves to "#{Address.streetName}" then "#{x}" resolves to
-     * {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, Faker root) {
         if (expression.indexOf('}') == -1 || !expression.contains("#{")) {
@@ -810,7 +808,6 @@ public class FakeValuesService {
 
     /**
      * Given a directive like 'firstName', attempts to resolve it to a method.  For example if obj is an instance of
-     * {@link net.datafaker.Name} then this method would return {@link net.datafaker.Name#firstName()}.  Returns null if the directive is nested
      * (i.e. has a '.') or the method doesn't exist on the <em>obj</em> object.
      */
     private Supplier<Object> resolveFromMethodOn(Object obj, String directive, String[] args) {
@@ -840,7 +837,6 @@ public class FakeValuesService {
 
     /**
      * Accepts a {@link Faker} instance and a name.firstName style 'key' which is resolved to the return value of:
-     * {@link Faker#name()}'s {@link net.datafaker.Name#firstName()} method.
      *
      * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
      */
