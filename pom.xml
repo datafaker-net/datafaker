@@ -3,7 +3,7 @@
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
     <packaging>jar</packaging>
-    <version>1.6.0</version>
+    <version>1.7.0-SNAPSHOT</version>
     <name>Data Faker</name>
     <description>
         This library is a improved port of JavaFaker (as well as Ruby's stympy/faker gem and Perl's Data::Faker library) that
