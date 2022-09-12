@@ -223,6 +223,7 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>${maven-shade-plugin.version}</version>
                 <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
                     <artifactSet>
                         <includes>
                             <include>org.yaml:snakeyaml:*:*</include>
@@ -239,7 +240,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.yaml.snakeyaml</pattern>
-                            <shadedPattern>com.github.javafaker.shaded.snakeyaml</shadedPattern>
+                            <shadedPattern>net.datafaker.shaded.snakeyaml</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
