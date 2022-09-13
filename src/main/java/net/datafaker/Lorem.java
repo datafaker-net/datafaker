@@ -34,12 +34,10 @@ public class Lorem extends AbstractProvider {
         return characters(faker.random().nextInt(minimumLength, maximumLength), false);
     }
 
-    @Deprecated // use net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int minimumLength, int maximumLength, boolean includeUppercase) {
         return characters(minimumLength, maximumLength, includeUppercase, false);
     }
 
-    @Deprecated // net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeDigit) {
         return characters(minimumLength, maximumLength, includeUppercase, false, includeDigit);
     }
@@ -48,12 +46,10 @@ public class Lorem extends AbstractProvider {
         return characters(fixedNumberOfCharacters, false);
     }
 
-    @Deprecated // use net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int fixedNumberOfCharacters, boolean includeUppercase) {
         return faker.internet().password(fixedNumberOfCharacters, fixedNumberOfCharacters, includeUppercase);
     }
 
-    @Deprecated // use net.datafaker.Lorem.characters(int, java.util.Map<java.lang.String,java.lang.Integer>, boolean)
     public String characters(int minimumLength, int maximumLength,
                              boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return faker.internet().password(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
