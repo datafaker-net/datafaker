@@ -55,6 +55,21 @@ class VehicleTest extends AbstractFakerTest {
     }
 
     @Test
+    void testUpholsteryColor() {
+        assertThat(faker.vehicle().upholsteryColor()).matches(WORD_MATCH);
+    }
+
+    @Test
+    void testUpholsteryFabric() {
+        assertThat(faker.vehicle().upholsteryFabric()).matches(WORD_MATCH);
+    }
+
+    @Test
+    void testUpholstery() {
+        assertThat(faker.vehicle().upholstery()).matches(WORDS_MATCH);
+    }
+
+    @Test
     void testTransmission() {
         assertThat(faker.vehicle().transmission()).matches(WORD_MATCH);
     }

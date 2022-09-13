@@ -49,6 +49,18 @@ public class Vehicle extends AbstractProvider {
         return faker.resolve("vehicle.colors");
     }
 
+    public String upholsteryColor() {
+        return faker.resolve("vehicle.upholstery_colors");
+    }
+
+    public String upholsteryFabric() {
+        return faker.resolve("vehicle.upholstery_fabrics");
+    }
+
+    public String upholstery() {
+        return faker.resolve("vehicle.upholsteries");
+    }
+
     public String transmission() {
         return faker.resolve("vehicle.transmissions");
     }

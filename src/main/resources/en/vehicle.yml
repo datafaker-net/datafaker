@@ -16,6 +16,9 @@ en:
         Tesla: [ 'Model S', 'Model 3', 'Model X', 'Model Y', 'Roadster' ]
         Toyota: [ 'Prius', 'Camry', 'Corolla' ]
       colors: ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Violet', 'Black', 'White', 'Grey', 'Beige']
+      upholstery_fabrics: ['Leather', 'Artificial Leather', 'Velvet', 'Vinyl', 'Cloth']
+      upholstery_colors: ['Black', 'Grey', 'Taupe', 'Beige', 'White', 'Anthracite', 'Brown']
+      upholsteries: "#{Vehicle.upholstery_colors} #{Vehicle.upholstery_fabrics}"
       transmissions: ['Automanual', 'Automatic', 'CVT', 'Manual']
       drive_types: ['4x2/2-wheel drive', '4x4/4-wheel drive', 'AWD', 'FWD', 'RWD']
       fuel_types: ['Compressed Natural Gas', 'Diesel', 'E-85/Gasoline', 'Electric', 'Gasoline', 'Gasoline Hybrid', 'Ethanol']
