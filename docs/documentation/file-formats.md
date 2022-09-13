@@ -67,7 +67,25 @@ The result looks something like this:
 
 ## JSON
 
-It's also possible to generate JSON output:
+A way to generate simple JSON. However, it won't work for complex JSON generation:
+
+=== "Java"
+
+    ``` java
+        Faker faker = new Faker();
+
+        System.out.println(Format.toJson()
+            .set("firstName", () -> faker.name().firstName())
+            .set("lastName", () -> faker.name().lastName())
+            .set("address", () -> faker.address().country())
+            .build().generate());
+    ```
+This will produce JSON similar to the following:
+``` json
+{"firstName": "Clemencia", "lastName": "Collier", "address": "Nauru"}
+```
+
+It's also possible to generate a more complex JSON:
 
 === "Java"
 
@@ -134,21 +152,6 @@ This will produce json with escaped json payload e.g.:
 ```json
 [{"firstName": "Rey", "lastName": "Hilpert", "payload": "[{\"country\": \"Vanuatu\", \"city\": \"Douglasborough\", \"zipcode\": \"78956\", \"streetAddress\": \"15586 DuBuque Circles\"}]", "phones": ["(739) 078-6320", "(530) 089-9967 x167", "422.892.6273 x46644"]},
 {"firstName": "Timmy", "lastName": "Lakin", "payload": "[{\"country\": \"Chile\", \"city\": \"East Frederick\", \"zipcode\": \"07470\", \"streetAddress\": \"425 Hackett Tunnel\"}]", "phones": ["416.215.9044", "700.631.9476", "1-521-484-1096"]}]
-```
-
-A way to generate simple JSON. However, it won't work for complex JSON generation
-```java
-    Faker faker = new Faker();
-
-    System.out.println(Format.toJson()
-        .set("firstName", () -> faker.name().firstName())
-        .set("lastName", () -> faker.name().lastName())
-        .set("address", () -> faker.address().country())
-        .build().generate());
-```
-This will produce JSON similar to the following:
-``` json
-{"firstName": "Clemencia", "lastName": "Collier", "address": "Nauru"}
 ```
 
 ## YAML
