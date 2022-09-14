@@ -28,7 +28,7 @@ public class LocaleFaker extends AbstractProvider {
      * @return locale in form: "English (United States)"
      */
     public String displayName() {
-        int randomIndex = new RandomService().nextInt(availableLocales.length - 1);
+        int randomIndex = faker.random().nextInt(availableLocales.length - 1);
         Locale locale = Arrays.stream(availableLocales)
             .filter(lcl -> !lcl.getDisplayName().isEmpty())
             .skip(randomIndex).findFirst().get();
