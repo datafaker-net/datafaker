@@ -1,14 +1,10 @@
 package net.datafaker;
 
-import net.datafaker.service.LocalePicker;
 import net.datafaker.service.RandomService;
 
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.Optional;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 public class LocaleFaker extends AbstractProvider {
 
