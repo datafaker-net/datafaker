@@ -18,20 +18,32 @@ public class LocaleFaker extends AbstractProvider {
 
     /**
      *
-     * @return locale in form: "en_US"
+     * @return locale in form: "en_US or en"
      */
     public String baseLocale() {
         final Locale locale = availableLocales.get(faker.random().nextInt(availableLocales.size()));
-        return locale.toString();
+        String language = locale.getLanguage();
+
+        String country = locale.getCountry();
+        if (!country.isEmpty()) {
+            language += "_" + country;
+        }
+        return language;
     }
 
     /**
      *
-     * @return locale in form: "English (United States) or en_IN"
+     * @return locale in form: "English (United States) or English"
      */
     public String displayName() {
         int randomIndex = faker.random().nextInt(availableLocales.size());
         Locale locale = availableLocales.get(randomIndex);
-        return locale.getDisplayName();
+
+        String displayLanguage = locale.getDisplayLanguage(Locale.ENGLISH);
+        String displayCountry = locale.getDisplayCountry(Locale.ENGLISH);
+        if (!displayCountry.isEmpty()) {
+            displayLanguage += " (" + displayCountry + ")";
+        }
+        return displayLanguage;
     }
 }
