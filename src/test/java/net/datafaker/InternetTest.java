@@ -76,11 +76,6 @@ class InternetTest extends AbstractFakerTest {
     }
 
     @Test
-    void testAvatar() {
-        assertThat(faker.internet().avatar()).matches("^https://robohash.org/[a-z]{8}.png$");
-    }
-
-    @Test
     void testImage() {
         String imageUrl = faker.internet().image();
         assertThat(imageUrl).matches("^https://lorempixel\\.com(/g)?/\\d{1,4}/\\d{1,4}/\\w+/$");

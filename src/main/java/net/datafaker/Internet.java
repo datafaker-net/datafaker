@@ -86,14 +86,6 @@ public class Internet extends AbstractProvider {
     }
 
     /**
-     * @deprecated use faker.avatar.image() instead
-     */
-    @Deprecated
-    public String avatar() {
-        return faker.avatar().image();
-    }
-
-    /**
      * Generates a random image url based on the lorempixel service. All the images provided by this service are released
      * under the creative commons license (CC BY-SA). For more information, please visit: <a href="http://lorempixel.com/">http://lorempixel.com/</a>
      *

@@ -1059,11 +1059,6 @@ public class FakeValuesService {
         return convertedClass;
     }
 
-
-    private String string(Object obj) {
-        return (obj == null) ? null : obj.toString();
-    }
-
     /**
      * simple wrapper class around an accessor and a list of coerced arguments.
      * this is useful as we get to find the method and coerce the arguments in one

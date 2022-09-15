@@ -52,8 +52,10 @@ public class Faker {
     /**
      * Constructs Faker instance with default argument.
      *
+     * @deprecated Use the default contructor instead
      * @return {@link Faker#Faker()}
      */
+    @Deprecated // Use the default contructor instead
     public static Faker instance() {
         return new Faker();
     }
@@ -61,9 +63,11 @@ public class Faker {
     /**
      * Constructs Faker instance with provided {@link Locale}.
      *
+     * @deprecated Use the contructor with locale instead
      * @param locale - {@link Locale}
      * @return {@link Faker#Faker(Locale)}
      */
+    @Deprecated
     public static Faker instance(Locale locale) {
         return new Faker(locale);
     }
@@ -71,9 +75,11 @@ public class Faker {
     /**
      * Constructs Faker instance with provided {@link Random}.
      *
+     * @deprecated Use the contructor with random instead
      * @param random - {@link Random}
      * @return {@link Faker#Faker(Random)}
      */
+    @Deprecated
     public static Faker instance(Random random) {
         return new Faker(random);
     }
@@ -81,10 +87,12 @@ public class Faker {
     /**
      * Constructs Faker instance with provided {@link Locale} and {@link Random}.
      *
+     * @deprecated Use the contructor with locale and random instead
      * @param locale - {@link Locale}
      * @param random - {@link Random}
      * @return {@link Faker#Faker(Locale, Random)}
      */
+    @Deprecated
     public static Faker instance(Locale locale, Random random) {
         return new Faker(locale, random);
     }
@@ -256,7 +264,7 @@ public class Faker {
      * For example, it could generate
      * "name_column","last_name_column"
      * "Sabrina","Kihn"
-     *
+     * <p>
      * for expression {@code faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");}
      *
      * @param limit             Number of lines
@@ -276,7 +284,7 @@ public class Faker {
      * "Thad" ### "Crist"
      * "Kathryne" ### "Wuckert"
      * "Sybil" ### "Connelly"
-     *
+     * <p>
      * for expression {@code faker.expression("#{csv ' ### ','"','false','3','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");}
      *
      * @param separator         Delimiter to use
