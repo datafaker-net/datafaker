@@ -61,7 +61,7 @@ class VehicleTest extends AbstractFakerTest {
 
     @Test
     void testUpholsteryFabric() {
-        assertThat(faker.vehicle().upholsteryFabric()).matches(WORD_MATCH);
+        assertThat(faker.vehicle().upholsteryFabric()).matches(WORDS_MATCH);
     }
 
     @Test
