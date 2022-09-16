@@ -12,7 +12,7 @@ public class NatoPhoneticAlphabet extends AbstractProvider {
     }
 
     public String codeWord() {
-        return faker.fakeValuesService().resolve("nato_phonetic_alphabet.code_word", this);
+        return resolve("nato_phonetic_alphabet.code_word");
     }
 
 }

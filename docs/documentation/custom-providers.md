@@ -44,7 +44,7 @@ Create your own custom faker, which extends `Faker`, and register the custom pro
     ``` java
     public static class MyCustomFaker extends Faker {
         public Insect insect() {
-            return getProvider(Insect.class, () -> new Insect(this));
+            return getProvider(Insect.class, Insect::new, this);
         }
     }
     ```
@@ -92,11 +92,11 @@ First, create the custom provider which loads the data from a file:
         }
 
         public String ant() {
-            return faker.fakeValuesService().resolve(KEY + ".ants", null, faker);
+            return resolve(KEY + ".ants", null, faker);
         }
 
         public String bee() {
-            return faker.fakeValuesService().resolve(KEY + ".bees", null, faker);
+            return resolve(KEY + ".bees", null, faker);
         }
     }
     ```
@@ -129,7 +129,7 @@ Registering the provider would happen like this:
     ``` java
     public static class MyCustomFaker extends Faker {
         public InsectFromFile insectFromFile() {
-            return getProvider(InsectFromFile.class, () -> new InsectFromFile(this));
+            return getProvider(InsectFromFile.class, InsectFromFile::new, this);
         }
     }
     ```

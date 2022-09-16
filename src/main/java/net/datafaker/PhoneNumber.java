@@ -10,11 +10,11 @@ public class PhoneNumber extends AbstractProvider {
     }
 
     public String cellPhone() {
-        return faker.numerify(faker.fakeValuesService().resolve("cell_phone.formats", this));
+        return faker.numerify(resolve("cell_phone.formats"));
     }
 
     public String phoneNumber() {
-        return faker.numerify(faker.fakeValuesService().resolve("phone_number.formats", this));
+        return faker.numerify(resolve("phone_number.formats"));
     }
 
     public String extension() {

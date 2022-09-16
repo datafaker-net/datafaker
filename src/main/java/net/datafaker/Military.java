@@ -12,23 +12,23 @@ public class Military extends AbstractProvider {
     }
 
     public String armyRank() {
-        return faker.fakeValuesService().resolve("military.army_rank", this);
+        return resolve("military.army_rank");
     }
 
     public String marinesRank() {
-        return faker.fakeValuesService().resolve("military.marines_rank", this);
+        return resolve("military.marines_rank");
     }
 
     public String navyRank() {
-        return faker.fakeValuesService().resolve("military.navy_rank", this);
+        return resolve("military.navy_rank");
     }
 
     public String airForceRank() {
-        return faker.fakeValuesService().resolve("military.air_force_rank", this);
+        return resolve("military.air_force_rank");
     }
 
     public String dodPaygrade() {
-        return faker.fakeValuesService().resolve("military.dod_paygrade", this);
+        return resolve("military.dod_paygrade");
     }
 
 }

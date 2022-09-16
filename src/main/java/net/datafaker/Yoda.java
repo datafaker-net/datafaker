@@ -10,6 +10,6 @@ public class Yoda extends AbstractProvider {
     }
 
     public String quote() {
-        return faker.resolve("yoda.quotes");
+        return resolve("yoda.quotes");
     }
 }

@@ -10,23 +10,23 @@ public class Volleyball extends AbstractProvider {
     }
 
     public String team() {
-        return faker.fakeValuesService().resolve("volleyball.team", this);
+        return resolve("volleyball.team");
     }
 
     public String player() {
-        return faker.fakeValuesService().resolve("volleyball.player", this);
+        return resolve("volleyball.player");
     }
 
     public String coach() {
-        return faker.fakeValuesService().resolve("volleyball.coach", this);
+        return resolve("volleyball.coach");
     }
 
     public String position() {
-        return faker.fakeValuesService().resolve("volleyball.position", this);
+        return resolve("volleyball.position");
     }
 
     public String formation() {
-        return faker.fakeValuesService().resolve("volleyball.formation", this);
+        return resolve("volleyball.formation");
     }
 
 }

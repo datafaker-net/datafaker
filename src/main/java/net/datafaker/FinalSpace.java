@@ -12,15 +12,15 @@ public class FinalSpace extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("final_space.characters");
+        return resolve("final_space.characters");
     }
 
     public String vehicle() {
-        return faker.resolve("final_space.vehicles");
+        return resolve("final_space.vehicles");
     }
 
     public String quote() {
-        return faker.resolve("final_space.quotes");
+        return resolve("final_space.quotes");
     }
 
 }

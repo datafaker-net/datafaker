@@ -14,7 +14,7 @@ public class Music extends AbstractProvider {
     }
 
     public String instrument() {
-        return faker.resolve("music.instruments");
+        return resolve("music.instruments");
     }
 
     public String key() {
@@ -26,6 +26,6 @@ public class Music extends AbstractProvider {
     }
 
     public String genre() {
-        return faker.resolve("music.genres");
+        return resolve("music.genres");
     }
 }

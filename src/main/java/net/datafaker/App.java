@@ -10,14 +10,14 @@ public class App extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("app.name", this);
+        return resolve("app.name");
     }
 
     public String version() {
-        return faker.numerify(faker.fakeValuesService().resolve("app.version", this));
+        return faker.numerify(faker.resolve("app.version"));
     }
 
     public String author() {
-        return faker.fakeValuesService().resolve("app.author", this);
+        return resolve("app.author");
     }
 }

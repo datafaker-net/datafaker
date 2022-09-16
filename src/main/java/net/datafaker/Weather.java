@@ -20,7 +20,7 @@ public class Weather extends AbstractProvider {
      * Generates a short weather description.
      */
     public String description() {
-        return faker.resolve("weather.description");
+        return resolve("weather.description");
     }
 
     /**
@@ -64,6 +64,6 @@ public class Weather extends AbstractProvider {
     }
 
     private String temperature(int minTemperature, int maxTemperature, String degreeKey) {
-        return faker.random().nextInt(minTemperature, maxTemperature) + faker.resolve(degreeKey);
+        return faker.random().nextInt(minTemperature, maxTemperature) + resolve(degreeKey);
     }
 }

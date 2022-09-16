@@ -15,7 +15,7 @@ public class Camera extends AbstractProvider {
      * @return a string of camera brand.
      */
     public String brand() {
-        return faker.fakeValuesService().resolve("camera.brand", this);
+        return resolve("camera.brand");
     }
 
     /**
@@ -24,7 +24,7 @@ public class Camera extends AbstractProvider {
      * @return a string of camera model.
      */
     public String model() {
-        return faker.fakeValuesService().resolve("camera.model", this);
+        return resolve("camera.model");
     }
 
     /**
@@ -33,6 +33,6 @@ public class Camera extends AbstractProvider {
      * @return a string of camera brand with a model.
      */
     public String brandWithModel() {
-        return faker.fakeValuesService().resolve("camera.brand_with_model", this);
+        return resolve("camera.brand_with_model");
     }
 }

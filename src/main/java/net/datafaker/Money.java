@@ -17,7 +17,7 @@ public class Money extends AbstractProvider {
      * @return detailed currency value.
      */
     public String currency() {
-        return faker.fakeValuesService().resolve("money.currency", this);
+        return resolve("money.currency");
     }
 
     /**
@@ -26,6 +26,6 @@ public class Money extends AbstractProvider {
      * @return currency code.
      */
     public String currencyCode() {
-        return faker.fakeValuesService().resolve("money.code", this);
+        return resolve("money.code");
     }
 }

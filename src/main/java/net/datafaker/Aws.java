@@ -12,7 +12,7 @@ public class Aws extends AbstractProvider {
     }
 
     public String region() {
-        return faker.fakeValuesService().resolve("aws.regions", this);
+        return resolve("aws.regions");
     }
 
     public String accountId() {

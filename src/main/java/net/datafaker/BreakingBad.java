@@ -15,10 +15,10 @@ public class BreakingBad extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("breaking_bad.characters", this);
+        return resolve("breaking_bad.characters");
     }
 
     public String episode() {
-        return faker.fakeValuesService().resolve("breaking_bad.episodes", this);
+        return resolve("breaking_bad.episodes");
     }
 }

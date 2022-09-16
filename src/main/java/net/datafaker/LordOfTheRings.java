@@ -10,10 +10,10 @@ public class LordOfTheRings extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("lord_of_the_rings.characters");
+        return resolve("lord_of_the_rings.characters");
     }
 
     public String location() {
-        return faker.resolve("lord_of_the_rings.locations");
+        return resolve("lord_of_the_rings.locations");
     }
 }

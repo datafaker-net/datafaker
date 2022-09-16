@@ -10,23 +10,23 @@ public class Subscription extends AbstractProvider {
     }
 
     public String plans() {
-        return faker.fakeValuesService().resolve("subscription.plans", this);
+        return resolve("subscription.plans");
     }
 
     public String statuses() {
-        return faker.fakeValuesService().resolve("subscription.statuses", this);
+        return resolve("subscription.statuses");
     }
 
     public String paymentMethods() {
-        return faker.fakeValuesService().resolve("subscription.payment_methods", this);
+        return resolve("subscription.payment_methods");
     }
 
     public String subscriptionTerms() {
-        return faker.fakeValuesService().resolve("subscription.subscription_terms", this);
+        return resolve("subscription.subscription_terms");
     }
 
     public String paymentTerms() {
-        return faker.fakeValuesService().resolve("subscription.payment_terms", this);
+        return resolve("subscription.payment_terms");
     }
 
 }

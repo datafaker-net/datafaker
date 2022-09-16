@@ -10,34 +10,34 @@ public class ElderScrolls extends AbstractProvider {
     }
 
     public String race() {
-        return faker.fakeValuesService().resolve("games.elder_scrolls.race", this);
+        return resolve("games.elder_scrolls.race");
     }
 
     public String creature() {
-        return faker.fakeValuesService().resolve("games.elder_scrolls.creature", this);
+        return resolve("games.elder_scrolls.creature");
     }
 
     public String region() {
-        return faker.fakeValuesService().resolve("games.elder_scrolls.region", this);
+        return resolve("games.elder_scrolls.region");
     }
 
     public String dragon() {
-        return faker.fakeValuesService().resolve("games.elder_scrolls.dragon", this);
+        return resolve("games.elder_scrolls.dragon");
     }
 
     public String city() {
-        return faker.fakeValuesService().resolve("games.elder_scrolls.city", this);
+        return resolve("games.elder_scrolls.city");
     }
 
     public String firstName() {
-        return faker.fakeValuesService().resolve("games.elder_scrolls.first_name", this);
+        return resolve("games.elder_scrolls.first_name");
     }
 
     public String lastName() {
-        return faker.fakeValuesService().resolve("games.elder_scrolls.last_name", this);
+        return resolve("games.elder_scrolls.last_name");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("games.elder_scrolls.quote", this);
+        return resolve("games.elder_scrolls.quote");
     }
 }

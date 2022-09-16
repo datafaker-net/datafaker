@@ -10,6 +10,6 @@ public class Matz extends AbstractProvider {
     }
 
     public String quote() {
-        return faker.resolve("matz.quotes");
+        return resolve("matz.quotes");
     }
 }

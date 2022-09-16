@@ -10,26 +10,26 @@ public class HarryPotter extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("harry_potter.characters");
+        return resolve("harry_potter.characters");
     }
 
     public String location() {
-        return faker.resolve("harry_potter.locations");
+        return resolve("harry_potter.locations");
     }
 
     public String quote() {
-        return faker.resolve("harry_potter.quotes");
+        return resolve("harry_potter.quotes");
     }
 
     public String book() {
-        return faker.resolve("harry_potter.books");
+        return resolve("harry_potter.books");
     }
 
     public String house() {
-        return faker.resolve("harry_potter.houses");
+        return resolve("harry_potter.houses");
     }
 
     public String spell() {
-        return faker.resolve("harry_potter.spells");
+        return resolve("harry_potter.spells");
     }
 }

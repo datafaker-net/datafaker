@@ -10,14 +10,14 @@ public class DumbAndDumber extends AbstractProvider {
     }
 
     public String actor() {
-        return faker.resolve("dumb_and_dumber.actors");
+        return resolve("dumb_and_dumber.actors");
     }
 
     public String character() {
-        return faker.resolve("dumb_and_dumber.characters");
+        return resolve("dumb_and_dumber.characters");
     }
 
     public String quote() {
-        return faker.resolve("dumb_and_dumber.quotes");
+        return resolve("dumb_and_dumber.quotes");
     }
 }

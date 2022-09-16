@@ -12,31 +12,31 @@ public class Country extends AbstractProvider {
     }
 
     public String flag() {
-        return flagUrl + faker.fakeValuesService().resolve("country.code2", this) + ".png";
+        return flagUrl + resolve("country.code2") + ".png";
     }
 
     public String countryCode2() {
-        return faker.fakeValuesService().resolve("country.code2", this);
+        return resolve("country.code2");
     }
 
     public String countryCode3() {
-        return faker.fakeValuesService().resolve("country.code3", this);
+        return resolve("country.code3");
     }
 
     public String capital() {
-        return faker.fakeValuesService().resolve("country.capital", this);
+        return resolve("country.capital");
     }
 
     public String currency() {
-        return faker.fakeValuesService().resolve("country.currency", this);
+        return resolve("country.currency");
     }
 
     public String currencyCode() {
-        return faker.fakeValuesService().resolve("country.currency_code", this);
+        return resolve("country.currency_code");
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("country.name", this);
+        return resolve("country.name");
     }
 
 }

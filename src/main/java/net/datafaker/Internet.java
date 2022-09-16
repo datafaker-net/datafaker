@@ -34,7 +34,7 @@ public class Internet extends AbstractProvider {
     }
 
     public String emailAddress(String localPart) {
-        return emailAddress(localPart, FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.free_email", this)));
+        return emailAddress(localPart, FakerIDN.toASCII(faker.resolve("internet.free_email")));
     }
 
     public String safeEmailAddress() {
@@ -42,7 +42,7 @@ public class Internet extends AbstractProvider {
     }
 
     public String safeEmailAddress(String localPart) {
-        return emailAddress(localPart, FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.safe_email", this)));
+        return emailAddress(localPart, FakerIDN.toASCII(faker.resolve("internet.safe_email")));
     }
 
     private String emailAddress(String localPart, String domain) {
@@ -68,7 +68,7 @@ public class Internet extends AbstractProvider {
     }
 
     public String domainSuffix() {
-        return faker.fakeValuesService().resolve("internet.domain_suffix", this);
+        return resolve("internet.domain_suffix");
     }
 
     public String url() {
@@ -93,7 +93,7 @@ public class Internet extends AbstractProvider {
      * @see <a href="http://lorempixel.com/">lorempixel - Placeholder Images for every case</a>
      */
     public String image() {
-        String[] dimension = faker.fakeValuesService().resolve("internet.image_dimension", this).split("x");
+        String[] dimension = resolve("internet.image_dimension").split("x");
         if (dimension.length == 0) {
             return "";
         } else {
@@ -114,7 +114,7 @@ public class Internet extends AbstractProvider {
      */
     public String image(Integer width, Integer height, Boolean gray, String text) {
         return String.format("https://lorempixel.com/%s%s/%s/%s/%s",
-            gray ? "g/" : "", width, height, faker.fakeValuesService().resolve("internet.image_category", this),
+            gray ? "g/" : "", width, height, resolve("internet.image_category"),
             (text == null || text.length() == 0) ? "" : text);
     }
 
@@ -385,7 +385,7 @@ public class Internet extends AbstractProvider {
         }
 
         String userAgentKey = "internet.user_agent." + agent.toString();
-        return faker.fakeValuesService().resolve(userAgentKey, this);
+        return resolve(userAgentKey);
     }
 
     public String userAgentAny() {

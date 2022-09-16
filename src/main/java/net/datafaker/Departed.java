@@ -15,7 +15,7 @@ public class Departed extends AbstractProvider {
      * @return a string of actor's name from The Departed.
      */
     public String actor() {
-        return faker.fakeValuesService().resolve("departed.actors", this);
+        return resolve("departed.actors");
     }
 
     /**
@@ -24,7 +24,7 @@ public class Departed extends AbstractProvider {
      * @return a string of character's name from The Departed.
      */
     public String character() {
-        return faker.fakeValuesService().resolve("departed.characters", this);
+        return resolve("departed.characters");
     }
 
     /**
@@ -33,6 +33,6 @@ public class Departed extends AbstractProvider {
      * @return a string of quote from The Departed.
      */
     public String quote() {
-        return faker.fakeValuesService().resolve("departed.quotes", this);
+        return resolve("departed.quotes");
     }
 }

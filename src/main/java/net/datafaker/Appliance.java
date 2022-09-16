@@ -10,10 +10,10 @@ public class Appliance extends AbstractProvider {
     }
 
     public String brand() {
-        return faker.fakeValuesService().resolve("appliance.brand", this);
+        return resolve("appliance.brand");
     }
 
     public String equipment() {
-        return faker.fakeValuesService().resolve("appliance.equipment", this);
+        return resolve("appliance.equipment");
     }
 }

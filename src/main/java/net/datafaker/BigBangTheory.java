@@ -15,7 +15,7 @@ public class BigBangTheory extends AbstractProvider {
      * @return a string of Big Bang Theory's character's name.
      */
     public String character() {
-        return faker.fakeValuesService().resolve("big_bang_theory.characters", this);
+        return resolve("big_bang_theory.characters");
     }
 
     /**
@@ -24,6 +24,6 @@ public class BigBangTheory extends AbstractProvider {
      * @return a string of Big Bang Theory's character's quote.
      */
     public String quote() {
-        return faker.fakeValuesService().resolve("big_bang_theory.quotes", this);
+        return resolve("big_bang_theory.quotes");
     }
 }

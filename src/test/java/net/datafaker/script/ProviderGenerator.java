@@ -73,7 +73,7 @@ class ProviderGenerator {
             String methodName = StringUtils.uncapitalize(toJavaConvention(string));
 
             System.out.println("    public String " + methodName + "() {\n" +
-                "        return faker.fakeValuesService().resolve(\"" + key + "." + string + "\", this);\n" +
+                "        return resolve(\"" + key + "." + string + "\", this);\n" +
                 "    }");
             System.out.println();
         }

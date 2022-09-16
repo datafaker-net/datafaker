@@ -15,7 +15,7 @@ public class BloodType extends AbstractProvider {
      * @return a string of ABO blood type
      */
     public String aboTypes() {
-        return faker.fakeValuesService().fetchString("blood_type.abo_types");
+        return resolve("blood_type.abo_types");
     }
 
     /**
@@ -24,7 +24,7 @@ public class BloodType extends AbstractProvider {
      * @return a string of Rh blood type
      */
     public String rhTypes() {
-        return faker.fakeValuesService().fetchString("blood_type.rh_types");
+        return resolve("blood_type.rh_types");
     }
 
     /**
@@ -33,7 +33,7 @@ public class BloodType extends AbstractProvider {
      * @return a string of P blood type
      */
     public String pTypes() {
-        return faker.fakeValuesService().fetchString("blood_type.p_types");
+        return resolve("blood_type.p_types");
     }
 
 
@@ -43,6 +43,6 @@ public class BloodType extends AbstractProvider {
      * @return a blood group such as O−, O+, A-, A+, B-, B+, AB-, AB+
      */
     public String bloodGroup() {
-        return faker.fakeValuesService().resolve("blood_type.blood_group", this);
+        return resolve("blood_type.blood_group");
     }
 }

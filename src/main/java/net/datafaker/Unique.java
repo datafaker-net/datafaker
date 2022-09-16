@@ -65,7 +65,7 @@ public class Unique extends AbstractProvider {
     }
 
     private List<String> fetchValues(String key) {
-        Object object = faker.fakeValuesService().fetchObject(key);
+        Object object = faker.fakeValuesService().fetchObject(key, faker.getContext());
 
         if (!(object instanceof List)) {
             throw noValuesFoundException(key);

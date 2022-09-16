@@ -11,23 +11,23 @@ public class MassEffect extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("mass_effect.characters");
+        return resolve("mass_effect.characters");
     }
 
     public String specie() {
-        return faker.resolve("mass_effect.species");
+        return resolve("mass_effect.species");
     }
 
     public String cluster() {
-        return faker.resolve("mass_effect.cluster");
+        return resolve("mass_effect.cluster");
     }
 
     public String planet() {
-        return faker.resolve("mass_effect.planets");
+        return resolve("mass_effect.planets");
     }
 
     public String quote(){
-        return faker.resolve("mass_effect.quotes");
+        return resolve("mass_effect.quotes");
     }
 
 }

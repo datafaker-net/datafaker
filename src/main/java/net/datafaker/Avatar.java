@@ -12,6 +12,6 @@ public class Avatar extends AbstractProvider {
     }
 
     public String image() {
-        return baseUrl + faker.fakeValuesService().regexify("[a-z]{8}") + ".png";
+        return baseUrl + faker.regexify("[a-z]{8}") + ".png";
     }
 }

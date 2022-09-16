@@ -10,27 +10,27 @@ public class Construction extends AbstractProvider {
     }
 
     public String heavyEquipment() {
-        return faker.fakeValuesService().resolve("construction.heavy_equipment", this);
+        return resolve("construction.heavy_equipment");
     }
 
     public String materials() {
-        return faker.fakeValuesService().resolve("construction.materials", this);
+        return resolve("construction.materials");
     }
 
     public String subcontractCategories() {
-        return faker.fakeValuesService().resolve("construction.subcontract_categories", this);
+        return resolve("construction.subcontract_categories");
     }
 
     public String roles() {
-        return faker.fakeValuesService().resolve("construction.roles", this);
+        return resolve("construction.roles");
     }
 
     public String trades() {
-        return faker.fakeValuesService().resolve("construction.trades", this);
+        return resolve("construction.trades");
     }
 
     public String standardCostCodes() {
-        return faker.fakeValuesService().resolve("construction.standard_cost_codes", this);
+        return resolve("construction.standard_cost_codes");
     }
 
 }

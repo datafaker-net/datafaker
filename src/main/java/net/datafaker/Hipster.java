@@ -10,6 +10,6 @@ public class Hipster extends AbstractProvider {
     }
 
     public String word() {
-        return faker.resolve("hipster.words");
+        return resolve("hipster.words");
     }
 }

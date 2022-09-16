@@ -10,7 +10,7 @@ public class AquaTeenHungerForce extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("aqua_teen_hunger_force.character", this);
+        return resolve("aqua_teen_hunger_force.character");
     }
 
 }

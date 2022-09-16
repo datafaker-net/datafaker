@@ -10,18 +10,18 @@ public class Team extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("team.name", this);
+        return resolve("team.name");
     }
 
     public String creature() {
-        return faker.fakeValuesService().resolve("team.creature", this);
+        return resolve("team.creature");
     }
 
     public String state() {
-        return faker.fakeValuesService().resolve("address.state", this);
+        return resolve("address.state");
     }
 
     public String sport() {
-        return faker.fakeValuesService().resolve("team.sport", this);
+        return resolve("team.sport");
     }
 }

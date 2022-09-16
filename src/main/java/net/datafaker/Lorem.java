@@ -77,7 +77,7 @@ public class Lorem extends AbstractProvider {
     }
 
     public String word() {
-        return faker.fakeValuesService().resolve("lorem.words", this);
+        return resolve("lorem.words");
     }
 
     /**

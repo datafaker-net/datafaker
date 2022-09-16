@@ -15,6 +15,6 @@ public class FamousLastWords extends AbstractProvider {
      * @return a string of last words.
      */
     public String lastWords() {
-        return faker.fakeValuesService().resolve("famous_last_words.last_words", this);
+        return resolve("famous_last_words.last_words");
     }
 }

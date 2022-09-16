@@ -10,30 +10,30 @@ public class HitchhikersGuideToTheGalaxy extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("hitchhikers_guide_to_the_galaxy.characters", this);
+        return resolve("hitchhikers_guide_to_the_galaxy.characters");
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("hitchhikers_guide_to_the_galaxy.locations", this);
+        return resolve("hitchhikers_guide_to_the_galaxy.locations");
     }
 
     public String marvinQuote() {
-        return faker.fakeValuesService().resolve("hitchhikers_guide_to_the_galaxy.marvin_quote", this);
+        return resolve("hitchhikers_guide_to_the_galaxy.marvin_quote");
     }
 
     public String planet() {
-        return faker.fakeValuesService().resolve("hitchhikers_guide_to_the_galaxy.planets", this);
+        return resolve("hitchhikers_guide_to_the_galaxy.planets");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("hitchhikers_guide_to_the_galaxy.quotes", this);
+        return resolve("hitchhikers_guide_to_the_galaxy.quotes");
     }
 
     public String species() {
-        return faker.fakeValuesService().resolve("hitchhikers_guide_to_the_galaxy.species", this);
+        return resolve("hitchhikers_guide_to_the_galaxy.species");
     }
 
     public String starship() {
-        return faker.fakeValuesService().resolve("hitchhikers_guide_to_the_galaxy.starships", this);
+        return resolve("hitchhikers_guide_to_the_galaxy.starships");
     }
 }

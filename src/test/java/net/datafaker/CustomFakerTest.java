@@ -15,11 +15,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class CustomFakerTest {
     public static class MyCustomFaker extends Faker {
         public Insect insect() {
-            return getProvider(Insect.class, () -> new Insect(this));
+            return getProvider(Insect.class, Insect::new, this);
         }
 
         public InsectFromFile insectFromFile() {
-            return getProvider(InsectFromFile.class, () -> new InsectFromFile(this));
+            return getProvider(InsectFromFile.class, InsectFromFile::new, this);
         }
     }
 
@@ -45,11 +45,11 @@ class CustomFakerTest {
         }
 
         public String ant() {
-            return faker.fakeValuesService().resolve(KEY + ".ants", null, faker);
+            return resolve(KEY + ".ants");
         }
 
         public String bee() {
-            return faker.fakeValuesService().resolve(KEY + ".bees", null, faker);
+            return resolve(KEY + ".bees");
         }
     }
 
@@ -92,12 +92,12 @@ class CustomFakerTest {
     @Test
     void insectBeeTestExpressionFromFileWithoutExtraFaker() {
         Faker faker = new Faker();
-        assertThat(faker.getProvider(InsectFromFile.class, () -> new InsectFromFile(faker)).bee()).endsWith("bee");
+        assertThat(faker.getProvider(InsectFromFile. class, f -> new InsectFromFile(f), faker).bee()).endsWith("bee");
     }
 
     @Test
     void insectTestWithoutExtraFaker() {
         Faker faker = new Faker();
-        assertThat(faker.getProvider(Insect.class, () -> new Insect(faker)).nextInsectName()).matches("[A-Za-z ]+");
+        assertThat(faker.getProvider(Insect. class, f -> new Insect(f), faker).nextInsectName()).matches("[A-Za-z ]+");
     }
 }

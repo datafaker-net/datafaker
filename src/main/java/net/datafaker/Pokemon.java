@@ -10,10 +10,10 @@ public class Pokemon extends AbstractProvider {
     }
 
     public String name() {
-        return faker.resolve("games.pokemon.names");
+        return resolve("games.pokemon.names");
     }
 
     public String location() {
-        return faker.resolve("games.pokemon.locations");
+        return resolve("games.pokemon.locations");
     }
 }

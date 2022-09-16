@@ -10,22 +10,22 @@ public class StarTrek extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("star_trek.character", this);
+        return resolve("star_trek.character");
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("star_trek.location", this);
+        return resolve("star_trek.location");
     }
 
     public String species() {
-        return faker.fakeValuesService().resolve("star_trek.species", this);
+        return resolve("star_trek.species");
     }
 
     public String villain() {
-        return faker.fakeValuesService().resolve("star_trek.villain", this);
+        return resolve("star_trek.villain");
     }
 
     public String klingon() {
-        return faker.fakeValuesService().resolve("star_trek.klingon", this);
+        return resolve("star_trek.klingon");
     }
 }

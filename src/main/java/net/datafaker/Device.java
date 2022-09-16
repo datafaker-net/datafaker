@@ -10,19 +10,19 @@ public class Device extends AbstractProvider {
     }
 
     public String modelName() {
-        return faker.fakeValuesService().resolve("device.model_name", this);
+        return resolve("device.model_name");
     }
 
     public String platform() {
-        return faker.fakeValuesService().resolve("device.platform", this);
+        return resolve("device.platform");
     }
 
     public String manufacturer() {
-        return faker.fakeValuesService().resolve("device.manufacturer", this);
+        return resolve("device.manufacturer");
     }
 
     public String serial() {
-        return faker.fakeValuesService().resolve("device.serial", this);
+        return resolve("device.serial");
     }
 
 }

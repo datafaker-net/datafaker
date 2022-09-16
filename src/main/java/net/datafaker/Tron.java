@@ -16,15 +16,15 @@ public class Tron extends AbstractProvider {
     }
 
     public String character(Character character) {
-        return faker.fakeValuesService().resolve("tron.characters." + character.yamlKey, this);
+        return resolve("tron.characters." + character.yamlKey);
     }
 
     public String game() {
-        return faker.fakeValuesService().resolve("tron.games", this);
+        return resolve("tron.games");
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("tron.locations", this);
+        return resolve("tron.locations");
     }
 
     public String quote() {
@@ -32,15 +32,15 @@ public class Tron extends AbstractProvider {
     }
 
     public String quote(Tron.Quote quote) {
-        return faker.fakeValuesService().resolve("tron.quotes." + quote.yamlKey, this);
+        return resolve("tron.quotes." + quote.yamlKey);
     }
 
     public String tagline() {
-        return faker.fakeValuesService().resolve("tron.taglines", this);
+        return resolve("tron.taglines");
     }
 
     public String vehicle() {
-        return faker.fakeValuesService().resolve("tron.vehicles", this);
+        return resolve("tron.vehicles");
     }
 
     public String alternateCharacterSpelling() {
@@ -48,7 +48,7 @@ public class Tron extends AbstractProvider {
     }
 
     public String alternateCharacterSpelling(AlternateCharacterSpelling alternateCharacterSpelling) {
-        return faker.fakeValuesService().resolve("tron.alternate_character_spellings." + alternateCharacterSpelling.yamlKey, this);
+        return resolve("tron.alternate_character_spellings." + alternateCharacterSpelling.yamlKey);
     }
 
     public enum AlternateCharacterSpelling {

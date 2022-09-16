@@ -13,23 +13,23 @@ public class Nigeria extends AbstractProvider {
     }
 
     public String places() {
-        return faker.fakeValuesService().resolve(KEY + ".places", this);
+        return resolve(KEY + ".places");
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve(KEY + ".name", this);
+        return resolve(KEY + ".name");
     }
 
     public String food() {
-        return faker.fakeValuesService().resolve(KEY + ".food", this);
+        return resolve(KEY + ".food");
     }
 
     public String schools() {
-        return faker.fakeValuesService().resolve(KEY + ".schools", this);
+        return resolve(KEY + ".schools");
     }
 
     public String celebrities() {
-        return faker.fakeValuesService().resolve(KEY + ".celebrities", this);
+        return resolve(KEY + ".celebrities");
     }
 }
 

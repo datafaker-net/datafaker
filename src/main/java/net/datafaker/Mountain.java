@@ -12,10 +12,10 @@ public class Mountain extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("mountain.name", this);
+        return resolve("mountain.name");
     }
 
     public String range() {
-        return faker.fakeValuesService().resolve("mountain.range", this);
+        return resolve("mountain.range");
     }
 }

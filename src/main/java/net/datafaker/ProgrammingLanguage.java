@@ -10,11 +10,11 @@ public class ProgrammingLanguage extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("programming_language.name", this);
+        return resolve("programming_language.name");
     }
 
     public String creator() {
-        return faker.fakeValuesService().resolve("programming_language.creator", this);
+        return resolve("programming_language.creator");
     }
 
 }

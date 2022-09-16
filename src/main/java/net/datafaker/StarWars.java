@@ -16,37 +16,37 @@ public class StarWars extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("star_wars.characters", this, faker);
+        return resolve("star_wars.characters");
     }
 
     public String callSign() {
-        return faker.numerify(faker.fakeValuesService().resolve("star_wars.call_sign", this, faker));
+        return faker.numerify(resolve("star_wars.call_sign"));
     }
 
     public String quotes() {
-        return faker.fakeValuesService().resolve("star_wars.quotes." + CHARACTERS[faker.random().nextInt(CHARACTERS.length)], this, faker);
+        return resolve("star_wars.quotes." + CHARACTERS[faker.random().nextInt(CHARACTERS.length)]);
     }
     public String vehicles() {
-        return faker.fakeValuesService().resolve("star_wars.vehicles", this, faker);
+        return resolve("star_wars.vehicles");
     }
 
     public String droids() {
-        return faker.fakeValuesService().resolve("star_wars.droids", this, faker);
+        return resolve("star_wars.droids");
     }
 
     public String planets() {
-        return faker.fakeValuesService().resolve("star_wars.planets", this, faker);
+        return resolve("star_wars.planets");
     }
 
     public String species() {
-        return faker.fakeValuesService().resolve("star_wars.species", this, faker);
+        return resolve("star_wars.species");
     }
 
     public String wookieWords() {
-        return faker.fakeValuesService().resolve("star_wars.wookiee_words", this, faker);
+        return resolve("star_wars.wookiee_words");
     }
 
     public String alternateCharacterSpelling() {
-        return faker.fakeValuesService().resolve("star_wars.alternate_character_spellings." + CHARACTERS[faker.random().nextInt(CHARACTERS.length)], this, faker);
+        return resolve("star_wars.alternate_character_spellings." + CHARACTERS[faker.random().nextInt(CHARACTERS.length)]);
     }
 }

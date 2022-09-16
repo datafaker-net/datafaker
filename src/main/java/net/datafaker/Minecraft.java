@@ -10,23 +10,23 @@ public class Minecraft extends AbstractProvider {
     }
 
     public String itemName() {
-        return faker.fakeValuesService().resolve("minecraft.item_name", this);
+        return resolve("minecraft.item_name");
     }
 
     public String tileName() {
-        return faker.fakeValuesService().resolve("minecraft.tile_name", this);
+        return resolve("minecraft.tile_name");
     }
 
     public String entityName() {
-        return faker.fakeValuesService().resolve("minecraft.entity_name", this);
+        return resolve("minecraft.entity_name");
     }
 
     public String monsterName() {
-        return faker.fakeValuesService().resolve("minecraft.monster_name", this);
+        return resolve("minecraft.monster_name");
     }
 
     public String animalName() {
-        return faker.fakeValuesService().resolve("minecraft.animal_name", this);
+        return resolve("minecraft.animal_name");
     }
 
     public String tileItemName() {

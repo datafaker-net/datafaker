@@ -10,6 +10,6 @@ public class DragonBall extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("dragon_ball.characters", this);
+        return resolve("dragon_ball.characters");
     }
 }

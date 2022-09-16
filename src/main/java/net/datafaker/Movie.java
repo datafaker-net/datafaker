@@ -15,6 +15,6 @@ public class Movie extends AbstractProvider {
      * @return a string of quote from a movie.
      */
     public String quote() {
-        return faker.fakeValuesService().resolve("movie.quote", this);
+        return resolve("movie.quote");
     }
 }

@@ -10,11 +10,11 @@ public class Horse extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("creature.horse.name", this);
+        return resolve("creature.horse.name");
     }
 
     public String breed() {
-        return faker.fakeValuesService().resolve("creature.horse.breed", this);
+        return resolve("creature.horse.breed");
     }
 
 }

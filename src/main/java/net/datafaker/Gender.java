@@ -17,7 +17,7 @@ public class Gender extends AbstractProvider {
      * @return a string of gender type
      */
     public String types() {
-        return faker.fakeValuesService().fetchString("gender.types");
+        return resolve("gender.types");
     }
 
     /**
@@ -26,7 +26,7 @@ public class Gender extends AbstractProvider {
      * @return a string of binary gender type
      */
     public String binaryTypes() {
-        return faker.fakeValuesService().fetchString("gender.binary_types");
+        return resolve("gender.binary_types");
     }
 
     /**
@@ -35,6 +35,6 @@ public class Gender extends AbstractProvider {
      * @return a string of short binary gender type
      */
     public String shortBinaryTypes() {
-        return faker.fakeValuesService().fetchString("gender.short_binary_types");
+        return resolve("gender.short_binary_types");
     }
 }

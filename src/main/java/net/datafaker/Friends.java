@@ -10,14 +10,14 @@ public class Friends extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("friends.characters");
+        return resolve("friends.characters");
     }
 
     public String location() {
-        return faker.resolve("friends.locations");
+        return resolve("friends.locations");
     }
 
     public String quote() {
-        return faker.resolve("friends.quotes");
+        return resolve("friends.quotes");
     }
 }

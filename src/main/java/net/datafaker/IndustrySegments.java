@@ -10,19 +10,19 @@ public class IndustrySegments extends AbstractProvider {
     }
 
     public String industry() {
-        return faker.resolve("industry_segments.industry");
+        return resolve("industry_segments.industry");
     }
 
     public String superSector() {
-        return faker.resolve("industry_segments.super_sector");
+        return resolve("industry_segments.super_sector");
     }
 
     public String sector() {
-        return faker.resolve("industry_segments.sector");
+        return resolve("industry_segments.sector");
     }
 
     public String subSector() {
-        return faker.resolve("industry_segments.sub_sector");
+        return resolve("industry_segments.sub_sector");
     }
 
 }

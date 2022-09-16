@@ -10,27 +10,27 @@ public class Restaurant extends AbstractProvider {
     }
 
     public String namePrefix() {
-        return faker.fakeValuesService().resolve("restaurant.name_prefix", this);
+        return resolve("restaurant.name_prefix");
     }
 
     public String nameSuffix() {
-        return faker.fakeValuesService().resolve("restaurant.name_suffix", this);
+        return resolve("restaurant.name_suffix");
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("restaurant.name", this);
+        return resolve("restaurant.name");
     }
 
     public String type() {
-        return faker.fakeValuesService().resolve("restaurant.type", this);
+        return resolve("restaurant.type");
     }
 
     public String description() {
-        return faker.fakeValuesService().resolve("restaurant.description", this);
+        return resolve("restaurant.description");
     }
 
     public String review() {
-        return faker.fakeValuesService().resolve("restaurant.review", this);
+        return resolve("restaurant.review");
     }
 
 }

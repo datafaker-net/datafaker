@@ -10,15 +10,15 @@ public class Hearthstone extends AbstractProvider {
     }
 
     public String mainProfession() {
-        return faker.resolve("games.hearthstone.professions");
+        return resolve("games.hearthstone.professions");
     }
 
     public String mainCharacter() {
-        return faker.fakeValuesService().resolve("games.hearthstone.characters", this);
+        return resolve("games.hearthstone.characters");
     }
 
     public String mainPattern() {
-        return faker.resolve("games.hearthstone.patterns");
+        return resolve("games.hearthstone.patterns");
     }
 
     public int battlegroundsScore() {
@@ -26,7 +26,7 @@ public class Hearthstone extends AbstractProvider {
     }
 
     public String standardRank() {
-        String rank = faker.resolve("games.hearthstone.rank");
+        String rank = resolve("games.hearthstone.rank");
         if (rank.equals("Legend")) {
             rank = rank + " " + faker.random().nextInt(1, 65000);
         } else {

@@ -10,6 +10,6 @@ public class Robin extends AbstractProvider {
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("robin.quotes", this);
+        return resolve("robin.quotes");
     }
 }

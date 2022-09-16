@@ -15,7 +15,7 @@ public class Verb extends AbstractProvider {
      * @return a string of base form of a verb.
      */
     public String base() {
-        return faker.fakeValuesService().resolve("verbs.base", this);
+        return resolve("verbs.base");
     }
 
     /**
@@ -24,7 +24,7 @@ public class Verb extends AbstractProvider {
      * @return a string of verb in past tense.
      */
     public String past() {
-        return faker.fakeValuesService().resolve("verbs.past", this);
+        return resolve("verbs.past");
     }
 
     /**
@@ -33,7 +33,7 @@ public class Verb extends AbstractProvider {
      * @return a string of verb in past participle tense.
      */
     public String pastParticiple() {
-        return faker.fakeValuesService().resolve("verbs.past_participle", this);
+        return resolve("verbs.past_participle");
     }
 
     /**
@@ -42,7 +42,7 @@ public class Verb extends AbstractProvider {
      * @return a string of verb in simple present tense.
      */
     public String simplePresent() {
-        return faker.fakeValuesService().resolve("verbs.simple_present", this);
+        return resolve("verbs.simple_present");
     }
 
     /**
@@ -51,6 +51,6 @@ public class Verb extends AbstractProvider {
      * @return a string of verb in -ing form.
      */
     public String ingForm() {
-        return faker.fakeValuesService().resolve("verbs.ing_form", this);
+        return resolve("verbs.ing_form");
     }
 }

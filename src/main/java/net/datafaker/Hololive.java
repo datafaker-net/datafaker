@@ -10,6 +10,6 @@ public class Hololive extends AbstractProvider {
     }
 
     public String talent() {
-        return faker.resolve("hololive.talent");
+        return resolve("hololive.talent");
     }
 }

@@ -12,10 +12,10 @@ public class RuPaulDragRace extends AbstractProvider {
     }
 
     public String queen() {
-        return faker.resolve("rupaul.queens");
+        return resolve("rupaul.queens");
     }
 
     public String quote() {
-        return faker.resolve("rupaul.quotes");
+        return resolve("rupaul.quotes");
     }
 }

@@ -30,22 +30,16 @@ import java.util.WeakHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class FakeValuesService {
-    private static final Pattern LOCALE = Pattern.compile("[-_]");
     private static final String DIGITS = "0123456789";
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
     private final Map<Locale, FakeValuesInterface> fakeValuesCache = new HashMap<>();
 
     private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
-    private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
-    private RandomService currentRandomService;
-    private Locale currentLocale;
-
-    private final Map<Locale, List<Locale>> locale2localesChain;
+    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
     private final Map<Class<?>, Constructor<?>> class2constructorCache = new IdentityHashMap<>();
@@ -61,44 +55,11 @@ public class FakeValuesService {
 
     private final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
 
-    /**
-     * Resolves YAML file using the most specific path first based on language and country code.
-     * 'en_US' would resolve in the following order:
-     * <ol>
-     * <li>/en-US.yml</li>
-     * <li>/en.yml</li>
-     * </ol>
-     * The search is case-insensitive, so the following will all resolve correctly.  Also, either a hyphen or
-     * an underscore can be used when constructing a {@link Locale} instance.  This is legacy behavior and not
-     * condoned, but it will work.
-     * <ul>
-     * <li>EN_US</li>
-     * <li>En-Us</li>
-     * <li>eN_uS</li>
-     * </ul>
-     */
-    public FakeValuesService(Locale locale, RandomService randomService) {
-        if (locale == null) {
-            throw new IllegalArgumentException("locale is required");
-        }
-        this.currentRandomService = randomService;
-        this.locale2localesChain = new HashMap<>();
-        setCurrentLocale(locale);
+    public FakeValuesService() {
     }
 
-    public void setCurrentRandomService(RandomService randomService) {
-        Objects.requireNonNull(randomService);
-        this.currentRandomService = randomService;
-    }
-
-    public void setCurrentLocale(Locale locale) {
-        Objects.requireNonNull(locale);
-        currentLocale = normalizeLocale(locale);
-        if (locale2localesChain.containsKey(currentLocale)) {
-            return;
-        }
-        locale2localesChain.put(currentLocale, localeChain(currentLocale));
-        for (final Locale l : locale2localesChain.get(currentLocale)) {
+    public void updateFakeValuesInterfaceMap(List<Locale> locales) {
+        for (final Locale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
         }
     }
@@ -135,72 +96,22 @@ public class FakeValuesService {
     }
 
     /**
-     * Convert the specified locale into a chain of locales used for message resolution. For example:
-     * <p>
-     * {@link Locale#FRANCE} (fr_FR) to [ fr_FR, anotherTest, en ]
-     *
-     * @return a list of {@link Locale} instances
-     */
-    protected List<Locale> localeChain(Locale from) {
-        if (DEFAULT_LOCALE.equals(from)) {
-            return Collections.singletonList(DEFAULT_LOCALE);
-        }
-
-        final Locale normalized = normalizeLocale(from);
-
-        final List<Locale> chain = new ArrayList<>(3);
-        chain.add(normalized);
-        if (!"".equals(normalized.getCountry()) && !DEFAULT_LOCALE.getLanguage().equals(normalized.getLanguage())) {
-            chain.add(new Locale(normalized.getLanguage()));
-        }
-        chain.add(DEFAULT_LOCALE); // default
-        return chain;
-    }
-
-    /**
-     * @return a proper {@link Locale} instance with language and country code set regardless of how
-     * it was instantiated.  new Locale("pt-br") will be normalized to a locale constructed
-     * with new Locale("pt","BR").
-     */
-    private Locale normalizeLocale(Locale locale) {
-        final String[] parts = LOCALE.split(locale.toString());
-
-        if (parts.length == 1) {
-            return new Locale(parts[0]);
-        } else {
-            return new Locale(parts[0], parts[1]);
-        }
-    }
-
-    public List<Locale> getLocalesChain() {
-        return locale2localesChain.get(currentLocale);
-    }
-
-    public Locale getCurrentLocale() {
-        return currentLocale;
-    }
-
-    public RandomService getCurrentRandomService() {
-        return currentRandomService;
-    }
-
-    /**
      * Fetch a random value from an array item specified by the key
      */
-    public Object fetch(String key) {
+    public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
-        Object o = fetchObject(key);
+        Object o = fetchObject(key, context);
         if (o instanceof ArrayList)
             valuesArray = (ArrayList<?>) o;
         return valuesArray == null || valuesArray.isEmpty()
-            ? null : valuesArray.get(getCurrentRandomService().nextInt(valuesArray.size()));
+            ? null : valuesArray.get(context.getRandomService().nextInt(valuesArray.size()));
     }
 
     /**
-     * Same as {@link #fetch(String)} except this casts the result into a String.
+     * Same as {@link #fetch(String, FakerContext)} except this casts the result into a String.
      */
-    public String fetchString(String key) {
-        return (String) fetch(key);
+    public String fetchString(String key, FakerContext context) {
+        return (String) fetch(key, context);
     }
 
     /**
@@ -220,15 +131,15 @@ public class FakeValuesService {
      * @return see above
      */
     @SuppressWarnings("unchecked")
-    public String safeFetch(String key, String defaultIfNull) {
-        Object o = fetchObject(key);
+    public String safeFetch(String key, FakerContext context, String defaultIfNull) {
+        Object o = fetchObject(key, context);
         if (o == null) return defaultIfNull;
         if (o instanceof List) {
             List<String> values = (List<String>) o;
             if (values.size() == 0) {
                 return defaultIfNull;
             }
-            return values.get(getCurrentRandomService().nextInt(values.size()));
+            return values.get(context.getRandomService().nextInt(values.size()));
         } else if (isSlashDelimitedRegex(o.toString())) {
             return String.format("#{regexify '%s'}", trimRegexSlashes(o.toString()));
         } else {
@@ -242,11 +153,11 @@ public class FakeValuesService {
      * @param key key contains path to an object. Path segment is separated by
      *            dot. E.g. name.first_name
      */
-    public Object fetchObject(String key) {
+    public Object fetchObject(String key, FakerContext context) {
         Object result = null;
-        for (Locale locale: locale2localesChain.get(currentLocale)) {
+        for (Locale locale: context.getLocaleChain()) {
             // exclude default locale from cache checks
-            if (locale.equals(DEFAULT_LOCALE) && locale2localesChain.get(currentLocale).size() > 1) {
+            if (locale.equals(DEFAULT_LOCALE) && context.getLocaleChain().size() > 1) {
                 continue;
             }
             if (key2fetchedObject.get(locale) != null && (result = key2fetchedObject.get(locale).get(key)) != null) {
@@ -259,7 +170,7 @@ public class FakeValuesService {
 
         String[] path = split(key);
         Locale local2Add = null;
-        for (Locale locale : locale2localesChain.get(currentLocale)) {
+        for (Locale locale : context.getLocaleChain()) {
             Object currentValue = fakeValuesInterfaceMap.get(locale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
@@ -316,11 +227,11 @@ public class FakeValuesService {
      * <p>
      * For example, the string "ABC##EFG" could be replaced with a string like "ABC99EFG".
      */
-    public String numerify(String numberString) {
+    public String numerify(String numberString, FakerContext context) {
         char[] res = new char[numberString.length()];
         for (int i = 0; i < numberString.length(); i++) {
             if (numberString.charAt(i) == '#') {
-                res[i] = DIGITS.charAt(getCurrentRandomService().nextInt(10));
+                res[i] = DIGITS.charAt(context.getRandomService().nextInt(10));
             } else {
                 res[i] = numberString.charAt(i);
             }
@@ -330,29 +241,29 @@ public class FakeValuesService {
     }
 
     /**
-     * Applies both a {@link #numerify(String)} and a {@link #letterify(String)}
+     * Applies both a {@link #numerify(String, FakerContext)} and a {@link #letterify(String, FakerContext)}
      * over the incoming string.
      */
-    public String bothify(String string) {
-        return letterify(numerify(string));
+    public String bothify(String string, FakerContext context) {
+        return letterify(numerify(string, context), context);
     }
 
     /**
-     * Applies both a {@link #numerify(String)} and a {@link #letterify(String, boolean)}
+     * Applies both a {@link #numerify(String, FakerContext)} and a {@link #letterify(String, FakerContext, boolean)}
      * over the incoming string.
      */
-    public String bothify(String string, boolean isUpper) {
-        return letterify(numerify(string), isUpper);
+    public String bothify(String string, FakerContext context, boolean isUpper) {
+        return letterify(numerify(string, context), context, isUpper);
     }
 
     /**
      * Generates a String that matches the given regular expression.
      */
-    public String regexify(String regex) {
+    public String regexify(String regex, FakerContext context) {
         Generex generex = expression2generex.get(regex);
         if (generex == null) {
             generex = new Generex(regex);
-            generex.setSeed(getCurrentRandomService().nextLong());
+            generex.setSeed(context.getRandomService().nextLong());
             expression2generex.put(regex, generex);
         }
         return generex.random();
@@ -361,7 +272,7 @@ public class FakeValuesService {
     /**
      * Generates a String by example. The output string will have the same pattern as the input string.
      */
-    public String examplify(String example) {
+    public String examplify(String example, FakerContext context) {
         if (example == null) {
             return null;
         }
@@ -369,9 +280,9 @@ public class FakeValuesService {
 
         for (int i = 0; i < chars.length; i++) {
             if (Character.isLetter(chars[i])) {
-                chars[i] = letterify("?", Character.isUpperCase(chars[i])).charAt(0);
+                chars[i] = letterify("?", context, Character.isUpperCase(chars[i])).charAt(0);
             } else if (Character.isDigit(chars[i])) {
-                chars[i] = DIGITS.charAt(getCurrentRandomService().nextInt(10));
+                chars[i] = DIGITS.charAt(context.getRandomService().nextInt(10));
             }
         }
 
@@ -385,8 +296,8 @@ public class FakeValuesService {
      * <p>
      * For example, the string "12??34" could be replaced with a string like "12AB34".
      */
-    public String letterify(String letterString) {
-        return this.letterify(letterString, false);
+    public String letterify(String letterString, FakerContext context) {
+        return this.letterify(letterString, context, false);
     }
 
     /**
@@ -395,29 +306,29 @@ public class FakeValuesService {
      * <p>
      * For example, the string "12??34" could be replaced with a string like "12AB34".
      */
-    public String letterify(String letterString, boolean isUpper) {
-        return letterHelper((isUpper) ? 65 : 97, letterString); // from ascii table
+    public String letterify(String letterString, FakerContext context, boolean isUpper) {
+        return letterHelper((isUpper) ? 65 : 97, letterString, context); // from ascii table
     }
 
     /**
      * Returns a string with the char2replace characters in the parameter replaced with random alphabetic
      * characters from options
      */
-    public String templatify(String letterString, char char2replace, String... options) {
-        return templatify(letterString, Collections.singletonMap(char2replace, options));
+    public String templatify(String letterString, char char2replace, FakerContext context, String... options) {
+        return templatify(letterString, Collections.singletonMap(char2replace, options), context);
     }
 
     /**
      * Returns a string with the optionsMap.getKeys() characters in the parameter replaced with random alphabetic
      * characters from corresponding optionsMap.values()
      */
-    public String templatify(String letterString, Map<Character, String[]> optionsMap) {
+    public String templatify(String letterString, Map<Character, String[]> optionsMap, FakerContext context) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < letterString.length(); i++) {
             if (optionsMap.containsKey(letterString.charAt(i))) {
                 final String[] options = optionsMap.get(letterString.charAt(i));
                 Objects.requireNonNull(options, "Array with available options should be non null");
-                sb.append(options[getCurrentRandomService().nextInt(options.length)]);
+                sb.append(options[context.getRandomService().nextInt(options.length)]);
             } else {
                 sb.append(letterString.charAt(i));
             }
@@ -425,11 +336,11 @@ public class FakeValuesService {
         return sb.toString();
     }
 
-    private String letterHelper(int baseChar, String letterString) {
+    private String letterHelper(int baseChar, String letterString, FakerContext context) {
         final char[] res = letterString.toCharArray();
         for (int i = 0; i < letterString.length(); i++) {
             if (letterString.charAt(i) == '?') {
-                res[i] = (char) (baseChar + getCurrentRandomService().nextInt(26)); // a-z
+                res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
             }
         }
 
@@ -443,12 +354,12 @@ public class FakeValuesService {
      * <p>
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
-    public String resolve(String key, Object current, Faker root) {
-        return resolve(key, current, root, () -> key + " resulted in null expression");
+    public String resolve(String key, Object current, Faker root, FakerContext context) {
+        return resolve(key, current, root, () -> key + " resulted in null expression", context);
     }
 
-    public String resolve(String key, AbstractProvider provider) {
-        return resolve(key, provider, provider.getFaker(), () -> key + " resulted in null expression");
+    public String resolve(String key, AbstractProvider provider, FakerContext context) {
+        return resolve(key, provider, provider.getFaker(), () -> key + " resulted in null expression", context);
     }
 
     /**
@@ -458,13 +369,13 @@ public class FakeValuesService {
      * <p>
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
-    public String resolve(String key, Object current, Faker root, Supplier<String> exceptionMessage) {
-        String expression = root == null ? key2Expression.get(currentLocale).get(key) : null;
+    public String resolve(String key, Object current, Faker root, Supplier<String> exceptionMessage, FakerContext context) {
+        String expression = root == null ? key2Expression.get(context.getLocale()).get(key) : null;
         if (expression == null) {
-            expression = safeFetch(key, null);
+            expression = safeFetch(key, context, null);
             if (root == null) {
-                key2Expression.putIfAbsent(currentLocale, new HashMap<>());
-                key2Expression.get(currentLocale).put(key, expression);
+                key2Expression.putIfAbsent(context.getLocale(), new HashMap<>());
+                key2Expression.get(context.getLocale()).put(key, expression);
             }
         }
 
@@ -472,23 +383,23 @@ public class FakeValuesService {
             throw new RuntimeException(exceptionMessage.get());
         }
 
-        return resolveExpression(expression, current, root);
+        return resolveExpression(expression, current, root, context);
     }
 
     /**
      * Resolves an expression using the current faker.
      */
-    public String expression(String expression, Faker faker) {
-        return resolveExpression(expression, null, faker);
+    public String expression(String expression, Faker faker, FakerContext context) {
+        return resolveExpression(expression, null, faker, context);
     }
 
     /**
      * Resolves an expression in file using the current faker.
      */
-    public String fileExpression(Path path, Faker faker) {
+    public String fileExpression(Path path, Faker faker, FakerContext context) {
         try {
             return Files.readAllLines(path)
-                .stream().map(t -> expression(t, faker))
+                .stream().map(t -> expression(t, faker, context))
                 .collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -567,7 +478,7 @@ public class FakeValuesService {
      * Recursive templates are supported.  if "#{x}" resolves to "#{Address.streetName}" then "#{x}" resolves to
      * {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}.
      */
-    protected String resolveExpression(String expression, Object current, Faker root) {
+    protected String resolveExpression(String expression, Object current, Faker root, FakerContext context) {
         if (expression.indexOf('}') == -1 || !expression.contains("#{")) {
             return expression;
         }
@@ -589,11 +500,11 @@ public class FakeValuesService {
             final String arguments = j == expr.length() ? "" : expr.substring(j);
             final String[] args = splitArguments(arguments);
 
-            final Object resolved = resolveExpression(directive, args, current, root);
+            final Object resolved = resolveExpression(directive, args, current, root, context);
             if (resolved == null) {
                 throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
             }
-            result.append(resolveExpression(Objects.toString(resolved), current, root));
+            result.append(resolveExpression(Objects.toString(resolved), current, root, context));
         }
         return result.toString();
     }
@@ -679,7 +590,7 @@ public class FakeValuesService {
      *
      * @return null if unable to resolve
      */
-    private Object resolveExpression(String directive, String[] args, Object current, Faker root) {
+    private Object resolveExpression(String directive, String[] args, Object current, Faker root, FakerContext context) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
         if (directive.trim().isEmpty()) {
@@ -704,7 +615,7 @@ public class FakeValuesService {
         // simple fetch of a value from the yaml file. the directive may have been mutated
         // such that if the current yml object is car: and directive is #{wheel} then
         // car.wheel will be looked up in the YAML file.
-        Supplier<Object> supplier = () -> safeFetch(simpleDirective, null);
+        Supplier<Object> supplier = () -> safeFetch(simpleDirective, context, null);
         resolved = supplier.get();
         if (resolved != null) {
             // expression2function.put(expression, supplier);
@@ -735,7 +646,7 @@ public class FakeValuesService {
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
         if (dotDirective) {
-            supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), null);
+            supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), context, null);
             resolved = supplier.get();
         }
 

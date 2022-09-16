@@ -10,7 +10,7 @@ public class Size extends AbstractProvider {
     }
 
     public String adjective() {
-        return faker.fakeValuesService().resolve("size.adjective", this);
+        return resolve("size.adjective");
     }
 
 }

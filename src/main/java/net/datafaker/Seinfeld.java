@@ -12,15 +12,15 @@ public class Seinfeld extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("seinfeld.character", this);
+        return resolve("seinfeld.character");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("seinfeld.quote", this);
+        return resolve("seinfeld.quote");
     }
 
     public String business() {
-        return faker.fakeValuesService().resolve("seinfeld.business", this);
+        return resolve("seinfeld.business");
     }
 
 }

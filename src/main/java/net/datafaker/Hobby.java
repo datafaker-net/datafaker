@@ -10,7 +10,7 @@ public class Hobby extends AbstractProvider {
     }
 
     public String activity() {
-        return faker.fakeValuesService().resolve("hobby.activity", this);
+        return resolve("hobby.activity");
     }
 
 }

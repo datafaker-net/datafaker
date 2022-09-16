@@ -13,6 +13,6 @@ public class Coin extends AbstractProvider {
      * @return coin side e.g. "Heads", "Tails".
      */
     public String flip() {
-        return faker.fakeValuesService().resolve("coin.flip", this);
+        return resolve("coin.flip");
     }
 }

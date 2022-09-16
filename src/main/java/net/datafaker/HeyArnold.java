@@ -12,15 +12,15 @@ public class HeyArnold extends AbstractProvider {
     }
 
     public String characters() {
-        return faker.fakeValuesService().resolve("hey_arnold.characters", this);
+        return resolve("hey_arnold.characters");
     }
 
     public String locations() {
-        return faker.fakeValuesService().resolve("hey_arnold.locations", this);
+        return resolve("hey_arnold.locations");
     }
 
     public String quotes() {
-        return faker.fakeValuesService().resolve("hey_arnold.quotes", this);
+        return resolve("hey_arnold.quotes");
     }
 
 }

@@ -23,7 +23,7 @@ public class Basketball extends AbstractProvider {
      * @return Basketball teams
      */
     public String teams() {
-        return faker.fakeValuesService().resolve("basketball.teams", this);
+        return resolve("basketball.teams");
     }
 
     /**
@@ -32,7 +32,7 @@ public class Basketball extends AbstractProvider {
      * @return Basketball coaches
      */
     public String coaches() {
-        return faker.fakeValuesService().resolve("basketball.coaches", this);
+        return resolve("basketball.coaches");
     }
 
     /**
@@ -41,7 +41,7 @@ public class Basketball extends AbstractProvider {
      * @return Basketball positions
      */
     public String positions() {
-        return faker.fakeValuesService().resolve("basketball.positions", this);
+        return resolve("basketball.positions");
     }
 
     /**
@@ -50,6 +50,6 @@ public class Basketball extends AbstractProvider {
      * @return Basketball players
      */
     public String players() {
-        return faker.fakeValuesService().resolve("basketball.players", this);
+        return resolve("basketball.players");
     }
 }

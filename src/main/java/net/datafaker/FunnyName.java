@@ -10,6 +10,6 @@ public class FunnyName extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("funny_name.name", this);
+        return resolve("funny_name.name");
     }
 }

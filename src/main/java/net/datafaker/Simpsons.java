@@ -10,14 +10,14 @@ public class Simpsons extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("simpsons.characters");
+        return resolve("simpsons.characters");
     }
 
     public String location() {
-        return faker.resolve("simpsons.locations");
+        return resolve("simpsons.locations");
     }
 
     public String quote() {
-        return faker.resolve("simpsons.quotes");
+        return resolve("simpsons.quotes");
     }
 }

@@ -10,15 +10,15 @@ public class Australia extends AbstractProvider {
     }
 
     public String locations() {
-        return faker.fakeValuesService().resolve("australia.locations", this);
+        return resolve("australia.locations");
     }
 
     public String animals() {
-        return faker.fakeValuesService().resolve("australia.animals", this);
+        return resolve("australia.animals");
     }
 
     public String states() {
-        return faker.fakeValuesService().resolve("australia.states", this);
+        return resolve("australia.states");
     }
 
 }

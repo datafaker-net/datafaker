@@ -10,15 +10,15 @@ public class Dune extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("dune.characters", this);
+        return resolve("dune.characters");
     }
 
     public String title() {
-        return faker.fakeValuesService().resolve("dune.titles", this);
+        return resolve("dune.titles");
     }
 
     public String planet() {
-        return faker.fakeValuesService().resolve("dune.planets", this);
+        return resolve("dune.planets");
     }
 
     public String quote() {
@@ -26,7 +26,7 @@ public class Dune extends AbstractProvider {
     }
 
     public String quote(Quote quote) {
-        return faker.fakeValuesService().resolve("dune.quotes." + quote.yamlKey, this);
+        return resolve("dune.quotes." + quote.yamlKey);
     }
 
     public String saying() {
@@ -34,7 +34,7 @@ public class Dune extends AbstractProvider {
     }
 
     public String saying(Saying saying) {
-        return faker.fakeValuesService().resolve("dune.sayings." + saying.yamlKey, this);
+        return resolve("dune.sayings." + saying.yamlKey);
     }
 
     public enum Quote {

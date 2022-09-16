@@ -10,7 +10,7 @@ public class Color extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("color.name", this);
+        return resolve("color.name");
     }
 
     public String hex() {

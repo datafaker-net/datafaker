@@ -19,20 +19,20 @@ public class Nation extends AbstractProvider {
     }
 
     public String nationality() {
-        return faker.fakeValuesService().resolve("nation.nationality", this);
+        return resolve("nation.nationality");
     }
 
     public String language() {
-        return faker.fakeValuesService().resolve("nation.language", this);
+        return resolve("nation.language");
     }
 
     public String capitalCity() {
-        return faker.fakeValuesService().resolve("nation.capital_city", this);
+        return resolve("nation.capital_city");
     }
 
     public String flag() {
         @SuppressWarnings("unchecked")
-        List<Integer> flagInts = (List<Integer>) faker.fakeValuesService().fetch("nation.flag");
+        List<Integer> flagInts = (List<Integer>) faker.fakeValuesService().fetch("nation.flag", faker.getContext());
 
         ByteBuffer byteBuffer = MappedByteBuffer.allocate(flagInts.size());
 

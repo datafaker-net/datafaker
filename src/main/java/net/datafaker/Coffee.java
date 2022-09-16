@@ -13,7 +13,7 @@ public class Coffee extends AbstractProvider {
     }
 
     public String country() {
-        return faker.fakeValuesService().resolve("coffee.country", this);
+        return resolve("coffee.country");
     }
 
     public String region() {
@@ -21,39 +21,39 @@ public class Coffee extends AbstractProvider {
     }
 
     public String region(Coffee.Country country) {
-        return faker.fakeValuesService().resolve("coffee.regions." + country.name().toLowerCase(Locale.ROOT), this);
+        return resolve("coffee.regions." + country.name().toLowerCase(Locale.ROOT));
     }
 
     public String variety() {
-        return faker.fakeValuesService().resolve("coffee.variety", this);
+        return resolve("coffee.variety");
     }
 
     public String intensifier() {
-        return faker.fakeValuesService().resolve("coffee.intensifier", this);
+        return resolve("coffee.intensifier");
     }
 
     public String body() {
-        return faker.fakeValuesService().resolve("coffee.body", this);
+        return resolve("coffee.body");
     }
 
     public String descriptor() {
-        return faker.fakeValuesService().resolve("coffee.descriptor", this);
+        return resolve("coffee.descriptor");
     }
 
     public String notes() {
-        return faker.fakeValuesService().resolve("coffee.notes", this);
+        return resolve("coffee.notes");
     }
 
     public String name1() {
-        return faker.fakeValuesService().resolve("coffee.name_1", this);
+        return resolve("coffee.name_1");
     }
 
     public String name2() {
-        return faker.fakeValuesService().resolve("coffee.name_2", this);
+        return resolve("coffee.name_2");
     }
 
     public String blendName() {
-        return faker.fakeValuesService().resolve("coffee.blend_name", this);
+        return resolve("coffee.blend_name");
     }
 
     public enum Country {

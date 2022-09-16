@@ -10,14 +10,14 @@ public class TwinPeaks extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("twin_peaks.characters");
+        return resolve("twin_peaks.characters");
     }
 
     public String location() {
-        return faker.resolve("twin_peaks.locations");
+        return resolve("twin_peaks.locations");
     }
 
     public String quote() {
-        return faker.resolve("twin_peaks.quotes");
+        return resolve("twin_peaks.quotes");
     }
 }

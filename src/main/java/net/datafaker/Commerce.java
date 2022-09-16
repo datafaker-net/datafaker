@@ -20,7 +20,7 @@ public class Commerce extends AbstractProvider {
         int numberOfDepartments = Math.max(faker.random().nextInt(4), 1);
         SortedSet<String> departments = new TreeSet<>();
         while (departments.size() < numberOfDepartments) {
-            departments.add(faker.fakeValuesService().resolve("commerce.department", this));
+            departments.add(faker.resolve("commerce.department"));
         }
         if (departments.size() > 1) {
             String lastDepartment = departments.last();
@@ -33,22 +33,22 @@ public class Commerce extends AbstractProvider {
 
     public String productName() {
         return String.join(" ",
-            faker.fakeValuesService().resolve("commerce.product_name.adjective", this),
-            faker.fakeValuesService().resolve("commerce.product_name.material", this),
-            faker.fakeValuesService().resolve("commerce.product_name.product", this)
+            resolve("commerce.product_name.adjective"),
+            resolve("commerce.product_name.material"),
+            resolve("commerce.product_name.product")
         );
     }
 
     public String material() {
-        return faker.fakeValuesService().resolve("commerce.product_name.material", this);
+        return resolve("commerce.product_name.material");
     }
 
     public String brand() {
-        return faker.fakeValuesService().resolve("commerce.brand", this);
+        return resolve("commerce.brand");
     }
 
     public String vendor() {
-        return faker.fakeValuesService().resolve("commerce.vendor", this);
+        return resolve("commerce.vendor");
     }
 
     /**
@@ -69,7 +69,7 @@ public class Commerce extends AbstractProvider {
 
     public String promotionCode(int digits) {
         return String.join(faker.resolve("commerce.promotion_code.adjective"),
-            faker.resolve("commerce.promotion_code.noun"),
+            resolve("commerce.promotion_code.noun"),
             faker.number().digits(digits));
     }
 }

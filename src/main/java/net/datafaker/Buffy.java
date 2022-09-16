@@ -10,23 +10,23 @@ public class Buffy extends AbstractProvider {
     }
 
     public String characters() {
-        return faker.fakeValuesService().resolve("buffy.characters", this);
+        return resolve("buffy.characters");
     }
 
     public String quotes() {
-        return faker.fakeValuesService().resolve("buffy.quotes", this);
+        return resolve("buffy.quotes");
     }
 
     public String celebrities() {
-        return faker.fakeValuesService().resolve("buffy.celebrities", this);
+        return resolve("buffy.celebrities");
     }
 
     public String bigBads() {
-        return faker.fakeValuesService().resolve("buffy.big_bads", this);
+        return resolve("buffy.big_bads");
     }
 
     public String episodes() {
-        return faker.fakeValuesService().resolve("buffy.episodes", this);
+        return resolve("buffy.episodes");
     }
 
 }
