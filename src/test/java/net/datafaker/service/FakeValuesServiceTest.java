@@ -4,6 +4,7 @@ import net.datafaker.AbstractFakerTest;
 import net.datafaker.Faker;
 import net.datafaker.Superhero;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -261,7 +262,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
             "Unable to resolve #{Number.number_between 'x','y'} directive.");
     }
 
-    @Test
+    @RepeatedTest(100)
     void futureDateExpression() throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
 
@@ -273,7 +274,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
         assertThat(date.getTime()).isStrictlyBetween(now.getTime(), nowPlus10Days.getTime());
     }
 
-    @Test
+    @RepeatedTest(100)
     void pastDateExpression() throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
 
@@ -356,7 +357,6 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void FakeValuesServiceWithNullLocaleTest() {
-        RandomService r = new RandomService();
         assertThatThrownBy(() -> new FakeValuesService(null, new RandomService()))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("locale is required");

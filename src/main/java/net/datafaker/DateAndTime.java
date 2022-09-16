@@ -28,20 +28,19 @@ public class DateAndTime extends AbstractProvider {
     }
 
     /**
-     * Generates a future date from now. Note that there is a 1 second slack to avoid generating a past date.
+     * Generates a future date from now.
      *
      * @param atMost at most this amount of time ahead from now exclusive.
      * @param unit   the time unit.
      * @return a future date from now.
      */
     public Timestamp future(int atMost, TimeUnit unit) {
-        Timestamp aBitLaterThanNow = new Timestamp(System.currentTimeMillis() + 1000);
+        Timestamp aBitLaterThanNow = new Timestamp(System.currentTimeMillis() + 1);
         return future(atMost, unit, aBitLaterThanNow);
     }
 
     /**
      * Generates and converts to string representation a future date from now.
-     * Note that there is a 1 second slack to avoid generating a past date.
      *
      * @param atMost  at most this amount of time ahead from now exclusive.
      * @param unit    the time unit.
@@ -111,20 +110,19 @@ public class DateAndTime extends AbstractProvider {
     }
 
     /**
-     * Generates a past date from now. Note that there is a 1 second slack added.
+     * Generates a past date from now.
      *
      * @param atMost at most this amount of time earlier from now exclusive.
      * @param unit   the time unit.
      * @return a past date from now.
      */
     public Timestamp past(int atMost, TimeUnit unit) {
-        Timestamp aBitEarlierThanNow = new Timestamp(System.currentTimeMillis() - 1000);
+        Timestamp aBitEarlierThanNow = new Timestamp(System.currentTimeMillis() - 1);
         return past(atMost, unit, aBitEarlierThanNow);
     }
 
     /**
      * Generates a string representation of a past date from now.
-     * Note that there is a 1 second slack added.
      *
      * @param atMost  at most this amount of time earlier from now exclusive.
      * @param unit    the time unit.
