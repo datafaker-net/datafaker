@@ -59,4 +59,23 @@ class PassportTest extends AbstractFakerTest {
             .hasSize(9)
             .matches("[MT][A-Z][0-9]{7}");
     }
+
+    @RepeatedTest(10)
+    void testValidSpain() {
+        assertThat(new Faker(new Locale("es")).passport().valid())
+            .matches("[A-z0-9]{2,3}[0-9]{6}");
+    }
+
+    @RepeatedTest(10)
+    void testValidBulgaria() {
+        assertThat(new Faker(new Locale("bg")).passport().valid())
+            .hasSize(9);
+    }
+
+    @RepeatedTest(10)
+    void testValidFinland() {
+        assertThat(new Faker(new Locale("fi", "FI")).passport().valid())
+            .hasSize(9);
+    }
+
 }
