@@ -194,3 +194,6 @@ de:
         - "#{vehicle.license_plate_base}"
         - "#{vehicle.license_plate_base}E"
         - "#{vehicle.license_plate_base}H"
+
+    passport:
+      valid: "[CFGHJK][0-9CFGHJKLMNPRTVWXYZ]{8}"
