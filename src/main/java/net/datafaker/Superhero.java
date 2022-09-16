@@ -10,22 +10,22 @@ public class Superhero extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("superhero.name", this);
+        return resolve("superhero.name");
     }
 
     public String prefix() {
-        return faker.fakeValuesService().resolve("superhero.prefix", this);
+        return resolve("superhero.prefix");
     }
 
     public String suffix() {
-        return faker.fakeValuesService().resolve("superhero.suffix", this);
+        return resolve("superhero.suffix");
     }
 
     public String power() {
-        return faker.fakeValuesService().resolve("superhero.power", this);
+        return resolve("superhero.power");
     }
 
     public String descriptor() {
-        return faker.fakeValuesService().resolve("superhero.descriptor", this);
+        return resolve("superhero.descriptor");
     }
 }

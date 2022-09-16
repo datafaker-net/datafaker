@@ -10,14 +10,14 @@ public class BackToTheFuture extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("back_to_the_future.characters");
+        return resolve("back_to_the_future.characters");
     }
 
     public String date() {
-        return faker.resolve("back_to_the_future.dates");
+        return resolve("back_to_the_future.dates");
     }
 
     public String quote() {
-        return faker.resolve("back_to_the_future.quotes");
+        return resolve("back_to_the_future.quotes");
     }
 }

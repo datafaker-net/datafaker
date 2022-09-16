@@ -10,28 +10,28 @@ public class Medical extends AbstractProvider {
     }
 
     public String medicineName() {
-        return faker.fakeValuesService().resolve("medical.medicine_name", this);
+        return resolve("medical.medicine_name");
     }
 
     public String diseaseName() {
-        return faker.fakeValuesService().resolve("medical.disease_name", this);
+        return resolve("medical.disease_name");
     }
 
     public String hospitalName() {
-        return faker.fakeValuesService().resolve("medical.hospital_name", this);
+        return resolve("medical.hospital_name");
     }
 
     public String symptoms() {
-        return faker.fakeValuesService().resolve("medical.symptoms", this);
+        return resolve("medical.symptoms");
     }
 
     public String diagnosisCode() {
-        String regex = faker.fakeValuesService().resolve("medical.diagnosis_code.icd10", this);
+        String regex = resolve("medical.diagnosis_code.icd10");
         return faker.regexify(regex);
     }
 
     public String procedureCode() {
-        String regex = faker.fakeValuesService().resolve("medical.procedure_code.icd10", this);
+        String regex = resolve("medical.procedure_code.icd10");
         return faker.regexify(regex);
     }
 }

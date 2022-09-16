@@ -15,7 +15,7 @@ public class GreekPhilosopher extends AbstractProvider {
      * @return a string of greek philosopher's name.
      */
     public String name() {
-        return faker.fakeValuesService().resolve("greek_philosophers.names", this);
+        return resolve("greek_philosophers.names");
     }
 
     /**
@@ -24,6 +24,6 @@ public class GreekPhilosopher extends AbstractProvider {
      * @return a string of greek philosopher's quote.
      */
     public String quote() {
-        return faker.fakeValuesService().resolve("greek_philosophers.quotes", this);
+        return resolve("greek_philosophers.quotes");
     }
 }

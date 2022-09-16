@@ -10,6 +10,6 @@ public class Artist extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().fetchString("artist.names");
+        return  resolve("artist.names");
     }
 }

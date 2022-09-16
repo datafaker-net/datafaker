@@ -90,6 +90,6 @@ public class Barcode extends AbstractProvider {
     }
 
     public String type() {
-        return faker.resolve("barcode.types");
+        return resolve("barcode.types");
     }
 }

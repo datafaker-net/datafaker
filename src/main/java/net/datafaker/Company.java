@@ -18,24 +18,24 @@ public class Company extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("company.name", this);
+        return resolve("company.name");
     }
 
     public String suffix() {
-        return faker.fakeValuesService().resolve("company.suffix", this);
+        return resolve("company.suffix");
     }
 
     public String industry() {
-        return faker.fakeValuesService().resolve("company.industry", this);
+        return resolve("company.industry");
     }
 
     public String profession() {
-        return faker.fakeValuesService().resolve("company.profession", this);
+        return resolve("company.profession");
     }
 
     public String buzzword() {
         @SuppressWarnings("unchecked")
-        List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords");
+        List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
         List<String> buzzwords = new ArrayList<>();
         for (List<String> buzzwordList : buzzwordLists) {
             buzzwords.addAll(buzzwordList);
@@ -48,7 +48,7 @@ public class Company extends AbstractProvider {
      */
     public String catchPhrase() {
         @SuppressWarnings("unchecked")
-        List<List<String>> catchPhraseLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords");
+        List<List<String>> catchPhraseLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
         return joinSampleOfEachList(catchPhraseLists);
     }
 
@@ -57,7 +57,7 @@ public class Company extends AbstractProvider {
      */
     public String bs() {
         @SuppressWarnings("unchecked")
-        List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.bs");
+        List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.bs", faker.getContext());
         return joinSampleOfEachList(buzzwordLists);
     }
 
@@ -82,7 +82,7 @@ public class Company extends AbstractProvider {
     }
 
     private String domainSuffix() {
-        return faker.fakeValuesService().resolve("internet.domain_suffix", this);
+        return resolve("internet.domain_suffix");
     }
 
     private String joinSampleOfEachList(List<List<String>> listOfLists) {

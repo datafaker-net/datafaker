@@ -10,22 +10,22 @@ public class GameOfThrones extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("game_of_thrones.characters");
+        return resolve("game_of_thrones.characters");
     }
 
     public String house() {
-        return faker.resolve("game_of_thrones.houses");
+        return resolve("game_of_thrones.houses");
     }
 
     public String city() {
-        return faker.resolve("game_of_thrones.cities");
+        return resolve("game_of_thrones.cities");
     }
 
     public String dragon() {
-        return faker.resolve("game_of_thrones.dragons");
+        return resolve("game_of_thrones.dragons");
     }
 
     public String quote() {
-        return faker.resolve("game_of_thrones.quotes");
+        return resolve("game_of_thrones.quotes");
     }
 }

@@ -10,42 +10,42 @@ public class Cannabis extends AbstractProvider {
     }
 
     public String strains() {
-        return faker.fakeValuesService().resolve("cannabis.strains", this);
+        return resolve("cannabis.strains");
     }
 
     public String cannabinoidAbbreviations() {
-        return faker.fakeValuesService().resolve("cannabis.cannabinoid_abbreviations", this);
+        return resolve("cannabis.cannabinoid_abbreviations");
     }
 
     public String cannabinoids() {
-        return faker.fakeValuesService().resolve("cannabis.cannabinoids", this);
+        return resolve("cannabis.cannabinoids");
     }
 
     public String terpenes() {
-        return faker.fakeValuesService().resolve("cannabis.terpenes", this);
+        return resolve("cannabis.terpenes");
     }
 
     public String medicalUses() {
-        return faker.fakeValuesService().resolve("cannabis.medical_uses", this);
+        return resolve("cannabis.medical_uses");
     }
 
     public String healthBenefits() {
-        return faker.fakeValuesService().resolve("cannabis.health_benefits", this);
+        return resolve("cannabis.health_benefits");
     }
 
     public String categories() {
-        return faker.fakeValuesService().resolve("cannabis.categories", this);
+        return resolve("cannabis.categories");
     }
 
     public String types() {
-        return faker.fakeValuesService().resolve("cannabis.types", this);
+        return resolve("cannabis.types");
     }
 
     public String buzzwords() {
-        return faker.fakeValuesService().resolve("cannabis.buzzwords", this);
+        return resolve("cannabis.buzzwords");
     }
 
     public String brands() {
-        return faker.fakeValuesService().resolve("cannabis.brands", this);
+        return resolve("cannabis.brands");
     }
 }

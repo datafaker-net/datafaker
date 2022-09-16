@@ -10,18 +10,18 @@ public class Hobbit extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("hobbit.character", this);
+        return resolve("hobbit.character");
     }
 
     public String thorinsCompany() {
-        return faker.fakeValuesService().resolve("hobbit.thorins_company", this);
+        return resolve("hobbit.thorins_company");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("hobbit.quote", this);
+        return resolve("hobbit.quote");
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("hobbit.location", this);
+        return resolve("hobbit.location");
     }
 }

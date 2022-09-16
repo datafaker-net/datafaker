@@ -12,7 +12,7 @@ public class Animal extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("creature.animal.name", this);
+        return resolve("creature.animal.name");
     }
 
     public String scientificName() {
@@ -20,10 +20,10 @@ public class Animal extends AbstractProvider {
     }
 
     public String genus() {
-        return WordUtils.capitalize(faker.fakeValuesService().resolve("creature.animal.genus", this));
+        return WordUtils.capitalize(faker.resolve("creature.animal.genus"));
     }
 
     public String species() {
-        return faker.fakeValuesService().resolve("creature.animal.species", this).toLowerCase();
+        return resolve("creature.animal.species").toLowerCase();
     }
 }

@@ -128,14 +128,14 @@ public class Twitter extends AbstractProvider {
      * @return Return a user name using the twitter.user_name.
      */
     public String userName() {
-        return faker.fakeValuesService().resolve("twitter.user_name", this);
+        return resolve("twitter.user_name");
     }
 
     /**
      * @return Return a user id using the twitter.user_name.
      */
     public String userId() {
-        return faker.fakeValuesService().resolve("twitter.user_id", this);
+        return resolve("twitter.user_id");
     }
 
     /**

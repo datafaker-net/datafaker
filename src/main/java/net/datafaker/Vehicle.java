@@ -17,15 +17,15 @@ public class Vehicle extends AbstractProvider {
     }
 
     public String vin() {
-        return faker.fakeValuesService().regexify(VIN_REGEX);
+        return faker.regexify(VIN_REGEX);
     }
 
     public String manufacturer() {
-        return faker.resolve("vehicle.manufacture");
+        return resolve("vehicle.manufacture");
     }
 
     public String make() {
-        return faker.resolve("vehicle.makes");
+        return resolve("vehicle.makes");
     }
 
     public String model() {
@@ -33,7 +33,7 @@ public class Vehicle extends AbstractProvider {
     }
 
     public String model(String make) {
-        return faker.resolve("vehicle.models_by_make." + make);
+        return resolve("vehicle.models_by_make." + make);
     }
 
     public String makeAndModel() {
@@ -42,45 +42,45 @@ public class Vehicle extends AbstractProvider {
     }
 
     public String style() {
-        return faker.resolve("vehicle.styles");
+        return resolve("vehicle.styles");
     }
 
     public String color() {
-        return faker.resolve("vehicle.colors");
+        return resolve("vehicle.colors");
     }
 
     public String upholsteryColor() {
-        return faker.resolve("vehicle.upholstery_colors");
+        return resolve("vehicle.upholstery_colors");
     }
 
     public String upholsteryFabric() {
-        return faker.resolve("vehicle.upholstery_fabrics");
+        return resolve("vehicle.upholstery_fabrics");
     }
 
     public String upholstery() {
-        return faker.resolve("vehicle.upholsteries");
+        return resolve("vehicle.upholsteries");
     }
 
     public String transmission() {
-        return faker.resolve("vehicle.transmissions");
+        return resolve("vehicle.transmissions");
     }
 
     public String driveType() {
-        return faker.resolve("vehicle.drive_types");
+        return resolve("vehicle.drive_types");
     }
 
     public String fuelType() {
-        return faker.resolve("vehicle.fuel_types");
+        return resolve("vehicle.fuel_types");
     }
 
     public String carType() {
-        return faker.resolve("vehicle.car_types");
+        return resolve("vehicle.car_types");
     }
 
     public String engine() {
-        return faker.resolve("vehicle.engine_sizes")
+        return resolve("vehicle.engine_sizes")
             + " "
-            + faker.resolve("vehicle.cylinder_engine");
+            + resolve("vehicle.cylinder_engine");
     }
 
     public List<String> carOptions() {
@@ -112,7 +112,7 @@ public class Vehicle extends AbstractProvider {
     }
 
     public String doors() {
-        return faker.resolve("vehicle.doors");
+        return resolve("vehicle.doors");
     }
 
     public String licensePlate() {
@@ -125,7 +125,7 @@ public class Vehicle extends AbstractProvider {
             return null;
         }
 
-        String licensePlatesByState = faker.fakeValuesService().resolve("vehicle.license_plate_by_state." + stateAbbreviation, this);
+        String licensePlatesByState = resolve("vehicle.license_plate_by_state." + stateAbbreviation);
         return licensePlatesByState == null ? null : faker.regexify(faker.bothify(licensePlatesByState)).toUpperCase(Locale.ROOT);
     }
 }

@@ -1,6 +1,7 @@
 package net.datafaker.integration;
 
 import net.datafaker.service.FakeValuesService;
+import net.datafaker.service.FakerContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,20 +17,24 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class MostSpecificLocaleTest {
 
-    private FakeValuesService en;
-    private FakeValuesService en_US;
+    private FakerContext en;
+    private FakerContext en_US;
 
     @BeforeEach
     void setupFakers() {
-        en = new FakeValuesService(new Locale("en"), null);
-        en_US = new FakeValuesService(new Locale("en", "US"), null);
+        en = new FakerContext(new Locale("en"), null);
+        en_US = new FakerContext(new Locale("en", "US"), null);
     }
 
     @Test
     @SuppressWarnings("unchecked")
     void resolvesTheMostSpecificLocale() {
-        final List<String> enDefaultCountries = (List<String>) en.fetchObject("address.default_country");
-        final List<String> enUsDefaultCountries = (List<String>) en_US.fetchObject("address.default_country");
+        FakeValuesService fakeValuesService = new FakeValuesService();
+        fakeValuesService.updateFakeValuesInterfaceMap(en.getLocaleChain());
+        final List<String> enDefaultCountries = (List<String>) fakeValuesService.fetchObject("address.default_country", en);
+        fakeValuesService = new FakeValuesService();
+        fakeValuesService.updateFakeValuesInterfaceMap(en_US.getLocaleChain());
+        final List<String> enUsDefaultCountries = (List<String>) fakeValuesService.fetchObject("address.default_country", en_US);
 
         assertThat(enDefaultCountries).hasSize(1);
         assertThat(enUsDefaultCountries).hasSize(3);

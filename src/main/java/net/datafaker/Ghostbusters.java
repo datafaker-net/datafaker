@@ -10,14 +10,14 @@ public class Ghostbusters extends AbstractProvider {
     }
 
     public String actor() {
-        return faker.resolve("ghostbusters.actors");
+        return resolve("ghostbusters.actors");
     }
 
     public String character() {
-        return faker.resolve("ghostbusters.characters");
+        return resolve("ghostbusters.characters");
     }
 
     public String quote() {
-        return faker.resolve("ghostbusters.quotes");
+        return resolve("ghostbusters.quotes");
     }
 }

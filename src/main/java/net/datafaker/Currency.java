@@ -10,10 +10,10 @@ public class Currency extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("currency.name", this);
+        return resolve("currency.name");
     }
 
     public String code() {
-        return faker.fakeValuesService().resolve("currency.code", this);
+        return resolve("currency.code");
     }
 }

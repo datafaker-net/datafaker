@@ -10,34 +10,34 @@ public class Dog extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("creature.dog.name", this);
+        return resolve("creature.dog.name");
     }
 
     public String breed() {
-        return faker.fakeValuesService().resolve("creature.dog.breed", this);
+        return resolve("creature.dog.breed");
     }
 
     public String sound() {
-        return faker.fakeValuesService().resolve("creature.dog.sound", this);
+        return resolve("creature.dog.sound");
     }
 
     public String memePhrase() {
-        return faker.fakeValuesService().resolve("creature.dog.meme_phrase", this);
+        return resolve("creature.dog.meme_phrase");
     }
 
     public String age() {
-        return faker.fakeValuesService().resolve("creature.dog.age", this);
+        return resolve("creature.dog.age");
     }
 
     public String coatLength() {
-        return faker.fakeValuesService().resolve("creature.dog.coat_length", this);
+        return resolve("creature.dog.coat_length");
     }
 
     public String gender() {
-        return faker.fakeValuesService().resolve("creature.dog.gender", this);
+        return resolve("creature.dog.gender");
     }
 
     public String size() {
-        return faker.fakeValuesService().resolve("creature.dog.size", this);
+        return resolve("creature.dog.size");
     }
 }

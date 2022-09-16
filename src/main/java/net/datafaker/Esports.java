@@ -10,22 +10,22 @@ public class Esports extends AbstractProvider {
     }
 
     public String player() {
-        return faker.resolve("esport.players");
+        return resolve("esport.players");
     }
 
     public String team() {
-        return faker.resolve("esport.teams");
+        return resolve("esport.teams");
     }
 
     public String event() {
-        return faker.resolve("esport.events");
+        return resolve("esport.events");
     }
 
     public String league() {
-        return faker.resolve("esport.leagues");
+        return resolve("esport.leagues");
     }
 
     public String game() {
-        return faker.resolve("esport.games");
+        return resolve("esport.games");
     }
 }

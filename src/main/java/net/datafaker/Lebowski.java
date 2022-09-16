@@ -10,14 +10,14 @@ public class Lebowski extends AbstractProvider {
     }
 
     public String actor() {
-        return faker.fakeValuesService().resolve("lebowski.actors", this);
+        return resolve("lebowski.actors");
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("lebowski.characters", this);
+        return resolve("lebowski.characters");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("lebowski.quotes", this);
+        return resolve("lebowski.quotes");
     }
 }

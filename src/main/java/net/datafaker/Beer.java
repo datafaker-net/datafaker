@@ -10,22 +10,22 @@ public class Beer extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("beer.name", this);
+        return resolve("beer.name");
     }
 
     public String style() {
-        return faker.fakeValuesService().resolve("beer.style", this);
+        return resolve("beer.style");
     }
 
     public String hop() {
-        return faker.fakeValuesService().resolve("beer.hop", this);
+        return resolve("beer.hop");
     }
 
     public String yeast() {
-        return faker.fakeValuesService().resolve("beer.yeast", this);
+        return resolve("beer.yeast");
     }
 
     public String malt() {
-        return faker.fakeValuesService().resolve("beer.malt", this);
+        return resolve("beer.malt");
     }
 }

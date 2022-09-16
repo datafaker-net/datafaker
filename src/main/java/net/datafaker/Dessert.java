@@ -13,20 +13,20 @@ public class Dessert extends AbstractProvider {
      * @return dessert variety e.g. "Cake".
      */
     public String variety() {
-        return faker.fakeValuesService().resolve("dessert.variety", this);
+        return resolve("dessert.variety");
     }
 
     /**
      * @return dessert topping e.g. "Rainbow Sprinkles".
      */
     public String topping() {
-        return faker.fakeValuesService().resolve("dessert.topping", this);
+        return resolve("dessert.topping");
     }
 
     /**
      * @return dessert flavor e.g. "Vanilla".
      */
     public String flavor() {
-        return faker.fakeValuesService().resolve("dessert.flavor", this);
+        return resolve("dessert.flavor");
     }
 }

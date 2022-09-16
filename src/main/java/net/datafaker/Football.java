@@ -10,23 +10,23 @@ public class Football extends AbstractProvider {
     }
 
     public String teams() {
-        return faker.fakeValuesService().resolve("football.teams", this);
+        return resolve("football.teams");
     }
 
     public String players() {
-        return faker.fakeValuesService().resolve("football.players", this);
+        return resolve("football.players");
     }
 
     public String coaches() {
-        return faker.fakeValuesService().resolve("football.coaches", this);
+        return resolve("football.coaches");
     }
 
     public String competitions() {
-        return faker.fakeValuesService().resolve("football.competitions", this);
+        return resolve("football.competitions");
     }
 
     public String positions() {
-        return faker.fakeValuesService().resolve("football.positions", this);
+        return resolve("football.positions");
     }
 
 }

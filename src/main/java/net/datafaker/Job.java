@@ -10,22 +10,22 @@ public class Job extends AbstractProvider {
     }
 
     public String field() {
-        return faker.fakeValuesService().resolve("job.field", this);
+        return resolve("job.field");
     }
 
     public String seniority() {
-        return faker.fakeValuesService().resolve("job.seniority", this);
+        return resolve("job.seniority");
     }
 
     public String position() {
-        return faker.fakeValuesService().resolve("job.position", this);
+        return resolve("job.position");
     }
 
     public String keySkills() {
-        return faker.fakeValuesService().resolve("job.key_skills", this);
+        return resolve("job.key_skills");
     }
 
     public String title() {
-        return faker.fakeValuesService().resolve("job.title", this);
+        return resolve("job.title");
     }
 }

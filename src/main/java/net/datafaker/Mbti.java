@@ -15,24 +15,24 @@ public class Mbti extends AbstractProvider {
     }
 
     public String type() {
-        return faker.resolve("mbti.".concat(choice).concat(".type"));
+        return resolve("mbti.".concat(choice).concat(".type"));
     }
 
     public String name() {
-        return faker.resolve("mbti.".concat(choice).concat(".name"));
+        return resolve("mbti.".concat(choice).concat(".name"));
     }
 
     public String characteristic() {
-        return faker.resolve("mbti.".concat(choice).concat(".characteristic"));
+        return resolve("mbti.".concat(choice).concat(".characteristic"));
     }
 
     public String personage() {
-        return faker.resolve("mbti.".concat(choice).concat(".personage"));
+        return resolve("mbti.".concat(choice).concat(".personage"));
     }
 
-    public String merit(){return faker.resolve("mbti.".concat(choice).concat(".merit"));}
+    public String merit(){return resolve("mbti.".concat(choice).concat(".merit"));}
 
-    public String weakness(){return faker.resolve("mbti.".concat(choice).concat(".weakness"));}
+    public String weakness(){return resolve("mbti.".concat(choice).concat(".weakness"));}
 
 
 }

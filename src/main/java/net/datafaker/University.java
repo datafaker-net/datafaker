@@ -10,14 +10,14 @@ public class University extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("university.name", this);
+        return resolve("university.name");
     }
 
     public String prefix() {
-        return faker.fakeValuesService().resolve("university.prefix", this);
+        return resolve("university.prefix");
     }
 
     public String suffix() {
-        return faker.fakeValuesService().resolve("university.suffix", this);
+        return resolve("university.suffix");
     }
 }

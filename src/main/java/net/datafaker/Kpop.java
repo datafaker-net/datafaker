@@ -12,27 +12,27 @@ public class Kpop extends AbstractProvider {
     }
 
     public String iGroups() {
-        return faker.fakeValuesService().resolve("kpop.i_groups", this);
+        return resolve("kpop.i_groups");
     }
 
     public String iiGroups() {
-        return faker.fakeValuesService().resolve("kpop.ii_groups", this);
+        return resolve("kpop.ii_groups");
     }
 
     public String iiiGroups() {
-        return faker.fakeValuesService().resolve("kpop.iii_groups", this);
+        return resolve("kpop.iii_groups");
     }
 
     public String girlGroups() {
-        return faker.fakeValuesService().resolve("kpop.girl_groups", this);
+        return resolve("kpop.girl_groups");
     }
 
     public String boyBands() {
-        return faker.fakeValuesService().resolve("kpop.boy_bands", this);
+        return resolve("kpop.boy_bands");
     }
 
     public String solo() {
-        return faker.fakeValuesService().resolve("kpop.solo", this);
+        return resolve("kpop.solo");
     }
 
 }

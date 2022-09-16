@@ -10,37 +10,37 @@ public class Witcher extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("games.witcher.characters", this);
+        return resolve("games.witcher.characters");
     }
 
     public String witcher() {
-        return faker.fakeValuesService().resolve("games.witcher.witchers", this);
+        return resolve("games.witcher.witchers");
     }
 
     public String school() {
-        return faker.fakeValuesService().resolve("games.witcher.schools", this);
+        return resolve("games.witcher.schools");
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("games.witcher.locations", this);
+        return resolve("games.witcher.locations");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("games.witcher.quotes", this);
+        return resolve("games.witcher.quotes");
     }
 
     public String monster() {
-        return faker.fakeValuesService().resolve("games.witcher.monsters", this);
+        return resolve("games.witcher.monsters");
     }
     public String sign() {
-        return faker.fakeValuesService().resolve("games.witcher.signs", this);
+        return resolve("games.witcher.signs");
     }
 
     public String potion() {
-        return faker.fakeValuesService().resolve("games.witcher.potions", this);
+        return resolve("games.witcher.potions");
     }
 
     public String book() {
-        return faker.fakeValuesService().resolve("games.witcher.books", this);
+        return resolve("games.witcher.books");
     }
 }

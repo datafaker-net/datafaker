@@ -10,10 +10,10 @@ public class Zelda extends AbstractProvider {
     }
 
     public String game() {
-        return faker.resolve("games.zelda.games");
+        return resolve("games.zelda.games");
     }
 
     public String character() {
-        return faker.resolve("games.zelda.characters");
+        return resolve("games.zelda.characters");
     }
 }

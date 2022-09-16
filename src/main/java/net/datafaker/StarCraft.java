@@ -10,19 +10,19 @@ public class StarCraft extends AbstractProvider {
     }
 
     public String unit() {
-        return faker.fakeValuesService().resolve("starcraft.units", this);
+        return resolve("starcraft.units");
     }
 
     public String building() {
-        return faker.fakeValuesService().resolve("starcraft.buildings", this);
+        return resolve("starcraft.buildings");
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("starcraft.characters", this);
+        return resolve("starcraft.characters");
     }
 
     public String planet() {
-        return faker.fakeValuesService().resolve("starcraft.planets", this);
+        return resolve("starcraft.planets");
     }
 
 }

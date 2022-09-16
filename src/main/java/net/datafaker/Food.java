@@ -10,31 +10,31 @@ public class Food extends AbstractProvider {
     }
 
     public String ingredient() {
-        return faker.fakeValuesService().resolve("food.ingredients", this);
+        return resolve("food.ingredients");
     }
 
     public String spice() {
-        return faker.fakeValuesService().resolve("food.spices", this);
+        return resolve("food.spices");
     }
 
     public String dish() {
-        return faker.fakeValuesService().resolve("food.dish", this);
+        return resolve("food.dish");
     }
 
     public String fruit() {
-        return faker.fakeValuesService().resolve("food.fruits", this);
+        return resolve("food.fruits");
     }
 
     public String vegetable() {
-        return faker.fakeValuesService().resolve("food.vegetables", this);
+        return resolve("food.vegetables");
     }
 
     public String sushi() {
-        return faker.fakeValuesService().resolve("food.sushi", this);
+        return resolve("food.sushi");
     }
 
     public String measurement() {
-        return faker.fakeValuesService().resolve("food.measurement_sizes", this) +
-            " " + faker.fakeValuesService().resolve("food.measurements", this);
+        return resolve("food.measurement_sizes") +
+            " " + resolve("food.measurements");
     }
 }

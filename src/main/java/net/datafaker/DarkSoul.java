@@ -13,19 +13,19 @@ public class DarkSoul extends AbstractProvider {
     }
 
     public String stats() {
-        return faker.fakeValuesService().resolve("dark_soul.stats", this);
+        return resolve("dark_soul.stats");
     }
 
     public String covenants() {
-        return faker.fakeValuesService().resolve("dark_soul.covenants", this);
+        return resolve("dark_soul.covenants");
     }
 
     public String classes() {
-        return faker.fakeValuesService().resolve("dark_soul.classes", this);
+        return resolve("dark_soul.classes");
     }
 
     public String shield() {
-        return faker.fakeValuesService().resolve("dark_soul.shield", this);
+        return resolve("dark_soul.shield");
     }
 
 }

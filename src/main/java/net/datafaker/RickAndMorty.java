@@ -10,14 +10,14 @@ public class RickAndMorty extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("rick_and_morty.characters");
+        return resolve("rick_and_morty.characters");
     }
 
     public String location() {
-        return faker.resolve("rick_and_morty.locations");
+        return resolve("rick_and_morty.locations");
     }
 
     public String quote() {
-        return faker.resolve("rick_and_morty.quotes");
+        return resolve("rick_and_morty.quotes");
     }
 }

@@ -25,7 +25,7 @@ public class Sip extends AbstractProvider {
      * @return a SIP method String, e.g. {@code INVITE}.
      */
     public String method() {
-        return faker.resolve("sip.methods");
+        return resolve("sip.methods");
     }
 
     /**
@@ -35,7 +35,7 @@ public class Sip extends AbstractProvider {
      * @return a SIP content-type declaration String, e.g. {@code application/sdp}
      */
     public String contentType() {
-        return faker.resolve("sip.content.types");
+        return resolve("sip.content.types");
     }
 
     /**
@@ -123,7 +123,7 @@ public class Sip extends AbstractProvider {
      * @return a SIP provisional response phrase String, e.g. {@code Ringing}.
      */
     public String provisionalResponsePhrase() {
-        return faker.resolve("sip.response.phrases.provisional");
+        return resolve("sip.response.phrases.provisional");
     }
 
     /**
@@ -133,7 +133,7 @@ public class Sip extends AbstractProvider {
      * @return a SIP success response phrase String, e.g. {@code OK}.
      */
     public String successResponsePhrase() {
-        return faker.resolve("sip.response.phrases.success");
+        return resolve("sip.response.phrases.success");
     }
 
     /**
@@ -143,7 +143,7 @@ public class Sip extends AbstractProvider {
      * @return a SIP redirection response phrase String, e.g. {@code Moved Permanently}.
      */
     public String redirectResponsePhrase() {
-        return faker.resolve("sip.response.phrases.redirection");
+        return resolve("sip.response.phrases.redirection");
     }
 
     /**
@@ -153,7 +153,7 @@ public class Sip extends AbstractProvider {
      * @return a SIP client error response phrase String, e.g. {@code Busy Here}.
      */
     public String clientErrorResponsePhrase() {
-        return faker.resolve("sip.response.phrases.clientError");
+        return resolve("sip.response.phrases.clientError");
     }
 
     /**
@@ -163,7 +163,7 @@ public class Sip extends AbstractProvider {
      * @return a SIP server error response phrase String, e.g. {@code Service Unavailable}.
      */
     public String serverErrorResponsePhrase() {
-        return faker.resolve("sip.response.phrases.serverError");
+        return resolve("sip.response.phrases.serverError");
     }
 
     /**
@@ -173,7 +173,7 @@ public class Sip extends AbstractProvider {
      * @return a SIP global error response phrase String, e.g. {@code Rejected}.
      */
     public String globalErrorResponsePhrase() {
-        return faker.resolve("sip.response.phrases.globalError");
+        return resolve("sip.response.phrases.globalError");
     }
 
     /**

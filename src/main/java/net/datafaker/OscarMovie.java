@@ -46,7 +46,7 @@ public class OscarMovie extends AbstractProvider {
      * @return random actor
      */
     public String actor() {
-        return faker.resolve(str.concat(".actor"));
+        return resolve(str.concat(".actor"));
     }
 
     /**
@@ -55,7 +55,7 @@ public class OscarMovie extends AbstractProvider {
      * @return random movieName
      */
     public String movieName() {
-        return faker.resolve(str.concat(".movieName"));
+        return resolve(str.concat(".movieName"));
     }
 
     /**
@@ -64,7 +64,7 @@ public class OscarMovie extends AbstractProvider {
      * @return random quote
      */
     public String quote() {
-        return faker.resolve(str.concat(".quote"));
+        return resolve(str.concat(".quote"));
     }
 
     /**
@@ -73,7 +73,7 @@ public class OscarMovie extends AbstractProvider {
      * @return random character
      */
     public String character() {
-        return faker.resolve(str.concat(".character"));
+        return resolve(str.concat(".character"));
     }
 
     /**
@@ -82,6 +82,6 @@ public class OscarMovie extends AbstractProvider {
      * @return random releaseDate
      */
     public String releaseDate() {
-        return faker.resolve(str.concat(".releaseDate"));
+        return resolve(str.concat(".releaseDate"));
     }
 }

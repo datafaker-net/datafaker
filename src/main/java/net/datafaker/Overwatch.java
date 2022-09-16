@@ -10,14 +10,14 @@ public class Overwatch extends AbstractProvider {
     }
 
     public String hero() {
-        return faker.fakeValuesService().resolve("games.overwatch.heroes", this);
+        return resolve("games.overwatch.heroes");
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("games.overwatch.locations", this);
+        return resolve("games.overwatch.locations");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("games.overwatch.quotes", this);
+        return resolve("games.overwatch.quotes");
     }
 }

@@ -15,27 +15,27 @@ public class Relationship extends AbstractProvider {
     }
 
     public String direct() {
-        return faker.resolve("relationship.familial.direct");
+        return resolve("relationship.familial.direct");
     }
 
     public String extended() {
-        return faker.resolve("relationship.familial.extended");
+        return resolve("relationship.familial.extended");
     }
 
     public String inLaw() {
-        return faker.resolve("relationship.in_law");
+        return resolve("relationship.in_law");
     }
 
     public String spouse() {
-        return faker.resolve("relationship.spouse");
+        return resolve("relationship.spouse");
     }
 
     public String parent() {
-        return faker.resolve("relationship.parent");
+        return resolve("relationship.parent");
     }
 
     public String sibling() {
-        return faker.resolve("relationship.sibling");
+        return resolve("relationship.sibling");
     }
 
     public String any() {

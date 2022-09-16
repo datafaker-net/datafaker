@@ -10,11 +10,11 @@ public class Stock extends AbstractProvider {
     }
 
     public String nsdqSymbol() {
-        return faker.fakeValuesService().resolve("stock.symbol_nsdq", this);
+        return resolve("stock.symbol_nsdq");
     }
 
     public String nyseSymbol() {
-        return faker.fakeValuesService().resolve("stock.symbol_nyse", this);
+        return resolve("stock.symbol_nyse");
     }
 
 }

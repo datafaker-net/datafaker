@@ -12,6 +12,6 @@ public class Marketing extends AbstractProvider {
     }
 
     public String buzzwords() {
-        return faker.fakeValuesService().resolve("marketing.buzzwords", this);
+        return resolve("marketing.buzzwords");
     }
 }

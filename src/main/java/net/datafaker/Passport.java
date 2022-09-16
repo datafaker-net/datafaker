@@ -10,6 +10,6 @@ public class Passport extends AbstractProvider {
     }
 
     public String valid() {
-        return faker.regexify(faker.fakeValuesService().resolve("passport.valid", this));
+        return faker.regexify(faker.resolve("passport.valid"));
     }
 }

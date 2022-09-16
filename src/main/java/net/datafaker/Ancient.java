@@ -10,18 +10,18 @@ public class Ancient extends AbstractProvider {
     }
 
     public String god() {
-        return faker.resolve("ancient.god");
+        return resolve("ancient.god");
     }
 
     public String primordial() {
-        return faker.resolve("ancient.primordial");
+        return resolve("ancient.primordial");
     }
 
     public String titan() {
-        return faker.resolve("ancient.titan");
+        return resolve("ancient.titan");
     }
 
     public String hero() {
-        return faker.resolve("ancient.hero");
+        return resolve("ancient.hero");
     }
 }

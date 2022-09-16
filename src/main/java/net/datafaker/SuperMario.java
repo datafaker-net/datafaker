@@ -10,15 +10,15 @@ public class SuperMario extends AbstractProvider {
     }
 
     public String characters() {
-        return faker.fakeValuesService().resolve("games.super_mario.characters", this);
+        return resolve("games.super_mario.characters");
     }
 
     public String games() {
-        return faker.fakeValuesService().resolve("games.super_mario.games", this);
+        return resolve("games.super_mario.games");
     }
 
     public String locations() {
-        return faker.fakeValuesService().resolve("games.super_mario.locations", this);
+        return resolve("games.super_mario.locations");
     }
 
 }

@@ -10,19 +10,19 @@ public class Chiquito extends AbstractProvider {
     }
 
     public String expressions() {
-        return faker.fakeValuesService().resolve("chiquito.expressions", this);
+        return resolve("chiquito.expressions");
     }
 
     public String terms() {
-        return faker.fakeValuesService().resolve("chiquito.terms", this);
+        return resolve("chiquito.terms");
     }
 
     public String sentences() {
-        return faker.fakeValuesService().resolve("chiquito.sentences", this);
+        return resolve("chiquito.sentences");
     }
 
     public String jokes() {
-        return faker.fakeValuesService().resolve("chiquito.jokes", this);
+        return resolve("chiquito.jokes");
     }
 
 }

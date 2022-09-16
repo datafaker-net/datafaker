@@ -10,54 +10,54 @@ public class Space extends AbstractProvider {
     }
 
     public String planet() {
-        return faker.resolve("space.planet");
+        return resolve("space.planet");
     }
 
     public String moon() {
-        return faker.resolve("space.moon");
+        return resolve("space.moon");
     }
 
     public String galaxy() {
-        return faker.resolve("space.galaxy");
+        return resolve("space.galaxy");
     }
 
     public String nebula() {
-        return faker.resolve("space.nebula");
+        return resolve("space.nebula");
     }
 
     public String starCluster() {
-        return faker.resolve("space.star_cluster");
+        return resolve("space.star_cluster");
     }
 
     public String constellation() {
-        return faker.resolve("space.constellation");
+        return resolve("space.constellation");
     }
 
     public String star() {
-        return faker.resolve("space.star");
+        return resolve("space.star");
     }
 
     public String agency() {
-        return faker.resolve("space.agency");
+        return resolve("space.agency");
     }
 
     public String agencyAbbreviation() {
-        return faker.resolve("space.agency_abv");
+        return resolve("space.agency_abv");
     }
 
     public String nasaSpaceCraft() {
-        return faker.resolve("space.nasa_space_craft");
+        return resolve("space.nasa_space_craft");
     }
 
     public String company() {
-        return faker.resolve("space.company");
+        return resolve("space.company");
     }
 
     public String distanceMeasurement() {
-        return faker.number().numberBetween(10, 100) + ' ' + faker.resolve("space.distance_measurement");
+        return faker.number().numberBetween(10, 100) + ' ' + resolve("space.distance_measurement");
     }
 
     public String meteorite() {
-        return faker.resolve("space.meteorite");
+        return resolve("space.meteorite");
     }
 }

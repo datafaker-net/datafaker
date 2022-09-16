@@ -10,18 +10,18 @@ public class HowIMetYourMother extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("how_i_met_your_mother.character", this);
+        return resolve("how_i_met_your_mother.character");
     }
 
     public String catchPhrase() {
-        return faker.fakeValuesService().resolve("how_i_met_your_mother.catch_phrase", this);
+        return resolve("how_i_met_your_mother.catch_phrase");
     }
 
     public String highFive() {
-        return faker.fakeValuesService().resolve("how_i_met_your_mother.high_five", this);
+        return resolve("how_i_met_your_mother.high_five");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("how_i_met_your_mother.quote", this);
+        return resolve("how_i_met_your_mother.quote");
     }
 }

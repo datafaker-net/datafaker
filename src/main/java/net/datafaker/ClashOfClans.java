@@ -10,14 +10,14 @@ public class ClashOfClans extends AbstractProvider {
     }
 
     public String troop() {
-        return faker.fakeValuesService().resolve("clash_of_clans.troops", this);
+        return resolve("clash_of_clans.troops");
     }
 
     public String rank() {
-        return faker.fakeValuesService().resolve("clash_of_clans.ranks", this);
+        return resolve("clash_of_clans.ranks");
     }
 
     public String defensiveBuilding() {
-        return faker.fakeValuesService().resolve("clash_of_clans.defensive_buildings", this);
+        return resolve("clash_of_clans.defensive_buildings");
     }
 }

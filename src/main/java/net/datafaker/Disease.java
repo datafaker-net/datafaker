@@ -22,7 +22,7 @@ public class Disease extends AbstractProvider {
      * @return An internal disease
      */
     public String internalDisease() {
-        return faker.fakeValuesService().resolve("disease.internal_disease", this);
+        return resolve("disease.internal_disease");
     }
 
     /**
@@ -31,7 +31,7 @@ public class Disease extends AbstractProvider {
      * @return A neurology disease
      */
     public String neurology() {
-        return faker.fakeValuesService().resolve("disease.neurology", this);
+        return resolve("disease.neurology");
     }
 
     /**
@@ -40,7 +40,7 @@ public class Disease extends AbstractProvider {
      * @return A surgery disease
      */
     public String surgery() {
-        return faker.fakeValuesService().resolve("disease.surgery", this);
+        return resolve("disease.surgery");
     }
 
     /**
@@ -49,7 +49,7 @@ public class Disease extends AbstractProvider {
      * @return A paediatrics disease
      */
     public String paediatrics() {
-        return faker.fakeValuesService().resolve("disease.paediatrics", this);
+        return resolve("disease.paediatrics");
     }
 
     /**
@@ -58,7 +58,7 @@ public class Disease extends AbstractProvider {
      * @return A gynecology and obstetrics disease
      */
     public String gynecologyAndObstetrics() {
-        return faker.fakeValuesService().resolve("disease.gynecology_and_obstetrics", this);
+        return resolve("disease.gynecology_and_obstetrics");
     }
 
     /**
@@ -67,7 +67,7 @@ public class Disease extends AbstractProvider {
      * @return A ophthalmology and otorhinolaryngology disease
      */
     public String ophthalmologyAndOtorhinolaryngology() {
-        return faker.fakeValuesService().resolve("disease.ophthalmology_and_otorhinolaryngology", this);
+        return resolve("disease.ophthalmology_and_otorhinolaryngology");
     }
 
     /**
@@ -76,7 +76,7 @@ public class Disease extends AbstractProvider {
      * @return A dermatolory disease
      */
     public String dermatolory() {
-        return faker.fakeValuesService().resolve("disease.dermatolory", this);
+        return resolve("disease.dermatolory");
     }
 
 }

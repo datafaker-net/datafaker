@@ -12,10 +12,10 @@ public class Community extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("community.characters");
+        return resolve("community.characters");
     }
 
     public String quote() {
-        return faker.resolve("community.quotes");
+        return resolve("community.quotes");
     }
 }

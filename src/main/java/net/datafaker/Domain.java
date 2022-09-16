@@ -26,7 +26,7 @@ public class Domain extends AbstractProvider {
      * @return the
      */
     public String firstLevelDomain(String name) {
-        String top = faker.fakeValuesService().resolve("domain.top", this);
+        String top = resolve("domain.top");
         return String.join("",
             name,
             ".",
@@ -41,8 +41,8 @@ public class Domain extends AbstractProvider {
      * @return the second level domain with company name
      */
     public String secondLevelDomain(String name) {
-        String top = faker.fakeValuesService().resolve("domain.top", this);
-        String suffix = faker.fakeValuesService().resolve("domain.country", this);
+        String top = resolve("domain.top");
+        String suffix = resolve("domain.country");
         return String.join("",
             name,
             ".",
@@ -59,9 +59,9 @@ public class Domain extends AbstractProvider {
      * @return the full domain name
      */
     public String fullDomain(String name) {
-        String prefix = faker.fakeValuesService().resolve("domain.prefix", this);
-        String top = faker.fakeValuesService().resolve("domain.top", this);
-        String suffix = faker.fakeValuesService().resolve("domain.country", this);
+        String prefix = resolve("domain.prefix");
+        String top = resolve("domain.top");
+        String suffix = resolve("domain.country");
         return String.join("",
             prefix,
             ".",
@@ -86,7 +86,7 @@ public class Domain extends AbstractProvider {
         boolean hasPrefix = random.nextInt(3) == 1;
         boolean hasSuffix = random.nextInt(2) == 1;
 
-        String top = faker.fakeValuesService().resolve("domain.top", this);
+        String top = resolve("domain.top");
 
         String result = String.join("",
             name,
@@ -95,7 +95,7 @@ public class Domain extends AbstractProvider {
         );
 
         if (hasPrefix) {
-            String prefix = faker.fakeValuesService().resolve("domain.prefix", this);
+            String prefix = resolve("domain.prefix");
             result = String.join("",
                 prefix,
                 ".",
@@ -104,7 +104,7 @@ public class Domain extends AbstractProvider {
         }
 
         if (hasSuffix) {
-            String suffix = faker.fakeValuesService().resolve("domain.country", this);
+            String suffix = resolve("domain.country");
             result = String.join("",
                 result,
                 ".",

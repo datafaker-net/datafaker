@@ -13,11 +13,11 @@ public class GratefulDead extends AbstractProvider {
     }
 
     public String players() {
-        return faker.fakeValuesService().resolve("grateful_dead.players", this);
+        return resolve("grateful_dead.players");
     }
 
     public String songs() {
-        return faker.fakeValuesService().resolve("grateful_dead.songs", this);
+        return resolve("grateful_dead.songs");
     }
 
 }

@@ -158,7 +158,7 @@ public class Code extends AbstractProvider {
     }
 
     public String asin() {
-        return faker.resolve("code.asin");
+        return resolve("code.asin");
     }
 
     public String imei() {

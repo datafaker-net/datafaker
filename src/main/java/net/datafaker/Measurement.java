@@ -15,7 +15,7 @@ public class Measurement extends AbstractProvider {
      * @return a string of height measurement.
      */
     public String height() {
-        return faker.fakeValuesService().resolve("measurement.height", this);
+        return resolve("measurement.height");
     }
 
     /**
@@ -24,7 +24,7 @@ public class Measurement extends AbstractProvider {
      * @return a string of length measurement.
      */
     public String length() {
-        return faker.fakeValuesService().resolve("measurement.length", this);
+        return resolve("measurement.length");
     }
 
     /**
@@ -33,7 +33,7 @@ public class Measurement extends AbstractProvider {
      * @return a string of volume measurement.
      */
     public String volume() {
-        return faker.fakeValuesService().resolve("measurement.volume", this);
+        return resolve("measurement.volume");
     }
 
     /**
@@ -42,7 +42,7 @@ public class Measurement extends AbstractProvider {
      * @return a string of weight measurement.
      */
     public String weight() {
-        return faker.fakeValuesService().resolve("measurement.weight", this);
+        return resolve("measurement.weight");
     }
 
     /**
@@ -51,7 +51,7 @@ public class Measurement extends AbstractProvider {
      * @return a string of metric height measurement.
      */
     public String metricHeight() {
-        return faker.fakeValuesService().resolve("measurement.metric_height", this);
+        return resolve("measurement.metric_height");
     }
 
     /**
@@ -60,7 +60,7 @@ public class Measurement extends AbstractProvider {
      * @return a string of metric length measurement.
      */
     public String metricLength() {
-        return faker.fakeValuesService().resolve("measurement.metric_length", this);
+        return resolve("measurement.metric_length");
     }
 
     /**
@@ -69,7 +69,7 @@ public class Measurement extends AbstractProvider {
      * @return a string of metric volume measurement.
      */
     public String metricVolume() {
-        return faker.fakeValuesService().resolve("measurement.metric_volume", this);
+        return resolve("measurement.metric_volume");
     }
 
     /**
@@ -78,6 +78,6 @@ public class Measurement extends AbstractProvider {
      * @return a string of metric weight measurement.
      */
     public String metricWeight() {
-        return faker.fakeValuesService().resolve("measurement.metric_weight", this);
+        return resolve("measurement.metric_weight");
     }
 }

@@ -10,14 +10,14 @@ public class ElectricalComponents extends AbstractProvider {
     }
 
     public String active() {
-        return faker.fakeValuesService().resolve("electrical_components.active", this);
+        return resolve("electrical_components.active");
     }
 
     public String passive() {
-        return faker.fakeValuesService().resolve("electrical_components.passive", this);
+        return resolve("electrical_components.passive");
     }
 
     public String electromechanical() {
-        return faker.fakeValuesService().resolve("electrical_components.electromechanical", this);
+        return resolve("electrical_components.electromechanical");
     }
 }

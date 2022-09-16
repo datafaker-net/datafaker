@@ -10,10 +10,10 @@ public class Babylon5 extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("babylon5.characters");
+        return resolve("babylon5.characters");
     }
 
     public String quote() {
-        return faker.resolve("babylon5.quotes");
+        return resolve("babylon5.quotes");
     }
 }

@@ -10,19 +10,19 @@ public class TheItCrowd extends AbstractProvider {
     }
 
     public String actors() {
-        return faker.fakeValuesService().resolve("the_it_crowd.actors", this);
+        return resolve("the_it_crowd.actors");
     }
 
     public String characters() {
-        return faker.fakeValuesService().resolve("the_it_crowd.characters", this);
+        return resolve("the_it_crowd.characters");
     }
 
     public String emails() {
-        return faker.fakeValuesService().resolve("the_it_crowd.emails", this);
+        return resolve("the_it_crowd.emails");
     }
 
     public String quotes() {
-        return faker.fakeValuesService().resolve("the_it_crowd.quotes", this);
+        return resolve("the_it_crowd.quotes");
     }
 
 }

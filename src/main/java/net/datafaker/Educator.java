@@ -11,25 +11,25 @@ public class Educator extends AbstractProvider {
 
     // TODO - move these all out to en.yml by default. 
     public String university() {
-        return faker.fakeValuesService().resolve("educator.name", this)
+        return resolve("educator.name")
             + " "
-            + faker.fakeValuesService().resolve("educator.tertiary.type", this);
+            + resolve("educator.tertiary.type");
     }
 
     public String course() {
-        return faker.fakeValuesService().resolve("educator.tertiary.degree.type", this)
+        return resolve("educator.tertiary.degree.type")
             + " "
-            + faker.fakeValuesService().resolve("educator.tertiary.degree.subject", this);
+            + resolve("educator.tertiary.degree.subject");
     }
 
     public String secondarySchool() {
-        return faker.fakeValuesService().resolve("educator.name", this)
+        return resolve("educator.name")
             + " "
-            + faker.fakeValuesService().resolve("educator.secondary", this);
+            + resolve("educator.secondary");
     }
 
     public String campus() {
-        return faker.fakeValuesService().resolve("educator.name", this) + " Campus";
+        return resolve("educator.name") + " Campus";
     }
 
 }

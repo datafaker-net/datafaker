@@ -10,18 +10,18 @@ public class Book extends AbstractProvider {
     }
 
     public String author() {
-        return faker.fakeValuesService().resolve("book.author", this);
+        return resolve("book.author");
     }
 
     public String title() {
-        return faker.fakeValuesService().resolve("book.title", this);
+        return resolve("book.title");
     }
 
     public String publisher() {
-        return faker.fakeValuesService().resolve("book.publisher", this);
+        return resolve("book.publisher");
     }
 
     public String genre() {
-        return faker.fakeValuesService().resolve("book.genre", this);
+        return resolve("book.genre");
     }
 }

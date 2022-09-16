@@ -10,7 +10,7 @@ public class CryptoCoin extends AbstractProvider {
     }
 
     public String coin() {
-        return faker.fakeValuesService().resolve("crypto_coin.coin", this);
+        return resolve("crypto_coin.coin");
     }
 
 }

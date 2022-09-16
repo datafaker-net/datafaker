@@ -24,7 +24,7 @@ public class Name extends AbstractProvider {
      * @return a random name with given and family names and an optional suffix.
      */
     public String name() {
-        return faker.fakeValuesService().resolve("name.name", this);
+        return resolve("name.name");
     }
 
     /**
@@ -40,7 +40,7 @@ public class Name extends AbstractProvider {
      * @return a random name with a middle name component with optional prefix and suffix
      */
     public String nameWithMiddle() {
-        return faker.fakeValuesService().resolve("name.name_with_middle", this);
+        return resolve("name.name_with_middle");
     }
 
     /**
@@ -58,7 +58,7 @@ public class Name extends AbstractProvider {
      * @return a 'given' name such as Aaliyah, Aaron, Abagail or Abbey
      */
     public String firstName() {
-        return faker.fakeValuesService().resolve("name.first_name", this);
+        return resolve("name.first_name");
     }
 
     /**
@@ -67,7 +67,7 @@ public class Name extends AbstractProvider {
      * @return a random last name such as Smith, Jones or Baldwin
      */
     public String lastName() {
-        return faker.fakeValuesService().resolve("name.last_name", this);
+        return resolve("name.last_name");
     }
 
     /**
@@ -76,7 +76,7 @@ public class Name extends AbstractProvider {
      * @return a name prefix such as Mr., Mrs., Ms., Miss, or Dr.
      */
     public String prefix() {
-        return faker.fakeValuesService().resolve("name.prefix", this);
+        return resolve("name.prefix");
     }
 
     /**
@@ -85,7 +85,7 @@ public class Name extends AbstractProvider {
      * @return a name suffix such as Jr., Sr., I, II, III, IV, V, MD, DDS, PhD or DVM
      */
     public String suffix() {
-        return faker.fakeValuesService().resolve("name.suffix", this);
+        return resolve("name.suffix");
     }
 
     /**
@@ -101,9 +101,9 @@ public class Name extends AbstractProvider {
      */
     public String title() {
         return String.join(" ",
-            faker.fakeValuesService().resolve("name.title.descriptor", this),
-            faker.fakeValuesService().resolve("name.title.level", this),
-            faker.fakeValuesService().resolve("name.title.job", this)
+            resolve("name.title.descriptor"),
+            resolve("name.title.level"),
+            resolve("name.title.job")
         );
     }
 

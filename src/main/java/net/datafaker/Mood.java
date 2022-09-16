@@ -10,15 +10,15 @@ public class Mood extends AbstractProvider {
     }
 
     public String feeling() {
-        return faker.fakeValuesService().resolve("mood.feeling", this);
+        return resolve("mood.feeling");
     }
 
     public String emotion() {
-        return faker.fakeValuesService().resolve("mood.emotion", this);
+        return resolve("mood.emotion");
     }
 
     public String tone() {
-        return faker.fakeValuesService().resolve("mood.tone", this);
+        return resolve("mood.tone");
     }
 
 }

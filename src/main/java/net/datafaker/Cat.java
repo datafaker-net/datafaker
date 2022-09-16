@@ -10,14 +10,14 @@ public class Cat extends AbstractProvider {
     }
 
     public String name() {
-        return faker.fakeValuesService().resolve("creature.cat.name", this);
+        return resolve("creature.cat.name");
     }
 
     public String breed() {
-        return faker.fakeValuesService().resolve("creature.cat.breed", this);
+        return resolve("creature.cat.breed");
     }
 
     public String registry() {
-        return faker.fakeValuesService().resolve("creature.cat.registry", this);
+        return resolve("creature.cat.registry");
     }
 }

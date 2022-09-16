@@ -15,7 +15,7 @@ public class Tea extends AbstractProvider {
      * @return a string of tea variety.
      */
     public String variety() {
-        return faker.fakeValuesService().resolve("tea.variety." + type().toLowerCase(), this);
+        return resolve("tea.variety." + type().toLowerCase());
     }
 
     /**
@@ -24,6 +24,6 @@ public class Tea extends AbstractProvider {
      * @return a string of tea type.
      */
     public String type() {
-        return faker.fakeValuesService().resolve("tea.type", this);
+        return resolve("tea.type");
     }
 }

@@ -12,11 +12,11 @@ public class BrooklynNineNine extends AbstractProvider {
     }
 
     public String characters() {
-        return faker.fakeValuesService().resolve("brooklyn_nine_nine.characters", this);
+        return resolve("brooklyn_nine_nine.characters");
     }
 
     public String quotes() {
-        return faker.fakeValuesService().resolve("brooklyn_nine_nine.quotes", this);
+        return resolve("brooklyn_nine_nine.quotes");
     }
 
 }

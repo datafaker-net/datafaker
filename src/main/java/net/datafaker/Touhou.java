@@ -10,22 +10,22 @@ public class Touhou extends AbstractProvider {
     }
 
     public String characterName() {
-        return faker.fakeValuesService().resolve("touhou.full_name", this);
+        return resolve("touhou.full_name");
     }
 
     public String characterFirstName() {
-        return faker.fakeValuesService().resolve("touhou.first_name", this);
+        return resolve("touhou.first_name");
     }
 
     public String characterLastName() {
-        return faker.fakeValuesService().resolve("touhou.last_name", this);
+        return resolve("touhou.last_name");
     }
 
     public String trackName() {
-        return faker.fakeValuesService().resolve("touhou.track_name", this);
+        return resolve("touhou.track_name");
     }
 
     public String gameName() {
-        return faker.fakeValuesService().resolve("touhou.game_name", this);
+        return resolve("touhou.game_name");
     }
 }

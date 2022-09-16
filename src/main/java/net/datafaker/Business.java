@@ -10,14 +10,14 @@ public class Business extends AbstractProvider {
     }
 
     public String creditCardNumber() {
-        return faker.fakeValuesService().resolve("business.credit_card_numbers", this);
+        return resolve("business.credit_card_numbers");
     }
 
     public String creditCardType() {
-        return faker.fakeValuesService().resolve("business.credit_card_types", this);
+        return resolve("business.credit_card_types");
     }
 
     public String creditCardExpiry() {
-        return faker.fakeValuesService().resolve("business.credit_card_expiry_dates", this);
+        return resolve("business.credit_card_expiry_dates");
     }
 }

@@ -10,31 +10,31 @@ public class Science extends AbstractProvider {
     }
 
     public String element() {
-        return faker.fakeValuesService().resolve("science.element", this);
+        return resolve("science.element");
     }
 
     public String elementSymbol() {
-        return faker.fakeValuesService().resolve("science.element_symbol", this);
+        return resolve("science.element_symbol");
     }
 
     public String scientist() {
-        return faker.fakeValuesService().resolve("science.scientist", this);
+        return resolve("science.scientist");
     }
 
     public String tool() {
-        return faker.fakeValuesService().resolve("science.tool", this);
+        return resolve("science.tool");
     }
 
     public String quark() {
-        return faker.fakeValuesService().resolve("science.particles.quarks", this);
+        return resolve("science.particles.quarks");
     }
 
     public String leptons() {
-        return faker.fakeValuesService().resolve("science.particles.leptons", this);
+        return resolve("science.particles.leptons");
     }
 
     public String bosons() {
-        return faker.fakeValuesService().resolve("science.particles.bosons", this);
+        return resolve("science.particles.bosons");
     }
 
 }

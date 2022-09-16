@@ -23,7 +23,7 @@ public class BojackHorseman extends AbstractProvider {
      * @return Characters in BojackHorseman
      */
     public String characters() {
-        return faker.fakeValuesService().resolve("bojack_horseman.characters", this);
+        return resolve("bojack_horseman.characters");
     }
 
     /**
@@ -32,7 +32,7 @@ public class BojackHorseman extends AbstractProvider {
      * @return Quotes in BojackHorseman
      */
     public String quotes() {
-        return faker.fakeValuesService().resolve("bojack_horseman.quotes", this);
+        return resolve("bojack_horseman.quotes");
     }
 
     /**
@@ -41,7 +41,7 @@ public class BojackHorseman extends AbstractProvider {
      * @return Tongue twisters in BojackHorseman
      */
     public String tongueTwisters() {
-        return faker.fakeValuesService().resolve("bojack_horseman.tongue_twisters", this);
+        return resolve("bojack_horseman.tongue_twisters");
     }
 
 }

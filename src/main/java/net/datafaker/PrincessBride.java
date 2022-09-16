@@ -10,10 +10,10 @@ public class PrincessBride extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("princess_bride.characters");
+        return resolve("princess_bride.characters");
     }
 
     public String quote() {
-        return faker.resolve("princess_bride.quotes");
+        return resolve("princess_bride.quotes");
     }
 }

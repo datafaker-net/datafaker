@@ -10,11 +10,11 @@ public class File extends AbstractProvider {
     }
 
     public String extension() {
-        return faker.resolve("file.extension");
+        return resolve("file.extension");
     }
 
     public String mimeType() {
-        return faker.resolve("file.mime_type");
+        return resolve("file.mime_type");
     }
 
     public String fileName() {

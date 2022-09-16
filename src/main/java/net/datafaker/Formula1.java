@@ -10,18 +10,18 @@ public class Formula1 extends AbstractProvider {
     }
 
     public String driver() {
-        return faker.fakeValuesService().resolve("formula1.driver", this);
+        return resolve("formula1.driver");
     }
 
     public String team() {
-        return faker.fakeValuesService().resolve("formula1.team", this);
+        return resolve("formula1.team");
     }
 
     public String circuit() {
-        return faker.fakeValuesService().resolve("formula1.circuit", this);
+        return resolve("formula1.circuit");
     }
 
     public String grandPrix() {
-        return faker.fakeValuesService().resolve("formula1.grand_prix", this);
+        return resolve("formula1.grand_prix");
     }
 }

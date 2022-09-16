@@ -10,10 +10,10 @@ public class Kaamelott extends AbstractProvider {
     }
 
     public String character() {
-        return faker.fakeValuesService().resolve("kaamelott.characters", this);
+        return resolve("kaamelott.characters");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("kaamelott.quotes", this);
+        return resolve("kaamelott.quotes");
     }
 }

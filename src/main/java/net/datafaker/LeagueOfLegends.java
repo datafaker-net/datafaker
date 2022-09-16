@@ -10,26 +10,26 @@ public class LeagueOfLegends extends AbstractProvider {
     }
 
     public String champion() {
-        return faker.fakeValuesService().resolve("games.league_of_legends.champion", this);
+        return resolve("games.league_of_legends.champion");
     }
 
     public String location() {
-        return faker.fakeValuesService().resolve("games.league_of_legends.location", this);
+        return resolve("games.league_of_legends.location");
     }
 
     public String quote() {
-        return faker.fakeValuesService().resolve("games.league_of_legends.quote", this);
+        return resolve("games.league_of_legends.quote");
     }
 
     public String summonerSpell() {
-        return faker.fakeValuesService().resolve("games.league_of_legends.summoner_spell", this);
+        return resolve("games.league_of_legends.summoner_spell");
     }
 
     public String masteries() {
-        return faker.fakeValuesService().resolve("games.league_of_legends.masteries", this);
+        return resolve("games.league_of_legends.masteries");
     }
 
     public String rank() {
-        return faker.fakeValuesService().resolve("games.league_of_legends.rank", this);
+        return resolve("games.league_of_legends.rank");
     }
 }

@@ -10,22 +10,22 @@ public class Hacker extends AbstractProvider {
     }
 
     public String abbreviation() {
-        return faker.fakeValuesService().resolve("hacker.abbreviation", this);
+        return resolve("hacker.abbreviation");
     }
 
     public String adjective() {
-        return faker.fakeValuesService().resolve("hacker.adjective", this);
+        return resolve("hacker.adjective");
     }
 
     public String noun() {
-        return faker.fakeValuesService().resolve("hacker.noun", this);
+        return resolve("hacker.noun");
     }
 
     public String verb() {
-        return faker.fakeValuesService().resolve("hacker.verb", this);
+        return resolve("hacker.verb");
     }
 
     public String ingverb() {
-        return faker.fakeValuesService().resolve("hacker.ingverb", this);
+        return resolve("hacker.ingverb");
     }
 }

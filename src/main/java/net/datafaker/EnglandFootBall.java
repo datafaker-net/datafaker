@@ -10,10 +10,10 @@ public class EnglandFootBall extends AbstractProvider {
     }
 
     public String league() {
-        return faker.fakeValuesService().resolve("englandfootball.leagues", this);
+        return resolve("englandfootball.leagues");
     }
 
     public String team() {
-        return faker.fakeValuesService().resolve("englandfootball.teams", this);
+        return resolve("englandfootball.teams");
     }
 }

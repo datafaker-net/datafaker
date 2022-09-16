@@ -15,7 +15,7 @@ public class House extends AbstractProvider {
      * @return a string of furniture.
      */
     public String furniture() {
-        return faker.fakeValuesService().resolve("house.furniture", this);
+        return resolve("house.furniture");
     }
 
     /**
@@ -24,6 +24,6 @@ public class House extends AbstractProvider {
      * @return a string of room.
      */
     public String room() {
-        return faker.fakeValuesService().resolve("house.rooms", this);
+        return resolve("house.rooms");
     }
 }

@@ -10,6 +10,6 @@ public class ChuckNorris extends AbstractProvider {
     }
 
     public String fact() {
-        return faker.fakeValuesService().resolve("chuck_norris.fact", this);
+        return resolve("chuck_norris.fact");
     }
 }

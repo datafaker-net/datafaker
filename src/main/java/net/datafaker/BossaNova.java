@@ -14,10 +14,10 @@ public class BossaNova extends AbstractProvider {
     }
 
     public String artist() {
-        return faker.fakeValuesService().resolve("bossa_nova.artists", this);
+        return resolve("bossa_nova.artists");
     }
 
     public String song() {
-        return faker.fakeValuesService().resolve("bossa_nova.songs", this);
+        return resolve("bossa_nova.songs");
     }
 }

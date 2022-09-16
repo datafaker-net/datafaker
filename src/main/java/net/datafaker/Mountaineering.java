@@ -12,7 +12,7 @@ public class Mountaineering extends AbstractProvider {
     }
 
     public String mountaineer() {
-        return faker.fakeValuesService().resolve("mountaineering.mountaineer", this);
+        return resolve("mountaineering.mountaineer");
     }
 
 }

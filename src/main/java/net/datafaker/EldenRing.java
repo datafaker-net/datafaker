@@ -10,22 +10,22 @@ public class EldenRing extends AbstractProvider {
     }
 
     public String location() {
-        return faker.resolve("elden_ring.location");
+        return resolve("elden_ring.location");
     }
 
     public String weapon() {
-        return faker.resolve("elden_ring.weapon");
+        return resolve("elden_ring.weapon");
     }
 
     public String skill(){
-        return faker.resolve("elden_ring.skill");
+        return resolve("elden_ring.skill");
     }
 
     public String spell(){
-        return faker.resolve("elden_ring.spell");
+        return resolve("elden_ring.spell");
     }
 
     public String npc(){
-        return faker.resolve("elden_ring.npc");
+        return resolve("elden_ring.npc");
     }
 }

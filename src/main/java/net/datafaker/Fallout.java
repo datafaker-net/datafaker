@@ -12,18 +12,18 @@ public class Fallout extends AbstractProvider {
     }
 
     public String character() {
-        return faker.resolve("fallout.characters");
+        return resolve("fallout.characters");
     }
 
     public String faction() {
-        return faker.resolve("fallout.factions");
+        return resolve("fallout.factions");
     }
 
     public String location() {
-        return faker.resolve("fallout.locations");
+        return resolve("fallout.locations");
     }
 
     public String quote() {
-        return faker.resolve("fallout.quotes");
+        return resolve("fallout.quotes");
     }
 }

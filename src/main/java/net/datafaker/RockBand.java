@@ -10,6 +10,6 @@ public class RockBand extends AbstractProvider {
     }
 
     public String name() {
-        return faker.resolve("rock_band.name");
+        return resolve("rock_band.name");
     }
 }

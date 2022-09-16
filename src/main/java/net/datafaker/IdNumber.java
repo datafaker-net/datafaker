@@ -24,11 +24,11 @@ public class IdNumber extends AbstractProvider {
     }
 
     public String valid() {
-        return faker.fakeValuesService().resolve("id_number.valid", this);
+        return resolve("id_number.valid");
     }
 
     public String invalid() {
-        return faker.numerify(faker.fakeValuesService().resolve("id_number.invalid", this));
+        return faker.numerify(faker.resolve("id_number.invalid"));
     }
 
     public String ssnValid() {

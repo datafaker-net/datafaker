@@ -18,6 +18,6 @@ public class GarmentSize extends AbstractProvider {
    * @return a string of garment size
    */
   public String size() {
-    return faker.resolve("garments_sizes.sizes");
+    return resolve("garments_sizes.sizes");
   }
 }

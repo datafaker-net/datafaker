@@ -16,15 +16,15 @@ public class Finance extends AbstractProvider {
     }
 
     public String nasdaqTicker() {
-        return faker.fakeValuesService().resolve("finance.ticker.nasdaq", this);
+        return resolve("finance.ticker.nasdaq");
     }
 
     public String nyseTicker() {
-        return faker.fakeValuesService().resolve("finance.ticker.nyse", this);
+        return resolve("finance.ticker.nyse");
     }
 
     public String stockMarket() {
-        return faker.fakeValuesService().resolve("finance.stock_market", this);
+        return resolve("finance.stock_market");
     }
 
     private static final Map<String, String> countryCodeToBasicBankAccountNumberPattern =
@@ -32,7 +32,7 @@ public class Finance extends AbstractProvider {
 
     public String creditCard(CreditCardType creditCardType) {
         final String key = String.format("finance.credit_card.%s", creditCardType.toString().toLowerCase(Locale.ROOT));
-        String value = faker.fakeValuesService().resolve(key, this);
+        String value = resolve(key);
         final String template = faker.numerify(value);
 
         String[] split = EMPTY_STRING.split(NUMBERS.matcher(template).replaceAll(""));

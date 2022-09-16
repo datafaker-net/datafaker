@@ -9,7 +9,7 @@ public class Address extends AbstractProvider{
     }
 
     public String streetName() {
-        return faker.fakeValuesService().resolve("address.street_name", this);
+        return resolve("address.street_name");
     }
 
     public String streetAddressNumber() {
@@ -17,11 +17,11 @@ public class Address extends AbstractProvider{
     }
 
     public String streetAddress() {
-        return faker.fakeValuesService().resolve("address.street_address", this);
+        return resolve("address.street_address");
     }
 
     public String streetAddress(boolean includeSecondary) {
-        String streetAddress = faker.fakeValuesService().resolve("address.street_address", this);
+        String streetAddress = resolve("address.street_address");
         if (includeSecondary) {
             streetAddress = streetAddress + " " + secondaryAddress();
         }
@@ -29,7 +29,7 @@ public class Address extends AbstractProvider{
     }
 
     public String secondaryAddress() {
-        return faker.numerify(faker.fakeValuesService().resolve("address.secondary_address", this));
+        return faker.numerify(resolve("address.secondary_address"));
     }
 
     /**
@@ -38,11 +38,11 @@ public class Address extends AbstractProvider{
      * @return a String representing a standard zip code
      */
     public String zipCode() {
-        return faker.bothify(faker.fakeValuesService().resolve("address.postcode", this));
+        return faker.bothify(resolve("address.postcode"));
     }
 
     public String postcode() {
-        return faker.bothify(faker.fakeValuesService().resolve("address.postcode", this));
+        return faker.bothify(resolve("address.postcode"));
     }
 
     /**
@@ -52,47 +52,47 @@ public class Address extends AbstractProvider{
      * @return a String representing a ZIP+4 code
      */
     public String zipCodePlus4() {
-        return faker.bothify(faker.fakeValuesService().resolve("address.postcode_plus_four", this));
+        return faker.bothify(resolve("address.postcode_plus_four"));
     }
 
     public String zipCodeByState(String stateAbbr) {
-        return faker.fakeValuesService().resolve("address.postcode_by_state." + stateAbbr, this);
+        return resolve("address.postcode_by_state." + stateAbbr);
     }
 
     public String countyByZipCode(String postCode) {
-        return faker.fakeValuesService().resolve("address.county_by_postcode." + postCode, this, faker, () -> "County are not configured for postcode " + postCode);
+        return resolve("address.county_by_postcode." + postCode, () -> "County are not configured for postcode " + postCode);
     }
 
     public String streetSuffix() {
-        return faker.fakeValuesService().resolve("address.street_suffix", this);
+        return resolve("address.street_suffix");
     }
 
     public String streetPrefix() {
-        return faker.fakeValuesService().resolve("address.street_prefix", this);
+        return resolve("address.street_prefix");
     }
 
     public String citySuffix() {
-        return faker.fakeValuesService().resolve("address.city_suffix", this);
+        return resolve("address.city_suffix");
     }
 
     public String cityPrefix() {
-        return faker.fakeValuesService().resolve("address.city_prefix", this);
+        return resolve("address.city_prefix");
     }
 
     public String city() {
-        return faker.fakeValuesService().resolve("address.city", this);
+        return resolve("address.city");
     }
 
     public String cityName() {
-        return faker.fakeValuesService().resolve("address.city_name", this);
+        return resolve("address.city_name");
     }
 
     public String state() {
-        return faker.fakeValuesService().resolve("address.state", this);
+        return resolve("address.state");
     }
 
     public String stateAbbr() {
-        return faker.fakeValuesService().resolve("address.state_abbr", this);
+        return resolve("address.state_abbr");
     }
 
     /**
@@ -138,26 +138,26 @@ public class Address extends AbstractProvider{
     }
 
     public String timeZone() {
-        return faker.fakeValuesService().resolve("address.time_zone", this);
+        return resolve("address.time_zone");
     }
 
     public String country() {
-        return faker.fakeValuesService().resolve("address.country", this);
+        return resolve("address.country");
     }
 
     public String countryCode() {
-        return faker.fakeValuesService().resolve("address.country_code", this);
+        return resolve("address.country_code");
     }
 
     public String buildingNumber() {
-        return faker.numerify(faker.fakeValuesService().resolve("address.building_number", this));
+        return faker.numerify(resolve("address.building_number"));
     }
 
     public String fullAddress() {
-        return faker.fakeValuesService().resolve("address.full_address", this);
+        return resolve("address.full_address");
     }
 
     public String mailBox() {
-        return faker.numerify(faker.fakeValuesService().resolve("address.mail_box", this));
+        return faker.numerify(resolve("address.mail_box"));
     }
 }
