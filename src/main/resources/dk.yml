@@ -1,0 +1,4 @@
+dk:
+  faker:
+    passport:
+      valid: "[0-9]{9}"
