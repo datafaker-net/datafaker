@@ -36,7 +36,6 @@ public class FakeValuesService {
     private static final String DIGITS = "0123456789";
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
-    private final Map<Locale, FakeValuesInterface> fakeValuesCache = new HashMap<>();
 
     private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
@@ -68,7 +67,7 @@ public class FakeValuesService {
         if (DEFAULT_LOCALE.equals(locale)) {
             return FakeValuesGrouping.getEnglishFakeValueGrouping();
         }
-        return fakeValuesCache.computeIfAbsent(locale, FakeValues::new);
+        return new FakeValues(locale);
     }
 
     /**

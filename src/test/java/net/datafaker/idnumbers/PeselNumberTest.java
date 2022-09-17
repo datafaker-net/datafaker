@@ -23,7 +23,7 @@ class PeselNumberTest {
 
     @BeforeAll
     static void setUpBeforeClass() {
-        peselNumber = new PeselNumber(Faker.instance());
+        peselNumber = new PeselNumber(new Faker());
     }
 
     @ParameterizedTest
@@ -32,7 +32,7 @@ class PeselNumberTest {
         /*
          * Given
          */
-        final LocalDate givenBirthDate = Faker.instance().date().birthday(0, 100).toInstant()
+        final LocalDate givenBirthDate = new Faker().date().birthday(0, 100).toInstant()
             .atZone(ZoneId.systemDefault()).toLocalDate();
         /*
          * When
@@ -141,10 +141,10 @@ class PeselNumberTest {
         final int gotGenderDigit = gotPesel.charAt(9) - '0';
         switch (givenGender) {
             case FEMALE:
-                assertThat(gotGenderDigit % 2).isEqualTo(0);
+                assertThat(gotGenderDigit % 2).isZero();
                 break;
             case MALE:
-                assertThat(gotGenderDigit % 2).isEqualTo(1);
+                assertThat(gotGenderDigit % 2).isOne();
                 break;
             default:
             case ANY:
@@ -156,7 +156,7 @@ class PeselNumberTest {
         final int gotSum = (gotPesel.charAt(0) + gotPesel.charAt(4) + gotPesel.charAt(8) + gotPesel.charAt(10)
             + 3 * (gotPesel.charAt(1) + gotPesel.charAt(5) + gotPesel.charAt(9))
             + 7 * (gotPesel.charAt(2) + gotPesel.charAt(6)) + 9 * (gotPesel.charAt(3) + gotPesel.charAt(7))) % 10;
-        assertThat(gotSum).isEqualTo(0);
+        assertThat(gotSum).isZero();
     }
 
     private int toNumber(char digit2, char digit1) {

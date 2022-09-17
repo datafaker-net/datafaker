@@ -109,7 +109,7 @@ class InternetTest extends AbstractFakerTest {
 
     @Test
     void testPasswordWithFixedLength() {
-        String password = Faker.instance().internet().password(32, 32, true, true, true);
+        String password = new Faker().internet().password(32, 32, true, true, true);
         assertThat(password).hasSize(32);
     }
 

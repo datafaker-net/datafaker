@@ -50,15 +50,18 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     @BeforeEach
     public void before() {
         super.before();
-        MockitoAnnotations.openMocks(this);
+        try (AutoCloseable av = MockitoAnnotations.openMocks(this)) {
 
-        // always return the first element
-        when(randomService.nextInt(anyInt())).thenReturn(0);
-        context = new FakerContext(new Locale("test"), randomService);
-        when(mockedFaker.getContext()).thenReturn(context);
+            // always return the first element
+            when(randomService.nextInt(anyInt())).thenReturn(0);
+            context = new FakerContext(new Locale("test"), randomService);
+            when(mockedFaker.getContext()).thenReturn(context);
 
-        fakeValuesService = Mockito.spy(new FakeValuesService());
-        fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
+            fakeValuesService = Mockito.spy(new FakeValuesService());
+            fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

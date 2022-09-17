@@ -29,7 +29,7 @@ class RandomServiceTest extends AbstractFakerTest {
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     void testLongWithinBoundary(RandomService randomService) {
-        assertThat(randomService.nextLong(1)).isEqualTo(0L);
+        assertThat(randomService.nextLong(1)).isZero();
 
         for (int i = 1; i < 10; i++) {
             assertThat(randomService.nextLong(2)).isLessThan(2L);
@@ -76,7 +76,7 @@ class RandomServiceTest extends AbstractFakerTest {
         assertThat(f1).isEqualTo(0.41291267F);
 
         assertThat(l1).isEqualTo(1092083446069765248L);
-        assertThat(l2).isEqualTo(1L);
+        assertThat(l2).isOne();
         assertThat(l3).isEqualTo(836L);
 
         assertThat(b).isFalse();

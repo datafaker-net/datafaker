@@ -26,14 +26,16 @@ public class AbstractFakerTest {
 
     @BeforeEach
     public void before() {
-        MockitoAnnotations.openMocks(this);
+        try (AutoCloseable ac = MockitoAnnotations.openMocks(this)) {
 
-        Logger rootLogger = LogManager.getLogManager().getLogger("");
-        Handler[] handlers = rootLogger.getHandlers();
-        rootLogger.setLevel(Level.INFO);
-        for (Handler h : handlers) {
-            h.setLevel(Level.INFO);
+            Logger rootLogger = LogManager.getLogManager().getLogger("");
+            Handler[] handlers = rootLogger.getHandlers();
+            rootLogger.setLevel(Level.INFO);
+            for (Handler h : handlers) {
+                h.setLevel(Level.INFO);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
-
 }
