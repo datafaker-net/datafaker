@@ -25,7 +25,7 @@ class SipTest extends AbstractFakerTest {
     void rtpPort_returnPositiveEvenInt() {
         int sut = faker.sip().rtpPort();
         assertThat(sut).isGreaterThanOrEqualTo(2);
-        assertThat(sut % 2).isEqualTo(0);
+        assertThat(sut % 2).isZero();
     }
 
     @Test
@@ -112,7 +112,7 @@ class SipTest extends AbstractFakerTest {
         String[] sixthLine = sut[5].split(" ");
         assertThat(sixthLine[0]).isEqualTo("m=audio");
         assertThat(Integer.parseInt(sixthLine[1])).isGreaterThanOrEqualTo(2);
-        assertThat(Integer.parseInt(sixthLine[1]) % 2).isEqualTo(0);
+        assertThat(Integer.parseInt(sixthLine[1]) % 2).isZero();
 
         assertThat(sut[6]).isEqualTo("a=rtpmap:0 PCMU/8000");
     }

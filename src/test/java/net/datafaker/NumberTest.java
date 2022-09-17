@@ -31,8 +31,8 @@ class NumberTest extends AbstractFakerTest {
         Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigit();
-            assertThat(value).isLessThanOrEqualTo(9);
-            assertThat(value).isGreaterThanOrEqualTo(0);
+            assertThat(value).isLessThanOrEqualTo(9)
+                .isGreaterThanOrEqualTo(0);
             nums.add(value);
         }
         assertThat(nums).contains(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
@@ -43,8 +43,8 @@ class NumberTest extends AbstractFakerTest {
         Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigitNotZero();
-            assertThat(value).isLessThanOrEqualTo(9);
-            assertThat(value).isGreaterThan(0);
+            assertThat(value).isLessThanOrEqualTo(9)
+                .isGreaterThan(0);
             nums.add(value);
         }
         assertThat(nums).contains(1, 2, 3, 4, 5, 6, 7, 8, 9);
@@ -60,8 +60,8 @@ class NumberTest extends AbstractFakerTest {
     void testRandomNumberWithSingleDigitStrict() {
         for (int i = 0; i < 100; ++i) {
             long value = faker.number().randomNumber(1, true);
-            assertThat(value).isLessThan(10L);
-            assertThat(value).isGreaterThanOrEqualTo(0L);
+            assertThat(value).isLessThan(10L)
+                .isGreaterThanOrEqualTo(0L);
         }
     }
 
@@ -69,7 +69,7 @@ class NumberTest extends AbstractFakerTest {
     void testRandomNumberWithZeroDigitsStrict() {
         for (int i = 0; i < 100; ++i) {
             long value = faker.number().randomNumber(0, true);
-            assertThat(value).isEqualTo(0L);
+            assertThat(value).isZero();
         }
     }
 
@@ -79,7 +79,7 @@ class NumberTest extends AbstractFakerTest {
             for (int x = 0; x < 100; ++x) {
                 long value = faker.number().randomNumber(i, true);
                 String stringValue = String.valueOf(value);
-                assertThat(stringValue.length()).isEqualTo(i);
+                assertThat(stringValue).hasSize(i);
             }
         }
     }
@@ -102,20 +102,20 @@ class NumberTest extends AbstractFakerTest {
     void testNumberBetween() {
         for (int i = 1; i < 100; ++i) {
             int v = faker.number().numberBetween(0, i);
-            assertThat(v).isLessThanOrEqualTo(i);
-            assertThat(v).isGreaterThanOrEqualTo(0);
+            assertThat(v).isLessThanOrEqualTo(i)
+                .isGreaterThanOrEqualTo(0);
         }
 
         for (long i = 1L; i < 100L; ++i) {
             long v = faker.number().numberBetween(0, i);
-            assertThat(v).isLessThanOrEqualTo(i);
-            assertThat(v).isGreaterThanOrEqualTo(0L);
+            assertThat(v).isLessThanOrEqualTo(i)
+                .isGreaterThanOrEqualTo(0L);
         }
 
         int min1 = 1;
         long v1 = faker.number().numberBetween(min1, 980000000L);
-        assertThat(v1).isGreaterThan(min1);
-        assertThat(v1).isLessThan(980000000L);
+        assertThat(v1).isGreaterThan(min1)
+            .isLessThan(980000000L);
     }
 
     @RepeatedTest(100)
@@ -123,8 +123,8 @@ class NumberTest extends AbstractFakerTest {
         long low = 1;
         long high = 10;
         long v = faker.number().numberBetween(low, high);
-        assertThat(v).isLessThan(high);
-        assertThat(v).isGreaterThanOrEqualTo(low);
+        assertThat(v).isLessThan(high)
+            .isGreaterThanOrEqualTo(low);
     }
 
     @RepeatedTest(100)
@@ -132,8 +132,8 @@ class NumberTest extends AbstractFakerTest {
         int low = 1;
         int high = 10;
         int v = faker.number().numberBetween(low, high);
-        assertThat(v).isLessThan(high);
-        assertThat(v).isGreaterThanOrEqualTo(low);
+        assertThat(v).isLessThan(high)
+            .isGreaterThanOrEqualTo(low);
     }
 
     @Test
@@ -143,8 +143,8 @@ class NumberTest extends AbstractFakerTest {
         final int upperLimit = 3;
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().numberBetween(lowerLimit, upperLimit);
-            assertThat(value).isLessThan(upperLimit);
-            assertThat(value).isGreaterThanOrEqualTo(lowerLimit);
+            assertThat(value).isLessThan(upperLimit)
+                .isGreaterThanOrEqualTo(lowerLimit);
             nums.add(value);
         }
         assertThat(nums).contains(0, 1, 2);
@@ -157,8 +157,8 @@ class NumberTest extends AbstractFakerTest {
         final long upperLimit = 3;
         for (int i = 0; i < 1000; ++i) {
             long value = faker.number().numberBetween(lowerLimit, upperLimit);
-            assertThat(value).isLessThan(upperLimit);
-            assertThat(value).isGreaterThanOrEqualTo(lowerLimit);
+            assertThat(value).isLessThan(upperLimit)
+                .isGreaterThanOrEqualTo(lowerLimit);
             nums.add(value);
         }
         assertThat(nums).contains(0L, 1L, 2L);
@@ -167,8 +167,7 @@ class NumberTest extends AbstractFakerTest {
     @Test
     void numberBetweenIntIntZeroMinMax() {
         assertThat(faker.number().numberBetween(0, 0))
-            .as("Calling numberBetween with min==max yields min, with 0")
-            .isEqualTo(0);
+            .as("Calling numberBetween with min==max yields min, with 0").isZero();
         assertThat(faker.number().numberBetween(2, 2))
             .as("Calling numberBetween with min==max yields min")
             .isEqualTo(2);
@@ -177,8 +176,7 @@ class NumberTest extends AbstractFakerTest {
     @Test
     void numberBetweenLongLongZeroMinMax() {
         assertThat(faker.number().numberBetween(0L, 0L))
-            .as("Calling numberBetween with min==max yields min, with 0")
-            .isEqualTo(0);
+            .as("Calling numberBetween with min==max yields min, with 0").isZero();
         assertThat(faker.number().numberBetween(2L, 2L))
             .as("Calling numberBetween with min==max yields min")
             .isEqualTo(2);
@@ -404,8 +402,8 @@ class NumberTest extends AbstractFakerTest {
         int maxInt = minInt + size;
         for (int i = 0; i < 10000; ++i) {
             int value = faker.number().numberBetween(minInt, maxInt);
-            assertThat(value).isBetween(minInt, maxInt);
-            assertThat(value).isGreaterThanOrEqualTo(minInt);
+            assertThat(value).isBetween(minInt, maxInt)
+                .isGreaterThanOrEqualTo(minInt);
             ints.add(value);
         }
         assertThat(ints).hasSize(Math.max(1, size));
@@ -417,8 +415,8 @@ class NumberTest extends AbstractFakerTest {
         long maxLong = minLong + size;
         for (int i = 0; i < 10000; ++i) {
             long value = faker.number().numberBetween(minLong, maxLong);
-            assertThat(value).isBetween(minLong, maxLong);
-            assertThat(value).isGreaterThanOrEqualTo(minLong);
+            assertThat(value).isBetween(minLong, maxLong)
+                .isGreaterThanOrEqualTo(minLong);
             longs.add(value);
         }
         assertThat(longs).hasSize(Math.max(1, size));
@@ -442,8 +440,8 @@ class NumberTest extends AbstractFakerTest {
 
             for (int j = 0; j < 100; j++) {
                 long value = faker.number().numberBetween(min, max);
-                assertThat(value).isLessThan(max);
-                assertThat(value).isGreaterThanOrEqualTo(min);
+                assertThat(value).isLessThan(max)
+                    .isGreaterThanOrEqualTo(min);
             }
         }
     }
