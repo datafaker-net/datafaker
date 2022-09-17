@@ -3,7 +3,7 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Address extends AbstractProvider{
+public class Address extends AbstractProvider {
     protected Address(Faker faker) {
         super(faker);
     }
