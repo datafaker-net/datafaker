@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class CoffeeTest extends AbstractFoodFakerTest {
+class CoffeeTest extends FoodFakerTest {
 
     @Test
     public void country() {

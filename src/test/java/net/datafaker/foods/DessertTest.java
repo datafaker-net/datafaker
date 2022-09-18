@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DessertTest extends AbstractFoodFakerTest {
+class DessertTest extends FoodFakerTest {
 
     @Test
     void variety() {

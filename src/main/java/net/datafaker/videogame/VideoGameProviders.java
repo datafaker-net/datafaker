@@ -39,10 +39,6 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(StarCraft.class, StarCraft::new);
     }
 
-    default StarWars starWars() {
-        return getProvider(StarWars.class, StarWars::new);
-    }
-
     default SuperMario superMario() {
         return getProvider(SuperMario.class, SuperMario::new);
     }

@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HebrewFoodTest extends AbstractFoodFakerTest {
+class HebrewFoodTest extends FoodFakerTest {
     public final String matchHebrewFood = "[\\u0590-\\u05FF ']+";
     public static FoodFaker food;
 

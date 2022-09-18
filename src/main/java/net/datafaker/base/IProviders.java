@@ -1,6 +1,9 @@
 package net.datafaker.base;
 
 
+import net.datafaker.movie.DarkSoul;
+import net.datafaker.movie.Lebowski;
+import net.datafaker.movie.Simpsons;
 import net.datafaker.videogame.Minecraft;
 
 /**
@@ -28,20 +31,12 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Appliance.class, Appliance::new);
   }
 
-  default AquaTeenHungerForce aquaTeenHungerForce() {
-    return getProvider(AquaTeenHungerForce.class, AquaTeenHungerForce::new);
-  }
-
   default Artist artist() {
     return getProvider(Artist.class, Artist::new);
   }
 
   default Australia australia() {
     return getProvider(Australia.class, Australia::new);
-  }
-
-  default Avatar avatar() {
-    return getProvider(Avatar.class, Avatar::new);
   }
 
   default Aviation aviation() {
@@ -52,28 +47,12 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Aws.class, Aws::new);
   }
 
-  default BackToTheFuture backToTheFuture() {
-    return getProvider(BackToTheFuture.class, BackToTheFuture::new);
-  }
-
-  default Babylon5 babylon5() {
-    return getProvider(Babylon5.class, Babylon5::new);
-  }
-
   default Barcode barcode() {
     return getProvider(Barcode.class, Barcode::new);
   }
 
-  default BigBangTheory bigBangTheory() {
-    return getProvider(BigBangTheory.class, BigBangTheory::new);
-  }
-
   default BloodType bloodtype() {
     return getProvider(BloodType.class, BloodType::new);
-  }
-
-  default BojackHorseman bojackHorseman() {
-    return getProvider(BojackHorseman.class, BojackHorseman::new);
   }
 
   default Book book() {
@@ -82,22 +61,6 @@ public interface IProviders extends ProviderRegistration {
 
   default Bool bool() {
     return getProvider(Bool.class, Bool::new);
-  }
-
-  default BossaNova bossaNova() {
-    return getProvider(BossaNova.class, BossaNova::new);
-  }
-
-  default BreakingBad breakingBad() {
-    return getProvider(BreakingBad.class, BreakingBad::new);
-  }
-
-  default BrooklynNineNine brooklynNineNine() {
-    return getProvider(BrooklynNineNine.class, BrooklynNineNine::new);
-  }
-
-  default Buffy buffy() {
-    return getProvider(Buffy.class, Buffy::new);
   }
 
   default Business business() {
@@ -114,10 +77,6 @@ public interface IProviders extends ProviderRegistration {
 
   default Cat cat() {
     return getProvider(Cat.class, Cat::new);
-  }
-
-  default ChuckNorris chuckNorris() {
-    return getProvider(ChuckNorris.class, ChuckNorris::new);
   }
 
   default Chiquito chiquito() {
@@ -204,10 +163,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(DcComics.class, DcComics::new);
   }
 
-  default Departed departed() {
-    return getProvider(Departed.class, Departed::new);
-  }
-
   default Device device() {
     return getProvider(Device.class, Device::new);
   }
@@ -220,20 +175,8 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Domain.class, Domain::new);
   }
 
-  default DragonBall dragonBall() {
-    return getProvider(DragonBall.class, DragonBall::new);
-  }
-
   default DrivingLicense drivingLicense() {
     return getProvider(DrivingLicense.class, DrivingLicense::new);
-  }
-
-  default DumbAndDumber dumbAndDumber() {
-    return getProvider(DumbAndDumber.class, DumbAndDumber::new);
-  }
-
-  default Dune dune() {
-    return getProvider(Dune.class, Dune::new);
   }
 
   default Educator educator() {
@@ -260,24 +203,12 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(File.class, File::new);
   }
 
-  default FinalSpace finalSpace() {
-    return getProvider(FinalSpace.class, FinalSpace::new);
-  }
-
   default Finance finance() {
     return getProvider(Finance.class, Finance::new);
   }
 
-  default Friends friends() {
-    return getProvider(Friends.class, Friends::new);
-  }
-
   default FunnyName funnyName() {
     return getProvider(FunnyName.class, FunnyName::new);
-  }
-
-  default GameOfThrones gameOfThrones() {
-    return getProvider(GameOfThrones.class, GameOfThrones::new);
   }
 
   default GarmentSize garmentSize() {
@@ -286,10 +217,6 @@ public interface IProviders extends ProviderRegistration {
 
   default Gender gender() {
     return getProvider(Gender.class, Gender::new);
-  }
-
-  default Ghostbusters ghostbusters() {
-    return getProvider(Ghostbusters.class, Ghostbusters::new);
   }
 
   default GratefulDead gratefulDead() {
@@ -304,25 +231,8 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Hacker.class, Hacker::new);
   }
 
-  default HarryPotter harryPotter() {
-    return getProvider(HarryPotter.class, HarryPotter::new);
-  }
-
-  default HeyArnold heyArnold() {
-    return getProvider(HeyArnold.class, HeyArnold::new);
-  }
-
   default Hipster hipster() {
     return getProvider(Hipster.class, Hipster::new);
-  }
-
-  default HitchhikersGuideToTheGalaxy hitchhikersGuideToTheGalaxy() {
-    return getProvider(
-        HitchhikersGuideToTheGalaxy.class, HitchhikersGuideToTheGalaxy::new);
-  }
-
-  default Hobbit hobbit() {
-    return getProvider(Hobbit.class, Hobbit::new);
   }
 
   default Hobby hobby() {
@@ -341,10 +251,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(House.class, House::new);
   }
 
-  default HowIMetYourMother howIMetYourMother() {
-    return getProvider(HowIMetYourMother.class, HowIMetYourMother::new);
-  }
-
   default IdNumber idNumber() {
     return getProvider(IdNumber.class, IdNumber::new);
   }
@@ -361,10 +267,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Job.class, Job::new);
   }
 
-  default Kaamelott kaamelott() {
-    return getProvider(Kaamelott.class, Kaamelott::new);
-  }
-
   default Kpop kpop() {
     return getProvider(Kpop.class, Kpop::new);
   }
@@ -373,20 +275,12 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Lebowski.class, Lebowski::new);
   }
 
-  default LordOfTheRings lordOfTheRings() {
-    return getProvider(LordOfTheRings.class, LordOfTheRings::new);
-  }
-
   default Lorem lorem() {
     return getProvider(Lorem.class, Lorem::new);
   }
 
   default Marketing marketing() {
     return getProvider(Marketing.class, Marketing::new);
-  }
-
-  default MassEffect massEffect() {
-    return getProvider(MassEffect.class, MassEffect::new);
   }
 
   default Matz matz() {
@@ -425,10 +319,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Mountaineering.class, Mountaineering::new);
   }
 
-  default Movie movie() {
-    return getProvider(Movie.class, Movie::new);
-  }
-
   default Music music() {
     return getProvider(Music.class, Music::new);
   }
@@ -457,10 +347,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Overwatch.class, Overwatch::new);
   }
 
-  default OscarMovie oscarMovie() {
-    return getProvider(OscarMovie.class, OscarMovie::new);
-  }
-
   default Passport passport() {
     return getProvider(Passport.class, Passport::new);
   }
@@ -477,14 +363,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Photography.class, Photography::new);
   }
 
-  default Pokemon pokemon() {
-    return getProvider(Pokemon.class, Pokemon::new);
-  }
-
-  default PrincessBride princessBride() {
-    return getProvider(PrincessBride.class, PrincessBride::new);
-  }
-
   default ProgrammingLanguage programmingLanguage() {
     return getProvider(ProgrammingLanguage.class, ProgrammingLanguage::new);
   }
@@ -493,16 +371,8 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Relationship.class, Relationship::new);
   }
 
-  default ResidentEvil residentEvil() {
-    return getProvider(ResidentEvil.class, ResidentEvil::new);
-  }
-
   default Restaurant restaurant() {
     return getProvider(Restaurant.class, Restaurant::new);
-  }
-
-  default RickAndMorty rickAndMorty() {
-    return getProvider(RickAndMorty.class, RickAndMorty::new);
   }
 
   default Robin robin() {
@@ -513,16 +383,8 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(RockBand.class, RockBand::new);
   }
 
-  default RuPaulDragRace ruPaulDragRace() {
-    return getProvider(RuPaulDragRace.class, RuPaulDragRace::new);
-  }
-
   default Science science() {
     return getProvider(Science.class, Science::new);
-  }
-
-  default Seinfeld seinfeld() {
-    return getProvider(Seinfeld.class, Seinfeld::new);
   }
 
   default SlackEmoji slackEmoji() {
@@ -549,10 +411,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Space.class, Space::new);
   }
 
-  default StarTrek starTrek() {
-    return getProvider(StarTrek.class, StarTrek::new);
-  }
-
   default Stock stock() {
     return getProvider(Stock.class, Stock::new);
   }
@@ -569,20 +427,12 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Team.class, Team::new);
   }
 
-  default TheItCrowd theItCrowd() {
-    return getProvider(TheItCrowd.class, TheItCrowd::new);
-  }
-
   default Time time() {
     return getProvider(Time.class, Time::new);
   }
 
   default Tron tron() {
     return getProvider(Tron.class, Tron::new);
-  }
-
-  default TwinPeaks twinPeaks() {
-    return getProvider(TwinPeaks.class, TwinPeaks::new);
   }
 
   default Twitter twitter() {
@@ -607,10 +457,6 @@ public interface IProviders extends ProviderRegistration {
 
   default Weather weather() {
     return getProvider(Weather.class, Weather::new);
-  }
-
-  default Witcher witcher() {
-    return getProvider(Witcher.class, Witcher::new);
   }
 
   default Yoda yoda() {
