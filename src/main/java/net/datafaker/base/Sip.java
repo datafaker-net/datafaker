@@ -8,7 +8,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @author TomerFi
  * @since 0.8.0
  */
-public class Sip extends AbstractProvider<IProviders> {
+public class Sip extends AbstractProvider<BaseProviders> {
     
     private final int[] portPool = new int[5001];
 

@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 0.8.0
  */
-public class Weather extends AbstractProvider<IProviders> {
+public class Weather extends AbstractProvider<BaseProviders> {
 
     private static final int DEFAULT_MIN_TEMP_C = -30;
     private static final int DEFAULT_MAX_TEMP_C = 38;

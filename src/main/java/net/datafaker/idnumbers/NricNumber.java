@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.base.IProviders;
+import net.datafaker.base.BaseProviders;
 import net.datafaker.service.RandomService;
 
 import java.util.EnumMap;
@@ -52,7 +52,7 @@ public class NricNumber {
         INITIALIZER.put(Type.FOREIGNER_TWENTY_FIRST_CENTURY, new NricType('G', FIN_LETTERS, CODE, 4));
     }
 
-    public static String getValidFIN(IProviders f, Type type) {
+    public static String getValidFIN(BaseProviders f, Type type) {
         final RandomService random = f.random();
         final int[] number = new int[7];
         for (int i = 0; i < number.length; i++) {

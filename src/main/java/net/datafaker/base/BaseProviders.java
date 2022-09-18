@@ -9,7 +9,7 @@ import net.datafaker.videogame.Minecraft;
 /**
  * The interface to register providers for {@link BaseFaker}.
  */
-public interface IProviders extends ProviderRegistration {
+public interface BaseProviders extends ProviderRegistration {
 
   default Address address() {
     return getProvider(Address.class, Address::new);

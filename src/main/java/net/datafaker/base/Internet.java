@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 /**
  * @since 0.8.0
  */
-public class Internet extends AbstractProvider<IProviders> {
+public class Internet extends AbstractProvider<BaseProviders> {
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
     private static final Pattern COLON = Pattern.compile(":");
 
@@ -403,7 +403,7 @@ public class Internet extends AbstractProvider<IProviders> {
             this.browserName = browserName;
         }
 
-        private static UserAgent any(IProviders faker) {
+        private static UserAgent any(BaseProviders faker) {
             UserAgent[] agents = UserAgent.values();
             int randomIndex = (int) (faker.random().nextDouble() * agents.length);
             return agents[randomIndex];

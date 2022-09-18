@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class Shakespeare extends AbstractProvider<IProviders> {
+public class Shakespeare extends AbstractProvider<BaseProviders> {
 
     private static final String[] hamletQuotes = {
         "To be, or not to be: that is the question.",

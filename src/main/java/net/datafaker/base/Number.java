@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 /**
  * @since 0.8.0
  */
-public class Number extends AbstractProvider<IProviders> {
+public class Number extends AbstractProvider<BaseProviders> {
 
     protected Number(BaseFaker faker) {
         super(faker);

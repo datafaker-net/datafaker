@@ -11,7 +11,7 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  * @see <a href="https://en.wikipedia.org/wiki/CPF_number">CPF</a>
  * @since 0.8.0
  */
-public class CPF extends AbstractProvider<IProviders> {
+public class CPF extends AbstractProvider<BaseProviders> {
 
     protected CPF(BaseFaker faker) {
         super(faker);
@@ -21,7 +21,7 @@ public class CPF extends AbstractProvider<IProviders> {
      * Return valid and formatted
      *
      * @return a valid CPF
-     * @see IdNumberGeneratorPtBrUtil#cpf(IProviders, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cpf(BaseProviders, boolean, boolean)
      */
     public String valid() {
         return IdNumberGeneratorPtBrUtil.cpf(faker, true, true);
@@ -32,7 +32,7 @@ public class CPF extends AbstractProvider<IProviders> {
      *
      * @param formatted a (un)formatted CPF
      * @return a valid CPF
-     * @see IdNumberGeneratorPtBrUtil#cpf(IProviders, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cpf(BaseProviders, boolean, boolean)
      */
     public String valid(boolean formatted) {
         return IdNumberGeneratorPtBrUtil.cpf(faker, formatted, true);
@@ -42,7 +42,7 @@ public class CPF extends AbstractProvider<IProviders> {
      * Return invalid and formatted
      *
      * @return an invalid CPF
-     * @see IdNumberGeneratorPtBrUtil#cpf(IProviders, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cpf(BaseProviders, boolean, boolean)
      */
     public String invalid() {
         return IdNumberGeneratorPtBrUtil.cpf(faker, true, false);
@@ -53,7 +53,7 @@ public class CPF extends AbstractProvider<IProviders> {
      *
      * @param formatted a (un)formatted CPF
      * @return an invalid CPF
-     * @see IdNumberGeneratorPtBrUtil#cpf(IProviders, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cpf(BaseProviders, boolean, boolean)
      */
     public String invalid(boolean formatted) {
         return IdNumberGeneratorPtBrUtil.cpf(faker, formatted, false);

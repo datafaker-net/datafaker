@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 1.6.0
  */
-public class Community extends AbstractProvider<IProviders> {
+public class Community extends AbstractProvider<BaseProviders> {
 
     protected Community(BaseFaker faker) {
         super(faker);

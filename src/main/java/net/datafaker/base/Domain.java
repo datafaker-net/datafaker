@@ -8,7 +8,7 @@ import net.datafaker.service.RandomService;
  *
  * @since 0.9.0
  */
-public class Domain extends AbstractProvider<IProviders> {
+public class Domain extends AbstractProvider<BaseProviders> {
 
     /**
      * Instantiates a new Domain.

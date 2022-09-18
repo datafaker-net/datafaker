@@ -17,7 +17,7 @@ import java.time.ZoneId;
 /**
  * @since 0.8.0
  */
-public class IdNumber extends AbstractProvider<IProviders> {
+public class IdNumber extends AbstractProvider<BaseProviders> {
 
     protected IdNumber(BaseFaker faker) {
         super(faker);

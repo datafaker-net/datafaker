@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 1.5.0
  */
-public class Mbti extends AbstractProvider<IProviders> {
+public class Mbti extends AbstractProvider<BaseProviders> {
     
     private final String choice;
 

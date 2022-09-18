@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  *
  * @since 1.6.0
  */
-public class Unique extends AbstractProvider<IProviders> {
+public class Unique extends AbstractProvider<BaseProviders> {
 
     private final Map<Locale, Map<String, List<String>>> valuesByKeyAndLocale = new HashMap<>();
 

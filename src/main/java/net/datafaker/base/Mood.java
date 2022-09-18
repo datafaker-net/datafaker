@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.9.0
  */
-public class Mood extends AbstractProvider<IProviders> {
+public class Mood extends AbstractProvider<BaseProviders> {
 
     protected Mood(BaseFaker faker) {
         super(faker);

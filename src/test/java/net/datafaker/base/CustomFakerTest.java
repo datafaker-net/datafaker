@@ -23,7 +23,7 @@ class CustomFakerTest {
         }
     }
 
-    public static class Insect extends AbstractProvider<IProviders> {
+    public static class Insect extends AbstractProvider<BaseProviders> {
         private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
 
         public Insect(BaseFaker faker) {
@@ -35,7 +35,7 @@ class CustomFakerTest {
         }
     }
 
-    public static class InsectFromFile extends AbstractProvider<IProviders> {
+    public static class InsectFromFile extends AbstractProvider<BaseProviders> {
         private static final String KEY = "insectsfromfile";
 
         public InsectFromFile(BaseFaker faker) {

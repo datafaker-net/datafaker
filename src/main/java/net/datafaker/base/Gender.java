@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 0.8.0
  */
-public class Gender extends AbstractProvider<IProviders> {
+public class Gender extends AbstractProvider<BaseProviders> {
 
     protected Gender(BaseFaker faker) {
         super(faker);

@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.4.0
  */
-public class Device extends AbstractProvider<IProviders> {
+public class Device extends AbstractProvider<BaseProviders> {
 
     protected Device(BaseFaker faker) {
         super(faker);

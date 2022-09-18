@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class Country extends AbstractProvider<IProviders> {
+public class Country extends AbstractProvider<BaseProviders> {
     private final String flagUrl;
 
     protected Country(BaseFaker faker) {

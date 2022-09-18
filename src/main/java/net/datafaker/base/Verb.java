@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.5.0
  */
-public class Verb extends AbstractProvider<IProviders> {
+public class Verb extends AbstractProvider<BaseProviders> {
 
     protected Verb(BaseFaker faker) {
         super(faker);

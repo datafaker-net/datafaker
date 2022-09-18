@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.2.0
  */
-public class Australia extends AbstractProvider<IProviders> {
+public class Australia extends AbstractProvider<BaseProviders> {
 
     protected Australia(BaseFaker faker) {
         super(faker);

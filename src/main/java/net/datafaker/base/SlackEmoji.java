@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class SlackEmoji extends AbstractProvider<IProviders> {
+public class SlackEmoji extends AbstractProvider<BaseProviders> {
 
     protected SlackEmoji(BaseFaker faker) {
         super(faker);

@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 1.3.0
  */
-public class Kpop extends AbstractProvider<IProviders> {
+public class Kpop extends AbstractProvider<BaseProviders> {
 
     protected Kpop(BaseFaker faker) {
         super(faker);

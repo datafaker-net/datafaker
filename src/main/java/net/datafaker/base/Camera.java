@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.4.0
  */
-public class Camera extends AbstractProvider<IProviders> {
+public class Camera extends AbstractProvider<BaseProviders> {
 
     protected Camera(BaseFaker faker) {
         super(faker);

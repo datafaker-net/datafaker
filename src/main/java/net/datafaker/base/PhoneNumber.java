@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class PhoneNumber extends AbstractProvider<IProviders> {
+public class PhoneNumber extends AbstractProvider<BaseProviders> {
 
     protected PhoneNumber(BaseFaker faker) {
         super(faker);

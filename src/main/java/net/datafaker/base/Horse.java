@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.3.0
  */
-public class Horse extends AbstractProvider<IProviders> {
+public class Horse extends AbstractProvider<BaseProviders> {
 
     protected Horse(BaseFaker faker) {
         super(faker);

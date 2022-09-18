@@ -5,7 +5,7 @@ import java.util.UUID;
 /**
  * @since 1.3.0
  */
-public class Aws extends AbstractProvider<IProviders> {
+public class Aws extends AbstractProvider<BaseProviders> {
 
     protected Aws(BaseFaker faker) {
         super(faker);

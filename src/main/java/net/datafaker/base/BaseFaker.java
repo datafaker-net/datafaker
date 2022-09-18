@@ -22,7 +22,7 @@ import java.util.function.Supplier;
  *
  * @author ren
  */
-public class BaseFaker implements IProviders {
+public class BaseFaker implements BaseProviders {
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
     private static final Map<Class<? extends AbstractProvider>, Map<FakerContext, AbstractProvider>> PROVIDERS_MAP = new ConcurrentHashMap<>();

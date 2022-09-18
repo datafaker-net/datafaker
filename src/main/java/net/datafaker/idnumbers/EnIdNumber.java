@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.base.IProviders;
+import net.datafaker.base.BaseProviders;
 
 import java.util.regex.Pattern;
 
@@ -12,7 +12,7 @@ public class EnIdNumber {
         Pattern.compile("666-\\d{2}-\\d{4}"),
         Pattern.compile("9\\d{2}-\\d{2}-\\d{4}")};
 
-    public String getValidSsn(IProviders f) {
+    public String getValidSsn(BaseProviders f) {
         String ssn = f.regexify("[0-8]\\d{2}-\\d{2}-\\d{4}");
 
         boolean isValid = true;

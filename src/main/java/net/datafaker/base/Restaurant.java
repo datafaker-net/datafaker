@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.2.0
  */
-public class Restaurant extends AbstractProvider<IProviders> {
+public class Restaurant extends AbstractProvider<BaseProviders> {
 
     protected Restaurant(BaseFaker faker) {
         super(faker);

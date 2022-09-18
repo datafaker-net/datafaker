@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.base.IProviders;
+import net.datafaker.base.BaseProviders;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +45,7 @@ public class EsMXIdNumber {
      * @param faker faker
      * @return A valid MEX CURP.
      */
-    public String get(IProviders faker) {
+    public String get(BaseProviders faker) {
 
         String sex = new String[]{"H", "M"}[faker.random().nextInt(2)];
         String birthDay = getBirthday(faker);
@@ -75,7 +75,7 @@ public class EsMXIdNumber {
      * @param faker faker
      * @return A invalid MEX CURP.
      */
-    public String getWrong(IProviders faker) {
+    public String getWrong(BaseProviders faker) {
         return faker.options().option(CHA);
     }
 
@@ -85,7 +85,7 @@ public class EsMXIdNumber {
      * @param f A specific instance of Faker.
      * @return A valid date.
      */
-    private String getBirthday(IProviders f) {
+    private String getBirthday(BaseProviders f) {
         int year = f.random().nextInt(1900, 2021);
         int month = f.random().nextInt(1, 12);
         int day = validDay(year, month, f);
@@ -101,7 +101,7 @@ public class EsMXIdNumber {
      * @param f     A specific instance of Faker.
      * @return A valid day.
      */
-    private int validDay(int year, int month, IProviders f) {
+    private int validDay(int year, int month, BaseProviders f) {
 
         List<Integer> bigMonths = Arrays.asList(1, 3, 5, 7, 8, 10, 12);
 

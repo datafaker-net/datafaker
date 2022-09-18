@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class ProgrammingLanguage extends AbstractProvider<IProviders> {
+public class ProgrammingLanguage extends AbstractProvider<BaseProviders> {
 
     public ProgrammingLanguage(BaseFaker faker) {
         super(faker);

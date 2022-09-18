@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.5.0
  */
-public class Cannabis extends AbstractProvider<IProviders> {
+public class Cannabis extends AbstractProvider<BaseProviders> {
 
     protected Cannabis(BaseFaker faker) {
         super(faker);

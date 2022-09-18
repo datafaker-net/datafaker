@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class Artist extends AbstractProvider<IProviders> {
+public class Artist extends AbstractProvider<BaseProviders> {
 
     protected Artist(BaseFaker faker) {
         super(faker);

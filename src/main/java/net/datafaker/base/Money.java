@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 1.5.0
  */
-public class Money extends AbstractProvider<IProviders> {
+public class Money extends AbstractProvider<BaseProviders> {
 
     public Money(BaseFaker faker) {
         super(faker);

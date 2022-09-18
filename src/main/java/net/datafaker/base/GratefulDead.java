@@ -6,7 +6,7 @@ package net.datafaker.base;
  *
  * @since 1.4.0
  */
-public class GratefulDead extends AbstractProvider<IProviders> {
+public class GratefulDead extends AbstractProvider<BaseProviders> {
 
     protected GratefulDead(BaseFaker faker) {
         super(faker);

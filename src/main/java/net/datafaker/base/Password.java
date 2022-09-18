@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @since 1.6.0
  */
-public class Password extends AbstractProvider<IProviders> {
+public class Password extends AbstractProvider<BaseProviders> {
 
     public static final String EN_LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
     public static final String EN_UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

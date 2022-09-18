@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.4.0
  */
-public class EldenRing extends AbstractProvider<IProviders> {
+public class EldenRing extends AbstractProvider<BaseProviders> {
 
     protected EldenRing(BaseFaker faker) {
         super(faker);

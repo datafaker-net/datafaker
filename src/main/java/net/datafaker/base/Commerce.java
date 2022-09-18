@@ -8,7 +8,7 @@ import java.util.TreeSet;
 /**
  * @since 0.8.0
  */
-public class Commerce extends AbstractProvider<IProviders> {
+public class Commerce extends AbstractProvider<BaseProviders> {
     private final DecimalFormatSymbols decimalFormatSymbols;
 
     protected Commerce(BaseFaker faker) {

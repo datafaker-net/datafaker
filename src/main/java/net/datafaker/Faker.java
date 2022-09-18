@@ -6,14 +6,14 @@ import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
 import net.datafaker.base.BaseFaker;
-import net.datafaker.base.IProviders;
+import net.datafaker.base.BaseProviders;
 import net.datafaker.sport.SportProviders;
 import net.datafaker.videogame.VideoGameProviders;
 
 import java.util.Locale;
 import java.util.Random;
 
-public class Faker extends BaseFaker implements IProviders, SportProviders, FoodProviders, MovieProviders, VideoGameProviders {
+public class Faker extends BaseFaker implements BaseProviders, SportProviders, FoodProviders, MovieProviders, VideoGameProviders {
     public Faker() {
     }
 

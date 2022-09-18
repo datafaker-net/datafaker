@@ -8,7 +8,7 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  * @see <a href="https://en.wikipedia.org/wiki/CNPJ">CNPJ</a>
  * @since 1.1.0
  */
-public class CNPJ extends AbstractProvider<IProviders> {
+public class CNPJ extends AbstractProvider<BaseProviders> {
 
     protected CNPJ(BaseFaker faker) {
         super(faker);
@@ -18,7 +18,7 @@ public class CNPJ extends AbstractProvider<IProviders> {
      * Return valid and formatted
      *
      * @return a valid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(IProviders, boolean, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(BaseProviders, boolean, boolean, boolean)
      */
     public String valid() {
         return IdNumberGeneratorPtBrUtil.cnpj(faker, true, true, false);
@@ -29,7 +29,7 @@ public class CNPJ extends AbstractProvider<IProviders> {
      *
      * @param formatted a CNPJ (un)formatted
      * @return a valid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(IProviders, boolean, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(BaseProviders, boolean, boolean, boolean)
      */
     public String valid(boolean formatted) {
         return IdNumberGeneratorPtBrUtil.cnpj(faker, formatted, true, false);
@@ -47,7 +47,7 @@ public class CNPJ extends AbstractProvider<IProviders> {
      * @param formatted a CNPJ (un)formatted
      * @param multiBranch CPNJ from a random company branch
      * @return a valid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(IProviders, boolean, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(BaseProviders, boolean, boolean, boolean)
      */
     public String valid(boolean formatted, boolean multiBranch) {
         return IdNumberGeneratorPtBrUtil.cnpj(faker, formatted, true, multiBranch);
@@ -57,7 +57,7 @@ public class CNPJ extends AbstractProvider<IProviders> {
      * Return invalid and formatted
      *
      * @return an invalid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(IProviders, boolean, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(BaseProviders, boolean, boolean, boolean)
      */
     public String invalid() {
         return IdNumberGeneratorPtBrUtil.cnpj(faker, true, false, false);
@@ -67,7 +67,7 @@ public class CNPJ extends AbstractProvider<IProviders> {
      * Return invalid and (un)formatted
      *
      * @return an invalid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(IProviders, boolean, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(BaseProviders, boolean, boolean, boolean)
      */
     public String invalid(boolean formatted) {
         return IdNumberGeneratorPtBrUtil.cnpj(faker, formatted, false, false);
@@ -83,7 +83,7 @@ public class CNPJ extends AbstractProvider<IProviders> {
      * Otherwise, this number will vary between 0001 and 9999 .
      *
      * @return an invalid CNPJ
-     * @see IdNumberGeneratorPtBrUtil#cnpj(IProviders, boolean, boolean, boolean)
+     * @see IdNumberGeneratorPtBrUtil#cnpj(BaseProviders, boolean, boolean, boolean)
      */
     public String invalid(boolean formatted, boolean multiBranch) {
         return IdNumberGeneratorPtBrUtil.cnpj(faker, formatted, false, multiBranch);

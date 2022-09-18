@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class Currency extends AbstractProvider<IProviders> {
+public class Currency extends AbstractProvider<BaseProviders> {
 
     public Currency(BaseFaker faker) {
         super(faker);

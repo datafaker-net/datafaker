@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 1.4.0
  */
-public class Tron extends AbstractProvider<IProviders> {
+public class Tron extends AbstractProvider<BaseProviders> {
 
     protected Tron(BaseFaker faker) {
         super(faker);

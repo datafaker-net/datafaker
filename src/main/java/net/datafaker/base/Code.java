@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  *
  * @since 0.8.0
  */
-public class Code extends AbstractProvider<IProviders> {
+public class Code extends AbstractProvider<BaseProviders> {
 
     private static final int[] GTIN_8_CHECK_DIGITS = {3, 1, 3, 1, 3, 1, 3};
     private static final int[] GTIN_13_CHECK_DIGITS = {1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3};

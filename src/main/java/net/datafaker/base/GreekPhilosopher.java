@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.5.0
  */
-public class GreekPhilosopher extends AbstractProvider<IProviders> {
+public class GreekPhilosopher extends AbstractProvider<BaseProviders> {
 
     protected GreekPhilosopher(BaseFaker faker) {
         super(faker);

@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 1.2.0
  */
-public class Military extends AbstractProvider<IProviders> {
+public class Military extends AbstractProvider<BaseProviders> {
 
     protected Military(BaseFaker faker) {
         super(faker);

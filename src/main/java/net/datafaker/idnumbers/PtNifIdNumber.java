@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.base.IProviders;
+import net.datafaker.base.BaseProviders;
 
 /**
  * Portuguese VAT identification number (NIF)
@@ -17,7 +17,7 @@ public class PtNifIdNumber {
     private static final String[] VALID_FIRST_DOUBLE_DIGITS =
         {"45", "70", "71", "72", "74", "75", "77", "79", "90", "91", "98", "99"};
 
-    public String getInvalid(final IProviders faker) {
+    public String getInvalid(final BaseProviders faker) {
         String digits = faker.number().digits(8);
         int digitSum = calculateDigitSum(digits);
         // by adding 5 to a valid checksum, we should invalidate
@@ -25,7 +25,7 @@ public class PtNifIdNumber {
         return digits + (digitSum + 5);
     }
 
-    public String getValid(final IProviders faker) {
+    public String getValid(final BaseProviders faker) {
         String digits;
         if (faker.random().nextBoolean()) {
             final char firstDigit = faker.options().option(VALID_FIRST_DIGITS);

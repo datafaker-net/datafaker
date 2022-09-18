@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 0.8.0
  */
-public class Photography extends AbstractProvider<IProviders> {
+public class Photography extends AbstractProvider<BaseProviders> {
 
     protected Photography(BaseFaker faker) {
         super(faker);

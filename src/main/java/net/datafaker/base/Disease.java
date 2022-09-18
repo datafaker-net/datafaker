@@ -5,7 +5,7 @@ package net.datafaker.base;
  *
  * @since 0.8.0
  */
-public class Disease extends AbstractProvider<IProviders> {
+public class Disease extends AbstractProvider<BaseProviders> {
 
     /**
      * Create a constructor for Disease

@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class Demographic extends AbstractProvider<IProviders> {
+public class Demographic extends AbstractProvider<BaseProviders> {
 
     protected Demographic(BaseFaker faker) {
         super(faker);

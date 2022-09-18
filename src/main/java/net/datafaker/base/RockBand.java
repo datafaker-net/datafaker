@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class RockBand extends AbstractProvider<IProviders> {
+public class RockBand extends AbstractProvider<BaseProviders> {
 
     protected RockBand(BaseFaker faker) {
         super(faker);

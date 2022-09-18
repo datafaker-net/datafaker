@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class Superhero extends AbstractProvider<IProviders> {
+public class Superhero extends AbstractProvider<BaseProviders> {
 
     protected Superhero(BaseFaker faker) {
         super(faker);

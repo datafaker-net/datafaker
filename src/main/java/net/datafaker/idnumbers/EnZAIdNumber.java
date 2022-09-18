@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.base.IProviders;
+import net.datafaker.base.BaseProviders;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +21,7 @@ public class EnZAIdNumber {
      * @param f the java-faker
      * @return a valid social security number on faker
      */
-    public String getValidSsn(IProviders f) {
+    public String getValidSsn(BaseProviders f) {
 
         String ssn = "";
         while (!validSsn(ssn)) {
@@ -38,7 +38,7 @@ public class EnZAIdNumber {
      * @param f the java-faker
      * @return a invalid social security number on faker
      */
-    public String getInValidSsn(IProviders f) {
+    public String getInValidSsn(BaseProviders f) {
 
         String ssn = f.numerify(f.options().option(VALID_PATTERN));
         while (validSsn(ssn)) {
@@ -54,7 +54,7 @@ public class EnZAIdNumber {
      * @param faker the java-faker
      * @return a fixed format numeric string
      */
-    private String getPattern(IProviders faker) {
+    private String getPattern(BaseProviders faker) {
         return faker.options().option(VALID_PATTERN);
     }
 

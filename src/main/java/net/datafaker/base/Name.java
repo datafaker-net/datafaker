@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 0.8.0
  */
-public class Name extends AbstractProvider<IProviders> {
+public class Name extends AbstractProvider<BaseProviders> {
 
     /**
      * Internal constructor, not to be used by clients.  Instances of {@link Name} should be accessed via

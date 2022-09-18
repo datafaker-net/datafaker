@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * @since 0.8.0
  */
-public class Company extends AbstractProvider<IProviders> {
+public class Company extends AbstractProvider<BaseProviders> {
 
     private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[.,' ]");
 

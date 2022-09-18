@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.base.IProviders;
+import net.datafaker.base.BaseProviders;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,7 @@ import java.util.Date;
 public class SvSEIdNumber {
     private static final String[] VALID_PATTERNS = {"######-####", "######+####"};
 
-    public String getValidSsn(IProviders f) {
+    public String getValidSsn(BaseProviders f) {
         String candidate = "";
         while (!validSwedishSsn(candidate)) {
             String pattern = getPattern(f);
@@ -25,7 +25,7 @@ public class SvSEIdNumber {
         return candidate;
     }
 
-    public String getInvalidSsn(IProviders f) {
+    public String getInvalidSsn(BaseProviders f) {
         String candidate = "121212-1212"; // Seed with a valid number
         while (validSwedishSsn(candidate)) {
             String pattern = getPattern(f);
@@ -35,7 +35,7 @@ public class SvSEIdNumber {
         return candidate;
     }
 
-    private String getPattern(IProviders faker) {
+    private String getPattern(BaseProviders faker) {
         return faker.options().option(VALID_PATTERNS);
     }
 

@@ -10,7 +10,7 @@ import java.util.Locale;
 /**
  * @since 0.8.0
  */
-public class Nation extends AbstractProvider<IProviders> {
+public class Nation extends AbstractProvider<BaseProviders> {
 
     private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 

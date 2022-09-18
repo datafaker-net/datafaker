@@ -8,9 +8,9 @@ import java.util.Arrays;
 /**
  * @since 0.8.0
  */
-public class Relationship extends AbstractProvider<IProviders> {
+public class Relationship extends AbstractProvider<BaseProviders> {
 
-    protected Relationship(final IProviders faker) {
+    protected Relationship(final BaseProviders faker) {
         super(faker);
     }
 

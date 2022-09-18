@@ -5,7 +5,7 @@ import net.datafaker.internal.helper.WordUtils;
 /**
  * @since 0.8.0
  */
-public class Animal extends AbstractProvider<IProviders> {
+public class Animal extends AbstractProvider<BaseProviders> {
 
     protected Animal(BaseFaker faker) {
         super(faker);

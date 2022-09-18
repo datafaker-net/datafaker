@@ -3,7 +3,7 @@ package net.datafaker.base;
 /**
  * @since 1.3.0
  */
-public class CryptoCoin extends AbstractProvider<IProviders> {
+public class CryptoCoin extends AbstractProvider<BaseProviders> {
 
     protected CryptoCoin(BaseFaker faker) {
         super(faker);
