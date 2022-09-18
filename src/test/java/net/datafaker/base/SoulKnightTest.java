@@ -1,12 +1,11 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SoulKnightTest extends AbstractFakerTest {
+public class SoulKnightTest extends AbstractBaseFakerTest {
 
     public static final String SOUL_KNIGHT_VALUE_REGEX = "[a-zA-Z\\d\\-. /():+'’]+";
 

@@ -1,11 +1,10 @@
-package net.datafaker.base;
+package net.datafaker.foods;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FoodTest extends AbstractFakerTest {
+class FoodTest extends AbstractFoodFakerTest {
 
     @Test
     void ingredient() {

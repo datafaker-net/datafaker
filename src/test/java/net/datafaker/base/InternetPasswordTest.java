@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Matcher;
@@ -8,7 +7,7 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class InternetPasswordTest extends AbstractFakerTest {
+class InternetPasswordTest extends AbstractBaseFakerTest {
     @Test
     void testPassword1000() {
         final Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");

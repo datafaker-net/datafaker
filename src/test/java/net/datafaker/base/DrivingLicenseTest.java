@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DrivingLicenseTest extends AbstractFakerTest {
+public class DrivingLicenseTest extends AbstractBaseFakerTest {
 
     @RepeatedTest(100)
     void drivingLicense_AL() {

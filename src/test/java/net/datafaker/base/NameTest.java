@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +10,7 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
-class NameTest extends AbstractFakerTest {
+class NameTest extends AbstractBaseFakerTest {
 
     @Spy
     private BaseFaker mockedFaker;

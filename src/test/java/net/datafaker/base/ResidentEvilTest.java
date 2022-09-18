@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ResidentEvilTest extends AbstractFakerTest {
+class ResidentEvilTest extends AbstractBaseFakerTest {
 
     static private final String WORDS_WITH_SPECIAL_CHAR_REGEX = "^(?! )[A-Za-z0-9αγβ'.()\\- ]*(?<! )$";
 

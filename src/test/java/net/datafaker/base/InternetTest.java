@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.fail;
 
-class InternetTest extends AbstractFakerTest {
+class InternetTest extends AbstractBaseFakerTest {
 
     @Test
     void testEmailAddress() {

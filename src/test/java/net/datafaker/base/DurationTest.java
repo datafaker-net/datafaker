@@ -1,13 +1,12 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DurationTest extends AbstractFakerTest {
+class DurationTest extends AbstractBaseFakerTest {
 
     @Test
     void testDurationSeconds() {

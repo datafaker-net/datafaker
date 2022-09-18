@@ -1,12 +1,11 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class TouhouTest extends AbstractFakerTest {
+class TouhouTest extends AbstractBaseFakerTest {
 
     @RepeatedTest(100)
     void testCharacterName() {

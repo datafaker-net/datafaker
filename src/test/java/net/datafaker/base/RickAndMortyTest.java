@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RickAndMortyTest extends AbstractFakerTest {
+class RickAndMortyTest extends AbstractBaseFakerTest {
 
     @Test
     void character() {

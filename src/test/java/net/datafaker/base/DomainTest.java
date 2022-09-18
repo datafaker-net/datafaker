@@ -1,10 +1,9 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-class DomainTest extends AbstractFakerTest {
+class DomainTest extends AbstractBaseFakerTest {
 
     @Test
     void testFirstLevelDomainNotNull() {

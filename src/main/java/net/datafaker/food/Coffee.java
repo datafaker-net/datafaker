@@ -1,14 +1,16 @@
-package net.datafaker.base;
+package net.datafaker.food;
 
+
+import net.datafaker.base.AbstractProvider;
 
 import java.util.Locale;
 
 /**
  * @since 1.5.0
  */
-public class Coffee extends AbstractProvider<IProviders> {
+public class Coffee extends AbstractProvider<FoodProviders> {
 
-    protected Coffee(BaseFaker faker) {
+    protected Coffee(FoodProviders faker) {
         super(faker);
     }
 

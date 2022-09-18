@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class Battlefield1Test extends AbstractFakerTest {
+class Battlefield1Test extends AbstractBaseFakerTest {
 
     @RepeatedTest(50)
     void classes() {

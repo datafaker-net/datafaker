@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MeasurementTest extends AbstractFakerTest {
+class MeasurementTest extends AbstractBaseFakerTest {
 
     public static final String WORDS = "^[a-z ]+$";
 

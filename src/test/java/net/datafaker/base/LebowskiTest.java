@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LebowskiTest extends AbstractFakerTest {
+class LebowskiTest extends AbstractBaseFakerTest {
     @Test
     void actor() {
         assertThat(faker.lebowski().actor()).matches("^([\\w]+ ?){1,3}$");

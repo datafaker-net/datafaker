@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GenderTest extends AbstractFakerTest {
+class GenderTest extends AbstractBaseFakerTest {
 
     @Test
     void types() {

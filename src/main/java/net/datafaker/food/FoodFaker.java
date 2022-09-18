@@ -1,4 +1,4 @@
-package net.datafaker.sport;
+package net.datafaker.food;
 
 import net.datafaker.base.BaseFaker;
 import net.datafaker.service.FakeValuesService;
@@ -8,27 +8,27 @@ import net.datafaker.service.RandomService;
 import java.util.Locale;
 import java.util.Random;
 
-public class SportFaker extends BaseFaker implements SportProviders {
-    public SportFaker() {
+public class FoodFaker extends BaseFaker implements FoodProviders {
+    public FoodFaker() {
     }
 
-    public SportFaker(Locale locale) {
+    public FoodFaker(Locale locale) {
         super(locale);
     }
 
-    public SportFaker(Random random) {
+    public FoodFaker(Random random) {
         super(random);
     }
 
-    public SportFaker(Locale locale, Random random) {
+    public FoodFaker(Locale locale, Random random) {
         super(locale, random);
     }
 
-    public SportFaker(Locale locale, RandomService randomService) {
+    public FoodFaker(Locale locale, RandomService randomService) {
         super(locale, randomService);
     }
 
-    public SportFaker(FakeValuesService fakeValuesService, FakerContext context) {
+    public FoodFaker(FakeValuesService fakeValuesService, FakerContext context) {
         super(fakeValuesService, context);
     }
 }

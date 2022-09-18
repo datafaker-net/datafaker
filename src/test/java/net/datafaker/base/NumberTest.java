@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NumberTest extends AbstractFakerTest {
+class NumberTest extends AbstractBaseFakerTest {
 
     public static final int RANDOMIZATION_QUALITY_RANGE_END = 1000;
     public static final int RANDOMIZATION_QUALITY_RANGE_STEP = 25;

@@ -1,13 +1,12 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PassportTest extends AbstractFakerTest {
+class PassportTest extends AbstractBaseFakerTest {
 
     @RepeatedTest(10)
     void testDefaultLocale() {

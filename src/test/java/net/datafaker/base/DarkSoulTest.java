@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class DarkSoulTest extends AbstractFakerTest {
+class DarkSoulTest extends AbstractBaseFakerTest {
 
     public static final String DARK_SOUL_REGEX = "[A-Za-z '-]+";
 

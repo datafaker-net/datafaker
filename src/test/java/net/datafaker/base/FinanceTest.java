@@ -1,13 +1,12 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FinanceTest extends AbstractFakerTest {
+class FinanceTest extends AbstractBaseFakerTest {
 
     @RepeatedTest(100)
     void creditCard() {

@@ -1,12 +1,11 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DiseaseTest extends AbstractFakerTest {
+class DiseaseTest extends AbstractBaseFakerTest {
     @Test
     void testInternalDisease() {
         assertThat(faker.disease().internalDisease()).matches("[\\p{L}'()., 0-9-’]+");

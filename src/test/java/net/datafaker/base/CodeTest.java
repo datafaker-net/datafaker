@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.apache.commons.validator.routines.ISBNValidator;
 import org.apache.commons.validator.routines.checkdigit.EAN13CheckDigit;
 import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
@@ -11,7 +10,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CodeTest extends AbstractFakerTest {
+class CodeTest extends AbstractBaseFakerTest {
 
     @RepeatedTest(100)
     void isbn10DefaultIsNoSeparator() {

@@ -1,11 +1,11 @@
-package net.datafaker.base;
+package net.datafaker.foods;
 
-import net.datafaker.AbstractFakerTest;
+import net.datafaker.food.Coffee;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class CoffeeTest extends AbstractFakerTest {
+class CoffeeTest extends AbstractFoodFakerTest {
 
     @Test
     public void country() {

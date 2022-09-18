@@ -3,7 +3,6 @@ package net.datafaker.base;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,7 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class PhoneNumberTest extends AbstractFakerTest {
+class PhoneNumberTest extends AbstractBaseFakerTest {
 
     @Test
     void testCellPhone_enUS() {

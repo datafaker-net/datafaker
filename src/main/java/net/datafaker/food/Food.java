@@ -1,11 +1,13 @@
-package net.datafaker.base;
+package net.datafaker.food;
+
+import net.datafaker.base.AbstractProvider;
 
 /**
  * @since 0.8.0
  */
-public class Food extends AbstractProvider<IProviders> {
+public class Food extends AbstractProvider<FoodProviders> {
 
-    protected Food(BaseFaker faker) {
+    protected Food(FoodProviders faker) {
         super(faker);
     }
 

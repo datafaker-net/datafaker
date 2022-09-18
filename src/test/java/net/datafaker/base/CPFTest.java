@@ -1,13 +1,12 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class CPFTest extends AbstractFakerTest {
+class CPFTest extends AbstractBaseFakerTest {
 
     /**
      * A valid CPF is either a real number or a generated valid number.

@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MarketingTest extends AbstractFakerTest {
+class MarketingTest extends AbstractBaseFakerTest {
 
     @Test
     void buzzwords() {

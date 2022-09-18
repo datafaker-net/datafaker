@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MovieTest extends AbstractFakerTest {
+class MovieTest extends AbstractBaseFakerTest {
 
     @RepeatedTest(50)
     void testQuote() {

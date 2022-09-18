@@ -1,13 +1,12 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TeamTest extends AbstractFakerTest {
+class TeamTest extends AbstractBaseFakerTest {
 
     @Test
     void testName() {

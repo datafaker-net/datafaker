@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,7 @@ import static net.datafaker.base.Password.EN_LOWERCASE;
 import static net.datafaker.base.Password.EN_UPPERCASE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PasswordTest extends AbstractFakerTest {
+class PasswordTest extends AbstractBaseFakerTest {
     @Test
     void passwordShouldContain3RULowerCaseAnd5CustomSpecialSymbols() {
         final String ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";

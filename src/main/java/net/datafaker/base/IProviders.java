@@ -66,10 +66,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Battlefield1.class, Battlefield1::new);
   }
 
-  default Beer beer() {
-    return getProvider(Beer.class, Beer::new);
-  }
-
   default BigBangTheory bigBangTheory() {
     return getProvider(BigBangTheory.class, BigBangTheory::new);
   }
@@ -140,10 +136,6 @@ public interface IProviders extends ProviderRegistration {
 
   default Code code() {
     return getProvider(Code.class, Code::new);
-  }
-
-  default Coffee coffee() {
-    return getProvider(Coffee.class, Coffee::new);
   }
 
   default Coin coin() {
@@ -222,10 +214,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Departed.class, Departed::new);
   }
 
-  default Dessert dessert() {
-    return getProvider(Dessert.class, Dessert::new);
-  }
-
   default Device device() {
     return getProvider(Device.class, Device::new);
   }
@@ -296,10 +284,6 @@ public interface IProviders extends ProviderRegistration {
 
   default Finance finance() {
     return getProvider(Finance.class, Finance::new);
-  }
-
-  default Food food() {
-    return getProvider(Food.class, Food::new);
   }
 
   default Friends friends() {
@@ -495,10 +479,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Number.class, Number::new);
   }
 
-  default Options options() {
-    return getProvider(Options.class, Options::new);
-  }
-
   default Overwatch overwatch() {
     return getProvider(Overwatch.class, Overwatch::new);
   }
@@ -625,10 +605,6 @@ public interface IProviders extends ProviderRegistration {
 
   default SuperMario superMario() {
     return getProvider(SuperMario.class, SuperMario::new);
-  }
-
-  default Tea tea() {
-    return getProvider(Tea.class, Tea::new);
   }
 
   default Team team() {

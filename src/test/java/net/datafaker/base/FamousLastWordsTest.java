@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FamousLastWordsTest extends AbstractFakerTest {
+class FamousLastWordsTest extends AbstractBaseFakerTest {
 
     @RepeatedTest(1000)
     void testLastWords() {

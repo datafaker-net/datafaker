@@ -1,13 +1,12 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HololiveTest extends AbstractFakerTest {
+public class HololiveTest extends AbstractBaseFakerTest {
 
     private static final BaseFaker JA_FAKER = new BaseFaker(new Locale("ja"));
 

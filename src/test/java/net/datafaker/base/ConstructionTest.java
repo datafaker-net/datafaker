@@ -1,10 +1,9 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class ConstructionTest extends AbstractFakerTest {
+class ConstructionTest extends AbstractBaseFakerTest {
 
     @Test
     public void heavyEquipment() {

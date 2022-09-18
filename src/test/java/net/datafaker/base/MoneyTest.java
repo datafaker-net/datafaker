@@ -1,12 +1,11 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Strings.isNullOrEmpty;
 
-class MoneyTest extends AbstractFakerTest {
+class MoneyTest extends AbstractBaseFakerTest {
 
     @Test
     void testCurrency() {

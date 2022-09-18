@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class StockTest extends AbstractFakerTest {
+class StockTest extends AbstractBaseFakerTest {
 
     @Test
     void testNasdaq() {

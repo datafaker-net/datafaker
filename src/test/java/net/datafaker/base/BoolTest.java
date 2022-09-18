@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BoolTest extends AbstractFakerTest {
+class BoolTest extends AbstractBaseFakerTest {
 
     @RepeatedTest(100)
     void testBool() {

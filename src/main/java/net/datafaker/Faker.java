@@ -1,5 +1,6 @@
 package net.datafaker;
 
+import net.datafaker.food.FoodProviders;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
@@ -10,7 +11,7 @@ import net.datafaker.sport.SportProviders;
 import java.util.Locale;
 import java.util.Random;
 
-public class Faker extends BaseFaker implements IProviders, SportProviders {
+public class Faker extends BaseFaker implements IProviders, SportProviders, FoodProviders {
     public Faker() {
     }
 

@@ -148,4 +148,8 @@ public interface ProviderRegistration {
     String expression(String expression);
 
     FakeValuesService fakeValuesService();
+
+    default Options options() {
+        return getProvider(Options.class, Options::new);
+    }
 }

@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import net.datafaker.Faker;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
@@ -19,7 +18,7 @@ import java.util.regex.Pattern;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class AddressTest extends AbstractFakerTest {
+class AddressTest extends AbstractBaseFakerTest {
 
     private final char decimalSeparator = new DecimalFormatSymbols(faker.getContext().getLocale()).getDecimalSeparator();
     private static final Faker US_FAKER = new Faker(new Locale("en", "US"));

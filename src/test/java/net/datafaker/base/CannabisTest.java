@@ -1,11 +1,10 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class CannabisTest extends AbstractFakerTest {
+class CannabisTest extends AbstractBaseFakerTest {
     @Test
     public void strains() {
         assertThat(faker.cannabis().strains()).isNotEmpty();

@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
@@ -10,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class TimeTest extends AbstractFakerTest {
+public class TimeTest extends AbstractBaseFakerTest {
 
     @Test
     void testFutureTime() {
