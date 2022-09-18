@@ -1,8 +1,8 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.BaseFaker;
-import net.datafaker.Superhero;
+import net.datafaker.base.BaseFaker;
+import net.datafaker.base.Superhero;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;

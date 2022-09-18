@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.BaseFaker;
+import net.datafaker.base.BaseFaker;
 import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Locale;

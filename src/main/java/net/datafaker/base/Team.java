@@ -1,0 +1,27 @@
+package net.datafaker.base;
+
+/**
+ * @since 0.8.0
+ */
+public class Team extends AbstractProvider<IProviders> {
+
+    protected Team(BaseFaker faker) {
+        super(faker);
+    }
+
+    public String name() {
+        return resolve("team.name");
+    }
+
+    public String creature() {
+        return resolve("team.creature");
+    }
+
+    public String state() {
+        return resolve("address.state");
+    }
+
+    public String sport() {
+        return resolve("team.sport");
+    }
+}

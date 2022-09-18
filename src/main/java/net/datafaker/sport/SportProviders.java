@@ -1,6 +1,6 @@
 package net.datafaker.sport;
 
-import net.datafaker.ProviderRegistration;
+import net.datafaker.base.ProviderRegistration;
 
 public interface SportProviders extends ProviderRegistration {
     default Basketball basketball() {

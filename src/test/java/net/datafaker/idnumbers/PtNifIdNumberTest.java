@@ -1,7 +1,7 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.BaseFaker;
+import net.datafaker.base.BaseFaker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 

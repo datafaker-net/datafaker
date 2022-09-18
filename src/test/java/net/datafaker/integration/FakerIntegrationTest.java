@@ -1,10 +1,10 @@
 package net.datafaker.integration;
 
-import net.datafaker.AbstractProvider;
-import net.datafaker.Address;
-import net.datafaker.BaseFaker;
+import net.datafaker.base.AbstractProvider;
+import net.datafaker.base.Address;
+import net.datafaker.base.BaseFaker;
 import net.datafaker.Faker;
-import net.datafaker.Name;
+import net.datafaker.base.Name;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

@@ -3,7 +3,7 @@ package net.datafaker.idnumbers;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import net.datafaker.BaseFaker;
+import net.datafaker.base.BaseFaker;
 import net.datafaker.idnumbers.PeselNumber.Gender;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

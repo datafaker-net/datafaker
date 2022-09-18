@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.IProviders;
+import net.datafaker.base.IProviders;
 
 import java.time.LocalDate;
 import java.util.Optional;

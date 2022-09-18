@@ -3,6 +3,8 @@ package net.datafaker;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
+import net.datafaker.base.BaseFaker;
+import net.datafaker.base.IProviders;
 import net.datafaker.sport.SportProviders;
 
 import java.util.Locale;

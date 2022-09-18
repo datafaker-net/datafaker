@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.IProviders;
+import net.datafaker.base.IProviders;
 
 /**
  * Portuguese VAT identification number (NIF)

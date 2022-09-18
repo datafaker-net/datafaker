@@ -144,7 +144,7 @@ jshell> import net.datafaker.Faker;
 
 jshell> import net.datafaker.fileformats.Format;
 
-jshell> import net.datafaker.Name;
+jshell> import net.datafaker.service.base.Name;
 
 jshell> var faker = new Faker();
 faker ==> net.datafaker.Faker@c4437c4

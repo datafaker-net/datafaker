@@ -1,12 +1,14 @@
 package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
-import net.datafaker.AbstractProvider;
-import net.datafaker.BaseFaker;
-import net.datafaker.ProviderRegistration;
+import net.datafaker.base.AbstractProvider;
+import net.datafaker.base.BaseFaker;
+import net.datafaker.base.ProviderRegistration;
 import net.datafaker.fileformats.Csv;
 import net.datafaker.fileformats.Format;
 import net.datafaker.fileformats.Json;
+import net.datafaker.base.Address;
+import net.datafaker.base.Name;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -471,12 +473,12 @@ public class FakeValuesService {
      * processes a expression in the style #{X.y} using the current objects as the 'current' location
      * within the yml file (or the {@link BaseFaker} object hierarchy as it were).
      * <p>
-     * #{Address.streetName} would get resolved to {@link BaseFaker#address()}'s {@link net.datafaker.Address#streetName()}
+     * #{Address.streetName} would get resolved to {@link BaseFaker#address()}'s {@link Address#streetName()}
      * #{address.street} would get resolved to the YAML like locale: faker: address: street:
      * Combinations are supported as well: "#{x} #{y}"
      * <p>
      * Recursive templates are supported.  if "#{x}" resolves to "#{Address.streetName}" then "#{x}" resolves to
-     * {@link BaseFaker#address()}'s {@link net.datafaker.Address#streetName()}.
+     * {@link BaseFaker#address()}'s {@link Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, ProviderRegistration root, FakerContext context) {
         if (expression.indexOf('}') == -1 || !expression.contains("#{")) {
@@ -721,7 +723,7 @@ public class FakeValuesService {
 
     /**
      * Given a directive like 'firstName', attempts to resolve it to a method.  For example if obj is an instance of
-     * {@link net.datafaker.Name} then this method would return {@link net.datafaker.Name#firstName()}.  Returns null if the directive is nested
+     * {@link Name} then this method would return {@link Name#firstName()}.  Returns null if the directive is nested
      * (i.e. has a '.') or the method doesn't exist on the <em>obj</em> object.
      */
     private Supplier<Object> resolveFromMethodOn(Object obj, String directive, String[] args) {
@@ -751,7 +753,7 @@ public class FakeValuesService {
 
     /**
      * Accepts a {@link BaseFaker} instance and a name.firstName style 'key' which is resolved to the return value of:
-     * {@link BaseFaker#name()}'s {@link net.datafaker.Name#firstName()} method.
+     * {@link BaseFaker#name()}'s {@link Name#firstName()} method.
      *
      * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
      */

@@ -1,6 +1,7 @@
 package net.datafaker;
 
 import net.datafaker.service.RandomService;
+import net.datafaker.base.BaseFaker;
 
 import java.util.ArrayList;
 import java.util.Arrays;

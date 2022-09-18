@@ -1,0 +1,20 @@
+package net.datafaker.base;
+
+/**
+ * @since 1.5.0
+ */
+public class FamousLastWords extends AbstractProvider<IProviders> {
+
+    protected FamousLastWords(BaseFaker faker) {
+        super(faker);
+    }
+
+    /**
+     * This method generates random famous last words.
+     *
+     * @return a string of last words.
+     */
+    public String lastWords() {
+        return resolve("famous_last_words.last_words");
+    }
+}

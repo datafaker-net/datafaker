@@ -1,6 +1,6 @@
 package net.datafaker.sport;
 
-import net.datafaker.AbstractProvider;
+import net.datafaker.base.AbstractProvider;
 
 /**
  * Generate random components of basketball game, e.g. teams, coaches, positions and players.

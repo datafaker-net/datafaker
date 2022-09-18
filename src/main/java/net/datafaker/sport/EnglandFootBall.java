@@ -1,6 +1,6 @@
 package net.datafaker.sport;
 
-import net.datafaker.AbstractProvider;
+import net.datafaker.base.AbstractProvider;
 
 /**
  * @since 0.9.0

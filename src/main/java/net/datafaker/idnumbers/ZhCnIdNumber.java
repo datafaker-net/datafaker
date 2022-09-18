@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.IProviders;
+import net.datafaker.base.IProviders;
 import net.datafaker.service.RandomService;
 
 import java.text.ParseException;
