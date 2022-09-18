@@ -3,7 +3,7 @@ package net.datafaker.sport;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class FootballTest extends AbstractSportFakerTest {
+class FootballTest extends SportFakerTest {
 
     @Test
     public void teams() {

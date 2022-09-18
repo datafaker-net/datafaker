@@ -1,6 +1,8 @@
 package net.datafaker.base;
 
 
+import net.datafaker.videogame.Minecraft;
+
 /**
  * The interface to register providers for {@link BaseFaker}.
  */
@@ -62,10 +64,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Barcode.class, Barcode::new);
   }
 
-  default Battlefield1 battlefield1() {
-    return getProvider(Battlefield1.class, Battlefield1::new);
-  }
-
   default BigBangTheory bigBangTheory() {
     return getProvider(BigBangTheory.class, BigBangTheory::new);
   }
@@ -120,10 +118,6 @@ public interface IProviders extends ProviderRegistration {
 
   default ChuckNorris chuckNorris() {
     return getProvider(ChuckNorris.class, ChuckNorris::new);
-  }
-
-  default ClashOfClans clashOfClans() {
-    return getProvider(ClashOfClans.class, ClashOfClans::new);
   }
 
   default Chiquito chiquito() {
@@ -250,24 +244,12 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(EldenRing.class, EldenRing::new);
   }
 
-  default ElderScrolls elderScrolls() {
-    return getProvider(ElderScrolls.class, ElderScrolls::new);
-  }
-
   default ElectricalComponents electricalComponents() {
     return getProvider(ElectricalComponents.class, ElectricalComponents::new);
   }
 
-  default Esports esports() {
-    return getProvider(Esports.class, Esports::new);
-  }
-
   default FakeDuration duration() {
     return getProvider(FakeDuration.class, FakeDuration::new);
-  }
-
-  default Fallout fallout() {
-    return getProvider(Fallout.class, Fallout::new);
   }
 
   default FamousLastWords famousLastWords() {
@@ -324,10 +306,6 @@ public interface IProviders extends ProviderRegistration {
 
   default HarryPotter harryPotter() {
     return getProvider(HarryPotter.class, HarryPotter::new);
-  }
-
-  default Hearthstone hearthstone() {
-    return getProvider(Hearthstone.class, Hearthstone::new);
   }
 
   default HeyArnold heyArnold() {
@@ -393,10 +371,6 @@ public interface IProviders extends ProviderRegistration {
 
   default Lebowski lebowski() {
     return getProvider(Lebowski.class, Lebowski::new);
-  }
-
-  default LeagueOfLegends leagueOfLegends() {
-    return getProvider(LeagueOfLegends.class, LeagueOfLegends::new);
   }
 
   default LordOfTheRings lordOfTheRings() {
@@ -571,24 +545,12 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Simpsons.class, Simpsons::new);
   }
 
-  default SoulKnight soulKnight() {
-    return getProvider(SoulKnight.class, SoulKnight::new);
-  }
-
   default Space space() {
     return getProvider(Space.class, Space::new);
   }
 
-  default StarCraft starCraft() {
-    return getProvider(StarCraft.class, StarCraft::new);
-  }
-
   default StarTrek starTrek() {
     return getProvider(StarTrek.class, StarTrek::new);
-  }
-
-  default StarWars starWars() {
-    return getProvider(StarWars.class, StarWars::new);
   }
 
   default Stock stock() {
@@ -603,10 +565,6 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Superhero.class, Superhero::new);
   }
 
-  default SuperMario superMario() {
-    return getProvider(SuperMario.class, SuperMario::new);
-  }
-
   default Team team() {
     return getProvider(Team.class, Team::new);
   }
@@ -617,10 +575,6 @@ public interface IProviders extends ProviderRegistration {
 
   default Time time() {
     return getProvider(Time.class, Time::new);
-  }
-
-  default Touhou touhou() {
-    return getProvider(Touhou.class, Touhou::new);
   }
 
   default Tron tron() {
@@ -663,7 +617,4 @@ public interface IProviders extends ProviderRegistration {
     return getProvider(Yoda.class, Yoda::new);
   }
 
-  default Zelda zelda() {
-    return getProvider(Zelda.class, Zelda::new);
-  }
 }

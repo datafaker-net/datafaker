@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DemographicTest extends AbstractBaseFakerTest {
+class DemographicTest extends BaseFakerTest {
 
     @Test
     void race() {

@@ -9,7 +9,7 @@ import static net.datafaker.base.Password.EN_LOWERCASE;
 import static net.datafaker.base.Password.EN_UPPERCASE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PasswordTest extends AbstractBaseFakerTest {
+class PasswordTest extends BaseFakerTest {
     @Test
     void passwordShouldContain3RULowerCaseAnd5CustomSpecialSymbols() {
         final String ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";

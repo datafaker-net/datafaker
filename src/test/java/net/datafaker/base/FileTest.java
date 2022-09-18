@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FileTest extends AbstractBaseFakerTest {
+class FileTest extends BaseFakerTest {
 
     @RepeatedTest(10)
     void testExtension() {

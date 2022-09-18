@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SlackEmojiTest extends AbstractBaseFakerTest {
+class SlackEmojiTest extends BaseFakerTest {
 
     private static final String EMOTICON_REGEX = ":([\\w-]+):";
 

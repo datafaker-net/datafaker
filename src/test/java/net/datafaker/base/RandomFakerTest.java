@@ -7,7 +7,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RandomFakerTest extends AbstractBaseFakerTest {
+class RandomFakerTest extends BaseFakerTest {
 
     private static final int CONSTANT_SEED_VALUE = 10;
     private BaseFaker faker;

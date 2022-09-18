@@ -7,11 +7,12 @@ import net.datafaker.service.RandomService;
 import net.datafaker.base.BaseFaker;
 import net.datafaker.base.IProviders;
 import net.datafaker.sport.SportProviders;
+import net.datafaker.videogame.VideoGameProviders;
 
 import java.util.Locale;
 import java.util.Random;
 
-public class Faker extends BaseFaker implements IProviders, SportProviders, FoodProviders {
+public class Faker extends BaseFaker implements IProviders, SportProviders, FoodProviders, VideoGameProviders {
     public Faker() {
     }
 

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VerbTest extends AbstractBaseFakerTest {
+class VerbTest extends BaseFakerTest {
 
     public static final String WORDS = "[\\w-]+";
 

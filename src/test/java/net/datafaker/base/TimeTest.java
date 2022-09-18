@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class TimeTest extends AbstractBaseFakerTest {
+public class TimeTest extends BaseFakerTest {
 
     @Test
     void testFutureTime() {

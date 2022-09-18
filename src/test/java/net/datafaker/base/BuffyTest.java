@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BuffyTest extends AbstractBaseFakerTest {
+class BuffyTest extends BaseFakerTest {
     @Test
     void testCharacters() {
         assertThat(faker.buffy().characters()).isNotEmpty();

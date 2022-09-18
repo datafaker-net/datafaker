@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GratefulDeadTest extends AbstractBaseFakerTest {
+class GratefulDeadTest extends BaseFakerTest {
 
     @Test
     void players() {

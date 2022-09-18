@@ -7,7 +7,7 @@ import static java.lang.Integer.parseInt;
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCNPJValid;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CNPJTest extends AbstractBaseFakerTest {
+class CNPJTest extends BaseFakerTest {
 
     /**
      * A valid CNPJ is either a real number or a generated valid number.

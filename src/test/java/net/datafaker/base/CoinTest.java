@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CoinTest extends AbstractBaseFakerTest {
+class CoinTest extends BaseFakerTest {
 
     @Test
     void coinFlip() {

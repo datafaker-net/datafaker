@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DiseaseTest extends AbstractBaseFakerTest {
+class DiseaseTest extends BaseFakerTest {
     @Test
     void testInternalDisease() {
         assertThat(faker.disease().internalDisease()).matches("[\\p{L}'()., 0-9-’]+");

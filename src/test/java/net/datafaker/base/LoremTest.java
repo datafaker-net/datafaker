@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LoremTest extends AbstractBaseFakerTest {
+class LoremTest extends BaseFakerTest {
 
     @Test
     void shouldCreateFixedLengthString() {

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CountryTest extends AbstractBaseFakerTest {
+class CountryTest extends BaseFakerTest {
 
     @RepeatedTest(10)
     void testFlag() {

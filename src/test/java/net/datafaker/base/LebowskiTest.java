@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LebowskiTest extends AbstractBaseFakerTest {
+class LebowskiTest extends BaseFakerTest {
     @Test
     void actor() {
         assertThat(faker.lebowski().actor()).matches("^([\\w]+ ?){1,3}$");

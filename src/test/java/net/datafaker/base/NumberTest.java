@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NumberTest extends AbstractBaseFakerTest {
+class NumberTest extends BaseFakerTest {
 
     public static final int RANDOMIZATION_QUALITY_RANGE_END = 1000;
     public static final int RANDOMIZATION_QUALITY_RANGE_STEP = 25;
@@ -184,7 +184,7 @@ class NumberTest extends AbstractBaseFakerTest {
 
     /**
      * Given a number of min/max ranges
-     * for each min/max range, call {@link Number#randomDouble(int, int, int)} with min/max 'n' times
+     * for each min/max range, call {@link java.lang.Number#randomDouble(int, int, int)} with min/max 'n' times
      * calculate the uniqueness for that given min/max range.
      * For all 'uniqueness' values
      * verify the percentage of 'uniqueness' ratios over 80% is 90%.
@@ -239,7 +239,7 @@ class NumberTest extends AbstractBaseFakerTest {
 
     /**
      * Given a number of min/max ranges
-     * for each min/max range, call {@link Number#numberBetween(long, long)}  with min/max 'n' times
+     * for each min/max range, call {@link java.lang.Number#numberBetween(long, long)}  with min/max 'n' times
      * calculate the uniqueness for that given min/max range.
      * For all 'uniqueness' values
      * verify the percentage of 'uniqueness' ratios over 80% is 90%.

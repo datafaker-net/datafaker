@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class KpopTest extends AbstractBaseFakerTest {
+class KpopTest extends BaseFakerTest {
 
     @Test
     void iGroups() {

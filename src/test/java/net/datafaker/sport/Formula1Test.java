@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class Formula1Test extends AbstractSportFakerTest {
+class Formula1Test extends SportFakerTest {
 
     @Test
     void driver() {

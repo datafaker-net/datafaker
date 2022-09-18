@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HololiveTest extends AbstractBaseFakerTest {
+public class HololiveTest extends BaseFakerTest {
 
     private static final BaseFaker JA_FAKER = new BaseFaker(new Locale("ja"));
 

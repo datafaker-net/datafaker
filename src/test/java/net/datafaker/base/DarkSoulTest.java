@@ -4,7 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class DarkSoulTest extends AbstractBaseFakerTest {
+class DarkSoulTest extends BaseFakerTest {
 
     public static final String DARK_SOUL_REGEX = "[A-Za-z '-]+";
 

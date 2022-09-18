@@ -10,7 +10,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CodeTest extends AbstractBaseFakerTest {
+class CodeTest extends BaseFakerTest {
 
     @RepeatedTest(100)
     void isbn10DefaultIsNoSeparator() {

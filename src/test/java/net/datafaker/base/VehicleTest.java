@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VehicleTest extends AbstractBaseFakerTest {
+class VehicleTest extends BaseFakerTest {
 
     private static final String WORD_MATCH = "\\w+\\.?";
     private static final String WORDS_MATCH = "^[a-zA-Z\\d_/ -]*$";

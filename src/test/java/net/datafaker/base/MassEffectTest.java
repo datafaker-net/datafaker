@@ -5,7 +5,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class MassEffectTest extends AbstractBaseFakerTest {
+class MassEffectTest extends BaseFakerTest {
 
     @RepeatedTest(10)
     void character() {

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NatoPhoneticAlphabetTest extends AbstractBaseFakerTest {
+class NatoPhoneticAlphabetTest extends BaseFakerTest {
 
     @Test
     void codeWord() {

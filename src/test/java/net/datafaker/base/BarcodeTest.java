@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BarcodeTest extends AbstractBaseFakerTest {
+class BarcodeTest extends BaseFakerTest {
 
     @Test
     void type() {

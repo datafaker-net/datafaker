@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HitchhikersGuideToTheGalaxyTest extends AbstractBaseFakerTest {
+class HitchhikersGuideToTheGalaxyTest extends BaseFakerTest {
 
     @Test
     void character() {

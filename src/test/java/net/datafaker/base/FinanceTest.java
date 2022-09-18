@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FinanceTest extends AbstractBaseFakerTest {
+class FinanceTest extends BaseFakerTest {
 
     @RepeatedTest(100)
     void creditCard() {

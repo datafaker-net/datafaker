@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class TwinPeaksTest extends AbstractBaseFakerTest {
+class TwinPeaksTest extends BaseFakerTest {
 
     @Test
     void character() {

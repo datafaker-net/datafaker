@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * @author pmiklos
  */
-class DateAndTimeTest extends AbstractBaseFakerTest {
+class DateAndTimeTest extends BaseFakerTest {
 
     @Test
     void testFutureDate() {

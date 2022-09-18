@@ -6,7 +6,7 @@ import java.text.DecimalFormatSymbols;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CommerceTest extends AbstractBaseFakerTest<BaseFaker> {
+class CommerceTest extends BaseFakerTest<BaseFaker> {
 
     private final char decimalSeparator = new DecimalFormatSymbols(faker.getContext().getLocale()).getDecimalSeparator();
 

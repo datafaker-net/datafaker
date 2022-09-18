@@ -6,7 +6,7 @@ import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DurationTest extends AbstractBaseFakerTest {
+class DurationTest extends BaseFakerTest {
 
     @Test
     void testDurationSeconds() {

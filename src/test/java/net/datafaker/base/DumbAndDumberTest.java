@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DumbAndDumberTest extends AbstractBaseFakerTest {
+class DumbAndDumberTest extends BaseFakerTest {
 
     @Test
     void actor() {

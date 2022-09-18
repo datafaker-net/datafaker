@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BloodTypeTest extends AbstractBaseFakerTest {
+class BloodTypeTest extends BaseFakerTest {
 
     @Test
     void aboTypes() {
