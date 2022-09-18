@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class University extends AbstractProvider {
+public class University extends AbstractProvider<IProviders> {
 
-    protected University(Faker faker) {
+    protected University(BaseFaker faker) {
         super(faker);
     }
 

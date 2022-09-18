@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 1.4.0
  */
-public class HeyArnold extends AbstractProvider {
+public class HeyArnold extends AbstractProvider<IProviders> {
 
-    protected HeyArnold(Faker faker) {
+    protected HeyArnold(BaseFaker faker) {
         super(faker);
     }
 

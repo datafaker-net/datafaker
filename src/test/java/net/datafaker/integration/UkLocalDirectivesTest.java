@@ -1,6 +1,6 @@
 package net.datafaker.integration;
 
-import net.datafaker.Faker;
+import net.datafaker.BaseFaker;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -19,14 +19,14 @@ class UkLocalDirectivesTest {
     /**
      * uk is interesting in that it has feminine and masculine prefixes for street names.  the feminine
      * and masculine prefixes are NOT methods on Address though as they only make sense for this locale (and possibly
-     * others).  This test shows we can resolve within the yml file without reaching out to any of the {@link Faker}
+     * others).  This test shows we can resolve within the yml file without reaching out to any of the {@link BaseFaker}
      * child objects.
      */
     @Test
     void resolvesDirectivesOnlyInYmlFile() {
         final Locale uk = new Locale("uk");
 
-        final String streetName = new Faker(uk).address().streetName();
+        final String streetName = new BaseFaker(uk).address().streetName();
 
         final List<String> masc = Arrays.asList("пр.", "проспект", "пров.", "провулок");
         final List<String> fem = Arrays.asList("вул.", "вулиця", "пл.", "площа");

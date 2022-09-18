@@ -5,8 +5,8 @@ package net.datafaker;
  *
  * @since 1.6.0
  */
-public class MassEffect extends AbstractProvider {
-    protected MassEffect(Faker faker) {
+public class MassEffect extends AbstractProvider<IProviders> {
+    protected MassEffect(BaseFaker faker) {
         super(faker);
     }
 

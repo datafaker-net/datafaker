@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.9.0
  */
-public class Minecraft extends AbstractProvider {
+public class Minecraft extends AbstractProvider<IProviders> {
 
-    public Minecraft(Faker faker) {
+    public Minecraft(BaseFaker faker) {
         super(faker);
     }
 

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Hobbit extends AbstractProvider {
+public class Hobbit extends AbstractProvider<IProviders> {
 
-    protected Hobbit(Faker faker) {
+    protected Hobbit(BaseFaker faker) {
         super(faker);
     }
 

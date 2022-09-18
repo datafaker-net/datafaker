@@ -3,7 +3,7 @@ package net.datafaker;
 /**
  * @since 1.6.0
  */
-public class StarWars extends AbstractProvider {
+public class StarWars extends AbstractProvider<IProviders> {
 
     private final String[] CHARACTERS = new String[]{"admiral_ackbar", "ahsoka_tano", "anakin_skywalker", "asajj_ventress",
             "bendu", "boba_fett", "c_3po", "count_dooku", "darth_caedus", "darth_vader", "emperor_palpatine", "finn",
@@ -11,7 +11,7 @@ public class StarWars extends AbstractProvider {
             "jar_jar_binks", "k_2so", "kylo_ren", "lando_calrissian", "leia_organa", "luke_skywalker", "mace_windu",
             "maz_kanata", "obi_wan_kenobi", "padme_amidala", "qui_gon_jinn", "rey", "shmi_skywalker", "yoda"};
 
-    protected StarWars(Faker faker) {
+    protected StarWars(BaseFaker faker) {
         super(faker);
     }
 

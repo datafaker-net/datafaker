@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class PhoneNumber extends AbstractProvider {
+public class PhoneNumber extends AbstractProvider<IProviders> {
 
-    protected PhoneNumber(Faker faker) {
+    protected PhoneNumber(BaseFaker faker) {
         super(faker);
     }
 

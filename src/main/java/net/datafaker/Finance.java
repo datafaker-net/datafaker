@@ -7,11 +7,11 @@ import java.util.regex.Pattern;
 /**
  * @since 0.8.0
  */
-public class Finance extends AbstractProvider {
+public class Finance extends AbstractProvider<IProviders> {
     private static final Pattern NUMBERS = Pattern.compile("[^0-9]");
     private static final Pattern EMPTY_STRING = Pattern.compile("");
 
-    protected Finance(Faker faker) {
+    protected Finance(BaseFaker faker) {
         super(faker);
     }
 

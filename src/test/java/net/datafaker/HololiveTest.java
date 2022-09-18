@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HololiveTest extends AbstractFakerTest {
 
-    private static final Faker JA_FAKER = new Faker(new Locale("ja"));
+    private static final BaseFaker JA_FAKER = new BaseFaker(new Locale("ja"));
 
     @Test
     void talent() {

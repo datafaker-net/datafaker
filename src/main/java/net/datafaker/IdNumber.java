@@ -1,8 +1,5 @@
 package net.datafaker;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-
 import net.datafaker.idnumbers.EnIdNumber;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.EsMXIdNumber;
@@ -14,12 +11,15 @@ import net.datafaker.idnumbers.PtNifIdNumber;
 import net.datafaker.idnumbers.SvSEIdNumber;
 import net.datafaker.idnumbers.ZhCnIdNumber;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 /**
  * @since 0.8.0
  */
-public class IdNumber extends AbstractProvider {
+public class IdNumber extends AbstractProvider<IProviders> {
 
-    protected IdNumber(Faker faker) {
+    protected IdNumber(BaseFaker faker) {
         super(faker);
     }
 

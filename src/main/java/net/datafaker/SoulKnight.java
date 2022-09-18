@@ -7,9 +7,9 @@ package net.datafaker;
  * @author zhou mintao
  * @since 1.4.0
  */
-public class SoulKnight extends AbstractProvider {
+public class SoulKnight extends AbstractProvider<IProviders> {
 
-    protected SoulKnight(final Faker faker) {
+    protected SoulKnight(final BaseFaker faker) {
         super(faker);
     }
 

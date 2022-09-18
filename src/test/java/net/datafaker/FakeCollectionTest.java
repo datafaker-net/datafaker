@@ -75,7 +75,7 @@ class FakeCollectionTest extends AbstractFakerTest {
 
     @Test
     void generateCollectionWithRepeatableFaker() {
-        Faker seededFaker = new Faker(new Random(10L));
+        BaseFaker seededFaker = new BaseFaker(new Random(10L));
 
         List<String> names = faker.<String>collection()
             .faker(seededFaker)
@@ -129,7 +129,7 @@ class FakeCollectionTest extends AbstractFakerTest {
 
         @Override
         public String value() {
-            return new Faker().random().nextInt(60, 180) + "";
+            return new BaseFaker().random().nextInt(60, 180) + "";
         }
 
         @Override
@@ -152,7 +152,7 @@ class FakeCollectionTest extends AbstractFakerTest {
 
         @Override
         public String value() {
-            return String.format("%.1f", new Faker().random().nextDouble(3.2, 5.5));
+            return String.format("%.1f", new BaseFaker().random().nextDouble(3.2, 5.5));
         }
 
         @Override
@@ -175,7 +175,7 @@ class FakeCollectionTest extends AbstractFakerTest {
 
         @Override
         public String value() {
-            return new Faker().random().nextInt(30, 50) + "";
+            return new BaseFaker().random().nextInt(30, 50) + "";
         }
 
         @Override

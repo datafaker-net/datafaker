@@ -62,7 +62,7 @@ class ProviderGenerator {
         System.out.println("/**");
         System.out.println(" * @since 1.6.0");
         System.out.println(" */");
-        System.out.println("public class " + className + " extends AbstractProvider {");
+        System.out.println("public class " + className + " extends AbstractProvider<IProviders> {");
         System.out.println();
         System.out.println("    protected " + className + "(Faker faker) {");
         System.out.println("        super(faker);");
@@ -92,7 +92,7 @@ class ProviderGenerator {
         System.out.println("import static org.assertj.core.api.AssertionsForClassTypes.assertThat;");
 
         System.out.println();
-        System.out.println("class " + className + "Test extends AbstractFakerTest {");
+        System.out.println("class " + className + "Test extends net.datafaker.AbstractFakerTest {");
         System.out.println();
 
         for (String string : strings) {

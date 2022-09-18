@@ -1,11 +1,13 @@
-package net.datafaker;
+package net.datafaker.sport;
+
+import net.datafaker.AbstractProvider;
 
 /**
  * @since 1.3.0
  */
-public class Volleyball extends AbstractProvider {
+public class Volleyball extends AbstractProvider<SportProviders> {
 
-    protected Volleyball(Faker faker) {
+    protected Volleyball(SportProviders faker) {
         super(faker);
     }
 

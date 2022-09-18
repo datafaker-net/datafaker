@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.4.0
  */
-public class Tea extends AbstractProvider {
+public class Tea extends AbstractProvider<IProviders> {
 
-    protected Tea(Faker faker) {
+    protected Tea(BaseFaker faker) {
         super(faker);
     }
 

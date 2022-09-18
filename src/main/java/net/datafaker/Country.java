@@ -3,10 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Country extends AbstractProvider {
+public class Country extends AbstractProvider<IProviders> {
     private final String flagUrl;
 
-    protected Country(Faker faker) {
+    protected Country(BaseFaker faker) {
         super(faker);
         this.flagUrl = "https://flags.fmcdn.net/data/flags/w580/";
     }

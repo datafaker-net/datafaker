@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class TheItCrowd extends AbstractProvider {
+public class TheItCrowd extends AbstractProvider<IProviders> {
 
-    protected TheItCrowd(Faker faker) {
+    protected TheItCrowd(BaseFaker faker) {
         super(faker);
     }
 

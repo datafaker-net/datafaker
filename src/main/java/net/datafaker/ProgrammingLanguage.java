@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class ProgrammingLanguage extends AbstractProvider {
+public class ProgrammingLanguage extends AbstractProvider<IProviders> {
 
-    public ProgrammingLanguage(Faker faker) {
+    public ProgrammingLanguage(BaseFaker faker) {
         super(faker);
     }
 

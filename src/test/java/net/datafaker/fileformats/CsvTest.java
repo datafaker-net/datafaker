@@ -1,7 +1,7 @@
 package net.datafaker.fileformats;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.Faker;
+import net.datafaker.BaseFaker;
 import net.datafaker.Name;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,7 +16,7 @@ class CsvTest extends AbstractFakerTest {
 
     @Test
     void csvTest() {
-        final Faker faker = new Faker();
+        final BaseFaker faker = new BaseFaker();
         String separator = "@@@";
         int limit = 20;
         String csv = Format.toCsv(Csv.Column.of("first_name", () -> faker.name().firstName()),
@@ -43,7 +43,7 @@ class CsvTest extends AbstractFakerTest {
     void csvTestWithQuotes() {
         String separator = "$$$";
         int limit = 20;
-        final Faker faker = new Faker();
+        final BaseFaker faker = new BaseFaker();
         List<Csv.Column> columns = new ArrayList<>();
         columns.add(Csv.Column.of("first_name", () -> faker.expression("#{Name.first_name}")));
         columns.add(Csv.Column.of("last_name", () -> faker.expression("#{Name.last_name}")));
@@ -84,7 +84,7 @@ class CsvTest extends AbstractFakerTest {
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 3, 10, 20, 100})
     void testLimitForCsv(int limit) {
-        final Faker faker = new Faker();
+        final BaseFaker faker = new BaseFaker();
         String csv = Format.toCsv(
                 faker.<Name>collection()
                     .suppliers(faker::name)
@@ -110,7 +110,7 @@ class CsvTest extends AbstractFakerTest {
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 3, 10, 20, 100})
     void testLimitForCollection(int limit) {
-        final Faker faker = new Faker();
+        final BaseFaker faker = new BaseFaker();
         String csv = Format.toCsv(
                 faker.<Name>collection()
                     .suppliers(faker::name)

@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 0.9.0
  */
-public class ResidentEvil extends AbstractProvider {
+public class ResidentEvil extends AbstractProvider<IProviders> {
 
-    protected ResidentEvil(Faker faker) {
+    protected ResidentEvil(BaseFaker faker) {
         super(faker);
     }
 

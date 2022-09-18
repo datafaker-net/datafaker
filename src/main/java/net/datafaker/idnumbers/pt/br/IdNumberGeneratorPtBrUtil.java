@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers.pt.br;
 
-import net.datafaker.Faker;
+import net.datafaker.IProviders;
 
 public final class IdNumberGeneratorPtBrUtil {
 
@@ -13,7 +13,7 @@ public final class IdNumberGeneratorPtBrUtil {
      * @param formatted a cnpj (un)formatted
      * @param valid     a cnpj (in)valid
      */
-    public static String cnpj(Faker faker, boolean formatted, boolean valid, boolean multiBranch) {
+    public static String cnpj(IProviders faker, boolean formatted, boolean valid, boolean multiBranch) {
         String cnpj;
 
         if (valid) {
@@ -56,7 +56,7 @@ public final class IdNumberGeneratorPtBrUtil {
      * @param formatted a CPF (un)formatted
      * @param valid     a CPF (in)valid
      */
-    public static String cpf(Faker faker, boolean formatted, boolean valid) {
+    public static String cpf(IProviders faker, boolean formatted, boolean valid) {
         String cpf;
         if (valid) {
             StringBuilder partial = new StringBuilder();

@@ -5,9 +5,9 @@ import java.util.Locale;
 /**
  * @since 1.5.0
  */
-public class DrivingLicense extends AbstractProvider {
+public class DrivingLicense extends AbstractProvider<IProviders> {
 
-    protected DrivingLicense(Faker faker) {
+    protected DrivingLicense(BaseFaker faker) {
         super(faker);
     }
 

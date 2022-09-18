@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.6.0
  */
-public class Chiquito extends AbstractProvider {
+public class Chiquito extends AbstractProvider<IProviders> {
 
-    protected Chiquito(Faker faker) {
+    protected Chiquito(BaseFaker faker) {
         super(faker);
     }
 

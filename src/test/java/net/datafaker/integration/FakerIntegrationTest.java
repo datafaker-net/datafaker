@@ -2,6 +2,7 @@ package net.datafaker.integration;
 
 import net.datafaker.AbstractProvider;
 import net.datafaker.Address;
+import net.datafaker.BaseFaker;
 import net.datafaker.Faker;
 import net.datafaker.Name;
 import org.apache.commons.lang3.StringUtils;
@@ -224,10 +225,10 @@ class FakerIntegrationTest {
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {
         final Locale locale;
-        if (object instanceof Faker) {
-            locale = ((Faker) object).getLocale();
+        if (object instanceof BaseFaker) {
+            locale = ((BaseFaker) object).getContext().getLocale();
         } else {
-            locale = ((AbstractProvider) object).getFaker().getLocale();
+            locale = ((AbstractProvider) object).getFaker().getContext().getLocale();
         }
         @SuppressWarnings("unchecked")
         Set<Method> methodsThatReturnStrings = getAllMethods(object.getClass(),
@@ -256,7 +257,7 @@ class FakerIntegrationTest {
     @ParameterizedTest
     @MethodSource("dataParameters")
     void testExceptionsNotCoveredInAboveTest(Locale locale, Random random) {
-        final Faker faker = init(locale, random);
+        final BaseFaker faker = init(locale, random);
         assertThat(faker.bothify("####???")).isNotNull();
         assertThat(faker.letterify("????")).isNotNull();
         assertThat(faker.numerify("####")).isNotNull();

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.4.0
  */
-public class Camera extends AbstractProvider {
+public class Camera extends AbstractProvider<IProviders> {
 
-    protected Camera(Faker faker) {
+    protected Camera(BaseFaker faker) {
         super(faker);
     }
 

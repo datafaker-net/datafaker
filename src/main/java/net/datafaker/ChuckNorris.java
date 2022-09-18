@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class ChuckNorris extends AbstractProvider {
+public class ChuckNorris extends AbstractProvider<IProviders> {
 
-    protected ChuckNorris(Faker faker) {
+    protected ChuckNorris(BaseFaker faker) {
         super(faker);
     }
 

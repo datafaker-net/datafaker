@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  *
  * @since 0.8.0
  */
-public class Code extends AbstractProvider {
+public class Code extends AbstractProvider<IProviders> {
 
     private static final int[] GTIN_8_CHECK_DIGITS = {3, 1, 3, 1, 3, 1, 3};
     private static final int[] GTIN_13_CHECK_DIGITS = {1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3};
@@ -20,7 +20,7 @@ public class Code extends AbstractProvider {
 
     private static final Pattern HYPHEN = Pattern.compile("-");
 
-    protected Code(Faker faker) {
+    protected Code(BaseFaker faker) {
         super(faker);
     }
 

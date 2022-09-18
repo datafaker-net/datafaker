@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.9.0
  */
-public class Dessert extends AbstractProvider {
+public class Dessert extends AbstractProvider<IProviders> {
 
-    protected Dessert(Faker faker) {
+    protected Dessert(BaseFaker faker) {
         super(faker);
     }
 

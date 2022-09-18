@@ -6,9 +6,9 @@ package net.datafaker;
  * @since 1.6.0
  */
 
-public class GarmentSize extends AbstractProvider {
+public class GarmentSize extends AbstractProvider<IProviders> {
 
-  protected GarmentSize(Faker faker) {
+  protected GarmentSize(BaseFaker faker) {
     super(faker);
   }
 

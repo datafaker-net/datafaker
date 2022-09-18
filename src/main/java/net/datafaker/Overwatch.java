@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Overwatch extends AbstractProvider {
+public class Overwatch extends AbstractProvider<IProviders> {
 
-    protected Overwatch(Faker faker) {
+    protected Overwatch(BaseFaker faker) {
         super(faker);
     }
 

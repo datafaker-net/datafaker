@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class DragonBall extends AbstractProvider {
+public class DragonBall extends AbstractProvider<IProviders> {
 
-    protected DragonBall(Faker faker) {
+    protected DragonBall(BaseFaker faker) {
         super(faker);
     }
 

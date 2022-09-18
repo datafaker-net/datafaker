@@ -268,15 +268,15 @@ class FakerTest extends AbstractFakerTest {
 
     @Test
     void fakerInstanceCanBeAcquiredViaUtilityMethods() {
-        assertThat(new Faker()).isInstanceOf(Faker.class);
-        assertThat(new Faker(Locale.CANADA)).isInstanceOf(Faker.class);
-        assertThat(new Faker(new Random(1))).isInstanceOf(Faker.class);
-        assertThat(new Faker(Locale.CHINA, new Random(2))).isInstanceOf(Faker.class);
+        assertThat(new Faker()).isInstanceOf(BaseFaker.class);
+        assertThat(new Faker(Locale.CANADA)).isInstanceOf(BaseFaker.class);
+        assertThat(new Faker(new Random(1))).isInstanceOf(BaseFaker.class);
+        assertThat(new Faker(Locale.CHINA, new Random(2))).isInstanceOf(BaseFaker.class);
     }
 
     @Test
     void differentLocalesTest() {
-        Faker localFaker = new Faker();
+        BaseFaker localFaker = new Faker();
         Callable<String> stringCallable = () -> localFaker.name().firstName();
         localFaker.doWith(stringCallable, new Locale("ru_RU"));
         localFaker.doWith(stringCallable, Locale.GERMAN);
@@ -288,7 +288,7 @@ class FakerTest extends AbstractFakerTest {
 
     @Test
     void differentSeeds() {
-        Faker localFaker = new Faker();
+        BaseFaker localFaker = new Faker();
         Callable<String> stringCallable = () -> localFaker.name().firstName();
 
         assertThat(localFaker.doWith(stringCallable, 123))

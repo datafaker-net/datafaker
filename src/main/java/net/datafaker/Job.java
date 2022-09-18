@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Job extends AbstractProvider {
+public class Job extends AbstractProvider<IProviders> {
 
-    public Job(final Faker faker) {
+    public Job(final IProviders faker) {
         super(faker);
     }
 

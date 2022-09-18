@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class HarryPotter extends AbstractProvider {
+public class HarryPotter extends AbstractProvider<IProviders> {
 
-    protected HarryPotter(final Faker faker) {
+    protected HarryPotter(final BaseFaker faker) {
         super(faker);
     }
 

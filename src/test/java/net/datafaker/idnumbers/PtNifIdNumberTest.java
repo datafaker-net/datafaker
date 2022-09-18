@@ -1,7 +1,7 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.Faker;
+import net.datafaker.BaseFaker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 
@@ -11,11 +11,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class PtNifIdNumberTest extends AbstractFakerTest {
 
-    private Faker ptFaker;
+    private BaseFaker ptFaker;
 
     @BeforeEach
     public void before() {
-        ptFaker = new Faker(new Locale("pt"));
+        ptFaker = new BaseFaker(new Locale("pt"));
     }
 
     @RepeatedTest(100)

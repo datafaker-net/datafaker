@@ -1,16 +1,10 @@
 package net.datafaker;
 
-import java.util.function.Function;
 
 /**
- * The interface to register providers for {@link Faker}.
+ * The interface to register providers for {@link BaseFaker}.
  */
-public interface IProviders {
-  Faker getFaker();
-
-  default <T extends AbstractProvider> T getProvider(Class<T> clazz, Function<Faker, T> valueSupplier) {
-      return Faker.getProvider(clazz, valueSupplier, getFaker());
-  }
+public interface IProviders extends ProviderRegistration {
 
   default Address address() {
     return getProvider(Address.class, Address::new);
@@ -66,10 +60,6 @@ public interface IProviders {
 
   default Barcode barcode() {
     return getProvider(Barcode.class, Barcode::new);
-  }
-
-  default Basketball basketball() {
-    return getProvider(Basketball.class, Basketball::new);
   }
 
   default Battlefield1 battlefield1() {
@@ -276,10 +266,6 @@ public interface IProviders {
     return getProvider(ElderScrolls.class, ElderScrolls::new);
   }
 
-  default EnglandFootBall englandfootball() {
-    return getProvider(EnglandFootBall.class, EnglandFootBall::new);
-  }
-
   default ElectricalComponents electricalComponents() {
     return getProvider(ElectricalComponents.class, ElectricalComponents::new);
   }
@@ -314,14 +300,6 @@ public interface IProviders {
 
   default Food food() {
     return getProvider(Food.class, Food::new);
-  }
-
-  default Football football() {
-    return getProvider(Football.class, Football::new);
-  }
-
-  default Formula1 formula1() {
-    return getProvider(Formula1.class, Formula1::new);
   }
 
   default Friends friends() {
@@ -695,10 +673,6 @@ public interface IProviders {
 
   default Verb verb() {
     return getProvider(Verb.class, Verb::new);
-  }
-
-  default Volleyball volleyball() {
-    return getProvider(Volleyball.class, Volleyball::new);
   }
 
   default Weather weather() {

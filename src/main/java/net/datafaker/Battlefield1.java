@@ -6,9 +6,9 @@ package net.datafaker;
  * @author coolestjj
  * @since 1.4.0
  */
-public class Battlefield1 extends AbstractProvider {
+public class Battlefield1 extends AbstractProvider<IProviders> {
 
-    protected Battlefield1(final Faker faker) {
+    protected Battlefield1(final BaseFaker faker) {
         super(faker);
     }
 

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Size extends AbstractProvider {
+public class Size extends AbstractProvider<IProviders> {
 
-    protected Size(Faker faker) {
+    protected Size(BaseFaker faker) {
         super(faker);
     }
 

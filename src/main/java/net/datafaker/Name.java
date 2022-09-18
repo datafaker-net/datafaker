@@ -3,13 +3,13 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Name extends AbstractProvider {
+public class Name extends AbstractProvider<IProviders> {
 
     /**
      * Internal constructor, not to be used by clients.  Instances of {@link Name} should be accessed via
-     * {@link Faker#name()}.
+     * {@link BaseFaker#name()}.
      */
-    protected Name(Faker faker) {
+    protected Name(BaseFaker faker) {
         super(faker);
     }
 
@@ -123,7 +123,7 @@ public class Name extends AbstractProvider {
     public String username() {
 
         StringBuilder result = new StringBuilder();
-        final String firstName = firstName().toLowerCase(faker.getLocale()) + "." + lastName().toLowerCase(faker.getLocale());
+        final String firstName = firstName().toLowerCase(faker.getContext().getLocale()) + "." + lastName().toLowerCase(faker.getContext().getLocale());
         for (int i = 0; i < firstName.length(); i++) {
             final char c = firstName.charAt(i);
             if (c == '\'' || Character.isWhitespace(c)) {

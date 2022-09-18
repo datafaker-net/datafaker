@@ -6,9 +6,9 @@ import java.util.Locale;
 /**
  * @since 1.5.0
  */
-public class Coffee extends AbstractProvider {
+public class Coffee extends AbstractProvider<IProviders> {
 
-    protected Coffee(Faker faker) {
+    protected Coffee(BaseFaker faker) {
         super(faker);
     }
 

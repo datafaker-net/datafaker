@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Matz extends AbstractProvider {
+public class Matz extends AbstractProvider<IProviders> {
 
-    protected Matz(final Faker faker) {
+    protected Matz(final BaseFaker faker) {
         super(faker);
     }
 

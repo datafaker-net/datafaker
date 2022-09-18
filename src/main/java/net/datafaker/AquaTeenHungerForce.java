@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class AquaTeenHungerForce extends AbstractProvider {
+public class AquaTeenHungerForce extends AbstractProvider<IProviders> {
 
-    protected AquaTeenHungerForce(Faker faker) {
+    protected AquaTeenHungerForce(BaseFaker faker) {
         super(faker);
     }
 

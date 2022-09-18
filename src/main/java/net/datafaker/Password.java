@@ -7,14 +7,14 @@ import java.util.Map;
 /**
  * @since 1.6.0
  */
-public class Password extends AbstractProvider {
+public class Password extends AbstractProvider<IProviders> {
 
     public static final String EN_LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
     public static final String EN_UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String DIGITS = "0123456789";
     public static final String DEFAULT_SPECIAL = "!@#$%^&*";
 
-    public Password(Faker faker) {
+    public Password(BaseFaker faker) {
         super(faker);
     }
 
@@ -84,7 +84,7 @@ public class Password extends AbstractProvider {
             return this;
         }
 
-        public PasswordRuleConfig build(Faker faker) {
+        public PasswordRuleConfig build(BaseFaker faker) {
             if (maxLength < minLength) {
                 throw new IllegalArgumentException("Max length should be not smaller than min length");
             }
@@ -97,7 +97,7 @@ public class Password extends AbstractProvider {
         }
 
         public PasswordRuleConfig build() {
-            return build(new Faker());
+            return build(new BaseFaker());
         }
     }
 

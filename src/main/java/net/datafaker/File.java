@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class File extends AbstractProvider {
+public class File extends AbstractProvider<IProviders> {
 
-    protected File(Faker faker) {
+    protected File(BaseFaker faker) {
         super(faker);
     }
 
@@ -24,7 +24,7 @@ public class File extends AbstractProvider {
     public String fileName(String dirOrNull, String nameOrNull, String extensionOrNull, String separatorOrNull) {
         final String sep = separatorOrNull == null ? System.getProperty("file.separator") : separatorOrNull;
         final String dir = dirOrNull == null ? faker.internet().slug() : dirOrNull;
-        final String name = nameOrNull == null ? faker.lorem().word().toLowerCase(faker.getLocale()) : nameOrNull;
+        final String name = nameOrNull == null ? faker.lorem().word().toLowerCase(faker.getContext().getLocale()) : nameOrNull;
         final String ext = extensionOrNull == null ? extension() : extensionOrNull;
         return dir + sep + name + "." + ext;
     }

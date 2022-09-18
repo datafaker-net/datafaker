@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class StarCraft extends AbstractProvider {
+public class StarCraft extends AbstractProvider<IProviders> {
 
-    protected StarCraft(final Faker faker) {
+    protected StarCraft(final BaseFaker faker) {
         super(faker);
     }
 

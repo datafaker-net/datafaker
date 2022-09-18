@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 1.6.0
  */
-public class FinalSpace extends AbstractProvider {
+public class FinalSpace extends AbstractProvider<IProviders> {
 
-    protected FinalSpace(Faker faker) {
+    protected FinalSpace(BaseFaker faker) {
         super(faker);
     }
 

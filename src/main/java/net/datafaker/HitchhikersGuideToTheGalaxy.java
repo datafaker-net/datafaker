@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class HitchhikersGuideToTheGalaxy extends AbstractProvider {
+public class HitchhikersGuideToTheGalaxy extends AbstractProvider<IProviders> {
 
-    protected HitchhikersGuideToTheGalaxy(Faker faker) {
+    protected HitchhikersGuideToTheGalaxy(BaseFaker faker) {
         super(faker);
     }
 

@@ -1,7 +1,7 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.Faker;
+import net.datafaker.BaseFaker;
 import net.datafaker.Superhero;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -39,7 +39,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     private static final Long MILLIS_IN_A_DAY = MILLIS_IN_AN_HOUR * 24;
 
     @Spy
-    private Faker mockedFaker;
+    private BaseFaker mockedFaker;
 
     @Mock
     private RandomService randomService;
@@ -99,7 +99,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     void bothify2Args() {
         final DummyService dummy = mock(DummyService.class);
 
-        Faker f = new Faker();
+        BaseFaker f = new BaseFaker();
 
         String value = fakeValuesService.resolve("property.bothify_2", dummy, f, context);
         assertThat(value).matches("[A-Z]{2}\\d{2}");

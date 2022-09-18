@@ -2,14 +2,14 @@ package net.datafaker;
 
 import java.util.function.Supplier;
 
-public class AbstractProvider {
-    protected final Faker faker;
+public class AbstractProvider<T extends ProviderRegistration> {
+    protected final T faker;
 
-    protected AbstractProvider(Faker faker) {
+    protected AbstractProvider(T faker) {
         this.faker = faker;
     }
 
-    public final Faker getFaker() {
+    public final ProviderRegistration getFaker() {
         return faker;
     }
 

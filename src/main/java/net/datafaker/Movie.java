@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Movie extends AbstractProvider {
+public class Movie extends AbstractProvider<IProviders> {
 
-    protected Movie(Faker faker) {
+    protected Movie(BaseFaker faker) {
         super(faker);
     }
 

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Esports extends AbstractProvider {
+public class Esports extends AbstractProvider<IProviders> {
 
-    protected Esports(final Faker faker) {
+    protected Esports(final BaseFaker faker) {
         super(faker);
     }
 

@@ -24,7 +24,7 @@ class LocalePickerExample {
         // EXAMPLE: GET A FAKER OBJECT WITH A RANDOM LOCALE (SELECTED WITH REPLACEMENT)
         // Instantiate a Faker object with a randomized locale
         Locale pickedLocale = lp.getLocale();
-        Faker faker = new Faker(pickedLocale);
+        BaseFaker faker = new BaseFaker(pickedLocale);
 
         // Use Faker object to generate data in the randomly selected locale
         String fullName = faker.name().fullName();
@@ -40,13 +40,13 @@ class LocalePickerExample {
         // EXAMPLE: ROTATE THROUGH ALL SUPPORTED LOCALES TO GENERATE USER DATA
         //   LOCALES PICKED AT RANDOM (SELECTED WITHOUT REPLACEMENT)
         System.out.println("EXAMPLE: ROTATE THROUGH ALL LOCALES AT RANDOM (WITHOUT REPLACEMENT)");
-        Faker currentFaker;
+        BaseFaker currentFaker;
 
         int numSupportedLocales = allLocales.size();
         for (int i = 0; i < numSupportedLocales; i++) {
             Locale currentLocale = lp.getLocaleWithoutReplacement();
             System.out.println("Random Locale: " + currentLocale.toString());
-            currentFaker = new Faker(currentLocale);
+            currentFaker = new BaseFaker(currentLocale);
             System.out.println("  First Name: " + currentFaker.name().firstName());
             System.out.println("  Last Name: " + currentFaker.name().lastName());
             System.out.println("  Street Address: " + currentFaker.address().streetAddress());

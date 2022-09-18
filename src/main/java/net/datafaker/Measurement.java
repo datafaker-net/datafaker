@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Measurement extends AbstractProvider {
+public class Measurement extends AbstractProvider<IProviders> {
 
-    protected Measurement(Faker faker) {
+    protected Measurement(BaseFaker faker) {
         super(faker);
     }
 

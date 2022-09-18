@@ -32,7 +32,7 @@ class MedicalTest extends AbstractFakerTest {
     @Test
     void testDiagnosisCodeUS() {
         // will use icd-10-cm - https://www.johndcook.com/blog/2019/05/05/regex_icd_codes/
-        Faker faker = new Faker(Locale.US);
+        BaseFaker faker = new BaseFaker(Locale.US);
 
         for (int i = 0; i < 100; i++) { // Loading the US data is slow.
             String actual = faker.medical().diagnosisCode();
@@ -43,7 +43,7 @@ class MedicalTest extends AbstractFakerTest {
     @RepeatedTest(100)
     void testDiagnosisCodeAU() {
         // will use icd-10-am - https://ace.ihpa.gov.au/Downloads/Current/ICD-10-AM-ACHI-ACS%2011th%20Edition/Education/11th%20Edition%20PDF%20files/Coding-Exercise-Workbook-Eleventh-Edition%20V2-15%20Jun%202019.pdf
-        Faker faker = new Faker(new Locale("en", "au"));
+        BaseFaker faker = new BaseFaker(new Locale("en", "au"));
 
         String actual = faker.medical().diagnosisCode();
         assertThat(actual).matches("[A-Z][0-9]{1,2}\\.[0-9]{1,2}");
@@ -52,7 +52,7 @@ class MedicalTest extends AbstractFakerTest {
     @RepeatedTest(100)
     void testDiagnosisCodeNotAustraliaNorUS() {
         // will use icd-10 - variation of https://regexlib.com/REDetails.aspx?regexp_id=2276&AspxAutoDetectCookieSupport=1
-        Faker faker = new Faker(Locale.FRANCE);
+        BaseFaker faker = new BaseFaker(Locale.FRANCE);
 
         String actual = faker.medical().diagnosisCode();
         assertThat(actual).matches("^[A-Z][0-9]{1,2}(\\.[0-9])?$");

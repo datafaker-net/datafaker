@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 1.4.0
  */
-public class Seinfeld extends AbstractProvider {
+public class Seinfeld extends AbstractProvider<IProviders> {
 
-    protected Seinfeld(Faker faker) {
+    protected Seinfeld(BaseFaker faker) {
         super(faker);
     }
 

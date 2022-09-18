@@ -7,9 +7,9 @@ package net.datafaker;
  *
  * @since 1.0.0
  */
-public class BossaNova extends AbstractProvider {
+public class BossaNova extends AbstractProvider<IProviders> {
 
-    protected BossaNova(Faker faker) {
+    protected BossaNova(BaseFaker faker) {
         super(faker);
     }
 

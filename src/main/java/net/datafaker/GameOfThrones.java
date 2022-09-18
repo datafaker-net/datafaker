@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class GameOfThrones extends AbstractProvider {
+public class GameOfThrones extends AbstractProvider<IProviders> {
 
-    protected GameOfThrones(Faker faker) {
+    protected GameOfThrones(BaseFaker faker) {
         super(faker);
     }
 

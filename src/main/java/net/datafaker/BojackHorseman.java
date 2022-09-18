@@ -6,14 +6,14 @@ package net.datafaker;
  * @author unknown and irakatz
  * @since 0.8.0
  */
-public class BojackHorseman extends AbstractProvider {
+public class BojackHorseman extends AbstractProvider<IProviders> {
 
     /**
      * Create a constructor for BojackHorseman.
      *
      * @param faker The Faker instance for generating random parts in BojackHorseman.
      */
-    protected BojackHorseman(Faker faker) {
+    protected BojackHorseman(BaseFaker faker) {
         super(faker);
     }
 

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Artist extends AbstractProvider {
+public class Artist extends AbstractProvider<IProviders> {
 
-    protected Artist(Faker faker) {
+    protected Artist(BaseFaker faker) {
         super(faker);
     }
 

@@ -1,4 +1,6 @@
-package net.datafaker;
+package net.datafaker.sport;
+
+import net.datafaker.AbstractProvider;
 
 /**
  * Generate random components of basketball game, e.g. teams, coaches, positions and players.
@@ -6,14 +8,14 @@ package net.datafaker;
  * @author unknown and irakatz
  * @since 0.8.0
  */
-public class Basketball extends AbstractProvider {
+public class Basketball extends AbstractProvider<SportProviders> {
 
     /**
      * Create a constructor for Basketball.
      *
      * @param faker The Faker instance for generating random, different kinds of disease, e.g. the internal disease.
      */
-    protected Basketball(Faker faker) {
+    protected Basketball(SportProviders faker) {
         super(faker);
     }
 

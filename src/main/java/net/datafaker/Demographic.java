@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Demographic extends AbstractProvider {
+public class Demographic extends AbstractProvider<IProviders> {
 
-    protected Demographic(Faker faker) {
+    protected Demographic(BaseFaker faker) {
         super(faker);
     }
 

@@ -10,9 +10,9 @@ import java.util.stream.Stream;
 /**
  * @since 0.8.0
  */
-public class Options extends AbstractProvider {
+public class Options extends AbstractProvider<IProviders> {
 
-    protected Options(Faker faker) {
+    protected Options(BaseFaker faker) {
         super(faker);
     }
 

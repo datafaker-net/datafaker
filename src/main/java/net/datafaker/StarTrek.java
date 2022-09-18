@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class StarTrek extends AbstractProvider {
+public class StarTrek extends AbstractProvider<IProviders> {
 
-    protected StarTrek(Faker faker) {
+    protected StarTrek(BaseFaker faker) {
         super(faker);
     }
 

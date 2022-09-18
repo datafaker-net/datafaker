@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 1.0.0
  */
-public class RuPaulDragRace extends AbstractProvider {
+public class RuPaulDragRace extends AbstractProvider<IProviders> {
 
-    protected RuPaulDragRace(Faker faker) {
+    protected RuPaulDragRace(BaseFaker faker) {
         super(faker);
     }
 

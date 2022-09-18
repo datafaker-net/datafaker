@@ -6,9 +6,9 @@ package net.datafaker;
  * @since 1.5.0
  * @author SickDawn
  */
-public class DarkSoul extends AbstractProvider {
+public class DarkSoul extends AbstractProvider<IProviders> {
 
-    public DarkSoul(final Faker faker) {
+    public DarkSoul(final BaseFaker faker) {
         super(faker);
     }
 

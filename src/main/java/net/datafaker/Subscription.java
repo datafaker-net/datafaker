@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.3.0
  */
-public class Subscription extends AbstractProvider {
+public class Subscription extends AbstractProvider<IProviders> {
 
-    protected Subscription(Faker faker) {
+    protected Subscription(BaseFaker faker) {
         super(faker);
     }
 

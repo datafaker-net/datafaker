@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.9.0
  */
-public class Passport extends AbstractProvider {
+public class Passport extends AbstractProvider<IProviders> {
 
-    protected Passport(Faker faker) {
+    protected Passport(BaseFaker faker) {
         super(faker);
     }
 

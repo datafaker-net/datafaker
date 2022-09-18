@@ -10,11 +10,11 @@ import java.util.Locale;
 /**
  * @since 0.8.0
  */
-public class Nation extends AbstractProvider {
+public class Nation extends AbstractProvider<IProviders> {
 
     private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 
-    protected Nation(Faker faker) {
+    protected Nation(BaseFaker faker) {
         super(faker);
     }
 

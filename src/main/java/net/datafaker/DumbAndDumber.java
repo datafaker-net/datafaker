@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.6.0
  */
-public class DumbAndDumber extends AbstractProvider {
+public class DumbAndDumber extends AbstractProvider<IProviders> {
 
-    protected DumbAndDumber(Faker faker) {
+    protected DumbAndDumber(BaseFaker faker) {
         super(faker);
     }
 

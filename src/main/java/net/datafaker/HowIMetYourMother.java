@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class HowIMetYourMother extends AbstractProvider {
+public class HowIMetYourMother extends AbstractProvider<IProviders> {
 
-    protected HowIMetYourMother(Faker faker) {
+    protected HowIMetYourMother(BaseFaker faker) {
         super(faker);
     }
 

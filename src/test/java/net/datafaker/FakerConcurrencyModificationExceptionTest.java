@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 public class FakerConcurrencyModificationExceptionTest {
 
-    private final Faker faker = new Faker();
+    private final BaseFaker faker = new BaseFaker();
 
     @Test
     public void test1() {

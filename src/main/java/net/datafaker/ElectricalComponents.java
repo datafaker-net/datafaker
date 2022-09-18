@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.4.0
  */
-public class ElectricalComponents extends AbstractProvider {
+public class ElectricalComponents extends AbstractProvider<IProviders> {
 
-    protected ElectricalComponents(Faker faker) {
+    protected ElectricalComponents(BaseFaker faker) {
         super(faker);
     }
 

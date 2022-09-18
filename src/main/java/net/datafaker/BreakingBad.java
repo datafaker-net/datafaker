@@ -8,9 +8,9 @@ package net.datafaker;
  *
  * @since 1.0.0
  */
-public class BreakingBad extends AbstractProvider {
+public class BreakingBad extends AbstractProvider<IProviders> {
 
-    protected BreakingBad(Faker faker) {
+    protected BreakingBad(BaseFaker faker) {
         super(faker);
     }
 

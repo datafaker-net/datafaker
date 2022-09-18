@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Kaamelott extends AbstractProvider {
+public class Kaamelott extends AbstractProvider<IProviders> {
 
-    protected Kaamelott(Faker faker) {
+    protected Kaamelott(BaseFaker faker) {
         super(faker);
     }
 

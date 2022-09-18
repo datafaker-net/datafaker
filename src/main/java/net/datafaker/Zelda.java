@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Zelda extends AbstractProvider {
+public class Zelda extends AbstractProvider<IProviders> {
 
-    protected Zelda(final Faker faker) {
+    protected Zelda(final BaseFaker faker) {
         super(faker);
     }
 

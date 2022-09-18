@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Hololive extends AbstractProvider {
+public class Hololive extends AbstractProvider<IProviders> {
 
-    protected Hololive(Faker faker) {
+    protected Hololive(BaseFaker faker) {
         super(faker);
     }
 

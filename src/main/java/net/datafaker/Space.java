@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Space extends AbstractProvider {
+public class Space extends AbstractProvider<IProviders> {
 
-    protected Space(Faker faker) {
+    protected Space(BaseFaker faker) {
         super(faker);
     }
 

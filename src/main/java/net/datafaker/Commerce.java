@@ -8,12 +8,12 @@ import java.util.TreeSet;
 /**
  * @since 0.8.0
  */
-public class Commerce extends AbstractProvider {
+public class Commerce extends AbstractProvider<IProviders> {
     private final DecimalFormatSymbols decimalFormatSymbols;
 
-    protected Commerce(Faker faker) {
+    protected Commerce(BaseFaker faker) {
         super(faker);
-        decimalFormatSymbols = new DecimalFormatSymbols(faker.getLocale());
+        decimalFormatSymbols = new DecimalFormatSymbols(faker.getContext().getLocale());
     }
 
     public String department() {

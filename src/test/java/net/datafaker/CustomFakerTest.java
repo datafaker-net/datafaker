@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * This is a demo of how to create a custom faker and register a custom faker in it.
  */
 class CustomFakerTest {
-    public static class MyCustomFaker extends Faker {
+    public static class MyCustomFaker extends BaseFaker {
         public Insect insect() {
             return getProvider(Insect.class, Insect::new, this);
         }
@@ -23,10 +23,10 @@ class CustomFakerTest {
         }
     }
 
-    public static class Insect extends AbstractProvider {
+    public static class Insect extends AbstractProvider<IProviders> {
         private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
 
-        public Insect(Faker faker) {
+        public Insect(BaseFaker faker) {
             super(faker);
         }
 
@@ -35,10 +35,10 @@ class CustomFakerTest {
         }
     }
 
-    public static class InsectFromFile extends AbstractProvider {
+    public static class InsectFromFile extends AbstractProvider<IProviders> {
         private static final String KEY = "insectsfromfile";
 
-        public InsectFromFile(Faker faker) {
+        public InsectFromFile(BaseFaker faker) {
             super(faker);
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
@@ -55,13 +55,13 @@ class CustomFakerTest {
 
     @Test
     void addNullExistingPath() {
-        assertThatThrownBy(() -> new Faker().addPath(Locale.ENGLISH, null))
+        assertThatThrownBy(() -> new BaseFaker().addPath(Locale.ENGLISH, null))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void addNonExistingPath() {
-        assertThatThrownBy(() -> new Faker().addPath(Locale.ENGLISH, Paths.get("non-existing-file")))
+        assertThatThrownBy(() -> new BaseFaker().addPath(Locale.ENGLISH, Paths.get("non-existing-file")))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -91,13 +91,13 @@ class CustomFakerTest {
 
     @Test
     void insectBeeTestExpressionFromFileWithoutExtraFaker() {
-        Faker faker = new Faker();
+        BaseFaker faker = new BaseFaker();
         assertThat(faker.getProvider(InsectFromFile. class, f -> new InsectFromFile(f), faker).bee()).endsWith("bee");
     }
 
     @Test
     void insectTestWithoutExtraFaker() {
-        Faker faker = new Faker();
+        BaseFaker faker = new BaseFaker();
         assertThat(faker.getProvider(Insect. class, f -> new Insect(f), faker).nextInsectName()).matches("[A-Za-z ]+");
     }
 }

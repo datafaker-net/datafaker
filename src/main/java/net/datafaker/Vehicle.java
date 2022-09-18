@@ -8,11 +8,11 @@ import java.util.Locale;
 /**
  * @since 0.8.0
  */
-public class Vehicle extends AbstractProvider {
+public class Vehicle extends AbstractProvider<IProviders> {
 
     static final String VIN_REGEX = "([A-HJ-NPR-Z0-9]){3}[A-HJ-NPR-Z0-9]{5}[A-HJ-NPR-Z0-9]{1}[A-HJ-NPR-Z0-9]{1}[A-HJ-NPR-Z0-0]{1}[A-HJ-NPR-Z0-9]{1}\\d{5}";
 
-    public Vehicle(Faker faker) {
+    public Vehicle(BaseFaker faker) {
         super(faker);
     }
 

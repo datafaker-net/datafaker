@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Dune extends AbstractProvider {
+public class Dune extends AbstractProvider<IProviders> {
 
-    protected Dune(Faker faker) {
+    protected Dune(BaseFaker faker) {
         super(faker);
     }
 

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.4.0
  */
-public class EldenRing extends AbstractProvider {
+public class EldenRing extends AbstractProvider<IProviders> {
 
-    protected EldenRing(Faker faker) {
+    protected EldenRing(BaseFaker faker) {
         super(faker);
     }
 

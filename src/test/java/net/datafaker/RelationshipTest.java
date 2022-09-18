@@ -13,12 +13,12 @@ import static org.mockito.Mockito.when;
 
 class RelationshipTest extends AbstractFakerTest {
 
-    private Faker mockFaker;
+    private BaseFaker mockFaker;
 
     @BeforeEach
     public void before() {
         super.before();
-        mockFaker = Mockito.mock(Faker.class);
+        mockFaker = Mockito.mock(BaseFaker.class);
     }
 
     @RepeatedTest(100)

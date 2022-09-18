@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Color extends AbstractProvider {
+public class Color extends AbstractProvider<IProviders> {
 
-    protected Color(Faker faker) {
+    protected Color(BaseFaker faker) {
         super(faker);
     }
 

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Robin extends AbstractProvider {
+public class Robin extends AbstractProvider<IProviders> {
 
-    protected Robin(Faker faker) {
+    protected Robin(BaseFaker faker) {
         super(faker);
     }
 

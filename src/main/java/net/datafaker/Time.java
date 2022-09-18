@@ -7,9 +7,9 @@ import java.time.temporal.ChronoUnit;
 /**
  * @since 1.4.0
  */
-public class Time extends AbstractProvider {
+public class Time extends AbstractProvider<IProviders> {
 
-    protected Time(Faker faker) {
+    protected Time(BaseFaker faker) {
         super(faker);
     }
 

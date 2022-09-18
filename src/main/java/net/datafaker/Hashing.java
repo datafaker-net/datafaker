@@ -8,9 +8,9 @@ import java.security.NoSuchAlgorithmException;
 /**
  * @since 0.8.0
  */
-public class Hashing extends AbstractProvider {
+public class Hashing extends AbstractProvider<IProviders> {
 
-    protected Hashing(Faker faker) {
+    protected Hashing(BaseFaker faker) {
         super(faker);
     }
 

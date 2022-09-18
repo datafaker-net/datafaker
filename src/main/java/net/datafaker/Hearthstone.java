@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.9.0
  */
-public class Hearthstone extends AbstractProvider {
+public class Hearthstone extends AbstractProvider<IProviders> {
 
-    protected Hearthstone(final Faker faker) {
+    protected Hearthstone(final BaseFaker faker) {
         super(faker);
     }
 

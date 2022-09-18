@@ -1,7 +1,7 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.Faker;
+import net.datafaker.BaseFaker;
 import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Locale;
@@ -12,7 +12,7 @@ class ZhCNIdNumberTest extends AbstractFakerTest {
 
     @RepeatedTest(10)
     void testValidChineseIdNumber() {
-        Faker faker = new Faker(new Locale("zh_CN"));
+        BaseFaker faker = new BaseFaker(new Locale("zh_CN"));
         String idNumber = faker.idNumber().valid();
         boolean isSatisfied = idNumber.length() == 18;
         for (int j = 0; j < idNumber.length(); j++) {
@@ -34,7 +34,7 @@ class ZhCNIdNumberTest extends AbstractFakerTest {
 
     @RepeatedTest(10)
     void testChecksumOfChineseIdNumber() {
-        Faker faker = new Faker(new Locale("zh_CN"));
+        BaseFaker faker = new BaseFaker(new Locale("zh_CN"));
         String s = faker.idNumber().valid();
         boolean isSatisfied = true;
         int count = 0;

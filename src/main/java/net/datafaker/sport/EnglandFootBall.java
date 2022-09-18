@@ -1,11 +1,13 @@
-package net.datafaker;
+package net.datafaker.sport;
+
+import net.datafaker.AbstractProvider;
 
 /**
  * @since 0.9.0
  */
-public class EnglandFootBall extends AbstractProvider {
+public class EnglandFootBall extends AbstractProvider<SportProviders> {
 
-    protected EnglandFootBall(final Faker faker) {
+    protected EnglandFootBall(final SportProviders faker) {
         super(faker);
     }
 

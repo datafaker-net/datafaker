@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class ElderScrolls extends AbstractProvider {
+public class ElderScrolls extends AbstractProvider<IProviders> {
 
-    protected ElderScrolls(Faker faker) {
+    protected ElderScrolls(BaseFaker faker) {
         super(faker);
     }
 

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class BackToTheFuture extends AbstractProvider {
+public class BackToTheFuture extends AbstractProvider<IProviders> {
 
-    protected BackToTheFuture(Faker faker) {
+    protected BackToTheFuture(BaseFaker faker) {
         super(faker);
     }
 

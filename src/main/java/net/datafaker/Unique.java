@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
  *
  * @since 1.6.0
  */
-public class Unique extends AbstractProvider {
+public class Unique extends AbstractProvider<IProviders> {
 
     private final Map<Locale, Map<String, List<String>>> valuesByKeyAndLocale = new HashMap<>();
 
-    public Unique(Faker faker) {
+    public Unique(BaseFaker faker) {
         super(faker);
     }
 
@@ -32,7 +32,7 @@ public class Unique extends AbstractProvider {
      * @return a unique random value based on {@code key} and the current locale
      */
     public String fetchFromYaml(String key) {
-        Locale locale = faker.getLocale();
+        Locale locale = faker.getContext().getLocale();
 
         Map<String, List<String>> valuesByKey = valuesByKeyAndLocale.getOrDefault(locale, new HashMap<>());
         List<String> values = valuesByKey.get(key);

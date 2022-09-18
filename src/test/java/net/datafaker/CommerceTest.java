@@ -6,9 +6,9 @@ import java.text.DecimalFormatSymbols;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CommerceTest extends AbstractFakerTest {
+class CommerceTest extends AbstractBaseFakerTest<BaseFaker> {
 
-    private final char decimalSeparator = new DecimalFormatSymbols(faker.getLocale()).getDecimalSeparator();
+    private final char decimalSeparator = new DecimalFormatSymbols(faker.getContext().getLocale()).getDecimalSeparator();
 
     private static final String CAPITALIZED_WORD_REGEX = "[A-Z][a-z]+";
 

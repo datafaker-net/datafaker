@@ -3,7 +3,7 @@ package net.datafaker.idnumbers;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import net.datafaker.Faker;
+import net.datafaker.BaseFaker;
 import net.datafaker.idnumbers.PeselNumber.Gender;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class PeselNumberTest {
 
     @BeforeAll
     static void setUpBeforeClass() {
-        peselNumber = new PeselNumber(new Faker());
+        peselNumber = new PeselNumber(new BaseFaker());
     }
 
     @ParameterizedTest
@@ -32,7 +32,7 @@ class PeselNumberTest {
         /*
          * Given
          */
-        final LocalDate givenBirthDate = new Faker().date().birthday(0, 100).toInstant()
+        final LocalDate givenBirthDate = new BaseFaker().date().birthday(0, 100).toInstant()
             .atZone(ZoneId.systemDefault()).toLocalDate();
         /*
          * When

@@ -14,14 +14,14 @@ import java.util.logging.Logger;
  *
  * @since 0.9.0
  */
-public class Twitter extends AbstractProvider {
+public class Twitter extends AbstractProvider<IProviders> {
 
     private final String basicstr = "QabR0cYdZ1efSg2hi3jNOPkTUM4VLlmXK5nJo6WIpHGqF7rEs8tDuC9vwBxAyz";
 
     /**
      * @param faker used as constructor
      */
-    protected Twitter(Faker faker) {
+    protected Twitter(BaseFaker faker) {
         super(faker);
     }
 

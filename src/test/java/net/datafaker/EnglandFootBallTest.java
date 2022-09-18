@@ -1,11 +1,12 @@
 package net.datafaker;
 
 
+import net.datafaker.sport.AbstractSportFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EnglandFootBallTest extends AbstractFakerTest {
+class EnglandFootBallTest extends AbstractSportFakerTest {
 
     @Test
     void testLeague() {

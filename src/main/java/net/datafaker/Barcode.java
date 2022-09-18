@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.9.0
  */
-public class Barcode extends AbstractProvider {
+public class Barcode extends AbstractProvider<IProviders> {
 
-    public Barcode(Faker faker) {
+    public Barcode(BaseFaker faker) {
         super(faker);
     }
 

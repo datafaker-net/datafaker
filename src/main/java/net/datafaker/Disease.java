@@ -5,14 +5,14 @@ package net.datafaker;
  *
  * @since 0.8.0
  */
-public class Disease extends AbstractProvider {
+public class Disease extends AbstractProvider<IProviders> {
 
     /**
      * Create a constructor for Disease
      *
      * @param faker The Faker instance for generating random, different kinds of disease, e.g. the internal disease.
      */
-    protected Disease(Faker faker) {
+    protected Disease(BaseFaker faker) {
         super(faker);
     }
 

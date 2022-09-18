@@ -1,10 +1,11 @@
 package net.datafaker;
 
+import net.datafaker.sport.AbstractSportFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VolleyballTest extends AbstractFakerTest {
+class VolleyballTest extends AbstractSportFakerTest {
 
     @Test
     void team() {

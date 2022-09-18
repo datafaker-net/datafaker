@@ -21,11 +21,11 @@ import static net.datafaker.Password.EN_UPPERCASE;
 /**
  * @since 0.8.0
  */
-public class Internet extends AbstractProvider {
+public class Internet extends AbstractProvider<IProviders> {
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
     private static final Pattern COLON = Pattern.compile(":");
 
-    protected Internet(Faker faker) {
+    protected Internet(BaseFaker faker) {
         super(faker);
     }
 
@@ -408,7 +408,7 @@ public class Internet extends AbstractProvider {
             this.browserName = browserName;
         }
 
-        private static UserAgent any(Faker faker) {
+        private static UserAgent any(IProviders faker) {
             UserAgent[] agents = UserAgent.values();
             int randomIndex = (int) (faker.random().nextDouble() * agents.length);
             return agents[randomIndex];

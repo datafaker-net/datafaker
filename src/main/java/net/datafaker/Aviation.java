@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 0.8.0
  */
-public class Aviation extends AbstractProvider {
+public class Aviation extends AbstractProvider<IProviders> {
 
-    protected Aviation(Faker faker) {
+    protected Aviation(BaseFaker faker) {
         super(faker);
     }
 

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class FamousLastWords extends AbstractProvider {
+public class FamousLastWords extends AbstractProvider<IProviders> {
 
-    protected FamousLastWords(Faker faker) {
+    protected FamousLastWords(BaseFaker faker) {
         super(faker);
     }
 

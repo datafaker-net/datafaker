@@ -1,9 +1,9 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.IProviders;
+
 import java.time.LocalDate;
 import java.util.Optional;
-
-import net.datafaker.Faker;
 
 /**
  * Implementation based on the definition at
@@ -14,13 +14,13 @@ public class PeselNumber {
 
     public static final int PESEL_LENGTH = 11;
 
-    private final Faker faker;
+    private final IProviders faker;
 
     public enum Gender {
         MALE, FEMALE, ANY
     }
 
-    public PeselNumber(Faker faker) {
+    public PeselNumber(IProviders faker) {
         this.faker = faker;
     }
 

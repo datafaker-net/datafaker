@@ -8,14 +8,14 @@ import net.datafaker.service.RandomService;
  *
  * @since 0.9.0
  */
-public class Domain extends AbstractProvider {
+public class Domain extends AbstractProvider<IProviders> {
 
     /**
      * Instantiates a new Domain.
      *
      * @param faker the faker
      */
-    protected Domain(Faker faker) {
+    protected Domain(BaseFaker faker) {
         super(faker);
     }
 

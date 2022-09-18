@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Verb extends AbstractProvider {
+public class Verb extends AbstractProvider<IProviders> {
 
-    protected Verb(Faker faker) {
+    protected Verb(BaseFaker faker) {
         super(faker);
     }
 

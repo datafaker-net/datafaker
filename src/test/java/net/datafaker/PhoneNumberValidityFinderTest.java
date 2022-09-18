@@ -22,7 +22,7 @@ class PhoneNumberValidityFinderTest {
     void testAllCellPhoneForLocale() throws NumberParseException {
         String language = "en";
         String region = "GB";
-        Faker localFaker = new Faker(new Locale(language, region));
+        BaseFaker localFaker = new BaseFaker(new Locale(language, region));
         PhoneNumberUtil util = PhoneNumberUtil.getInstance();
 
         int errorCount = 0;
@@ -68,7 +68,7 @@ class PhoneNumberValidityFinderTest {
 
             PhoneNumberUtil util = PhoneNumberUtil.getInstance();
             Locale locale = new Locale(supportedLocale, country);
-            final Faker f = new Faker(locale);
+            final BaseFaker f = new BaseFaker(locale);
             int errorCount = 0;
             for (int i = 0; i < 100; i++) {
                 String phoneNumber = f.phoneNumber().phoneNumber();

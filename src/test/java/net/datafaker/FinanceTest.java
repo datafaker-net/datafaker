@@ -61,8 +61,8 @@ class FinanceTest extends AbstractFakerTest {
     @Test
     void costaRicaIbanMustBeValid() {
         final String givenCountryCode = "CR";
-        final Faker faker = new Faker();
-        final String ibanFaker = faker.finance().iban(givenCountryCode).toUpperCase(faker.getLocale());
+        final BaseFaker faker = new BaseFaker();
+        final String ibanFaker = faker.finance().iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
         assertThat(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker)).isTrue();
     }
 }

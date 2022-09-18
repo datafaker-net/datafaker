@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class TwinPeaks extends AbstractProvider {
+public class TwinPeaks extends AbstractProvider<IProviders> {
 
-    protected TwinPeaks(final Faker faker) {
+    protected TwinPeaks(final BaseFaker faker) {
         super(faker);
     }
 

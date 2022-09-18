@@ -25,7 +25,7 @@ class TeamTest extends AbstractFakerTest {
 
     @Test
     void testStateWithZaLocale() {
-        Faker zaFaker = new Faker(new Locale("en", "ZA"));
+        BaseFaker zaFaker = new BaseFaker(new Locale("en", "ZA"));
         assertThat(zaFaker.team().state()).isNotEmpty();
     }
 

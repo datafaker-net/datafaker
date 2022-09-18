@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class FunnyName extends AbstractProvider {
+public class FunnyName extends AbstractProvider<IProviders> {
 
-    protected FunnyName(Faker faker) {
+    protected FunnyName(BaseFaker faker) {
         super(faker);
     }
 

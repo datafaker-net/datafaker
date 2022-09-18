@@ -14,7 +14,7 @@ class CodeTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void isbn10DefaultIsNoSeparator() {
-        final Faker faker = new Faker();
+        final BaseFaker faker = new BaseFaker();
         String isbn10 = faker.code().isbn10();
 
         final ISBNValidator isbnValidator = ISBNValidator.getInstance(false);
@@ -24,7 +24,7 @@ class CodeTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void isbn13DefaultIsNoSeparator() {
-        final Faker faker = new Faker();
+        final BaseFaker faker = new BaseFaker();
         String isbn13 = faker.code().isbn13();
 
         final ISBNValidator isbnValidator = ISBNValidator.getInstance(false);
@@ -34,7 +34,7 @@ class CodeTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testIsbn10() {
-        final Faker faker = new Faker();
+        final BaseFaker faker = new BaseFaker();
         final String isbn10NoSep = faker.code().isbn10(false);
         final String isbn10Sep = faker.code().isbn10(true);
         final ISBNValidator isbnValidator = ISBNValidator.getInstance(false);
@@ -47,7 +47,7 @@ class CodeTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testIsbn13() {
-        final Faker faker = new Faker();
+        final BaseFaker faker = new BaseFaker();
         final String isbn13NoSep = faker.code().isbn13(false);
         final String isbn13Sep = faker.code().isbn13(true);
         final ISBNValidator isbnValidator = ISBNValidator.getInstance(false);
@@ -69,7 +69,7 @@ class CodeTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testOverrides() {
-        Faker faker = new Faker(new Locale("test"));
+        BaseFaker faker = new BaseFaker(new Locale("test"));
 
         final String isbn10Sep = faker.code().isbn10(true);
         final String isbn13Sep = faker.code().isbn13(true);

@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.6.0
  */
-public class ClashOfClans extends AbstractProvider {
+public class ClashOfClans extends AbstractProvider<IProviders> {
 
-    protected ClashOfClans(Faker faker) {
+    protected ClashOfClans(BaseFaker faker) {
         super(faker);
     }
 

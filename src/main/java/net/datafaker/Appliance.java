@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.0.0
  */
-public class Appliance extends AbstractProvider {
+public class Appliance extends AbstractProvider<IProviders> {
 
-    protected Appliance(Faker faker) {
+    protected Appliance(BaseFaker faker) {
         super(faker);
     }
 

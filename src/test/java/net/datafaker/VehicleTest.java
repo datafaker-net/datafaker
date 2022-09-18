@@ -149,7 +149,7 @@ class VehicleTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testLicensePlateWithParam_Canada() {
-        Faker test = new Faker(Locale.CANADA);
+        BaseFaker test = new BaseFaker(Locale.CANADA);
         assertThat(test.vehicle().licensePlate("MB")).matches(WORDS_MATCH);
         assertThat(test.vehicle().licensePlate("ON")).matches(WORDS_MATCH);
     }

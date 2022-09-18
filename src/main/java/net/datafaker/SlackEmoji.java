@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class SlackEmoji extends AbstractProvider {
+public class SlackEmoji extends AbstractProvider<IProviders> {
 
-    protected SlackEmoji(Faker faker) {
+    protected SlackEmoji(BaseFaker faker) {
         super(faker);
     }
 

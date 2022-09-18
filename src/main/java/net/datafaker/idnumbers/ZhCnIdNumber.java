@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.Faker;
+import net.datafaker.IProviders;
 import net.datafaker.service.RandomService;
 
 import java.text.ParseException;
@@ -24,7 +24,7 @@ public class ZhCnIdNumber {
      * @param faker a Faker instance for generating Zh_CN Id numbers
      * @return a Zh_CN Id numbers string. or null if exception.
      */
-    public String getValidSsn(Faker faker) {
+    public String getValidSsn(IProviders faker) {
         final RandomService random = faker.random();
         String s = "";
         RandomService rand = faker.random();

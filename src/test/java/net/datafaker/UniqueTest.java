@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 
 class UniqueTest {
 
-    private Faker faker = new Faker(new Locale("test"));
+    private BaseFaker faker = new BaseFaker(new Locale("test"));
 
     private final List<String> defaultValues = asList(
         "firstValue",
@@ -30,7 +30,7 @@ class UniqueTest {
         RandomService randomService = Mockito.spy(new RandomService(new Random()));
         doCallRealMethod().when(randomService).nextInt(anyInt(), anyInt());
 
-        faker = new Faker(new Locale("test"), randomService);
+        faker = new BaseFaker(new Locale("test"), randomService);
 
         Set<String> results = new HashSet<>();
 

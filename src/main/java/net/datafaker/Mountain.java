@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 1.1.0
  */
-public class Mountain extends AbstractProvider {
+public class Mountain extends AbstractProvider<IProviders> {
 
-    protected Mountain(Faker faker) {
+    protected Mountain(BaseFaker faker) {
         super(faker);
     }
 

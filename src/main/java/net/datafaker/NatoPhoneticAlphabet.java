@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 1.2.0
  */
-public class NatoPhoneticAlphabet extends AbstractProvider {
+public class NatoPhoneticAlphabet extends AbstractProvider<IProviders> {
 
-    protected NatoPhoneticAlphabet(Faker faker) {
+    protected NatoPhoneticAlphabet(BaseFaker faker) {
         super(faker);
     }
 

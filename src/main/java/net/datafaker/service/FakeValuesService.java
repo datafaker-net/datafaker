@@ -2,7 +2,8 @@ package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
 import net.datafaker.AbstractProvider;
-import net.datafaker.Faker;
+import net.datafaker.BaseFaker;
+import net.datafaker.ProviderRegistration;
 import net.datafaker.fileformats.Csv;
 import net.datafaker.fileformats.Format;
 import net.datafaker.fileformats.Json;
@@ -353,7 +354,7 @@ public class FakeValuesService {
      * <p>
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
-    public String resolve(String key, Object current, Faker root, FakerContext context) {
+    public String resolve(String key, Object current, BaseFaker root, FakerContext context) {
         return resolve(key, current, root, () -> key + " resulted in null expression", context);
     }
 
@@ -368,7 +369,7 @@ public class FakeValuesService {
      * <p>
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
-    public String resolve(String key, Object current, Faker root, Supplier<String> exceptionMessage, FakerContext context) {
+    public String resolve(String key, Object current, ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
         String expression = root == null ? key2Expression.get(context.getLocale()).get(key) : null;
         if (expression == null) {
             expression = safeFetch(key, context, null);
@@ -388,14 +389,14 @@ public class FakeValuesService {
     /**
      * Resolves an expression using the current faker.
      */
-    public String expression(String expression, Faker faker, FakerContext context) {
+    public String expression(String expression, BaseFaker faker, FakerContext context) {
         return resolveExpression(expression, null, faker, context);
     }
 
     /**
      * Resolves an expression in file using the current faker.
      */
-    public String fileExpression(Path path, Faker faker, FakerContext context) {
+    public String fileExpression(Path path, BaseFaker faker, FakerContext context) {
         try {
             return Files.readAllLines(path)
                 .stream().map(t -> expression(t, faker, context))
@@ -468,16 +469,16 @@ public class FakeValuesService {
 
     /**
      * processes a expression in the style #{X.y} using the current objects as the 'current' location
-     * within the yml file (or the {@link Faker} object hierarchy as it were).
+     * within the yml file (or the {@link BaseFaker} object hierarchy as it were).
      * <p>
-     * #{Address.streetName} would get resolved to {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}
+     * #{Address.streetName} would get resolved to {@link BaseFaker#address()}'s {@link net.datafaker.Address#streetName()}
      * #{address.street} would get resolved to the YAML like locale: faker: address: street:
      * Combinations are supported as well: "#{x} #{y}"
      * <p>
      * Recursive templates are supported.  if "#{x}" resolves to "#{Address.streetName}" then "#{x}" resolves to
-     * {@link Faker#address()}'s {@link net.datafaker.Address#streetName()}.
+     * {@link BaseFaker#address()}'s {@link net.datafaker.Address#streetName()}.
      */
-    protected String resolveExpression(String expression, Object current, Faker root, FakerContext context) {
+    protected String resolveExpression(String expression, Object current, ProviderRegistration root, FakerContext context) {
         if (expression.indexOf('}') == -1 || !expression.contains("#{")) {
             return expression;
         }
@@ -589,7 +590,7 @@ public class FakeValuesService {
      *
      * @return null if unable to resolve
      */
-    private Object resolveExpression(String directive, String[] args, Object current, Faker root, FakerContext context) {
+    private Object resolveExpression(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
         if (directive.trim().isEmpty()) {
@@ -749,12 +750,12 @@ public class FakeValuesService {
     }
 
     /**
-     * Accepts a {@link Faker} instance and a name.firstName style 'key' which is resolved to the return value of:
-     * {@link Faker#name()}'s {@link net.datafaker.Name#firstName()} method.
+     * Accepts a {@link BaseFaker} instance and a name.firstName style 'key' which is resolved to the return value of:
+     * {@link BaseFaker#name()}'s {@link net.datafaker.Name#firstName()} method.
      *
      * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
      */
-    private Supplier<Object> resolveFakerObjectAndMethod(Faker faker, String key, String[] args) {
+    private Supplier<Object> resolveFakerObjectAndMethod(ProviderRegistration faker, String key, String[] args) {
         int index = key.indexOf('.');
         final String[] classAndMethod;
         if (index == -1) {

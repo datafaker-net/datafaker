@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class Simpsons extends AbstractProvider {
+public class Simpsons extends AbstractProvider<IProviders> {
 
-    public Simpsons(Faker faker) {
+    public Simpsons(BaseFaker faker) {
         super(faker);
     }
 

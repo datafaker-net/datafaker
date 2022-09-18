@@ -10,14 +10,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RandomFakerTest extends AbstractFakerTest {
 
     private static final int CONSTANT_SEED_VALUE = 10;
-    private Faker faker;
+    private BaseFaker faker;
     private Random random;
 
     @BeforeEach
     public void before() {
         super.before();
         random = new Random();
-        faker = new Faker(random);
+        faker = new BaseFaker(random);
     }
 
     @Test

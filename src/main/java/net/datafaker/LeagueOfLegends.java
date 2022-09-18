@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class LeagueOfLegends extends AbstractProvider {
+public class LeagueOfLegends extends AbstractProvider<IProviders> {
 
-    protected LeagueOfLegends(Faker faker) {
+    protected LeagueOfLegends(BaseFaker faker) {
         super(faker);
     }
 

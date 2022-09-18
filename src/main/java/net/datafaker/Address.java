@@ -3,8 +3,8 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Address extends AbstractProvider {
-    protected Address(Faker faker) {
+public class Address extends AbstractProvider<IProviders> {
+    protected Address(BaseFaker faker) {
         super(faker);
     }
 
@@ -99,14 +99,14 @@ public class Address extends AbstractProvider {
      * @return Returns the latitude, a number between -90 to 90.
      */
     public String latitude() {
-        return String.format(faker.getLocale(), "%.8f", (faker.random().nextDouble() * 180) - 90);
+        return String.format(faker.getContext().getLocale(), "%.8f", (faker.random().nextDouble() * 180) - 90);
     }
 
     /**
      * @return Returns the longitude, a number between -180 and 180
      */
     public String longitude() {
-        return String.format(faker.getLocale(), "%.8f", (faker.random().nextDouble() * 360) - 180);
+        return String.format(faker.getContext().getLocale(), "%.8f", (faker.random().nextDouble() * 360) - 180);
     }
 
     /**

@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 1.3.0
  */
-public class BrooklynNineNine extends AbstractProvider {
+public class BrooklynNineNine extends AbstractProvider<IProviders> {
 
-    protected BrooklynNineNine(Faker faker) {
+    protected BrooklynNineNine(BaseFaker faker) {
         super(faker);
     }
 

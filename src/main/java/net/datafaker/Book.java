@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Book extends AbstractProvider {
+public class Book extends AbstractProvider<IProviders> {
 
-    protected Book(Faker faker) {
+    protected Book(BaseFaker faker) {
         super(faker);
     }
 

@@ -5,11 +5,11 @@ package net.datafaker;
  *
  * @since 1.5.0
  */
-public class Mbti extends AbstractProvider {
+public class Mbti extends AbstractProvider<IProviders> {
     
     private final String choice;
 
-    public Mbti(final Faker faker) {
+    public Mbti(final BaseFaker faker) {
         super(faker);
         this.choice = this.faker.resolve("mbti.choice");
     }

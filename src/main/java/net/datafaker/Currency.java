@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Currency extends AbstractProvider {
+public class Currency extends AbstractProvider<IProviders> {
 
-    public Currency(Faker faker) {
+    public Currency(BaseFaker faker) {
         super(faker);
     }
 

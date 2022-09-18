@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Buffy extends AbstractProvider {
+public class Buffy extends AbstractProvider<IProviders> {
 
-    protected Buffy(Faker faker) {
+    protected Buffy(BaseFaker faker) {
         super(faker);
     }
 

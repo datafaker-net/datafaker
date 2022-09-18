@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.9.0
  */
-public class Touhou extends AbstractProvider {
+public class Touhou extends AbstractProvider<IProviders> {
 
-    protected Touhou(Faker faker) {
+    protected Touhou(BaseFaker faker) {
         super(faker);
     }
 

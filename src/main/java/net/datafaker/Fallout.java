@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 1.6.0
  */
-public class Fallout extends AbstractProvider {
+public class Fallout extends AbstractProvider<IProviders> {
 
-    protected Fallout(Faker faker) {
+    protected Fallout(BaseFaker faker) {
         super(faker);
     }
 

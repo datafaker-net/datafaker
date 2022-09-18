@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Yoda extends AbstractProvider {
+public class Yoda extends AbstractProvider<IProviders> {
 
-    protected Yoda(final Faker faker) {
+    protected Yoda(final BaseFaker faker) {
         super(faker);
     }
 

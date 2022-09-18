@@ -13,7 +13,7 @@ import static org.mockito.Mockito.doReturn;
 class NameTest extends AbstractFakerTest {
 
     @Spy
-    private Faker mockedFaker;
+    private BaseFaker mockedFaker;
 
     @Test
     void testName() {
@@ -46,7 +46,7 @@ class NameTest extends AbstractFakerTest {
 
     @Test
     void testFullNameArabic() {
-        Faker localFaker = new Faker(new Locale("ar"));
+        BaseFaker localFaker = new BaseFaker(new Locale("ar"));
 
         for (int i = 0; i < 25; i++) {
             assertThat(localFaker.name().fullName()).matches("^[\\u0600-\\u06FF\\u0750-\\u077F ]+$");

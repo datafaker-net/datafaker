@@ -5,10 +5,10 @@ package net.datafaker;
  *
  * @since 1.2.0
  */
-public class Nigeria extends AbstractProvider {
+public class Nigeria extends AbstractProvider<IProviders> {
     private static final String KEY = "nigeria";
 
-    protected Nigeria(Faker faker) {
+    protected Nigeria(BaseFaker faker) {
         super(faker);
     }
 

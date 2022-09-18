@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Coin extends AbstractProvider {
+public class Coin extends AbstractProvider<IProviders> {
 
-    protected Coin(Faker faker) {
+    protected Coin(BaseFaker faker) {
         super(faker);
     }
 

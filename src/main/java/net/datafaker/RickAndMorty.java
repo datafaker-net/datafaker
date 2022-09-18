@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class RickAndMorty extends AbstractProvider {
+public class RickAndMorty extends AbstractProvider<IProviders> {
 
-    protected RickAndMorty(final Faker faker) {
+    protected RickAndMorty(final BaseFaker faker) {
         super(faker);
     }
 

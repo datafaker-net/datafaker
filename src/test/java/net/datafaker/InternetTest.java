@@ -6,7 +6,11 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
@@ -37,7 +41,7 @@ class InternetTest extends AbstractFakerTest {
             assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
             emails.add(emailAddress);
         }
-        final String safeDomain = faker.resolve("internet.safe_email");
+        final String safeDomain = faker.internet().resolve("internet.safe_email");
 
         assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).collect(Collectors.toList()))
             .isNotEmpty();
@@ -52,7 +56,7 @@ class InternetTest extends AbstractFakerTest {
             assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
             emails.add(emailAddress);
         }
-        final String safeDomain = faker.resolve("internet.safe_email");
+        final String safeDomain = faker.internet().resolve("internet.safe_email");
 
         assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).collect(Collectors.toList()))
             .isNotEmpty();
@@ -109,7 +113,7 @@ class InternetTest extends AbstractFakerTest {
 
     @Test
     void testPasswordWithFixedLength() {
-        String password = new Faker().internet().password(32, 32, true, true, true);
+        String password = new BaseFaker().internet().password(32, 32, true, true, true);
         assertThat(password).hasSize(32);
     }
 
@@ -312,8 +316,8 @@ class InternetTest extends AbstractFakerTest {
     void testUuidv3ConstantRandomSeed() {
         final int randomSeed = 42;
         // Two fakers, same random seed.
-        final Faker faker1 = new Faker(new Random(randomSeed));
-        final Faker faker2 = new Faker(new Random((randomSeed)));
+        final BaseFaker faker1 = new BaseFaker(new Random(randomSeed));
+        final BaseFaker faker2 = new BaseFaker(new Random((randomSeed)));
         // Keep it simple and without loops, three examples should suffice to act as the general case.
         final String faker1Uuidv3First = faker1.internet().uuidv3();
         final String faker1Uuidv3Second = faker1.internet().uuidv3();
@@ -341,7 +345,7 @@ class InternetTest extends AbstractFakerTest {
     void testFarsiIDNs() {
         // in this case, we're just making sure Farsi doesn't blow up.
         // there have been issues with Farsi not being produced.
-        final Faker f = new Faker(new Locale("fa"));
+        final BaseFaker f = new BaseFaker(new Locale("fa"));
         assertThat(f.internet().domainName()).isNotEmpty();
         assertThat(f.internet().emailAddress()).isNotEmpty();
         assertThat(f.internet().safeEmailAddress()).isNotEmpty();

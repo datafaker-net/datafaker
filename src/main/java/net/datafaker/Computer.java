@@ -5,9 +5,9 @@ package net.datafaker;
  *
  * @since 1.5.0
  */
-public class Computer extends AbstractProvider {
+public class Computer extends AbstractProvider<IProviders> {
 
-    protected Computer(Faker faker) {
+    protected Computer(BaseFaker faker) {
         super(faker);
     }
 

@@ -26,25 +26,25 @@ class IdNumberTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testValidSwedishSsn() {
-        final Faker f = new Faker(new Locale("sv_SE"));
+        final BaseFaker f = new BaseFaker(new Locale("sv_SE"));
         assertThat(f.idNumber().validSvSeSsn()).matches("\\d{6}[-+]\\d{4}");
     }
 
     @RepeatedTest(100)
     void testInvalidSwedishSsn() {
-        final Faker f = new Faker(new Locale("sv_SE"));
+        final BaseFaker f = new BaseFaker(new Locale("sv_SE"));
         assertThat(f.idNumber().invalidSvSeSsn()).matches("\\d{6}[-+]\\d{4}");
     }
 
     @RepeatedTest(100)
     void testValidEnZaSsn() {
-        final Faker f = new Faker(new Locale("en_ZA"));
+        final BaseFaker f = new BaseFaker(new Locale("en_ZA"));
         assertThat(f.idNumber().validEnZaSsn()).matches("[0-9]{10}([01])8[0-9]");
     }
 
     @RepeatedTest(100)
     void testInvalidEnZaSsn() {
-        final Faker f = new Faker(new Locale("en_ZA"));
+        final BaseFaker f = new BaseFaker(new Locale("en_ZA"));
         assertThat(f.idNumber().inValidEnZaSsn()).matches("[0-9]{10}([01])8[0-9]");
     }
 

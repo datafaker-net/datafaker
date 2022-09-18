@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Witcher extends AbstractProvider {
+public class Witcher extends AbstractProvider<IProviders> {
 
-    protected Witcher(Faker faker) {
+    protected Witcher(BaseFaker faker) {
         super(faker);
     }
 

@@ -3,10 +3,10 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Avatar extends AbstractProvider {
+public class Avatar extends AbstractProvider<IProviders> {
     private final String baseUrl;
 
-    protected Avatar(Faker faker) {
+    protected Avatar(BaseFaker faker) {
         super(faker);
         this.baseUrl = "https://robohash.org/";
     }

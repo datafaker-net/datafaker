@@ -44,7 +44,7 @@ public class FakeCollection<T> {
         private int minLength = -1; // negative means same as maxLength
         private int maxLength = 10;
         private double nullRate = 0d;
-        private Faker faker;
+        private BaseFaker faker;
 
         public Builder() {
             suppliers = new ArrayList<>();
@@ -59,7 +59,7 @@ public class FakeCollection<T> {
             suppliers = new ArrayList<>(Arrays.asList(elems));
         }
 
-        public Builder<T> faker(Faker faker) {
+        public Builder<T> faker(BaseFaker faker) {
             this.faker = faker;
             return this;
         }

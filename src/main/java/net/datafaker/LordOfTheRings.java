@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class LordOfTheRings extends AbstractProvider {
+public class LordOfTheRings extends AbstractProvider<IProviders> {
 
-    protected LordOfTheRings(final Faker faker) {
+    protected LordOfTheRings(final BaseFaker faker) {
         super(faker);
     }
 

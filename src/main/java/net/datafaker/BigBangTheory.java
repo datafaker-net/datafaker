@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 1.5.0
  */
-public class BigBangTheory extends AbstractProvider {
+public class BigBangTheory extends AbstractProvider<IProviders> {
 
-    protected BigBangTheory(Faker faker) {
+    protected BigBangTheory(BaseFaker faker) {
         super(faker);
     }
 

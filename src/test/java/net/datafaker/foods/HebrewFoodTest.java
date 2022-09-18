@@ -1,6 +1,6 @@
 package net.datafaker.foods;
 
-import net.datafaker.Faker;
+import net.datafaker.BaseFaker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,11 +10,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class HebrewFoodTest {
     public final String matchHebrewFood = "[\\u0590-\\u05FF ']+";
-    public static Faker food;
+    public static BaseFaker food;
 
     @BeforeEach
     void before() {
-        food = new Faker(new Locale("he"));
+        food = new BaseFaker(new Locale("he"));
     }
 
     @Test

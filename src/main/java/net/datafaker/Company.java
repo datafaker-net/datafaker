@@ -9,11 +9,11 @@ import java.util.regex.Pattern;
 /**
  * @since 0.8.0
  */
-public class Company extends AbstractProvider {
+public class Company extends AbstractProvider<IProviders> {
 
     private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[.,' ]");
 
-    protected Company(Faker faker) {
+    protected Company(BaseFaker faker) {
         super(faker);
     }
 
@@ -78,7 +78,7 @@ public class Company extends AbstractProvider {
     }
 
     private String domainName() {
-        return UNWANTED_CHARACTERS.matcher(name().toLowerCase(faker.getLocale())).replaceAll("");
+        return UNWANTED_CHARACTERS.matcher(name().toLowerCase(faker.getContext().getLocale())).replaceAll("");
     }
 
     private String domainSuffix() {

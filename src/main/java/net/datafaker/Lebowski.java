@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Lebowski extends AbstractProvider {
+public class Lebowski extends AbstractProvider<IProviders> {
 
-    public Lebowski(final Faker faker) {
+    public Lebowski(final BaseFaker faker) {
         super(faker);
     }
 

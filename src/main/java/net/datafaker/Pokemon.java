@@ -3,9 +3,9 @@ package net.datafaker;
 /**
  * @since 0.8.0
  */
-public class Pokemon extends AbstractProvider {
+public class Pokemon extends AbstractProvider<IProviders> {
 
-    protected Pokemon(Faker faker) {
+    protected Pokemon(BaseFaker faker) {
         super(faker);
     }
 
