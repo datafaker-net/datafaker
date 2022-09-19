@@ -48,7 +48,7 @@
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.24.4</javaparser.version>
         <snakeyaml.version>1.32</snakeyaml.version>
-        <spotless-maven-plugin.version>2.26.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>2.27.0</spotless-maven-plugin.version>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
         <!-- Run tests in Turkish to make sure that they don't depend on
