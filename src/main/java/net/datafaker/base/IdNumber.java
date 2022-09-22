@@ -19,6 +19,12 @@ import java.time.ZoneId;
  */
 public class IdNumber extends AbstractProvider<BaseProviders> {
 
+    private final EnIdNumber enIdNumber = new EnIdNumber();
+    private final SvSEIdNumber svSEIdNumber = new SvSEIdNumber();
+    private final EnZAIdNumber enZAIdNumber = new EnZAIdNumber();
+    private final PtNifIdNumber idNumber = new PtNifIdNumber();
+    private final ZhCnIdNumber zhCnIdNumber = new ZhCnIdNumber();
+    private final EsMXIdNumber esMXIdNumber = new EsMXIdNumber();
     protected IdNumber(BaseFaker faker) {
         super(faker);
     }
@@ -32,7 +38,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     }
 
     public String ssnValid() {
-        EnIdNumber enIdNumber = new EnIdNumber();
         return enIdNumber.getValidSsn(faker);
     }
 
@@ -40,8 +45,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * Specified as #{IDNumber.valid_sv_se_ssn} in sv-SE.yml
      */
     public String validSvSeSsn() {
-        SvSEIdNumber svSEIdNumber = new SvSEIdNumber();
-
         return svSEIdNumber.getValidSsn(faker);
     }
 
@@ -49,7 +52,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * Specified as #{IDNumber.valid_en_za_ssn} in en-ZA.yml
      */
     public String validEnZaSsn() {
-        EnZAIdNumber enZAIdNumber = new EnZAIdNumber();
         return enZAIdNumber.getValidSsn(faker);
     }
 
@@ -57,7 +59,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * Specified as #{IDNumber.invalid_en_za_ssn} in en-ZA.yml
      */
     public String inValidEnZaSsn() {
-        EnZAIdNumber enZAIdNumber = new EnZAIdNumber();
         return enZAIdNumber.getInValidSsn(faker);
     }
 
@@ -65,7 +66,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * Specified as #{IDNumber.invalid_sv_se_ssn} in sv-SE.yml
      */
     public String invalidSvSeSsn() {
-        SvSEIdNumber svSEIdNumber = new SvSEIdNumber();
         return svSEIdNumber.getInvalidSsn(faker);
     }
 
@@ -91,17 +91,14 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A Zh-CN id number
      */
     public String validZhCNSsn() {
-        ZhCnIdNumber zhCnIdNumber = new ZhCnIdNumber();
         return zhCnIdNumber.getValidSsn(faker);
     }
 
     public String validPtNif() {
-        PtNifIdNumber idNumber = new PtNifIdNumber();
         return idNumber.getValid(faker);
     }
 
     public String invalidPtNif() {
-        PtNifIdNumber idNumber = new PtNifIdNumber();
         return idNumber.getInvalid(faker);
     }
 
@@ -112,7 +109,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid MEX CURP.
      */
     public String validEsMXSsn() {
-        EsMXIdNumber esMXIdNumber = new EsMXIdNumber();
         return esMXIdNumber.get(faker);
     }
 
@@ -122,7 +118,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid MEX CURP.
      */
     public String invalidEsMXSsn() {
-        EsMXIdNumber esMXIdNumber = new EsMXIdNumber();
         return esMXIdNumber.getWrong(faker);
     }
 
