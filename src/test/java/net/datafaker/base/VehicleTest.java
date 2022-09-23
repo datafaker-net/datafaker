@@ -31,17 +31,17 @@ class VehicleTest extends BaseFakerTest {
 
     @Test
     void testModel() {
-        assertThat(faker.vehicle().model()).matches(WORDS_MATCH);
+        assertThat(faker.vehicle().model()).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @Test
     void testModelWithParams() {
-        assertThat(faker.vehicle().model("Toyota")).matches(WORDS_MATCH);
+        assertThat(faker.vehicle().model("Toyota")).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @Test
     void testMakeAndModel() {
-        assertThat(faker.vehicle().makeAndModel()).matches(WORDS_MATCH);
+        assertThat(faker.vehicle().makeAndModel()).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @Test
