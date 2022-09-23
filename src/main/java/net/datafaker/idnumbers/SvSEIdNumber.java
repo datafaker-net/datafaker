@@ -12,7 +12,7 @@ import java.util.Date;
  * and the description at
  * <a href="https://en.wikipedia.org/wiki/Personal_identity_number_">https://en.wikipedia.org/wiki/Personal_identity_number_</a>(Sweden)
  */
-public class SvSEIdNumber {
+public class SvSEIdNumber implements IdNumbers {
     private static final String[] VALID_PATTERNS = {"######-####", "######+####"};
 
     public String getValidSsn(BaseProviders f) {

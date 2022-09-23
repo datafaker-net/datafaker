@@ -9,7 +9,7 @@ import java.util.List;
  * Implementation based on the definition at
  * <a href="https://en.wikipedia.org/wiki/Unique_Population_Registry_Code">https://en.wikipedia.org/wiki/Unique_Population_Registry_Code</a>
  */
-public class EsMXIdNumber {
+public class EsMXIdNumber implements IdNumbers {
 
     private static final String[] CHA = new String[]{
         "HEFA560427MVZRRL04",

@@ -10,7 +10,7 @@ import java.util.Map;
  * Generate number of UIN/FIN for Singapore.
  * Algorithm is given from <a href="http://www.ngiam.net/NRIC/">http://www.ngiam.net/NRIC/</a>
  */
-public class NricNumber {
+public class NricNumber implements IdNumbers {
 
     public enum Type {SINGAPOREAN_TWENTIETH_CENTURY, FOREIGNER_TWENTIETH_CENTURY, SINGAPOREAN_TWENTY_FIRST_CENTURY, FOREIGNER_TWENTY_FIRST_CENTURY}
 

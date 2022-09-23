@@ -3,6 +3,7 @@ package net.datafaker.base;
 import net.datafaker.idnumbers.EnIdNumber;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.EsMXIdNumber;
+import net.datafaker.idnumbers.IdNumbers;
 import net.datafaker.idnumbers.NricNumber;
 import net.datafaker.idnumbers.NricNumber.Type;
 import net.datafaker.idnumbers.PeselNumber;
@@ -13,18 +14,16 @@ import net.datafaker.idnumbers.ZhCnIdNumber;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @since 0.8.0
  */
 public class IdNumber extends AbstractProvider<BaseProviders> {
 
-    private final EnIdNumber enIdNumber = new EnIdNumber();
-    private final SvSEIdNumber svSEIdNumber = new SvSEIdNumber();
-    private final EnZAIdNumber enZAIdNumber = new EnZAIdNumber();
-    private final PtNifIdNumber idNumber = new PtNifIdNumber();
-    private final ZhCnIdNumber zhCnIdNumber = new ZhCnIdNumber();
-    private final EsMXIdNumber esMXIdNumber = new EsMXIdNumber();
+    private final Map<Class<? extends IdNumbers>, IdNumbers> map = new ConcurrentHashMap<>();
+
     protected IdNumber(BaseFaker faker) {
         super(faker);
     }
@@ -38,6 +37,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     }
 
     public String ssnValid() {
+        EnIdNumber enIdNumber = (EnIdNumber) map.computeIfAbsent(EnIdNumber.class, aClass -> new EnIdNumber());
         return enIdNumber.getValidSsn(faker);
     }
 
@@ -45,6 +45,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * Specified as #{IDNumber.valid_sv_se_ssn} in sv-SE.yml
      */
     public String validSvSeSsn() {
+        SvSEIdNumber svSEIdNumber = (SvSEIdNumber) map.computeIfAbsent(SvSEIdNumber.class, aClass -> new SvSEIdNumber());
         return svSEIdNumber.getValidSsn(faker);
     }
 
@@ -52,6 +53,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * Specified as #{IDNumber.valid_en_za_ssn} in en-ZA.yml
      */
     public String validEnZaSsn() {
+        EnZAIdNumber enZAIdNumber = (EnZAIdNumber) map.computeIfAbsent(EnZAIdNumber.class, aClass -> new EnZAIdNumber());
         return enZAIdNumber.getValidSsn(faker);
     }
 
@@ -59,6 +61,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * Specified as #{IDNumber.invalid_en_za_ssn} in en-ZA.yml
      */
     public String inValidEnZaSsn() {
+        EnZAIdNumber enZAIdNumber = (EnZAIdNumber) map.computeIfAbsent(EnZAIdNumber.class, aClass -> new EnZAIdNumber());
         return enZAIdNumber.getInValidSsn(faker);
     }
 
@@ -66,6 +69,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * Specified as #{IDNumber.invalid_sv_se_ssn} in sv-SE.yml
      */
     public String invalidSvSeSsn() {
+        SvSEIdNumber svSEIdNumber = (SvSEIdNumber) map.computeIfAbsent(SvSEIdNumber.class, aClass -> new SvSEIdNumber());
         return svSEIdNumber.getInvalidSsn(faker);
     }
 
@@ -91,14 +95,17 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A Zh-CN id number
      */
     public String validZhCNSsn() {
+        ZhCnIdNumber zhCnIdNumber = (ZhCnIdNumber) map.computeIfAbsent(ZhCnIdNumber.class, aClass -> new ZhCnIdNumber());
         return zhCnIdNumber.getValidSsn(faker);
     }
 
     public String validPtNif() {
+        PtNifIdNumber idNumber = (PtNifIdNumber) map.computeIfAbsent(PtNifIdNumber.class, aClass -> new PtNifIdNumber());
         return idNumber.getValid(faker);
     }
 
     public String invalidPtNif() {
+        PtNifIdNumber idNumber = (PtNifIdNumber) map.computeIfAbsent(PtNifIdNumber.class, aClass -> new PtNifIdNumber());
         return idNumber.getInvalid(faker);
     }
 
@@ -109,6 +116,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid MEX CURP.
      */
     public String validEsMXSsn() {
+        EsMXIdNumber esMXIdNumber = (EsMXIdNumber) map.computeIfAbsent(EsMXIdNumber.class, aClass -> new EsMXIdNumber());
         return esMXIdNumber.get(faker);
     }
 
@@ -118,6 +126,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid MEX CURP.
      */
     public String invalidEsMXSsn() {
+        EsMXIdNumber esMXIdNumber = (EsMXIdNumber) map.computeIfAbsent(EsMXIdNumber.class, aClass -> new EsMXIdNumber());
         return esMXIdNumber.getWrong(faker);
     }
 

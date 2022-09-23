@@ -37,7 +37,7 @@ class EnZAIdNumberTest {
     @RepeatedTest(100)
     void testSsnFormat() {
         final BaseFaker f = new BaseFaker(new Locale("en", "ZA"));
-        assertThat(f.idNumber().valid()).matches("\\d{10}[01][8]\\d");
-        assertThat(f.idNumber().invalid()).matches("\\d{10}[01][8]\\d");
+        assertThat(f.idNumber().valid()).matches("\\d{10}[01]8\\d");
+        assertThat(f.idNumber().invalid()).matches("\\d{10}[01]8\\d");
     }
 }

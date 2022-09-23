@@ -11,7 +11,7 @@ import java.util.Date;
  * <a href="https://en.wikipedia.org/wiki/South_African_identity_card">https://en.wikipedia.org/wiki/South_African_identity_card</a>
  */
 
-public class EnZAIdNumber {
+public class EnZAIdNumber implements IdNumbers {
 
     private static final String[] VALID_PATTERN = {"##########08#", "##########18#"};
 

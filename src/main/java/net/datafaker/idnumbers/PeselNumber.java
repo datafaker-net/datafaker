@@ -10,7 +10,7 @@ import java.util.Optional;
  * <a href="https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000510">https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000510</a> and the
  * description at <a href="https://en.wikipedia.org/wiki/PESEL">https://en.wikipedia.org/wiki/PESEL</a>
  */
-public class PeselNumber {
+public class PeselNumber implements IdNumbers {
 
     public static final int PESEL_LENGTH = 11;
 

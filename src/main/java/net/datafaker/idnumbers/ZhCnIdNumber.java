@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author irakatz
  */
-public class ZhCnIdNumber {
+public class ZhCnIdNumber implements IdNumbers {
     /**
      * list all combination of first 6 bits, they are locations
      */
