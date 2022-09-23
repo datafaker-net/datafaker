@@ -67,7 +67,7 @@ public class BaseFaker implements BaseProviders {
     /**
      * Constructs Faker instance with provided {@link Locale}.
      *
-     * @deprecated Use the contructor with locale instead
+     * @deprecated Use the constructor with locale instead
      * @param locale - {@link Locale}
      * @return {@link BaseFaker#BaseFaker(Locale)}
      */
@@ -79,7 +79,7 @@ public class BaseFaker implements BaseProviders {
     /**
      * Constructs Faker instance with provided {@link Random}.
      *
-     * @deprecated Use the contructor with random instead
+     * @deprecated Use the constructor with random instead
      * @param random - {@link Random}
      * @return {@link BaseFaker#BaseFaker(Random)}
      */
@@ -91,7 +91,7 @@ public class BaseFaker implements BaseProviders {
     /**
      * Constructs Faker instance with provided {@link Locale} and {@link Random}.
      *
-     * @deprecated Use the contructor with locale and random instead
+     * @deprecated Use the constructor with locale and random instead
      * @param locale - {@link Locale}
      * @param random - {@link Random}
      * @return {@link BaseFaker#BaseFaker(Locale, Random)}
