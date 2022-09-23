@@ -26,7 +26,7 @@ class VehicleTest extends BaseFakerTest {
 
     @Test
     void testMake() {
-        assertThat(faker.vehicle().make()).matches(WORD_MATCH);
+        assertThat(faker.vehicle().make()).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @Test
