@@ -143,7 +143,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
         Password.PasswordRuleConfig config = builder.withMinLength(minimumLength)
             .withMaxLength(maximumLength)
-            .build((BaseFaker) faker);
+            .build(faker);
 
         return faker.password().password(config);
     }

@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import java.util.UUID;
 
 /**
  * @since 1.3.0
