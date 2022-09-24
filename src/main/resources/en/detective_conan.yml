@@ -1,6 +1,6 @@
 en:
   faker:
-    conan:
+    detective_conan:
       characters:
         - Shinichi Kudo
         - Conan Edogawa
