@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-class RelationshipTest extends BaseFakerTest {
+class RelationshipTest extends BaseFakerTest<BaseFaker> {
 
     private BaseFaker mockFaker;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class OptionsTest extends BaseFakerTest {
+class OptionsTest extends BaseFakerTest<BaseFaker> {
 
     private String[] options;
 

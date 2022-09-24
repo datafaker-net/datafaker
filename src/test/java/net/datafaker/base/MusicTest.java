@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MusicTest extends BaseFakerTest {
+class MusicTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void instrument() {

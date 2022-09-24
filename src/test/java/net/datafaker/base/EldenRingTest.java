@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EldenRingTest extends BaseFakerTest {
+class EldenRingTest extends BaseFakerTest<BaseFaker> {
     @Test
     void location() {
         assertThat(faker.eldenRing().location()).matches("[A-Za-z0-9 .]+");

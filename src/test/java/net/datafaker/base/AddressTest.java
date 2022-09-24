@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class AddressTest extends BaseFakerTest {
+class AddressTest extends BaseFakerTest<BaseFaker> {
 
     private final char decimalSeparator = new DecimalFormatSymbols(faker.getContext().getLocale()).getDecimalSeparator();
     private static final Faker US_FAKER = new Faker(new Locale("en", "US"));

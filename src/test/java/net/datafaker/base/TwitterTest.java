@@ -7,7 +7,7 @@ import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TwitterTest extends BaseFakerTest {
+class TwitterTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testCreatedDateForward() {

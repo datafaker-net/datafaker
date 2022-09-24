@@ -11,7 +11,7 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class PhoneNumberTest extends BaseFakerTest {
+class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testCellPhone_enUS() {

@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NumberTest extends BaseFakerTest {
+class NumberTest extends BaseFakerTest<BaseFaker> {
 
     public static final int RANDOMIZATION_QUALITY_RANGE_END = 1000;
     public static final int RANDOMIZATION_QUALITY_RANGE_STEP = 25;

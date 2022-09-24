@@ -6,7 +6,7 @@ import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class CPFTest extends BaseFakerTest {
+class CPFTest extends BaseFakerTest<BaseFaker> {
 
     /**
      * A valid CPF is either a real number or a generated valid number.

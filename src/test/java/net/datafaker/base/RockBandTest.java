@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RockBandTest extends BaseFakerTest {
+class RockBandTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void name() {

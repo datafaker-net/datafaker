@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SipTest extends BaseFakerTest {
+class SipTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void method_returnUpperCaseWithMinimum3Chars() {

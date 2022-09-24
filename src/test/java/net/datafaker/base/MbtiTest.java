@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Strings.isNullOrEmpty;
 
-class MbtiTest extends BaseFakerTest {
+class MbtiTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     public void type() {

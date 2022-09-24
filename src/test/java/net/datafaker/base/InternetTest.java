@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.fail;
 
-class InternetTest extends BaseFakerTest {
+class InternetTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testEmailAddress() {

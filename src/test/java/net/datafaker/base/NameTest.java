@@ -10,7 +10,7 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
-class NameTest extends BaseFakerTest {
+class NameTest extends BaseFakerTest<BaseFaker> {
 
     @Spy
     private BaseFaker mockedFaker;

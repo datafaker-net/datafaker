@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SubscriptionTest extends BaseFakerTest {
+class SubscriptionTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void plans() {

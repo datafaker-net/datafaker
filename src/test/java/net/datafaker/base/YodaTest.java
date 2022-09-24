@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Luka Obradovic (luka@vast.com)
  */
-class YodaTest extends BaseFakerTest {
+class YodaTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void quote() {

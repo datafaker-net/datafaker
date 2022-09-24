@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class CannabisTest extends BaseFakerTest {
+class CannabisTest extends BaseFakerTest<BaseFaker> {
     @Test
     public void strains() {
         assertThat(faker.cannabis().strains()).isNotEmpty();

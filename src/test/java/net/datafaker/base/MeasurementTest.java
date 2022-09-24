@@ -4,7 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MeasurementTest extends BaseFakerTest {
+class MeasurementTest extends BaseFakerTest<BaseFaker> {
 
     public static final String WORDS = "^[a-z ]+$";
 

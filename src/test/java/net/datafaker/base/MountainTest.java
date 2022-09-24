@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MountainTest extends BaseFakerTest {
+class MountainTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testMountainName() {

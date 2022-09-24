@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TeamTest extends BaseFakerTest {
+class TeamTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testName() {

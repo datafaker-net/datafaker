@@ -4,7 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DrivingLicenseTest extends BaseFakerTest {
+public class DrivingLicenseTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void drivingLicense_AL() {

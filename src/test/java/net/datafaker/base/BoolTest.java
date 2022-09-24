@@ -4,7 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BoolTest extends BaseFakerTest {
+class BoolTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void testBool() {
