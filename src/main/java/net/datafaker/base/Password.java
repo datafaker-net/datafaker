@@ -84,7 +84,7 @@ public class Password extends AbstractProvider<BaseProviders> {
             return this;
         }
 
-        public PasswordRuleConfig build(BaseFaker faker) {
+        public PasswordRuleConfig build(BaseProviders faker) {
             if (maxLength < minLength) {
                 throw new IllegalArgumentException("Max length should be not smaller than min length");
             }
@@ -94,10 +94,6 @@ public class Password extends AbstractProvider<BaseProviders> {
             }
             int fixedNumberOfCharacters = faker.number().numberBetween(minLength, maxLength + 1);
             return new PasswordRuleConfig(fixedNumberOfCharacters, map, minSize);
-        }
-
-        public PasswordRuleConfig build() {
-            return build(new BaseFaker());
         }
     }
 

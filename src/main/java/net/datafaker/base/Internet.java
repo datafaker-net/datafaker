@@ -140,9 +140,12 @@ public class Internet extends AbstractProvider<BaseProviders> {
         if (includeUppercase) builder = builder.with(Password.EN_UPPERCASE, 1);
         if (includeSpecial) builder = builder.with(Password.DEFAULT_SPECIAL, 1);
         if (includeDigit) builder = builder.with(Password.DIGITS, 1);
-        return faker.password().password(builder.withMinLength(minimumLength)
+
+        Password.PasswordRuleConfig config = builder.withMinLength(minimumLength)
             .withMaxLength(maximumLength)
-            .build());
+            .build(faker);
+
+        return faker.password().password(config);
     }
 
     /**
@@ -353,19 +356,24 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * Returns a UUID (type 3) as String.
      * Use this method (instead of {@link #uuid() uuid}) if you are
      * using a constant random seed and require the same output for different faker instances.     *
+     *
      * @return a uuid as string.
      */
-    public String uuidv3() { return UUID.nameUUIDFromBytes(faker.random().nextRandomBytes(16)).toString(); }
+    public String uuidv3() {
+        return UUID.nameUUIDFromBytes(faker.random().nextRandomBytes(16)).toString();
+    }
 
     /**
      * Returns a UUID (type 4) as String.
-     * Imporant: Use {@link #uuidv3() uuidv3} if you are
-     * using a constant random seed and require the same output for different faker instances.
-     * This method generates a random seed each time, regardless of the given random seed.     *
-     * @return a uuid as string.
+     * <p>
+     * This returns a repeatable version of a version 4 UUID, which is a bit against the idea of a version 4 UUID,
+     * but this is a faker library, not a UUID library.
+     *
+     * @return a v4 uuid as string.
      */
     public String uuid() {
-        return UUID.randomUUID().toString();
+        String uuidv3 = uuidv3();
+        return uuidv3.substring(0, 14) + '4' + uuidv3.substring(15);
     }
 
     private <T> T random(T[] src) {

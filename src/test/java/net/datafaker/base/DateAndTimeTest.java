@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * @author pmiklos
  */
-class DateAndTimeTest extends BaseFakerTest {
+class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testFutureDate() {
@@ -50,12 +50,12 @@ class DateAndTimeTest extends BaseFakerTest {
 
     @Test
     void testPastDateWithMinimum() {
-        final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
+            final long now = System.currentTimeMillis();
             Date past = faker.date().past(5, 4, TimeUnit.SECONDS);
-            assertThat(past.getTime()).isLessThan(now.getTime())
-                .isGreaterThan(now.getTime() - 5500)
-                .isLessThan(now.getTime() - 3500);
+            assertThat(past.getTime()).isLessThan(now)
+                .isGreaterThan(now - 5500)
+                .isLessThan(now - 3500);
         }
     }
 
