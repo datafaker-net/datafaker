@@ -2,7 +2,7 @@ en:
   faker:
     vehicle:
       manufacture: ['Abarth', 'Acura', 'Aixam', 'Alfa Romeo', 'Alpine', 'Aston Martin', 'Audi', 'Baojun', 'Bentley', 'BMW', 'Brilliance', 'Bugatti', 'Buick', 'BYD', 'Cadillac', 'Caterham', "Chang'an", 'Chevrolet', 'Chrysler', 'Citroën', 'Dacia', 'Daihatsu', 'Datsun', 'Dodge', 'Dongfeng', 'DS', 'Dongfeng Fengshen', 'Fiat', 'Karma', 'Ford', 'Ferrari', 'Geely', 'Genesis', 'GMC', 'Hino Motors', 'Holden (HSV)', 'Honda', 'Hyundai', 'Infiniti', 'Isuzu', 'Jaguar', 'Jeep', 'Jie Fang', 'Kantanka', 'Koenigsegg', 'Kia', 'Lada', 'Lamborghini', 'Lancia', 'Land Rover', 'Lexus', 'Ligier', 'Lincoln', 'Lotus', 'LTI', 'Luxgen', 'Mahindra', 'Maruti Suzuki', 'Maserati', 'Mastretta', 'Maybach', 'Mazda', 'McLaren', 'Mercedes-Benz', 'MG', 'Microcar', 'Mini', 'Mitsubishi', 'Morgan', 'NEVS', 'Nissan', 'Noble', 'Opel', 'Pagani', 'Perodua', 'Peugeot', 'PGO', 'Porsche', 'PROTON', 'Ram', 'Ravon', 'Renault', 'Rimac', 'Roewe', 'Rolls Royce', 'Saleen', 'Samand', 'Renault Samsung Motors', 'SEAT', 'Senova', 'Škoda', 'Smart', 'SsangYong', 'Subaru', 'Suzuki', 'Tata', 'Tesla', 'Tiba/Miniator', 'Toyota', 'Uniti', 'Vauxhall', 'Venucia', 'Volkswagen', 'Volvo Cars', 'Vuhl', 'Wuling', 'IVM']
-      makes: [ 'Audi', 'BMW', 'Buick', 'Chevy', 'Citroën', 'Dacia', 'Dodge', 'Fiat', 'Ford', 'Honda', 'Hyundai', 'Kia', 'Lincoln', 'Mercedes-Benz', 'Nissan', 'Opel', 'Peugeot', 'Renault', 'Seat', 'Skoda', 'Tesla', 'Toyota', 'Volkswagen', 'Volvo' ]
+      makes: [ 'Audi', 'BMW', 'Buick', 'Chevy', 'Citroën', 'Dacia', 'Dodge', 'Fiat', 'Ford', 'Honda', 'Hyundai', 'Kia', 'Lincoln', 'Mazda', 'Mercedes-Benz', 'Nissan', 'Opel', 'Peugeot', 'Renault', 'Seat', 'Skoda', 'Tesla', 'Toyota', 'Volkswagen', 'Volvo' ]
       models_by_make:
         Audi: [ 'A4', 'A5', 'S5', 'A7', 'A8' ]
         BMW: [ '328i', 'M3', 'M5', 'X1', 'X3', 'X5' ]
@@ -17,6 +17,7 @@ en:
         Hyundai: [ 'i10', 'i20', 'i30', 'IONIQ 5', 'Kona', 'Tucson' ]
         Kia: [ 'Ceed', 'EV6', 'Niro', 'Picanto', 'Sportage' ]
         Lincoln: [ 'Navigator', 'MKZ', 'MKX', 'MKS' ]
+        Mazda: ['CX-3', 'CX-30', 'CX-5', 'CX-8', 'CX-9', 'MX-5', 'BT-50']
         Mercedes-Benz: [ 'A-Class', 'B-Class', 'C-Class', 'E-Class' ]
         Nissan: [ 'Rogue', 'Juke', 'Cube', 'Pathfiner', 'Versa', 'Altima', 'Micra', 'Qashqai' ]
         Opel: [ 'Astra', 'Corsa', 'Crossland', 'Mokka' ]
