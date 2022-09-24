@@ -331,10 +331,11 @@ public class BaseFaker implements BaseProviders {
     public static <T extends AbstractProvider, B extends ProviderRegistration> T getProvider(Class<T> clazz, Function<B, T> valueSupplier, B faker) {
         PROVIDERS_MAP.putIfAbsent(clazz, new ConcurrentHashMap<>());
         Map<FakerContext, AbstractProvider> map = PROVIDERS_MAP.get(clazz);
-        T result = (T) map.get(faker.getContext());
+        final T result = (T) map.get(faker.getContext());
         if (result == null) {
-            result = valueSupplier.apply(faker);
-            map.putIfAbsent(faker.getContext(), result);
+            final T newMapping = valueSupplier.apply(faker);
+            map.putIfAbsent(faker.getContext(), newMapping);
+            return newMapping;
         }
         return result;
     }
