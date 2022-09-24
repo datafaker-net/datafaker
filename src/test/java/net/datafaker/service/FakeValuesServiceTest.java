@@ -243,14 +243,14 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void expressionWithInvalidFakerObject() {
-        expressionShouldFailWith("#{ObjectNotOnFaker.methodName}",
-            "Unable to resolve #{ObjectNotOnFaker.methodName} directive.");
+        expressionShouldFailWithContaining("#{ObjectNotOnFaker.methodName}",
+            "Unable to resolve #{ObjectNotOnFaker.methodName} directive");
     }
 
     @Test
     void expressionWithValidFakerObjectButInvalidMethod() {
-        expressionShouldFailWith("#{Name.nonExistentMethod}",
-            "Unable to resolve #{Name.nonExistentMethod} directive.");
+        expressionShouldFailWithContaining("#{Name.nonExistentMethod}",
+            "Unable to resolve #{Name.nonExistentMethod} directive");
     }
 
     /**
@@ -263,8 +263,8 @@ class FakeValuesServiceTest extends AbstractFakerTest {
      */
     @Test
     void expressionWithValidFakerObjectValidMethodInvalidArgs() {
-        expressionShouldFailWith("#{Number.number_between 'x','y'}",
-            "Unable to resolve #{Number.number_between 'x','y'} directive.");
+        expressionShouldFailWithContaining("#{Number.number_between 'x','y'}",
+            "Unable to resolve #{Number.number_between 'x','y'} directive");
     }
 
     @RepeatedTest(100)
@@ -334,13 +334,13 @@ class FakeValuesServiceTest extends AbstractFakerTest {
      */
     @Test
     void expressionCompletelyUnresolvable() {
-        expressionShouldFailWith("#{x}", "Unable to resolve #{x} directive.");
+        expressionShouldFailWithContaining("#{x}", "Unable to resolve #{x} directive");
     }
 
-    private void expressionShouldFailWith(String expression, String errorMessage) {
+    private void expressionShouldFailWithContaining(String expression, String errorMessagePattern) {
         assertThatThrownBy(() -> fakeValuesService.expression(expression, faker, context))
             .isInstanceOf(RuntimeException.class)
-            .hasMessage(errorMessage);
+            .hasMessageContaining(errorMessagePattern);
     }
 
     @Test

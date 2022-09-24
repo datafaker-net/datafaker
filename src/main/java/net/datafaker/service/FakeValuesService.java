@@ -504,7 +504,7 @@ public class FakeValuesService {
 
             final Object resolved = resolveExpression(directive, args, current, root, context);
             if (resolved == null) {
-                throw new RuntimeException("Unable to resolve #{" + expr + "} directive.");
+                throw new RuntimeException("Unable to resolve #{" + expr + "} directive for FakerContext " + context + ".");
             }
             result.append(resolveExpression(Objects.toString(resolved), current, root, context));
         }

@@ -122,4 +122,13 @@ public class FakerContext {
     public int hashCode() {
         return Objects.hash(locale, randomService);
     }
+
+    @Override
+    public String toString() {
+        return "FakerContext{" +
+            "locale2localesChain=" + locale2localesChain +
+            ", locale=" + locale +
+            ", randomService=" + randomService +
+            '}';
+    }
 }
