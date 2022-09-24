@@ -23,7 +23,7 @@ class ProviderGenerator {
     public void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("chiquito.todo.yml"));
+        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("dnd.todo.yml"));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
@@ -60,11 +60,11 @@ class ProviderGenerator {
         System.out.println("package net.datafaker;");
         System.out.println();
         System.out.println("/**");
-        System.out.println(" * @since 1.6.0");
+        System.out.println(" * @since 1.7.0");
         System.out.println(" */");
-        System.out.println("public class " + className + " extends AbstractProvider<IProviders> {");
+        System.out.println("public class " + className + " extends AbstractProvider<MovieProviders> {");
         System.out.println();
-        System.out.println("    protected " + className + "(Faker faker) {");
+        System.out.println("    protected " + className + "(MovieProviders faker) {");
         System.out.println("        super(faker);");
         System.out.println("    }");
         System.out.println();
@@ -73,7 +73,7 @@ class ProviderGenerator {
             String methodName = StringUtils.uncapitalize(toJavaConvention(string));
 
             System.out.println("    public String " + methodName + "() {\n" +
-                "        return resolve(\"" + key + "." + string + "\", this);\n" +
+                "        return resolve(\"" + key + "." + string + "\");\n" +
                 "    }");
             System.out.println();
         }
