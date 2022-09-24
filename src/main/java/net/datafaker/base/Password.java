@@ -95,10 +95,6 @@ public class Password extends AbstractProvider<BaseProviders> {
             int fixedNumberOfCharacters = faker.number().numberBetween(minLength, maxLength + 1);
             return new PasswordRuleConfig(fixedNumberOfCharacters, map, minSize);
         }
-
-        public PasswordRuleConfig build() {
-            return build(new BaseFaker());
-        }
     }
 
     public String password(PasswordRuleConfig passwordRuleConfig) {

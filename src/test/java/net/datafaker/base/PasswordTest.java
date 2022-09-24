@@ -9,7 +9,7 @@ import static net.datafaker.base.Password.EN_LOWERCASE;
 import static net.datafaker.base.Password.EN_UPPERCASE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PasswordTest extends BaseFakerTest {
+class PasswordTest extends BaseFakerTest<BaseFaker> {
     @Test
     void passwordShouldContain3RULowerCaseAnd5CustomSpecialSymbols() {
         final String ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
@@ -20,7 +20,7 @@ class PasswordTest extends BaseFakerTest {
             .withMinLength(ruCnt + specSmbCnt)
             .withMaxLength(Math.max(ruCnt + specSmbCnt, 10))
             .with(ruLowerCase, ruCnt)
-            .with(customSpecialSymbols, specSmbCnt).build();
+            .with(customSpecialSymbols, specSmbCnt).build(faker);
         for (int i = 0; i < 1000; i++) {
             final String pass = faker.password().password(config);
             assertThat(pass).matches(s -> {
@@ -51,7 +51,7 @@ class PasswordTest extends BaseFakerTest {
                     .with(EN_UPPERCASE, 1)
                     .with(DIGITS, 1)
                     .throwIfLengthSmall(true)
-                    .build()))
+                    .build(faker)))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -63,7 +63,7 @@ class PasswordTest extends BaseFakerTest {
             .withMaxLength(10)
             .with(EN_LOWERCASE, 1)
             .with(EN_UPPERCASE, 1)
-            .with(DIGITS, 1).build();
+            .with(DIGITS, 1).build(faker);
         while (count++ < 1000) {
             String password = faker.password().password(config);
             assertThat(password).is(new Condition<>(pw -> {

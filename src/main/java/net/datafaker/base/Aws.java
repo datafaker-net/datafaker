@@ -25,7 +25,7 @@ public class Aws extends AbstractProvider<BaseProviders> {
             ":" +
             accountId() +
             ":certificate/" +
-            UUID.randomUUID();
+            faker.internet().uuid();
     }
 
     public String albARN() {
