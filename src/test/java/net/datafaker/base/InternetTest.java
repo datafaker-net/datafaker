@@ -364,6 +364,17 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
+    void testBotUserAgent() {
+        Internet.BotUserAgent[] agents = Internet.BotUserAgent.values();
+        for (Internet.BotUserAgent agent : agents) {
+            assertThat(faker.internet().botUserAgent(agent)).isNotEmpty();
+        }
+
+        //Test faker.internet().userAgentAny() for random user_agent retrieval.
+        assertThat(faker.internet().botUserAgentAny()).isNotEmpty();
+    }
+
+    @Test
     void testSlugWithNull() {
         assertThat(faker.internet().slug(null, "_")).isNotNull();
     }
