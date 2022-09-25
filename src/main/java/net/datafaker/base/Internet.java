@@ -422,4 +422,45 @@ public class Internet extends AbstractProvider<BaseProviders> {
             return browserName;
         }
     }
+
+    public String botUserAgent(BotUserAgent vendor) {
+        BotUserAgent agent = vendor;
+
+        if (agent == null) {
+            agent = BotUserAgent.any(faker);
+        }
+
+        String userAgentKey = "internet.bot_user_agent." + agent.toString();
+        return resolve(userAgentKey);
+    }
+
+    public String botUserAgentAny() {
+        return botUserAgent(null);
+    }
+
+    public enum BotUserAgent {
+        GOOGLEBOT("googlebot"),
+        BINGBOT("bingbot"),
+        DUCKDUCKBOT("duckduckbot"),
+        BAIDUSPIDER("baiduspider"),
+        YANDEXBOT("yandexbot");
+
+        //Browser's name in corresponding yaml (internet.yml) file.
+        private final String browserName;
+
+        BotUserAgent(String browserName) {
+            this.browserName = browserName;
+        }
+
+        private static BotUserAgent any(BaseProviders faker) {
+            BotUserAgent[] agents = BotUserAgent.values();
+            int randomIndex = (int) (faker.random().nextDouble() * agents.length);
+            return agents[randomIndex];
+        }
+
+        @Override
+        public String toString() {
+            return browserName;
+        }
+    }
 }
