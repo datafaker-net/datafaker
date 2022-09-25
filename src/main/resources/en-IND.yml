@@ -10,20 +10,20 @@ en-IND:
         - "#{first_name} #{last_name} #{last_name}"
     address:
       postcode: ['######']
-      city: [Bengaluru, Chennai, Hyderabad, Kolkata, Mumbai, New Delhi, Thiruvananthapuram, Visakhapatnam]
-      state: [Andhra Pradesh, Arunachal Pradesh, Assam, Bihar, Chhattisgarh, Goa, Gujarat, Haryana, Himachal Pradesh, Jammu and Kashmir, Jharkhand, Karnataka, Kerala, Madya Pradesh, Maharashtra, Manipur, Meghalaya, Mizoram, Nagaland, Orissa, Punjab, Rajasthan, Sikkim, Tamil Nadu, Tripura, Uttaranchal, Uttar Pradesh, West Bengal, Andaman and Nicobar Islands, Chandigarh, Dadar and Nagar Haveli, Daman and Diu, Delhi, Lakshadweep, Pondicherry]
-      state_abbr: [AP, AR, AS, BR, CG, DL, GA, GJ, HR, HP, JK, JS, KA, KL, MP, MH, MN, ML, MZ, NL, OR, PB, RJ, SK, TN, TR, UK, UP, WB, AN, CH, DN, DD, LD, PY]
+      city: [Agra, Ahmedabad, Ajmer, Aligarh, Allahabad, Ambattur, Amravati, Amritsar, Asansol, Aurangabad, Bangalore, Bareilly, Belgaum, Bhavnagar, Bhilai Nagar, Bhiwandi, Bhopal, Bhubaneswar, Bikaner, Chandigarh, Chennai, Coimbatore, Cuttack, Dehradun, Delhi, Dhanbad, Durgapur, Faridabad, Firozabad, Gaya, Ghaziabad, Gorakhpur, Gulbarga, Guntur, Gurgaon, Guwahati, Gwalior, Haora, Hubli and Dharwad, Hyderabad, Indore, Jabalpur, Jaipur, Jalandhar, Jalgaon, Jammu, Jamnagar, Jamshedpur, Jhansi, Jodhpur, Kalyan & Dombivali, Kanpur, Karnataka, Kochi, Kolapur, Kolkata, Kota, Loni, Lucknow, Ludhiana, Madurai, Maheshtala, Malegoan, Mangalore, Meerut, Mira and Bhayander, Moradabad, Mumbai, Nagpur, Nanded Waghala, Nashik, Navi Mumbai, Nellore, Noida, Patna, Pimpri & Chinchwad, Pune, Raipur, Rajkot, Ranchi, Saharanpur, Salem, Sangli Miraj Kupwad, Siliguri, Solapur, Srinagar, Surat, Thane, Thiruvananthapuram, Tiruchirappalli, Tirunelveli, Udaipur, Ujjain, Ulhasnagar, Vadodara, Varanasi, Vasai Virar, Vijayawada, Visakhapatnam, Warangal]
+      state: [Andhra Pradesh, Arunachal Pradesh, Assam, Bihar, Chhattisgarh, Goa, Gujarat, Haryana, Himachal Pradesh, Jammu and Kashmir, Jharkhand, Karnataka, Kerala, Madya Pradesh, Maharashtra, Manipur, Meghalaya, Mizoram, Nagaland, Orissa, Punjab, Rajasthan, Sikkim, Tamil Nadu, Telangana, Tripura, Uttaranchal, Uttar Pradesh, West Bengal, Andaman and Nicobar Islands, Chandigarh, Dadar and Nagar Haveli, Daman and Diu, Delhi, Lakshadweep, Pondicherry]
+      state_abbr: [AP, AR, AS, BR, CG, DL, GA, GJ, HR, HP, JK, JS, KA, KL, MP, MH, MN, ML, MZ, NL, OR, PB, RJ, SK, TN, TS, TR, UK, UP, WB, AN, CH, DN, DD, LD, PY]
       default_country: [India, Indian Republic, Bharat, Hindustan]
       default_time_zone: ["Asia/Kolkata"]
       default_country_code: ["IN"]
     internet:
-      free_email: [gmail.com, yahoo.co.in, hotmail.com]
+      free_email: [gmail.com, yahoo.co.in, hotmail.com, rediffmail.com]
       domain_suffix: [in, com, biz, info, name, net, org, co.in]
     company:
       suffix: [Pvt Ltd, Limited, Ltd, and Sons, Corp, Group, Brothers]
     phone_number:
-      area_code_2: ['79', '80']
-      area_code_3: ['731', '621', '612', '641', '657', '712', '721', '724', '751', '761', '821', '831', '836', '870', '891']
+      area_code_2: ['11', '20', '33', '44', '79', '80']
+      area_code_3: ['261', '278', '621', '612', '641', '657', '712', '721', '724', '731', '751', '761', '821', '831', '836', '870', '891']
       formats:
         - "+91-#{PhoneNumber.area_code_2}-####-####"
         - "+91-#{PhoneNumber.area_code_3}-###-####"
