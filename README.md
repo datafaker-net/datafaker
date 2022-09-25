@@ -285,6 +285,7 @@ Providers
 * Harry Potter
 * Hashing
 * Hearthstone
+* Heroes of the Storm
 * Hey Arnold
 * Hipster
 * Hitchhiker's Guide To The Galaxy
