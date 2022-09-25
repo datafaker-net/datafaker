@@ -360,7 +360,7 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         }
 
         //Test faker.internet().userAgentAny() for random user_agent retrieval.
-        assertThat(faker.internet().userAgentAny()).isNotEmpty();
+        assertThat(faker.internet().userAgent()).isNotEmpty();
     }
 
     @Test
