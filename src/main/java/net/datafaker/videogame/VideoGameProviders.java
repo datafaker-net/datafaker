@@ -31,6 +31,10 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(LeagueOfLegends.class, LeagueOfLegends::new);
     }
 
+    default MassEffect massEffect() {
+        return getProvider(MassEffect.class, MassEffect::new);
+    }
+
     default SoulKnight soulKnight() {
         return getProvider(SoulKnight.class, SoulKnight::new);
     }

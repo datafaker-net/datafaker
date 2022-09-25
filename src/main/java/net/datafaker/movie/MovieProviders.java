@@ -112,10 +112,6 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(LordOfTheRings.class, LordOfTheRings::new);
     }
 
-    default MassEffect massEffect() {
-        return getProvider(MassEffect.class, MassEffect::new);
-    }
-
     default Movie movie() {
         return getProvider(Movie.class, Movie::new);
     }
