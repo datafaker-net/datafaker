@@ -347,10 +347,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Number.class, Number::new);
     }
 
-    default Overwatch overwatch() {
-        return getProvider(Overwatch.class, Overwatch::new);
-    }
-
     default Passport passport() {
         return getProvider(Passport.class, Passport::new);
     }

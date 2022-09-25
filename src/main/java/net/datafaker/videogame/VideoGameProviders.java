@@ -31,6 +31,10 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(LeagueOfLegends.class, LeagueOfLegends::new);
     }
 
+    default Overwatch overwatch() {
+        return getProvider(Overwatch.class, Overwatch::new);
+    }
+
     default SoulKnight soulKnight() {
         return getProvider(SoulKnight.class, SoulKnight::new);
     }
