@@ -391,7 +391,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return resolve(userAgentKey);
     }
 
-    public String userAgentAny() {
+    public String userAgent() {
         return userAgent(null);
     }
 
