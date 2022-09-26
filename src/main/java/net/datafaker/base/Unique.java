@@ -14,7 +14,7 @@ public class Unique extends AbstractProvider<BaseProviders> {
 
     private final Map<Locale, Map<String, List<String>>> valuesByKeyAndLocale = new HashMap<>();
 
-    public Unique(BaseFaker faker) {
+    public Unique(BaseProviders faker) {
         super(faker);
     }
 

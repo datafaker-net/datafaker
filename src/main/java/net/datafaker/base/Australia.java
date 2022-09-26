@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Australia extends AbstractProvider<BaseProviders> {
 
-    protected Australia(BaseFaker faker) {
+    protected Australia(BaseProviders faker) {
         super(faker);
     }
 

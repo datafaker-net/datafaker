@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Robin extends AbstractProvider<BaseProviders> {
 
-    protected Robin(BaseFaker faker) {
+    protected Robin(BaseProviders faker) {
         super(faker);
     }
 

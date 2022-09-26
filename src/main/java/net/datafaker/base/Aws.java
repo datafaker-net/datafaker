@@ -6,7 +6,7 @@ package net.datafaker.base;
  */
 public class Aws extends AbstractProvider<BaseProviders> {
 
-    protected Aws(BaseFaker faker) {
+    protected Aws(BaseProviders faker) {
         super(faker);
     }
 

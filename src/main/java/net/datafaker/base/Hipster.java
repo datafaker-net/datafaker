@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Hipster extends AbstractProvider<BaseProviders> {
 
-    protected Hipster(final BaseFaker faker) {
+    protected Hipster(final BaseProviders faker) {
         super(faker);
     }
 

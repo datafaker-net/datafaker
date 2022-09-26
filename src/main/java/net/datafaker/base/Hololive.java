@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Hololive extends AbstractProvider<BaseProviders> {
 
-    protected Hololive(BaseFaker faker) {
+    protected Hololive(BaseProviders faker) {
         super(faker);
     }
 

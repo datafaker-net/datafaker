@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class GreekPhilosopher extends AbstractProvider<BaseProviders> {
 
-    protected GreekPhilosopher(BaseFaker faker) {
+    protected GreekPhilosopher(BaseProviders faker) {
         super(faker);
     }
 

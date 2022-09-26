@@ -6,7 +6,7 @@ package net.datafaker.base;
 public class Country extends AbstractProvider<BaseProviders> {
     private final String flagUrl;
 
-    protected Country(BaseFaker faker) {
+    protected Country(BaseProviders faker) {
         super(faker);
         this.flagUrl = "https://flags.fmcdn.net/data/flags/w580/";
     }

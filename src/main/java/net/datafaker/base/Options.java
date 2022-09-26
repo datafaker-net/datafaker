@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  */
 public class Options extends AbstractProvider<BaseProviders> {
 
-    protected Options(BaseFaker faker) {
+    protected Options(BaseProviders faker) {
         super(faker);
     }
 

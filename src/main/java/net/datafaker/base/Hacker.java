@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Hacker extends AbstractProvider<BaseProviders> {
 
-    protected Hacker(BaseFaker faker) {
+    protected Hacker(BaseProviders faker) {
         super(faker);
     }
 

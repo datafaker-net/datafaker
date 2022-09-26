@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Camera extends AbstractProvider<BaseProviders> {
 
-    protected Camera(BaseFaker faker) {
+    protected Camera(BaseProviders faker) {
         super(faker);
     }
 

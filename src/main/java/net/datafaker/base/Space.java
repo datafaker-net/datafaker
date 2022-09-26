@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Space extends AbstractProvider<BaseProviders> {
 
-    protected Space(BaseFaker faker) {
+    protected Space(BaseProviders faker) {
         super(faker);
     }
 

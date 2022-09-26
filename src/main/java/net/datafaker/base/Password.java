@@ -14,7 +14,7 @@ public class Password extends AbstractProvider<BaseProviders> {
     public static final String DIGITS = "0123456789";
     public static final String DEFAULT_SPECIAL = "!@#$%^&*";
 
-    public Password(BaseFaker faker) {
+    public Password(BaseProviders faker) {
         super(faker);
     }
 

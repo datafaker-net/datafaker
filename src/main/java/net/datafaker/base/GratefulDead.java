@@ -8,7 +8,7 @@ package net.datafaker.base;
  */
 public class GratefulDead extends AbstractProvider<BaseProviders> {
 
-    protected GratefulDead(BaseFaker faker) {
+    protected GratefulDead(BaseProviders faker) {
         super(faker);
     }
 

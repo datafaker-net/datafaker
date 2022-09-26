@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Demographic extends AbstractProvider<BaseProviders> {
 
-    protected Demographic(BaseFaker faker) {
+    protected Demographic(BaseProviders faker) {
         super(faker);
     }
 

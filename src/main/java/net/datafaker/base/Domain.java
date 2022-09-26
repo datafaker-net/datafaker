@@ -15,7 +15,7 @@ public class Domain extends AbstractProvider<BaseProviders> {
      *
      * @param faker the faker
      */
-    protected Domain(BaseFaker faker) {
+    protected Domain(BaseProviders faker) {
         super(faker);
     }
 

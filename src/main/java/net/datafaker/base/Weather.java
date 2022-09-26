@@ -12,7 +12,7 @@ public class Weather extends AbstractProvider<BaseProviders> {
     private static final int DEFAULT_MIN_TEMP_F = -22;
     private static final int DEFAULT_MAX_TEMP_F = 100;
 
-    protected Weather(BaseFaker faker) {
+    protected Weather(BaseProviders faker) {
         super(faker);
     }
 

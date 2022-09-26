@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Color extends AbstractProvider<BaseProviders> {
 
-    protected Color(BaseFaker faker) {
+    protected Color(BaseProviders faker) {
         super(faker);
     }
 

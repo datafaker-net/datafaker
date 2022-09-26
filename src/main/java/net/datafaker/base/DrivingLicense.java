@@ -7,7 +7,7 @@ import java.util.Locale;
  */
 public class DrivingLicense extends AbstractProvider<BaseProviders> {
 
-    protected DrivingLicense(BaseFaker faker) {
+    protected DrivingLicense(BaseProviders faker) {
         super(faker);
     }
 

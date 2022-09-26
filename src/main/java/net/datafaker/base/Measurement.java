@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Measurement extends AbstractProvider<BaseProviders> {
 
-    protected Measurement(BaseFaker faker) {
+    protected Measurement(BaseProviders faker) {
         super(faker);
     }
 

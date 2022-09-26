@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Yoda extends AbstractProvider<BaseProviders> {
 
-    protected Yoda(final BaseFaker faker) {
+    protected Yoda(final BaseProviders faker) {
         super(faker);
     }
 

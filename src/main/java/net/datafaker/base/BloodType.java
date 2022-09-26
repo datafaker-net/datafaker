@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class BloodType extends AbstractProvider<BaseProviders> {
 
-    protected BloodType(BaseFaker faker) {
+    protected BloodType(BaseProviders faker) {
         super(faker);
     }
 

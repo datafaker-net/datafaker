@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Dog extends AbstractProvider<BaseProviders> {
 
-    protected Dog(BaseFaker faker) {
+    protected Dog(BaseProviders faker) {
         super(faker);
     }
 

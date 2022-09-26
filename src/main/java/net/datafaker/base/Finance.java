@@ -11,7 +11,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
     private static final Pattern NUMBERS = Pattern.compile("[^0-9]");
     private static final Pattern EMPTY_STRING = Pattern.compile("");
 
-    protected Finance(BaseFaker faker) {
+    protected Finance(BaseProviders faker) {
         super(faker);
     }
 

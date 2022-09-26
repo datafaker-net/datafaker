@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Mood extends AbstractProvider<BaseProviders> {
 
-    protected Mood(BaseFaker faker) {
+    protected Mood(BaseProviders faker) {
         super(faker);
     }
 

@@ -7,7 +7,7 @@ import java.time.Duration;
  */
 public class FakeDuration extends AbstractProvider<BaseProviders> {
 
-    protected FakeDuration(BaseFaker faker) {
+    protected FakeDuration(BaseProviders faker) {
         super(faker);
     }
 

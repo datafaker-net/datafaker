@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Science extends AbstractProvider<BaseProviders> {
 
-    protected Science(BaseFaker faker) {
+    protected Science(BaseProviders faker) {
         super(faker);
     }
 

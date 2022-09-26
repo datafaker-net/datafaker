@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Verb extends AbstractProvider<BaseProviders> {
 
-    protected Verb(BaseFaker faker) {
+    protected Verb(BaseProviders faker) {
         super(faker);
     }
 

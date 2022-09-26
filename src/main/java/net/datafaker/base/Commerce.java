@@ -11,7 +11,7 @@ import java.util.TreeSet;
 public class Commerce extends AbstractProvider<BaseProviders> {
     private final DecimalFormatSymbols decimalFormatSymbols;
 
-    protected Commerce(BaseFaker faker) {
+    protected Commerce(BaseProviders faker) {
         super(faker);
         decimalFormatSymbols = new DecimalFormatSymbols(faker.getContext().getLocale());
     }

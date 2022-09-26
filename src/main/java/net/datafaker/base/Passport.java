@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Passport extends AbstractProvider<BaseProviders> {
 
-    protected Passport(BaseFaker faker) {
+    protected Passport(BaseProviders faker) {
         super(faker);
     }
 

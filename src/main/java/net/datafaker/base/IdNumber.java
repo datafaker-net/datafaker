@@ -24,7 +24,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     private final Map<Class<? extends IdNumbers>, IdNumbers> map = new ConcurrentHashMap<>();
 
-    protected IdNumber(BaseFaker faker) {
+    protected IdNumber(BaseProviders faker) {
         super(faker);
     }
 

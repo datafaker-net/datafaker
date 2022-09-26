@@ -9,7 +9,7 @@ public class Name extends AbstractProvider<BaseProviders> {
      * Internal constructor, not to be used by clients.  Instances of {@link Name} should be accessed via
      * {@link BaseFaker#name()}.
      */
-    protected Name(BaseFaker faker) {
+    protected Name(BaseProviders faker) {
         super(faker);
     }
 

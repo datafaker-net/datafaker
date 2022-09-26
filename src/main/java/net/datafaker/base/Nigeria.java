@@ -8,7 +8,7 @@ package net.datafaker.base;
 public class Nigeria extends AbstractProvider<BaseProviders> {
     private static final String KEY = "nigeria";
 
-    protected Nigeria(BaseFaker faker) {
+    protected Nigeria(BaseProviders faker) {
         super(faker);
     }
 

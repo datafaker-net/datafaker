@@ -13,7 +13,7 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  */
 public class CPF extends AbstractProvider<BaseProviders> {
 
-    protected CPF(BaseFaker faker) {
+    protected CPF(BaseProviders faker) {
         super(faker);
     }
 

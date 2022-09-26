@@ -20,7 +20,7 @@ public class Code extends AbstractProvider<BaseProviders> {
 
     private static final Pattern HYPHEN = Pattern.compile("-");
 
-    protected Code(BaseFaker faker) {
+    protected Code(BaseProviders faker) {
         super(faker);
     }
 

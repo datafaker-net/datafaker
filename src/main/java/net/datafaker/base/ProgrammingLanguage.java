@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class ProgrammingLanguage extends AbstractProvider<BaseProviders> {
 
-    public ProgrammingLanguage(BaseFaker faker) {
+    public ProgrammingLanguage(BaseProviders faker) {
         super(faker);
     }
 

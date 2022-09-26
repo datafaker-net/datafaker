@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class ElectricalComponents extends AbstractProvider<BaseProviders> {
 
-    protected ElectricalComponents(BaseFaker faker) {
+    protected ElectricalComponents(BaseProviders faker) {
         super(faker);
     }
 

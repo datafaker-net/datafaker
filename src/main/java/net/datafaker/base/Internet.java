@@ -20,7 +20,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
     private static final Pattern COLON = Pattern.compile(":");
 
-    protected Internet(BaseFaker faker) {
+    protected Internet(BaseProviders faker) {
         super(faker);
     }
 

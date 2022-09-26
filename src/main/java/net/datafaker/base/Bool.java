@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Bool extends AbstractProvider<BaseProviders> {
 
-    protected Bool(BaseFaker faker) {
+    protected Bool(BaseProviders faker) {
         super(faker);
     }
 

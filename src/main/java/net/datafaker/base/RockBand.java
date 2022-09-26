@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class RockBand extends AbstractProvider<BaseProviders> {
 
-    protected RockBand(BaseFaker faker) {
+    protected RockBand(BaseProviders faker) {
         super(faker);
     }
 

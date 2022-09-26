@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Barcode extends AbstractProvider<BaseProviders> {
 
-    public Barcode(BaseFaker faker) {
+    public Barcode(BaseProviders faker) {
         super(faker);
     }
 

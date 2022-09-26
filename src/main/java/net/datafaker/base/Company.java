@@ -13,7 +13,7 @@ public class Company extends AbstractProvider<BaseProviders> {
 
     private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[.,' ]");
 
-    protected Company(BaseFaker faker) {
+    protected Company(BaseProviders faker) {
         super(faker);
     }
 

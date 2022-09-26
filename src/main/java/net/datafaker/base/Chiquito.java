@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Chiquito extends AbstractProvider<BaseProviders> {
 
-    protected Chiquito(BaseFaker faker) {
+    protected Chiquito(BaseProviders faker) {
         super(faker);
     }
 

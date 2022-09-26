@@ -12,7 +12,7 @@ public class Sip extends AbstractProvider<BaseProviders> {
     
     private final int[] portPool = new int[5001];
 
-    public Sip(final BaseFaker faker) {
+    public Sip(final BaseProviders faker) {
         super(faker);
         for (int i = 0; i < portPool.length; i++) {
             portPool[i] = 40000 + 2 * i;

@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Book extends AbstractProvider<BaseProviders> {
 
-    protected Book(BaseFaker faker) {
+    protected Book(BaseProviders faker) {
         super(faker);
     }
 

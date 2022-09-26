@@ -7,7 +7,7 @@ package net.datafaker.base;
  */
 public class Mountain extends AbstractProvider<BaseProviders> {
 
-    protected Mountain(BaseFaker faker) {
+    protected Mountain(BaseProviders faker) {
         super(faker);
     }
 

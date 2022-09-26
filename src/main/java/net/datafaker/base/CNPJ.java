@@ -10,7 +10,7 @@ import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
  */
 public class CNPJ extends AbstractProvider<BaseProviders> {
 
-    protected CNPJ(BaseFaker faker) {
+    protected CNPJ(BaseProviders faker) {
         super(faker);
     }
 

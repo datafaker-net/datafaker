@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Horse extends AbstractProvider<BaseProviders> {
 
-    protected Horse(BaseFaker faker) {
+    protected Horse(BaseProviders faker) {
         super(faker);
     }
 

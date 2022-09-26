@@ -10,7 +10,7 @@ import static net.datafaker.internal.helper.WordUtils.capitalize;
  */
 public class Lorem extends AbstractProvider<BaseProviders> {
 
-    protected Lorem(BaseFaker faker) {
+    protected Lorem(BaseProviders faker) {
         super(faker);
     }
 

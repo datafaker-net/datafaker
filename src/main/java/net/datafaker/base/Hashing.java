@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Hashing extends AbstractProvider<BaseProviders> {
 
-    protected Hashing(BaseFaker faker) {
+    protected Hashing(BaseProviders faker) {
         super(faker);
     }
 

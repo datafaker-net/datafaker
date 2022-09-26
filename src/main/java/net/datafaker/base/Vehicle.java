@@ -12,7 +12,7 @@ public class Vehicle extends AbstractProvider<BaseProviders> {
 
     static final String VIN_REGEX = "([A-HJ-NPR-Z0-9]){3}[A-HJ-NPR-Z0-9]{5}[A-HJ-NPR-Z0-9]{1}[A-HJ-NPR-Z0-9]{1}[A-HJ-NPR-Z0-0]{1}[A-HJ-NPR-Z0-9]{1}\\d{5}";
 
-    public Vehicle(BaseFaker faker) {
+    public Vehicle(BaseProviders faker) {
         super(faker);
     }
 

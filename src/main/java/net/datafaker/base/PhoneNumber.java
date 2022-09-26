@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class PhoneNumber extends AbstractProvider<BaseProviders> {
 
-    protected PhoneNumber(BaseFaker faker) {
+    protected PhoneNumber(BaseProviders faker) {
         super(faker);
     }
 

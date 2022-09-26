@@ -26,7 +26,7 @@ class CustomFakerTest {
     public static class Insect extends AbstractProvider<BaseProviders> {
         private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
 
-        public Insect(BaseFaker faker) {
+        public Insect(BaseProviders faker) {
             super(faker);
         }
 
@@ -38,7 +38,7 @@ class CustomFakerTest {
     public static class InsectFromFile extends AbstractProvider<BaseProviders> {
         private static final String KEY = "insectsfromfile";
 
-        public InsectFromFile(BaseFaker faker) {
+        public InsectFromFile(BaseProviders faker) {
             super(faker);
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
@@ -92,12 +92,12 @@ class CustomFakerTest {
     @Test
     void insectBeeTestExpressionFromFileWithoutExtraFaker() {
         BaseFaker faker = new BaseFaker();
-        assertThat(faker.getProvider(InsectFromFile. class, f -> new InsectFromFile(f), faker).bee()).endsWith("bee");
+        assertThat(BaseFaker.getProvider(InsectFromFile. class, InsectFromFile::new, faker).bee()).endsWith("bee");
     }
 
     @Test
     void insectTestWithoutExtraFaker() {
         BaseFaker faker = new BaseFaker();
-        assertThat(faker.getProvider(Insect. class, f -> new Insect(f), faker).nextInsectName()).matches("[A-Za-z ]+");
+        assertThat(BaseFaker.getProvider(Insect. class, Insect::new, faker).nextInsectName()).matches("[A-Za-z ]+");
     }
 }

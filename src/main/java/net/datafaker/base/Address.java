@@ -4,7 +4,7 @@ package net.datafaker.base;
  * @since 0.8.0
  */
 public class Address extends AbstractProvider<BaseProviders> {
-    protected Address(BaseFaker faker) {
+    protected Address(BaseProviders faker) {
         super(faker);
     }
 

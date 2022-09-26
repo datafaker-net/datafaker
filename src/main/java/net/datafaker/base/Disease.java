@@ -12,7 +12,7 @@ public class Disease extends AbstractProvider<BaseProviders> {
      *
      * @param faker The Faker instance for generating random, different kinds of disease, e.g. the internal disease.
      */
-    protected Disease(BaseFaker faker) {
+    protected Disease(BaseProviders faker) {
         super(faker);
     }
 

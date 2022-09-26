@@ -14,7 +14,7 @@ public class Nation extends AbstractProvider<BaseProviders> {
 
     private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 
-    protected Nation(BaseFaker faker) {
+    protected Nation(BaseProviders faker) {
         super(faker);
     }
 

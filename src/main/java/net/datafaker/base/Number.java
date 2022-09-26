@@ -8,7 +8,7 @@ import java.math.RoundingMode;
  */
 public class Number extends AbstractProvider<BaseProviders> {
 
-    protected Number(BaseFaker faker) {
+    protected Number(BaseProviders faker) {
         super(faker);
     }
 

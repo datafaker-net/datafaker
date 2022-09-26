@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Size extends AbstractProvider<BaseProviders> {
 
-    protected Size(BaseFaker faker) {
+    protected Size(BaseProviders faker) {
         super(faker);
     }
 

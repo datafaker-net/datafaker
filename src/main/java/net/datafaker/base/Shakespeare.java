@@ -58,7 +58,7 @@ public class Shakespeare extends AbstractProvider<BaseProviders> {
         "See, how she leans her cheek upon her hand! O that I were a glove upon that hand, that I might touch that cheek!.",
         "Not stepping o'er the bounds of modesty."};
 
-    protected Shakespeare(BaseFaker faker) {
+    protected Shakespeare(BaseProviders faker) {
         super(faker);
     }
 

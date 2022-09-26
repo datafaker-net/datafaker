@@ -5,6 +5,8 @@ import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
 
+import java.nio.file.Path;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -13,8 +15,8 @@ public interface ProviderRegistration {
   <B extends ProviderRegistration> B getFaker();
     FakerContext getContext();
 
-  default <T extends AbstractProvider, B extends ProviderRegistration> T getProvider(
-      Class<T> clazz, Function<B, T> valueSupplier) {
+  default <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
+      Class<AP> clazz, Function<PR, AP> valueSupplier) {
     return BaseFaker.getProvider(clazz, valueSupplier, getFaker());
   }
 
@@ -152,4 +154,6 @@ public interface ProviderRegistration {
     default Options options() {
         return getProvider(Options.class, Options::new);
     }
+
+    void addPath(Locale locale, Path path);
 }

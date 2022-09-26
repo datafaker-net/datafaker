@@ -23,7 +23,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
     private static final int DEFAULT_MIN_AGE = 18;
     private static final int DEFAULT_MAX_AGE = 65;
 
-    protected DateAndTime(BaseFaker faker) {
+    protected DateAndTime(BaseProviders faker) {
         super(faker);
     }
 

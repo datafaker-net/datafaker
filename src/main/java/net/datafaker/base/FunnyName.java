@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class FunnyName extends AbstractProvider<BaseProviders> {
 
-    protected FunnyName(BaseFaker faker) {
+    protected FunnyName(BaseProviders faker) {
         super(faker);
     }
 

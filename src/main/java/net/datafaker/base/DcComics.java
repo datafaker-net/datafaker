@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class DcComics extends AbstractProvider<BaseProviders> {
 
-    public DcComics(BaseFaker faker) {
+    public DcComics(BaseProviders faker) {
         super(faker);
     }
 

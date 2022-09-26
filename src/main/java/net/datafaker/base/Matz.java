@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Matz extends AbstractProvider<BaseProviders> {
 
-    protected Matz(final BaseFaker faker) {
+    protected Matz(final BaseProviders faker) {
         super(faker);
     }
 

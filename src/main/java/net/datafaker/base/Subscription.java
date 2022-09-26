@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Subscription extends AbstractProvider<BaseProviders> {
 
-    protected Subscription(BaseFaker faker) {
+    protected Subscription(BaseProviders faker) {
         super(faker);
     }
 

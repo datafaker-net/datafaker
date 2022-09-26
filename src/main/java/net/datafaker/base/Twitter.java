@@ -21,7 +21,7 @@ public class Twitter extends AbstractProvider<BaseProviders> {
     /**
      * @param faker used as constructor
      */
-    protected Twitter(BaseFaker faker) {
+    protected Twitter(BaseProviders faker) {
         super(faker);
     }
 

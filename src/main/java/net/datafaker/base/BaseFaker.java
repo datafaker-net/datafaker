@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 public class BaseFaker implements BaseProviders {
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
-    private static final Map<Class<? extends AbstractProvider>, Map<FakerContext, AbstractProvider>> PROVIDERS_MAP = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends AbstractProvider<?>>, Map<FakerContext, AbstractProvider<?>>> PROVIDERS_MAP = new ConcurrentHashMap<>();
 
     public BaseFaker() {
         this(Locale.ENGLISH);
@@ -328,12 +328,12 @@ public class BaseFaker implements BaseProviders {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends AbstractProvider, B extends ProviderRegistration> T getProvider(Class<T> clazz, Function<B, T> valueSupplier, B faker) {
+    public static <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(Class<AP> clazz, Function<PR, AP> valueSupplier, PR faker) {
         PROVIDERS_MAP.putIfAbsent(clazz, new ConcurrentHashMap<>());
-        Map<FakerContext, AbstractProvider> map = PROVIDERS_MAP.get(clazz);
-        final T result = (T) map.get(faker.getContext());
+        Map<FakerContext, AbstractProvider<?>> map = PROVIDERS_MAP.get(clazz);
+        final AP result = (AP) map.get(faker.getContext());
         if (result == null) {
-            final T newMapping = valueSupplier.apply(faker);
+            final AP newMapping = valueSupplier.apply(faker);
             map.putIfAbsent(faker.getContext(), newMapping);
             return newMapping;
         }
@@ -387,7 +387,7 @@ public class BaseFaker implements BaseProviders {
     }
 
     @Override
-    public final BaseFaker getFaker() {
-        return this;
+    public final <B extends ProviderRegistration> B getFaker() {
+        return (B) this;
     }
 }

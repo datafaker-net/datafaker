@@ -9,7 +9,7 @@ public class Mbti extends AbstractProvider<BaseProviders> {
     
     private final String choice;
 
-    public Mbti(final BaseFaker faker) {
+    public Mbti(final BaseProviders faker) {
         super(faker);
         this.choice = this.faker.resolve("mbti.choice");
     }

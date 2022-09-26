@@ -5,7 +5,7 @@ package net.datafaker.base;
  */
 public class Artist extends AbstractProvider<BaseProviders> {
 
-    protected Artist(BaseFaker faker) {
+    protected Artist(BaseProviders faker) {
         super(faker);
     }
 
