@@ -13,25 +13,25 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LocalePickerTest extends BaseFakerTest<BaseFaker> {
+class LocalityTest extends BaseFakerTest<BaseFaker> {
 
-    private LocalePicker localePicker;
+    private Locality locality;
     private List<String> allLocales;
 
     /**
-     * Initialize tests by instantiating a LocalePicker object and list of all supported locales
+     * Initialize tests by instantiating a Locality object and list of all supported locales
      */
     @BeforeEach
     void init() {
-        localePicker = faker.localePicker();
-        allLocales = localePicker.getAllSupportedLocales();
+        locality = faker.locality();
+        allLocales = locality.allSupportedLocales();
     }
 
     /**
      * Test to check that list of all locales support is loaded
      */
     @Test
-    void testGetAllSuppportedLocales() {
+    void testAllSuppportedLocales() {
         // Check that directory of locale resources exists
         File resourceDirectory = new File("./src/main/resources");
         assertThat(resourceDirectory).exists();
@@ -40,49 +40,54 @@ class LocalePickerTest extends BaseFakerTest<BaseFaker> {
         assertThat(allLocales).isNotEmpty();
     }
 
+    @Test
+    void displayName() {
+        assertThat(faker.locality().displayName()).isNotEmpty();
+    }
+
     /**
-     * Test to check LocalePicker's getLocaleString method is using the random number generator
+     * Test to check Locality's localeStringWithRandom method is using the random number generator
      * passed as an argument. This is checked with a Random object that has a fixed seed and
      * should have deterministic results.
      */
     @Test
-    void testGetLocaleStringRandom() {
+    void testLocaleStringRandom() {
         // Check that we get the same locale when using pseudorandom number generator with a fixed seed
         final long fixedSeed = 5;
 
         Random random1 = new Random(fixedSeed);
-        String randomLocale1 = localePicker.getLocaleString(random1);
+        String randomLocale1 = locality.localeStringWithRandom(random1);
 
         Random random2 = new Random(fixedSeed);
-        String randomLocale2 = localePicker.getLocaleString(random2);
+        String randomLocale2 = locality.localeStringWithRandom(random2);
 
         assertThat(randomLocale1).isEqualTo(randomLocale2);
     }
 
     /**
-     * Test to check LocalePicker's getLocaleString method. It verifies that the randomly selected
+     * Test to check Locality's localeStringWithRandom method. It verifies that the randomly selected
      * locale is within the set of all supported locales
      */
     @RepeatedTest(100)
-    void testGetLocaleString() {
+    void testLocaleStringWithRandom() {
         Random random = new Random();
-        String randomLocale = localePicker.getLocaleString(random);
+        String randomLocale = locality.localeStringWithRandom(random);
         assertThat(allLocales).contains(randomLocale);
     }
 
     /**
-     * Test to check LocalePicker's getLocaleStringWithoutReplacement method.
+     * Test to check Locality's localeStringWithoutReplacement method.
      * It randomly selects n locales where n is the number of locales.
      * It ensures that all the locales supported are represented once.
      */
     @Test
-    void testGetLocaleStringWithoutReplacement() {
+    void testLocaleStringWithoutReplacement() {
         Random random = new Random();
 
         // loop through all supported locales
         for (int i = 0; i < 2; i++) {
             List<String> returnedLocales = IntStream.range(0, allLocales.size())
-                .mapToObj(j -> localePicker.getLocaleStringWithoutReplacement(random))
+                .mapToObj(j -> locality.localeStringWithoutReplacement(random))
                 .sorted()
                 .collect(Collectors.toList());
 
@@ -92,12 +97,13 @@ class LocalePickerTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testGetLocale() {
-        assertThat(localePicker.getLocale()).isNotNull();
+    void testLocaleString() {
+        assertThat(allLocales).contains(locality.localeString());
     }
 
     @Test
-    void testGetLocaleWithoutReplacement() {
-        assertThat(localePicker.getLocaleWithoutReplacement()).isNotNull();
+    void testLocaleWithoutReplacement() {
+        assertThat(locality.localeStringWithoutReplacement()).isNotNull();
     }
+
 }

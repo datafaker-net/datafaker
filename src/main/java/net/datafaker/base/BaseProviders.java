@@ -275,8 +275,8 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Kpop.class, Kpop::new);
     }
 
-    default LocalePicker localePicker() {
-        return getProvider(LocalePicker.class, LocalePicker::new);
+    default Locality locality() {
+        return getProvider(Locality.class, Locality::new);
     }
 
     default Lebowski lebowski() {

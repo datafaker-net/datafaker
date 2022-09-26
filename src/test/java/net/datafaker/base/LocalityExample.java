@@ -1,14 +1,13 @@
 package net.datafaker.base;
 
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-class LocalePickerExample {
+class LocalityExample {
 
     /**
-     * Example to illustrate use of LocalePicker to randomly select
+     * Example to illustrate use of Locality to randomly select
      * locales (language and geographical/political/cultural region) when using Faker
      *
      * @param args Command-line arguments
@@ -17,12 +16,12 @@ class LocalePickerExample {
         BaseFaker defaultFaker = new BaseFaker();
 
         // EXAMPLE: GET LIST OF ALL SUPPORTED LOCALES
-        List<String> allLocales = defaultFaker.localePicker().getAllSupportedLocales();
+        List<String> allLocales = defaultFaker.locality().allSupportedLocales();
         System.out.println("All supported locales: " + Arrays.toString(allLocales.toArray()));
 
         // EXAMPLE: GET A FAKER OBJECT WITH A RANDOM LOCALE (SELECTED WITH REPLACEMENT)
         // Instantiate a Faker object with a randomized locale
-        Locale pickedLocale = defaultFaker.localePicker().getLocale();
+        Locale pickedLocale = Locale.forLanguageTag(defaultFaker.locality().localeString());
         BaseFaker faker = new BaseFaker(pickedLocale);
 
         // Use Faker object to generate data in the randomly selected locale
@@ -43,7 +42,7 @@ class LocalePickerExample {
 
         int numSupportedLocales = allLocales.size();
         for (int i = 0; i < numSupportedLocales; i++) {
-            Locale currentLocale = defaultFaker.localePicker().getLocaleWithoutReplacement();
+            Locale currentLocale = Locale.forLanguageTag(defaultFaker.locality().localeStringWithoutReplacement());
             System.out.println("Random Locale: " + currentLocale.toString());
             currentFaker = new BaseFaker(currentLocale);
             System.out.println("  First Name: " + currentFaker.name().firstName());

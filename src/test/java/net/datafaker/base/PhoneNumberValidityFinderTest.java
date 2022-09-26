@@ -56,7 +56,7 @@ class PhoneNumberValidityFinderTest extends AbstractFakerTest {
 
     @Test
     void testAllPhoneNumbers() {
-        List<String> allSupportedLocales = faker.localePicker().getAllSupportedLocales();
+        List<String> allSupportedLocales = faker.locality().allSupportedLocales();
         Map<Locale, Integer> errorCounts = new HashMap<>();
 
         for (String supportedLocale : allSupportedLocales) {
