@@ -1,4 +1,4 @@
-package net.datafaker.movie;
+package net.datafaker.videogame;
 
 import net.datafaker.base.AbstractProvider;
 
@@ -7,8 +7,8 @@ import net.datafaker.base.AbstractProvider;
  *
  * @since 1.6.0
  */
-public class MassEffect extends AbstractProvider<MovieProviders> {
-    protected MassEffect(MovieProviders faker) {
+public class MassEffect extends AbstractProvider<VideoGameProviders> {
+    protected MassEffect(final VideoGameProviders faker) {
         super(faker);
     }
 

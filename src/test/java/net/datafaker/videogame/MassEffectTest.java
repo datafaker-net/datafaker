@@ -1,11 +1,10 @@
-package net.datafaker.movie;
+package net.datafaker.videogame;
 
 import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-class MassEffectTest extends MovieFakerTest {
+class MassEffectTest extends VideoGameFakerTest {
 
     @RepeatedTest(10)
     void character() {
