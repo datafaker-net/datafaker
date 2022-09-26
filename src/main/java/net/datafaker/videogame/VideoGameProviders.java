@@ -27,12 +27,20 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(Hearthstone.class, Hearthstone::new);
     }
 
+    default HeroesOfTheStorm heroesOfTheStorm() {
+        return getProvider(HeroesOfTheStorm.class, HeroesOfTheStorm::new);
+    }
+
     default LeagueOfLegends leagueOfLegends() {
         return getProvider(LeagueOfLegends.class, LeagueOfLegends::new);
     }
 
     default MassEffect massEffect() {
         return getProvider(MassEffect.class, MassEffect::new);
+    }
+    
+    default Overwatch overwatch() {
+        return getProvider(Overwatch.class, Overwatch::new);
     }
 
     default SoulKnight soulKnight() {

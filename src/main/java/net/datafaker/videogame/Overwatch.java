@@ -1,11 +1,13 @@
-package net.datafaker.base;
+package net.datafaker.videogame;
+
+import net.datafaker.base.AbstractProvider;
 
 /**
  * @since 0.8.0
  */
-public class Overwatch extends AbstractProvider<BaseProviders> {
+public class Overwatch extends AbstractProvider<VideoGameProviders> {
 
-    protected Overwatch(BaseFaker faker) {
+    protected Overwatch(final VideoGameProviders faker) {
         super(faker);
     }
 
