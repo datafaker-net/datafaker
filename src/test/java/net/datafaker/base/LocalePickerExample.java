@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import net.datafaker.service.LocalePicker;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,15 +14,15 @@ class LocalePickerExample {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        LocalePicker lp = new LocalePicker();
+        BaseFaker defaultFaker = new BaseFaker();
 
         // EXAMPLE: GET LIST OF ALL SUPPORTED LOCALES
-        List<String> allLocales = lp.getAllSupportedLocales();
+        List<String> allLocales = defaultFaker.localePicker().getAllSupportedLocales();
         System.out.println("All supported locales: " + Arrays.toString(allLocales.toArray()));
 
         // EXAMPLE: GET A FAKER OBJECT WITH A RANDOM LOCALE (SELECTED WITH REPLACEMENT)
         // Instantiate a Faker object with a randomized locale
-        Locale pickedLocale = lp.getLocale();
+        Locale pickedLocale = defaultFaker.localePicker().getLocale();
         BaseFaker faker = new BaseFaker(pickedLocale);
 
         // Use Faker object to generate data in the randomly selected locale
@@ -44,7 +43,7 @@ class LocalePickerExample {
 
         int numSupportedLocales = allLocales.size();
         for (int i = 0; i < numSupportedLocales; i++) {
-            Locale currentLocale = lp.getLocaleWithoutReplacement();
+            Locale currentLocale = defaultFaker.localePicker().getLocaleWithoutReplacement();
             System.out.println("Random Locale: " + currentLocale.toString());
             currentFaker = new BaseFaker(currentLocale);
             System.out.println("  First Name: " + currentFaker.name().firstName());

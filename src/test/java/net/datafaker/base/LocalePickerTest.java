@@ -1,6 +1,5 @@
-package net.datafaker.service;
+package net.datafaker.base;
 
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LocalePickerTest extends AbstractFakerTest {
+class LocalePickerTest extends BaseFakerTest<BaseFaker> {
 
     private LocalePicker localePicker;
     private List<String> allLocales;
@@ -24,7 +23,7 @@ class LocalePickerTest extends AbstractFakerTest {
      */
     @BeforeEach
     void init() {
-        localePicker = new LocalePicker();
+        localePicker = faker.localePicker();
         allLocales = localePicker.getAllSupportedLocales();
     }
 

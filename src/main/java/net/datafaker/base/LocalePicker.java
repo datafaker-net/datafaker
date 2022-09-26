@@ -1,4 +1,4 @@
-package net.datafaker.service;
+package net.datafaker.base;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.io.File;
 import java.util.Collections;
 
-public class LocalePicker {
+public class LocalePicker extends AbstractProvider<BaseProviders> {
 
     private final static String resourcePath = "./src/main/resources";
     private final List<String> locales;
@@ -17,8 +17,8 @@ public class LocalePicker {
     /**
      * Constructor for LocalePicker class
      */
-    public LocalePicker() {
-        this(null);
+    public LocalePicker(BaseProviders baseProviders) {
+        this(null, baseProviders);
     }
 
     /**
@@ -26,7 +26,8 @@ public class LocalePicker {
      *
      * @param random random number generator (can utilize seed for deterministic random selection)
      */
-    public LocalePicker(Random random) {
+    public LocalePicker(Random random, BaseProviders baseProviders) {
+        super(baseProviders);
         if (random != null) {
             this.random = random;
         } else {

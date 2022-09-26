@@ -303,6 +303,7 @@ Providers
 * League Of Legends
 * Lebowski
 * Lord Of The Rings
+* Locale
 * Lorem
 * Marketing
 * Mass Effect
