@@ -93,11 +93,12 @@ nav:
   - Documentation:
     - Getting started: documentation/getting-started.md
     - Usage: documentation/usage.md
+    - Data Providers:
+      - All providers: documentation/providers.md
+      - Custom providers: documentation/custom-providers.md
     - Advanced usage:
       - Collections: documentation/collections.md
-      - Data providers: documentation/providers.md
       - Date format: documentation/date-format.md
-      - Custom providers: documentation/custom-providers.md
       - Expressions: documentation/expressions.md
       - File formats: documentation/file-formats.md
       - Unique values: documentation/unique-values.md
