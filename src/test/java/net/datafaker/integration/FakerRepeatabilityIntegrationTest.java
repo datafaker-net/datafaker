@@ -18,7 +18,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FakerRepeatabiltyIntegrationTest {
+public class FakerRepeatabilityIntegrationTest {
 
     @Test
     void shouldCreateRepeatableValues() throws InvocationTargetException, IllegalAccessException {
@@ -48,7 +48,7 @@ public class FakerRepeatabiltyIntegrationTest {
     private static Map<String, String> buildReport(Faker faker) throws IllegalAccessException, InvocationTargetException {
         Map<String, String> result = new HashMap<>();
 
-        // Need to sort the methods since they sometimes are returned in a different order
+        // Need to sort the methods since they are sometimes returned in a different order
         Method[] methods = faker.getClass().getMethods();
         List<Method> providerList = Arrays.asList(methods);
         providerList.sort(Comparator.comparing(Method::getName));
