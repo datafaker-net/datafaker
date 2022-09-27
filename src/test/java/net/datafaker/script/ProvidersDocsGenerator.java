@@ -37,6 +37,8 @@ public class ProvidersDocsGenerator {
         .comparing(Class::getSimpleName);
     private final Set<Class<?>> subTypes = new TreeSet<>(providersComparatorBySimpleName);
 
+    private final Set<String> groupsOfProviders = new HashSet<>(Arrays.asList("base", "food", "movie", "sport", "videogame"));
+
     // Exclude non-providers from generation
     private final Set<String> providersToExcludeFromGeneration = new HashSet<>(Arrays.asList("CustomFakerTest", "InsectFromFile", "Insect"));
 
@@ -54,14 +56,18 @@ public class ProvidersDocsGenerator {
     public void generateProvidersDocs(BufferedWriter writer) throws IOException {
         subTypes.addAll(
             reflections.get(SubTypes.of(AbstractProvider.class).asClass())
-                .stream().filter(t -> !providersToExcludeFromGeneration.contains(t.getSimpleName()))
+                .stream()
+                .filter(t -> !providersToExcludeFromGeneration.contains(t.getSimpleName()))
                 .collect(Collectors.toSet()));
 
         Set<String> fakersWithoutSinceTag = new HashSet<>();
         for (Class<?> clazz : subTypes) {
             String name = clazz.getSimpleName();
-
-            String comment = extractCommentFromJavadoc("src/main/java/net/datafaker/" + name + ".java", fakersWithoutSinceTag);
+            String packageName = clazz.getPackage().getName();
+            // `packageName` should be such format: net.datafaker.<groupName> (e.g. base, sport, movie)
+            // And just splitting by '.' and getting groupName (e.g. base, sport, movie)
+            String groupName = packageName.split("\\.")[2];
+            String comment = extractCommentFromJavadoc("src/main/java/net/datafaker/" + groupName + "/" + name + ".java", fakersWithoutSinceTag);
             writer.write(Column.generateRow(' ', name, comment));
         }
         System.out.println("Providers without '@since' tag: " + fakersWithoutSinceTag);
