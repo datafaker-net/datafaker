@@ -107,6 +107,11 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
+    void testHttpMethod() {
+        assertThat(faker.internet().httpMethod()).isNotEmpty();
+    }
+
+    @Test
     void testPassword() {
         assertThat(faker.internet().password()).matches("[a-z\\d]{8,16}");
     }

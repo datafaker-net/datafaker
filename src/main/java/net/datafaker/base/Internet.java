@@ -113,6 +113,10 @@ public class Internet extends AbstractProvider<BaseProviders> {
             (text == null || text.length() == 0) ? "" : text);
     }
 
+    public String httpMethod() {
+        return resolve("internet.http_method");
+    }
+
     public String password() {
         return password(8, 16);
     }
