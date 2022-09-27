@@ -3,7 +3,7 @@ package net.datafaker.base;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import net.datafaker.service.LocalePicker;
+import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * These tests use System.out.printlns because the error rate is quite high.
  */
-class PhoneNumberValidityFinderTest {
+class PhoneNumberValidityFinderTest extends AbstractFakerTest {
 
     @Test
     void testAllCellPhoneForLocale() throws NumberParseException {
@@ -56,7 +56,7 @@ class PhoneNumberValidityFinderTest {
 
     @Test
     void testAllPhoneNumbers() {
-        List<String> allSupportedLocales = new LocalePicker().getAllSupportedLocales();
+        List<String> allSupportedLocales = faker.locality().allSupportedLocales();
         Map<Locale, Integer> errorCounts = new HashMap<>();
 
         for (String supportedLocale : allSupportedLocales) {
