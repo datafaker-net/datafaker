@@ -1,6 +1,7 @@
 package net.datafaker.base;
 
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,6 +20,11 @@ class ScienceTest extends BaseFakerTest<BaseFaker> {
     @RepeatedTest(10)
     void scientist() {
         assertThat(faker.science().scientist()).matches("[A-Za-z. -]+");
+    }
+
+    @Test
+    void testUnit() {
+        assertThat(faker.science().unit()).isNotEmpty();
     }
 
     @RepeatedTest(10)

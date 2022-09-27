@@ -17,6 +17,10 @@ public class Science extends AbstractProvider<BaseProviders> {
         return resolve("science.element_symbol");
     }
 
+    public String unit() {
+        return resolve("science.unit");
+    }
+
     public String scientist() {
         return resolve("science.scientist");
     }
