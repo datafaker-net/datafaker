@@ -146,6 +146,11 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.internet().password(10, 25, true, true)).matches("[a-zA-Z\\d!@#$%^&*]{10,25}");
     }
 
+    @RepeatedTest(100)
+    void testPort() {
+        assertThat(faker.internet().port()).isBetween(0, 65535);
+    }
+
     @Test
     void shouldGenerateAPasswordWithMinAndMaxLength() {
         List<String> results = new ArrayList<>();
