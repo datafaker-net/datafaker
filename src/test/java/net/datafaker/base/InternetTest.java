@@ -79,11 +79,11 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.internet().url()).matches("www\\.(\\w|-)+\\.\\w+");
     }
 
-    @Test
-    void testImage() {
-        String imageUrl = faker.internet().image();
-        assertThat(imageUrl).matches("^https://lorempixel\\.com(/g)?/\\d{1,4}/\\d{1,4}/\\w+/$");
-    }
+	@Test
+	void testImage() {
+		String imageUrl = faker.internet().image();
+		assertThat(imageUrl).matches("^https://picsum\\.photos/\\d{1,4}/\\d{1,4}$");
+	}
 
     @Test
     void testDomainName() {
@@ -100,11 +100,11 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.internet().domainSuffix()).matches("\\w{2,4}");
     }
 
-    @Test
-    void testImageWithExplicitParams() {
-        String imageUrl = faker.internet().image(800, 600, false, "bugs");
-        assertThat(imageUrl).matches("^https://lorempixel\\.com/800/600/\\w+/bugs$");
-    }
+	@Test
+	void testImageWithExplicitParams() {
+		String imageUrl = faker.internet().image(800, 600, "lorem");
+		assertThat(imageUrl).matches("^https://picsum\\.photos/seed/lorem/800/600$");
+	}
 
     @Test
     void testHttpMethod() {

@@ -80,38 +80,22 @@ public class Internet extends AbstractProvider<BaseProviders> {
         );
     }
 
-    /**
-     * Generates a random image url based on the lorempixel service. All the images provided by this service are released
-     * under the creative commons license (CC BY-SA). For more information, please visit: <a href="http://lorempixel.com/">http://lorempixel.com/</a>
-     *
-     * @return an url to a random image.
-     * @see <a href="http://lorempixel.com/">lorempixel - Placeholder Images for every case</a>
-     */
-    public String image() {
-        String[] dimension = resolve("internet.image_dimension").split("x");
-        if (dimension.length == 0) {
-            return "";
-        } else {
-            return image(
-                Integer.valueOf(dimension[0].trim()), Integer.valueOf(dimension[1].trim()),
-                faker.bool().bool(), null);
-        }
-    }
+	public String image() {
+		String[] dimension = resolve("internet.image_dimension").split("x");
+		if (dimension.length == 0) {
+			return "";
+		} else {
+			return image(Integer.valueOf(dimension[0].trim()), Integer.valueOf(dimension[1].trim()));
+		}
+	}
 
-    /**
-     * Same as image() but allows client code to choose a few image characteristics
-     *
-     * @param width  the image width
-     * @param height the image height
-     * @param gray   true for gray image and false for color image
-     * @param text   optional custom text on the selected picture
-     * @return an url to a random image with the given characteristics.
-     */
-    public String image(Integer width, Integer height, Boolean gray, String text) {
-        return String.format("https://lorempixel.com/%s%s/%s/%s/%s",
-            gray ? "g/" : "", width, height, resolve("internet.image_category"),
-            (text == null || text.length() == 0) ? "" : text);
-    }
+	public String image(int width, int height) {
+		return String.format("https://picsum.photos/%s/%s", width, height);
+	}
+
+	public String image(int width, int height, String seed) {
+		return String.format("https://picsum.photos/seed/%s/%s/%s", seed, width, height);
+	}
 
     public String httpMethod() {
         return resolve("internet.http_method");
