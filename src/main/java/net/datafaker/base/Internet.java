@@ -153,6 +153,15 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
+     * Returns a port number between 0 and 65535
+     *
+     * @return a port number
+     */
+    public int port() {
+        return faker.random().nextInt(0, 65535);
+    }
+
+    /**
      * <p>Returns a MAC address in the following format: 6-bytes in MM:MM:MM:SS:SS:SS format.</p>
      *
      * @param prefix a prefix to put on the front of the address
