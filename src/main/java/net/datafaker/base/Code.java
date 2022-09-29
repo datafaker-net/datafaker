@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 /**
  * Generates codes such as ISBN, gin, ean and others.
- *
+ * <p>
  * For ISBN Rules, see <a href="https://en.wikipedia.org/wiki/International_Standard_Book_Number">https://en.wikipedia.org/wiki/International_Standard_Book_Number</a>.
  *
  * @since 0.8.0

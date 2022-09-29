@@ -37,14 +37,14 @@ public class CNPJ extends AbstractProvider<BaseProviders> {
 
     /**
      * Return valid and formatted. Also, it generates a multi-branch CNPJ.
-     *
+     * <p>
      * CNPJ numbers follow this format:
      * {@code AA.AAA.AAA/BBBB-CC }
      * Where A is the number of the company, B is the branch number and C are verification digits.
      * If the parameter {@code multiBranch} is false, B will always be 0001.
      * Otherwise, this number will vary between 0001 and 9999 .
      *
-     * @param formatted a CNPJ (un)formatted
+     * @param formatted   a CNPJ (un)formatted
      * @param multiBranch CPNJ from a random company branch
      * @return a valid CNPJ
      * @see IdNumberGeneratorPtBrUtil#cnpj(BaseProviders, boolean, boolean, boolean)
@@ -75,7 +75,7 @@ public class CNPJ extends AbstractProvider<BaseProviders> {
 
     /**
      * Return invalid and (un)formatted. Also, it generates a multi-branch CNPJ.
-     *
+     * <p>
      * CNPJ numbers follow this format:
      * {@code AA.AAA.AAA/BBBB-CC }
      * Where A is the number of the company, B is the branch number and C are verification digits.

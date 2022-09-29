@@ -331,8 +331,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
     /**
      * Generates a random Period between min and max.
      *
-     * @param min  the minimal value
-     * @param max  the maximum value
+     * @param min the minimal value
+     * @param max the maximum value
      * @return a random Period between {@code min} inclusive and {@code max} inclusive if {@code max} greater {@code min}.
      * @throws IllegalArgumentException if the {@code min} is greater than {@code max}.
      */

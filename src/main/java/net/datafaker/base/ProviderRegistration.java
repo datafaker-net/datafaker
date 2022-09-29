@@ -12,13 +12,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface ProviderRegistration {
-  <B extends ProviderRegistration> B getFaker();
+    <B extends ProviderRegistration> B getFaker();
+
     FakerContext getContext();
 
-  default <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
-      Class<AP> clazz, Function<PR, AP> valueSupplier) {
-    return BaseFaker.getProvider(clazz, valueSupplier, getFaker());
-  }
+    default <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
+        Class<AP> clazz, Function<PR, AP> valueSupplier) {
+        return BaseFaker.getProvider(clazz, valueSupplier, getFaker());
+    }
 
     String resolve(String key);
 
@@ -118,7 +119,7 @@ public interface ProviderRegistration {
      *                          The odd numbers args are used for columns names, and even for column values.
      * @return Generated string
      */
-    String csv(int limit, String ... columnExpressions);
+    String csv(int limit, String... columnExpressions);
 
     /**
      * Returns a string with generated csv based number of lines and column expressions.
@@ -139,7 +140,7 @@ public interface ProviderRegistration {
      *                          The odd numbers args are used for columns names, and even for column values.
      * @return Generated string
      */
-    String csv(String separator, char quote, boolean withHeader, int limit, String ... columnExpressions);
+    String csv(String separator, char quote, boolean withHeader, int limit, String... columnExpressions);
 
     Json json(String... fieldExpressions);
 

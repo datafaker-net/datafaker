@@ -35,7 +35,7 @@ public class Barcode extends AbstractProvider<BaseProviders> {
 
     private static int roundToHighestMultiplyOfTen(int number) {
         if (number % 10 == 0) {
-          return number;
+            return number;
         } else {
             int ones = number % 10;
             int add = 10 - ones;
