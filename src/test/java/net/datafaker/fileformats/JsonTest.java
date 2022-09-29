@@ -20,7 +20,7 @@ class JsonTest {
     @MethodSource("generateTestJson")
     void simpleJsonTest(Map<Object, Supplier<Object>> input, String expected) {
         Json.JsonBuilder builder = new Json.JsonBuilder();
-        for (Map.Entry<Object, Supplier<Object>> entry: input.entrySet()) {
+        for (Map.Entry<Object, Supplier<Object>> entry : input.entrySet()) {
             if (entry.getKey() instanceof String) {
                 builder.set((String) entry.getKey(), entry.getValue());
             } else if (entry.getKey() instanceof Supplier) {

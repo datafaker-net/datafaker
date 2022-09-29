@@ -38,7 +38,7 @@ public interface VideoGameProviders extends ProviderRegistration {
     default MassEffect massEffect() {
         return getProvider(MassEffect.class, MassEffect::new);
     }
-    
+
     default Overwatch overwatch() {
         return getProvider(Overwatch.class, Overwatch::new);
     }

@@ -22,7 +22,7 @@ class RandomServiceTest extends AbstractFakerTest {
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     void testPositiveBoundariesOnly(RandomService randomService) {
-        assertThatThrownBy( () -> randomService.nextLong(0L))
+        assertThatThrownBy(() -> randomService.nextLong(0L))
             .isInstanceOf(IllegalArgumentException.class);
     }
 

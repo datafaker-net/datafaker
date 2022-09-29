@@ -61,7 +61,7 @@ class FakerIntegrationTest {
     private static class SkippedMethods {
         private final Map<Class, Set<String>> class2methodNames = new HashMap<>();
 
-        public static SkippedMethods of(Class clazz, String ... methodNames) {
+        public static SkippedMethods of(Class clazz, String... methodNames) {
             SkippedMethods sm = new SkippedMethods();
             sm.class2methodNames.putIfAbsent(clazz, new HashSet<>());
             sm.class2methodNames.get(clazz).addAll(Arrays.asList(methodNames));

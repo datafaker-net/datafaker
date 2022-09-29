@@ -81,7 +81,7 @@ public class ProvidersDocsGenerator {
      * @param fakersWithoutSinceTag List in which add Faker's names that don't have '@since' tag
      * @return Entire first JavaDoc in the class
      */
-    private String extractCommentFromJavadoc(String filePath, Set<String> fakersWithoutSinceTag)  {
+    private String extractCommentFromJavadoc(String filePath, Set<String> fakersWithoutSinceTag) {
         try {
             final File file = new File(filePath);
 

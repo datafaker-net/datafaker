@@ -24,8 +24,7 @@ public final class IdNumberGeneratorPtBrUtil {
 
             if (multiBranch) {
                 partial.append(leftPad('0', 4, String.valueOf(faker.random().nextInt(1, 9999))));
-            }
-            else {
+            } else {
                 partial.append("0001");
             }
 
@@ -141,7 +140,7 @@ public final class IdNumberGeneratorPtBrUtil {
 
     private static String leftPad(char pad, int length, String string) {
         StringBuilder appender = new StringBuilder();
-        for (int i = 0; i < length - string.length(); i++ ) {
+        for (int i = 0; i < length - string.length(); i++) {
             appender.append(pad);
         }
         return appender.append(string).toString();

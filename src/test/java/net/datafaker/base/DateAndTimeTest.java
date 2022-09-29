@@ -128,7 +128,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
             assertThat(birthday)
                 .isBetween(Timestamp.from(from.toInstant(ZoneId.systemDefault().getRules().getOffset(from))),
-                Timestamp.from(to.toInstant(ZoneId.systemDefault().getRules().getOffset(to))), true, true);
+                    Timestamp.from(to.toInstant(ZoneId.systemDefault().getRules().getOffset(to))), true, true);
         }
     }
 

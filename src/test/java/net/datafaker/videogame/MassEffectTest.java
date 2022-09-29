@@ -27,7 +27,7 @@ class MassEffectTest extends VideoGameFakerTest {
     }
 
     @RepeatedTest(10)
-    void quote(){
+    void quote() {
         assertThat(faker.massEffect().quote()).isNotEmpty();
     }
 }
