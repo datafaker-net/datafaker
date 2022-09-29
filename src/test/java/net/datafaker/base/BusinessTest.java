@@ -22,6 +22,6 @@ class BusinessTest extends BaseFakerTest<BaseFaker> {
 
 	@Test
 	void securityCode() {
-		assertThat(faker.business().securityCode()).isNotEmpty();
+        assertThat(faker.business().securityCode()).isNotEmpty();
 	}
 }

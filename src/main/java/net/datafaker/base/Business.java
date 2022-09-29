@@ -12,7 +12,7 @@ public class Business extends AbstractProvider<BaseProviders> {
 	}
 
 	public String creditCardNumber() {
-		return faker.numerify(resolve("business.credit_card_numbers_format"));
+        return faker.numerify(resolve("business.credit_card_numbers_format"));
 	}
 
 	public String creditCardType() {
@@ -20,10 +20,10 @@ public class Business extends AbstractProvider<BaseProviders> {
 	}
 
 	public String creditCardExpiry() {
-		return faker.date().future(365 * faker.number().numberBetween(1, 20), TimeUnit.DAYS, "YYYY-MM-dd");
+        return faker.date().future(365 * faker.number().numberBetween(1, 20), TimeUnit.DAYS, "YYYY-MM-dd");
 	}
 
 	public String securityCode() {
-		return faker.numerify(resolve("business.security_code"));
+        return faker.numerify(resolve("business.security_code"));
 	}
 }
