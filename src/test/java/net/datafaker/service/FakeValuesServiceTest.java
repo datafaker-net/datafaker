@@ -87,7 +87,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void safeFetchShouldReturnSimpleList() {
-        assertThat(fakeValuesService.safeFetch("property.simple", mockedFaker.getContext() , null)).isEqualTo("hello");
+        assertThat(fakeValuesService.safeFetch("property.simple", mockedFaker.getContext(), null)).isEqualTo("hello");
     }
 
     @Test

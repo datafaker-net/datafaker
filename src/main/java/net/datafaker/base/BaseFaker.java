@@ -56,8 +56,8 @@ public class BaseFaker implements BaseProviders {
     /**
      * Constructs Faker instance with default argument.
      *
-     * @deprecated Use the default constructor instead
      * @return {@link BaseFaker#BaseFaker()}
+     * @deprecated Use the default constructor instead
      */
     @Deprecated // Use the default constructor instead
     public static BaseFaker instance() {
@@ -67,9 +67,9 @@ public class BaseFaker implements BaseProviders {
     /**
      * Constructs Faker instance with provided {@link Locale}.
      *
-     * @deprecated Use the constructor with locale instead
      * @param locale - {@link Locale}
      * @return {@link BaseFaker#BaseFaker(Locale)}
+     * @deprecated Use the constructor with locale instead
      */
     @Deprecated
     public static BaseFaker instance(Locale locale) {
@@ -79,9 +79,9 @@ public class BaseFaker implements BaseProviders {
     /**
      * Constructs Faker instance with provided {@link Random}.
      *
-     * @deprecated Use the constructor with random instead
      * @param random - {@link Random}
      * @return {@link BaseFaker#BaseFaker(Random)}
+     * @deprecated Use the constructor with random instead
      */
     @Deprecated
     public static BaseFaker instance(Random random) {
@@ -91,10 +91,10 @@ public class BaseFaker implements BaseProviders {
     /**
      * Constructs Faker instance with provided {@link Locale} and {@link Random}.
      *
-     * @deprecated Use the constructor with locale and random instead
      * @param locale - {@link Locale}
      * @param random - {@link Random}
      * @return {@link BaseFaker#BaseFaker(Locale, Random)}
+     * @deprecated Use the constructor with locale and random instead
      */
     @Deprecated
     public static BaseFaker instance(Locale locale, Random random) {
@@ -273,7 +273,7 @@ public class BaseFaker implements BaseProviders {
      *                          The odd numbers args are used for columns names, and even for column values.
      * @return Generated string
      */
-    public String csv(int limit, String ... columnExpressions) {
+    public String csv(int limit, String... columnExpressions) {
         return fakeValuesService().csv(limit, columnExpressions);
     }
 
@@ -296,7 +296,7 @@ public class BaseFaker implements BaseProviders {
      *                          The odd numbers args are used for columns names, and even for column values.
      * @return Generated string
      */
-    public String csv(String separator, char quote, boolean withHeader, int limit, String ... columnExpressions) {
+    public String csv(String separator, char quote, boolean withHeader, int limit, String... columnExpressions) {
         return fakeValuesService().csv(separator, quote, withHeader, limit, columnExpressions);
     }
 
@@ -319,8 +319,8 @@ public class BaseFaker implements BaseProviders {
     /**
      * Allows to add paths to files with custom data. Data should be in YAML format.
      *
-     * @param locale        the locale for which a path is going to be added.
-     * @param path          path to a file with YAML structure
+     * @param locale the locale for which a path is going to be added.
+     * @param path   path to a file with YAML structure
      * @throws IllegalArgumentException in case of invalid path
      */
     public void addPath(Locale locale, Path path) {
@@ -341,7 +341,6 @@ public class BaseFaker implements BaseProviders {
     }
 
     /**
-     *
      * @return builder to build {@code FakeCollection}
      */
     public <T> FakeCollection.Builder<T> collection() {

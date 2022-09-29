@@ -51,6 +51,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
 
     /**
      * Select a locale at random and returns display name of the locale
+     *
      * @return locale in the form: "English (United States) or English"
      */
     public String displayName() {

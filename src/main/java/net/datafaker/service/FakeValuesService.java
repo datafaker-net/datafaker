@@ -157,7 +157,7 @@ public class FakeValuesService {
      */
     public Object fetchObject(String key, FakerContext context) {
         Object result = null;
-        for (Locale locale: context.getLocaleChain()) {
+        for (Locale locale : context.getLocaleChain()) {
             // exclude default locale from cache checks
             if (locale.equals(DEFAULT_LOCALE) && context.getLocaleChain().size() > 1) {
                 continue;

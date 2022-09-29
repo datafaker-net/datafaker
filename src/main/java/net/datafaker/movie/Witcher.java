@@ -34,6 +34,7 @@ public class Witcher extends AbstractProvider<MovieProviders> {
     public String monster() {
         return resolve("games.witcher.monsters");
     }
+
     public String sign() {
         return resolve("games.witcher.signs");
     }

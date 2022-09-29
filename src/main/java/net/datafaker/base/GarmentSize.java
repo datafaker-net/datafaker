@@ -8,16 +8,16 @@ package net.datafaker.base;
 
 public class GarmentSize extends AbstractProvider<BaseProviders> {
 
-  protected GarmentSize(BaseProviders faker) {
-    super(faker);
-  }
+    protected GarmentSize(BaseProviders faker) {
+        super(faker);
+    }
 
-  /**
-   * This method returns a garment size
-   *
-   * @return a string of garment size
-   */
-  public String size() {
-    return resolve("garments_sizes.sizes");
-  }
+    /**
+     * This method returns a garment size
+     *
+     * @return a string of garment size
+     */
+    public String size() {
+        return resolve("garments_sizes.sizes");
+    }
 }

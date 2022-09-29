@@ -129,7 +129,7 @@ public class FakeValues implements FakeValuesInterface {
                     set.add(key);
                 }
             }
-            for (String str: set) {
+            for (String str : set) {
                 result.put(toJavaNames(str), result.get(str));
             }
         }

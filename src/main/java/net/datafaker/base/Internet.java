@@ -80,22 +80,22 @@ public class Internet extends AbstractProvider<BaseProviders> {
         );
     }
 
-	public String image() {
-		String[] dimension = resolve("internet.image_dimension").split("x");
-		if (dimension.length == 0) {
-			return "";
-		} else {
-			return image(Integer.valueOf(dimension[0].trim()), Integer.valueOf(dimension[1].trim()));
-		}
-	}
+    public String image() {
+        String[] dimension = resolve("internet.image_dimension").split("x");
+        if (dimension.length == 0) {
+            return "";
+        } else {
+            return image(Integer.valueOf(dimension[0].trim()), Integer.valueOf(dimension[1].trim()));
+        }
+    }
 
-	public String image(int width, int height) {
-		return String.format("https://picsum.photos/%s/%s", width, height);
-	}
+    public String image(int width, int height) {
+        return String.format("https://picsum.photos/%s/%s", width, height);
+    }
 
-	public String image(int width, int height, String seed) {
-		return String.format("https://picsum.photos/seed/%s/%s/%s", seed, width, height);
-	}
+    public String image(int width, int height, String seed) {
+        return String.format("https://picsum.photos/seed/%s/%s/%s", seed, width, height);
+    }
 
     public String httpMethod() {
         return resolve("internet.http_method");

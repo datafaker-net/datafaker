@@ -29,12 +29,16 @@ public class Number extends AbstractProvider<BaseProviders> {
     /**
      * Returns a positive number
      */
-    public int positive() { return numberBetween(1, Integer.MAX_VALUE); }
+    public int positive() {
+        return numberBetween(1, Integer.MAX_VALUE);
+    }
 
     /**
      * Returns a negative number
      */
-    public int negative() { return numberBetween(0, Integer.MIN_VALUE); }
+    public int negative() {
+        return numberBetween(0, Integer.MIN_VALUE);
+    }
 
     /**
      * @param min the lower bound (include min)

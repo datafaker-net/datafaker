@@ -10,6 +10,6 @@ public class Artist extends AbstractProvider<BaseProviders> {
     }
 
     public String name() {
-        return  resolve("artist.names");
+        return resolve("artist.names");
     }
 }

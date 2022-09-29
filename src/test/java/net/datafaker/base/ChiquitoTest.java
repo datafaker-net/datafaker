@@ -1,6 +1,7 @@
 package net.datafaker.base;
 
 import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class ChiquitoTest extends BaseFakerTest<BaseFaker> {

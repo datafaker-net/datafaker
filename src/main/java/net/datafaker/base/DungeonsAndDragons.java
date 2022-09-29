@@ -3,7 +3,7 @@ package net.datafaker.base;
 
 /**
  * Dungeons and Dragons is a fantasy tabletop role-playing game originally designed by Gary Gygax and Dave Arneson.
- *
+ * <p>
  * This faker is dedicated to Bart van Kuik, a lifelong DnD player, and lifelong friend.
  *
  * @since 1.7.0

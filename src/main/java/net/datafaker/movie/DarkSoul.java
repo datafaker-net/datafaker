@@ -5,8 +5,8 @@ import net.datafaker.base.AbstractProvider;
 /**
  * issue for: <a href="https://github.com/datafaker-net/datafaker/issues/159">159</a>
  *
- * @since 1.5.0
  * @author SickDawn
+ * @since 1.5.0
  */
 public class DarkSoul extends AbstractProvider<MovieProviders> {
 

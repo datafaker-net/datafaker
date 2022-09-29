@@ -92,12 +92,12 @@ class CustomFakerTest {
     @Test
     void insectBeeTestExpressionFromFileWithoutExtraFaker() {
         BaseFaker faker = new BaseFaker();
-        assertThat(BaseFaker.getProvider(InsectFromFile. class, InsectFromFile::new, faker).bee()).endsWith("bee");
+        assertThat(BaseFaker.getProvider(InsectFromFile.class, InsectFromFile::new, faker).bee()).endsWith("bee");
     }
 
     @Test
     void insectTestWithoutExtraFaker() {
         BaseFaker faker = new BaseFaker();
-        assertThat(BaseFaker.getProvider(Insect. class, Insect::new, faker).nextInsectName()).matches("[A-Za-z ]+");
+        assertThat(BaseFaker.getProvider(Insect.class, Insect::new, faker).nextInsectName()).matches("[A-Za-z ]+");
     }
 }

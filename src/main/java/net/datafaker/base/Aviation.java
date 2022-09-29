@@ -15,7 +15,7 @@ public class Aviation extends AbstractProvider<BaseProviders> {
      * @return some aircraft name/model/make e.g. "An-2".
      */
     public String aircraft() {
-        return  resolve("aviation.aircraft");
+        return resolve("aviation.aircraft");
     }
 
     /**
@@ -23,7 +23,7 @@ public class Aviation extends AbstractProvider<BaseProviders> {
      * See also: <a href="https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_A">https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_A</a>
      */
     public String airport() {
-        return  resolve("aviation.airport");
+        return resolve("aviation.airport");
     }
 
     /**
@@ -31,7 +31,7 @@ public class Aviation extends AbstractProvider<BaseProviders> {
      * Have a look at <a href="https://en.wikipedia.org/wiki/METAR">https://en.wikipedia.org/wiki/METAR</a>
      */
     public String METAR() {
-        return  resolve("aviation.metar");
+        return resolve("aviation.metar");
     }
 
     /**
@@ -42,9 +42,9 @@ public class Aviation extends AbstractProvider<BaseProviders> {
     public String flight(String type) {
         String airline;
         if (type.equals("ICAO")) {
-            airline =  resolve("aviation.ICAO_airline");
+            airline = resolve("aviation.ICAO_airline");
         } else {
-            airline =  resolve("aviation.IATA_airline");
+            airline = resolve("aviation.IATA_airline");
         }
         int number = faker.number().numberBetween(0, 9999);
         return airline + number;
@@ -65,7 +65,7 @@ public class Aviation extends AbstractProvider<BaseProviders> {
      * @return A randomly selected airline name in a String.
      */
     public String airline() {
-        return  resolve("aviation.airline");
+        return resolve("aviation.airline");
     }
 }
 

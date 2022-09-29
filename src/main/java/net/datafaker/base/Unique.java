@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 /**
  * This class contains methods that ensure uniqueness across separate invocations.
- *
+ * <p>
  * This can be helpful for unit tests and automated tests where certain values need to be different.
  *
  * @since 1.6.0
@@ -21,15 +21,15 @@ public class Unique extends AbstractProvider<BaseProviders> {
     /**
      * Returns a random value from the YAML files that is guaranteed to be unique for the given key and locale set on
      * the current faker instance.
-     *
+     * <p>
      * Since unique values are tracked by both the key and the locale, manually changing the locale could cause
      * this method to return the same value for a given key if there is not a separate locale for the given key.
      *
      * @param key the key of the values to fetch from the YAML files
+     * @return a unique random value based on {@code key} and the current locale
      * @throws NoSuchElementException if {@code key} does not correspond to a list of valid data types in the YAML
      *                                files, or if all possible values found for {@code key} and current locale
      *                                have been returned
-     * @return a unique random value based on {@code key} and the current locale
      */
     public String fetchFromYaml(String key) {
         Locale locale = faker.getContext().getLocale();

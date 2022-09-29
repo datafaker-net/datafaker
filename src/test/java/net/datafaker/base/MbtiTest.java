@@ -14,10 +14,11 @@ class MbtiTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    public void name(){
+    public void name() {
         assertThat(isNullOrEmpty(faker.mbti().name())).isFalse();
         assertThat(faker.mbti().name()).matches("[A-Za-z,\\-.();:'$ ]+");
     }
+
     @Test
     void characteristic() {
         assertThat(isNullOrEmpty(faker.mbti().characteristic())).isFalse();

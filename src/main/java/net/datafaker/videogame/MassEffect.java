@@ -28,7 +28,7 @@ public class MassEffect extends AbstractProvider<VideoGameProviders> {
         return resolve("mass_effect.planets");
     }
 
-    public String quote(){
+    public String quote() {
         return resolve("mass_effect.quotes");
     }
 
