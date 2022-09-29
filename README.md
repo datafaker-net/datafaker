@@ -244,6 +244,7 @@ Providers
 * Computer
 * Country
 * Credit Card Type
+* Cricket
 * Crypto
 * Currency
 * Date and Time
