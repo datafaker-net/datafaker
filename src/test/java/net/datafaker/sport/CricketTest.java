@@ -22,7 +22,7 @@ class CricketTest extends SportFakerTest {
     }
 
     @Test
-    public void tournaments() {
+    void tournaments() {
         assertThat(faker.cricket().tournaments()).isNotEmpty();
     }
 
