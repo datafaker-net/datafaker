@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 class JsonTest {
     @ParameterizedTest

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import static java.lang.Integer.parseInt;
 import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 class InternetTest extends BaseFakerTest<BaseFaker> {
 
