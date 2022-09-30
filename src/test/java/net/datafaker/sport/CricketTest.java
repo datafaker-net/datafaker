@@ -17,7 +17,7 @@ class CricketTest extends SportFakerTest {
     }
 
     @Test
-    public void formats() {
+    void formats() {
         assertThat(faker.cricket().formats()).isNotEmpty();
     }
 
