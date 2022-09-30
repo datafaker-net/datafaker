@@ -7,27 +7,27 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class FootballTest extends SportFakerTest {
 
     @Test
-    public void teams() {
+    void teams() {
         assertThat(faker.football().teams()).isNotEmpty();
     }
 
     @Test
-    public void players() {
+    void players() {
         assertThat(faker.football().players()).isNotEmpty();
     }
 
     @Test
-    public void coaches() {
+    void coaches() {
         assertThat(faker.football().coaches()).isNotEmpty();
     }
 
     @Test
-    public void competitions() {
+    void competitions() {
         assertThat(faker.football().competitions()).isNotEmpty();
     }
 
     @Test
-    public void positions() {
+    void positions() {
         assertThat(faker.football().positions()).isNotEmpty();
     }
 

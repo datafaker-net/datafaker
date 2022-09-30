@@ -9,11 +9,12 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HebrewFoodTest extends FoodFakerTest {
-    public final String matchHebrewFood = "[\\u0590-\\u05FF ']+";
-    public static FoodFaker food;
+
+    private final String matchHebrewFood = "[\\u0590-\\u05FF ']+";
+    private static FoodFaker food;
 
     @BeforeEach
-    public void before() {
+    protected void before() {
         super.before();
         food = new FoodFaker(new Locale("he"));
     }

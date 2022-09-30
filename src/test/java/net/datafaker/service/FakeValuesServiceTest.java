@@ -48,9 +48,9 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     private FakerContext context;
 
     @BeforeEach
-    public void before() {
+    protected void before() {
         super.before();
-        try (AutoCloseable av = MockitoAnnotations.openMocks(this)) {
+        try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
 
             // always return the first element
             when(randomService.nextInt(anyInt())).thenReturn(0);

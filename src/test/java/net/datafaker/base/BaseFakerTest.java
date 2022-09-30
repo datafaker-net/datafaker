@@ -13,7 +13,7 @@ public class BaseFakerTest<T extends BaseFaker> {
     protected final T faker = getFaker();
 
     @BeforeEach
-    public void before() {
+    protected void before() {
         try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
 
             Logger rootLogger = LogManager.getLogManager().getLogger("");

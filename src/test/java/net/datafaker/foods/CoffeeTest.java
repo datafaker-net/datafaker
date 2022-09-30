@@ -8,57 +8,57 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class CoffeeTest extends FoodFakerTest {
 
     @Test
-    public void country() {
+    void country() {
         assertThat(faker.coffee().country()).isNotEmpty();
     }
 
     @Test
-    public void region() {
+    void region() {
         assertThat(faker.coffee().region()).isNotEmpty();
     }
 
     @Test
-    public void regionBrazil() {
+    void regionBrazil() {
         assertThat(faker.coffee().region(Coffee.Country.BRAZIL)).isNotEmpty();
     }
 
     @Test
-    public void variety() {
+    void variety() {
         assertThat(faker.coffee().variety()).isNotEmpty();
     }
 
     @Test
-    public void intensifier() {
+    void intensifier() {
         assertThat(faker.coffee().intensifier()).isNotEmpty();
     }
 
     @Test
-    public void body() {
+    void body() {
         assertThat(faker.coffee().body()).isNotEmpty();
     }
 
     @Test
-    public void descriptor() {
+    void descriptor() {
         assertThat(faker.coffee().descriptor()).isNotEmpty();
     }
 
     @Test
-    public void notes() {
+    void notes() {
         assertThat(faker.coffee().notes()).isNotEmpty();
     }
 
     @Test
-    public void name1() {
+    void name1() {
         assertThat(faker.coffee().name1()).isNotEmpty();
     }
 
     @Test
-    public void name2() {
+    void name2() {
         assertThat(faker.coffee().name2()).isNotEmpty();
     }
 
     @Test
-    public void blendName() {
+    void blendName() {
         assertThat(faker.coffee().blendName()).isNotEmpty();
     }
 }

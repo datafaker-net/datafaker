@@ -14,7 +14,7 @@ class PtNifIdNumberTest extends AbstractFakerTest {
     private BaseFaker ptFaker;
 
     @BeforeEach
-    public void before() {
+    protected void before() {
         ptFaker = new BaseFaker(new Locale("pt"));
     }
 

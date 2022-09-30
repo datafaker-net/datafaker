@@ -37,8 +37,6 @@ public class ProvidersDocsGenerator {
         .comparing(Class::getSimpleName);
     private final Set<Class<?>> subTypes = new TreeSet<>(providersComparatorBySimpleName);
 
-    private final Set<String> groupsOfProviders = new HashSet<>(Arrays.asList("base", "food", "movie", "sport", "videogame"));
-
     // Exclude non-providers from generation
     private final Set<String> providersToExcludeFromGeneration = new HashSet<>(Arrays.asList("CustomFakerTest", "InsectFromFile", "Insect"));
 
@@ -53,7 +51,7 @@ public class ProvidersDocsGenerator {
         }
     }
 
-    public void generateProvidersDocs(BufferedWriter writer) throws IOException {
+    void generateProvidersDocs(BufferedWriter writer) throws IOException {
         subTypes.addAll(
             reflections.get(SubTypes.of(AbstractProvider.class).asClass())
                 .stream()

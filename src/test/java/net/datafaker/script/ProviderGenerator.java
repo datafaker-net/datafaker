@@ -20,7 +20,7 @@ class ProviderGenerator {
         new ProviderGenerator().generateProvider();
     }
 
-    public void generateProvider() throws FileNotFoundException {
+    void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
         File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("dnd.todo.yml"));
@@ -99,7 +99,7 @@ class ProviderGenerator {
             String testMethodName = StringUtils.uncapitalize(toJavaConvention(string));
 
             System.out.println("    @Test");
-            System.out.println("    public void " + testMethodName + "() {");
+            System.out.println("    void " + testMethodName + "() {");
             System.out.println("        assertThat(faker." + methodName + "()." + testMethodName + "()).isNotEmpty();");
             System.out.println("    }");
             System.out.println();

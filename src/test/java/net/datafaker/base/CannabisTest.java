@@ -5,53 +5,54 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class CannabisTest extends BaseFakerTest<BaseFaker> {
+
     @Test
-    public void strains() {
+    void strains() {
         assertThat(faker.cannabis().strains()).isNotEmpty();
     }
 
     @Test
-    public void cannabinoidAbbreviations() {
+    void cannabinoidAbbreviations() {
         assertThat(faker.cannabis().cannabinoidAbbreviations()).isNotEmpty();
     }
 
     @Test
-    public void cannabinoids() {
+    void cannabinoids() {
         assertThat(faker.cannabis().cannabinoids()).isNotEmpty();
     }
 
     @Test
-    public void terpenes() {
+    void terpenes() {
         assertThat(faker.cannabis().terpenes()).isNotEmpty();
     }
 
     @Test
-    public void medicalUses() {
+    void medicalUses() {
         assertThat(faker.cannabis().medicalUses()).isNotEmpty();
     }
 
     @Test
-    public void healthBenefits() {
+    void healthBenefits() {
         assertThat(faker.cannabis().healthBenefits()).isNotEmpty();
     }
 
     @Test
-    public void categories() {
+    void categories() {
         assertThat(faker.cannabis().categories()).isNotEmpty();
     }
 
     @Test
-    public void types() {
+    void types() {
         assertThat(faker.cannabis().types()).isNotEmpty();
     }
 
     @Test
-    public void buzzwords() {
+    void buzzwords() {
         assertThat(faker.cannabis().buzzwords()).isNotEmpty();
     }
 
     @Test
-    public void brands() {
+    void brands() {
         assertThat(faker.cannabis().brands()).isNotEmpty();
     }
 }
