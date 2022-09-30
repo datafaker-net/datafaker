@@ -315,6 +315,7 @@ Providers
 * Military
 * Minecraft
 * Money
+* Money Heist
 * Mood
 * Mountains
 * Mountaineering

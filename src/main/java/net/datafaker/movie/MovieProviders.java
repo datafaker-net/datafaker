@@ -111,6 +111,10 @@ public interface MovieProviders extends ProviderRegistration {
     default LordOfTheRings lordOfTheRings() {
         return getProvider(LordOfTheRings.class, LordOfTheRings::new);
     }
+    
+    default MoneyHeist moneyHeist() {
+        return getProvider(MoneyHeist.class, MoneyHeist::new);
+    }
 
     default Movie movie() {
         return getProvider(Movie.class, Movie::new);

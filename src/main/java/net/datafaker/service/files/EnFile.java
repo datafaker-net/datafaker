@@ -152,6 +152,7 @@ public class EnFile {
         "military.yml",
         "minecraft.yml",
         "money.yml",
+        "money_heist.yml",
         "most_interesting_man_in_the_world.yml",
         "mood.yml",
         "movie.yml",
