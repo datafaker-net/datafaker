@@ -1,28 +1,29 @@
 package net.datafaker.videogame;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class FalloutTest extends VideoGameFakerTest {
 
     @Test
     void testCharacter() {
-        Assertions.assertThat(faker.fallout().character()).isNotEmpty();
+        assertThat(faker.fallout().character()).isNotEmpty();
     }
 
     @Test
     void testFaction() {
-        Assertions.assertThat(faker.fallout().faction()).isNotEmpty();
+        assertThat(faker.fallout().faction()).isNotEmpty();
     }
 
     @Test
     void testLocation() {
-        Assertions.assertThat(faker.fallout().location()).isNotEmpty();
+        assertThat(faker.fallout().location()).isNotEmpty();
     }
 
     @Test
     void testQuote() {
-        Assertions.assertThat(faker.fallout().quote()).isNotEmpty();
+        assertThat(faker.fallout().quote()).isNotEmpty();
     }
 }

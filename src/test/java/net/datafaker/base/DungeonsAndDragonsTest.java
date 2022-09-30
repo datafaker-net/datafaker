@@ -7,47 +7,47 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class DungeonsAndDragonsTest extends net.datafaker.AbstractFakerTest {
 
     @Test
-    public void alignments() {
+    void alignments() {
         assertThat(faker.dungeonsAndDragons().alignments()).isNotEmpty();
     }
 
     @Test
-    public void backgrounds() {
+    void backgrounds() {
         assertThat(faker.dungeonsAndDragons().backgrounds()).isNotEmpty();
     }
 
     @Test
-    public void cities() {
+    void cities() {
         assertThat(faker.dungeonsAndDragons().cities()).isNotEmpty();
     }
 
     @Test
-    public void klasses() {
+    void klasses() {
         assertThat(faker.dungeonsAndDragons().klasses()).isNotEmpty();
     }
 
     @Test
-    public void languages() {
+    void languages() {
         assertThat(faker.dungeonsAndDragons().languages()).isNotEmpty();
     }
 
     @Test
-    public void meleeWeapons() {
+    void meleeWeapons() {
         assertThat(faker.dungeonsAndDragons().meleeWeapons()).isNotEmpty();
     }
 
     @Test
-    public void monsters() {
+    void monsters() {
         assertThat(faker.dungeonsAndDragons().monsters()).isNotEmpty();
     }
 
     @Test
-    public void races() {
+    void races() {
         assertThat(faker.dungeonsAndDragons().races()).isNotEmpty();
     }
 
     @Test
-    public void rangedWeapons() {
+    void rangedWeapons() {
         assertThat(faker.dungeonsAndDragons().rangedWeapons()).isNotEmpty();
     }
 

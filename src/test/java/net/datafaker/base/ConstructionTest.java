@@ -7,32 +7,32 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class ConstructionTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    public void heavyEquipment() {
+    void heavyEquipment() {
         assertThat(faker.construction().heavyEquipment()).isNotEmpty();
     }
 
     @Test
-    public void materials() {
+    void materials() {
         assertThat(faker.construction().materials()).isNotEmpty();
     }
 
     @Test
-    public void subcontractCategories() {
+    void subcontractCategories() {
         assertThat(faker.construction().subcontractCategories()).isNotEmpty();
     }
 
     @Test
-    public void roles() {
+    void roles() {
         assertThat(faker.construction().roles()).isNotEmpty();
     }
 
     @Test
-    public void trades() {
+    void trades() {
         assertThat(faker.construction().trades()).isNotEmpty();
     }
 
     @Test
-    public void standardCostCodes() {
+    void standardCostCodes() {
         assertThat(faker.construction().standardCostCodes()).isNotEmpty();
     }
 }

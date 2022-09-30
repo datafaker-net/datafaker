@@ -8,17 +8,17 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class DetectiveConanTest extends net.datafaker.AbstractFakerTest {
 
     @Test
-    public void characters() {
+    void characters() {
         assertThat(faker.detectiveConan().characters()).isNotEmpty();
     }
 
     @Test
-    public void gadgets() {
+    void gadgets() {
         assertThat(faker.detectiveConan().gadgets()).isNotEmpty();
     }
 
     @Test
-    public void vehicles() {
+    void vehicles() {
         assertThat(faker.detectiveConan().vehicles()).isNotEmpty();
     }
 

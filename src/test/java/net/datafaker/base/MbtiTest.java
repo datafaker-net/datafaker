@@ -8,13 +8,13 @@ import static org.assertj.core.util.Strings.isNullOrEmpty;
 class MbtiTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    public void type() {
+    void type() {
         assertThat(isNullOrEmpty(faker.mbti().type())).isFalse();
         assertThat(faker.mbti().type()).matches("[A-Za-z,\\-.() ]+");
     }
 
     @Test
-    public void name() {
+    void name() {
         assertThat(isNullOrEmpty(faker.mbti().name())).isFalse();
         assertThat(faker.mbti().name()).matches("[A-Za-z,\\-.();:'$ ]+");
     }

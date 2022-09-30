@@ -1,6 +1,5 @@
 package net.datafaker.base;
 
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +7,7 @@ import static net.datafaker.base.Password.DIGITS;
 import static net.datafaker.base.Password.EN_LOWERCASE;
 import static net.datafaker.base.Password.EN_UPPERCASE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PasswordTest extends BaseFakerTest<BaseFaker> {
     @Test
@@ -43,7 +43,7 @@ class PasswordTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void exceptionIfLengthIsShorterThanNumberOfRequiredSymbols() {
-        Assertions.assertThatThrownBy(() ->
+        assertThatThrownBy(() ->
                 faker.password().password(Password.PasswordSymbolsBuilder.builder()
                     .withMinLength(1)
                     .withMaxLength(1)

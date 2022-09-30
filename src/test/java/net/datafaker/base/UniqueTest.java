@@ -24,7 +24,7 @@ class UniqueTest {
     );
 
     @Test
-    public void fetchFromYaml_shouldReturnValuesInRandomOrderUsingRandomService() {
+    void fetchFromYaml_shouldReturnValuesInRandomOrderUsingRandomService() {
         String key = "unique.values";
 
         RandomService randomService = Mockito.spy(new RandomService(new Random()));
@@ -53,7 +53,7 @@ class UniqueTest {
     }
 
     @Test
-    public void fetchFromYaml_shouldThrowExceptionWhenAllPossibleValuesHaveBeenReturned() {
+    void fetchFromYaml_shouldThrowExceptionWhenAllPossibleValuesHaveBeenReturned() {
         String key = "unique.single-value";
 
         assertThat(faker.unique().fetchFromYaml(key)).isEqualTo("theOnlyValue");
@@ -62,7 +62,7 @@ class UniqueTest {
     }
 
     @Test
-    public void fetchFromYaml_shouldReturnValuesBasedOnKeyAndLocale() {
+    void fetchFromYaml_shouldReturnValuesBasedOnKeyAndLocale() {
         String firstKey = "unique.first-same-locale-value";
         String secondKey = "unique.second-same-locale-value";
 
@@ -76,25 +76,25 @@ class UniqueTest {
     }
 
     @Test
-    public void fetchFromYaml_shouldThrowExceptionWhenNoValuesFoundForKey() {
+    void fetchFromYaml_shouldThrowExceptionWhenNoValuesFoundForKey() {
         assertThatThrownBy(() -> faker.unique().fetchFromYaml("unique.nonexistent-values"))
             .hasMessage("No values found for key unique.nonexistent-values");
     }
 
     @Test
-    public void fetchFromYaml_shouldThrowExceptionWhenNonListValueFoundForKey() {
+    void fetchFromYaml_shouldThrowExceptionWhenNonListValueFoundForKey() {
         assertThatThrownBy(() -> faker.unique().fetchFromYaml("unique"))
             .hasMessage("No values found for key unique");
     }
 
     @Test
-    public void fetchFromYaml_shouldThrowExceptionWhenListOfListsFoundForKey() {
+    void fetchFromYaml_shouldThrowExceptionWhenListOfListsFoundForKey() {
         assertThatThrownBy(() -> faker.unique().fetchFromYaml("unique.list-of-lists"))
             .hasMessage("No values found for key unique.list-of-lists");
     }
 
     @Test
-    public void fetchFromYaml_shouldNotInterfereWithValuesReturnedFromOtherFakers() {
+    void fetchFromYaml_shouldNotInterfereWithValuesReturnedFromOtherFakers() {
         String key = "unique.values";
 
         for (int x = 0; x < defaultValues.size(); x++) {
@@ -107,19 +107,19 @@ class UniqueTest {
     }
 
     @Test
-    public void fetchFromYaml_shouldConvertIntegersToStrings() {
+    void fetchFromYaml_shouldConvertIntegersToStrings() {
         assertThat(faker.unique().fetchFromYaml("unique.valid-integer"))
             .isEqualTo("123");
     }
 
     @Test
-    public void fetchFromYaml_shouldConvertDecimalsToStrings() {
+    void fetchFromYaml_shouldConvertDecimalsToStrings() {
         assertThat(faker.unique().fetchFromYaml("unique.valid-decimal"))
             .isEqualTo("12.34");
     }
 
     @Test
-    public void fetchFromYaml_shouldConvertBooleansToStrings() {
+    void fetchFromYaml_shouldConvertBooleansToStrings() {
         assertThat(faker.unique().fetchFromYaml("unique.valid-boolean"))
             .isEqualTo("true");
     }

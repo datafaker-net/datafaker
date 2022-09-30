@@ -16,7 +16,7 @@ class RelationshipTest extends BaseFakerTest<BaseFaker> {
     private BaseFaker mockFaker;
 
     @BeforeEach
-    public void before() {
+    protected void before() {
         super.before();
         mockFaker = Mockito.mock(BaseFaker.class);
     }

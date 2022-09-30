@@ -7,22 +7,22 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class ChiquitoTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    public void expressions() {
+    void expressions() {
         assertThat(faker.chiquito().expressions()).isNotEmpty();
     }
 
     @Test
-    public void terms() {
+    void terms() {
         assertThat(faker.chiquito().terms()).isNotEmpty();
     }
 
     @Test
-    public void sentences() {
+    void sentences() {
         assertThat(faker.chiquito().sentences()).isNotEmpty();
     }
 
     @Test
-    public void jokes() {
+    void jokes() {
         assertThat(faker.chiquito().jokes()).isNotEmpty();
     }
 

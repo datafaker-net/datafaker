@@ -1,28 +1,29 @@
 package net.datafaker.videogame;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HeroesOfTheStormTest extends VideoGameFakerTest {
 
     @Test
     void testBattleground() {
-        Assertions.assertThat(faker.heroesOfTheStorm().battleground()).isNotEmpty();
+        assertThat(faker.heroesOfTheStorm().battleground()).isNotEmpty();
     }
 
     @Test
     void testHeroClass() {
-        Assertions.assertThat(faker.heroesOfTheStorm().heroClass()).isNotEmpty();
+        assertThat(faker.heroesOfTheStorm().heroClass()).isNotEmpty();
     }
 
     @Test
     void testHero() {
-        Assertions.assertThat(faker.heroesOfTheStorm().hero()).isNotEmpty();
+        assertThat(faker.heroesOfTheStorm().hero()).isNotEmpty();
     }
 
     @Test
     void testQuote() {
-        Assertions.assertThat(faker.heroesOfTheStorm().quote()).isNotEmpty();
+        assertThat(faker.heroesOfTheStorm().quote()).isNotEmpty();
     }
 
 }
