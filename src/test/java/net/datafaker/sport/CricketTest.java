@@ -7,7 +7,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class CricketTest extends SportFakerTest {
 
     @Test
-    public void teams() {
+    void teams() {
         assertThat(faker.cricket().teams()).isNotEmpty();
     }
 
