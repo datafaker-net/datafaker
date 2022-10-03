@@ -99,7 +99,7 @@ public class EnFile {
         "esport.yml",
         "englandfootball.yml",
 //            "fallout.yml",
-//            "family_guy.yml",
+        "family_guy.yml",
         "fallout.yml",
         "famous_last_words.yml",
         "file.yml",

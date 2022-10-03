@@ -268,6 +268,7 @@ Providers
 * England Football
 * Esports
 * Fallout
+* Family Guy
 * Famous Last Words
 * File
 * Final Space

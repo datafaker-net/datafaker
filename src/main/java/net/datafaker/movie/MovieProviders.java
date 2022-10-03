@@ -67,6 +67,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(Dune.class, Dune::new);
     }
 
+    default FamilyGuy familyGuy() {
+        return getProvider(FamilyGuy.class, FamilyGuy::new);
+    }
+
     default FinalSpace finalSpace() {
         return getProvider(FinalSpace.class, FinalSpace::new);
     }
