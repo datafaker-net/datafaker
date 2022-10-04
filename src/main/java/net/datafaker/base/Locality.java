@@ -7,6 +7,11 @@ import java.util.Locale;
 import java.io.File;
 import java.util.Collections;
 
+/**
+ * Generates random locales in different forms.
+ *
+ * @since 1.7.0
+ */
 public class Locality extends AbstractProvider<BaseProviders> {
 
     private final static String resourcePath = "./src/main/resources";

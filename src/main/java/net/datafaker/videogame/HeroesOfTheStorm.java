@@ -2,6 +2,9 @@ package net.datafaker.videogame;
 
 import net.datafaker.base.AbstractProvider;
 
+/**
+ * @since 1.7.0
+ */
 public class HeroesOfTheStorm extends AbstractProvider<VideoGameProviders> {
 
     protected HeroesOfTheStorm(VideoGameProviders faker) {

@@ -2,6 +2,9 @@ package net.datafaker.movie;
 
 import net.datafaker.base.AbstractProvider;
 
+/**
+ * @since 1.7.0
+ */
 public class FamilyGuy extends AbstractProvider<MovieProviders> {
 
     protected FamilyGuy(MovieProviders faker) {
