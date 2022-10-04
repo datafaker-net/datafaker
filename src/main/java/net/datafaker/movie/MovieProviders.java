@@ -79,6 +79,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(Friends.class, Friends::new);
     }
 
+    default FullmetalAlchemist fullMetalAlchemist() {
+        return getProvider(FullmetalAlchemist.class, FullmetalAlchemist::new);
+    }
+
     default GameOfThrones gameOfThrones() {
         return getProvider(GameOfThrones.class, GameOfThrones::new);
     }
