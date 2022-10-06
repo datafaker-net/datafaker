@@ -41,16 +41,11 @@ bg:
         - "#{female_last_name} #{female_first_name} #{female_middle_name}"
 
     phone_number:
-
-      formats:
-        - "02#######"
-        - "03#######"
-        - "04#######"
-        - "05#######"
-        - "06#######"
-        - "07#######"
-        - "08#######"
-        - "09#######"
+      area_codes: ['2', '3', '4', '5', '6', '7', '8', '9']
+      formats: # National format
+        - "(0#{PhoneNumber.area_codes}#) ###-###"
+      formats_international:
+        - "+359 #{PhoneNumber.area_codes}#-###-###"
 
     cell_phone:
       formats: ['088#######', '087#######', '089#######']
