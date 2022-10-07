@@ -1,6 +1,6 @@
 package net.datafaker;
 
-import net.datafaker.base.BaseProviders;
+import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.service.RandomService;
 
 import java.util.ArrayList;

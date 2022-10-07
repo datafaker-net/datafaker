@@ -4,7 +4,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.comments.CommentsCollection;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.google.common.base.Strings;
-import net.datafaker.base.AbstractProvider;
+import net.datafaker.providers.base.AbstractProvider;
 import org.reflections.Reflections;
 
 import java.io.BufferedWriter;

@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers.pt.br;
 
-import net.datafaker.base.BaseProviders;
+import net.datafaker.providers.base.BaseProviders;
 
 public final class IdNumberGeneratorPtBrUtil {
 

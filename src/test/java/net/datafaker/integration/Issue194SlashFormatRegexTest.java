@@ -1,6 +1,6 @@
 package net.datafaker.integration;
 
-import net.datafaker.base.BaseFaker;
+import net.datafaker.providers.base.BaseFaker;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;

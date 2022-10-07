@@ -1,8 +1,8 @@
 package net.datafaker.fileformats;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.base.BaseFaker;
-import net.datafaker.base.Name;
+import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.Name;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

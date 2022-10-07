@@ -1,6 +1,6 @@
 package net.datafaker;
 
-import net.datafaker.base.BaseFaker;
+import net.datafaker.providers.base.BaseFaker;
 import org.junit.jupiter.api.Test;
 
 public class FakerConcurrencyModificationExceptionTest {

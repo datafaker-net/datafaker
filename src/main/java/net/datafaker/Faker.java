@@ -1,14 +1,14 @@
 package net.datafaker;
 
-import net.datafaker.food.FoodProviders;
-import net.datafaker.movie.MovieProviders;
+import net.datafaker.providers.food.FoodProviders;
+import net.datafaker.providers.movie.MovieProviders;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
-import net.datafaker.base.BaseFaker;
-import net.datafaker.base.BaseProviders;
-import net.datafaker.sport.SportProviders;
-import net.datafaker.videogame.VideoGameProviders;
+import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.sport.SportProviders;
+import net.datafaker.providers.videogame.VideoGameProviders;
 
 import java.util.Locale;
 import java.util.Random;
