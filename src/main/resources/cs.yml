@@ -67,4 +67,11 @@ cs:
         - "#{woman_first_name} #{woman_last_name}"
 
     phone_number:
-      formats: ['08## ### ###', '0## #### ####', '0# #### ####', '+420 ### ### ###']
+      area_code_1: ['2']
+      area_code: ['31', '32', '49', '35', '48', '55', '59', '58', '46', '37', '38', '39', '51', '53', '54', '41', '47', '56', '57']
+      formats: # National format
+        - '#{PhoneNumber.area_code_1}####-####'
+        - '#{PhoneNumber.area_code}###-####'
+      formats_international:
+        - '+420 #{PhoneNumber.area_code_1} ####-####'
+        - '+420 #{PhoneNumber.area_code} ###-####'

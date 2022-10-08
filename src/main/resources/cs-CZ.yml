@@ -26,27 +26,14 @@ cs-CZ:
     color:
       name: [červená, zelená, modrá, žlutá, purpurová, bílá, černá, oranžová, růžová, šedá, fialová, tyrkysová, lososová, švesková, cihlová, olivová, magenta, hnědá, vínová, zlatá, stříbrná, azurová]
     phone_number:
-      formats:
-        - "2########"
-        - "31#######"
-        - "32#######"
-        - "35#######"
-        - "37#######"
-        - "38#######"
-        - "39#######"
-        - "41#######"
-        - "47#######"
-        - "46#######"
-        - "48#######"
-        - "49#######"
-        - "51#######"
-        - "53#######"
-        - "54#######"
-        - "55#######"
-        - "59#######"
-        - "56#######"
-        - "57#######"
-        - "58#######"
+      area_code_1: [ '2' ]
+      area_code: [ '31', '32', '49', '35', '48', '55', '59', '58', '46', '37', '38', '39', '51', '53', '54', '41', '47', '56', '57' ]
+      formats: # National format
+        - '#{PhoneNumber.area_code_1}## ### ###'
+        - '#{PhoneNumber.area_code}# ### ###'
+      formats_international:
+        - '+420 #{PhoneNumber.area_code_1}## ### ###'
+        - '+420 #{PhoneNumber.area_code}# ### ###'
     cell_phone:
       formats:
         # O2

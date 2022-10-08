@@ -43,23 +43,14 @@ ca:
         '306', '639',  # Saskatchewan
         '867'  # Yukon, Northwest Territories and Nunavut
       ]
-      formats:
-        - '#{area_code}-###-####'
+      formats: # National format
         - '(#{area_code}) ###-####'
-        - '#{country_code}-#{area_code}-###-####'
-        - '#{area_code}.###.####'
-        - '#{area_code}-###-#### x###'
-        - '(#{area_code}) ###-#### x###'
-        - '#{country_code}-###-###-#### x###'
-        - '#{area_code}.###.#### x###'
-        - '#{area_code}-###-#### x####'
         - '(#{area_code}) ###-#### x####'
-        - '#{country_code}-#{area_code}-###-#### x####'
-        - '#{area_code}.###.#### x####'
-        - '#{area_code}-###-#### x#####'
         - '(#{area_code}) ###-#### x#####'
-        - '#{country_code}-#{area_code}-###-#### x#####'
-        - '#{area_code}.###.#### x#####'
+      formats_international:
+        - '+#{PhoneNumber.country_code} #{PhoneNumber.area_code}-###-####'
+        - '+#{PhoneNumber.country_code} #{PhoneNumber.area_code}-###-#### x####'
+        - '+#{PhoneNumber.country_code} #{PhoneNumber.area_code}-###-#### x#####'
     cell_phone:
       country_code: ['1']
       area_code: [
