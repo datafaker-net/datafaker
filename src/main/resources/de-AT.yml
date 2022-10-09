@@ -52,19 +52,19 @@ de-AT:
     phone_number:
       area_code: ['4846', '2278', '6243', '7727', '5246', '3613', '3861', '4247', '2712', '7281', '4853', '5579', '7274', '2258', '2824', '5336', '7230', '7415', '2673', '7723', '7675', '7472', '7766', '7750', '3175', '2283', '6463', '6223', '7759', '2175', '2813', '7479', '3455', '4255', '7273', '7476', '2642', '2577', '4855', '7666', '7674', '2275', '6470', '5515', '2288']
       formats:
-        - "+43-#{PhoneNumber.area_code}-###"
-        - "+43-#{PhoneNumber.area_code}-####"
-        - "+43-#{PhoneNumber.area_code}-##-###"
-        - "+43-#{PhoneNumber.area_code}-###-###"
-        - "+43-#{PhoneNumber.area_code}-###-####"
-        - "+43-#{PhoneNumber.area_code}-####-####"
-        - "0-#{PhoneNumber.area_code}-###"
-        - "0-#{PhoneNumber.area_code}-####"
-        - "0-#{PhoneNumber.area_code}-##-###"
-        - "0-#{PhoneNumber.area_code}-###-###"
-        - "0-#{PhoneNumber.area_code}-###-####"
-        - "0-#{PhoneNumber.area_code}-####-####"
-
+        - "0#{PhoneNumber.area_code} ###"
+        - "0#{PhoneNumber.area_code} ####"
+        - "0#{PhoneNumber.area_code} #####"
+        - "0#{PhoneNumber.area_code} ######"
+        - "0#{PhoneNumber.area_code} #######"
+        - "0#{PhoneNumber.area_code} ########"
+      formats_international:
+        - "+43 #{PhoneNumber.area_code} ###"
+        - "+43 #{PhoneNumber.area_code} ####"
+        - "+43 #{PhoneNumber.area_code} #####"
+        - "+43 #{PhoneNumber.area_code} ######"
+        - "+43 #{PhoneNumber.area_code} #######"
+        - "+43 #{PhoneNumber.area_code} ########"
     cell_phone:
       formats: ['+43-6##-#######', '06##-########', '+436#########', '06##########']
 
