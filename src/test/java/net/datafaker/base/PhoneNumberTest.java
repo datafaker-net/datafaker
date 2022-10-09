@@ -211,7 +211,6 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
         String phoneNumber = new BaseFaker(new Locale("cs", "CZ")).phoneNumber().phoneNumber();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "CZ");
-        System.out.println(phoneNumber);
         assertThat(util.isValidNumberForRegion(proto, "CZ")).as(phoneNumber).isTrue();
     }
 
@@ -220,8 +219,55 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
         String phoneNumber = new BaseFaker(new Locale("cs", "CZ")).phoneNumber().phoneNumberInternational();
         Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "CZ");
-        System.out.println(phoneNumber);
         assertThat(util.isValidNumberForRegion(proto, "CZ")).as(phoneNumber).isTrue();
+    }
+
+    @Test
+    void testPhoneNumberNational_de() throws NumberParseException {
+        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+        String phoneNumber = new BaseFaker(new Locale("de", "DE")).phoneNumber().phoneNumber();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "DE");
+        assertThat(util.isValidNumberForRegion(proto, "DE")).as(phoneNumber).isTrue();
+    }
+
+    @Test
+    void testPhoneNumberInternational_de() throws NumberParseException {
+        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+        String phoneNumber = new BaseFaker(new Locale("de", "DE")).phoneNumber().phoneNumberInternational();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "DE");
+        assertThat(util.isValidNumberForRegion(proto, "DE")).as(phoneNumber).isTrue();
+    }
+
+    @Test
+    void testPhoneNumberNational_de_AT() throws NumberParseException {
+        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+        String phoneNumber = new BaseFaker(new Locale("de", "AT")).phoneNumber().phoneNumber();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "AT");
+        assertThat(util.isValidNumberForRegion(proto, "AT")).as(phoneNumber).isTrue();
+    }
+
+    @Test
+    void testPhoneNumberInternational_de_AT() throws NumberParseException {
+        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+        String phoneNumber = new BaseFaker(new Locale("de", "AT")).phoneNumber().phoneNumberInternational();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "AT");
+        assertThat(util.isValidNumberForRegion(proto, "AT")).as(phoneNumber).isTrue();
+    }
+
+    @Test
+    void testPhoneNumberNational_de_CH() throws NumberParseException {
+        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+        String phoneNumber = new BaseFaker(new Locale("de", "CH")).phoneNumber().phoneNumber();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "CH");
+        assertThat(util.isValidNumberForRegion(proto, "CH")).as(phoneNumber).isTrue();
+    }
+
+    @Test
+    void testPhoneNumberInternational_de_CH() throws NumberParseException {
+        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+        String phoneNumber = new BaseFaker(new Locale("de", "CH")).phoneNumber().phoneNumberInternational();
+        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "CH");
+        assertThat(util.isValidNumberForRegion(proto, "CH")).as(phoneNumber).isTrue();
     }
 
     @Test
