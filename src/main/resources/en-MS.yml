@@ -42,7 +42,6 @@ en-MS:
         - "No. #{building_number}, #{street_name}"
       default_country: [Malaysia]
     phone_number:
-#      formats: ['626-###-####', '689-###-####', '800-###-####', '212-###-####']
       formats: #National format
         - '(800) ###-####'
       formats_international:
