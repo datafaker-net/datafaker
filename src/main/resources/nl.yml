@@ -96,11 +96,15 @@ nl:
       ]
 
       formats:
-        - "#{PhoneNumber.area_code_3}-#######"
-        - "#{PhoneNumber.area_code_4}-######"
-        - "#{CellPhone.prefix}#######"
-        - "#{CellPhone.prefix}### ####"
-
+        - "#{PhoneNumber.area_code_3} ### ####"
+        - "#{PhoneNumber.area_code_4} ### ###"
+        - "#{CellPhone.prefix} #######"
+        - "#{CellPhone.prefix} ### ####"
+      formats_international:
+        - '+31 #{PhoneNumber.area_code_3} ### ####'
+        - '+31 #{PhoneNumber.area_code_4} ### ###'
+        - '+31 #{CellPhone.prefix} #######'
+        - '+31 #{CellPhone.prefix} ### ####'
     cell_phone:
       prefix: ["061", "062", "063", "064", "065" ]
       formats:

@@ -63,7 +63,9 @@ pt:
     phone_number:
       mobile_operator_prefix: ['1', '3', '6', '2']
       formats:
-        - "9-#{PhoneNumber.mobile_operator_prefix}-###-####"
+        - "9#{PhoneNumber.mobile_operator_prefix}# ### ###"
+      formats_international:
+        - '+351 9#{PhoneNumber.mobile_operator_prefix}# ### ###'
 
     id_number:
       valid: "#{IDNumber.valid_pt_nif}"
