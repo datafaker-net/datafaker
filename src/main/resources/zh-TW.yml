@@ -26,4 +26,14 @@ zh-TW:
         - "#{name}"
 
     phone_number:
-      formats: ['02-########', '03-#######', '037-######', '04-########', '04-#######', '049-#######', '05-#######', '06-#######', '07-#######', '08-#######', '082-######', '0826-#####', '0836-#####', '089-######']
+      area_code_1: ['2', '3', '4', '5', '6', '7', '8']
+      area_code_2: ['37', '49', '82', '89']
+      area_code_3: ['826', '836']
+      formats:
+        - '0#{PhoneNumber.area_code_1} ### ####'
+        - '0#{PhoneNumber.area_code_2} ######'
+        - '0#{PhoneNumber.area_code_3} #####'
+      formats_international:
+        - '+886 #{PhoneNumber.area_code_1} ### ####'
+        - '+886 #{PhoneNumber.area_code_2} ######'
+        - '+886 #{PhoneNumber.area_code_3} #####'
