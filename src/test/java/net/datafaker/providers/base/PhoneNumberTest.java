@@ -175,7 +175,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(new Locale("by", "BY"), "BY"),
             Arguments.of(new Locale("ca", "CA"), "CA"),
             Arguments.of(new Locale("cs", "CZ"), "CZ"),
-            Arguments.of(new Locale("de", "DE"), "DE"),
+            Arguments.of(new Locale("de"), "DE"),
             Arguments.of(new Locale("de", "AT"), "AT"),
             Arguments.of(new Locale("de", "CH"), "CH"),
             Arguments.of(new Locale("en", "IND"), "IN"),
@@ -197,7 +197,12 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(new Locale("en", "SG"), "SG"),
             Arguments.of(new Locale("en", "PH"), "PH"),
             Arguments.of(new Locale("en", "UG"), "UG"),
-            Arguments.of(new Locale("en", "ZA"), "ZA")
+            Arguments.of(new Locale("en", "ZA"), "ZA"),
+            Arguments.of(new Locale("sv"), "SE"),
+            Arguments.of(new Locale("th"), "TH"),
+            Arguments.of(new Locale("sk"), "SK"),
+            Arguments.of(new Locale("ru"), "RU"),
+            Arguments.of(new Locale("pt", "BR"), "BR")
         );
     }
 
