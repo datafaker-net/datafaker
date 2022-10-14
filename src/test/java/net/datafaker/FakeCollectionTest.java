@@ -113,7 +113,7 @@ class FakeCollectionTest extends AbstractFakerTest {
             .hasMessage("Max length must be not less than min length and not negative");
     }
 
-    private interface Data {
+    protected interface Data {
         String name();
 
         String value();
@@ -123,7 +123,7 @@ class FakeCollectionTest extends AbstractFakerTest {
         String unit();
     }
 
-    private static class BloodPressure implements Data {
+    protected static class BloodPressure implements Data {
 
         @Override
         public String name() {
@@ -146,7 +146,7 @@ class FakeCollectionTest extends AbstractFakerTest {
         }
     }
 
-    private static class Glucose implements Data {
+    protected static class Glucose implements Data {
 
         @Override
         public String name() {
@@ -169,7 +169,7 @@ class FakeCollectionTest extends AbstractFakerTest {
         }
     }
 
-    private static class Temperature implements Data {
+    protected static class Temperature implements Data {
 
         @Override
         public String name() {

@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.FakeCollection;
+import net.datafaker.FakeStream;
 import net.datafaker.fileformats.Json;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
@@ -354,6 +355,22 @@ public class BaseFaker implements BaseProviders {
 
     public final <T> FakeCollection.Builder<T> collection(List<Supplier<T>> suppliers) {
         return new FakeCollection.Builder<>(suppliers).faker(this);
+    }
+
+    /**
+     * @return builder to build {@code FakeStream}
+     */
+    public <T> FakeStream.Builder<T> stream() {
+        return new FakeStream.Builder<T>().faker(this);
+    }
+
+    @SafeVarargs
+    public final <T> FakeStream.Builder<T> stream(Supplier<T>... suppliers) {
+        return new FakeStream.Builder<>(suppliers).faker(this);
+    }
+
+    public final <T> FakeStream.Builder<T> stream(List<Supplier<T>> suppliers) {
+        return new FakeStream.Builder<>(suppliers).faker(this);
     }
 
     public String resolve(String key) {
