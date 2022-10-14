@@ -840,7 +840,7 @@ public class FakeValuesService {
             methods = methodMap.get(name.toLowerCase(Locale.ROOT));
         }
         for (Method m : methods) {
-            if (m.getParameterTypes().length == args.length || m.getParameterTypes().length < args.length && m.isVarArgs()) {
+            if (m.getParameterCount() == args.length || m.getParameterCount() < args.length && m.isVarArgs()) {
                 final Object[] coercedArguments = args.length == 0 ? EMPTY_ARRAY : coerceArguments(m, args);
                 if (coercedArguments != null) {
                     return new MethodAndCoercedArgs(m, coercedArguments);
@@ -876,10 +876,11 @@ public class FakeValuesService {
      * @return array of coerced values if successful, null otherwise
      */
     private Object[] coerceArguments(Method accessor, String[] args) {
-        final Object[] coerced = new Object[accessor.getParameterTypes().length];
-        for (int i = 0; i < accessor.getParameterTypes().length; i++) {
-            final boolean isVarArg = i == accessor.getParameterTypes().length - 1 && accessor.isVarArgs();
-            Class<?> toType = primitiveToWrapper(accessor.getParameterTypes()[i]);
+        final Object[] coerced = new Object[accessor.getParameterCount()];
+        final Class<?>[] parameterTypes = accessor.getParameterTypes();
+        for (int i = 0; i < accessor.getParameterCount(); i++) {
+            final boolean isVarArg = i == accessor.getParameterCount() - 1 && accessor.isVarArgs();
+            Class<?> toType = primitiveToWrapper(parameterTypes[i]);
             toType = isVarArg ? toType.getComponentType() : toType;
             try {
                 final Object coercedArgument;
@@ -899,7 +900,8 @@ public class FakeValuesService {
                     if (isVarArg) {
                         Constructor<?> ctor = class2constructorCache.get(toType);
                         if (ctor == null) {
-                            for (Constructor<?> c : toType.getConstructors()) {
+                            final Constructor<?>[] constructors = toType.getConstructors();
+                            for (Constructor<?> c : constructors) {
                                 if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == String.class) {
                                     ctor = toType.getConstructor(String.class);
                                     class2constructorCache.put(toType, ctor);
