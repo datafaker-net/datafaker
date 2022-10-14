@@ -69,15 +69,11 @@ en-UG:
       region:
         - "#{regions}"
     phone_number:
+      area_code: ['39', '41']
       formats:
-        # carrier mtn landline
-        - "256 39# ### ###"
-        - "+256 39# ### ###"
-        - "039# ### ###"
-        # carrier utl landline
-        - "256 41# ### ###"
-        - "+256 41# ### ###"
-        - "041# ### ###"
+        - "0#{PhoneNumber.area_code} #######"
+      formats_international:
+        - '+256 #{PhoneNumber.area_code} #######'
     cell_phone:
       formats:
         # africell
