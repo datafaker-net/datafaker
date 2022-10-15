@@ -207,7 +207,13 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(new Locale("es", "MX"), "MX"),
             Arguments.of(new Locale("es", "PY"), "PY"),
             Arguments.of(new Locale("es"), "ES"),
-            Arguments.of(new Locale("fr", "CA"), "CA")
+            Arguments.of(new Locale("fr", "CA"), "CA"),
+            Arguments.of(new Locale("fr"), "FR"),
+            Arguments.of(new Locale("he"), "IL"),
+            Arguments.of(new Locale("hr"), "HR"),
+            Arguments.of(new Locale("hy"), "AM"),
+            Arguments.of(new Locale("id"), "ID"),
+            Arguments.of(new Locale("in", "ID"), "ID")
         );
     }
 
