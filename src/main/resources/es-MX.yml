@@ -76,10 +76,9 @@ es-MX:
       formats:
         - "#{PhoneNumber.lada_dos} #### ####"
         - "#{PhoneNumber.lada_tres} ### ####"
-        - "(#{PhoneNumber.lada_dos}) #### ####"
-        - "(#{PhoneNumber.lada_tres}) ### ####"
-        - "#{PhoneNumber.lada_dos}-####-####"
-        - "#{PhoneNumber.lada_tres}-###-####"
+      formats_international:
+        - "+52 #{PhoneNumber.lada_dos} #### ####"
+        - "+52 #{PhoneNumber.lada_tres} ### ####"
     cell_phone:
       formats:
         - "#{PhoneNumber.lada_dos} #### ####"

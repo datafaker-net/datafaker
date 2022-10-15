@@ -127,11 +127,13 @@ es-AR:
       # http://www.wtng.info/wtng-54-ar.html
       area_code_new: ['229', '230', '236', '263', '260', '265', '298', '294', '290', '347', '348', '371', '372', '374', '376', '378', '382', '383']
       formats:
-        - "#{PhoneNumber.area_code2}-####-####"
+        - "0#{PhoneNumber.area_code2} ####-####"
 #        - "#{PhoneNumber.area_code3}-###-####"
 #        - "#{PhoneNumber.area_code4}-######"
-        - "#{PhoneNumber.area_code_new}-4-##-####"
-
+        - "0#{PhoneNumber.area_code_new} 4##-####"
+      formats_international:
+        - '+54 #{PhoneNumber.area_code2} ####-####'
+        - '+54 #{PhoneNumber.area_code_new} 4##-####'
 
     cell_phone:
       formats: ['6##-###-###', '6##.###.###', '6## ### ###', '6########']
