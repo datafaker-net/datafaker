@@ -145,6 +145,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         }
         assertThat(errorCount).isLessThan(250);
     }
+
     @ParameterizedTest
     @MethodSource("generateLanguageAndRegionOfLocales")
     void testAllPhoneNumberInternational(Locale locale, String phoneNumberRegion) throws NumberParseException {
@@ -160,6 +161,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         }
         assertThat(errorCount).isLessThan(250);
     }
+    
     // `new Locale("en", "IND")` in `new Locale("en", "IND"), "IN")` is a Java's Locale
     // `"IN"` in `new Locale("en", "IND"), "IN")` is a PhoneNumberUtil's region
     private static Stream<Arguments> generateLanguageAndRegionOfLocales() {
@@ -186,7 +188,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(new Locale("ko", "KR"), "KR"),
             Arguments.of(new Locale("ja", "JP"), "JP"),
             Arguments.of(new Locale("lv", "LV"), "LV"),
-            Arguments.of(new Locale("it", "IT"), "IT"),
+            Arguments.of(new Locale("ca", "IT"), "IT"),
             Arguments.of(new Locale("nl", "NL"), "NL"),
             Arguments.of(new Locale("pl", "PL"), "PL"),
             Arguments.of(new Locale("pt", "PT"), "PT"),
@@ -213,7 +215,12 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(new Locale("hr"), "HR"),
             Arguments.of(new Locale("hy"), "AM"),
             Arguments.of(new Locale("id"), "ID"),
-            Arguments.of(new Locale("in", "ID"), "ID")
+            Arguments.of(new Locale("in", "ID"), "ID"),
+            Arguments.of(Locale.ENGLISH, "US"),
+            Arguments.of(new Locale("nb", "NO"), "NO"),
+            Arguments.of(new Locale("no", "NO"), "NO"),
+            Arguments.of(new Locale("da", "DK"), "DK"),
+            Arguments.of(new Locale("vi", "VI"), "VI")
         );
     }
 
