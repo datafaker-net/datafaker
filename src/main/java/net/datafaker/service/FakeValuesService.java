@@ -163,11 +163,8 @@ public class FakeValuesService {
                 continue;
             }
             if (key2fetchedObject.get(locale) != null && (result = key2fetchedObject.get(locale).get(key)) != null) {
-                break;
+                return result;
             }
-        }
-        if (result != null) {
-            return result;
         }
 
         String[] path = split(key);
@@ -595,13 +592,10 @@ public class FakeValuesService {
     private Object resolveExpression(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
-        if (directive.trim().isEmpty()) {
+        if (directive.isEmpty()) {
             return directive;
         }
         final boolean dotDirective = isDotDirective(directive);
-        final String simpleDirective = (dotDirective || current == null)
-            ? directive
-            : classNameToYamlName(current) + "." + directive;
 
         Object resolved;
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
@@ -614,6 +608,9 @@ public class FakeValuesService {
             }
         }
 
+        final String simpleDirective = (dotDirective || current == null)
+            ? directive
+            : classNameToYamlName(current) + "." + directive;
         // simple fetch of a value from the yaml file. the directive may have been mutated
         // such that if the current yml object is car: and directive is #{wheel} then
         // car.wheel will be looked up in the YAML file.
@@ -625,7 +622,7 @@ public class FakeValuesService {
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
-        if (!dotDirective) {
+        if (!dotDirective && root != null && (current == null || root.getClass() != current.getClass())) {
             supplier = resolveFromMethodOn(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 //       expression2function.put(expression, supplier);
