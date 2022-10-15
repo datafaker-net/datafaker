@@ -55,7 +55,8 @@ da-DK:
     phone_number:
       formats:
         - '## ## ## ##'
-        - '##-##-##-##'
+      formats_international:
+        - '+45 ## ## ## ##'
     cell_phone:
       formats:
         - '20 ## ## ##'

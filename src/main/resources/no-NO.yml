@@ -7,16 +7,11 @@ no-NO:
         pattern: '\d{24}#'
 
     phone_number:
+      area_code_1: ['2', '3', '6', '7']
+      area_code_2: ['51', '52', '53', '55', '56', '57']
       formats:
-        - "2#######"
-        - "3#######"
-        - "50######"
-        - "51######"
-        - "52######"
-        - "53######"
-        - "54######"
-        - "55######"
-        - "56######"
-        - "57######"
-        - "6#######"
-        - "7#######"
+        - '#{PhoneNumber.area_code_1}# ## ## ##'
+        - '#{PhoneNumber.area_code_2} ## ## ##'
+      formats_international:
+        - '+47 #{PhoneNumber.area_code_1}# ## ## ##'
+        - '+47 #{PhoneNumber.area_code_2} ## ## ##'
