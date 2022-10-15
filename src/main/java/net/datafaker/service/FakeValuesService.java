@@ -700,16 +700,22 @@ public class FakeValuesService {
             name2yaml.put(expression, expression);
             return expression;
         }
-        StringBuilder sb = new StringBuilder(expression.length() + cnt);
+        final StringBuilder sb = new StringBuilder(expression.length() + cnt);
         for (int i = 0; i < expression.length(); i++) {
-            char c = expression.charAt(i);
-            if (Character.isUpperCase(c)) {
-                if (sb.length() > 0) {
-                    sb.append("_");
+            final char c = expression.charAt(i);
+            if (cnt > 0) {
+                if (Character.isUpperCase(c)) {
+                    if (sb.length() > 0) {
+                        sb.append("_");
+                    }
+                    sb.append(Character.toLowerCase(c));
+                    cnt--;
+                } else {
+                  sb.append(c);
                 }
-                sb.append(Character.toLowerCase(c));
             } else {
-                sb.append(c);
+                sb.append(expression.substring(i));
+                break;
             }
         }
         result = sb.toString();
@@ -728,17 +734,7 @@ public class FakeValuesService {
             return null;
         }
         try {
-            Class<?> clazz = obj.getClass();
-            final MethodAndCoercedArgs accessor;
-            if (!mapOfMethodAndCoercedArgs.containsKey(clazz) || !mapOfMethodAndCoercedArgs.get(clazz).containsKey(directive) || !mapOfMethodAndCoercedArgs.get(clazz).get(directive).containsKey(args)) {
-                accessor = accessor(obj.getClass(), directive, args);
-                mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(directive, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(clazz).get(directive).put(args, accessor);
-            } else {
-                accessor = mapOfMethodAndCoercedArgs.get(clazz).get(directive).get(args);
-            }
-
+            final MethodAndCoercedArgs accessor = retrieveMethodAccessor(obj, directive, args);
             return (accessor == null)
                 ? () -> null
                 : () -> invokeAndToString(accessor, obj);
@@ -765,33 +761,14 @@ public class FakeValuesService {
 
         try {
             String fakerMethodName = removeUnderscoreChars(classAndMethod[0]);
-            Class<?> fakerClass = faker.getClass();
-            final MethodAndCoercedArgs fakerAccessor;
-            if (mapOfMethodAndCoercedArgs.get(fakerClass) == null || mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName) == null || mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName).get(EMPTY_ARRAY) == null) {
-                fakerAccessor = accessor(fakerClass, fakerMethodName, EMPTY_ARRAY);
-                mapOfMethodAndCoercedArgs.putIfAbsent(fakerClass, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(fakerClass).putIfAbsent(fakerMethodName, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName).put(EMPTY_ARRAY, fakerAccessor);
-            } else {
-                fakerAccessor = mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName).get(EMPTY_ARRAY);
-            }
-
+            final MethodAndCoercedArgs fakerAccessor = retrieveMethodAccessor(faker, fakerMethodName, EMPTY_ARRAY);
             if (fakerAccessor == null) {
                 LOG.fine("Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
             }
             Object objectWithMethodToInvoke = fakerAccessor.invoke(faker);
             String nestedMethodName = removeUnderscoreChars(classAndMethod[1]);
-            Class<?> objectWithMethodClass = objectWithMethodToInvoke.getClass();
-            final MethodAndCoercedArgs accessor;
-            if (mapOfMethodAndCoercedArgs.get(objectWithMethodClass) == null || mapOfMethodAndCoercedArgs.get(objectWithMethodClass).get(nestedMethodName) == null || mapOfMethodAndCoercedArgs.get(objectWithMethodClass).get(nestedMethodName).get(args) == null) {
-                accessor = accessor(objectWithMethodClass, nestedMethodName, args);
-                mapOfMethodAndCoercedArgs.putIfAbsent(objectWithMethodClass, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(objectWithMethodClass).putIfAbsent(nestedMethodName, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(objectWithMethodClass).get(nestedMethodName).put(args, accessor);
-            } else {
-                accessor = accessor(objectWithMethodClass, nestedMethodName, args);
-            }
+            final MethodAndCoercedArgs accessor = retrieveMethodAccessor(objectWithMethodToInvoke, nestedMethodName, args);
             if (accessor == null) {
                 throw new Exception("Can't find method on "
                     + objectWithMethodToInvoke.getClass().getSimpleName()
@@ -803,6 +780,20 @@ public class FakeValuesService {
             LOG.fine(e.getMessage());
             return () -> null;
         }
+    }
+
+    private MethodAndCoercedArgs retrieveMethodAccessor(Object object, String methodName, String[] args) {
+        Class<?> clazz = object.getClass();
+        if (mapOfMethodAndCoercedArgs.containsKey(clazz)
+            && mapOfMethodAndCoercedArgs.get(clazz).containsKey(methodName)
+            && mapOfMethodAndCoercedArgs.get(clazz).get(methodName).containsKey(args)) {
+            return mapOfMethodAndCoercedArgs.get(clazz).get(methodName).get(args);
+        }
+        final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
+        mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
+        mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(methodName, new WeakHashMap<>());
+        mapOfMethodAndCoercedArgs.get(clazz).get(methodName).put(args, accessor);
+        return accessor;
     }
 
     private Object invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
