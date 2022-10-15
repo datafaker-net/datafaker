@@ -1,0 +1,48 @@
+en:
+  faker:
+    baseball:
+      teams:
+        - Boston Red Sox
+        - Los Angeles Angels
+        - Los Angeles Dodgers
+        - New York Yankees
+        - Detroit Tigers
+        - New York Mets
+     
+      players:
+        - Bobby Doerr
+        - Joe Cronin
+        - Pesky Paveskovich
+        - Carl Yastrzemski
+        - Carlton Fisk
+        - Billy Martin
+        - Derek Jeter
+        - Babe Ruth
+        - Lou Gehrig
+        - Joe DiMaggio
+        - Joe Torre
+        - Mickey Mantle
+        - Bill Dickey
+        - Yogi Berra
+        - Roger Maris
+        
+      coaches:
+        - Kenny Atkinson
+        
+      positions:
+        - Pitcher
+        - Catcher
+        - First Baseman
+        - Second Baseman
+        - Third Baseman
+        - Short Stop
+        - Left Fielder
+        - Center Fielder
+        - Right Fielder
+        - Designated Hitter
+        - Pinch Hitter
+        - Pinch Runner
+        
+        
+       //우리가 넣을 속성 더 써야함
+       //내용 채워 넣어야함
