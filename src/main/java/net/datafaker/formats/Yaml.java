@@ -1,4 +1,4 @@
-package net.datafaker.fileformats;
+package net.datafaker.formats;
 
 import java.util.*;
 import java.util.function.Supplier;

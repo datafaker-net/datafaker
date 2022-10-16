@@ -1,4 +1,4 @@
-package net.datafaker.fileformats;
+package net.datafaker.formats;
 
 import net.datafaker.util.FakeSequence;
 import net.datafaker.util.FakeStream;
