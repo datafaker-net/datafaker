@@ -702,8 +702,8 @@ public class FakeValuesService {
         }
         final StringBuilder sb = new StringBuilder(expression.length() + cnt);
         for (int i = 0; i < expression.length(); i++) {
-            final char c = expression.charAt(i);
             if (cnt > 0) {
+                final char c = expression.charAt(i);
                 if (Character.isUpperCase(c)) {
                     if (sb.length() > 0) {
                         sb.append("_");
@@ -784,15 +784,17 @@ public class FakeValuesService {
 
     private MethodAndCoercedArgs retrieveMethodAccessor(Object object, String methodName, String[] args) {
         Class<?> clazz = object.getClass();
-        if (mapOfMethodAndCoercedArgs.containsKey(clazz)
-            && mapOfMethodAndCoercedArgs.get(clazz).containsKey(methodName)
-            && mapOfMethodAndCoercedArgs.get(clazz).get(methodName).containsKey(args)) {
-            return mapOfMethodAndCoercedArgs.get(clazz).get(methodName).get(args);
+        MethodAndCoercedArgs accessor =
+            mapOfMethodAndCoercedArgs
+                .getOrDefault(clazz, Collections.emptyMap())
+                .getOrDefault(methodName, Collections.emptyMap())
+                .get(args);
+        if (accessor == null) {
+            accessor = accessor(clazz, methodName, args);
+            mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
+            mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(methodName, new WeakHashMap<>());
+            mapOfMethodAndCoercedArgs.get(clazz).get(methodName).put(args, accessor);
         }
-        final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
-        mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
-        mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(methodName, new WeakHashMap<>());
-        mapOfMethodAndCoercedArgs.get(clazz).get(methodName).put(args, accessor);
         return accessor;
     }
 
@@ -906,22 +908,22 @@ public class FakeValuesService {
                         }
                     } else if (toType == Character.class) {
                         coercedArgument = args[i] == null ? null : args[i].charAt(0);
+                    } else if (Boolean.class == toType) {
+                        coercedArgument = Boolean.valueOf(args[i]);
+                    } else if (Integer.class == toType) {
+                        coercedArgument = Integer.valueOf(args[i]);
+                    } else if (Long.class == toType) {
+                        coercedArgument = Long.valueOf(args[i]);
+                    } else if (Double.class == toType) {
+                        coercedArgument = Double.valueOf(args[i]);
+                    } else if (Float.class == toType) {
+                        coercedArgument = Float.valueOf(args[i]);
+                    } else if (Byte.class == toType) {
+                        coercedArgument = Byte.valueOf(args[i]);
+                    } else if (Short.class == toType) {
+                        coercedArgument = Short.valueOf(args[i]);
                     } else if (CharSequence.class.isAssignableFrom(toType)) {
                         coercedArgument = args[i];
-                    } else if (Boolean.class.isAssignableFrom(toType)) {
-                        coercedArgument = Boolean.valueOf(args[i]);
-                    } else if (Integer.class.isAssignableFrom(toType)) {
-                        coercedArgument = Integer.valueOf(args[i]);
-                    } else if (Long.class.isAssignableFrom(toType)) {
-                        coercedArgument = Long.valueOf(args[i]);
-                    } else if (Double.class.isAssignableFrom(toType)) {
-                        coercedArgument = Double.valueOf(args[i]);
-                    } else if (Float.class.isAssignableFrom(toType)) {
-                        coercedArgument = Float.valueOf(args[i]);
-                    } else if (Byte.class.isAssignableFrom(toType)) {
-                        coercedArgument = Byte.valueOf(args[i]);
-                    } else if (Short.class.isAssignableFrom(toType)) {
-                        coercedArgument = Short.valueOf(args[i]);
                     } else if (BigDecimal.class.isAssignableFrom(toType)) {
                         coercedArgument = new BigDecimal(args[i]);
                     } else if (BigInteger.class.isAssignableFrom(toType)) {
