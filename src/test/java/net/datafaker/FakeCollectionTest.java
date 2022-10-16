@@ -1,6 +1,6 @@
 package net.datafaker;
 
-import net.datafaker.fileformats.Format;
+import net.datafaker.formats.Format;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;

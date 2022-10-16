@@ -1,4 +1,4 @@
-package net.datafaker.fileformats;
+package net.datafaker.formats;
 
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;

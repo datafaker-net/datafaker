@@ -4,9 +4,9 @@ import com.mifmif.common.regex.Generex;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.ProviderRegistration;
-import net.datafaker.fileformats.Csv;
-import net.datafaker.fileformats.Format;
-import net.datafaker.fileformats.Json;
+import net.datafaker.formats.Csv;
+import net.datafaker.formats.Format;
+import net.datafaker.formats.Json;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.Name;
 
