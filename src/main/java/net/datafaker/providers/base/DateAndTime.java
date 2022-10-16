@@ -197,7 +197,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a random date between {@code from} and {@code to}.
      * @throws IllegalArgumentException if the {@code to} date represents an earlier date than {@code from} date.
      */
-    public Timestamp between(Timestamp from, Timestamp to) throws IllegalArgumentException {
+    public <T extends Date> T between(T from, T to) throws IllegalArgumentException {
         if (to.before(from)) {
             throw new IllegalArgumentException("Invalid date range, the upper bound date is before the lower bound.");
         }
@@ -207,7 +207,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
         }
 
         long offsetMillis = faker.random().nextLong(to.getTime() - from.getTime());
-        return new Timestamp(from.getTime() + offsetMillis);
+        return (T) new Timestamp(from.getTime() + offsetMillis);
     }
 
     /**
