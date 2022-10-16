@@ -1,7 +1,8 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.FakeCollection;
-import net.datafaker.FakeStream;
+import net.datafaker.util.FakeCollection;
+import net.datafaker.util.FakeStream;
+import net.datafaker.util.FakeSequence;
 import net.datafaker.fileformats.Json;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
@@ -344,32 +345,32 @@ public class BaseFaker implements BaseProviders {
     /**
      * @return builder to build {@code FakeCollection}
      */
-    public <T> FakeCollection.Builder<T> collection() {
+    public <T> FakeSequence.Builder<T> collection() {
         return new FakeCollection.Builder<T>().faker(this);
     }
 
     @SafeVarargs
-    public final <T> FakeCollection.Builder<T> collection(Supplier<T>... suppliers) {
+    public final <T> FakeSequence.Builder<T> collection(Supplier<T>... suppliers) {
         return new FakeCollection.Builder<>(suppliers).faker(this);
     }
 
-    public final <T> FakeCollection.Builder<T> collection(List<Supplier<T>> suppliers) {
+    public final <T> FakeSequence.Builder<T> collection(List<Supplier<T>> suppliers) {
         return new FakeCollection.Builder<>(suppliers).faker(this);
     }
 
     /**
      * @return builder to build {@code FakeStream}
      */
-    public <T> FakeStream.Builder<T> stream() {
+    public <T> FakeSequence.Builder<T> stream() {
         return new FakeStream.Builder<T>().faker(this);
     }
 
     @SafeVarargs
-    public final <T> FakeStream.Builder<T> stream(Supplier<T>... suppliers) {
+    public final <T> FakeSequence.Builder<T> stream(Supplier<T>... suppliers) {
         return new FakeStream.Builder<>(suppliers).faker(this);
     }
 
-    public final <T> FakeStream.Builder<T> stream(List<Supplier<T>> suppliers) {
+    public final <T> FakeSequence.Builder<T> stream(List<Supplier<T>> suppliers) {
         return new FakeStream.Builder<>(suppliers).faker(this);
     }
 

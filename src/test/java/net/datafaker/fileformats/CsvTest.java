@@ -3,6 +3,7 @@ package net.datafaker.fileformats;
 import net.datafaker.AbstractFakerTest;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
+import net.datafaker.util.FakeSequence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CsvTest extends AbstractFakerTest {
 
@@ -132,4 +134,51 @@ class CsvTest extends AbstractFakerTest {
 
         assertThat(numberOfLines).isEqualTo(limit);
     }
+
+    @Test
+    void testInfiniteCsv() {
+        final BaseFaker faker = new BaseFaker();
+        FakeSequence<Name> infiniteSequence = faker.<Name>stream()
+            .suppliers(faker::name)
+            .build();
+
+        assertThatThrownBy(() ->
+            Format.toCsv(infiniteSequence)
+                .headers(() -> "firstName", () -> "lastname")
+                .columns(Name::firstName, Name::lastName)
+                .separator(" : ")
+                .header(false)
+                .build()
+                .get()
+        ).isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Trying to generate a CSV from infinite sequence");
+    }
+
+    @Test
+    void testInfiniteCsvWithLimit() {
+        int limit = 10;
+        final BaseFaker faker = new BaseFaker();
+        FakeSequence<Name> infiniteSequence = faker.<Name>stream()
+            .suppliers(faker::name)
+            .build();
+
+        String csv = Format.toCsv(infiniteSequence)
+            .headers(() -> "firstName", () -> "lastname")
+            .columns(Name::firstName, Name::lastName)
+            .separator(" : ")
+            .header(false)
+            .limit(limit)
+            .build()
+            .get();
+
+        int numberOfLines = 0;
+        for (int i = 0; i < csv.length(); i++) {
+            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+                numberOfLines++;
+            }
+        }
+
+        assertThat(numberOfLines).isEqualTo(limit);
+    }
+
 }

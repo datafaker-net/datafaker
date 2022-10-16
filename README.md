@@ -125,7 +125,7 @@ more examples about that at https://www.datafaker.net/documentation/collections/
 ```java
 Faker faker = new Faker();
 // generate an infinite stream
-List<String> names = faker.stream(
+Stream<String> names = faker.stream(
                               () -> faker.name().firstName(),
                               () -> faker.name().lastName())
                          .generate();
