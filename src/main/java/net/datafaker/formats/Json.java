@@ -19,6 +19,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Deprecated // Use JsonTransformer
 public class Json {
     private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
     private final Map<Supplier<String>, Supplier<Object>> map;

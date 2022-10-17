@@ -8,16 +8,31 @@ public class SqlTransformer<IN extends AbstractProvider<?>>
     implements Transformer<IN, CharSequence> {
     private static final char DEFAULT_QUOTE = '\'';
     private static final String DEFAULT_SQL_IDENTIFIER = "\"\"";
+
+    private final Casing casing;
     private final char quote;
     private final char openSqlIdentifier;
     private final char closeSqlIdentifier;
     private final String tableName;
 
-    private SqlTransformer(char quote, String sqlIdentifier, String tableName) {
+    private SqlTransformer(char quote, String sqlIdentifier, String tableName, Casing casing) {
         this.quote = quote;
         this.openSqlIdentifier = sqlIdentifier.charAt(0);
         this.closeSqlIdentifier = sqlIdentifier.length() == 1 ? sqlIdentifier.charAt(0) : sqlIdentifier.charAt(1);
         this.tableName = tableName;
+        this.casing = casing;
+    }
+
+    private boolean isSqlQuoteIdentifierRequiredFor(String name) {
+        for (int i = 0; i < tableName.length(); i++) {
+            if (casing == Casing.TO_UPPER && Character.isLowerCase(name.charAt(i))
+                || casing == Casing.TO_LOWER && Character.isUpperCase(name.charAt(i))
+                || name.charAt(i) == openSqlIdentifier
+                || name.charAt(i) == closeSqlIdentifier) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -26,23 +41,37 @@ public class SqlTransformer<IN extends AbstractProvider<?>>
         if (fields.length == 0) {
             return "";
         }
-        StringBuilder sb = new StringBuilder("insert into ");
-        sb.append(openSqlIdentifier).append(tableName).append(closeSqlIdentifier).append(" (");
-        for (int i = 0; i < fields.length; i++) {
+        StringBuilder sb = new StringBuilder("INSERT INTO ");
+        boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(tableName);
+        if (sqlIdentifierRequired) {
             sb.append(openSqlIdentifier);
-            for (int j = 0; j < fields[i].getName().length(); j++) {
-                if (openSqlIdentifier == fields[i].getName().charAt(j)
-                || closeSqlIdentifier == fields[i].getName().charAt(j)) {
+        }
+        sb.append(tableName);
+        if (sqlIdentifierRequired) {
+            sb.append(closeSqlIdentifier);
+        }
+        sb.append(" (");
+        for (int i = 0; i < fields.length; i++) {
+            final String fieldName = fields[i].getName();
+            sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(fieldName);
+            if (sqlIdentifierRequired) {
+                sb.append(openSqlIdentifier);
+            }
+            for (int j = 0; j < fieldName.length(); j++) {
+                if (openSqlIdentifier == fieldName.charAt(j)
+                || closeSqlIdentifier == fieldName.charAt(j)) {
                     sb.append(openSqlIdentifier);
                 }
-                sb.append(fields[i].getName().charAt(j));
+                sb.append(fieldName.charAt(j));
             }
-            sb.append(closeSqlIdentifier);
+            if (sqlIdentifierRequired) {
+                sb.append(closeSqlIdentifier);
+            }
             if (i < fields.length - 1) {
                 sb.append(", ");
             }
         }
-        sb.append(") values (");
+        sb.append(") VALUES (");
         for (int i = 0; i < fields.length; i++) {
             if (fields[i] instanceof SimpleField) {
                 Object value = ((SimpleField<Object, ? extends CharSequence>) fields[i]).transform(input);
@@ -100,6 +129,18 @@ public class SqlTransformer<IN extends AbstractProvider<?>>
         private char quote = DEFAULT_QUOTE;
         private String sqlQuoteIdentifier = DEFAULT_SQL_IDENTIFIER;
         private String tableName = "MyTable";
+        private Casing casing = Casing.TO_UPPER;
+
+        public SqlTransformerBuilder dialect(SqlDialect dialect) {
+            sqlQuoteIdentifier = dialect.getSqlQuoteIdentifier();
+            casing = dialect.getUnquotedCasing();
+            return this;
+        }
+
+        public SqlTransformerBuilder casing(Casing casing) {
+            this.casing = casing;
+            return this;
+        }
 
         public SqlTransformerBuilder quote(char quote) {
             this.quote = quote;
@@ -117,7 +158,7 @@ public class SqlTransformer<IN extends AbstractProvider<?>>
         }
 
         public SqlTransformer build() {
-            return new SqlTransformer(quote, sqlQuoteIdentifier, tableName);
+            return new SqlTransformer(quote, sqlQuoteIdentifier, tableName, casing);
         }
     }
 }
