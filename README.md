@@ -121,6 +121,16 @@ System.out.println(names);
 ```
 more examples about that at https://www.datafaker.net/documentation/collections/
 
+### Streams
+```java
+Faker faker = new Faker();
+// generate an infinite stream
+Stream<String> names = faker.stream(
+                              () -> faker.name().firstName(),
+                              () -> faker.name().lastName())
+                         .generate();
+```
+
 ### File formats
 #### csv
 ```java
