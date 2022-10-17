@@ -45,7 +45,7 @@ Executing the above will result in something similar to the below:
 "Marg" ; "Effertz" ; "415 Gene Plaza"
 ```
 
-Another example using a fake collection builder:
+Another example using a fake sequence builder:
 
 === "Java"
 
@@ -58,13 +58,27 @@ Another example using a fake collection builder:
                 .limit(2).build().get());
     ```
 
-The result looks something like this:
+=== "Java"
+
+    ``` java
+        System.out.println(
+            Format.toCsv(faker.stream(faker::name).build())
+                .headers(() -> "first_name", () -> "last_name")
+                .columns(Name::firstName, Name::lastName)
+                .separator(" ; ")
+                .limit(2).build().get());
+    ```
+
+The result in both cases looks something like this:
 
 ```csv
 "first_name" ; "last_name"
 "Jonah" ; "Kovacek"
 "John" ; "Murphy"
 ```
+
+Note: you can generate a CSV from an infinite FakeStream in case if you specified
+limit parameter for the result CSV, otherwise you will get an exception.
 
 ## JSON
 
@@ -113,6 +127,35 @@ It's also possible to generate a more complex JSON:
             .generate();
         System.out.println(json);
     ```
+
+The same could be achieved with FakeStream:
+
+=== "Java"
+
+    ``` java
+    Faker faker = new Faker();
+    String json = Format.toJson(
+                faker.stream(faker::name)
+                    .len(2)
+                    .build())
+            .set("firstName", Name::firstName)
+            .set("lastName", Name::lastName)
+            .set("address",
+                Format.toJson(
+                        faker.stream(faker::address)
+                            .len(1)
+                            .build())
+                    .set("country", Address::country)
+                    .set("city", Address::city)
+                    .set("zipcode", Address::zipCode)
+                    .set("streetAddress", Address::streetAddress)
+                    .build())
+            .set("phones", name -> faker.stream(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+            .build()
+            .generate();
+        System.out.println(json);
+    ```
+
 
 This will produce something similar to the following:
 
