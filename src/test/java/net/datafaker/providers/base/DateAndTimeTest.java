@@ -90,6 +90,11 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
+    void testBetweenDateAsArgument() {
+         faker.date().between(new Date(), new Date());
+    }
+
+    @Test
     void testBetweenThenLargerThanNow() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         Timestamp then = new Timestamp(System.currentTimeMillis() + 1000);

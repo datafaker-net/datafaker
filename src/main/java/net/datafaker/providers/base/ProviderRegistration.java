@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.fileformats.Json;
+import net.datafaker.formats.Json;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;

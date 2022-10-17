@@ -86,13 +86,13 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param referenceDate the future date relative to this date.
      * @return a future date relative to {@code referenceDate}.
      */
-    public Timestamp future(int atMost, TimeUnit unit, Date referenceDate) {
+    public <T extends Date> T future(int atMost, TimeUnit unit, T referenceDate) {
         long upperBound = unit.toMillis(atMost);
 
         long futureMillis = referenceDate.getTime();
         futureMillis += 1 + faker.random().nextLong(upperBound - 1);
 
-        return new Timestamp(futureMillis);
+        return (T) new Timestamp(futureMillis);
     }
 
     /**
@@ -105,7 +105,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param pattern       date time pattern to convert to string.
      * @return a string representation of a future date relative to {@code referenceDate}.
      */
-    public String future(int atMost, TimeUnit unit, Date referenceDate, String pattern) {
+    public <T extends Date> String future(int atMost, TimeUnit unit, T referenceDate, String pattern) {
         return toString(future(atMost, unit, referenceDate), pattern);
     }
 
@@ -167,13 +167,13 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param referenceDate the past date relative to this date.
      * @return a past date relative to {@code referenceDate}.
      */
-    public Timestamp past(int atMost, TimeUnit unit, Date referenceDate) {
+    public <T extends Date> T past(int atMost, TimeUnit unit, T referenceDate) {
         long upperBound = unit.toMillis(atMost);
 
         long futureMillis = referenceDate.getTime();
         futureMillis -= 1 + faker.random().nextLong(upperBound - 1);
 
-        return new Timestamp(futureMillis);
+        return (T) new Timestamp(futureMillis);
     }
 
     /**
@@ -197,7 +197,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a random date between {@code from} and {@code to}.
      * @throws IllegalArgumentException if the {@code to} date represents an earlier date than {@code from} date.
      */
-    public Timestamp between(Timestamp from, Timestamp to) throws IllegalArgumentException {
+    public <T extends Date> T between(T from, T to) throws IllegalArgumentException {
         if (to.before(from)) {
             throw new IllegalArgumentException("Invalid date range, the upper bound date is before the lower bound.");
         }
@@ -207,7 +207,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
         }
 
         long offsetMillis = faker.random().nextLong(to.getTime() - from.getTime());
-        return new Timestamp(from.getTime() + offsetMillis);
+        return (T) new Timestamp(from.getTime() + offsetMillis);
     }
 
     /**
@@ -219,7 +219,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a string representation of a random date between {@code from} and {@code to}.
      * @throws IllegalArgumentException if the {@code to} date represents an earlier date than {@code from} date.
      */
-    public String between(Timestamp from, Timestamp to, String pattern) throws IllegalArgumentException {
+    public <T extends Date> String between(T from, T to, String pattern) throws IllegalArgumentException {
         return toString(between(from, to), pattern);
     }
 
