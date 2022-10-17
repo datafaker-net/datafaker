@@ -1,6 +1,6 @@
 package net.datafaker.formats;
 
-import net.datafaker.util.FakeSequence;
+import net.datafaker.sequence.FakeSequence;
 
 import java.util.List;
 

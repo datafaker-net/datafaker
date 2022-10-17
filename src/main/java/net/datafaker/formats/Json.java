@@ -1,7 +1,7 @@
 package net.datafaker.formats;
 
-import net.datafaker.util.FakeSequence;
-import net.datafaker.util.FakeStream;
+import net.datafaker.sequence.FakeSequence;
+import net.datafaker.sequence.FakeStream;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -290,7 +290,7 @@ public class Json {
             }
 
             if (sequence.isInfinite()) {
-                throw new IllegalArgumentException("Trying to generate a CSV from infinite sequence");
+                throw new IllegalArgumentException("The sequence should be finite of size");
             }
 
             if (sequence instanceof FakeStream) {

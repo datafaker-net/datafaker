@@ -1,4 +1,4 @@
-package net.datafaker.util;
+package net.datafaker.sequence;
 
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.service.RandomService;

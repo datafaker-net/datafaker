@@ -1,8 +1,8 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.util.FakeSequence;
-import net.datafaker.util.FakeStream;
-import net.datafaker.util.FakeCollection;
+import net.datafaker.sequence.FakeSequence;
+import net.datafaker.sequence.FakeStream;
+import net.datafaker.sequence.FakeCollection;
 import net.datafaker.formats.Json;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;

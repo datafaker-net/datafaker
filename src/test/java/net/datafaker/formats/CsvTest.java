@@ -5,7 +5,7 @@ import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.transformations.CsvTransformer;
 import net.datafaker.transformations.Schema;
-import net.datafaker.util.FakeSequence;
+import net.datafaker.sequence.FakeSequence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -288,7 +288,7 @@ class CsvTest extends AbstractFakerTest {
                 .build()
                 .get()
         ).isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Trying to generate a CSV from infinite sequence");
+            .hasMessage("The sequence should be finite of size");
     }
 
     @Test

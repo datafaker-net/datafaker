@@ -1,4 +1,4 @@
-package net.datafaker.util;
+package net.datafaker.sequence;
 
 import net.datafaker.AbstractFakerTest;
 import net.datafaker.formats.Format;
@@ -201,7 +201,7 @@ class FakeStreamTest extends AbstractFakerTest {
                 .build()
                 .get()
         ).isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Trying to generate a CSV from infinite sequence");
+            .hasMessage("The sequence should be finite of size");
     }
 
     @Test
@@ -274,7 +274,7 @@ class FakeStreamTest extends AbstractFakerTest {
                 .build()
                 .generate()
         ).isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Trying to generate a CSV from infinite sequence");
+            .hasMessage("The sequence should be finite of size");
     }
 
     @Test

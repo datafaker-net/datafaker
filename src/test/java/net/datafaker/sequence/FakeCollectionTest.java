@@ -1,4 +1,4 @@
-package net.datafaker.util;
+package net.datafaker.sequence;
 
 import net.datafaker.AbstractFakerTest;
 import net.datafaker.formats.Format;

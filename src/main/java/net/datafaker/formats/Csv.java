@@ -1,7 +1,7 @@
 package net.datafaker.formats;
 
-import net.datafaker.util.FakeSequence;
-import net.datafaker.util.FakeStream;
+import net.datafaker.sequence.FakeSequence;
+import net.datafaker.sequence.FakeStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ public class Csv<T> {
         }
 
         if (sequence != null && sequence.isInfinite() && limit < 0) {
-            throw new IllegalArgumentException("Trying to generate a CSV from infinite sequence");
+            throw new IllegalArgumentException("The sequence should be finite of size");
         }
 
         StringBuilder sb = new StringBuilder();
