@@ -4,7 +4,7 @@ Data Faker
 
 [![Maven Status](https://maven-badges.herokuapp.com/maven-central/net.datafaker/datafaker/badge.svg?style=flat)](http://mvnrepository.com/artifact/net.datafaker/datafaker)
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![codecov](https://codecov.io/gh/datafaker-net/datafaker/branch/master/graph/badge.svg?token=FJ6EXMUTFD)](https://codecov.io/gh/datafaker-net/datafaker)
+[![codecov](https://codecov.io/gh/datafaker-net/datafaker/branch/main/graph/badge.svg?token=FJ6EXMUTFD)](https://codecov.io/gh/datafaker-net/datafaker)
 
 This library is a modern fork of [java-faker](https://github.com/DiUS/java-faker), built on Java 8,
 with up to date libraries and several newly added Fake Generators.
@@ -42,7 +42,7 @@ dependencies {
 ```
 
 You can also use the snapshot version (`1.7.0-SNAPSHOT`), which automatically gets published
-after every push to the master branch of this repository. Binary repository URL for snapshots download is
+after every push to the main branch of this repository. Binary repository URL for snapshots download is
 https://s01.oss.sonatype.org/content/repositories/snapshots/.
 
 ### Get started
@@ -205,7 +205,7 @@ Documentation
 
 Contributions
 -------------
-See [CONTRIBUTING.md](https://github.com/datafaker-net/datafaker/blob/master/CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com/datafaker-net/datafaker/blob/main/CONTRIBUTING.md)
 
 Providers
 -----
