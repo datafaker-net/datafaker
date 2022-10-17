@@ -100,7 +100,7 @@ public abstract class FakeSequence<T> {
         public abstract FakeSequence<T> build();
 
         /**
-         * @param <S> [Stream<T>, List<T>]
+         * @param <S> might be Stream or List.
          * @return List or Stream with generated random values.
          */
         public <S> S generate() {
