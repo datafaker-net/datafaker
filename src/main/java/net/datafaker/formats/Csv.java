@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Deprecated // Use CsvTransformer
 public class Csv<T> {
     public static final char DEFAULT_QUOTE = '"';
     public static final String DEFAULT_SEPARATOR = ",";
