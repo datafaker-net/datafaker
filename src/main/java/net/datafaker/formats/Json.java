@@ -1,6 +1,7 @@
 package net.datafaker.formats;
 
-import net.datafaker.FakeCollection;
+import net.datafaker.sequence.FakeSequence;
+import net.datafaker.sequence.FakeStream;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,7 +16,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+@Deprecated // Use JsonTransformer
 public class Json {
     private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
     private final Map<Supplier<String>, Supplier<Object>> map;
@@ -168,10 +172,10 @@ public class Json {
 
     public static class JsonFromCollectionBuilder<T> {
         private final Map<Function<T, String>, Function<T, Object>> map = new LinkedHashMap<>();
-        private final FakeCollection<T> collection;
+        private final FakeSequence<T> sequence;
 
-        public JsonFromCollectionBuilder(FakeCollection<T> collection) {
-            this.collection = collection;
+        public JsonFromCollectionBuilder(FakeSequence<T> sequence) {
+            this.sequence = sequence;
         }
 
         public JsonFromCollectionBuilder<T> set(String key, Function<T, Object> value) {
@@ -195,22 +199,22 @@ public class Json {
         }
 
         public JsonForFakeCollection<T> build() {
-            return new JsonForFakeCollection<>(collection, map);
+            return new JsonForFakeCollection<>(sequence, map);
         }
     }
 
     public static class JsonForFakeCollection<T> {
         private final Map<Function<T, String>, Function<T, Object>> map;
-        private final FakeCollection<T> collection;
+        private final FakeSequence<T> sequence;
 
-        public JsonForFakeCollection(FakeCollection<T> collection, Map<Function<T, String>, Function<T, Object>> map) {
+        public JsonForFakeCollection(FakeSequence<T> sequence, Map<Function<T, String>, Function<T, Object>> map) {
             this.map = map;
-            this.collection = collection;
+            this.sequence = sequence;
         }
 
         public String generate() {
             StringBuilder sb = new StringBuilder();
-            List<T> col = collection.get();
+            List<T> col = getValuesFrom(sequence);
             if (col == null) {
                 return null;
             } else if (col.isEmpty()) {
@@ -279,6 +283,23 @@ public class Json {
                 }
                 sb.append("\"");
             }
+        }
+
+        private List<T> getValuesFrom(FakeSequence<T> sequence) {
+            if (sequence == null) {
+                return null;
+            }
+
+            if (sequence.isInfinite()) {
+                throw new IllegalArgumentException("The sequence should be finite of size");
+            }
+
+            if (sequence instanceof FakeStream) {
+                Stream<T> stream = sequence.get();
+                return stream.collect(Collectors.toList());
+            }
+
+            return sequence.get();
         }
     }
 

@@ -97,7 +97,7 @@ nav:
       - All providers: documentation/providers.md
       - Custom providers: documentation/custom-providers.md
     - Advanced usage:
-      - Collections: documentation/collections.md
+      - Sequences: documentation/sequences.md
       - Date format: documentation/date-format.md
       - Expressions: documentation/expressions.md
       - Formats: documentation/formats.md
