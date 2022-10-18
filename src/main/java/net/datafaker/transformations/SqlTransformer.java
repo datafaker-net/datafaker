@@ -1,11 +1,8 @@
 package net.datafaker.transformations;
 
-import net.datafaker.providers.base.AbstractProvider;
-
 import java.util.List;
 
-public class SqlTransformer<IN extends AbstractProvider<?>>
-    implements Transformer<IN, CharSequence> {
+public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private static final char DEFAULT_QUOTE = '\'';
     private static final String DEFAULT_SQL_IDENTIFIER = "\"\"";
 
@@ -36,8 +33,9 @@ public class SqlTransformer<IN extends AbstractProvider<?>>
     }
 
     @Override
-    public CharSequence apply(Object input, Schema<?, ? extends CharSequence> schema) {
-        Field<? extends Object, ? extends CharSequence>[] fields = schema.getFields();
+    public CharSequence apply(Object input, Schema<IN, ?> schema) {
+        //noinspection unchecked
+        Field<?, ? extends CharSequence>[] fields = (Field<?, ? extends CharSequence>[]) schema.getFields();
         if (fields.length == 0) {
             return "";
         }
@@ -74,6 +72,7 @@ public class SqlTransformer<IN extends AbstractProvider<?>>
         sb.append(") VALUES (");
         for (int i = 0; i < fields.length; i++) {
             if (fields[i] instanceof SimpleField) {
+                //noinspection unchecked
                 Object value = ((SimpleField<Object, ? extends CharSequence>) fields[i]).transform(input);
                 Class<?> clazz = value == null ? null : value.getClass();
                 if (value == null
@@ -102,7 +101,7 @@ public class SqlTransformer<IN extends AbstractProvider<?>>
     }
 
     @Override
-    public String generate(List<IN> input, Schema<IN, ? extends CharSequence> schema) {
+    public String generate(List<IN> input, Schema<IN, ?> schema) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < input.size(); i++) {
             sb.append(apply(input.get(i), schema));
@@ -114,7 +113,7 @@ public class SqlTransformer<IN extends AbstractProvider<?>>
     }
 
     @Override
-    public String generate(Schema<?, ? extends CharSequence> schema, int limit) {
+    public String generate(Schema<IN, ?> schema, int limit) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < limit; i++) {
             sb.append(apply(null, schema));
@@ -125,40 +124,40 @@ public class SqlTransformer<IN extends AbstractProvider<?>>
         return sb.toString();
     }
 
-    public static class SqlTransformerBuilder {
+    public static class SqlTransformerBuilder<IN> {
         private char quote = DEFAULT_QUOTE;
         private String sqlQuoteIdentifier = DEFAULT_SQL_IDENTIFIER;
         private String tableName = "MyTable";
         private Casing casing = Casing.TO_UPPER;
 
-        public SqlTransformerBuilder dialect(SqlDialect dialect) {
+        public SqlTransformerBuilder<IN> dialect(SqlDialect dialect) {
             sqlQuoteIdentifier = dialect.getSqlQuoteIdentifier();
             casing = dialect.getUnquotedCasing();
             return this;
         }
 
-        public SqlTransformerBuilder casing(Casing casing) {
+        public SqlTransformerBuilder<IN> casing(Casing casing) {
             this.casing = casing;
             return this;
         }
 
-        public SqlTransformerBuilder quote(char quote) {
+        public SqlTransformerBuilder<IN> quote(char quote) {
             this.quote = quote;
             return this;
         }
 
-        public SqlTransformerBuilder sqlQuoteIdentifier(String sqlQuoteIdentifier) {
+        public SqlTransformerBuilder<IN> sqlQuoteIdentifier(String sqlQuoteIdentifier) {
             this.sqlQuoteIdentifier = sqlQuoteIdentifier;
             return this;
         }
 
-        public SqlTransformerBuilder tableName(String tableName) {
+        public SqlTransformerBuilder<IN> tableName(String tableName) {
             this.tableName = tableName;
             return this;
         }
 
-        public SqlTransformer build() {
-            return new SqlTransformer(quote, sqlQuoteIdentifier, tableName, casing);
+        public SqlTransformer<IN> build() {
+            return new SqlTransformer<>(quote, sqlQuoteIdentifier, tableName, casing);
         }
     }
 }
