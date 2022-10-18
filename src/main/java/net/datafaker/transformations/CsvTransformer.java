@@ -17,7 +17,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
   }
 
   @Override
-  public CharSequence apply(Object input, Schema<IN, ?> schema) {
+  public CharSequence apply(IN input, Schema<IN, ?> schema) {
     Field<IN, ?>[] fields = schema.getFields();
     if (fields.length == 0) {
       return "";

@@ -14,7 +14,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
   private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
 
   @Override
-  public String apply(Object input, Schema<IN, ? extends Object> schema) {
+  public String apply(IN input, Schema<IN, ? extends Object> schema) {
     Field<?, ?>[] fields = schema.getFields();
     if (fields.length == 0) {
       return "{}";

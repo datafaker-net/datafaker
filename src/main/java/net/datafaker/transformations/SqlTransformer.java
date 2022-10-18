@@ -33,7 +33,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public CharSequence apply(Object input, Schema<IN, ?> schema) {
+    public CharSequence apply(IN input, Schema<IN, ?> schema) {
         //noinspection unchecked
         Field<?, ? extends CharSequence>[] fields = (Field<?, ? extends CharSequence>[]) schema.getFields();
         if (fields.length == 0) {
