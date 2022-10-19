@@ -18,4 +18,8 @@ public class Pokemon extends AbstractProvider<MovieProviders> {
     public String location() {
         return resolve("games.pokemon.locations");
     }
+
+    public String move() {
+        return resolve("games.pokemon.moves");
+    }
 }
