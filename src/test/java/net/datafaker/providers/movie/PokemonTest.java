@@ -17,12 +17,12 @@ class PokemonTest extends MovieFakerTest {
         assertThat(faker.pokemon().location()).matches("\\w+( \\w+)?( \\w+)?");
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void move() {
         assertThat(faker.pokemon().move()).matches("[ \\-\\w+]+");
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void move2() {
         assertThat(faker.pokemon().move()).matches("\\w+(\\s|-)?(\\w+)?(\\s|-)?(\\w+)?");
     }
