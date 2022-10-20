@@ -10,7 +10,7 @@ on:
     branches: [ main ]
 
 env:
-  mvn_options: -B -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss.SSS
+  mvn_options: --batch-mode -Dstyle.color=always -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss.SSS
 
 jobs:
   build:
