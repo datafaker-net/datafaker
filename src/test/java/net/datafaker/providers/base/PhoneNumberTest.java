@@ -24,79 +24,6 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         assertThat(cellPhone).matches("\\(?\\d+\\)?([- .]\\d+){1,3}");
     }
 
-    @RepeatedTest(10)
-    void testAllCellPhone_enUS() throws NumberParseException {
-        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        String phoneNumber = new BaseFaker(new Locale("en", "US")).phoneNumber().phoneNumber();
-        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "US");
-        assertThat(util.isValidNumberForRegion(proto, "US")).as(phoneNumber).isTrue();
-    }
-
-
-    @RepeatedTest(10)
-    void testAllCellPhone_svSE() throws NumberParseException {
-        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        String phoneNumber = new BaseFaker(new Locale("sv", "SE")).phoneNumber().phoneNumber();
-        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "SE");
-        assertThat(util.isValidNumberForRegion(proto, "SE")).as(phoneNumber).isTrue();
-    }
-
-
-    @RepeatedTest(10)
-    void testAllCellPhone_csCZ() throws NumberParseException {
-        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        String phoneNumber = new BaseFaker(new Locale("cs", "CZ")).phoneNumber().phoneNumber();
-        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "CZ");
-        assertThat(util.isValidNumberForRegion(proto, "CZ")).as(phoneNumber).isTrue();
-    }
-
-
-    @Test
-    void testAllCellPhone_enGB() throws NumberParseException {
-        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        int errorCount = 0;
-        final BaseFaker faker = new BaseFaker(new Locale("en", "GB"));
-        for (int i = 0; i < 10; i++) {
-            String phoneNumber = faker.phoneNumber().phoneNumber();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "GB");
-            if (!util.isValidNumberForRegion(proto, "GB")) {
-                errorCount++;
-            }
-        }
-
-        // Current score is ~420. Improvements are welcome.
-        assertThat(errorCount).isLessThan(500);
-    }
-
-
-    @Test
-    void testAllCellPhone_nbNO() throws NumberParseException {
-        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        int errorCount = 0;
-
-        final BaseFaker faker = new BaseFaker(new Locale("nb", "NO"));
-        for (int i = 0; i < 10; i++) {
-            String phoneNumber = faker.phoneNumber().phoneNumber();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "NO");
-
-            if (!util.isValidNumberForRegion(proto, "NO")) {
-                errorCount++;
-            }
-        }
-
-        // Not perfect yet, but should be good enough
-        assertThat(errorCount).isLessThan(250);
-    }
-
-
-    @RepeatedTest(10)
-    void testAllCellPhone_nl() throws NumberParseException {
-        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        String phoneNumber = new BaseFaker(new Locale("nl", "NL")).phoneNumber().phoneNumber();
-        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "NL");
-        assertThat(util.isValidNumberForRegion(proto, "NL")).as(phoneNumber).isTrue();
-    }
-
     @Test
     void testPhone_esMx() {
         final BaseFaker f = new BaseFaker(new Locale("es", "MX"));
@@ -120,14 +47,6 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
                         canadianAreaCode, canadianAreaCode));
             }
         }
-    }
-
-    @RepeatedTest(10)
-    void testAllCellPhone_enPh() throws NumberParseException {
-        final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        String phoneNumber = new BaseFaker(new Locale("en", "PH")).phoneNumber().phoneNumber();
-        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, "PH");
-        assertThat(util.isValidNumberForRegion(proto, "PH")).as(phoneNumber).isTrue();
     }
 
     @ParameterizedTest
