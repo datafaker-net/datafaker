@@ -3,7 +3,7 @@ package net.datafaker.providers.movie;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DetectiveConanTest extends net.datafaker.AbstractFakerTest {
 

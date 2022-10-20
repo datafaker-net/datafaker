@@ -2,7 +2,7 @@ package net.datafaker.providers.movie;
 
 import org.junit.jupiter.api.RepeatedTest;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DarkSoulTest extends MovieFakerTest {
 
