@@ -92,7 +92,7 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
 
 To generate a more predictable random result, it's possible to provide a seed value to the Faker. 
 
-When providing a seed, the instantiatiton of Fake objects will always happen in a predictable way,
+When providing a seed, the instantiation of Fake objects will always happen in a predictable way,
 which can be handy for generating results multiple times.
 
 === "Java"
