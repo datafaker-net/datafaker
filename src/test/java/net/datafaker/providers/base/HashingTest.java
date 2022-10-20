@@ -7,32 +7,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HashingTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testMd2() {
+    void md2() {
         assertThat(faker.hashing().md2()).matches("\\b[a-fA-F\\d]{32}\\b");
     }
 
     @Test
-    void testMd5() {
+    void md5() {
         assertThat(faker.hashing().md5()).matches("\\b[a-fA-F\\d]{32}\\b");
     }
 
     @Test
-    void testSha1() {
+    void sha1() {
         assertThat(faker.hashing().sha1()).matches("\\b[a-fA-F\\d]{40}\\b");
     }
 
     @Test
-    void testSha256() {
+    void sha256() {
         assertThat(faker.hashing().sha256()).matches("\\b[a-fA-F\\d]{64}\\b");
     }
 
     @Test
-    void testSha384() {
+    void sha384() {
         assertThat(faker.hashing().sha384()).matches("\\b[a-fA-F\\d]{96}\\b");
     }
 
     @Test
-    void testSha512() {
+    void sha512() {
         assertThat(faker.hashing().sha512()).matches("\\b[a-fA-F\\d]{128}\\b");
     }
 }

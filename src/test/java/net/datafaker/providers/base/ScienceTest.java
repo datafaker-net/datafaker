@@ -23,7 +23,7 @@ class ScienceTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testUnit() {
+    void unit() {
         assertThat(faker.science().unit()).isNotEmpty();
     }
 

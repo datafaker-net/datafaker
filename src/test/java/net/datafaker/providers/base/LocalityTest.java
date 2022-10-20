@@ -31,7 +31,7 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
      * Test to check that list of all locales support is loaded
      */
     @Test
-    void testAllSuppportedLocales() {
+    void allSuppportedLocales() {
         // Check that directory of locale resources exists
         File resourceDirectory = new File("./src/main/resources");
         assertThat(resourceDirectory).exists();
@@ -51,7 +51,7 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
      * should have deterministic results.
      */
     @Test
-    void testLocaleStringRandom() {
+    void localeStringRandom() {
         // Check that we get the same locale when using pseudorandom number generator with a fixed seed
         final long fixedSeed = 5;
 
@@ -69,7 +69,7 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
      * locale is within the set of all supported locales
      */
     @RepeatedTest(100)
-    void testLocaleStringWithRandom() {
+    void localeStringWithRandom() {
         Random random = new Random();
         String randomLocale = locality.localeStringWithRandom(random);
         assertThat(allLocales).contains(randomLocale);
@@ -81,7 +81,7 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
      * It ensures that all the locales supported are represented once.
      */
     @Test
-    void testLocaleStringWithoutReplacement() {
+    void localeStringWithoutReplacement() {
         Random random = new Random();
 
         // loop through all supported locales
@@ -97,12 +97,12 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testLocaleString() {
+    void localeString() {
         assertThat(allLocales).contains(locality.localeString());
     }
 
     @Test
-    void testLocaleWithoutReplacement() {
+    void localeWithoutReplacement() {
         assertThat(locality.localeStringWithoutReplacement()).isNotNull();
     }
 

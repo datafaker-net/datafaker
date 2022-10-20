@@ -27,18 +27,18 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testCharacter() {
+    void character() {
         assertThat(String.valueOf(faker.lorem().character())).matches("[a-z\\d]{1}");
     }
 
     @Test
-    void testCharacterIncludeUpperCase() {
+    void characterIncludeUpperCase() {
         assertThat(String.valueOf(faker.lorem().character(false))).matches("[a-z\\d]{1}");
         assertThat(String.valueOf(faker.lorem().character(true))).matches("[a-zA-Z\\d]{1}");
     }
 
     @Test
-    void testCharactersShouldIncludeMinAndMaxLenght() {
+    void charactersShouldIncludeMinAndMaxLenght() {
         List<String> results = new ArrayList<>();
         for (int i = 0; i < 300; i++) {
             results.add(faker.lorem().characters(1, 10));
@@ -52,18 +52,18 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testCharacters() {
+    void characters() {
         assertThat(faker.lorem().characters()).matches("[a-z\\d]{255}");
     }
 
     @Test
-    void testCharactersIncludeUpperCase() {
+    void charactersIncludeUpperCase() {
         assertThat(faker.lorem().characters(false)).matches("[a-z\\d]{255}");
         assertThat(faker.lorem().characters(true)).matches("[a-zA-Z\\d]{255}");
     }
 
     @Test
-    void testCharactersWithLength() {
+    void charactersWithLength() {
         assertThat(faker.lorem().characters(2)).matches("[a-z\\d]{2}");
         assertThat(faker.lorem().characters(500)).matches("[a-z\\d]{500}");
         assertThat(faker.lorem().characters(0)).isEmpty();
@@ -71,7 +71,7 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testCharactersWithLengthIncludeUppercase() {
+    void charactersWithLengthIncludeUppercase() {
         assertThat(faker.lorem().characters(2, false)).matches("[a-z\\d]{2}");
         assertThat(faker.lorem().characters(500, false)).matches("[a-z\\d]{500}");
         assertThat(faker.lorem().characters(2, true)).matches("[a-zA-Z\\d]{2}");
@@ -81,22 +81,22 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testCharactersMinimumMaximumLength() {
+    void charactersMinimumMaximumLength() {
         assertThat(faker.lorem().characters(1, 10)).matches("[a-z\\d]{1,10}");
     }
 
     @RepeatedTest(10)
-    void testCharactersMinimumMaximumLengthEquals() {
+    void charactersMinimumMaximumLengthEquals() {
         assertThat(faker.lorem().characters(5, 5)).matches("[a-z\\d]{5}");
     }
 
     @RepeatedTest(10)
-    void testCharactersMinimumMaximumLengthEqualsIncludingUppercaseAndIncludingDigit() {
+    void charactersMinimumMaximumLengthEqualsIncludingUppercaseAndIncludingDigit() {
         assertThat(faker.lorem().characters(8, 8, true, true)).matches("[a-zA-Z\\d]{8}");
     }
 
     @Test
-    void testFixedNumberOfCharactersEmpty() {
+    void fixedNumberOfCharactersEmpty() {
         assertThat(faker.lorem().characters(-1)).isEmpty();
         assertThat(faker.lorem().characters(0)).isEmpty();
 
@@ -106,18 +106,18 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
 
 
     @Test
-    void testCharactersMinimumMaximumLengthIncludeUppercase() {
+    void charactersMinimumMaximumLengthIncludeUppercase() {
         assertThat(faker.lorem().characters(1, 10, true)).matches("[a-zA-Z\\d]{1,10}");
     }
 
     @Test
-    void testCharactersMinimumMaximumLengthIncludeUppercaseIncludeDigit() {
+    void charactersMinimumMaximumLengthIncludeUppercaseIncludeDigit() {
         assertThat(faker.lorem().characters(1, 10, false, false)).matches("[a-zA-Z]{1,10}");
         assertThat(faker.lorem().characters(2, 10, true, true)).matches("[a-zA-Z\\d]{1,10}");
     }
 
     @Test
-    void testSentence() {
+    void sentence() {
         String sentence = faker.lorem().sentence();
         String[] words = sentence.split(" ");
 
@@ -126,7 +126,7 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testSentenceWithWordCount() {
+    void sentenceWithWordCount() {
         String sentence = faker.lorem().sentence(10);
         String[] words = sentence.split(" ");
 
@@ -135,22 +135,22 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(10)
-    void testSentenceWithWordCountAndRandomWordsToAdd() {
+    void sentenceWithWordCountAndRandomWordsToAdd() {
         assertThat(faker.lorem().sentence(10, 10)).matches("(\\w+\\s?){10,20}\\.");
     }
 
     @RepeatedTest(10)
-    void testSentenceFixedNumberOfWords() {
+    void sentenceFixedNumberOfWords() {
         assertThat(faker.lorem().sentence(10, 0)).matches("(\\w+\\s?){10}\\.");
     }
 
     @Test
-    void testWords() {
+    void words() {
         assertThat(faker.lorem().words()).isNotEmpty();
     }
 
     @RepeatedTest(10)
-    void testMaxLengthSentence() {
+    void maxLengthSentence() {
         Random rand = new Random();
         // Test different lengths over 10 runs
         int length = Math.abs(rand.nextInt(10000));
@@ -159,26 +159,26 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testMaxLengthWithEmptySentence() {
+    void maxLengthWithEmptySentence() {
         String s = faker.lorem().maxLengthSentence(0);
         assertThat(s).isEmpty();
     }
 
     @Test
-    void testMaxLengthWithNegativeLengthSentence() {
+    void maxLengthWithNegativeLengthSentence() {
         String s = faker.lorem().maxLengthSentence(-1);
         assertThat(s).isEmpty();
     }
 
     @RepeatedTest(10)
-    void testSentences() {
+    void sentences() {
         String paragraph = faker.lorem().paragraph();
         int matches = StringUtils.countMatches(paragraph, ".");
         assertThat(matches).isBetween(3, 6);
     }
 
     @RepeatedTest(10)
-    void testSentencesWithCount() {
+    void sentencesWithCount() {
         String paragraph = faker.lorem().paragraph(1);
         int matches = StringUtils.countMatches(paragraph, ".");
         assertThat(matches).isBetween(1, 3);

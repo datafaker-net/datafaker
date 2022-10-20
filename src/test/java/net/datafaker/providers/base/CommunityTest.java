@@ -7,12 +7,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommunityTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testCharacter() {
+    void character() {
         assertThat(faker.community().character()).isNotEmpty();
     }
 
     @Test
-    void testQuote() {
+    void quote() {
         assertThat(faker.community().quote()).isNotEmpty();
     }
 }

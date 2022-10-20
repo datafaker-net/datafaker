@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class InternetPasswordTest extends BaseFakerTest<BaseFaker> {
     @Test
-    void testPassword1000() {
+    void password1000() {
         final Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
         final Pattern digitPattern = Pattern.compile("[0-9]");
         for (int i = 0; i < 1000; i++) {

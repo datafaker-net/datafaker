@@ -27,55 +27,55 @@ class BarcodeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testEan13() {
+    void ean13() {
         assertThat(String.valueOf(faker.barcode().ean13())).matches("[0-9]{13}");
     }
 
     @Test
-    void testGtin13() {
+    void gtin13() {
         assertThat(String.valueOf(faker.barcode().gtin13())).matches("[0-9]{13}");
     }
 
     @Test
-    void testEan8() {
+    void ean8() {
         assertThat(String.valueOf(faker.barcode().ean8())).matches("[0-9]{8}");
     }
 
     @Test
-    void testGtin8() {
+    void gtin8() {
         assertThat(String.valueOf(faker.barcode().gtin8())).matches("[0-9]{8}");
     }
 
     @Test
-    void testGtin14Length() {
+    void gtin14Length() {
         assertThat(String.valueOf(faker.barcode().gtin14())).matches("[0-9]{14}");
     }
 
     @Test
-    void testGtin12Length() {
+    void gtin12Length() {
         assertThat(String.valueOf(faker.barcode().gtin12())).matches("[0-9]{12}");
     }
 
     @Test
-    void testGtin12CheckSum() {
+    void gtin12CheckSum() {
         long barcode = faker.barcode().gtin12();
         assertThat(BarcodeTest.isBarcodeValid(barcode)).isTrue();
     }
 
     @Test
-    void testGtin14CheckSum() {
+    void gtin14CheckSum() {
         long barcode = faker.barcode().gtin14();
         assertThat(BarcodeTest.isBarcodeValid(barcode)).isTrue();
     }
 
     @Test
-    void testEan8CheckSum() {
+    void ean8CheckSum() {
         long barcode = faker.barcode().ean8();
         assertThat(BarcodeTest.isBarcodeValid(barcode)).isTrue();
     }
 
     @Test
-    void testEan13CheckSum() {
+    void ean13CheckSum() {
         long barcode = faker.barcode().ean13();
         char[] array = String.valueOf(barcode).toCharArray();
         int sum = 0;

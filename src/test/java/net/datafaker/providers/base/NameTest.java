@@ -16,17 +16,17 @@ class NameTest extends BaseFakerTest<BaseFaker> {
     private BaseFaker mockedFaker;
 
     @Test
-    void testName() {
+    void name() {
         assertThat(faker.name().name()).matches("([\\w']+\\.?( )?){2,3}");
     }
 
     @Test
-    void testNameWithMiddle() {
+    void nameWithMiddle() {
         assertThat(faker.name().nameWithMiddle()).matches("([\\w']+\\.?( )?){3,4}");
     }
 
     @Test
-    void testNameWithMiddleDoesNotHaveRepeatedName() {
+    void nameWithMiddleDoesNotHaveRepeatedName() {
         int theSameNameCnt = 0;
         int total = 100;
         for (int i = 0; i < total; i++) {
@@ -40,12 +40,12 @@ class NameTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testFullName() {
+    void fullName() {
         assertThat(faker.name().fullName()).matches("([\\w']+\\.?( )?){2,4}");
     }
 
     @Test
-    void testFullNameArabic() {
+    void fullNameArabic() {
         BaseFaker localFaker = new BaseFaker(new Locale("ar"));
 
         for (int i = 0; i < 25; i++) {
@@ -54,37 +54,37 @@ class NameTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testFirstName() {
+    void firstName() {
         assertThat(faker.name().firstName()).matches("\\w+");
     }
 
     @Test
-    void testLastName() {
+    void lastName() {
         assertThat(faker.name().lastName()).matches("[A-Za-z']+");
     }
 
     @Test
-    void testPrefix() {
+    void prefix() {
         assertThat(faker.name().prefix()).matches("\\w+\\.?");
     }
 
     @Test
-    void testSuffix() {
+    void suffix() {
         assertThat(faker.name().suffix()).matches("\\w+\\.?");
     }
 
     @Test
-    void testTitle() {
+    void title() {
         assertThat(faker.name().title()).matches("(\\w+\\.?( )?){3}");
     }
 
     @RepeatedTest(100)
-    void testUsername() {
+    void username() {
         assertThat(faker.name().username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
     @Test
-    void testUsernameWithSpaces() {
+    void usernameWithSpaces() {
         final Name name = Mockito.spy(new Name(mockedFaker));
         doReturn("Compound Name").when(name).firstName();
         doReturn(name).when(mockedFaker).name();

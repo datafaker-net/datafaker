@@ -7,17 +7,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UniversityTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testName() {
+    void name() {
         assertThat(faker.university().name()).matches("[A-Za-z'() ]+");
     }
 
     @Test
-    void testPrefix() {
+    void prefix() {
         assertThat(faker.university().prefix()).matches("\\w+");
     }
 
     @Test
-    void testSuffix() {
+    void suffix() {
         assertThat(faker.university().suffix()).matches("\\w+");
     }
 }

@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ZhCNIdNumberTest extends AbstractFakerTest {
 
     @RepeatedTest(10)
-    void testValidChineseIdNumber() {
+    void validChineseIdNumber() {
         BaseFaker faker = new BaseFaker(new Locale("zh_CN"));
         String idNumber = faker.idNumber().valid();
         boolean isSatisfied = idNumber.length() == 18;
@@ -33,7 +33,7 @@ class ZhCNIdNumberTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(10)
-    void testChecksumOfChineseIdNumber() {
+    void checksumOfChineseIdNumber() {
         BaseFaker faker = new BaseFaker(new Locale("zh_CN"));
         String s = faker.idNumber().valid();
         boolean isSatisfied = true;
@@ -63,7 +63,7 @@ class ZhCNIdNumberTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    void testValidZhCnIdNumber() {
+    void validZhCnIdNumber() {
         ZhCnIdNumber id = new ZhCnIdNumber();
         String idNumber = id.getValidSsn(faker);
         boolean isSatisfied = idNumber.length() == 18;

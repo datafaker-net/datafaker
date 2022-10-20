@@ -21,7 +21,7 @@ class RandomFakerTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testNumerifyRandomnessCanBeControlled() {
+    void numerifyRandomnessCanBeControlled() {
         resetRandomSeed();
         final String firstInvocation = faker.numerify("###");
 
@@ -31,7 +31,7 @@ class RandomFakerTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testLetterifyRandomnessCanBeControlled() {
+    void letterifyRandomnessCanBeControlled() {
         resetRandomSeed();
         final String firstInvocation = faker.letterify("???");
 
@@ -41,7 +41,7 @@ class RandomFakerTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testNameRandomnessCanBeControlled() {
+    void nameRandomnessCanBeControlled() {
         resetRandomSeed();
         final String firstInvocation = faker.name().name();
 
@@ -51,7 +51,7 @@ class RandomFakerTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testEmailRandomnessCanBeControlled() {
+    void emailRandomnessCanBeControlled() {
         resetRandomSeed();
         final String firstInvocation = faker.internet().emailAddress();
 

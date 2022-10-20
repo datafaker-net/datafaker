@@ -7,22 +7,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EducatorTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testUniversity() {
+    void university() {
         assertThat(faker.educator().university()).matches("(\\w+ ?){2,3}");
     }
 
     @Test
-    void testCourse() {
+    void course() {
         assertThat(faker.educator().course()).matches("(\\(?\\w+\\)? ?){3,6}");
     }
 
     @Test
-    void testSecondarySchool() {
+    void secondarySchool() {
         assertThat(faker.educator().secondarySchool()).matches("(\\w+ ?){2,3}");
     }
 
     @Test
-    void testCampus() {
+    void campus() {
         assertThat(faker.educator().campus()).matches("(\\w+ ?){1,2}");
     }
 }

@@ -7,27 +7,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BeerTest extends FoodFakerTest {
 
     @Test
-    void testName() {
+    void name() {
         assertThat(faker.beer().name()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testStyle() {
+    void style() {
         assertThat(faker.beer().style()).matches("[A-Za-z'() 0-9-]+");
     }
 
     @Test
-    void testHop() {
+    void hop() {
         assertThat(faker.beer().hop()).matches("[A-Za-z'’(). 0-9-]+");
     }
 
     @Test
-    void testMalt() {
+    void malt() {
         assertThat(faker.beer().malt()).matches("[A-Za-z'() 0-9-]+");
     }
 
     @Test
-    void testYeast() {
+    void yeast() {
         assertThat(faker.beer().yeast()).matches("[\\p{L}'() 0-9-ö]+");
     }
 }

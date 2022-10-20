@@ -22,7 +22,7 @@ class BloodTypeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testBloodGroup() {
+    void bloodGroup() {
         assertThat(faker.bloodtype().bloodGroup()).matches("(A|B|AB|O)[+-]");
     }
 

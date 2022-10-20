@@ -10,66 +10,66 @@ import static org.assertj.core.api.Assertions.assertThat;
 class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testValid() {
+    void valid() {
         assertThat(faker.idNumber().valid()).matches("[0-8]\\d{2}-\\d{2}-\\d{4}");
     }
 
     @Test
-    void testInvalid() {
+    void invalid() {
         assertThat(faker.idNumber().invalid()).matches("[0-9]\\d{2}-\\d{2}-\\d{4}");
     }
 
     @RepeatedTest(100)
-    void testSsnValid() {
+    void ssnValid() {
         assertThat(faker.idNumber().ssnValid()).matches("[0-8]\\d{2}-\\d{2}-\\d{4}");
     }
 
     @RepeatedTest(100)
-    void testValidSwedishSsn() {
+    void validSwedishSsn() {
         final BaseFaker f = new BaseFaker(new Locale("sv_SE"));
         assertThat(f.idNumber().validSvSeSsn()).matches("\\d{6}[-+]\\d{4}");
     }
 
     @RepeatedTest(100)
-    void testInvalidSwedishSsn() {
+    void invalidSwedishSsn() {
         final BaseFaker f = new BaseFaker(new Locale("sv_SE"));
         assertThat(f.idNumber().invalidSvSeSsn()).matches("\\d{6}[-+]\\d{4}");
     }
 
     @RepeatedTest(100)
-    void testValidEnZaSsn() {
+    void validEnZaSsn() {
         final BaseFaker f = new BaseFaker(new Locale("en_ZA"));
         assertThat(f.idNumber().validEnZaSsn()).matches("[0-9]{10}([01])8[0-9]");
     }
 
     @RepeatedTest(100)
-    void testInvalidEnZaSsn() {
+    void invalidEnZaSsn() {
         final BaseFaker f = new BaseFaker(new Locale("en_ZA"));
         assertThat(f.idNumber().inValidEnZaSsn()).matches("[0-9]{10}([01])8[0-9]");
     }
 
     @RepeatedTest(100)
-    void testSingaporeanFin() {
+    void singaporeanFin() {
         assertThat(faker.idNumber().singaporeanFin()).matches("G[0-9]{7}[A-Z]");
     }
 
     @RepeatedTest(100)
-    void testSingaporeanFinBefore2000() {
+    void singaporeanFinBefore2000() {
         assertThat(faker.idNumber().singaporeanFinBefore2000()).matches("F[0-9]{7}[A-Z]");
     }
 
     @RepeatedTest(100)
-    void testSingaporeanUin() {
+    void singaporeanUin() {
         assertThat(faker.idNumber().singaporeanUin()).matches("T[0-9]{7}[A-Z]");
     }
 
     @RepeatedTest(100)
-    void testSingaporeanUinBefore2000() {
+    void singaporeanUinBefore2000() {
         assertThat(faker.idNumber().singaporeanUinBefore2000()).matches("S[0-9]{7}[A-Z]");
     }
 
     @RepeatedTest(100)
-    void testPeselNumber() {
+    void peselNumber() {
         assertThat(faker.idNumber().peselNumber()).matches("[0-9]{11}");
     }
 }

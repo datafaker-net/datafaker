@@ -138,7 +138,7 @@ class CsvTest extends AbstractFakerTest {
   }
 
   @Test
-  void testCsvWithComma() {
+  void csvWithComma() {
 
     String csv =
         Format.toCsv(
@@ -160,7 +160,7 @@ class CsvTest extends AbstractFakerTest {
   }
 
   @Test
-  void testCsvWithCommaNew() {
+  void csvWithCommaNew() {
     Schema<?, ? extends CharSequence> schema =
         Schema.of(field("values", () -> "1,2,3"), field("title", () -> "The \"fabulous\" artist"));
     CsvTransformer<?> transformer =
@@ -178,7 +178,7 @@ class CsvTest extends AbstractFakerTest {
 
   @ParameterizedTest
   @ValueSource(ints = {0, 2, 3, 10, 20, 100})
-  void testLimitForCsv(int limit) {
+  void limitForCsv(int limit) {
     final BaseFaker faker = new BaseFaker();
     String csv =
         Format.toCsv(faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build())
@@ -202,7 +202,7 @@ class CsvTest extends AbstractFakerTest {
 
   @ParameterizedTest
   @ValueSource(ints = {0, 2, 3, 10, 20, 100})
-  void testLimitForCsvNew(int limit) {
+  void limitForCsvNew(int limit) {
     final BaseFaker faker = new BaseFaker();
     Schema<Name, String> schema =
         Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName));
@@ -226,7 +226,7 @@ class CsvTest extends AbstractFakerTest {
 
   @ParameterizedTest
   @ValueSource(ints = {0, 2, 3, 10, 20, 100})
-  void testLimitForCollection(int limit) {
+  void limitForCollection(int limit) {
     final BaseFaker faker = new BaseFaker();
     String csv =
         Format.toCsv(faker.<Name>collection().suppliers(faker::name).maxLen(limit).build())
@@ -250,7 +250,7 @@ class CsvTest extends AbstractFakerTest {
 
   @ParameterizedTest
   @ValueSource(ints = {0, 2, 3, 10, 20, 100})
-  void testLimitForCollectionNew(int limit) {
+  void limitForCollectionNew(int limit) {
     final BaseFaker faker = new BaseFaker();
     Schema<Name, String> schema =
         Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName));
@@ -273,7 +273,7 @@ class CsvTest extends AbstractFakerTest {
   }
 
     @Test
-    void testInfiniteCsv() {
+    void infiniteCsv() {
         final BaseFaker faker = new BaseFaker();
         FakeSequence<Name> infiniteSequence = faker.<Name>stream()
             .suppliers(faker::name)
@@ -292,7 +292,7 @@ class CsvTest extends AbstractFakerTest {
     }
 
     @Test
-    void testInfiniteCsvWithLimit() {
+    void infiniteCsvWithLimit() {
         int limit = 10;
         final BaseFaker faker = new BaseFaker();
         FakeSequence<Name> infiniteSequence = faker.<Name>stream()

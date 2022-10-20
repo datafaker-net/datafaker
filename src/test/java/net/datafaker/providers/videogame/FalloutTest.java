@@ -8,22 +8,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FalloutTest extends VideoGameFakerTest {
 
     @Test
-    void testCharacter() {
+    void character() {
         assertThat(faker.fallout().character()).isNotEmpty();
     }
 
     @Test
-    void testFaction() {
+    void faction() {
         assertThat(faker.fallout().faction()).isNotEmpty();
     }
 
     @Test
-    void testLocation() {
+    void location() {
         assertThat(faker.fallout().location()).isNotEmpty();
     }
 
     @Test
-    void testQuote() {
+    void quote() {
         assertThat(faker.fallout().quote()).isNotEmpty();
     }
 }

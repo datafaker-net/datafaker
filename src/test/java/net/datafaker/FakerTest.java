@@ -199,7 +199,7 @@ class FakerTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 3, 10, 20, 100})
-    void testLimitForCsvExpression(int limit) {
+    void limitForCsvExpression(int limit) {
         String csvFullExpression = faker.expression("#{csv ';','\"','false','" + limit + "','first_name','#{Name.first_name}','last_name','#{Name.last_name}'}");
         String csvShortExpression = faker.expression("#{csv '" + limit + "','first_name','#{Name.first_name}','last_name','#{Name.last_name}'}");
 

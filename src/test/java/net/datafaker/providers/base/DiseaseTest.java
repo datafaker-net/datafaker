@@ -7,43 +7,43 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DiseaseTest extends BaseFakerTest<BaseFaker> {
     @Test
-    void testInternalDisease() {
+    void internalDisease() {
         assertThat(faker.disease().internalDisease()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testNeurology() {
+    void neurology() {
         assertThat(faker.disease().neurology()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testSurgery() {
+    void surgery() {
         assertThat(faker.disease().surgery()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testPaediatrics() {
+    void paediatrics() {
         assertThat(faker.disease().paediatrics()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testGynecologyAndObstetrics() {
+    void gynecologyAndObstetrics() {
         assertThat(faker.disease().gynecologyAndObstetrics()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testOphthalmologyAndOtorhinolaryngology() {
+    void ophthalmologyAndOtorhinolaryngology() {
         assertThat(faker.disease().ophthalmologyAndOtorhinolaryngology()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testDermatolory() {
+    void dermatolory() {
         assertThat(faker.disease().dermatolory()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
 
     @Test
-    void testInternalDiseaseWith10000Times() {
+    void internalDiseaseWith10000Times() {
         boolean isExist = false;
         for (int i = 0; i < 10000; i++) {
             String generateString = faker.disease().internalDisease();
@@ -55,32 +55,32 @@ class DiseaseTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(1000)
-    void testNeurologyWith1000Times() {
+    void neurologyWith1000Times() {
         assertThat(faker.disease().neurology()).isNotEmpty();
     }
 
     @RepeatedTest(1000)
-    void testSurgeryWith1000Times() {
+    void surgeryWith1000Times() {
         assertThat(faker.disease().surgery()).isNotEmpty();
     }
 
     @RepeatedTest(1000)
-    void testPaediatricsWith1000Times() {
+    void paediatricsWith1000Times() {
         assertThat(faker.disease().paediatrics()).isNotEmpty();
     }
 
     @RepeatedTest(1000)
-    void testGynecologyAndObstetricsWith1000Times() {
+    void gynecologyAndObstetricsWith1000Times() {
         assertThat(faker.disease().gynecologyAndObstetrics()).isNotEmpty();
     }
 
     @RepeatedTest(1000)
-    void testOphthalmologyAndOtorhinolaryngologyWith1000Times() {
+    void ophthalmologyAndOtorhinolaryngologyWith1000Times() {
         assertThat(faker.disease().ophthalmologyAndOtorhinolaryngology()).isNotEmpty();
     }
 
     @RepeatedTest(10000)
-    void testDermatoloryWith10000Times() {
+    void dermatoloryWith10000Times() {
         assertThat(faker.disease().dermatolory()).isNotEmpty();
     }
 }

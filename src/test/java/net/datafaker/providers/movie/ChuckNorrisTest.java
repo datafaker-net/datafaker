@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ChuckNorrisTest extends MovieFakerTest {
 
     @Test
-    void testFact() {
+    void fact() {
         assertThat(faker.chuckNorris().fact()).isNotEmpty();
     }
 }

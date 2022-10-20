@@ -205,35 +205,35 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     }
 
     @Test
-    void testLocaleChain() {
+    void localeChain() {
         final List<Locale> chain = context.localeChain(Locale.SIMPLIFIED_CHINESE);
 
         assertThat(chain).contains(Locale.SIMPLIFIED_CHINESE, Locale.CHINESE, Locale.ENGLISH);
     }
 
     @Test
-    void testLocaleChainEnglish() {
+    void localeChainEnglish() {
         final List<Locale> chain = new FakerContext(Locale.ENGLISH, null).localeChain(Locale.ENGLISH);
 
         assertThat(chain).contains(Locale.ENGLISH);
     }
 
     @Test
-    void testLocaleChainLanguageOnly() {
+    void localeChainLanguageOnly() {
         final List<Locale> chain = new FakerContext(Locale.CHINESE, null).localeChain(Locale.CHINESE);
 
         assertThat(chain).contains(Locale.CHINESE, Locale.ENGLISH);
     }
 
     @Test
-    void testLocalesChainGetter() {
+    void localesChainGetter() {
         final List<Locale> chain = context.getLocaleChain();
 
         assertThat(chain).contains(new Locale("test"), Locale.ENGLISH);
     }
 
     @Test
-    void testLocalesChainGetterRu() {
+    void localesChainGetterRu() {
         final FakerContext FVS = new FakerContext(new Locale("ru"), randomService);
         final List<Locale> processedChain = FVS.localeChain(new Locale("ru"));
         final List<Locale> chain = FVS.getLocaleChain();

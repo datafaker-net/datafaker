@@ -7,47 +7,47 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AwsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testAccountId() {
+    void accountId() {
         assertThat(faker.aws().accountId()).matches("^\\d{10}$");
     }
 
     @Test
-    void testAcmARN() {
+    void acmARN() {
         assertThat(faker.aws().acmARN()).matches("^arn:aws:acm:\\w+-\\w+-\\d:\\d{10}:certificate/[\\w\\-]+$");
     }
 
     @Test
-    void testAlbARN() {
+    void albARN() {
         assertThat(faker.aws().albARN()).matches("^arn:aws:elasticloadbalancing:\\w+-\\w+-\\d:\\d{10}:loadbalancer/app/[\\w]+/\\w+$");
     }
 
     @Test
-    void testAlbTargetGroupARN() {
+    void albTargetGroupARN() {
         assertThat(faker.aws().albTargetGroupARN()).matches("^arn:aws:elasticloadbalancing:\\w+-\\w+-\\d:\\d{10}:targetgroup/[\\w]+/\\w+$");
     }
 
     @Test
-    void testRoute53ZoneId() {
+    void route53ZoneId() {
         assertThat(faker.aws().route53ZoneId()).matches("^\\w{21}$");
     }
 
     @Test
-    void testSecurityGroupId() {
+    void securityGroupId() {
         assertThat(faker.aws().securityGroupId()).matches("^sg-[0-9a-f]{16}$");
     }
 
     @Test
-    void testSubnetId() {
+    void subnetId() {
         assertThat(faker.aws().subnetId()).matches("^subnet-[0-9a-f]{16}$");
     }
 
     @Test
-    void testVpcId() {
+    void vpcId() {
         assertThat(faker.aws().vpcId()).matches("^vpc-[0-9a-f]{16}$");
     }
 
     @Test
-    void testRegion() {
+    void region() {
         String region = faker.aws().region();
         assertThat(region).matches("^[a-z]{2}-(south|east|north|west|northeast|central|southeast)-\\d$");
     }

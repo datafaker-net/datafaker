@@ -9,7 +9,7 @@ class ResidentEvilTest extends MovieFakerTest {
     static private final String WORDS_WITH_SPECIAL_CHAR_REGEX = "^(?! )[A-Za-z0-9αγβ'.()\\- ]*(?<! )$";
 
     @Test
-    void testCharacter() {
+    void character() {
         String character = faker.residentEvil().character();
         assertThat(character)
             .isNotEmpty()
@@ -17,7 +17,7 @@ class ResidentEvilTest extends MovieFakerTest {
     }
 
     @Test
-    void testBiologicalAgent() {
+    void biologicalAgent() {
         String biologicalAgent = faker.residentEvil().biologicalAgent();
         assertThat(biologicalAgent)
             .isNotEmpty()
@@ -25,7 +25,7 @@ class ResidentEvilTest extends MovieFakerTest {
     }
 
     @Test
-    void testEquipment() {
+    void equipment() {
         String equipment = faker.residentEvil().equipment();
         assertThat(equipment)
             .isNotEmpty()
@@ -33,7 +33,7 @@ class ResidentEvilTest extends MovieFakerTest {
     }
 
     @Test
-    void testLocation() {
+    void location() {
         String location = faker.residentEvil().location();
         assertThat(location)
             .isNotEmpty()
@@ -41,7 +41,7 @@ class ResidentEvilTest extends MovieFakerTest {
     }
 
     @Test
-    void testCreature() {
+    void creature() {
         String creature = faker.residentEvil().creature();
         assertThat(creature)
             .isNotEmpty()

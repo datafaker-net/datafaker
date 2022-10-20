@@ -7,17 +7,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ColorTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testName() {
+    void name() {
         assertThat(faker.color().name()).matches("(\\w+ ?){1,2}");
     }
 
     @Test
-    void testHex() {
+    void hex() {
         assertThat(faker.color().hex()).matches("^#[0-9A-F]{6}$");
     }
 
     @Test
-    void testHexNoHashSign() {
+    void hexNoHashSign() {
         assertThat(faker.color().hex(false)).matches("^[0-9A-F]{6}$");
     }
 }

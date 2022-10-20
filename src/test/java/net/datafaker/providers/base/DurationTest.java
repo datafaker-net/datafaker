@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DurationTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testDurationSeconds() {
+    void durationSeconds() {
         final long maxSeconds = 55;
         Duration randomDuration = faker.duration().atMostSeconds(maxSeconds);
         Duration lowerBound = Duration.ofSeconds(0);
@@ -19,7 +19,7 @@ class DurationTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testDurationMinutes() {
+    void durationMinutes() {
         final long maxMins = 45;
         Duration randomDuration = faker.duration().atMostMinutes(maxMins);
         Duration lowerBound = Duration.ofMinutes(0);
@@ -29,7 +29,7 @@ class DurationTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testDurationHours() {
+    void durationHours() {
         final long maxHours = 35;
         Duration randomDuration = faker.duration().atMostHours(maxHours);
         Duration lowerBound = Duration.ofHours(0);
@@ -39,7 +39,7 @@ class DurationTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testDurationDays() {
+    void durationDays() {
         final long maxDays = 40;
         Duration randomDuration = faker.duration().atMostDays(maxDays);
         Duration lowerBound = Duration.ofDays(0);

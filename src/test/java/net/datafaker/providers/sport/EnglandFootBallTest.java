@@ -8,13 +8,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EnglandFootBallTest extends SportFakerTest {
 
     @Test
-    void testLeague() {
+    void league() {
         String league = faker.englandfootball().league();
         assertThat(league).isNotEmpty();
     }
 
     @Test
-    void testTeam() {
+    void team() {
         String team = faker.englandfootball().team();
         assertThat(team).isNotEmpty();
     }

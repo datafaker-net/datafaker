@@ -7,32 +7,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ComputerTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testType() {
+    void type() {
         assertThat(faker.computer().type()).isNotEmpty();
     }
 
     @Test
-    void testPlatform() {
+    void platform() {
         assertThat(faker.computer().platform()).isNotEmpty();
     }
 
     @Test
-    void testOperatingSystem() {
+    void operatingSystem() {
         assertThat(faker.computer().operatingSystem()).isNotEmpty();
     }
 
     @Test
-    void testLinux() {
+    void linux() {
         assertThat(faker.computer().linux()).isNotEmpty();
     }
 
     @Test
-    void testMacos() {
+    void macos() {
         assertThat(faker.computer().macos()).isNotEmpty();
     }
 
     @Test
-    void testWindows() {
+    void windows() {
         assertThat(faker.computer().windows()).isNotEmpty();
     }
 }

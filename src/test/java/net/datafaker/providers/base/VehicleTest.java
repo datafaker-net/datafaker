@@ -14,87 +14,87 @@ class VehicleTest extends BaseFakerTest<BaseFaker> {
     private static final String INTERNATIONAL_WORDS_MATCH = "\\P{Cc}+";
 
     @RepeatedTest(10)
-    void testVin() {
+    void vin() {
         assertThat(faker.vehicle().vin()).matches(Vehicle.VIN_REGEX);
     }
 
     @RepeatedTest(10)
-    void testManufacturer() {
+    void manufacturer() {
         assertThat(faker.vehicle().manufacturer()).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testMake() {
+    void make() {
         assertThat(faker.vehicle().make()).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testModel() {
+    void model() {
         assertThat(faker.vehicle().model()).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testModelWithParams() {
+    void modelWithParams() {
         assertThat(faker.vehicle().model("Toyota")).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testMakeAndModel() {
+    void makeAndModel() {
         assertThat(faker.vehicle().makeAndModel()).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testStyle() {
+    void style() {
         assertThat(faker.vehicle().style()).matches(WORD_MATCH);
     }
 
     @RepeatedTest(10)
-    void testColor() {
+    void color() {
         assertThat(faker.vehicle().color()).matches(WORD_MATCH);
     }
 
     @RepeatedTest(10)
-    void testUpholsteryColor() {
+    void upholsteryColor() {
         assertThat(faker.vehicle().upholsteryColor()).matches(WORD_MATCH);
     }
 
     @RepeatedTest(10)
-    void testUpholsteryFabric() {
+    void upholsteryFabric() {
         assertThat(faker.vehicle().upholsteryFabric()).matches(WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testUpholstery() {
+    void upholstery() {
         assertThat(faker.vehicle().upholstery()).matches(WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testTransmission() {
+    void transmission() {
         assertThat(faker.vehicle().transmission()).matches(WORD_MATCH);
     }
 
     @RepeatedTest(10)
-    void testDriveType() {
+    void driveType() {
         assertThat(faker.vehicle().driveType()).matches(WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testFuelType() {
+    void fuelType() {
         assertThat(faker.vehicle().fuelType()).matches(WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testCarType() {
+    void carType() {
         assertThat(faker.vehicle().carType()).matches(WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testEngine() {
+    void engine() {
         assertThat(faker.vehicle().engine()).matches("\\d Cylinder Engine");
     }
 
     @RepeatedTest(10)
-    void testCarOptions() {
+    void carOptions() {
         List<String> carOptions = faker.vehicle().carOptions();
         assertThat(carOptions)
             .hasSizeGreaterThanOrEqualTo(5)
@@ -102,7 +102,7 @@ class VehicleTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(10)
-    void testCarOptionsMinMax() {
+    void carOptionsMinMax() {
         List<String> carOptions = faker.vehicle().carOptions(11, 12);
 
         assertThat(carOptions)
@@ -113,7 +113,7 @@ class VehicleTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(10)
-    void testStandardSpecsMinMax() {
+    void standardSpecsMinMax() {
         List<String> standardSpecs = faker.vehicle().standardSpecs(13, 14);
 
         assertThat(standardSpecs)
@@ -122,7 +122,7 @@ class VehicleTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(10)
-    void testStandardSpecs() {
+    void standardSpecs() {
         List<String> standardSpecs = faker.vehicle().standardSpecs();
 
         assertThat(standardSpecs)
@@ -131,23 +131,23 @@ class VehicleTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(10)
-    void testDoor() {
+    void door() {
         assertThat(faker.vehicle().doors()).matches("\\d");
     }
 
     @RepeatedTest(10)
-    void testLicensePlate() {
+    void licensePlate() {
         assertThat(faker.vehicle().licensePlate()).matches(WORDS_MATCH);
     }
 
     @RepeatedTest(10)
-    void testLicensePlateWithParam() {
+    void licensePlateWithParam() {
         assertThat(faker.vehicle().licensePlate("GA")).matches(WORDS_MATCH);
         assertThat(faker.vehicle().licensePlate("AL")).matches(WORDS_MATCH);
     }
 
     @RepeatedTest(100)
-    void testLicensePlateWithParam_Canada() {
+    void licensePlateWithParam_Canada() {
         BaseFaker test = new BaseFaker(Locale.CANADA);
         assertThat(test.vehicle().licensePlate("MB")).matches(WORDS_MATCH);
         assertThat(test.vehicle().licensePlate("ON")).matches(WORDS_MATCH);

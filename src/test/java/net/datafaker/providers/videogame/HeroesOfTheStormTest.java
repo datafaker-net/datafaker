@@ -7,22 +7,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HeroesOfTheStormTest extends VideoGameFakerTest {
 
     @Test
-    void testBattleground() {
+    void battleground() {
         assertThat(faker.heroesOfTheStorm().battleground()).isNotEmpty();
     }
 
     @Test
-    void testHeroClass() {
+    void heroClass() {
         assertThat(faker.heroesOfTheStorm().heroClass()).isNotEmpty();
     }
 
     @Test
-    void testHero() {
+    void hero() {
         assertThat(faker.heroesOfTheStorm().hero()).isNotEmpty();
     }
 
     @Test
-    void testQuote() {
+    void quote() {
         assertThat(faker.heroesOfTheStorm().quote()).isNotEmpty();
     }
 

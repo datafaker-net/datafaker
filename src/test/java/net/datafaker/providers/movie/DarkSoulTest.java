@@ -9,22 +9,22 @@ class DarkSoulTest extends MovieFakerTest {
     public static final String DARK_SOUL_REGEX = "[A-Za-z '-]+";
 
     @RepeatedTest(10)
-    void testClasses() {
+    void classes() {
         assertThat(faker.darkSoul().classes()).matches(DARK_SOUL_REGEX);
     }
 
     @RepeatedTest(10)
-    void testCovenants() {
+    void covenants() {
         assertThat(faker.darkSoul().covenants()).matches(DARK_SOUL_REGEX);
     }
 
     @RepeatedTest(10)
-    void testShield() {
+    void shield() {
         assertThat(faker.darkSoul().shield()).matches(DARK_SOUL_REGEX);
     }
 
     @RepeatedTest(10)
-    void testStats() {
+    void stats() {
         assertThat(faker.darkSoul().stats()).matches(DARK_SOUL_REGEX);
     }
 }

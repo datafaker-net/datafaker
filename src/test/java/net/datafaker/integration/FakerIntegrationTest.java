@@ -83,7 +83,7 @@ class FakerIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("dataParameters")
-    void testAllFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
+    void allFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
         final Faker faker = init(locale, random);
 
         Method[] methods = faker.getClass().getMethods();
@@ -129,7 +129,7 @@ class FakerIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("dataParameters")
-    void testExceptionsNotCoveredInAboveTest(Locale locale, Random random) {
+    void exceptionsNotCoveredInAboveTest(Locale locale, Random random) {
         final BaseFaker faker = init(locale, random);
         assertThat(faker.bothify("####???")).isNotNull();
         assertThat(faker.letterify("????")).isNotNull();

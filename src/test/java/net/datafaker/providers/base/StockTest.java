@@ -7,12 +7,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class StockTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testNasdaq() {
+    void nasdaq() {
         assertThat(faker.stock().nsdqSymbol()).isNotEmpty();
     }
 
     @Test
-    void testNYSE() {
+    void nYSE() {
         assertThat(faker.stock().nyseSymbol()).isNotEmpty();
     }
 

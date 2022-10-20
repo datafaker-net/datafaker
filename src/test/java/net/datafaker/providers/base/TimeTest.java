@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class TimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testFutureTime() {
+    void futureTime() {
         LocalTime now = LocalTime.now();
         for (int i = 0; i < 1000; i++) {
             long future = faker.time().future(1, ChronoUnit.SECONDS);
@@ -23,7 +23,7 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testFutureTimeWithMinimum() {
+    void futureTimeWithMinimum() {
         LocalTime now = LocalTime.now();
         for (int i = 0; i < 1000; i++) {
             long future = faker.time().future(5, 4, ChronoUnit.SECONDS);
@@ -35,7 +35,7 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testPastTimeWithMinimum() {
+    void pastTimeWithMinimum() {
         LocalTime now = LocalTime.now();
         for (int i = 0; i < 1000; i++) {
             long past = faker.time().past(5, 4, ChronoUnit.SECONDS);
@@ -47,14 +47,14 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testPastTime() {
+    void pastTime() {
         LocalTime now = LocalTime.now();
         long past = faker.time().past(100, ChronoUnit.SECONDS);
         assertThat(LocalTime.ofNanoOfDay(past)).isBefore(now);
     }
 
     @Test
-    void testBetween() {
+    void between() {
         LocalTime now = LocalTime.now();
         LocalTime then = now.plus(1, ChronoUnit.SECONDS);
 
@@ -67,7 +67,7 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testBetweenThenLargerThanNow() {
+    void betweenThenLargerThanNow() {
         LocalTime now = LocalTime.now();
         LocalTime then = now.plus(1, ChronoUnit.SECONDS);
         assertThatThrownBy(() -> faker.time().between(then, now))

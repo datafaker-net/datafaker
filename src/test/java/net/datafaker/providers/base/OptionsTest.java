@@ -21,17 +21,17 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testOptionWithArray() {
+    void optionWithArray() {
         assertThat(faker.options().option(options)).isIn((Object[]) options);
     }
 
     @Test
-    void testOptionWithVarargsString() {
+    void optionWithVarargsString() {
         assertThat(faker.options().option("A", "B", "C")).isIn((Object[]) options);
     }
 
     @Test
-    void testOptionWithVarargs() {
+    void optionWithVarargs() {
         Integer[] integerOptions = new Integer[]{1, 3, 4, 5};
         assertThat(faker.options().option(1, 3, 4, 5)).isIn((Object[]) integerOptions);
         Long[] longOptions = new Long[]{1L, 3L, 4L, 5L};
@@ -53,7 +53,7 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testSubset() {
+    void subset() {
         Integer[] integerOptions = new Integer[]{1, 3, 4, 5};
         assertThat(faker.options().subset(1, integerOptions))
             .doesNotContainAnyElementsOf(Arrays.asList(2, 6))
@@ -84,7 +84,7 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testSubsetWithDuplicate() {
+    void subsetWithDuplicate() {
         Object[] array = new Object[]{1, 1, 2, 2};
         assertThat(faker.options().subset(5, array)).hasSize(2);
         String[] strArray = new String[]{"a", "s", "s", "a"};
@@ -92,7 +92,7 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testEmptySubset() {
+    void emptySubset() {
         Object[] array = new Object[]{1, 2, 3};
         assertThat(faker.options().subset(0, array)).isEmpty();
         assertThatThrownBy(() -> faker.options().subset(-1, array))
@@ -103,12 +103,12 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testOptionWithEnum() {
+    void optionWithEnum() {
         assertThat(faker.options().option(Day.class)).isIn((Object[]) Day.values());
     }
 
     @Test
-    void testNextArrayElement() {
+    void nextArrayElement() {
         Integer[] array = new Integer[]{1, 2, 3, 5, 8, 13, 21};
 
         for (int i = 1; i < 10; i++) {
@@ -117,7 +117,7 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testNextListElement() {
+    void nextListElement() {
         List<Integer> list = Arrays.asList(1, 2, 3, 5, 8, 13, 21);
         for (int i = 1; i < 10; i++) {
             assertThat(faker.options().nextElement(list)).isIn(list);

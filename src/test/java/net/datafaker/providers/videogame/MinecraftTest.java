@@ -8,32 +8,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MinecraftTest extends VideoGameFakerTest {
 
     @Test
-    void testItemName() {
+    void itemName() {
         assertThat(faker.minecraft().itemName()).matches("([\\w'()]+\\.?( )?){2,4}");
     }
 
     @Test
-    void testTileName() {
+    void tileName() {
         assertThat(faker.minecraft().tileName()).matches("([\\w'()]+\\.?( )?){2,5}");
     }
 
     @Test
-    void testEntityName() {
+    void entityName() {
         assertThat(faker.minecraft().entityName()).matches("([\\w']+\\.?( )?){2,4}");
     }
 
     @Test
-    void testMonsterName() {
+    void monsterName() {
         assertThat(faker.minecraft().monsterName()).matches("([\\w']+\\.?( )?){2,4}");
     }
 
     @Test
-    void testAnimalName() {
+    void animalName() {
         assertThat(faker.minecraft().animalName()).matches("([\\w']+\\.?( )?){2,4}");
     }
 
     @Test
-    void testTileItemName() {
+    void tileItemName() {
         assertThat(faker.minecraft().tileItemName()).matches("([\\w()']+\\.?( )?){2,5}");
     }
 

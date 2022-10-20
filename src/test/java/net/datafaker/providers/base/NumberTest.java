@@ -27,7 +27,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     final double percentRunsGtUniquePercentage = 0.90;
 
     @Test
-    void testRandomDigit() {
+    void randomDigit() {
         Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigit();
@@ -39,7 +39,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testRandomDigitNotZero() {
+    void randomDigitNotZero() {
         Set<Integer> nums = new HashSet<>();
         for (int i = 0; i < 1000; ++i) {
             int value = faker.number().randomDigitNotZero();
@@ -51,13 +51,13 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testRandomNumber() {
+    void randomNumber() {
         long value = faker.number().randomNumber();
         assertThat(value).isLessThan(Long.MAX_VALUE);
     }
 
     @Test
-    void testRandomNumberWithSingleDigitStrict() {
+    void randomNumberWithSingleDigitStrict() {
         for (int i = 0; i < 100; ++i) {
             long value = faker.number().randomNumber(1, true);
             assertThat(value).isLessThan(10L)
@@ -66,7 +66,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testRandomNumberWithZeroDigitsStrict() {
+    void randomNumberWithZeroDigitsStrict() {
         for (int i = 0; i < 100; ++i) {
             long value = faker.number().randomNumber(0, true);
             assertThat(value).isZero();
@@ -74,7 +74,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testRandomNumberWithGivenDigitsStrict() {
+    void randomNumberWithGivenDigitsStrict() {
         for (int i = 1; i < 9; ++i) {
             for (int x = 0; x < 100; ++x) {
                 long value = faker.number().randomNumber(i, true);
@@ -85,7 +85,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testRandomDouble() {
+    void randomDouble() {
         for (int i = 1; i < 5; ++i) {
             for (int x = 0; x < 100; ++x) {
                 double value = faker.number().randomDouble(i, 1, 1000);
@@ -99,7 +99,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testNumberBetween() {
+    void numberBetween() {
         for (int i = 1; i < 100; ++i) {
             int v = faker.number().numberBetween(0, i);
             assertThat(v).isLessThanOrEqualTo(i)
@@ -119,7 +119,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(100)
-    void testLongNumberBetweenRepeated() {
+    void longNumberBetweenRepeated() {
         long low = 1;
         long high = 10;
         long v = faker.number().numberBetween(low, high);
@@ -128,7 +128,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(100)
-    void testIntNumberBetweenRepeated() {
+    void intNumberBetweenRepeated() {
         int low = 1;
         int high = 10;
         int v = faker.number().numberBetween(low, high);
@@ -137,7 +137,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testNumberBetweenOneAndThree() {
+    void numberBetweenOneAndThree() {
         Set<Integer> nums = new HashSet<>();
         final int lowerLimit = 0;
         final int upperLimit = 3;
@@ -151,7 +151,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testLongBetweenOneAndThree() {
+    void longBetweenOneAndThree() {
         Set<Long> nums = new HashSet<>();
         final long lowerLimit = 0;
         final long upperLimit = 3;
@@ -265,7 +265,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testRandomDoubleMaxEqualsMin() {
+    void randomDoubleMaxEqualsMin() {
         double actual = faker.number().randomDouble(1, 42, 42);
 
         double expected = BigDecimal.valueOf(42).doubleValue();
@@ -274,14 +274,14 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testDigit() {
+    void digit() {
         String digit = faker.number().digit();
 
         assertThat(digit).matches("[0-9]");
     }
 
     @Test
-    void testDigits() {
+    void digits() {
         String digits = faker.number().digits(5);
 
         assertThat(digits).matches("[0-9]{5}");
@@ -341,7 +341,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testIntNumberBetweenQuality() {
+    void intNumberBetweenQuality() {
         //test whether the fake number made by numberBetween(int min, int max)
         // is not randomly and evenly distributed
         // (The difference between the average is less than 10%)
@@ -364,7 +364,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testLongNumberBetweenQuality() {
+    void longNumberBetweenQuality() {
         //test whether the fake number made by numberBetween(long min, long max)
         // is not randomly and evenly distributed
         // (The difference between the average is less than 10%)
@@ -388,7 +388,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testNumberBetweenContain() {
+    void numberBetweenContain() {
 
         Set<Integer> ints = new HashSet<>();
         Set<Long> longs = new HashSet<>();
@@ -423,7 +423,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testNumberBetweenBorder() {
+    void numberBetweenBorder() {
 
         Random random = new Random();
 
@@ -447,12 +447,12 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(10)
-    void testPositive() {
+    void positive() {
         assertThat(faker.number().positive()).isGreaterThan(0);
     }
 
     @RepeatedTest(10)
-    void testNegative() {
+    void negative() {
         assertThat(faker.number().negative()).isLessThan(0);
 
     }

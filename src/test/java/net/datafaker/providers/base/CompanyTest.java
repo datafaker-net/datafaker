@@ -8,47 +8,47 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CompanyTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testName() {
+    void name() {
         assertThat(faker.company().name()).matches("[A-Za-z\\-&', ]+");
     }
 
     @Test
-    void testSuffix() {
+    void suffix() {
         assertThat(faker.company().suffix()).matches("[A-Za-z ]+");
     }
 
     @Test
-    void testIndustry() {
+    void industry() {
         assertThat(faker.company().industry()).matches("(\\w+([ ,&/-]{1,3})?){1,4}+");
     }
 
     @Test
-    void testBuzzword() {
+    void buzzword() {
         assertThat(faker.company().buzzword()).matches("(\\w+[ /-]?){1,3}");
     }
 
     @Test
-    void testCatchPhrase() {
+    void catchPhrase() {
         assertThat(faker.company().catchPhrase()).matches("(\\w+[ /-]?){1,9}");
     }
 
     @Test
-    void testBs() {
+    void bs() {
         assertThat(faker.company().bs()).matches("(\\w+[ /-]?){1,9}");
     }
 
     @Test
-    void testLogo() {
+    void logo() {
         assertThat(faker.company().logo()).matches("https://pigment.github.io/fake-logos/logos/medium/color/\\d+\\.png");
     }
 
     @Test
-    void testProfession() {
+    void profession() {
         assertThat(faker.company().profession()).matches("[a-z ]+");
     }
 
     @RepeatedTest(100)
-    void testUrl() {
+    void url() {
         String regexp = "(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])";
         assertThat(faker.company().url()).matches(regexp);
     }

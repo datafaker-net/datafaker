@@ -7,19 +7,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ElectricalComponentsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testActive() {
+    void active() {
         String activeComponent = faker.electricalComponents().active();
         assertThat(activeComponent).isNotEmpty();
     }
 
     @Test
-    void testPassive() {
+    void passive() {
         String passiveComponent = faker.electricalComponents().passive();
         assertThat(passiveComponent).isNotEmpty();
     }
 
     @Test
-    void testElectromechanical() {
+    void electromechanical() {
         String electromechanicalComponent = faker.electricalComponents().electromechanical();
         assertThat(electromechanicalComponent).isNotEmpty();
     }

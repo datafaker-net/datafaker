@@ -10,42 +10,42 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ElderScrollsTest extends VideoGameFakerTest {
 
     @Test
-    void testCity() {
+    void city() {
         assertThat(faker.elderScrolls().city()).isNotEmpty();
     }
 
     @Test
-    void testCreature() {
+    void creature() {
         assertThat(faker.elderScrolls().creature()).isNotEmpty();
     }
 
     @Test
-    void testDragon() {
+    void dragon() {
         assertThat(faker.elderScrolls().dragon()).isNotEmpty();
     }
 
     @Test
-    void testFirstName() {
+    void firstName() {
         assertThat(faker.elderScrolls().firstName()).isNotEmpty();
     }
 
     @Test
-    void testLastName() {
+    void lastName() {
         assertThat(faker.elderScrolls().lastName()).isNotEmpty();
     }
 
     @Test
-    void testRace() {
+    void race() {
         assertThat(faker.elderScrolls().race()).isNotEmpty();
     }
 
     @Test
-    void testRegion() {
+    void region() {
         assertThat(faker.elderScrolls().region()).isNotEmpty();
     }
 
     @Test
-    void testQuote() {
+    void quote() {
         assertThat(faker.elderScrolls().quote()).isNotEmpty();
     }
 }

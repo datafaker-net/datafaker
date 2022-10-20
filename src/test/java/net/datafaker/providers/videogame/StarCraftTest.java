@@ -9,7 +9,7 @@ class StarCraftTest extends VideoGameFakerTest {
     private final String noLeadingTrailingWhitespaceRegex = "^(?! )[-A-Za-z\\d' ]*(?<! )$";
 
     @Test
-    void testUnit() {
+    void unit() {
         String unit = faker.starCraft().unit();
         assertThat(unit)
             .isNotEmpty()
@@ -17,7 +17,7 @@ class StarCraftTest extends VideoGameFakerTest {
     }
 
     @RepeatedTest(1000)
-    void testUnitOneThousand() {
+    void unitOneThousand() {
         String unit = faker.starCraft().unit();
         // System.out.println(unit);
         assertThat(unit)
@@ -26,7 +26,7 @@ class StarCraftTest extends VideoGameFakerTest {
     }
 
     @Test
-    void testBuilding() {
+    void building() {
         String building = faker.starCraft().building();
         assertThat(building)
             .isNotEmpty()
@@ -34,7 +34,7 @@ class StarCraftTest extends VideoGameFakerTest {
     }
 
     @Test
-    void testCharacter() {
+    void character() {
         String character = faker.starCraft().character();
         assertThat(character)
             .isNotEmpty()
@@ -42,7 +42,7 @@ class StarCraftTest extends VideoGameFakerTest {
     }
 
     @Test
-    void testPlanet() {
+    void planet() {
         String planet = faker.starCraft().planet();
         assertThat(planet)
             .isNotEmpty()
@@ -50,7 +50,7 @@ class StarCraftTest extends VideoGameFakerTest {
     }
 
     @RepeatedTest(1000)
-    void testPlanetOneThousand() {
+    void planetOneThousand() {
         String planet = faker.starCraft().planet();
         assertThat(planet)
             .isNotEmpty()

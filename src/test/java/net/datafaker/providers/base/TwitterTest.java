@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TwitterTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testCreatedDateForward() {
+    void createdDateForward() {
         Date testDate = new Date();
         Date constrainDate = new Date(testDate.getTime() + 3000000);
         Date generated = faker.twitter().createdTime(true, testDate, constrainDate);
@@ -19,7 +19,7 @@ class TwitterTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testCreatedDateBackward() {
+    void createdDateBackward() {
         Date testDate = new Date();
         Date constrainDate = new Date(testDate.getTime() - 3000000);
         Date generated = faker.twitter().createdTime(false, testDate, constrainDate);
@@ -28,28 +28,28 @@ class TwitterTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testShortTwitterIdLength() {
+    void shortTwitterIdLength() {
         int expectedLength = 6;
         String generatedID = faker.twitter().twitterId(expectedLength);
         assertThat(generatedID).hasSize(expectedLength);
     }
 
     @RepeatedTest(100)
-    void testLongTwitterIdLength() {
+    void longTwitterIdLength() {
         int expectedLength = 25;
         String generatedID = faker.twitter().twitterId(expectedLength);
         assertThat(generatedID).hasSize(expectedLength);
     }
 
     @Test
-    void testTwitterIdLength() {
+    void twitterIdLength() {
         int expectedLength = 15;
         String generatedID = faker.twitter().twitterId(expectedLength);
         assertThat(generatedID).hasSize(expectedLength);
     }
 
     @Test
-    void testTwitterIdUnique() {
+    void twitterIdUnique() {
         int expectedLength = 15;
         String generatedIDOne = faker.twitter().twitterId(expectedLength);
         String generatedIDTwo = faker.twitter().twitterId(expectedLength);
@@ -57,7 +57,7 @@ class TwitterTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testTextLength() {
+    void textLength() {
         int sentenceMaxLength = 15;
         int wordMaxLength = 5;
         String text = faker.twitter().text(null, sentenceMaxLength, wordMaxLength);
@@ -66,7 +66,7 @@ class TwitterTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testTextKeyWords() {
+    void textKeyWords() {
         int sentenceMaxLength = 15;
         int wordMaxLength = 5;
         String[] keywords = new String[]{"buy", "see"};

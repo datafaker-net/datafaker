@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 class DomainTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testFirstLevelDomainNotNull() {
+    void firstLevelDomainNotNull() {
         String ret = faker.domain().firstLevelDomain("example");
         assert (ret != null);
     }
 
     @Test
-    void testFirstLevelDomain() {
+    void firstLevelDomain() {
         String[] components = faker.domain().firstLevelDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);
@@ -20,13 +20,13 @@ class DomainTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testSecondLevelDomainNotNull() {
+    void secondLevelDomainNotNull() {
         String ret = faker.domain().secondLevelDomain("example");
         assert (ret != null);
     }
 
     @Test
-    void testSecondLevelDomain() {
+    void secondLevelDomain() {
         String[] components = faker.domain().secondLevelDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);
@@ -35,13 +35,13 @@ class DomainTest extends BaseFakerTest<BaseFaker> {
 
 
     @Test
-    void testFullDomainNotNull() {
+    void fullDomainNotNull() {
         String ret = faker.domain().fullDomain("example");
         assert (ret != null);
     }
 
     @Test
-    void testFullDomain() {
+    void fullDomain() {
         String[] components = faker.domain().fullDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);
@@ -49,13 +49,13 @@ class DomainTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(10)
-    void testValidDomainNotNull() {
+    void validDomainNotNull() {
         String ret = faker.domain().validDomain("example");
         assert (ret != null);
     }
 
     @Test
-    void testValidDomain() {
+    void validDomain() {
         String[] components = faker.domain().validDomain("example").split("\\.");
         for (String str : components) {
             assert (str.length() > 0);

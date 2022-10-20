@@ -7,12 +7,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class KaamelottTest extends MovieFakerTest {
 
     @Test
-    void testCharacter() {
+    void character() {
         assertThat(faker.kaamelott().character()).matches("[A-Za-z' -ÇÉàçêèéïîüùú]+");
     }
 
     @Test
-    void testQuote() {
+    void quote() {
         assertThat(faker.kaamelott().quote()).matches("[-A-Za-z0-9 —ÇÉàçêèéïîüùú;:…?!.’‘'”“,\\[\\]]+");
     }
 }

@@ -9,42 +9,42 @@ class MeasurementTest extends BaseFakerTest<BaseFaker> {
     public static final String WORDS = "^[a-z ]+$";
 
     @RepeatedTest(10)
-    void testHeight() {
+    void height() {
         assertThat(faker.measurement().height()).matches(WORDS);
     }
 
     @RepeatedTest(10)
-    void testLength() {
+    void length() {
         assertThat(faker.measurement().length()).matches(WORDS);
     }
 
     @RepeatedTest(10)
-    void testVolume() {
+    void volume() {
         assertThat(faker.measurement().volume()).matches(WORDS);
     }
 
     @RepeatedTest(10)
-    void testWeight() {
+    void weight() {
         assertThat(faker.measurement().weight()).matches(WORDS);
     }
 
     @RepeatedTest(10)
-    void testMetricHeight() {
+    void metricHeight() {
         assertThat(faker.measurement().metricHeight()).matches(WORDS);
     }
 
     @RepeatedTest(10)
-    void testMetricLength() {
+    void metricLength() {
         assertThat(faker.measurement().metricLength()).matches(WORDS);
     }
 
     @RepeatedTest(10)
-    void testMetricVolume() {
+    void metricVolume() {
         assertThat(faker.measurement().metricVolume()).matches(WORDS);
     }
 
     @RepeatedTest(10)
-    void testMetricWeight() {
+    void metricWeight() {
         assertThat(faker.measurement().metricWeight()).matches(WORDS);
     }
 }

@@ -7,22 +7,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class IndustrySegmentsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testIndustry() {
+    void industry() {
         assertThat(faker.industrySegments().industry()).isNotEmpty();
     }
 
     @Test
-    void testSuperSector() {
+    void superSector() {
         assertThat(faker.industrySegments().superSector()).isNotEmpty();
     }
 
     @Test
-    void testSector() {
+    void sector() {
         assertThat(faker.industrySegments().sector()).isNotEmpty();
     }
 
     @Test
-    void testSubSector() {
+    void subSector() {
         assertThat(faker.industrySegments().subSector()).isNotEmpty();
     }
 }

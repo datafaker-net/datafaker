@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PhoneNumberValidityFinderTest extends AbstractFakerTest {
 
     @Test
-    void testAllCellPhoneForLocale() throws NumberParseException {
+    void allCellPhoneForLocale() throws NumberParseException {
         String language = "en";
         String region = "GB";
         BaseFaker localFaker = new BaseFaker(new Locale(language, region));
@@ -45,7 +45,7 @@ class PhoneNumberValidityFinderTest extends AbstractFakerTest {
     }
 
     @Test
-    void testValidNumber() throws NumberParseException {
+    void validNumber() throws NumberParseException {
         String phoneNumber = "0140 123456";
         String region = "SE";
 
@@ -55,7 +55,7 @@ class PhoneNumberValidityFinderTest extends AbstractFakerTest {
     }
 
     @Test
-    void testAllPhoneNumbers() {
+    void allPhoneNumbers() {
         List<String> allSupportedLocales = faker.locality().allSupportedLocales();
         Map<Locale, Integer> errorCounts = new HashMap<>();
 

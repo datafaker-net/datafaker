@@ -7,17 +7,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DepartedTest extends MovieFakerTest {
 
     @RepeatedTest(100)
-    void testActor() {
+    void actor() {
         assertThat(faker.departed().actor()).matches("^[a-zA-Z ']+$");
     }
 
     @RepeatedTest(100)
-    void testCharacter() {
+    void character() {
         assertThat(faker.departed().character()).matches("^[a-zA-Z ]+$");
     }
 
     @RepeatedTest(100)
-    void testQuote() {
+    void quote() {
         assertThat(faker.departed().quote()).matches("^[a-zA-Z '.?!,]+$");
     }
 }

@@ -7,22 +7,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BasketballTest extends SportFakerTest {
 
     @Test
-    void testPositions() {
+    void positions() {
         assertThat(faker.basketball().positions()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testTeams() {
+    void teams() {
         assertThat(faker.basketball().teams()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testCoaches() {
+    void coaches() {
         assertThat(faker.basketball().coaches()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
     @Test
-    void testPlayers() {
+    void players() {
         assertThat(faker.basketball().players()).matches("[\\p{L}'()., 0-9-’]+");
     }
 }

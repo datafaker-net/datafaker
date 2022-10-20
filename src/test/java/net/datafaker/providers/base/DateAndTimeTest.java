@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testFutureDate() {
+    void futureDate() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         for (int i = 0; i < 1000; i++) {
             Date future = faker.date().future(1, TimeUnit.SECONDS, now);
@@ -38,7 +38,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testFutureDateWithMinimum() {
+    void futureDateWithMinimum() {
         final Date now = new Date();
         for (int i = 0; i < 1000; i++) {
             Date future = faker.date().future(5, 4, TimeUnit.SECONDS);
@@ -49,7 +49,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testPastDateWithMinimum() {
+    void pastDateWithMinimum() {
         for (int i = 0; i < 1000; i++) {
             final long now = System.currentTimeMillis();
             Date past = faker.date().past(5, 4, TimeUnit.SECONDS);
@@ -60,7 +60,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testPastDateWithReferenceDate() {
+    void pastDateWithReferenceDate() {
         Date now = new Date();
 
         for (int i = 0; i < 1000; i++) {
@@ -71,14 +71,14 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testPastDate() {
+    void pastDate() {
         Date now = new Date();
         Date past = faker.date().past(100, TimeUnit.SECONDS);
         assertThat(past.getTime()).isLessThan(now.getTime());
     }
 
     @Test
-    void testBetween() {
+    void between() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         Timestamp then = new Timestamp(System.currentTimeMillis() + 1000);
 
@@ -90,12 +90,12 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testBetweenDateAsArgument() {
+    void betweenDateAsArgument() {
          faker.date().between(new Date(), new Date());
     }
 
     @Test
-    void testBetweenThenLargerThanNow() {
+    void betweenThenLargerThanNow() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         Timestamp then = new Timestamp(System.currentTimeMillis() + 1000);
         assertThatThrownBy(() -> faker.date().between(then, now))
@@ -104,7 +104,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testBirthday() {
+    void birthday() {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
         int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
@@ -119,7 +119,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testBirthdayWithAges() {
+    void birthdayWithAges() {
         LocalDateTime nw = LocalDateTime.now();
 
         for (int i = 0; i < 5000; i++) {

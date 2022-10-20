@@ -8,13 +8,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PhotographyTest extends BaseFakerTest<BaseFaker> {
 
     @Test
-    void testAperture() {
+    void aperture() {
         final String value = faker.photography().aperture();
         assertThat(value).startsWith("f");
     }
 
     @Test
-    void testTerm() {
+    void term() {
         final String value = faker.photography().term();
         assertNonNullOrEmpty(value);
     }

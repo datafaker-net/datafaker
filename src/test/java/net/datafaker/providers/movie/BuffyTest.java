@@ -6,27 +6,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class BuffyTest extends MovieFakerTest {
     @Test
-    void testCharacters() {
+    void characters() {
         assertThat(faker.buffy().characters()).isNotEmpty();
     }
 
     @Test
-    void testQuotes() {
+    void quotes() {
         assertThat(faker.buffy().quotes()).isNotEmpty();
     }
 
     @Test
-    void testCelebrities() {
+    void celebrities() {
         assertThat(faker.buffy().celebrities()).isNotEmpty();
     }
 
     @Test
-    void testBigBads() {
+    void bigBads() {
         assertThat(faker.buffy().bigBads()).isNotEmpty();
     }
 
     @Test
-    void testEpisodes() {
+    void episodes() {
         assertThat(faker.buffy().episodes()).isNotEmpty();
     }
 }

@@ -19,19 +19,19 @@ class PtNifIdNumberTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    void testInValid() {
+    void inValid() {
         PtNifIdNumber idNumber = new PtNifIdNumber();
         assertThat(idNumber.getInvalid(ptFaker)).matches("[0-9]{9,10}");
     }
 
     @RepeatedTest(100)
-    void testValid() {
+    void valid() {
         PtNifIdNumber idNumber = new PtNifIdNumber();
         assertThat(idNumber.getValid(ptFaker)).matches("[0-9]{9,10}");
     }
 
     @RepeatedTest(100)
-    void testValidWithFaker() {
+    void validWithFaker() {
         assertThat(ptFaker.idNumber().valid()).matches("[0-9]{9,10}");
     }
 

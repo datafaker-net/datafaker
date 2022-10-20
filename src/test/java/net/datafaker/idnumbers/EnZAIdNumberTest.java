@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EnZAIdNumberTest {
 
     @Test
-    void testExistSsn() {
+    void existSsn() {
         EnZAIdNumber idNumber = new EnZAIdNumber();
 
         assertThat(idNumber.validSsn("9202204720085")).isFalse();
@@ -26,7 +26,7 @@ class EnZAIdNumberTest {
     }
 
     @RepeatedTest(100)
-    void testFakerSsn() {
+    void fakerSsn() {
         EnZAIdNumber idNumber = new EnZAIdNumber();
         final BaseFaker f = new BaseFaker(new Locale("en", "ZA"));
 
@@ -35,7 +35,7 @@ class EnZAIdNumberTest {
     }
 
     @RepeatedTest(100)
-    void testSsnFormat() {
+    void ssnFormat() {
         final BaseFaker f = new BaseFaker(new Locale("en", "ZA"));
         assertThat(f.idNumber().valid()).matches("\\d{10}[01]8\\d");
         assertThat(f.idNumber().invalid()).matches("\\d{10}[01]8\\d");

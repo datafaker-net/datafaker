@@ -28,7 +28,7 @@ class PeselNumberTest {
 
     @ParameterizedTest
     @EnumSource(value = Gender.class, names = {"MALE", "FEMALE"})
-    void testGenderedPesel(Gender givenGender) {
+    void genderedPesel(Gender givenGender) {
         /*
          * Given
          */
@@ -50,7 +50,7 @@ class PeselNumberTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1850, 1950, 2050, 2150, 2250})
-    void testCenturiesPesel(int givenBirthYear) {
+    void centuriesPesel(int givenBirthYear) {
         /*
          * Given
          */
@@ -71,7 +71,7 @@ class PeselNumberTest {
 
     @ParameterizedTest()
     @ValueSource(ints = {1799, 2300})
-    void testInvalidCenturiesPesel(int givenBirthYear) {
+    void invalidCenturiesPesel(int givenBirthYear) {
         /*
          * Given
          */
@@ -85,7 +85,7 @@ class PeselNumberTest {
     }
 
     @Test
-    void testNullGender() {
+    void nullGender() {
         /*
          * Given
          */
