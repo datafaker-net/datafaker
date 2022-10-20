@@ -1,9 +1,11 @@
-package net.datafaker;
+package net.datafaker.sequence;
 
-import net.datafaker.fileformats.Format;
+import net.datafaker.AbstractFakerTest;
+import net.datafaker.formats.Format;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
+import net.datafaker.providers.base.Number;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,6 +39,44 @@ class FakeCollectionTest extends AbstractFakerTest {
         for (String digit : digits) {
             assertThat(digit).matches("\\d");
         }
+    }
+
+    @Test
+    void generateSequenceOfDefaultSize() {
+        List<String> digits = faker
+            .collection(() -> faker.number().digit())
+            .generate();
+        assertThat(digits).hasSize(10);
+
+        digits = faker
+            .collection(() -> faker.number().digit())
+            .maxLen(-175)
+            .generate();
+        assertThat(digits).hasSize(10);
+    }
+
+    @Test
+    void generateEmptySequence() {
+        List<Number> digits = faker
+            .collection(() -> faker.number().digit())
+            .maxLen(0)
+            .generate();
+        assertThat(digits).isEmpty();
+    }
+
+    @Test
+    void isInfiniteTest() {
+        FakeSequence<String> digits = faker
+            .collection(() -> faker.number().digit())
+            .build();
+        assertThat(digits.isInfinite()).isFalse();
+
+        digits = faker
+            .collection(() -> faker.number().digit())
+            .minLen(3)
+            .maxLen(5)
+            .build();
+        assertThat(digits.isInfinite()).isFalse();
     }
 
     @Test
@@ -111,85 +151,6 @@ class FakeCollectionTest extends AbstractFakerTest {
                 .maxLen(5).build().get())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Max length must be not less than min length and not negative");
-    }
-
-    private interface Data {
-        String name();
-
-        String value();
-
-        String range();
-
-        String unit();
-    }
-
-    private static class BloodPressure implements Data {
-
-        @Override
-        public String name() {
-            return "Mean Blood Pressure";
-        }
-
-        @Override
-        public String value() {
-            return new BaseFaker().random().nextInt(60, 180) + "";
-        }
-
-        @Override
-        public String range() {
-            return "";
-        }
-
-        @Override
-        public String unit() {
-            return "mm Hg";
-        }
-    }
-
-    private static class Glucose implements Data {
-
-        @Override
-        public String name() {
-            return "Glucose";
-        }
-
-        @Override
-        public String value() {
-            return String.format("%.1f", new BaseFaker().random().nextDouble(3.2, 5.5));
-        }
-
-        @Override
-        public String range() {
-            return "3.2-5.5";
-        }
-
-        @Override
-        public String unit() {
-            return "mmol/L";
-        }
-    }
-
-    private static class Temperature implements Data {
-
-        @Override
-        public String name() {
-            return "Temperature";
-        }
-
-        @Override
-        public String value() {
-            return new BaseFaker().random().nextInt(30, 50) + "";
-        }
-
-        @Override
-        public String range() {
-            return "";
-        }
-
-        @Override
-        public String unit() {
-            return "degrees C";
-        }
     }
 
     @Test

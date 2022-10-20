@@ -1,6 +1,7 @@
-package net.datafaker.fileformats;
+package net.datafaker.formats;
 
-import net.datafaker.FakeCollection;
+import net.datafaker.sequence.FakeSequence;
+import net.datafaker.sequence.FakeStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,36 +12,42 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Deprecated // Use CsvTransformer
 public class Csv<T> {
     public static final char DEFAULT_QUOTE = '"';
     public static final String DEFAULT_SEPARATOR = ",";
 
-    private final FakeCollection<T> collection;
+    private final FakeSequence<T> sequence;
     private final String separator;
     private final char quote;
     private final boolean withHeader;
     private final List<CollectionColumn<T>> columns;
     private final int limit;
 
-    Csv(FakeCollection<T> collection, String separator, char quote, boolean withHeader, List<CollectionColumn<T>> columns, int limit) {
-        this.collection = collection;
+    Csv(FakeSequence<T> sequence, String separator, char quote, boolean withHeader, List<CollectionColumn<T>> columns, int limit) {
+        this.sequence = sequence;
         this.separator = separator;
         this.quote = quote;
         this.withHeader = withHeader;
         this.columns = columns;
-        this.limit = limit == -1 && collection == null ? 10 : limit;
+        this.limit = limit == -1 && sequence == null ? 10 : limit;
     }
 
     public String get() {
         if (columns == null) {
             throw new IllegalArgumentException("Length of headers should be equal to length of columns");
         }
+
+        if (sequence != null && sequence.isInfinite() && limit < 0) {
+            throw new IllegalArgumentException("The sequence should be finite of size");
+        }
+
         StringBuilder sb = new StringBuilder();
         if (withHeader) {
             addLine(sb, integer -> columns.get(integer).getName());
         }
 
-        List<T> res = collection == null ? null : collection.get();
+        List<T> res = getValuesFrom(sequence, limit);
         final int initialLength = sb.length();
         int maxLength = 0;
         final int totalLines = (res == null ? limit : limit != -1 ? Math.min(limit, res.size()) : res.size());
@@ -67,6 +74,23 @@ public class Csv<T> {
             result.append(quote);
             result.append(i == columns.size() - 1 ? System.lineSeparator() : separator);
         }
+    }
+
+    private List<T> getValuesFrom(FakeSequence<T> sequence, int limitValue) {
+        if (sequence == null) {
+            return null;
+        }
+
+        if (sequence instanceof FakeStream) {
+            Stream<T> stream = sequence.get();
+            if (limitValue >= 0) {
+                stream = stream.limit(limitValue);
+            }
+
+            return stream.collect(Collectors.toList());
+        }
+
+        return sequence.get();
     }
 
     public static class Column extends CollectionColumn<String> {
@@ -131,12 +155,12 @@ public class Csv<T> {
     }
 
     public static class CsvCollectionBasedBuilder<T> extends CsvBuilder {
-        protected FakeCollection<T> collection;
+        protected FakeSequence<T> sequence;
         protected Supplier<String>[] headers;
         protected Function<T, String>[] columnValues;
 
-        CsvCollectionBasedBuilder<T> collection(FakeCollection<T> collection) {
-            this.collection = collection;
+        CsvCollectionBasedBuilder<T> sequence(FakeSequence<T> sequence) {
+            this.sequence = sequence;
             return this;
         }
 
@@ -166,11 +190,12 @@ public class Csv<T> {
             for (int i = 0; i < (columnValues == null ? 0 : columnValues.length); i++) {
                 cols.add(CollectionColumn.of(headers == null ? null : headers[i], columnValues[i]));
             }
-            return new Csv<>(collection, getSeparator(), getQuote(), isWithHeader(), cols, getLimit());
+            return new Csv<>(sequence, getSeparator(), getQuote(), isWithHeader(), cols, getLimit());
         }
     }
 
 
+    @SuppressWarnings("unchecked")
     public static abstract class CsvBuilder {
         private String separator = DEFAULT_SEPARATOR;
         private char quote = DEFAULT_QUOTE;

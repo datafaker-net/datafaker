@@ -4,9 +4,9 @@ import com.mifmif.common.regex.Generex;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.ProviderRegistration;
-import net.datafaker.fileformats.Csv;
-import net.datafaker.fileformats.Format;
-import net.datafaker.fileformats.Json;
+import net.datafaker.formats.Csv;
+import net.datafaker.formats.Format;
+import net.datafaker.formats.Json;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.Name;
 
@@ -163,11 +163,8 @@ public class FakeValuesService {
                 continue;
             }
             if (key2fetchedObject.get(locale) != null && (result = key2fetchedObject.get(locale).get(key)) != null) {
-                break;
+                return result;
             }
-        }
-        if (result != null) {
-            return result;
         }
 
         String[] path = split(key);
@@ -595,13 +592,10 @@ public class FakeValuesService {
     private Object resolveExpression(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context) {
         // name.name (resolve locally)
         // Name.first_name (resolve to faker.name().firstName())
-        if (directive.trim().isEmpty()) {
+        if (directive.isEmpty()) {
             return directive;
         }
         final boolean dotDirective = isDotDirective(directive);
-        final String simpleDirective = (dotDirective || current == null)
-            ? directive
-            : classNameToYamlName(current) + "." + directive;
 
         Object resolved;
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
@@ -614,6 +608,9 @@ public class FakeValuesService {
             }
         }
 
+        final String simpleDirective = (dotDirective || current == null)
+            ? directive
+            : classNameToYamlName(current) + "." + directive;
         // simple fetch of a value from the yaml file. the directive may have been mutated
         // such that if the current yml object is car: and directive is #{wheel} then
         // car.wheel will be looked up in the YAML file.
@@ -625,7 +622,7 @@ public class FakeValuesService {
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
-        if (!dotDirective) {
+        if (!dotDirective && root != null && (current == null || root.getClass() != current.getClass())) {
             supplier = resolveFromMethodOn(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 //       expression2function.put(expression, supplier);
@@ -703,16 +700,22 @@ public class FakeValuesService {
             name2yaml.put(expression, expression);
             return expression;
         }
-        StringBuilder sb = new StringBuilder(expression.length() + cnt);
+        final StringBuilder sb = new StringBuilder(expression.length() + cnt);
         for (int i = 0; i < expression.length(); i++) {
-            char c = expression.charAt(i);
-            if (Character.isUpperCase(c)) {
-                if (sb.length() > 0) {
-                    sb.append("_");
+            if (cnt > 0) {
+                final char c = expression.charAt(i);
+                if (Character.isUpperCase(c)) {
+                    if (sb.length() > 0) {
+                        sb.append("_");
+                    }
+                    sb.append(Character.toLowerCase(c));
+                    cnt--;
+                } else {
+                  sb.append(c);
                 }
-                sb.append(Character.toLowerCase(c));
             } else {
-                sb.append(c);
+                sb.append(expression.substring(i));
+                break;
             }
         }
         result = sb.toString();
@@ -731,17 +734,7 @@ public class FakeValuesService {
             return null;
         }
         try {
-            Class<?> clazz = obj.getClass();
-            final MethodAndCoercedArgs accessor;
-            if (!mapOfMethodAndCoercedArgs.containsKey(clazz) || !mapOfMethodAndCoercedArgs.get(clazz).containsKey(directive) || !mapOfMethodAndCoercedArgs.get(clazz).get(directive).containsKey(args)) {
-                accessor = accessor(obj.getClass(), directive, args);
-                mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(directive, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(clazz).get(directive).put(args, accessor);
-            } else {
-                accessor = mapOfMethodAndCoercedArgs.get(clazz).get(directive).get(args);
-            }
-
+            final MethodAndCoercedArgs accessor = retrieveMethodAccessor(obj, directive, args);
             return (accessor == null)
                 ? () -> null
                 : () -> invokeAndToString(accessor, obj);
@@ -768,33 +761,14 @@ public class FakeValuesService {
 
         try {
             String fakerMethodName = removeUnderscoreChars(classAndMethod[0]);
-            Class<?> fakerClass = faker.getClass();
-            final MethodAndCoercedArgs fakerAccessor;
-            if (mapOfMethodAndCoercedArgs.get(fakerClass) == null || mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName) == null || mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName).get(EMPTY_ARRAY) == null) {
-                fakerAccessor = accessor(fakerClass, fakerMethodName, EMPTY_ARRAY);
-                mapOfMethodAndCoercedArgs.putIfAbsent(fakerClass, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(fakerClass).putIfAbsent(fakerMethodName, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName).put(EMPTY_ARRAY, fakerAccessor);
-            } else {
-                fakerAccessor = mapOfMethodAndCoercedArgs.get(fakerClass).get(fakerMethodName).get(EMPTY_ARRAY);
-            }
-
+            final MethodAndCoercedArgs fakerAccessor = retrieveMethodAccessor(faker, fakerMethodName, EMPTY_ARRAY);
             if (fakerAccessor == null) {
                 LOG.fine("Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
             }
             Object objectWithMethodToInvoke = fakerAccessor.invoke(faker);
             String nestedMethodName = removeUnderscoreChars(classAndMethod[1]);
-            Class<?> objectWithMethodClass = objectWithMethodToInvoke.getClass();
-            final MethodAndCoercedArgs accessor;
-            if (mapOfMethodAndCoercedArgs.get(objectWithMethodClass) == null || mapOfMethodAndCoercedArgs.get(objectWithMethodClass).get(nestedMethodName) == null || mapOfMethodAndCoercedArgs.get(objectWithMethodClass).get(nestedMethodName).get(args) == null) {
-                accessor = accessor(objectWithMethodClass, nestedMethodName, args);
-                mapOfMethodAndCoercedArgs.putIfAbsent(objectWithMethodClass, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(objectWithMethodClass).putIfAbsent(nestedMethodName, new WeakHashMap<>());
-                mapOfMethodAndCoercedArgs.get(objectWithMethodClass).get(nestedMethodName).put(args, accessor);
-            } else {
-                accessor = accessor(objectWithMethodClass, nestedMethodName, args);
-            }
+            final MethodAndCoercedArgs accessor = retrieveMethodAccessor(objectWithMethodToInvoke, nestedMethodName, args);
             if (accessor == null) {
                 throw new Exception("Can't find method on "
                     + objectWithMethodToInvoke.getClass().getSimpleName()
@@ -806,6 +780,22 @@ public class FakeValuesService {
             LOG.fine(e.getMessage());
             return () -> null;
         }
+    }
+
+    private MethodAndCoercedArgs retrieveMethodAccessor(Object object, String methodName, String[] args) {
+        Class<?> clazz = object.getClass();
+        MethodAndCoercedArgs accessor =
+            mapOfMethodAndCoercedArgs
+                .getOrDefault(clazz, Collections.emptyMap())
+                .getOrDefault(methodName, Collections.emptyMap())
+                .get(args);
+        if (accessor == null) {
+            accessor = accessor(clazz, methodName, args);
+            mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
+            mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(methodName, new WeakHashMap<>());
+            mapOfMethodAndCoercedArgs.get(clazz).get(methodName).put(args, accessor);
+        }
+        return accessor;
     }
 
     private Object invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
@@ -840,7 +830,7 @@ public class FakeValuesService {
             methods = methodMap.get(name.toLowerCase(Locale.ROOT));
         }
         for (Method m : methods) {
-            if (m.getParameterTypes().length == args.length || m.getParameterTypes().length < args.length && m.isVarArgs()) {
+            if (m.getParameterCount() == args.length || m.getParameterCount() < args.length && m.isVarArgs()) {
                 final Object[] coercedArguments = args.length == 0 ? EMPTY_ARRAY : coerceArguments(m, args);
                 if (coercedArguments != null) {
                     return new MethodAndCoercedArgs(m, coercedArguments);
@@ -876,10 +866,11 @@ public class FakeValuesService {
      * @return array of coerced values if successful, null otherwise
      */
     private Object[] coerceArguments(Method accessor, String[] args) {
-        final Object[] coerced = new Object[accessor.getParameterTypes().length];
-        for (int i = 0; i < accessor.getParameterTypes().length; i++) {
-            final boolean isVarArg = i == accessor.getParameterTypes().length - 1 && accessor.isVarArgs();
-            Class<?> toType = primitiveToWrapper(accessor.getParameterTypes()[i]);
+        final Object[] coerced = new Object[accessor.getParameterCount()];
+        final Class<?>[] parameterTypes = accessor.getParameterTypes();
+        for (int i = 0; i < accessor.getParameterCount(); i++) {
+            final boolean isVarArg = i == accessor.getParameterCount() - 1 && accessor.isVarArgs();
+            Class<?> toType = primitiveToWrapper(parameterTypes[i]);
             toType = isVarArg ? toType.getComponentType() : toType;
             try {
                 final Object coercedArgument;
@@ -899,7 +890,8 @@ public class FakeValuesService {
                     if (isVarArg) {
                         Constructor<?> ctor = class2constructorCache.get(toType);
                         if (ctor == null) {
-                            for (Constructor<?> c : toType.getConstructors()) {
+                            final Constructor<?>[] constructors = toType.getConstructors();
+                            for (Constructor<?> c : constructors) {
                                 if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == String.class) {
                                     ctor = toType.getConstructor(String.class);
                                     class2constructorCache.put(toType, ctor);
@@ -916,22 +908,22 @@ public class FakeValuesService {
                         }
                     } else if (toType == Character.class) {
                         coercedArgument = args[i] == null ? null : args[i].charAt(0);
+                    } else if (Boolean.class == toType) {
+                        coercedArgument = Boolean.valueOf(args[i]);
+                    } else if (Integer.class == toType) {
+                        coercedArgument = Integer.valueOf(args[i]);
+                    } else if (Long.class == toType) {
+                        coercedArgument = Long.valueOf(args[i]);
+                    } else if (Double.class == toType) {
+                        coercedArgument = Double.valueOf(args[i]);
+                    } else if (Float.class == toType) {
+                        coercedArgument = Float.valueOf(args[i]);
+                    } else if (Byte.class == toType) {
+                        coercedArgument = Byte.valueOf(args[i]);
+                    } else if (Short.class == toType) {
+                        coercedArgument = Short.valueOf(args[i]);
                     } else if (CharSequence.class.isAssignableFrom(toType)) {
                         coercedArgument = args[i];
-                    } else if (Boolean.class.isAssignableFrom(toType)) {
-                        coercedArgument = Boolean.valueOf(args[i]);
-                    } else if (Integer.class.isAssignableFrom(toType)) {
-                        coercedArgument = Integer.valueOf(args[i]);
-                    } else if (Long.class.isAssignableFrom(toType)) {
-                        coercedArgument = Long.valueOf(args[i]);
-                    } else if (Double.class.isAssignableFrom(toType)) {
-                        coercedArgument = Double.valueOf(args[i]);
-                    } else if (Float.class.isAssignableFrom(toType)) {
-                        coercedArgument = Float.valueOf(args[i]);
-                    } else if (Byte.class.isAssignableFrom(toType)) {
-                        coercedArgument = Byte.valueOf(args[i]);
-                    } else if (Short.class.isAssignableFrom(toType)) {
-                        coercedArgument = Short.valueOf(args[i]);
                     } else if (BigDecimal.class.isAssignableFrom(toType)) {
                         coercedArgument = new BigDecimal(args[i]);
                     } else if (BigInteger.class.isAssignableFrom(toType)) {

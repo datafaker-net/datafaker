@@ -2,7 +2,7 @@
 
 Since version 1.2.0 of Datafaker it's possible create your own provider of data.
 
-A [full example](https://github.com/datafaker-net/datafaker/blob/master/src/test/java/net/datafaker/CustomFakerTest.java) can be found in the source code.
+A [full example](https://github.com/datafaker-net/datafaker/blob/main/src/test/java/net/datafaker/CustomFakerTest.java) can be found in the source code.
 
 
 ## Custom hardcoded provider
