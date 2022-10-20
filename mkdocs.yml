@@ -7,7 +7,7 @@ site_description: >-
 
 repo_name: datafaker-net/datafaker
 repo_url: https://github.com/datafaker-net/datafaker
-edit_url: ""
+edit_uri: "edit/main/docs"
 
 # Copyright
 copyright: Copyright &copy; 2016 - 2022 Erik Pragt
