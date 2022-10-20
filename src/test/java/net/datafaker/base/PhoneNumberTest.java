@@ -143,7 +143,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
                 errorCount++;
             }
         }
-        assertThat(errorCount).isLessThan(250);
+        assertThat(errorCount).isLessThan(25);
     }
 
     @ParameterizedTest
@@ -159,9 +159,9 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
                 errorCount++;
             }
         }
-        assertThat(errorCount).isLessThan(250);
+        assertThat(errorCount).isLessThan(25);
     }
-    
+
     // `new Locale("en", "IND")` in `new Locale("en", "IND"), "IN")` is a Java's Locale
     // `"IN"` in `new Locale("en", "IND"), "IN")` is a PhoneNumberUtil's region
     private static Stream<Arguments> generateLanguageAndRegionOfLocales() {
@@ -220,7 +220,8 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(new Locale("nb", "NO"), "NO"),
             Arguments.of(new Locale("no", "NO"), "NO"),
             Arguments.of(new Locale("da", "DK"), "DK"),
-            Arguments.of(new Locale("vi", "VI"), "VI")
+            Arguments.of(new Locale("vi", "VI"), "VI"),
+            Arguments.of(new Locale("fr", "CH"), "CH")
         );
     }
 
