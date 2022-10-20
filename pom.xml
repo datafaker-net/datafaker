@@ -378,5 +378,31 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>openrewrite-check</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.openrewrite.maven</groupId>
+                        <artifactId>rewrite-maven-plugin</artifactId>
+                        <version>4.36.0</version>
+                        <configuration>
+                            <activeRecipes>
+                                <recipe>org.openrewrite.java.testing.assertj.Assertj</recipe>
+                                <recipe>org.openrewrite.java.testing.cleanup.BestPractices</recipe>
+                            </activeRecipes>
+                            <failOnDryRunResults>true</failOnDryRunResults>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.openrewrite.recipe</groupId>
+                                <artifactId>rewrite-testing-frameworks</artifactId>
+                                <version>1.30.0</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>
