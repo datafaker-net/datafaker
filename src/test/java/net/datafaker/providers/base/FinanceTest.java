@@ -65,4 +65,16 @@ class FinanceTest extends BaseFakerTest<BaseFaker> {
         final String ibanFaker = faker.finance().iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
         assertThat(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker)).isTrue();
     }
+
+    @RepeatedTest(100)
+    void visaCard() {
+        String creditCard = faker.finance().creditCard(CreditCardType.VISA).replace("-", "");
+        assertThat(creditCard).startsWith("4").hasSize(16);
+    }
+
+    @RepeatedTest(100)
+    void discoverCard() {
+        String creditCard = faker.finance().creditCard(CreditCardType.DISCOVER).replace("-", "");
+        assertThat(creditCard).startsWith("6").hasSize(16);
+    }
 }
