@@ -54,49 +54,49 @@ en:
         - Lismore
         - Nelson Bay
       animals:
-        - Koala
-        - Humpback Whale
-        - Australian Fur Seal
-        - Wallaby
-        - Platypus
-        - Kangaroo
-        - Wombat
-        - Sugar Glider
-        - Flying Fox
-        - Tasmanian Devil
-        - Quokka
-        - Dugong
-        - Luaner
-        - Echidna
-        - Magpie
-        - Cockatoo
-        - Tawny Frogmouth
-        - Galah
-        - Lorikeet
-        - Pelican
-        - Cassowary
-        - Kookaburra
-        - Emu
-        - Lyrebird
-        - Barramundi
-        - Grouper
-        - Murray Cod
-        - Green Tree Frog
-        - Cane Toad
-        - Redback Spider
-        - Funnel Web Spider
-        - Blue Ringed OCtopus
-        - Fresh Water Crocodile
-        - Skink
-        - Thorny Devil
-        - King Brown Snake
-        - Carpet Python
-        - Tiger Snake
-        - Red Bellied Black Snake
-        - Blue Tongue Lizard
-        - Frilled Neck Lizard
-        - Saltwater Crocodile
-        - Eastern Brown Snake
+        - koala
+        - humpback whale
+        - Australian fur seal
+        - wallaby
+        - platypus
+        - kangaroo
+        - wombat
+        - sugar glider
+        - flying fox
+        - Tasmanian devil
+        - quokka
+        - dugong
+        - luaner
+        - echidna
+        - magpie
+        - cockatoo
+        - tawny frogmouth
+        - galah
+        - lorikeet
+        - pelican
+        - cassowary
+        - kookaburra
+        - emu
+        - lyrebird
+        - barramundi
+        - grouper
+        - murray cod
+        - green tree frog
+        - cane toad
+        - redback spider
+        - funnel web spider
+        - blue ringed octopus
+        - fresh water crocodile
+        - skink
+        - thorny devil
+        - king brown snake
+        - carpet python
+        - tiger snake
+        - red bellied black snake
+        - blue tongue lizard
+        - frilled neck lizard
+        - saltwater crocodile
+        - eastern brown snake
       states:
         - New South wales
         - Queensland
