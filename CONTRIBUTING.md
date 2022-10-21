@@ -10,9 +10,15 @@ First and foremost thanks to anyone who contributes, very much appreciated.
 - Try and make one logical change per PR. That is not make many changes in one PR. Submit multiple PRs instead.
 - Java 8 is our target version. If you need anything older than that, we recommend using [Java Faker](https://github.com/DiUS/java-faker) instead.
 
+Note: Please **don't** make contributions which enforce the style of the code.
+
+I understand everyone means well, but there's hardly a reason to force everyone into the same style. There should be no reason to break a build when someone puts a space or empty line too many, or any of these style things. Issues like these are easy to address, either during a review or after, and I'd love the keep the barrier of entry as low as possible.
+
+Ideally respect the `.editorconfig` file if your IDE supports it, but if it doesn't, no big deal. This is an open source project, not an enterprise mission critical system, so let's keep it fun!
+
 ## Building
 
 - Should be as easy as running `mvn clean install` on the root directory.
 - When you do not have [GnuPG](https://gnupg.org/) in your path, and you cannot install it, to be able to build without error you may
-  - specify the property `gpg.skip=true` when running maven, for example `mvn clean install '-Dgpg.skip=true'`.
-  - use the profile `noGpg`, for example `mvn clean install -PnoGpg`
+    - specify the property `gpg.skip=true` when running maven, for example `mvn clean install '-Dgpg.skip=true'`.
+    - use the profile `noGpg`, for example `mvn clean install -PnoGpg`
