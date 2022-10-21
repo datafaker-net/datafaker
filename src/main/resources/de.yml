@@ -117,8 +117,8 @@ de:
 
     phone_number:
       formats: # National format
-        - '0#### #######'
-        - '0#### ########'
+        - '0Ø### #######'
+        - '0Ø### ########'
       formats_international:
         - '+49 #### ######'
 
