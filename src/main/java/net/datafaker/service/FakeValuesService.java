@@ -232,7 +232,7 @@ public class FakeValuesService {
             if (numberString.charAt(i) == '#') {
                 res[i] = DIGITS.charAt(context.getRandomService().nextInt(10));
             } else if (numberString.charAt(i) == 'Ø') {
-                res[i] = DIGITS.charAt(context.getRandomService().nextInt(9) + 1);
+                res[i] = DIGITS.charAt(context.getRandomService().nextInt(1, 9));
             } else {
                 res[i] = numberString.charAt(i);
             }
