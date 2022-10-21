@@ -11,7 +11,7 @@ public enum SqlDialect {
     INFOBRIGHT("`"),
     LUCIDDB("\""),
     MSSQL("[]"),
-    MYSQL("[]", Casing.UNCHANGED),
+    MYSQL("`", Casing.UNCHANGED),
     NETEZZA("\""),
     ORACLE("\""),
     PARACCEL("\""),
