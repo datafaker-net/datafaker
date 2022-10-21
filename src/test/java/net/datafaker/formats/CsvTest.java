@@ -11,7 +11,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,8 +61,8 @@ class CsvTest extends AbstractFakerTest {
             field("first_name", () -> faker.name().firstName()),
             field("last_name", () -> faker.name().lastName()),
             field("address", () -> faker.address().streetAddress()));
-    CsvTransformer<?> transformer =
-        new CsvTransformer.CsvTransformerBuilder<>().header(true).separator(separator).build();
+    CsvTransformer<String> transformer =
+        new CsvTransformer.CsvTransformerBuilder<String>().header(true).separator(separator).build();
 
     String csv = transformer.generate(schema, limit);
     int numberOfLines = 0;
@@ -118,8 +120,8 @@ class CsvTest extends AbstractFakerTest {
         Schema.of(
             field("first_name", () -> faker.expression("#{Name.first_name}")),
             field("last_name", () -> faker.expression("#{Name.last_name}")));
-    CsvTransformer<?> transformer =
-        new CsvTransformer.CsvTransformerBuilder<>().header(true).separator(separator).build();
+    CsvTransformer<String> transformer =
+        new CsvTransformer.CsvTransformerBuilder<String>().header(true).separator(separator).build();
 
     String csv = transformer.generate(schema, limit);
     int numberOfLines = 0;
@@ -161,9 +163,9 @@ class CsvTest extends AbstractFakerTest {
 
   @Test
   void testCsvWithCommaNew() {
-    Schema<?, ? extends CharSequence> schema =
+    Schema<Object, ? extends CharSequence> schema =
         Schema.of(field("values", () -> "1,2,3"), field("title", () -> "The \"fabulous\" artist"));
-    CsvTransformer<?> transformer =
+    CsvTransformer<Object> transformer =
         new CsvTransformer.CsvTransformerBuilder<>().header(true).separator(",").build();
 
     String csv = transformer.generate(schema, 1);
@@ -176,6 +178,60 @@ class CsvTest extends AbstractFakerTest {
     assertThat(csv).isEqualTo(expected);
   }
 
+  @Test
+  void testCsvWithDifferentObjects() {
+    BaseFaker faker = new BaseFaker(new Random(10L));
+    Schema<Object, ?> schema = Schema.of(
+		field("Number", () -> faker.number().randomDigit()),
+		field("Bool", () -> faker.bool().bool()),
+		field("String", () -> faker.name().firstName()),
+		field("Text", () -> "The, \"fabulous\" artist'")
+    );
+	CsvTransformer<Object> transformer =
+		new CsvTransformer.CsvTransformerBuilder<>().header(true).separator(",").build();
+	
+	String csv = transformer.generate(schema, 4);
+ 
+	String expected =
+		"\"Number\",\"Bool\",\"String\",\"Text\""
+			+ System.lineSeparator()
+			+ "3,false,\"Flor\",\"The, \"\"fabulous\"\" artist'\""
+			+ System.lineSeparator()
+			+ "6,true,\"Stephnie\",\"The, \"\"fabulous\"\" artist'\""
+			+ System.lineSeparator()
+			+ "1,false,\"Edythe\",\"The, \"\"fabulous\"\" artist'\""
+			+ System.lineSeparator()
+			+ "1,true,\"Dwight\",\"The, \"\"fabulous\"\" artist'\"";
+
+	assertThat(csv).isEqualTo(expected);
+  }
+  
+  @Test
+  void testCsvWithDifferentObjectsFunction() {
+    BaseFaker faker = new BaseFaker(new Random(10L));
+    Schema<Integer, ?> schema = Schema.of(
+        field("Number", integer -> faker.number().digits(integer)),
+        field("Bool", () -> faker.bool().bool()),
+        field("String", prefix -> prefix + ": " + faker.name().firstName()),
+        field("Text", () -> "The, \"fabulous\" artist'")
+    );
+    CsvTransformer<Integer> transformer =
+        new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
+    
+    String csv = transformer.generate(Arrays.asList(1, 2, 3), schema);
+    
+    String expected =
+        "\"Number\",\"Bool\",\"String\",\"Text\""
+            + System.lineSeparator()
+            + "\"3\",false,\"1: Flor\",\"The, \"\"fabulous\"\" artist'\""
+            + System.lineSeparator()
+            + "\"66\",false,\"2: Lily\",\"The, \"\"fabulous\"\" artist'\""
+            + System.lineSeparator()
+            + "\"439\",true,\"3: Dominick\",\"The, \"\"fabulous\"\" artist'\"";
+
+    assertThat(csv).isEqualTo(expected);
+  }
+  
   @ParameterizedTest
   @ValueSource(ints = {0, 2, 3, 10, 20, 100})
   void testLimitForCsv(int limit) {
