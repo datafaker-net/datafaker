@@ -231,6 +231,8 @@ public class FakeValuesService {
         for (int i = 0; i < numberString.length(); i++) {
             if (numberString.charAt(i) == '#') {
                 res[i] = DIGITS.charAt(context.getRandomService().nextInt(10));
+            } else if (numberString.charAt(i) == 'Ø') {
+                res[i] = DIGITS.charAt(context.getRandomService().nextInt(9) + 1);
             } else {
                 res[i] = numberString.charAt(i);
             }

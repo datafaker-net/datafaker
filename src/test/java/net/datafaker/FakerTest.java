@@ -66,6 +66,16 @@ class FakerTest extends AbstractFakerTest {
         assertThat(faker.numerify("####")).matches("\\d{4}");
     }
 
+    @RepeatedTest(25)
+    void numerifyShouldGenerateNumbersNotStartingWithZero() {
+        assertThat(faker.numerify("Ø###")).matches("[1-9]\\d{3}");
+    }
+
+    @RepeatedTest(25)
+    void numerifyShouldGenerateNonZeroNumbers() {
+        assertThat(faker.numerify("ØØ")).matches("[1-9]{2}");
+    }
+
     @Test
     void numerifyShouldLeaveNonSpecialCharactersAlone() {
         assertThat(faker.numerify("####123")).matches("\\d{4}123");
