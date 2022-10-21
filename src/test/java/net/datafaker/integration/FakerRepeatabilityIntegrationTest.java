@@ -3,7 +3,7 @@ package net.datafaker.integration;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import net.datafaker.Faker;
-import net.datafaker.base.AbstractProvider;
+import net.datafaker.providers.base.AbstractProvider;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;

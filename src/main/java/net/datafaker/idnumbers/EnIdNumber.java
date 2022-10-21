@@ -1,6 +1,6 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.base.BaseProviders;
+import net.datafaker.providers.base.BaseProviders;
 
 import java.util.regex.Pattern;
 

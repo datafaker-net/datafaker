@@ -7,7 +7,7 @@ site_description: >-
 
 repo_name: datafaker-net/datafaker
 repo_url: https://github.com/datafaker-net/datafaker
-edit_url: ""
+edit_uri: "edit/main/docs"
 
 # Copyright
 copyright: Copyright &copy; 2016 - 2022 Erik Pragt
@@ -97,10 +97,10 @@ nav:
       - All providers: documentation/providers.md
       - Custom providers: documentation/custom-providers.md
     - Advanced usage:
-      - Collections: documentation/collections.md
+      - Sequences: documentation/sequences.md
       - Date format: documentation/date-format.md
       - Expressions: documentation/expressions.md
-      - File formats: documentation/file-formats.md
+      - Formats: documentation/formats.md
       - Unique values: documentation/unique-values.md
     - Performance: documentation/performance.md
     - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.6.0/datafaker-1.6.0-javadoc.jar/!/index.html'
