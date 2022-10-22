@@ -22,4 +22,8 @@ public class Pokemon extends AbstractProvider<MovieProviders> {
     public String move() {
         return resolve("games.pokemon.moves");
     }
+
+    public String type() {
+        return resolve("games.pokemon.types");
+    }
 }
