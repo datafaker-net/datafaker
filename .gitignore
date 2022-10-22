@@ -3,7 +3,8 @@ target
 .project
 .classpath
 .settings
-.idea/
+.idea/*
+!.idea/vcs.xml
 *.iml
 .java-version
 /dependency-reduced-pom.xml

@@ -42,7 +42,7 @@ In general, we could say that for jdk8 and jdk11 timings for Data Faker and Kotl
 JFairy and Java Faker are far behind.
 
 ### Initialization
-It's worse to measure since initially during initialization of Faker object it requires to initialise all the providers objects and read all the yaml files for providers.
+It's worth to measure since initially during initialization of Faker object it requires to initialise all the providers objects and read all the yaml files for providers.
 Tests for initialization could be  found at `net.datafaker.benchmark.initialization`
 Initialization:
 
@@ -241,7 +241,7 @@ Similar example as previous, however there are 3 methods. Besides, cache of pars
 
 It makes sense to keep in mind that these tests do not cover all possible use cases and could be considered only as a starting point for analysis.
 
-# More Fun
+## More Fun
 There is an [issue](https://github.com/DiUS/java-faker/issues/663) in Java Faker about generation of 100M of objects.
 Of course, the task could be solved with concurrent generation in multiple threads. 
 However, here it is interesting how much can 1 thread application within 1 hour. 
