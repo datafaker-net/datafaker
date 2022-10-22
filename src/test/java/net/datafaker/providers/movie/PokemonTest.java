@@ -27,4 +27,9 @@ class PokemonTest extends MovieFakerTest {
         assertThat(faker.pokemon().move()).matches("\\w+(\\s|-)?(\\w+)?(\\s|-)?(\\w+)?");
     }
 
+    @RepeatedTest(50)
+    void type() {
+        assertThat(faker.pokemon().type()).matches("\\w+");
+    }
+
 }
