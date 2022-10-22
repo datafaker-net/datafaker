@@ -32,7 +32,7 @@ public class ProvidersDocsGenerator {
 
     // Specify destination of 'providers.md' file
     private static final String DESTINATION_PLACE_OF_PROVIDERS_FILE = "target/test-classes/providers.md";
-    private final Reflections reflections = new Reflections("net.datafaker");
+    private final Reflections reflections = new Reflections("net.datafaker.providers");
     private final Comparator<Class<?>> providersComparatorBySimpleName = Comparator
         .comparing(Class::getSimpleName);
     private final Set<Class<?>> subTypes = new TreeSet<>(providersComparatorBySimpleName);
@@ -62,11 +62,11 @@ public class ProvidersDocsGenerator {
         for (Class<?> clazz : subTypes) {
             String name = clazz.getSimpleName();
             String packageName = clazz.getPackage().getName();
-            // `packageName` should be such format: net.datafaker.<groupName> (e.g. base, sport, movie)
+            // `packageName` should be such format: net.datafaker.providers.<groupName> (e.g. base, sport, movie)
             // And just splitting by '.' and getting groupName (e.g. base, sport, movie)
-            String groupName = packageName.split("\\.")[2];
-            String comment = extractCommentFromJavadoc("src/main/java/net/datafaker/" + groupName + "/" + name + ".java", fakersWithoutSinceTag);
-            writer.write(Column.generateRow(' ', name, comment));
+            String groupName = packageName.split("\\.")[3];
+            String comment = extractCommentFromJavadoc("src/main/java/net/datafaker/providers/" + groupName + "/" + name + ".java", fakersWithoutSinceTag);
+            writer.write(Column.generateRow(' ', name, comment, formatGroupName(groupName)));
         }
         System.out.println("Providers without '@since' tag: " + fakersWithoutSinceTag);
     }
@@ -125,11 +125,15 @@ public class ProvidersDocsGenerator {
         writer.write(Column.generateEmptyRow('-'));
     }
 
+    private String formatGroupName(String groupName) {
+        return Character.toUpperCase(groupName.charAt(0)) + groupName.substring(1);
+    }
+
     private enum Column {
         NAME("Name", 93),
         DESCRIPTION("Description", 132, Pattern.compile(".* \\* ([A-Z].+)"), comment -> comment.group(1).trim()),
+        GROUP("Group", 50),
         SINCE("Since", 7, Pattern.compile("@since\\s+\\d\\.\\d+\\.\\d"), comment -> comment.group().substring("@since".length()).trim());
-
         private final String columnName;
         private final int length;
         private final Pattern pattern2extract;
@@ -164,10 +168,14 @@ public class ProvidersDocsGenerator {
             return sb.append("\n").toString();
         }
 
-        public static String generateRow(char padSymbol, String clazzName, String javaDocComment) {
+        public static String generateRow(char padSymbol, String clazzName, String javaDocComment, String groupName) {
             StringBuilder sb = new StringBuilder();
             sb.append("|").append(generateColumn(getName(clazzName), padSymbol, NAME.length)).append("|");
             for (int i = 1; i < values().length; i++) {
+                if (values()[i] == GROUP) {
+                    sb.append(generateColumn(groupName, padSymbol, GROUP.length)).append("|");
+                    continue;
+                }
                 sb.append(generateColumn(values()[i].getValue(javaDocComment), padSymbol, values()[i].length));
                 sb.append("|");
             }

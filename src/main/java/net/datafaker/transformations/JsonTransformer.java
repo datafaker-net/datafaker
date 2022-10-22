@@ -1,7 +1,5 @@
 package net.datafaker.transformations;
 
-import net.datafaker.providers.base.AbstractProvider;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -12,11 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class JsonTransformer<IN extends AbstractProvider<?>> implements Transformer<IN, Object> {
+public class JsonTransformer<IN> implements Transformer<IN, Object> {
   private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
 
   @Override
-  public String apply(Object input, Schema<?, ? extends Object> schema) {
+  public String apply(IN input, Schema<IN, ? extends Object> schema) {
     Field<?, ?>[] fields = schema.getFields();
     if (fields.length == 0) {
       return "{}";
@@ -39,13 +37,14 @@ public class JsonTransformer<IN extends AbstractProvider<?>> implements Transfor
     return sb.toString();
   }
 
-  public String generate(List<IN> input, Schema<IN, ? extends Object> schema) {
+  @Override
+  public String generate(List<IN> input, Schema<IN, ?> schema) {
     String result = input.stream().map(t -> apply(t, schema)).collect(Collectors.joining(",\n"));
     return input.size() > 1 ? "{\n" + result + "}" : result;
   }
 
   @Override
-  public String generate(Schema<?, ?> schema, int limit) {
+  public String generate(Schema<IN, ?> schema, int limit) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < limit; i++) {
       sb.append(apply(null, schema));

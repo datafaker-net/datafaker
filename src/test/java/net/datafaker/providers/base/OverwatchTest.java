@@ -1,24 +1,25 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.providers.videogame.VideoGameFakerTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class OverwatchTest extends VideoGameFakerTest {
 
     @Test
     void hero() {
-        Assertions.assertThat(faker.overwatch().hero()).matches("^(\\w+\\.?\\s?)+$");
+        assertThat(faker.overwatch().hero()).matches("^(\\w+\\.?\\s?)+$");
     }
 
     @Test
     void location() {
-        Assertions.assertThat(faker.overwatch().location()).matches("^(.+'?:?\\s?)+$");
+        assertThat(faker.overwatch().location()).matches("^(.+'?:?\\s?)+$");
     }
 
     @Test
     void quote() {
-        Assertions.assertThat(faker.overwatch().quote()).isNotEmpty();
+        assertThat(faker.overwatch().quote()).isNotEmpty();
     }
 }

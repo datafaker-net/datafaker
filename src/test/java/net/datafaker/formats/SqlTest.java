@@ -17,7 +17,7 @@ public class SqlTest {
     @ParameterizedTest
     @MethodSource("generateTestSchema")
     void simpleSqlTestForSqlTransformer(Schema<String, String> schema, String expected) {
-        SqlTransformer<?> transformer = new SqlTransformer.SqlTransformerBuilder().sqlQuoteIdentifier("`").tableName("MY_TABLE").build();
+        SqlTransformer<String> transformer = new SqlTransformer.SqlTransformerBuilder<String>().sqlQuoteIdentifier("`").tableName("MY_TABLE").build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
 
@@ -35,7 +35,7 @@ public class SqlTest {
     @ParameterizedTest
     @MethodSource("generateTestSchemaForPostgres")
     void simpleSqlTestForSqlTransformerPostgres(Schema<String, String> schema, String expected) {
-        SqlTransformer<?> transformer = new SqlTransformer.SqlTransformerBuilder().dialect(SqlDialect.POSTGRES).build();
+        SqlTransformer<String> transformer = new SqlTransformer.SqlTransformerBuilder<String>().dialect(SqlDialect.POSTGRES).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
 
@@ -53,7 +53,7 @@ public class SqlTest {
     @ParameterizedTest
     @MethodSource("generateTestSchemaForMSSQL")
     void simpleSqlTestForSqlTransformerMSSQL(Schema<String, String> schema, String expected) {
-        SqlTransformer<?> transformer = new SqlTransformer.SqlTransformerBuilder().dialect(SqlDialect.MSSQL).build();
+        SqlTransformer<String> transformer = new SqlTransformer.SqlTransformerBuilder<String>().dialect(SqlDialect.MSSQL).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
 

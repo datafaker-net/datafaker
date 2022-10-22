@@ -26,7 +26,7 @@ class JsonTest {
   @ParameterizedTest
   @MethodSource("generateTestSchema")
   void simpleJsonTestForJsonTransformer(Schema<String, String> schema, String expected) {
-    JsonTransformer<?> transformer = new JsonTransformer();
+    JsonTransformer<String> transformer = new JsonTransformer<>();
     assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
   }
 

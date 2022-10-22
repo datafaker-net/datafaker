@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class InternetPasswordTest extends BaseFakerTest<BaseFaker> {
     @Test

@@ -1,11 +1,8 @@
 package net.datafaker.transformations;
 
-import net.datafaker.providers.base.AbstractProvider;
-
 import java.util.List;
 
-public class CsvTransformer<IN extends AbstractProvider<?>>
-    implements Transformer<IN, CharSequence> {
+public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
   private static final String DEFAULT_SEPARATOR = ";";
   public static final char DEFAULT_QUOTE = '"';
 
@@ -20,16 +17,16 @@ public class CsvTransformer<IN extends AbstractProvider<?>>
   }
 
   @Override
-  public CharSequence apply(Object input, Schema<?, ? extends CharSequence> schema) {
-    Field<? extends Object, ? extends CharSequence>[] fields = schema.getFields();
+  public CharSequence apply(IN input, Schema<IN, ?> schema) {
+    Field<IN, ?>[] fields = schema.getFields();
     if (fields.length == 0) {
       return "";
     }
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < fields.length; i++) {
-      SimpleField<Object, ? extends CharSequence> f =
-          (SimpleField<Object, ? extends CharSequence>) fields[i];
-      addLine(sb, f.transform(input));
+      //noinspection unchecked
+      SimpleField<Object, ?> f = (SimpleField<Object, ?>) fields[i];
+	  addLine(sb, f.transform(input));
       if (i < fields.length - 1) {
         sb.append(separator);
       }
@@ -37,19 +34,8 @@ public class CsvTransformer<IN extends AbstractProvider<?>>
     return sb.toString();
   }
 
-  private void addLine(StringBuilder sb, CharSequence apply) {
-    sb.append(quote);
-    for (int j = 0; j < apply.length(); j++) {
-      if (apply.charAt(j) == quote) {
-        sb.append(quote);
-      }
-      sb.append(apply.charAt(j));
-    }
-    sb.append(quote);
-  }
-
   @Override
-  public String generate(List<IN> input, Schema<IN, ? extends CharSequence> schema) {
+  public String generate(List<IN> input, Schema<IN, ?> schema) {
     StringBuilder sb = new StringBuilder();
     generateHeader(schema, sb);
     for (int i = 0; i < input.size(); i++) {
@@ -61,7 +47,26 @@ public class CsvTransformer<IN extends AbstractProvider<?>>
     return sb.toString();
   }
 
-  private void generateHeader(Schema<?, ? extends CharSequence> schema, StringBuilder sb) {
+  private void addLine(StringBuilder sb, Object transform) {
+    if (transform instanceof CharSequence) {
+      addCharSequence(sb, (CharSequence) transform);
+    } else {
+      sb.append(transform);
+    }
+  }
+
+  private void addCharSequence(StringBuilder sb, CharSequence charSequence) {
+    sb.append(quote);
+    for (int j = 0; j < charSequence.length(); j++) {
+      if (charSequence.charAt(j) == quote) {
+        sb.append(quote);
+      }
+      sb.append(charSequence.charAt(j));
+    }
+    sb.append(quote);
+  }
+  
+  private void generateHeader(Schema<?, ?> schema, StringBuilder sb) {
     if (withHeader) {
       for (int i = 0; i < schema.getFields().length; i++) {
         addLine(sb, schema.getFields()[i].getName());
@@ -74,7 +79,7 @@ public class CsvTransformer<IN extends AbstractProvider<?>>
   }
 
   @Override
-  public String generate(Schema<?, ? extends CharSequence> schema, int limit) {
+  public String generate(Schema<IN, ?> schema, int limit) {
     StringBuilder sb = new StringBuilder();
     generateHeader(schema, sb);
     for (int i = 0; i < limit; i++) {
@@ -86,7 +91,7 @@ public class CsvTransformer<IN extends AbstractProvider<?>>
     return sb.toString();
   }
 
-  public static class CsvTransformerBuilder<IN extends AbstractProvider<?>> {
+  public static class CsvTransformerBuilder<IN> {
     private String separator = DEFAULT_SEPARATOR;
     private char quote = DEFAULT_QUOTE;
     private boolean withHeader = true;
