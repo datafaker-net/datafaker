@@ -146,6 +146,7 @@ CsvTransformer<Name> transformer =
 Schema<Name, String> fromScratch =
     Schema.of(field("firstName", () -> faker.name().firstName()),
         field("lastname", () -> faker.name().lastName()));
+System.out.println(transformer.generate(fromScratch, 2));
 // POSSIBLE OUTPUT
 // "first_name" ; "last_name"
 // "Kimberely" ; "Considine"
@@ -173,21 +174,30 @@ jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
 
 jshell> import net.datafaker.Faker;
 
-jshell> import net.datafaker.fileformats.Format;
+jshell> import net.datafaker.providers.base.Name;
 
-jshell> import net.datafaker.service.base.Name;
+jshell> import net.datafaker.transformations.Schema;
+
+jshell> import net.datafaker.transformations.CsvTransformer;
+
+jshell> import static net.datafaker.transformations.Field.field;
 
 jshell> var faker = new Faker();
 faker ==> net.datafaker.Faker@c4437c4
 
-jshell> System.out.println(Format.toCsv(faker.collection(faker::name).build())
-   ...>                 .headers(() -> "first_name", () -> "last_name")
-   ...>                 .columns(Name::firstName, Name::lastName)
-   ...>                 .separator(" ; ")
-   ...>                 .limit(2).build().get());
-"first_name" ; "last_name"
-"Lisa" ; "Crooks"
-"Lakita" ; "Powlowski"
+jshell> Schema fromScratch =
+   ...>     Schema.of(field("firstName", () -> faker.name().firstName()),
+   ...>         field("lastname", () -> faker.name().lastName()));
+fromScratch ==> net.datafaker.transformations.Schema@306a30c7
+
+jshell> CsvTransformer<Name> transformer =
+   ...>     new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(",").build();
+transformer ==> net.datafaker.transformations.CsvTransformer@506c589e
+
+jshell> System.out.println(transformer.generate(fromScratch, 2));
+"firstName","lastname"
+"Darcel","Schuppe"
+"Noelle","Smitham"
 ```
 
 #### json
