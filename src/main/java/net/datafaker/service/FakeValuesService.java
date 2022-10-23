@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class FakeValuesService {
-    private static final String DIGITS = "0123456789";
+    private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
 
@@ -229,12 +229,16 @@ public class FakeValuesService {
     public String numerify(String numberString, FakerContext context) {
         char[] res = new char[numberString.length()];
         for (int i = 0; i < numberString.length(); i++) {
-            if (numberString.charAt(i) == '#') {
-                res[i] = DIGITS.charAt(context.getRandomService().nextInt(10));
-            } else if (numberString.charAt(i) == 'Ø') {
-                res[i] = DIGITS.charAt(context.getRandomService().nextInt(1, 9));
-            } else {
-                res[i] = numberString.charAt(i);
+            switch (numberString.charAt(i)) {
+                case '#':
+                    res[i] = DIGITS[context.getRandomService().nextInt(10)];
+                    break;
+                case 'Ø':
+                    res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
+                    break;
+                default:
+                    res[i] = numberString.charAt(i);
+                    break;
             }
         }
 
@@ -283,7 +287,7 @@ public class FakeValuesService {
             if (Character.isLetter(chars[i])) {
                 chars[i] = letterify("?", context, Character.isUpperCase(chars[i])).charAt(0);
             } else if (Character.isDigit(chars[i])) {
-                chars[i] = DIGITS.charAt(context.getRandomService().nextInt(10));
+                chars[i] = DIGITS[context.getRandomService().nextInt(10)];
             }
         }
 
