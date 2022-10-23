@@ -131,14 +131,35 @@ Stream<String> names = faker.stream(
                          .generate();
 ```
 
-### File formats
-#### csv
+### Formats
+#### Schema
+There are 2 ways of data generation in specific formats
+1. Generate it from scratch
+2. There is already a sequence of objects and we could extract from them some values and return it in specific format
+For both cases we need a `Schema` which could describe fields and a way of data generation.
+In case of generation from scratch `Suppliers` are enough, in case of transformation `Functions` are required
 ```java
-String csv = Format.toCsv(faker.collection(faker::name).build())
-                .headers(() -> "first_name", () -> "last_name")
-                .columns(Name::firstName, Name::lastName)
-                .separator(" ; ")
-                .limit(2).build().get();
+// transformer could be the same for both
+CsvTransformer<Name> transformer =
+        new CsvTransformer.CsvTransformerBuilder<Name>().header(true).separator(",").build();
+// Schema for from scratch
+Schema<Name, String> fromScratch =
+    Schema.of(field("firstName", () -> faker.name().firstName()),
+        field("lastname", () -> faker.name().lastName()));
+// POSSIBLE OUTPUT
+// "first_name" ; "last_name"
+// "Kimberely" ; "Considine"
+// "Mariela" ; "Krajcik"
+// ----------------------
+// Schema for transformations
+Schema<Name, String> schemaForTransformations =
+    Schema.of(field("firstName", Name::firstName),
+        field("lastname", Name::lastName));
+// Here we pass a collection of Name objects and extract first and lastnames from each element
+System.out.println(
+    transformer.generate(
+        faker.collection(faker::name).maxLen(2).generate(), schemaForTransformations));
+// POSSIBLE OUTPUT
 // "first_name" ; "last_name"
 // "Kimberely" ; "Considine"
 // "Mariela" ; "Krajcik"
