@@ -19,7 +19,7 @@ public enum SqlDialect {
     ORACLE("\""),
     PARACCEL("\""),
     PHOENIX("\""),
-    POSTGRES("\""),
+    POSTGRES("\"", true),
     PRESTO("\"", Casing.UNCHANGED),
     REDSHIFT("\"", Casing.TO_LOWER),
     SNOWFLAKE("\""),
@@ -53,5 +53,9 @@ public enum SqlDialect {
 
     public Casing getUnquotedCasing() {
         return unquotedCasing;
+    }
+
+    public boolean isSupportBulkInsert() {
+        return supportBulkInsert;
     }
 }
