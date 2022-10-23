@@ -21,7 +21,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private boolean isSqlQuoteIdentifierRequiredFor(String name) {
-        for (int i = 0; i < tableName.length(); i++) {
+        for (int i = 0; i < name.length(); i++) {
             if (casing == Casing.TO_UPPER && Character.isLowerCase(name.charAt(i))
                 || casing == Casing.TO_LOWER && Character.isUpperCase(name.charAt(i))
                 || name.charAt(i) == openSqlIdentifier

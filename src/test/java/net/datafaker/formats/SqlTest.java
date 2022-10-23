@@ -67,4 +67,22 @@ public class SqlTest {
             of(Schema.of(field("boolean", () -> true)), "INSERT INTO [MyTable] ([boolean]) VALUES (true);"),
             of(Schema.of(field("nullValue", () -> null)), "INSERT INTO [MyTable] ([nullValue]) VALUES (null);"));
     }
+
+    @ParameterizedTest
+    @MethodSource("generateTestSchemaForMySQL")
+    void simpleSqlTestForSqlTransformerMySQL(Schema<String, String> schema, String expected) {
+        SqlTransformer<String> transformer = new SqlTransformer.SqlTransformerBuilder<String>().dialect(SqlDialect.MYSQL).build();
+        assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> generateTestSchemaForMySQL() {
+        return Stream.of(
+            of(Schema.of(), ""),
+            of(Schema.of(field("key", () -> "value")), "INSERT INTO MyTable (key) VALUES ('value');"),
+            of(Schema.of(field("number", () -> 123)), "INSERT INTO MyTable (number) VALUES (123);"),
+            of(Schema.of(field("number", () -> 123.0)), "INSERT INTO MyTable (number) VALUES (123.0);"),
+            of(Schema.of(field("number", () -> 123.123)), "INSERT INTO MyTable (number) VALUES (123.123);"),
+            of(Schema.of(field("boolean", () -> true)), "INSERT INTO MyTable (boolean) VALUES (true);"),
+            of(Schema.of(field("nullValue", () -> null)), "INSERT INTO MyTable (nullValue) VALUES (null);"));
+    }
 }
