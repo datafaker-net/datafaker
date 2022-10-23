@@ -16,73 +16,85 @@ import static org.junit.jupiter.params.provider.Arguments.of;
 public class SqlTest {
     @ParameterizedTest
     @MethodSource("generateTestSchema")
-    void simpleSqlTestForSqlTransformer(Schema<String, String> schema, String expected) {
-        SqlTransformer<String> transformer = new SqlTransformer.SqlTransformerBuilder<String>().sqlQuoteIdentifier("`").tableName("MY_TABLE").build();
+    void simpleSqlTestForSqlTransformer(Schema<String, String> schema, String tableSchemaName, String expected) {
+        SqlTransformer<String> transformer =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .sqlQuoteIdentifier("`").schemaName(tableSchemaName).tableName("MY_TABLE").build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestSchema() {
         return Stream.of(
-            of(Schema.of(), ""),
-            of(Schema.of(field("key", () -> "value")), "INSERT INTO MY_TABLE (`key`) VALUES ('value');"),
-            of(Schema.of(field("number", () -> 123)), "INSERT INTO MY_TABLE (`number`) VALUES (123);"),
-            of(Schema.of(field("number", () -> 123.0)), "INSERT INTO MY_TABLE (`number`) VALUES (123.0);"),
-            of(Schema.of(field("number", () -> 123.123)), "INSERT INTO MY_TABLE (`number`) VALUES (123.123);"),
-            of(Schema.of(field("boolean", () -> true)), "INSERT INTO MY_TABLE (`boolean`) VALUES (true);"),
-            of(Schema.of(field("nullValue", () -> null)), "INSERT INTO MY_TABLE (`nullValue`) VALUES (null);"));
+            of(Schema.of(), null, ""),
+            of(Schema.of(field("key", () -> "value")), "", "INSERT INTO MY_TABLE (`key`) VALUES ('value');"),
+            of(Schema.of(field("number", () -> 123)), "", "INSERT INTO MY_TABLE (`number`) VALUES (123);"),
+            of(Schema.of(field("number", () -> 123.0)), null, "INSERT INTO MY_TABLE (`number`) VALUES (123.0);"),
+            of(Schema.of(field("number", () -> 123.123)), null, "INSERT INTO MY_TABLE (`number`) VALUES (123.123);"),
+            of(Schema.of(field("boolean", () -> true)), "", "INSERT INTO MY_TABLE (`boolean`) VALUES (true);"),
+            of(Schema.of(field("nullValue", () -> null)), null, "INSERT INTO MY_TABLE (`nullValue`) VALUES (null);"),
+            of(Schema.of(field("nullValue", () -> null)), "MY_SCHEMA", "INSERT INTO MY_SCHEMA.MY_TABLE (`nullValue`) VALUES (null);"));
     }
 
     @ParameterizedTest
     @MethodSource("generateTestSchemaForPostgres")
-    void simpleSqlTestForSqlTransformerPostgres(Schema<String, String> schema, String expected) {
-        SqlTransformer<String> transformer = new SqlTransformer.SqlTransformerBuilder<String>().dialect(SqlDialect.POSTGRES).build();
+    void simpleSqlTestForSqlTransformerPostgres(Schema<String, String> schema, String tableSchemaName, String expected) {
+        SqlTransformer<String> transformer =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .schemaName(tableSchemaName).dialect(SqlDialect.POSTGRES).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestSchemaForPostgres() {
         return Stream.of(
-            of(Schema.of(), ""),
-            of(Schema.of(field("key", () -> "value")), "INSERT INTO \"MyTable\" (\"key\") VALUES ('value');"),
-            of(Schema.of(field("number", () -> 123)), "INSERT INTO \"MyTable\" (\"number\") VALUES (123);"),
-            of(Schema.of(field("number", () -> 123.0)), "INSERT INTO \"MyTable\" (\"number\") VALUES (123.0);"),
-            of(Schema.of(field("number", () -> 123.123)), "INSERT INTO \"MyTable\" (\"number\") VALUES (123.123);"),
-            of(Schema.of(field("boolean", () -> true)), "INSERT INTO \"MyTable\" (\"boolean\") VALUES (true);"),
-            of(Schema.of(field("nullValue", () -> null)), "INSERT INTO \"MyTable\" (\"nullValue\") VALUES (null);"));
+            of(Schema.of(), null, ""),
+            of(Schema.of(field("key", () -> "value")), "", "INSERT INTO \"MyTable\" (\"key\") VALUES ('value');"),
+            of(Schema.of(field("number", () -> 123)), null, "INSERT INTO \"MyTable\" (\"number\") VALUES (123);"),
+            of(Schema.of(field("number", () -> 123.0)), null, "INSERT INTO \"MyTable\" (\"number\") VALUES (123.0);"),
+            of(Schema.of(field("number", () -> 123.123)), "", "INSERT INTO \"MyTable\" (\"number\") VALUES (123.123);"),
+            of(Schema.of(field("boolean", () -> true)), null, "INSERT INTO \"MyTable\" (\"boolean\") VALUES (true);"),
+            of(Schema.of(field("nullValue", () -> null)), null, "INSERT INTO \"MyTable\" (\"nullValue\") VALUES (null);"),
+            of(Schema.of(field("nullValue", () -> null)), "MySchema", "INSERT INTO \"MySchema\".\"MyTable\" (\"nullValue\") VALUES (null);"));
     }
 
     @ParameterizedTest
     @MethodSource("generateTestSchemaForMSSQL")
-    void simpleSqlTestForSqlTransformerMSSQL(Schema<String, String> schema, String expected) {
-        SqlTransformer<String> transformer = new SqlTransformer.SqlTransformerBuilder<String>().dialect(SqlDialect.MSSQL).build();
+    void simpleSqlTestForSqlTransformerMSSQL(Schema<String, String> schema, String tableSchemaName, String expected) {
+        SqlTransformer<String> transformer =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .schemaName(tableSchemaName).dialect(SqlDialect.MSSQL).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestSchemaForMSSQL() {
         return Stream.of(
-            of(Schema.of(), ""),
-            of(Schema.of(field("key", () -> "value")), "INSERT INTO [MyTable] ([key]) VALUES ('value');"),
-            of(Schema.of(field("number", () -> 123)), "INSERT INTO [MyTable] ([number]) VALUES (123);"),
-            of(Schema.of(field("number", () -> 123.0)), "INSERT INTO [MyTable] ([number]) VALUES (123.0);"),
-            of(Schema.of(field("number", () -> 123.123)), "INSERT INTO [MyTable] ([number]) VALUES (123.123);"),
-            of(Schema.of(field("boolean", () -> true)), "INSERT INTO [MyTable] ([boolean]) VALUES (true);"),
-            of(Schema.of(field("nullValue", () -> null)), "INSERT INTO [MyTable] ([nullValue]) VALUES (null);"));
+            of(Schema.of(), null, ""),
+            of(Schema.of(field("key", () -> "value")), "", "INSERT INTO [MyTable] ([key]) VALUES ('value');"),
+            of(Schema.of(field("number", () -> 123)), null, "INSERT INTO [MyTable] ([number]) VALUES (123);"),
+            of(Schema.of(field("number", () -> 123.0)), null, "INSERT INTO [MyTable] ([number]) VALUES (123.0);"),
+            of(Schema.of(field("number", () -> 123.123)), "", "INSERT INTO [MyTable] ([number]) VALUES (123.123);"),
+            of(Schema.of(field("boolean", () -> true)), "", "INSERT INTO [MyTable] ([boolean]) VALUES (true);"),
+            of(Schema.of(field("nullValue", () -> null)), null, "INSERT INTO [MyTable] ([nullValue]) VALUES (null);"),
+            of(Schema.of(field("nullValue", () -> null)), "MySchema", "INSERT INTO [MySchema].[MyTable] ([nullValue]) VALUES (null);"));
     }
 
     @ParameterizedTest
     @MethodSource("generateTestSchemaForMySQL")
-    void simpleSqlTestForSqlTransformerMySQL(Schema<String, String> schema, String expected) {
-        SqlTransformer<String> transformer = new SqlTransformer.SqlTransformerBuilder<String>().dialect(SqlDialect.MYSQL).build();
+    void simpleSqlTestForSqlTransformerMySQL(Schema<String, String> schema, String tableSchemaName, String expected) {
+        SqlTransformer<String> transformer =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .schemaName(tableSchemaName).dialect(SqlDialect.MYSQL).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestSchemaForMySQL() {
         return Stream.of(
-            of(Schema.of(), ""),
-            of(Schema.of(field("key", () -> "value")), "INSERT INTO MyTable (key) VALUES ('value');"),
-            of(Schema.of(field("number", () -> 123)), "INSERT INTO MyTable (number) VALUES (123);"),
-            of(Schema.of(field("number", () -> 123.0)), "INSERT INTO MyTable (number) VALUES (123.0);"),
-            of(Schema.of(field("number", () -> 123.123)), "INSERT INTO MyTable (number) VALUES (123.123);"),
-            of(Schema.of(field("boolean", () -> true)), "INSERT INTO MyTable (boolean) VALUES (true);"),
-            of(Schema.of(field("nullValue", () -> null)), "INSERT INTO MyTable (nullValue) VALUES (null);"));
+            of(Schema.of(), null, ""),
+            of(Schema.of(field("key", () -> "value")), "", "INSERT INTO MyTable (key) VALUES ('value');"),
+            of(Schema.of(field("number", () -> 123)), "", "INSERT INTO MyTable (number) VALUES (123);"),
+            of(Schema.of(field("number", () -> 123.0)), null, "INSERT INTO MyTable (number) VALUES (123.0);"),
+            of(Schema.of(field("number", () -> 123.123)), null, "INSERT INTO MyTable (number) VALUES (123.123);"),
+            of(Schema.of(field("boolean", () -> true)), null, "INSERT INTO MyTable (boolean) VALUES (true);"),
+            of(Schema.of(field("nullValue", () -> null)), null, "INSERT INTO MyTable (nullValue) VALUES (null);"),
+            of(Schema.of(field("nullValue", () -> null)), "MySchema", "INSERT INTO MySchema.MyTable (nullValue) VALUES (null);"));
     }
 }
