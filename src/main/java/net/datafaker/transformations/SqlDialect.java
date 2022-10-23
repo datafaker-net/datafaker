@@ -10,6 +10,7 @@ public enum SqlDialect {
     H2("\""),
     INFOBRIGHT("`"),
     LUCIDDB("\""),
+    MARIADB("`", Casing.TO_LOWER),
     MSSQL("[]"),
     MYSQL("`", Casing.UNCHANGED),
     NETEZZA("\""),
