@@ -163,9 +163,12 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         private boolean withBatchMode = false;
         private boolean keywordUpperCase = true;
 
+        private SqlDialect dialect;
+
         public SqlTransformerBuilder<IN> dialect(SqlDialect dialect) {
             sqlQuoteIdentifier = dialect.getSqlQuoteIdentifier();
             casing = dialect.getUnquotedCasing();
+            this.dialect = dialect;
             return this;
         }
 
@@ -205,7 +208,9 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         public SqlTransformer<IN> build() {
-            return new SqlTransformer<>(schemaName, tableName, quote, sqlQuoteIdentifier, casing, withBatchMode, keywordUpperCase);
+            return new SqlTransformer<>(
+                schemaName, tableName, quote, sqlQuoteIdentifier, casing,
+                withBatchMode && dialect.isSupportBulkInsert(), keywordUpperCase);
         }
     }
 }
