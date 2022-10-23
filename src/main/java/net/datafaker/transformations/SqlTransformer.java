@@ -3,6 +3,10 @@ package net.datafaker.transformations;
 import java.util.List;
 
 public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
+    private static final String INSERT_INTO_UP = "INSERT INTO ";
+    private static final String INSERT_INTO_LW = "insert into ";
+    private static final String VALUES_UP = "VALUES ";
+    private static final String VALUES_LW = "values ";
     private static final char DEFAULT_QUOTE = '\'';
     private static final char DEFAULT_CATALOG_SEPARATOR = '.';
     private static final String DEFAULT_SQL_IDENTIFIER = "\"\"";
@@ -14,13 +18,18 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private final String tableName;
     private final String schemaName;
 
-    private SqlTransformer(String schemaName, String tableName, char quote, String sqlIdentifier, Casing casing) {
+    private final boolean withBatchMode;
+    private final boolean keywordUpperCase;
+
+    private SqlTransformer(String schemaName, String tableName, char quote, String sqlIdentifier, Casing casing, boolean withBatchMode, boolean keywordUpperCase) {
         this.schemaName = schemaName;
         this.quote = quote;
         this.openSqlIdentifier = sqlIdentifier.charAt(0);
         this.closeSqlIdentifier = sqlIdentifier.length() == 1 ? sqlIdentifier.charAt(0) : sqlIdentifier.charAt(1);
         this.tableName = tableName;
         this.casing = casing;
+        this.withBatchMode = withBatchMode;
+        this.keywordUpperCase = keywordUpperCase;
     }
 
     private boolean isSqlQuoteIdentifierRequiredFor(String name) {
@@ -36,40 +45,47 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public CharSequence apply(IN input, Schema<IN, ?> schema) {
+    public CharSequence apply(IN input, Schema<IN, ?> schema, int rowId) {
         //noinspection unchecked
         Field<?, ? extends CharSequence>[] fields = (Field<?, ? extends CharSequence>[]) schema.getFields();
         if (fields.length == 0) {
             return "";
         }
-        StringBuilder sb = new StringBuilder("INSERT INTO ");
-        appendNameToQuery(sb, schemaName);
-        if (schemaName != null && !schemaName.isEmpty()) {
-            sb.append(DEFAULT_CATALOG_SEPARATOR);
-        }
-        appendNameToQuery(sb, tableName);
-        sb.append(" (");
-        for (int i = 0; i < fields.length; i++) {
-            final String fieldName = fields[i].getName();
-            final boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(fieldName);
-            if (sqlIdentifierRequired) {
-                sb.append(openSqlIdentifier);
+        StringBuilder sb = new StringBuilder();
+        if (!withBatchMode || rowId == 0) {
+            sb.append(keywordUpperCase ? INSERT_INTO_UP : INSERT_INTO_LW);
+            appendNameToQuery(sb, schemaName);
+            if (schemaName != null && !schemaName.isEmpty()) {
+                sb.append(DEFAULT_CATALOG_SEPARATOR);
             }
-            for (int j = 0; j < fieldName.length(); j++) {
-                if (openSqlIdentifier == fieldName.charAt(j)
-                || closeSqlIdentifier == fieldName.charAt(j)) {
+            appendNameToQuery(sb, tableName);
+            sb.append(" (");
+            for (int i = 0; i < fields.length; i++) {
+                final String fieldName = fields[i].getName();
+                final boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(fieldName);
+                if (sqlIdentifierRequired) {
                     sb.append(openSqlIdentifier);
                 }
-                sb.append(fieldName.charAt(j));
+                for (int j = 0; j < fieldName.length(); j++) {
+                    if (openSqlIdentifier == fieldName.charAt(j)
+                      || closeSqlIdentifier == fieldName.charAt(j)) {
+                        sb.append(openSqlIdentifier);
+                    }
+                    sb.append(fieldName.charAt(j));
+                }
+                if (sqlIdentifierRequired) {
+                    sb.append(closeSqlIdentifier);
+                }
+                if (i < fields.length - 1) {
+                    sb.append(", ");
+                }
             }
-            if (sqlIdentifierRequired) {
-                sb.append(closeSqlIdentifier);
-            }
-            if (i < fields.length - 1) {
-                sb.append(", ");
-            }
+            sb.append(")");
+            sb.append(withBatchMode ? "\n": " ");
+            sb.append(keywordUpperCase ? VALUES_UP : VALUES_LW).append("(");
+        } else {
+            sb.append(",\n").append("       ("); // "VALUES ".length() number of spaces indentation
         }
-        sb.append(") VALUES (");
         for (int i = 0; i < fields.length; i++) {
             if (fields[i] instanceof SimpleField) {
                 //noinspection unchecked
@@ -96,7 +112,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                 sb.append(", ");
             }
         }
-        sb.append(");");
+        sb.append(")");
+
         return sb.toString();
     }
 
@@ -117,9 +134,9 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     public String generate(List<IN> input, Schema<IN, ?> schema) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < input.size(); i++) {
-            sb.append(apply(input.get(i), schema));
-            if (i < input.size() - 1) {
-                sb.append("\n");
+            sb.append(apply(input.get(i), schema, i));
+            if (i == input.size() - 1 && sb.length() > 0) {
+                sb.append(";");
             }
         }
         return sb.toString();
@@ -129,9 +146,9 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     public String generate(Schema<IN, ?> schema, int limit) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < limit; i++) {
-            sb.append(apply(null, schema));
-            if (i < limit - 1) {
-                sb.append("\n");
+            sb.append(apply(null, schema, i));
+            if (i == limit - 1 && sb.length() > 0) {
+                sb.append(";");
             }
         }
         return sb.toString();
@@ -143,6 +160,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         private String tableName = "MyTable";
         private String schemaName = "";
         private Casing casing = Casing.TO_UPPER;
+        private boolean withBatchMode = false;
+        private boolean keywordUpperCase = true;
 
         public SqlTransformerBuilder<IN> dialect(SqlDialect dialect) {
             sqlQuoteIdentifier = dialect.getSqlQuoteIdentifier();
@@ -175,8 +194,18 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             return this;
         }
 
+        public SqlTransformerBuilder<IN> batch(boolean withBatchMode) {
+            this.withBatchMode = withBatchMode;
+            return this;
+        }
+
+        public SqlTransformerBuilder<IN> keywordUpperCase(boolean keywordUpperCase) {
+            this.keywordUpperCase = keywordUpperCase;
+            return this;
+        }
+
         public SqlTransformer<IN> build() {
-            return new SqlTransformer<>(schemaName, tableName, quote, sqlQuoteIdentifier, casing);
+            return new SqlTransformer<>(schemaName, tableName, quote, sqlQuoteIdentifier, casing, withBatchMode, keywordUpperCase);
         }
     }
 }

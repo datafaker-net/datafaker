@@ -1,8 +1,10 @@
 package net.datafaker.formats;
 
+import net.datafaker.Faker;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SqlDialect;
 import net.datafaker.transformations.SqlTransformer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,7 +15,7 @@ import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
-public class SqlTest {
+class SqlTest {
     @ParameterizedTest
     @MethodSource("generateTestSchema")
     void simpleSqlTestForSqlTransformer(Schema<String, String> schema, String tableSchemaName, String expected) {
@@ -96,5 +98,37 @@ public class SqlTest {
             of(Schema.of(field("boolean", () -> true)), null, "INSERT INTO MyTable (boolean) VALUES (true);"),
             of(Schema.of(field("nullValue", () -> null)), null, "INSERT INTO MyTable (nullValue) VALUES (null);"),
             of(Schema.of(field("nullValue", () -> null)), "MySchema", "INSERT INTO MySchema.MyTable (nullValue) VALUES (null);"));
+    }
+
+    @Test
+    void batchSqlTestForSqlTransformerPostgres() {
+        Faker faker = new Faker();
+        Schema<String, String> schema =
+            Schema.of(field("firstName", () -> faker.name().firstName()),
+                field("lastName", () -> faker.name().lastName()));
+        SqlTransformer<String> transformer =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .batch(true).dialect(SqlDialect.POSTGRES).build();
+        final int limit = 5;
+        String output = transformer.generate(schema, limit);
+        assertThat(output.split("\\n")).hasSize(limit + 1);
+    }
+
+    @Test
+    void sqlKeywordCaseCheck() {
+        Faker faker = new Faker();
+        Schema<String, String> schema =
+            Schema.of(field("firstName", () -> faker.name().firstName()),
+                field("lastName", () -> faker.name().lastName()));
+        SqlTransformer<String> transformer =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .keywordUpperCase(false)
+                .dialect(SqlDialect.POSTGRES).build();
+        final int limit = 1;
+        assertThat(transformer.generate(schema, limit))
+            .contains("insert into ")
+            .doesNotContain("INSERT INTO ")
+            .contains("values ")
+            .doesNotContain("VALUES");
     }
 }
