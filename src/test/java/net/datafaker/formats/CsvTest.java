@@ -373,4 +373,17 @@ class CsvTest extends AbstractFakerTest {
 
         assertThat(numberOfLines).isEqualTo(limit);
     }
+
+    @Test
+    void supplierShouldBeDefinedInCaseOfNullInput() {
+        Schema<Name, String> schema =
+            Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName));
+        assertThatThrownBy(() ->
+            new CsvTransformer.CsvTransformerBuilder<Name>()
+                .header(false).separator(" : ")
+                .build()
+                .generate(schema, 1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Input could be null only if suppliers are defined");
+    }
 }

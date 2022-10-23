@@ -2,7 +2,7 @@
 
 Since version 1.2.0 of Datafaker it's possible to export generated data to a file format of your choice.
 
-The currently support file formats are:
+The currently supported file formats are:
 
 * CSV
 * JSON
