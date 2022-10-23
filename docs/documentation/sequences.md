@@ -37,7 +37,7 @@ between 3 and 5:
 
 A list/stream can also contain different types:
 
-=== "Java"
+=== "List"
 
     ``` java 
     List<Object> objects =
@@ -48,7 +48,7 @@ A list/stream can also contain different types:
             .generate();
     ```
 
-=== "Java"
+=== "Stream"
 
     ``` java 
     Stream<Object> objects =
@@ -62,7 +62,7 @@ A list/stream can also contain different types:
 With usage of `nullRate` it is possible to specify how often it should contain null values.
 By default, it's value is 0, i.e. no null values will be generated.
 
-=== "Java"
+=== "List"
 
     ``` java 
     List<Object> objects =
@@ -74,7 +74,7 @@ By default, it's value is 0, i.e. no null values will be generated.
             .generate();
     ```
 
-=== "Java"
+=== "Stream"
 
     ``` java 
     Stream<Object> objects =
@@ -89,7 +89,7 @@ By default, it's value is 0, i.e. no null values will be generated.
 will generate a collection/stream where every value is null.
 And to generate a collection/stream with only about 30% values of null `nullRate(0.3)` will do it
 
-=== "Java"
+=== "List"
 
     ``` java 
     List<Object> objects =
@@ -101,7 +101,7 @@ And to generate a collection/stream with only about 30% values of null `nullRate
             .generate();
     ```
 
-=== "Java"
+=== "Stream"
 
     ``` java 
     Stream<Object> objects =
