@@ -119,7 +119,7 @@ List<String> names = faker.collection(
 System.out.println(names);
 // [Skiles, O'Connell, Lorenzo, West]
 ```
-more examples about that at https://www.datafaker.net/documentation/collections/
+more examples about that at https://www.datafaker.net/documentation/sequences/
 
 ### Streams
 ```java
@@ -183,7 +183,7 @@ String json = Format.toJson(
 // [{"firstName": "Oleta", "lastName": "Toy"},
 // {"firstName": "Gerard", "lastName": "Windler"}]
 ```
-More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/file-formats/
+More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/formats/
 
 ### Unique Values
 ```java
