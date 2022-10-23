@@ -138,6 +138,7 @@ There are 2 ways of data generation in specific formats
 2. There is already a sequence of objects and we could extract from them some values and return it in specific format
 For both cases we need a `Schema` which could describe fields and a way of data generation.
 In case of generation from scratch `Suppliers` are enough, in case of transformation `Functions` are required
+#### CSV
 ```java
 // transformer could be the same for both
 CsvTransformer<Name> transformer =
@@ -200,7 +201,7 @@ jshell> System.out.println(transformer.generate(fromScratch, 2));
 "Noelle","Smitham"
 ```
 
-#### json
+#### JSON
 ```java
 Faker faker = new Faker();
 String json = Format.toJson(
