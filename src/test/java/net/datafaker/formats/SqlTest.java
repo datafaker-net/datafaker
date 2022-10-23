@@ -38,6 +38,27 @@ class SqlTest {
     }
 
     @ParameterizedTest
+    @MethodSource("generateTestSchemaForOracle")
+    void simpleSqlTestForSqlTransformerOracle(Schema<String, String> schema, String tableSchemaName, String expected) {
+        SqlTransformer<String> transformer =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .schemaName(tableSchemaName).dialect(SqlDialect.ORACLE).build();
+        assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> generateTestSchemaForOracle() {
+        return Stream.of(
+            of(Schema.of(), null, ""),
+            of(Schema.of(field("key", () -> "value")), "", "INSERT INTO \"MyTable\" (\"key\") VALUES ('value');"),
+            of(Schema.of(field("number", () -> 123)), null, "INSERT INTO \"MyTable\" (\"number\") VALUES (123);"),
+            of(Schema.of(field("number", () -> 123.0)), null, "INSERT INTO \"MyTable\" (\"number\") VALUES (123.0);"),
+            of(Schema.of(field("number", () -> 123.123)), "", "INSERT INTO \"MyTable\" (\"number\") VALUES (123.123);"),
+            of(Schema.of(field("boolean", () -> true)), null, "INSERT INTO \"MyTable\" (\"boolean\") VALUES (true);"),
+            of(Schema.of(field("nullValue", () -> null)), null, "INSERT INTO \"MyTable\" (\"nullValue\") VALUES (null);"),
+            of(Schema.of(field("nullValue", () -> null)), "MySchema", "INSERT INTO \"MySchema\".\"MyTable\" (\"nullValue\") VALUES (null);"));
+    }
+
+    @ParameterizedTest
     @MethodSource("generateTestSchemaForPostgres")
     void simpleSqlTestForSqlTransformerPostgres(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
@@ -130,5 +151,38 @@ class SqlTest {
             .doesNotContain("INSERT INTO ")
             .contains("values ")
             .doesNotContain("VALUES");
+    }
+
+    @Test
+    void batchSqlTestForSqlTransformerOracle() {
+        Faker faker = new Faker();
+        Schema<String, String> schema =
+            Schema.of(field("firstName", () -> faker.name().firstName()),
+                field("lastName", () -> faker.name().lastName()));
+        SqlTransformer<String> transformerUpper =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .batch(true)
+                .keywordUpperCase(true)
+                .dialect(SqlDialect.ORACLE).build();
+        final int limit = 5;
+        String output = transformerUpper.generate(schema, limit);
+        assertThat(output.split("\\n")).hasSize(limit + 2);
+        assertThat(output)
+            .contains("INSERT ALL")
+            .contains("INTO")
+            .doesNotContain("INSERT INTO")
+            .contains("SELECT 1 FROM dual;");
+        SqlTransformer<String> transformerLower =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .batch(true)
+                .keywordUpperCase(false)
+                .dialect(SqlDialect.ORACLE).build();
+        output = transformerLower.generate(schema, limit);
+        assertThat(output.split("\\n")).hasSize(limit + 2);
+        assertThat(output)
+            .contains("insert all")
+            .contains("into")
+            .doesNotContain("insert into")
+            .contains("select 1 from dual;");
     }
 }
