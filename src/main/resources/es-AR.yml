@@ -73,17 +73,17 @@ es-AR:
         abbreviation:  ['NNE', 'ENE', 'ESE', 'SSE', 'SSW', 'WSW', 'WNW', 'NNW']
         azimuth:  ['22.5', '67.5', '112.5', '157.5', '202.5', '247.5', '292.5', '337.5']
       direction:
-      - "#{cardinal}"
-      - "#{ordinal}"
-      - "#{half_wind}"
+      - "#{Compass.cardinal.word}"
+      - "#{Compass.ordinal.word}"
+      - "#{Compass.half-wind.word}"
       abbreviation:
-      - "#{cardinal_abbreviation}"
-      - "#{ordinal_abbreviation}"
-      - "#{half_wind_abbreviation}"
+      - "#{Compass.cardinal.abbreviation}"
+      - "#{Compass.ordinal.abbreviation}"
+      - "#{Compass.half-wind.abbreviation}"
       azimuth:
-      - "#{cardinal_azimuth}"
-      - "#{ordinal_azimuth}"
-      - "#{half_wind_azimuth}"
+      - "#{Compass.cardinal.azimuth}"
+      - "#{Compass.ordinal.azimuth}"
+      - "#{Compass.half-wind.azimuth}"
 
     internet:
       free_email: [gmail.com, yahoo.com, hotmail.com]
