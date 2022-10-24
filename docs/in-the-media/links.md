@@ -1,5 +1,11 @@
 # Articles and news
 
+**October 20, 2022**
+
+*Eugene Kovko* wrote an excellent getting started guide for Baeldung, which you can find here:
+
+https://www.baeldung.com/java-datafaker
+
 **October 11, 2022**
 
 *Jaap Coomans*, who also helped contribute data to Datafaker, updated his excellent presentation
@@ -15,7 +21,7 @@ https://rieckpil.de/howto-generate-random-data-in-java-using-java-faker/
 
 **May 22, 2022**
 
-We published an article on *Dzone* to demonstrate some of the new features of Datafaker:
+We published an article on *DZone* to demonstrate some of the new features of Datafaker:
 
 https://dzone.com/articles/datafaker-a-solid-alternative-to-using-production
 
