@@ -25,12 +25,14 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private final String schemaName;
 
     private final boolean withBatchMode;
+    private final int batchSize;
     private final Case keywordCase;
     private final boolean forceSqlQuoteIdentifierUsage;
 
     private final SqlDialect dialect;
 
-    private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier, Casing casing, boolean withBatchMode, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
+    private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier,
+        Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
         this.schemaName = schemaName;
         this.quote = quote;
         this.dialect = dialect;
@@ -39,6 +41,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         this.tableName = tableName;
         this.casing = casing;
         this.withBatchMode = withBatchMode;
+        this.batchSize = batchSize;
         this.keywordCase = keywordCase;
         this.forceSqlQuoteIdentifierUsage = forceSqlQuoteIdentifierUsage;
     }
@@ -70,7 +73,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
         StringBuilder sb = new StringBuilder();
         if (withBatchMode) {
-            if (rowId == 0) {
+            if (rowId == 0 || batchSize > 0 && rowId % batchSize == 0) {
                 sb.append(
                     SqlDialect.getFirstRow(
                         dialect, () -> appendTableInfo(fields), () -> addValues(input, fields), keywordCase));
@@ -277,7 +280,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < input.size(); i++) {
             sb.append(apply(input.get(i), schema, i));
-            if (i == input.size() - 1 && sb.length() > 0) {
+            if (i == input.size() - 1 && sb.length() > 0 || i % (batchSize - 1) == 0) {
                 if (withBatchMode) {
                     sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));
                 }
@@ -300,9 +303,12 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < limit; i++) {
             sb.append(apply(null, schema, i));
-            if (i == limit - 1 && sb.length() > 0) {
+            if (i == limit - 1 && sb.length() > 0 || batchSize > 0 && (i + 1) % batchSize == 0) {
                 sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));
                 sb.append(";");
+                if (i < limit - 1 && sb.length() > 0) {
+                    sb.append(LINE_SEPARATOR);
+                }
             }
         }
         return sb.toString();
@@ -325,6 +331,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         private String schemaName = "";
         private Casing casing = Casing.TO_UPPER;
         private boolean withBatchMode = false;
+        private int batchSize = -1; // no limit
         private Case keywordCase = Case.UPPERCASE;
         private boolean forceSqlQuoteIdentifierUsage = false;
 
@@ -368,6 +375,12 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             return this;
         }
 
+        public SqlTransformerBuilder<IN> batch(int batchSize) {
+            this.batchSize = batchSize;
+            this.withBatchMode = true;
+            return this;
+        }
+
         public SqlTransformerBuilder<IN> keywordCase(Case caze) {
             this.keywordCase = caze;
             return this;
@@ -381,11 +394,11 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         public SqlTransformer<IN> build() {
             if (dialect == null) {
                 return new SqlTransformer<>(
-                    schemaName, tableName, quote, dialect, sqlQuoteIdentifier, casing, withBatchMode, keywordCase, forceSqlQuoteIdentifierUsage);
+                    schemaName, tableName, quote, dialect, sqlQuoteIdentifier, casing, withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
             }
             return new SqlTransformer<>(
                 schemaName, tableName, quote, dialect, dialect.getSqlQuoteIdentifier(), dialect.getUnquotedCasing(),
-                withBatchMode, keywordCase, forceSqlQuoteIdentifierUsage);
+                withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
         }
     }
 

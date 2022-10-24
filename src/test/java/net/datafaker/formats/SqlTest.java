@@ -252,6 +252,38 @@ class SqlTest {
             .contains("select 1 from dual;");
     }
 
+    @Test
+    void batchSizeSqlTestForSqlTransformerOracle() {
+        Faker faker = new Faker();
+        Schema<String, String> schema =
+            Schema.of(field("firstName", () -> faker.name().firstName()),
+                field("lastName", () -> faker.name().lastName()));
+        SqlTransformer<String> transformerUpper =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .batch(2)
+                .dialect(SqlDialect.ORACLE).build();
+        final int limit = 5;
+        String output = transformerUpper.generate(schema, limit);
+        assertThat(output.split("INSERT ALL")).hasSize(4);
+        assertThat(output.split("SELECT 1 FROM dual")).hasSize(4);
+    }
+
+    @Test
+    void batchSizeSqlTestForSqlTransformerPostgres() {
+        Faker faker = new Faker();
+        Schema<String, String> schema =
+            Schema.of(field("firstName", () -> faker.name().firstName()),
+                field("lastName", () -> faker.name().lastName()));
+        SqlTransformer<String> transformerUpper =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .batch(2)
+                .dialect(SqlDialect.POSTGRES).build();
+        final int limit = 5;
+        String output = transformerUpper.generate(schema, limit);
+        assertThat(output.split("INSERT INTO")).hasSize(4);
+        assertThat(output.split("VALUES ")).hasSize(4);
+    }
+
     @ParameterizedTest
     @MethodSource("generateTestSchemaForCalcite")
     void arrayAndMultisetSqlTestForSqlTransformerCalcite(Schema<String, String> schema, String tableSchemaName, String expected) {
