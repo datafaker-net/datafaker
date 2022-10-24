@@ -10,6 +10,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -208,7 +210,7 @@ class SqlTest {
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformer =
             new SqlTransformer.SqlTransformerBuilder<String>()
-                .keywordLowerCase()
+                .keywordCase(SqlTransformer.Case.LOWERCASE)
                 .dialect(SqlDialect.POSTGRES).build();
         final int limit = 1;
         assertThat(transformer.generate(schema, limit))
@@ -239,7 +241,7 @@ class SqlTest {
         SqlTransformer<String> transformerLower =
             new SqlTransformer.SqlTransformerBuilder<String>()
                 .batch()
-                .keywordLowerCase()
+                .keywordCase(SqlTransformer.Case.LOWERCASE)
                 .dialect(SqlDialect.ORACLE).build();
         output = transformerLower.generate(schema, limit);
         assertThat(output.split("\\n")).hasSize(limit + 2);
@@ -248,5 +250,32 @@ class SqlTest {
             .contains("into")
             .doesNotContain("insert into")
             .contains("select 1 from dual;");
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateTestSchemaForCalcite")
+    void arrayAndMultisetSqlTestForSqlTransformerCalcite(Schema<String, String> schema, String tableSchemaName, String expected) {
+        SqlTransformer<String> transformer =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .schemaName(tableSchemaName).dialect(SqlDialect.CALCITE).build();
+        assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> generateTestSchemaForCalcite() {
+        return Stream.of(
+            of(Schema.of(), null, ""),
+            of(Schema.of(field("ints", () -> new int[]{1, 2, 3})), "", "INSERT INTO \"MyTable\" (\"ints\") VALUES (ARRAY[1, 2, 3]);"),
+            of(Schema.of(field("longs", () -> new long[]{23L, 45L})), null, "INSERT INTO \"MyTable\" (\"longs\") VALUES (ARRAY[23, 45]);"),
+            of(Schema.of(field("bytes", () -> new byte[]{1, 0})), null, "INSERT INTO \"MyTable\" (\"bytes\") VALUES (ARRAY[1, 0]);"),
+            of(Schema.of(field("shorts", () -> new short[]{1, 0, 3})), null, "INSERT INTO \"MyTable\" (\"shorts\") VALUES (ARRAY[1, 0, 3]);"),
+            of(Schema.of(field("booleans", () -> new boolean[]{true, false})), null, "INSERT INTO \"MyTable\" (\"booleans\") VALUES (ARRAY[true, false]);"),
+            of(Schema.of(field("floats", () -> new float[]{1f, 0f, 3f})), null, "INSERT INTO \"MyTable\" (\"floats\") VALUES (ARRAY[1.0, 0.0, 3.0]);"),
+            of(Schema.of(field("doubles", () -> new double[]{1d, 5d, 3d})), null, "INSERT INTO \"MyTable\" (\"doubles\") VALUES (ARRAY[1.0, 5.0, 3.0]);"),
+            of(Schema.of(field("names", () -> new String[]{"hello", "world"})),
+                null, "INSERT INTO \"MyTable\" (\"names\") VALUES (ARRAY['hello', 'world']);"),
+            of(Schema.of(field("names_list", () -> Arrays.asList("hello", "world"))),
+                "", "INSERT INTO \"MyTable\" (\"names_list\") VALUES (ARRAY['hello', 'world']);"),
+            of(Schema.of(field("names_multiset", () -> Collections.singleton("hello"))),
+                "", "INSERT INTO \"MyTable\" (\"names_multiset\") VALUES (MULTISET['hello']);"));
     }
 }

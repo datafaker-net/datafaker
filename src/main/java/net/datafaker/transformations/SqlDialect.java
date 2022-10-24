@@ -1,12 +1,16 @@
 package net.datafaker.transformations;
 
-import java.util.Locale;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static net.datafaker.transformations.Casing.DEFAULT_CASING;
 import static net.datafaker.transformations.SqlDialect.AuxiliaryConstants.DEFAULT_FIRST_ROW;
 import static net.datafaker.transformations.SqlDialect.AuxiliaryConstants.DEFAULT_OTHER_ROWS;
+import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.INSERT_ALL;
+import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.INSERT_INTO;
+import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.INTO;
+import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.SELECT_1_FROM_DUAL;
+import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.VALUES;
 
 public enum SqlDialect {
     ANSI("`"),
@@ -23,20 +27,16 @@ public enum SqlDialect {
     MYSQL("`", Casing.UNCHANGED),
     NETEZZA("\""),
     ORACLE("\"", Casing.TO_UPPER,
-        (columns, values, withKeywordsUppercase) -> {
-            String insertAll = "INSERT ALL\n    INTO ";
-            insertAll = withKeywordsUppercase ? insertAll.toUpperCase(Locale.ROOT) : insertAll.toLowerCase(Locale.ROOT);
-            String valuesKeyWord = " VALUES ";
-            valuesKeyWord = withKeywordsUppercase ? valuesKeyWord.toUpperCase(Locale.ROOT) : valuesKeyWord.toLowerCase(Locale.ROOT);
+        (columns, values, caze) -> {
+            final String insertAll = INSERT_ALL.getValue(caze) + System.lineSeparator() + "    " + INTO.getValue(caze) + " ";
+            final String valuesKeyWord = " " + VALUES.getValue(caze) + " ";
             return insertAll + columns.get() + valuesKeyWord + values.get();
         },
-        (columns, values, withKeywordsUppercase) -> {
-            String into = "    INTO ";
-            into = withKeywordsUppercase ? into.toUpperCase(Locale.ROOT) : into.toLowerCase(Locale.ROOT);
-            String valuesKeyWord = " VALUES ";
-            valuesKeyWord = withKeywordsUppercase ? valuesKeyWord.toUpperCase(Locale.ROOT) : valuesKeyWord.toLowerCase(Locale.ROOT);
+        (columns, values, caze) -> {
+            final String into = "    " + INTO.getValue(caze) + " ";
+            final String valuesKeyWord = " " + VALUES.getValue(caze) + " ";
             return into + columns.get() + valuesKeyWord + values.get();
-        }, withKeywordsUppercase -> "\n" + (withKeywordsUppercase ? "SELECT 1 FROM " : "select 1 from ") + "dual"),
+        }, caze -> "\n" + SELECT_1_FROM_DUAL.getValue(caze)),
     PARACCEL("\""),
     PHOENIX("\""),
     POSTGRES("\""),
@@ -47,14 +47,14 @@ public enum SqlDialect {
     VERTICA("\"", Casing.UNCHANGED);
     private final String sqlQuoteIdentifier;
     private final Casing unquotedCasing;
-    private final TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchFirstRow;
-    private final TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchOtherRows;
-    private final Function<Boolean, String> lastBatchRow;
+    private final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow;
+    private final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows;
+    private final Function<SqlTransformer.Case, String> lastBatchRow;
 
     private static final String DEFAULT_BEFORE_EACH_BATCH_PREFIX = "       ";
 
-    SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchFirstRow,
-               TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchOtherRows, Function<Boolean, String> lastBatchRow) {
+    SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
+               TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
         this.sqlQuoteIdentifier = sqlQuoteIdentifier;
         this.unquotedCasing = casing;
         this.batchFirstRow = batchFirstRow;
@@ -62,8 +62,8 @@ public enum SqlDialect {
         this.lastBatchRow = lastBatchRow;
     }
 
-    SqlDialect(String sqlQuoteIdentifier, TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchFirstRow,
-               TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchOtherRows, Function<Boolean, String> lastBatchRow) {
+    SqlDialect(String sqlQuoteIdentifier, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
+               TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
         this(sqlQuoteIdentifier, DEFAULT_CASING, batchFirstRow, batchOtherRows, lastBatchRow);
     }
 
@@ -86,30 +86,27 @@ public enum SqlDialect {
         return unquotedCasing;
     }
 
-    public static String getFirstRow(SqlDialect dialect, Supplier<String> input, Supplier<String> input2, boolean withKeywordUppercase) {
+    public static String getFirstRow(SqlDialect dialect, Supplier<String> input, Supplier<String> input2, SqlTransformer.Case keywordCase) {
         return dialect == null
-            ? DEFAULT_FIRST_ROW.apply(input, input2, withKeywordUppercase) : dialect.batchFirstRow.apply(input, input2, withKeywordUppercase);
+            ? DEFAULT_FIRST_ROW.apply(input, input2, keywordCase) : dialect.batchFirstRow.apply(input, input2, keywordCase);
     }
 
-    public static String getOtherRow(SqlDialect dialect, Supplier<String> input, Supplier<String> input2, boolean withKeywordUppercase) {
+    public static String getOtherRow(SqlDialect dialect, Supplier<String> input, Supplier<String> input2, SqlTransformer.Case keywordCase) {
         return dialect == null
-            ? DEFAULT_OTHER_ROWS.apply(input, input2, withKeywordUppercase) : dialect.batchOtherRows.apply(input, input2, withKeywordUppercase);
+            ? DEFAULT_OTHER_ROWS.apply(input, input2, keywordCase) : dialect.batchOtherRows.apply(input, input2, keywordCase);
     }
 
-    public static String getLastRowSuffix(SqlDialect dialect, Boolean withKeywordUppercase) {
-        return dialect == null
-            ? "" : dialect.lastBatchRow.apply(withKeywordUppercase);
+    public static String getLastRowSuffix(SqlDialect dialect, SqlTransformer.Case caze) {
+        return dialect == null ? "" : dialect.lastBatchRow.apply(caze);
     }
 
     static class AuxiliaryConstants {
-        static final TriFunction<Supplier<String>, Supplier<String>, Boolean, String> DEFAULT_FIRST_ROW = (supplier, supplier2, aBoolean) -> {
-            String insertAll = "INSERT INTO ";
-            insertAll = aBoolean ? insertAll.toUpperCase(Locale.ROOT) : insertAll.toLowerCase(Locale.ROOT);
-            String values = "\nVALUES ";
-            values = aBoolean ? values.toUpperCase(Locale.ROOT) : values.toLowerCase(Locale.ROOT);
+        static final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> DEFAULT_FIRST_ROW = (supplier, supplier2, caze) -> {
+            final String insertAll = INSERT_INTO.getValue(caze) + " ";
+            final String values = "\n" + VALUES.getValue(caze) + " ";
             return insertAll + supplier.get() + values + supplier2.get();
         };
-        static final TriFunction<Supplier<String>, Supplier<String>, Boolean, String> DEFAULT_OTHER_ROWS =
-            (supplier, supplier2, aBoolean) -> DEFAULT_BEFORE_EACH_BATCH_PREFIX + supplier2.get();
+        static final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> DEFAULT_OTHER_ROWS =
+            (supplier, supplier2, caze) -> DEFAULT_BEFORE_EACH_BATCH_PREFIX + supplier2.get();
     }
 }
