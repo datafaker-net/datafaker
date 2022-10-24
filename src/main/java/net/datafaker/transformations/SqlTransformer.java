@@ -1,6 +1,7 @@
 package net.datafaker.transformations;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private static final String INSERT_INTO_UP = "INSERT INTO ";
@@ -45,6 +46,11 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             }
         }
         return false;
+    }
+
+    @Override
+    public CharSequence apply(IN input, Schema<IN, ?> schema) {
+        return apply(input, schema, 0);
     }
 
     @Override
@@ -168,17 +174,33 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String generate(Schema<IN, ?> schema, int limit) {
+        if (withBatchMode) {
+            return generateBatchModeStatements(schema, limit);
+        } else {
+            return generateSeparatedStatements(schema, limit);
+        }
+    }
+
+    public String generateBatchModeStatements(Schema<IN, ?> schema, int limit) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < limit; i++) {
             sb.append(apply(null, schema, i));
             if (i == limit - 1 && sb.length() > 0) {
-                if (withBatchMode) {
-                    sb.append(SqlDialect.getLastRowSuffix(dialect, keywordUpperCase));
-                }
+                sb.append(SqlDialect.getLastRowSuffix(dialect, keywordUpperCase));
                 sb.append(";");
             }
         }
         return sb.toString();
+    }
+
+    public String generateSeparatedStatements(Schema<IN, ?> schema, int limit) {
+        StringJoiner data = new StringJoiner(LINE_SEPARATOR);
+        int limitMin = Math.min(schema.getFields().length, limit);
+        for (int i = 0; i < limitMin; i++) {
+            data.add(apply(null, schema) + ";");
+        }
+
+        return data.toString();
     }
 
     public static class SqlTransformerBuilder<IN> {
