@@ -181,7 +181,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    public String generateBatchModeStatements(Schema<IN, ?> schema, int limit) {
+    private String generateBatchModeStatements(Schema<IN, ?> schema, int limit) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < limit; i++) {
             sb.append(apply(null, schema, i));
@@ -193,7 +193,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
-    public String generateSeparatedStatements(Schema<IN, ?> schema, int limit) {
+    private String generateSeparatedStatements(Schema<IN, ?> schema, int limit) {
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
         int limitMin = Math.min(schema.getFields().length, limit);
         for (int i = 0; i < limitMin; i++) {
