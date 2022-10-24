@@ -21,10 +21,11 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private final boolean withBatchMode;
     private final boolean keywordUpperCase;
+    private final boolean forceSqlQuoteIdentifierUsage;
 
     private final SqlDialect dialect;
 
-    private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier, Casing casing, boolean withBatchMode, boolean keywordUpperCase) {
+    private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier, Casing casing, boolean withBatchMode, boolean keywordUpperCase, boolean forceSqlQuoteIdentifierUsage) {
         this.schemaName = schemaName;
         this.quote = quote;
         this.dialect = dialect;
@@ -34,9 +35,11 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         this.casing = casing;
         this.withBatchMode = withBatchMode;
         this.keywordUpperCase = keywordUpperCase;
+        this.forceSqlQuoteIdentifierUsage = forceSqlQuoteIdentifierUsage;
     }
 
     private boolean isSqlQuoteIdentifierRequiredFor(String name) {
+        if (forceSqlQuoteIdentifierUsage) return true;
         for (int i = 0; i < name.length(); i++) {
             if (casing == Casing.TO_UPPER && Character.isLowerCase(name.charAt(i))
                 || casing == Casing.TO_LOWER && Character.isUpperCase(name.charAt(i))
@@ -211,6 +214,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         private Casing casing = Casing.TO_UPPER;
         private boolean withBatchMode = false;
         private boolean keywordUpperCase = true;
+        private boolean forceSqlQuoteIdentifierUsage = false;
+
 
         private SqlDialect dialect;
 
@@ -246,24 +251,29 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             return this;
         }
 
-        public SqlTransformerBuilder<IN> batch(boolean withBatchMode) {
-            this.withBatchMode = withBatchMode;
+        public SqlTransformerBuilder<IN> batch() {
+            this.withBatchMode = true;
             return this;
         }
 
-        public SqlTransformerBuilder<IN> keywordUpperCase(boolean keywordUpperCase) {
-            this.keywordUpperCase = keywordUpperCase;
+        public SqlTransformerBuilder<IN> keywordLowerCase() {
+            this.keywordUpperCase = false;
+            return this;
+        }
+
+        public SqlTransformerBuilder<IN> forceUseSqlQuoteIdentifier() {
+            this.forceSqlQuoteIdentifierUsage = true;
             return this;
         }
 
         public SqlTransformer<IN> build() {
             if (dialect == null) {
                 return new SqlTransformer<>(
-                    schemaName, tableName, quote, dialect, sqlQuoteIdentifier, casing, withBatchMode, keywordUpperCase);
+                    schemaName, tableName, quote, dialect, sqlQuoteIdentifier, casing, withBatchMode, keywordUpperCase, forceSqlQuoteIdentifierUsage);
             }
             return new SqlTransformer<>(
                 schemaName, tableName, quote, dialect, dialect.getSqlQuoteIdentifier(), dialect.getUnquotedCasing(),
-                withBatchMode, keywordUpperCase);
+                withBatchMode, keywordUpperCase, forceSqlQuoteIdentifierUsage);
         }
     }
 }
