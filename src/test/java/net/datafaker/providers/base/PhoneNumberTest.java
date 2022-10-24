@@ -56,12 +56,16 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         final BaseFaker faker = new BaseFaker(locale);
         for (int i = 0; i < 10; i++) {
             String phoneNumber = faker.phoneNumber().phoneNumber();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, phoneNumberRegion);
-            if (!util.isValidNumberForRegion(proto, phoneNumberRegion)) {
+            try {
+                Phonenumber.PhoneNumber proto = util.parse(phoneNumber, phoneNumberRegion);
+                if (!util.isValidNumberForRegion(proto, phoneNumberRegion)) {
+                    errorCount++;
+                }
+            } catch(Exception e) {
                 errorCount++;
             }
         }
-        assertThat(errorCount).isLessThan(25);
+        assertThat(errorCount).isLessThanOrEqualTo(15);
     }
 
     @ParameterizedTest

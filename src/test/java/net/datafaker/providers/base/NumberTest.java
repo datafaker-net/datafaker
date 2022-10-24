@@ -184,7 +184,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
 
     /**
      * Given a number of min/max ranges
-     * for each min/max range, call {@link java.lang.Number#randomDouble(int, int, int)} with min/max 'n' times
+     * for each min/max range, call {@link net.datafaker.providers.base.Number#randomDouble(int, int, int)} with min/max 'n' times
      * calculate the uniqueness for that given min/max range.
      * For all 'uniqueness' values
      * verify the percentage of 'uniqueness' ratios over 80% is 90%.
@@ -239,7 +239,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
 
     /**
      * Given a number of min/max ranges
-     * for each min/max range, call {@link java.lang.Number#numberBetween(long, long)}  with min/max 'n' times
+     * for each min/max range, call {@link net.datafaker.providers.base.Number#numberBetween(long, long)}  with min/max 'n' times
      * calculate the uniqueness for that given min/max range.
      * For all 'uniqueness' values
      * verify the percentage of 'uniqueness' ratios over 80% is 90%.

@@ -13,7 +13,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
   private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
 
   @Override
-  public String apply(IN input, Schema<IN, ? extends Object> schema, int rowId) {
+  public String apply(IN input, Schema<IN, ?> schema) {
     Field<?, ?>[] fields = schema.getFields();
     if (fields.length == 0) {
       return "{}";
