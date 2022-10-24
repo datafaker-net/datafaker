@@ -91,7 +91,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testBetweenDateAsArgument() {
-         faker.date().between(new Date(), new Date());
+        faker.date().between(new Date(), new Date());
     }
 
     @Test
@@ -176,7 +176,8 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
             .as("Duration must be equal or greater than min value")
             .isLessThanOrEqualTo(generated);
         assertThat(max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated))
-            .as("Duration must be lower than max value").isTrue();
+            .as("Duration must be lower than max value")
+            .isTrue();
     }
 
     @ParameterizedTest
@@ -230,8 +231,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(786, "millis"),
             Arguments.of(879, "milli"),
             Arguments.of(8729, "nano"),
-            Arguments.of(8739, "nanos")
-        );
+            Arguments.of(8739, "nanos"));
     }
 
     private static Stream<Arguments> generateDurationsFromStringWithMinMax() {
@@ -250,8 +250,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(76, 100, "micros"),
             Arguments.of(87, 100, "micro"),
             Arguments.of(874, 1300, "nano"),
-            Arguments.of(879, 1030, "nanos")
-        );
+            Arguments.of(879, 1030, "nanos"));
     }
 
     private static Stream<Arguments> generateDurationsWithMaxOnly() {
@@ -263,8 +262,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(78, ChronoUnit.SECONDS),
             Arguments.of(786, ChronoUnit.MILLIS),
             Arguments.of(786, ChronoUnit.MICROS),
-            Arguments.of(8729, ChronoUnit.NANOS)
-        );
+            Arguments.of(8729, ChronoUnit.NANOS));
     }
 
     private static Stream<Arguments> generateDurationsWithMinMax() {
@@ -275,15 +273,13 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(65, 98, ChronoUnit.SECONDS),
             Arguments.of(76, 100, ChronoUnit.MILLIS),
             Arguments.of(879, 1030, ChronoUnit.MICROS),
-            Arguments.of(879, 1030, ChronoUnit.NANOS)
-        );
+            Arguments.of(879, 1030, ChronoUnit.NANOS));
     }
 
     private static Stream<Arguments> generatePeriod() {
         return Stream.of(
             Arguments.of(Period.of(1, 1, 1), Period.of(0, 1, 1)),
             Arguments.of(Period.of(1, 1, 3), Period.of(1, 1, 2)),
-            Arguments.of(Period.of(1, 2, 1), Period.of(1, 1, 1))
-        );
+            Arguments.of(Period.of(1, 2, 1), Period.of(1, 1, 1)));
     }
 }

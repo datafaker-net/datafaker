@@ -9,7 +9,7 @@ public class Educator extends AbstractProvider<BaseProviders> {
         super(faker);
     }
 
-    // TODO - move these all out to en.yml by default. 
+    // TODO - move these all out to en.yml by default.
     public String university() {
         return resolve("educator.name")
             + " "

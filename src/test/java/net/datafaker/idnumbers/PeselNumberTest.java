@@ -32,8 +32,11 @@ class PeselNumberTest {
         /*
          * Given
          */
-        final LocalDate givenBirthDate = new BaseFaker().date().birthday(0, 100).toInstant()
-            .atZone(ZoneId.systemDefault()).toLocalDate();
+        final LocalDate givenBirthDate = new BaseFaker().date()
+            .birthday(0, 100)
+            .toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate();
         /*
          * When
          */

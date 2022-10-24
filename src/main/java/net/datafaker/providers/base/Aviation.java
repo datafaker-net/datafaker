@@ -68,4 +68,3 @@ public class Aviation extends AbstractProvider<BaseProviders> {
         return resolve("aviation.airline");
     }
 }
-

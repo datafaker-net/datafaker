@@ -103,8 +103,7 @@ public class Name extends AbstractProvider<BaseProviders> {
         return String.join(" ",
             resolve("name.title.descriptor"),
             resolve("name.title.level"),
-            resolve("name.title.job")
-        );
+            resolve("name.title.job"));
     }
 
     /**

@@ -15,8 +15,7 @@ public class Code extends AbstractProvider<BaseProviders> {
 
     private static final int[] GTIN_8_CHECK_DIGITS = {3, 1, 3, 1, 3, 1, 3};
     private static final int[] GTIN_13_CHECK_DIGITS = {1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3};
-    private static final String[] REPORTING_BODY_IDENTIFIERS
-        = {"01", "10", "30", "33", "35", "44", "45", "49", "50", "51", "52", "53", "54", "86", "91", "98", "99"};
+    private static final String[] REPORTING_BODY_IDENTIFIERS = {"01", "10", "30", "33", "35", "44", "45", "49", "50", "51", "52", "53", "54", "86", "91", "98", "99"};
 
     private static final Pattern HYPHEN = Pattern.compile("-");
 

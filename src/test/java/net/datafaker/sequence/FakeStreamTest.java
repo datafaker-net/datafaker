@@ -72,8 +72,8 @@ class FakeStreamTest extends AbstractFakerTest {
                 .minLen(3)
                 .maxLen(5)
                 .generate())
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Null rate should be between 0 and 1");
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Null rate should be between 0 and 1");
     }
 
     @Test
@@ -105,14 +105,13 @@ class FakeStreamTest extends AbstractFakerTest {
 
     @Test
     void checkWrongArguments() {
-        assertThatThrownBy(() ->
-            faker.stream()
-                .suppliers(() -> faker.name().firstName())
-                .minLen(10)
-                .maxLen(5)
-                .generate())
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Max length must be not less than min length and not negative");
+        assertThatThrownBy(() -> faker.stream()
+            .suppliers(() -> faker.name().firstName())
+            .minLen(10)
+            .maxLen(5)
+            .generate())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Max length must be not less than min length and not negative");
     }
 
     @RepeatedTest(10)
@@ -123,8 +122,7 @@ class FakeStreamTest extends AbstractFakerTest {
             .maxLen(limit)
             .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
             .build()
-            .singleton()
-        ).isNotNull();
+            .singleton()).isNotNull();
     }
 
     @Test
@@ -142,17 +140,16 @@ class FakeStreamTest extends AbstractFakerTest {
     @Test
     void differentNumberOfHeadersAndColumns() {
         assertThatThrownBy(() -> Format.toCsv(
-                faker.<Name>stream()
-                    .suppliers(faker::name)
-                    .minLen(3)
-                    .maxLen(5)
-                    .build()
-            )
+            faker.<Name>stream()
+                .suppliers(faker::name)
+                .minLen(3)
+                .maxLen(5)
+                .build())
             .headers(() -> "firstName", () -> "lastname")
             .columns(Name::firstName, Name::lastName, Name::fullName)
             .build()
             .get())
-            .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -193,15 +190,13 @@ class FakeStreamTest extends AbstractFakerTest {
             .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
             .build();
 
-        assertThatThrownBy(() ->
-            Format.toCsv(infiniteStream)
-                .headers(() -> "name", () -> "value", () -> "range", () -> "unit")
-                .columns(Data::name, Data::value, Data::range, Data::unit)
-                .separator(separator)
-                .build()
-                .get()
-        ).isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("The sequence should be finite of size");
+        assertThatThrownBy(() -> Format.toCsv(infiniteStream)
+            .headers(() -> "name", () -> "value", () -> "range", () -> "unit")
+            .columns(Data::name, Data::value, Data::range, Data::unit)
+            .separator(separator)
+            .build()
+            .get()).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The sequence should be finite of size");
     }
 
     @Test
@@ -265,16 +260,14 @@ class FakeStreamTest extends AbstractFakerTest {
             .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
             .build();
 
-        assertThatThrownBy(() ->
-            Format.toJson(infiniteStream)
-                .set("name", Data::name)
-                .set("value", Data::value)
-                .set("range", Data::range)
-                .set("unit", Data::unit)
-                .build()
-                .generate()
-        ).isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("The sequence should be finite of size");
+        assertThatThrownBy(() -> Format.toJson(infiniteStream)
+            .set("name", Data::name)
+            .set("value", Data::value)
+            .set("range", Data::range)
+            .set("unit", Data::unit)
+            .build()
+            .generate()).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The sequence should be finite of size");
     }
 
     @Test
@@ -286,28 +279,27 @@ class FakeStreamTest extends AbstractFakerTest {
             .minLen(limit)
             .build();
 
-        final String json =
-            Format.toJson(stream)
-                .set("primaryAddress",
-                    Format.toJson()
-                        .set("country", () -> faker.address().country())
-                        .set("city", () -> faker.address().city())
-                        .set("zipcode", () -> faker.address().zipCode())
-                        .set("streetAddress", () -> faker.address().streetAddress())
-                        .build())
-                .set("secondaryAddresses", Format.toJson(faker.<Address>stream()
-                        .suppliers(faker::address)
-                        .maxLen(1)
-                        .minLen(1)
-                        .build())
-                    .set("country", Address::country)
-                    .set("city", Address::city)
-                    .set("zipcode", Address::zipCode)
-                    .set("streetAddress", Address::streetAddress)
+        final String json = Format.toJson(stream)
+            .set("primaryAddress",
+                Format.toJson()
+                    .set("country", () -> faker.address().country())
+                    .set("city", () -> faker.address().city())
+                    .set("zipcode", () -> faker.address().zipCode())
+                    .set("streetAddress", () -> faker.address().streetAddress())
                     .build())
-                .set("phones", name -> faker.stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
-                .build()
-                .generate();
+            .set("secondaryAddresses", Format.toJson(faker.<Address>stream()
+                .suppliers(faker::address)
+                .maxLen(1)
+                .minLen(1)
+                .build())
+                .set("country", Address::country)
+                .set("city", Address::city)
+                .set("zipcode", Address::zipCode)
+                .set("streetAddress", Address::streetAddress)
+                .build())
+            .set("phones", name -> faker.stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+            .build()
+            .generate();
 
         int numberOfLines = 0;
         for (int i = 0; i < json.length(); i++) {
@@ -322,9 +314,9 @@ class FakeStreamTest extends AbstractFakerTest {
     void testIterator() {
         int fakeSequenceSize = 100;
         FakeSequence<String> digits = faker
-                .stream(() -> faker.number().digit())
-                .len(fakeSequenceSize)
-                .build();
+            .stream(() -> faker.number().digit())
+            .len(fakeSequenceSize)
+            .build();
 
         int count = 0;
         for (String digit : digits) {
@@ -338,8 +330,8 @@ class FakeStreamTest extends AbstractFakerTest {
     @Test
     void testIteratorInfinite() {
         FakeSequence<String> digits = faker
-                .stream(() -> faker.number().digit())
-                .build();
+            .stream(() -> faker.number().digit())
+            .build();
 
         assertThat(digits.isInfinite()).isTrue();
 

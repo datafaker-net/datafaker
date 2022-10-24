@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-
 import net.datafaker.providers.movie.DarkSoul;
 import net.datafaker.providers.movie.Lebowski;
 import net.datafaker.providers.movie.Simpsons;

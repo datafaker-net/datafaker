@@ -11,4 +11,3 @@ class MountaineeringTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.mountaineering().mountaineer()).isNotEmpty();
     }
 }
-

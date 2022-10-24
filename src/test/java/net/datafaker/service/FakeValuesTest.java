@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
-
 class FakeValuesTest {
 
     private static final String PATH = "address";
@@ -84,7 +83,6 @@ class FakeValuesTest {
             of(new FakeValues(Locale.ENGLISH, "filepath", null), new FakeValues(Locale.ENGLISH, "filepath", "path"), false),
             of(new FakeValues(Locale.ENGLISH, "filepath", "path"), new FakeValues(Locale.ENGLISH, "filepath", "path"), true),
             of(new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), true),
-            of(new FakeValues(Locale.ENGLISH, "filepath", "path", Paths.get("tmp2")), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), false)
-        );
+            of(new FakeValues(Locale.ENGLISH, "filepath", "path", Paths.get("tmp2")), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), false));
     }
 }

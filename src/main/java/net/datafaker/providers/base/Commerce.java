@@ -35,8 +35,7 @@ public class Commerce extends AbstractProvider<BaseProviders> {
         return String.join(" ",
             resolve("commerce.product_name.adjective"),
             resolve("commerce.product_name.material"),
-            resolve("commerce.product_name.product")
-        );
+            resolve("commerce.product_name.product"));
     }
 
     public String material() {

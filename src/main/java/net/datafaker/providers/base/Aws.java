@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-
 /**
  * @since 1.3.0
  */

@@ -83,15 +83,15 @@ public class ProvidersDocsGenerator {
         try {
             final File file = new File(filePath);
 
-            Optional<CommentsCollection> commentsCollection =
-                parser.parse(file).getCommentsCollection();
+            Optional<CommentsCollection> commentsCollection = parser.parse(file).getCommentsCollection();
 
             if (!commentsCollection.isPresent()) {
                 fakersWithoutSinceTag.add(filePath);
                 return "";
             }
 
-            Optional<JavadocComment> javadocComments = commentsCollection.get().getJavadocComments()
+            Optional<JavadocComment> javadocComments = commentsCollection.get()
+                .getJavadocComments()
                 .stream()
                 .findFirst();
 

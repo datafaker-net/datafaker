@@ -25,14 +25,13 @@ class XmlTest {
             Arguments.of(new Xml.XmlNode("root", Collections.emptyList()), "<root/>"),
             Arguments.of(new Xml.XmlNode("root", "value"), "<root>value</root>"),
             Arguments.of(new Xml.XmlNode("root",
-                    map(entry("attribute1", "value1"), entry("attribute2", "value2")), "value"),
+                map(entry("attribute1", "value1"), entry("attribute2", "value2")), "value"),
                 "<root attribute1=\"value1\" attribute2=\"value2\">value</root>"),
             Arguments.of(new Xml.XmlNode("root",
-                    map(entry("attribute1", "value1"), entry("attribute2", "value2")),
-                    Collections.singletonList(new Xml.XmlNode("child", "value"))),
+                map(entry("attribute1", "value1"), entry("attribute2", "value2")),
+                Collections.singletonList(new Xml.XmlNode("child", "value"))),
                 "<root attribute1=\"value1\" attribute2=\"value2\">" + System.lineSeparator() + "    <child>value</child>" + System.lineSeparator() + "</root>"),
-            Arguments.of(new Xml.XmlNode("root", "<> value\""), "<root>&lt;&gt; value&quot;</root>")
-        );
+            Arguments.of(new Xml.XmlNode("root", "<> value\""), "<root>&lt;&gt; value&quot;</root>"));
     }
 
     @ParameterizedTest
@@ -47,14 +46,13 @@ class XmlTest {
             Arguments.of(new Xml.XmlNode("root", Collections.emptyList()), "<root/>"),
             Arguments.of(new Xml.XmlNode("root", "value"), "<root>value</root>"),
             Arguments.of(new Xml.XmlNode("root",
-                    map(entry("attribute1", "value1"), entry("attribute2", "value2")), "value"),
+                map(entry("attribute1", "value1"), entry("attribute2", "value2")), "value"),
                 "<root attribute1=\"value1\" attribute2=\"value2\">value</root>"),
             Arguments.of(new Xml.XmlNode("root",
-                    map(entry("attribute1", "value1"), entry("attribute2", "value2")),
-                    Collections.singletonList(new Xml.XmlNode("child", "value"))),
+                map(entry("attribute1", "value1"), entry("attribute2", "value2")),
+                Collections.singletonList(new Xml.XmlNode("child", "value"))),
                 "<root attribute1=\"value1\" attribute2=\"value2\"><child>value</child></root>"),
-            Arguments.of(new Xml.XmlNode("root", "<> value\""), "<root>&lt;&gt; value&quot;</root>")
-        );
+            Arguments.of(new Xml.XmlNode("root", "<> value\""), "<root>&lt;&gt; value&quot;</root>"));
     }
 
     private static Map.Entry<String, String> entry(String key, String value) {

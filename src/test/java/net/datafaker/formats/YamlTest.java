@@ -48,17 +48,16 @@ class YamlTest {
             Arguments.of(map(entry(() -> "emptyarray", () -> new Long[]{})), "emptyarray:" + System.lineSeparator()),
             Arguments.of(map(entry(() -> "emptyarray", Collections::emptyList)), "emptyarray:" + System.lineSeparator()),
             Arguments.of(map(entry(() -> "key", () -> "value"),
-                    entry(() -> "nested", () -> map(entry(() -> "nestedkey", () -> "nestedvalue")))),
+                entry(() -> "nested", () -> map(entry(() -> "nestedkey", () -> "nestedvalue")))),
                 "key: value" + System.lineSeparator() + "nested:" + System.lineSeparator() + "  nestedkey: nestedvalue" + System.lineSeparator()),
             Arguments.of(map(entry(() -> "key", () -> "value"),
-                    entry(() -> "nested",
-                        () -> map(entry(() -> "nestedkey", () -> "nestedvalue"),
-                            entry(() -> "nested2", () -> map(entry(() -> "nestedkey2", () -> "nestedvalue2")))))),
+                entry(() -> "nested",
+                    () -> map(entry(() -> "nestedkey", () -> "nestedvalue"),
+                        entry(() -> "nested2", () -> map(entry(() -> "nestedkey2", () -> "nestedvalue2")))))),
                 "key: value" + System.lineSeparator()
                     + "nested:" + System.lineSeparator() + "  nestedkey: nestedvalue" + System.lineSeparator()
                     + "  nested2:" + System.lineSeparator()
-                    + "    nestedkey2: nestedvalue2" + System.lineSeparator())
-        );
+                    + "    nestedkey2: nestedvalue2" + System.lineSeparator()));
     }
 
     private static Map.Entry<Supplier<String>, Supplier<Object>> entry(Supplier<String> key, Supplier<Object> value) {

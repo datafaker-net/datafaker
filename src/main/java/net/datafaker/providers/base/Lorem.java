@@ -51,7 +51,7 @@ public class Lorem extends AbstractProvider<BaseProviders> {
     }
 
     public String characters(int minimumLength, int maximumLength,
-                             boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
+        boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return faker.internet().password(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
 
@@ -60,7 +60,7 @@ public class Lorem extends AbstractProvider<BaseProviders> {
     }
 
     public String characters(int fixedNumberOfCharacters,
-                             boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
+        boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return faker.internet().password(fixedNumberOfCharacters, fixedNumberOfCharacters, includeUppercase, includeSpecial, includeDigit);
     }
 

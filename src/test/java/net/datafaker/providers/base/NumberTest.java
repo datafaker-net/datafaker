@@ -167,7 +167,8 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     @Test
     void numberBetweenIntIntZeroMinMax() {
         assertThat(faker.number().numberBetween(0, 0))
-            .as("Calling numberBetween with min==max yields min, with 0").isZero();
+            .as("Calling numberBetween with min==max yields min, with 0")
+            .isZero();
         assertThat(faker.number().numberBetween(2, 2))
             .as("Calling numberBetween with min==max yields min")
             .isEqualTo(2);
@@ -176,7 +177,8 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     @Test
     void numberBetweenLongLongZeroMinMax() {
         assertThat(faker.number().numberBetween(0L, 0L))
-            .as("Calling numberBetween with min==max yields min, with 0").isZero();
+            .as("Calling numberBetween with min==max yields min, with 0")
+            .isZero();
         assertThat(faker.number().numberBetween(2L, 2L))
             .as("Calling numberBetween with min==max yields min")
             .isEqualTo(2);
@@ -314,7 +316,6 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
         return (double) greaterThanThreshold.get() / (double) total.get();
     }
 
-
     /**
      * Given a number of iterations, calls <em>callable</em> 'iterations' times and collects the results,
      * then calculates the number of results that were unique and returns the percentage that where unique.
@@ -342,7 +343,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testIntNumberBetweenQuality() {
-        //test whether the fake number made by numberBetween(int min, int max)
+        // test whether the fake number made by numberBetween(int min, int max)
         // is not randomly and evenly distributed
         // (The difference between the average is less than 10%)
         Map<Integer, Integer> map = new HashMap<>();
@@ -365,7 +366,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testLongNumberBetweenQuality() {
-        //test whether the fake number made by numberBetween(long min, long max)
+        // test whether the fake number made by numberBetween(long min, long max)
         // is not randomly and evenly distributed
         // (The difference between the average is less than 10%)
         Map<Long, Integer> map = new HashMap<>();
@@ -395,7 +396,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
         Random random = new Random();
         int size = Math.abs(random.nextInt(100));
 
-        //test whether NumberBetween(int min, int max) can
+        // test whether NumberBetween(int min, int max) can
         // create all number between min and max(not included)
         // and not use crossing the border
         int minInt = Math.abs(random.nextInt());
@@ -408,7 +409,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
         }
         assertThat(ints).hasSize(Math.max(1, size));
 
-        //test whether NumberBetween(long, long) can
+        // test whether NumberBetween(long, long) can
         // create all number between min and max(not included)
         // and not use crossing the border
         long minLong = Math.abs(random.nextLong());
@@ -427,10 +428,10 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
 
         Random random = new Random();
 
-        //test whether NumberBetween(long, long) not use crossing the border
+        // test whether NumberBetween(long, long) not use crossing the border
         for (int i = 0; i <= 100; i++) {
 
-            //create long integer max and min
+            // create long integer max and min
             long size, min = 0, max = -1;
             while (max < min) {
                 size = Math.abs(random.nextLong());

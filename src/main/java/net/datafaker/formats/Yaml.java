@@ -29,7 +29,6 @@ public class Yaml {
                 value2String(value, sb, offset);
             }
 
-
             if (sb.lastIndexOf(System.lineSeparator()) != sb.length() - System.lineSeparator().length()) {
                 sb.append(System.lineSeparator());
             }

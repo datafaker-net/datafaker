@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-
 /**
  * Dungeons and Dragons is a fantasy tabletop role-playing game originally designed by Gary Gygax and Dave Arneson.
  * <p>

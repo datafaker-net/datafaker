@@ -73,8 +73,7 @@ public class Company extends AbstractProvider<BaseProviders> {
         return String.join(".",
             "www",
             FakerIDN.toASCII(domainName()),
-            domainSuffix()
-        );
+            domainSuffix());
     }
 
     private String domainName() {

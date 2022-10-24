@@ -195,8 +195,9 @@ class FakerTest extends AbstractFakerTest {
 
     @Test
     void jsonExpressionTest() {
-        assertThat(faker.expression("#{json 'person','#{json ''first_name'',''#{Name.first_name}'',''last_name'',''#{Name.last_name}''}','address','#{json ''country'',''#{Address.country}'',''city'',''#{Address.city}''}'}"))
-            .contains("\"address\": {\"country\":");
+        assertThat(faker.expression(
+            "#{json 'person','#{json ''first_name'',''#{Name.first_name}'',''last_name'',''#{Name.last_name}''}','address','#{json ''country'',''#{Address.country}'',''city'',''#{Address.city}''}'}"))
+                .contains("\"address\": {\"country\":");
 
         assertThat(
             faker.expression("#{jsona '-1','person'," +
@@ -204,7 +205,7 @@ class FakerTest extends AbstractFakerTest {
                 " '2','addesses'," +
                 "'#{json ''address''," +
                 "''#{json ''''country'''',''''#{Address.country}'''',''''city'''',''''#{Address.city}''''}''}'}"))
-            .contains("\"addesses\": [{\"address\": {\"country\": ");
+                    .contains("\"addesses\": [{\"address\": {\"country\": ");
     }
 
     @ParameterizedTest
@@ -259,7 +260,7 @@ class FakerTest extends AbstractFakerTest {
     }
 
     /*
-    Test case for issue https://github.com/datafaker-net/datafaker/issues/87
+     * Test case for issue https://github.com/datafaker-net/datafaker/issues/87
      */
     @ParameterizedTest
     @ValueSource(strings = {"#{regexify '[a-z]{5}[A-Z]{5}'}", "#{Address.city}"})
@@ -312,7 +313,7 @@ class FakerTest extends AbstractFakerTest {
             () -> localFaker.doWith(() -> {
                 throw new Exception();
             }, 123))
-            .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(RuntimeException.class);
         assertThat(localFaker.doWith(stringCallable, Locale.CANADA, 123))
             .isEqualTo(localFaker.doWith(stringCallable, Locale.CANADA, 123));
         assertThat(localFaker.doWith(stringCallable, Locale.CANADA, 987))
@@ -322,6 +323,6 @@ class FakerTest extends AbstractFakerTest {
             () -> localFaker.doWith(() -> {
                 throw new Exception();
             }, Locale.ENGLISH, 123))
-            .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(RuntimeException.class);
     }
 }

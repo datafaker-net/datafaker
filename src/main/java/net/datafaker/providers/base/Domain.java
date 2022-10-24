@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-
 import net.datafaker.service.RandomService;
 
 /**
@@ -30,8 +29,7 @@ public class Domain extends AbstractProvider<BaseProviders> {
         return String.join("",
             name,
             ".",
-            top
-        );
+            top);
     }
 
     /**
@@ -48,8 +46,7 @@ public class Domain extends AbstractProvider<BaseProviders> {
             ".",
             top,
             ".",
-            suffix
-        );
+            suffix);
     }
 
     /**
@@ -69,10 +66,8 @@ public class Domain extends AbstractProvider<BaseProviders> {
             ".",
             top,
             ".",
-            suffix
-        );
+            suffix);
     }
-
 
     /**
      * Return a random valid domain.
@@ -91,16 +86,14 @@ public class Domain extends AbstractProvider<BaseProviders> {
         String result = String.join("",
             name,
             ".",
-            top
-        );
+            top);
 
         if (hasPrefix) {
             String prefix = resolve("domain.prefix");
             result = String.join("",
                 prefix,
                 ".",
-                result
-            );
+                result);
         }
 
         if (hasSuffix) {
@@ -108,8 +101,7 @@ public class Domain extends AbstractProvider<BaseProviders> {
             result = String.join("",
                 result,
                 ".",
-                suffix
-            );
+                suffix);
         }
 
         return result;

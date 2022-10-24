@@ -243,7 +243,8 @@ public class DrivingLicenseTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void drivingLicense_WA() {
-        assertThat(faker.drivingLicense().drivingLicense("WA")).matches("(^[A-Z]{7}\\d{5}$)|(^[A-Z]{8}\\d{4}$)|(^[A-Z]{9}\\d{3}$)|(^[A-Z]{10}\\d{2}$)|(^[A-Z]{11}\\d$)|(^[A-Z]{12}$)|(^[A-Z]{7}\\d[A-Z]\\d[A-Z]\\d$)|(^[A-Z]{7}\\d{2}[A-Z]{2}\\d$)");
+        assertThat(faker.drivingLicense().drivingLicense("WA"))
+            .matches("(^[A-Z]{7}\\d{5}$)|(^[A-Z]{8}\\d{4}$)|(^[A-Z]{9}\\d{3}$)|(^[A-Z]{10}\\d{2}$)|(^[A-Z]{11}\\d$)|(^[A-Z]{12}$)|(^[A-Z]{7}\\d[A-Z]\\d[A-Z]\\d$)|(^[A-Z]{7}\\d{2}[A-Z]{2}\\d$)");
     }
 
     @RepeatedTest(100)

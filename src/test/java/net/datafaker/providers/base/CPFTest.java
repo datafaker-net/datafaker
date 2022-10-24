@@ -5,7 +5,6 @@ import org.junit.jupiter.api.RepeatedTest;
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 class CPFTest extends BaseFakerTest<BaseFaker> {
 
     /**

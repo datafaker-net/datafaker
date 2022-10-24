@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
 
     @Test
@@ -61,7 +60,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
                 if (!util.isValidNumberForRegion(proto, phoneNumberRegion)) {
                     errorCount++;
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 errorCount++;
             }
         }
@@ -143,8 +142,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(new Locale("no", "NO"), "NO"),
             Arguments.of(new Locale("da", "DK"), "DK"),
             Arguments.of(new Locale("vi", "VI"), "VI"),
-            Arguments.of(new Locale("fr", "CH"), "CH")
-        );
+            Arguments.of(new Locale("fr", "CH"), "CH"));
     }
 
     @Test

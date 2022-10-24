@@ -33,7 +33,6 @@ class DomainTest extends BaseFakerTest<BaseFaker> {
         }
     }
 
-
     @Test
     void testFullDomainNotNull() {
         String ret = faker.domain().fullDomain("example");

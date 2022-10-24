@@ -65,16 +65,19 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
 
         assertThat(faker.options().subset(longOptions.length, longOptions))
             .doesNotContainAnyElementsOf(Arrays.asList(2L, 6L))
-            .containsAnyElementsOf(Arrays.asList(longOptions)).hasSameSizeAs(longOptions);
+            .containsAnyElementsOf(Arrays.asList(longOptions))
+            .hasSameSizeAs(longOptions);
 
         assertThat(faker.options().subset(longOptions.length + 1, longOptions))
             .doesNotContainAnyElementsOf(Arrays.asList(2L, 6L))
-            .containsAnyElementsOf(Arrays.asList(longOptions)).hasSameSizeAs(longOptions);
+            .containsAnyElementsOf(Arrays.asList(longOptions))
+            .hasSameSizeAs(longOptions);
 
         String[] strOptions = new String[]{"1", "2", "3"};
         assertThat(faker.options().subset(strOptions.length + 1, strOptions))
             .doesNotContainAnyElementsOf(Arrays.asList("q", "w"))
-            .containsAnyElementsOf(Arrays.asList(strOptions)).hasSameSizeAs(strOptions);
+            .containsAnyElementsOf(Arrays.asList(strOptions))
+            .hasSameSizeAs(strOptions);
 
         assertThat(faker.options().subset(1, strOptions))
             .doesNotContainAnyElementsOf(Arrays.asList("q", "w"))

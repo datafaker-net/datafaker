@@ -41,7 +41,6 @@ class DiseaseTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.disease().dermatolory()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
-
     @Test
     void testInternalDiseaseWith10000Times() {
         boolean isExist = false;

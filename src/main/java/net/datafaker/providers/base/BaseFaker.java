@@ -154,7 +154,6 @@ public class BaseFaker implements BaseProviders {
         }
     }
 
-
     /**
      * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive.
      * <p>

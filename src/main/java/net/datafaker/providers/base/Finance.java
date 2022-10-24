@@ -27,8 +27,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
         return resolve("finance.stock_market");
     }
 
-    private static final Map<String, String> countryCodeToBasicBankAccountNumberPattern =
-        createCountryCodeToBasicBankAccountNumberPatternMap();
+    private static final Map<String, String> countryCodeToBasicBankAccountNumberPattern = createCountryCodeToBasicBankAccountNumberPatternMap();
 
     public String creditCard(CreditCardType creditCardType) {
         final String key = String.format("finance.credit_card.%s", creditCardType.toString().toLowerCase(Locale.ROOT));

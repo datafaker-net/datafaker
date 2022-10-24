@@ -20,7 +20,6 @@ public class FakerContext {
     private Locale locale;
     private RandomService randomService;
 
-
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
      * 'en_US' would resolve in the following order:

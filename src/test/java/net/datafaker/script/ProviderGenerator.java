@@ -48,7 +48,6 @@ class ProviderGenerator {
 
         Set<String> strings = subject.keySet();
 
-
         createCreator(file, key, strings);
         createTest(file, key, strings);
 

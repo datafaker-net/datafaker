@@ -106,7 +106,8 @@ public class FakeValuesService {
         if (o instanceof ArrayList)
             valuesArray = (ArrayList<?>) o;
         return valuesArray == null || valuesArray.isEmpty()
-            ? null : valuesArray.get(context.getRandomService().nextInt(valuesArray.size()));
+            ? null
+            : valuesArray.get(context.getRandomService().nextInt(valuesArray.size()));
     }
 
     /**
@@ -404,7 +405,8 @@ public class FakeValuesService {
     public String fileExpression(Path path, BaseFaker faker, FakerContext context) {
         try {
             return Files.readAllLines(path)
-                .stream().map(t -> expression(t, faker, context))
+                .stream()
+                .map(t -> expression(t, faker, context))
                 .collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -499,9 +501,11 @@ public class FakeValuesService {
             }
             String expr = expressions.get(i);
             int j = 0;
-            while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
+            while (j < expr.length() && !Character.isWhitespace(expr.charAt(j)))
+                j++;
             String directive = expr.substring(0, j);
-            while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
+            while (j < expr.length() && Character.isWhitespace(expr.charAt(j)))
+                j++;
             final String arguments = j == expr.length() ? "" : expr.substring(j);
             final String[] args = splitArguments(arguments);
 
@@ -609,7 +613,7 @@ public class FakeValuesService {
         if (!dotDirective) {
             Supplier<Object> supplier = resolveFromMethodOn(current, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-                //expression2function.put(expression, supplier);
+                // expression2function.put(expression, supplier);
                 return resolved;
             }
         }
@@ -631,7 +635,7 @@ public class FakeValuesService {
         if (!dotDirective && root != null && (current == null || root.getClass() != current.getClass())) {
             supplier = resolveFromMethodOn(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
-                //       expression2function.put(expression, supplier);
+                // expression2function.put(expression, supplier);
                 return resolved;
             }
         }
@@ -645,8 +649,8 @@ public class FakeValuesService {
             }
         }
 
-        // last ditch effort.  Due to Ruby's dynamic nature, something like 'Address.street_title' will resolve
-        // because 'street_title' is a dynamic method on the Address object.  We can't do this in Java so we go
+        // last ditch effort. Due to Ruby's dynamic nature, something like 'Address.street_title' will resolve
+        // because 'street_title' is a dynamic method on the Address object. We can't do this in Java so we go
         // thru the normal resolution above, but if we will can't resolve it, we once again do a 'safeFetch' as we
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
@@ -657,7 +661,6 @@ public class FakeValuesService {
 
         return resolved;
     }
-
 
     /**
      * @param expression input expression
@@ -717,7 +720,7 @@ public class FakeValuesService {
                     sb.append(Character.toLowerCase(c));
                     cnt--;
                 } else {
-                  sb.append(c);
+                    sb.append(c);
                 }
             } else {
                 sb.append(expression.substring(i));
@@ -728,7 +731,6 @@ public class FakeValuesService {
         name2yaml.put(expression, result);
         return result;
     }
-
 
     /**
      * Given a directive like 'firstName', attempts to resolve it to a method.  For example if obj is an instance of
@@ -790,11 +792,10 @@ public class FakeValuesService {
 
     private MethodAndCoercedArgs retrieveMethodAccessor(Object object, String methodName, String[] args) {
         Class<?> clazz = object.getClass();
-        MethodAndCoercedArgs accessor =
-            mapOfMethodAndCoercedArgs
-                .getOrDefault(clazz, Collections.emptyMap())
-                .getOrDefault(methodName, Collections.emptyMap())
-                .get(args);
+        MethodAndCoercedArgs accessor = mapOfMethodAndCoercedArgs
+            .getOrDefault(clazz, Collections.emptyMap())
+            .getOrDefault(methodName, Collections.emptyMap())
+            .get(args);
         if (accessor == null) {
             accessor = accessor(clazz, methodName, args);
             mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
@@ -812,7 +813,6 @@ public class FakeValuesService {
             return null;
         }
     }
-
 
     /**
      * Find an accessor by name ignoring case.

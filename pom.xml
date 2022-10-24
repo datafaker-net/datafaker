@@ -201,6 +201,12 @@
                 <version>${spotless-maven-plugin.version}</version>
                 <configuration>
                     <java>
+                        <eclipse>
+                            <!-- Avro uses Sun's java code style conventions with 2 spaces, this is a modified version of
+                                 the eclipse formatter -->
+                            <file>${basedir}/src/main/config/eclipse-java-formatter.xml</file>
+                            <version>4.10.0</version>
+                        </eclipse>
                         <removeUnusedImports />
                     </java>
                 </configuration>

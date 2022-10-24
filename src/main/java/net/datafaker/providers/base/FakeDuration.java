@@ -18,7 +18,7 @@ public class FakeDuration extends AbstractProvider<BaseProviders> {
      * @return a random long between 0 and max inclusive
      */
     private long getNumberBetween(long max) {
-        return this.faker.random().nextLong(max + 1);  // nextLong max is exclusive
+        return this.faker.random().nextLong(max + 1); // nextLong max is exclusive
     }
 
     /**

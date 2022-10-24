@@ -12,31 +12,31 @@ import java.util.List;
 public class EsMXIdNumber implements IdNumbers {
 
     private static final String[] CHA = new String[]{
-        "HEFA560427MVZRRL04",
-        "DKEM193827HDQWEF05",
-        "KAKS142444HNSSFAW6",
-        "KSDF414424HNSDFAW6",
-        "AKDF414424MSDSFAW6",
-        "ADKF144424MNSDFCD6",
-        "MYDF144424MDNFAW37",
-        "AKKS414424MDAFDFW6",
-        "WKDF144244HSDCNFA2",
-        "AKSK414244HSDATT56",
-        "QWDF414424HNSDVAW4",
-        "AKDF144424MDEFVFA1"
+            "HEFA560427MVZRRL04",
+            "DKEM193827HDQWEF05",
+            "KAKS142444HNSSFAW6",
+            "KSDF414424HNSDFAW6",
+            "AKDF414424MSDSFAW6",
+            "ADKF144424MNSDFCD6",
+            "MYDF144424MDNFAW37",
+            "AKKS414424MDAFDFW6",
+            "WKDF144244HSDCNFA2",
+            "AKSK414244HSDATT56",
+            "QWDF414424HNSDVAW4",
+            "AKDF144424MDEFVFA1"
     };
     private static final String[] CONSONANT = {"B", "C", "C", "D", "F",
-        "G", "H", "J", "K", "L", "L", "M", "N", "N",
-        "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"
+            "G", "H", "J", "K", "L", "L", "M", "N", "N",
+            "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"
     };
 
     private static final String[] VOWEL = {"A", "E", "I", "O", "U"};
 
     private static final String[] STATES = {"AG", "BC", "BS", "CM", "CS",
-        "CH", "CO", "CL", "DF", "DG", "GT", "GR",
-        "HG", "JA", "EM", "MI", "MO", "NA", "NL",
-        "OA", "PU", "QT", "QR", "SL", "SI", "SO",
-        "TB", "TM", "TL", "VE", "YU", "ZA", "NE",
+            "CH", "CO", "CL", "DF", "DG", "GT", "GR",
+            "HG", "JA", "EM", "MI", "MO", "NA", "NL",
+            "OA", "PU", "QT", "QR", "SL", "SI", "SO",
+            "TB", "TM", "TL", "VE", "YU", "ZA", "NE",
     };
 
     /**
@@ -60,8 +60,7 @@ public class EsMXIdNumber implements IdNumbers {
         String v3 = faker.options().option(VOWEL);
         String v4 = faker.options().option(VOWEL);
 
-        String ranNum = (Integer.parseInt(birthDay.substring(0, 4)) <= 1999) ?
-            "0" : faker.options().option(CONSONANT);
+        String ranNum = (Integer.parseInt(birthDay.substring(0, 4)) <= 1999) ? "0" : faker.options().option(CONSONANT);
 
         String ssn = c1 + v1 + c2 + c3 + birthDay.substring(2, 8) + sex + state + v2 + v3 + v4 + ranNum;
         ssn = ssn + getChecksum(ssn);
@@ -92,7 +91,6 @@ public class EsMXIdNumber implements IdNumbers {
         return String.valueOf(year * 10000 + month * 100 + day);
     }
 
-
     /**
      * Gets a valid day according to year and month.
      *
@@ -108,10 +106,12 @@ public class EsMXIdNumber implements IdNumbers {
         if (month == 2) {
             if (year % 4 == 0) {
                 return f.random().nextInt(1, 29);
-            } else return f.random().nextInt(1, 28);
+            } else
+                return f.random().nextInt(1, 28);
         } else if (bigMonths.contains(month)) {
             return f.random().nextInt(1, 31);
-        } else return f.random().nextInt(1, 30);
+        } else
+            return f.random().nextInt(1, 30);
 
     }
 
@@ -128,7 +128,8 @@ public class EsMXIdNumber implements IdNumbers {
             int number;
             if (str.charAt(i) < '9')
                 number = str.charAt(i) - '0';
-            else number = str.charAt(i) - 'A' + 10;
+            else
+                number = str.charAt(i) - 'A' + 10;
             sum += number * v--;
         }
         sum = Math.abs((sum % 10) - 10);

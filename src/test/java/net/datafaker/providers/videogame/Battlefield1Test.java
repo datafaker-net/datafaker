@@ -4,7 +4,6 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 class Battlefield1Test extends VideoGameFakerTest {
 
     @RepeatedTest(50)

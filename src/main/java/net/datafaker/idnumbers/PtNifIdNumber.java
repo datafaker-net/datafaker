@@ -14,8 +14,7 @@ import net.datafaker.providers.base.BaseProviders;
 public class PtNifIdNumber implements IdNumbers {
 
     private static final Character[] VALID_FIRST_DIGITS = {'1', '2', '3', '5', '6', '8'};
-    private static final String[] VALID_FIRST_DOUBLE_DIGITS =
-        {"45", "70", "71", "72", "74", "75", "77", "79", "90", "91", "98", "99"};
+    private static final String[] VALID_FIRST_DOUBLE_DIGITS = {"45", "70", "71", "72", "74", "75", "77", "79", "90", "91", "98", "99"};
 
     public String getInvalid(final BaseProviders faker) {
         String digits = faker.number().digits(8);

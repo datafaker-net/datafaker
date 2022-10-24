@@ -120,7 +120,6 @@ public final class IdNumberGeneratorPtBrUtil {
         return cpfUnmask.equals((cpfPartial + d1) + d2);
     }
 
-
     public static int calculateWeight(final String num, final int weight) {
         int sum = 0;
         int weightAux = weight;

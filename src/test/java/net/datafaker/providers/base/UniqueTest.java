@@ -20,8 +20,7 @@ class UniqueTest {
         "secondValue",
         "thirdValue",
         "fourthValue",
-        "fifthValue"
-    );
+        "fifthValue");
 
     @Test
     void fetchFromYaml_shouldReturnValuesInRandomOrderUsingRandomService() {

@@ -20,7 +20,8 @@ class PasswordTest extends BaseFakerTest<BaseFaker> {
             .withMinLength(ruCnt + specSmbCnt)
             .withMaxLength(Math.max(ruCnt + specSmbCnt, 10))
             .with(ruLowerCase, ruCnt)
-            .with(customSpecialSymbols, specSmbCnt).build(faker);
+            .with(customSpecialSymbols, specSmbCnt)
+            .build(faker);
         for (int i = 0; i < 1000; i++) {
             final String pass = faker.password().password(config);
             assertThat(pass).matches(s -> {
@@ -43,16 +44,16 @@ class PasswordTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void exceptionIfLengthIsShorterThanNumberOfRequiredSymbols() {
-        assertThatThrownBy(() ->
-                faker.password().password(Password.PasswordSymbolsBuilder.builder()
-                    .withMinLength(1)
-                    .withMaxLength(1)
-                    .with(EN_LOWERCASE, 1)
-                    .with(EN_UPPERCASE, 1)
-                    .with(DIGITS, 1)
-                    .throwIfLengthSmall(true)
-                    .build(faker)))
-            .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> faker.password()
+            .password(Password.PasswordSymbolsBuilder.builder()
+                .withMinLength(1)
+                .withMaxLength(1)
+                .with(EN_LOWERCASE, 1)
+                .with(EN_UPPERCASE, 1)
+                .with(DIGITS, 1)
+                .throwIfLengthSmall(true)
+                .build(faker)))
+                    .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -63,17 +64,18 @@ class PasswordTest extends BaseFakerTest<BaseFaker> {
             .withMaxLength(10)
             .with(EN_LOWERCASE, 1)
             .with(EN_UPPERCASE, 1)
-            .with(DIGITS, 1).build(faker);
+            .with(DIGITS, 1)
+            .build(faker);
         while (count++ < 1000) {
             String password = faker.password().password(config);
             assertThat(password).is(new Condition<>(pw -> {
-                    for (int i = 0; i < pw.length(); i++) {
-                        if (Character.isLowerCase(pw.charAt(i))) {
-                            return true;
-                        }
+                for (int i = 0; i < pw.length(); i++) {
+                    if (Character.isLowerCase(pw.charAt(i))) {
+                        return true;
                     }
-                    return false;
-                }, "contains lower case"))
+                }
+                return false;
+            }, "contains lower case"))
                 .is(new Condition<>(pw -> {
                     for (int i = 0; i < pw.length(); i++) {
                         if (Character.isUpperCase(pw.charAt(i))) {

@@ -36,7 +36,6 @@ public class BloodType extends AbstractProvider<BaseProviders> {
         return resolve("blood_type.p_types");
     }
 
-
     /**
      * Returns a blood group such as O−, O+, A-, A+, B-, B+, AB-, AB+
      *

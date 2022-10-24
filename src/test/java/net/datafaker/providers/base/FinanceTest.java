@@ -34,7 +34,6 @@ class FinanceTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.finance().stockMarket()).matches("[A-Z.-]+");
     }
 
-
     @Test
     void bic() {
         assertThat(faker.finance().bic()).matches("([A-Z]){4}([A-Z]){2}([0-9A-Z]){2}([0-9A-Z]{3})?");

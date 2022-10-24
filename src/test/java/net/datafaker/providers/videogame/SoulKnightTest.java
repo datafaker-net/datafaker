@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class SoulKnightTest extends VideoGameFakerTest {
 
     private static final String SOUL_KNIGHT_VALUE_REGEX = "[a-zA-Z\\d\\-. /():+'’]+";

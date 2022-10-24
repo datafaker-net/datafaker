@@ -38,5 +38,4 @@ public class Mbti extends AbstractProvider<BaseProviders> {
         return resolve("mbti.".concat(choice).concat(".weakness"));
     }
 
-
 }

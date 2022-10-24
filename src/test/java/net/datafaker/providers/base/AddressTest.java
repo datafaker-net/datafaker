@@ -34,13 +34,11 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         return true;
     }, "Is a number");
 
-    public static final BiFunction<String, String, Pattern> BI_LAT_LON_REGEX =
-        (decimalDelimiter, delimiter) ->
-            Pattern.compile("-?\\d{1,2}" + decimalDelimiter + "\\d{5,10}" + delimiter + "-?\\d{1,3}" + decimalDelimiter + "\\d{5,10}+");
+    public static final BiFunction<String, String, Pattern> BI_LAT_LON_REGEX = (decimalDelimiter, delimiter) -> Pattern
+        .compile("-?\\d{1,2}" + decimalDelimiter + "\\d{5,10}" + delimiter + "-?\\d{1,3}" + decimalDelimiter + "\\d{5,10}+");
 
-    public static final BiFunction<String, String, Pattern> BI_LON_LAT_REGEX =
-        (decimalDelimiter, delimiter) ->
-            Pattern.compile("-?\\d{1,3}" + decimalDelimiter + "\\d{5,10}+" + delimiter + "-?\\d{1,2}" + decimalDelimiter + "\\d{5,10}");
+    public static final BiFunction<String, String, Pattern> BI_LON_LAT_REGEX = (decimalDelimiter, delimiter) -> Pattern
+        .compile("-?\\d{1,3}" + decimalDelimiter + "\\d{5,10}+" + delimiter + "-?\\d{1,2}" + decimalDelimiter + "\\d{5,10}");
 
     private final static Function<Locale, String> ESCAPED_DECIMAL_SEPARATOR = t -> "\\" + new DecimalFormatSymbols(t).getDecimalSeparator();
 
@@ -208,7 +206,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testZipPlus4IsTenChars() {
         final BaseFaker localFaker = new BaseFaker(new Locale("en", "US"));
-        assertThat(localFaker.address().zipCodePlus4()).hasSize(10);  // includes dash
+        assertThat(localFaker.address().zipCodePlus4()).hasSize(10); // includes dash
     }
 
     @Test

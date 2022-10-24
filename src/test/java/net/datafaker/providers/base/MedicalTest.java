@@ -42,7 +42,8 @@ class MedicalTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void testDiagnosisCodeAU() {
-        // will use icd-10-am - https://ace.ihpa.gov.au/Downloads/Current/ICD-10-AM-ACHI-ACS%2011th%20Edition/Education/11th%20Edition%20PDF%20files/Coding-Exercise-Workbook-Eleventh-Edition%20V2-15%20Jun%202019.pdf
+        // will use icd-10-am -
+        // https://ace.ihpa.gov.au/Downloads/Current/ICD-10-AM-ACHI-ACS%2011th%20Edition/Education/11th%20Edition%20PDF%20files/Coding-Exercise-Workbook-Eleventh-Edition%20V2-15%20Jun%202019.pdf
         BaseFaker faker = new BaseFaker(new Locale("en", "au"));
 
         String actual = faker.medical().diagnosisCode();

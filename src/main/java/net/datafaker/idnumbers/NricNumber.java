@@ -12,7 +12,9 @@ import java.util.Map;
  */
 public class NricNumber implements IdNumbers {
 
-    public enum Type {SINGAPOREAN_TWENTIETH_CENTURY, FOREIGNER_TWENTIETH_CENTURY, SINGAPOREAN_TWENTY_FIRST_CENTURY, FOREIGNER_TWENTY_FIRST_CENTURY}
+    public enum Type {
+        SINGAPOREAN_TWENTIETH_CENTURY, FOREIGNER_TWENTIETH_CENTURY, SINGAPOREAN_TWENTY_FIRST_CENTURY, FOREIGNER_TWENTY_FIRST_CENTURY
+    }
 
     private static class NricType {
         private final char firstLetter;

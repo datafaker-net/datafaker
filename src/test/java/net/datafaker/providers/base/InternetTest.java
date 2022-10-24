@@ -248,7 +248,6 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         String oneNineTwo = "^192\\.168\\..+";
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..+";
 
-
         for (int i = 0; i < 1000; i++) {
             try {
                 String addr = faker.internet().getPrivateIpV4Address().getHostAddress();
@@ -257,8 +256,7 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
                     new Condition<>(s -> s.matches(oneTwoSeven), "oneTwoSeven"),
                     new Condition<>(s -> s.matches(oneSixNine), "oneSixNine"),
                     new Condition<>(s -> s.matches(oneNineTwo), "oneNineTwo"),
-                    new Condition<>(s -> s.matches(oneSevenTwo), "oneSevenTwo")
-                ));
+                    new Condition<>(s -> s.matches(oneSevenTwo), "oneSevenTwo")));
             } catch (UnknownHostException e) {
                 fail("Failed with", e);
             }
@@ -369,7 +367,7 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
             assertThat(faker.internet().userAgent(agent)).isNotEmpty();
         }
 
-        //Test faker.internet().userAgentAny() for random user_agent retrieval.
+        // Test faker.internet().userAgentAny() for random user_agent retrieval.
         assertThat(faker.internet().userAgent()).isNotEmpty();
     }
 
@@ -380,7 +378,7 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
             assertThat(faker.internet().botUserAgent(agent)).isNotEmpty();
         }
 
-        //Test faker.internet().userAgentAny() for random user_agent retrieval.
+        // Test faker.internet().userAgentAny() for random user_agent retrieval.
         assertThat(faker.internet().botUserAgentAny()).isNotEmpty();
     }
 

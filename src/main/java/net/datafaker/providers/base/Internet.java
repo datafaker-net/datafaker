@@ -44,8 +44,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return String.join("", stripAccents(localPart), "@", domain);
     }
 
-    public static final Pattern DIACRITICS_AND_FRIENDS
-        = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
+    public static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
     private String stripAccents(String input) {
         // strip accents from input
@@ -73,11 +72,9 @@ public class Internet extends AbstractProvider<BaseProviders> {
             FakerIDN.toASCII(
                 SINGLE_QUOTE.matcher(faker.name().firstName().toLowerCase()).replaceAll("") +
                     "-" +
-                    domainWord()
-            ),
+                    domainWord()),
             ".",
-            domainSuffix()
-        );
+            domainSuffix());
     }
 
     public String image() {
@@ -122,9 +119,8 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        Password.PasswordSymbolsBuilder builder =
-            Password.PasswordSymbolsBuilder.builder()
-                .with(Password.EN_LOWERCASE);
+        Password.PasswordSymbolsBuilder builder = Password.PasswordSymbolsBuilder.builder()
+            .with(Password.EN_LOWERCASE);
         if (includeUppercase) builder = builder.with(Password.EN_UPPERCASE, 1);
         if (includeSpecial) builder = builder.with(Password.DEFAULT_SPECIAL, 1);
         if (includeDigit) builder = builder.with(Password.DIGITS, 1);
@@ -195,10 +191,10 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public InetAddress getIpV4Address() throws UnknownHostException {
         return Inet4Address.getByAddress(new byte[]{
-            (byte) (faker.random().nextInt(254) + 2),
-            (byte) (faker.random().nextInt(254) + 2),
-            (byte) (faker.random().nextInt(254) + 2),
-            (byte) (faker.random().nextInt(254) + 2)});
+                (byte) (faker.random().nextInt(254) + 2),
+                (byte) (faker.random().nextInt(254) + 2),
+                (byte) (faker.random().nextInt(254) + 2),
+                (byte) (faker.random().nextInt(254) + 2)});
     }
 
     /**
@@ -401,7 +397,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         OPERA("opera"),
         SAFARI("safari");
 
-        //Browser's name in corresponding yaml (internet.yml) file.
+        // Browser's name in corresponding yaml (internet.yml) file.
         private final String browserName;
 
         UserAgent(String browserName) {
@@ -442,7 +438,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         BAIDUSPIDER("baiduspider"),
         YANDEXBOT("yandexbot");
 
-        //Browser's name in corresponding yaml (internet.yml) file.
+        // Browser's name in corresponding yaml (internet.yml) file.
         private final String browserName;
 
         BotUserAgent(String browserName) {

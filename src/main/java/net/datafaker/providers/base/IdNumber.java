@@ -109,7 +109,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
         return idNumber.getInvalid(faker);
     }
 
-
     /**
      * Specified as #{IDNumber.valid_es_mx_ssn} in es-MX.yml
      *

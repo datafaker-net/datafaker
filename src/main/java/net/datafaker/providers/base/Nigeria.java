@@ -32,6 +32,3 @@ public class Nigeria extends AbstractProvider<BaseProviders> {
         return resolve(KEY + ".celebrities");
     }
 }
-
-
-

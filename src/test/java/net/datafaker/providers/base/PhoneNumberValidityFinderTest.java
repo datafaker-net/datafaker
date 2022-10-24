@@ -87,7 +87,8 @@ class PhoneNumberValidityFinderTest extends AbstractFakerTest {
         }
 
         // sort by error count
-        errorCounts.entrySet().stream()
+        errorCounts.entrySet()
+            .stream()
             .filter(e -> e.getValue() > 35)
             .sorted(Map.Entry.comparingByValue())
             .forEach(System.out::println);

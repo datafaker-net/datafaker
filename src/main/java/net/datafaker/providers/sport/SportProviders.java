@@ -6,7 +6,7 @@ public interface SportProviders extends ProviderRegistration {
     default Basketball basketball() {
         return getProvider(Basketball.class, Basketball::new);
     }
-    
+
     default Cricket cricket() {
         return getProvider(Cricket.class, Cricket::new);
     }

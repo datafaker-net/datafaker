@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -37,7 +36,7 @@ class LocalityExample {
         System.out.println("  Phone Number: " + phoneNumber);
 
         // EXAMPLE: ROTATE THROUGH ALL SUPPORTED LOCALES TO GENERATE USER DATA
-        //   LOCALES PICKED AT RANDOM (SELECTED WITHOUT REPLACEMENT)
+        // LOCALES PICKED AT RANDOM (SELECTED WITHOUT REPLACEMENT)
         System.out.println("EXAMPLE: ROTATE THROUGH ALL LOCALES AT RANDOM (WITHOUT REPLACEMENT)");
         BaseFaker currentFaker;
 

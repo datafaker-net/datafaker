@@ -1,6 +1,5 @@
 package net.datafaker.providers.videogame;
 
-
 import net.datafaker.providers.base.AbstractProvider;
 
 /**

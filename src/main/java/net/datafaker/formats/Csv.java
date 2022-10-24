@@ -194,7 +194,6 @@ public class Csv<T> {
         }
     }
 
-
     @SuppressWarnings("unchecked")
     public static abstract class CsvBuilder {
         private String separator = DEFAULT_SEPARATOR;

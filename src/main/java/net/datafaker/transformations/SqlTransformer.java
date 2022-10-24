@@ -55,7 +55,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public CharSequence apply(IN input, Schema<IN, ?> schema, int rowId) {
-        //noinspection unchecked
+        // noinspection unchecked
         Field<?, ? extends CharSequence>[] fields = (Field<?, ? extends CharSequence>[]) schema.getFields();
         if (fields.length == 0) {
             return "";
@@ -74,7 +74,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             }
         } else {
             sb.append(keywordUpperCase ? INSERT_INTO_UP : INSERT_INTO_LW)
-                .append(appendTableInfo(fields)).append(keywordUpperCase ? VALUES_UP : VALUES_LW)
+                .append(appendTableInfo(fields))
+                .append(keywordUpperCase ? VALUES_UP : VALUES_LW)
                 .append(addValues(input, fields));
         }
 
@@ -85,7 +86,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < fields.length; i++) {
             if (fields[i] instanceof SimpleField) {
-                //noinspection unchecked
+                // noinspection unchecked
                 Object value = ((SimpleField<Object, ? extends CharSequence>) fields[i]).transform(input);
                 Class<?> clazz = value == null ? null : value.getClass();
                 if (value == null
@@ -128,7 +129,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             }
             for (int j = 0; j < fieldName.length(); j++) {
                 if (openSqlIdentifier == fieldName.charAt(j)
-                  || closeSqlIdentifier == fieldName.charAt(j)) {
+                    || closeSqlIdentifier == fieldName.charAt(j)) {
                     result.append(openSqlIdentifier);
                 }
                 result.append(fieldName.charAt(j));

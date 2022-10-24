@@ -54,7 +54,7 @@ public enum SqlDialect {
     private static final String DEFAULT_BEFORE_EACH_BATCH_PREFIX = "       ";
 
     SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchFirstRow,
-               TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchOtherRows, Function<Boolean, String> lastBatchRow) {
+        TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchOtherRows, Function<Boolean, String> lastBatchRow) {
         this.sqlQuoteIdentifier = sqlQuoteIdentifier;
         this.unquotedCasing = casing;
         this.batchFirstRow = batchFirstRow;
@@ -63,7 +63,7 @@ public enum SqlDialect {
     }
 
     SqlDialect(String sqlQuoteIdentifier, TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchFirstRow,
-               TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchOtherRows, Function<Boolean, String> lastBatchRow) {
+        TriFunction<Supplier<String>, Supplier<String>, Boolean, String> batchOtherRows, Function<Boolean, String> lastBatchRow) {
         this(sqlQuoteIdentifier, DEFAULT_CASING, batchFirstRow, batchOtherRows, lastBatchRow);
     }
 
@@ -88,17 +88,20 @@ public enum SqlDialect {
 
     public static String getFirstRow(SqlDialect dialect, Supplier<String> input, Supplier<String> input2, boolean withKeywordUppercase) {
         return dialect == null
-            ? DEFAULT_FIRST_ROW.apply(input, input2, withKeywordUppercase) : dialect.batchFirstRow.apply(input, input2, withKeywordUppercase);
+            ? DEFAULT_FIRST_ROW.apply(input, input2, withKeywordUppercase)
+            : dialect.batchFirstRow.apply(input, input2, withKeywordUppercase);
     }
 
     public static String getOtherRow(SqlDialect dialect, Supplier<String> input, Supplier<String> input2, boolean withKeywordUppercase) {
         return dialect == null
-            ? DEFAULT_OTHER_ROWS.apply(input, input2, withKeywordUppercase) : dialect.batchOtherRows.apply(input, input2, withKeywordUppercase);
+            ? DEFAULT_OTHER_ROWS.apply(input, input2, withKeywordUppercase)
+            : dialect.batchOtherRows.apply(input, input2, withKeywordUppercase);
     }
 
     public static String getLastRowSuffix(SqlDialect dialect, Boolean withKeywordUppercase) {
         return dialect == null
-            ? "" : dialect.lastBatchRow.apply(withKeywordUppercase);
+            ? ""
+            : dialect.lastBatchRow.apply(withKeywordUppercase);
     }
 
     static class AuxiliaryConstants {
@@ -109,7 +112,6 @@ public enum SqlDialect {
             values = aBoolean ? values.toUpperCase(Locale.ROOT) : values.toLowerCase(Locale.ROOT);
             return insertAll + supplier.get() + values + supplier2.get();
         };
-        static final TriFunction<Supplier<String>, Supplier<String>, Boolean, String> DEFAULT_OTHER_ROWS =
-            (supplier, supplier2, aBoolean) -> DEFAULT_BEFORE_EACH_BATCH_PREFIX + supplier2.get();
+        static final TriFunction<Supplier<String>, Supplier<String>, Boolean, String> DEFAULT_OTHER_ROWS = (supplier, supplier2, aBoolean) -> DEFAULT_BEFORE_EACH_BATCH_PREFIX + supplier2.get();
     }
 }

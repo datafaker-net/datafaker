@@ -1,6 +1,5 @@
 package net.datafaker.providers.food;
 
-
 import net.datafaker.providers.base.AbstractProvider;
 
 import java.util.Locale;
