@@ -192,9 +192,9 @@ class SqlTest {
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformer =
             new SqlTransformer.SqlTransformerBuilder<String>()
-            .batch()
-            .dialect(SqlDialect.POSTGRES)
-            .build();
+                .batch()
+                .dialect(SqlDialect.POSTGRES)
+                .build();
         final int limit = 5;
         String output = transformer.generate(schema, limit);
         assertThat(output.split("\\n")).hasSize(limit + 1);
@@ -208,7 +208,7 @@ class SqlTest {
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformer =
             new SqlTransformer.SqlTransformerBuilder<String>()
-            .keywordLowerCase()
+                .keywordLowerCase()
                 .dialect(SqlDialect.POSTGRES).build();
         final int limit = 1;
         assertThat(transformer.generate(schema, limit))
@@ -226,7 +226,7 @@ class SqlTest {
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformerUpper =
             new SqlTransformer.SqlTransformerBuilder<String>()
-            .batch()
+                .batch()
                 .dialect(SqlDialect.ORACLE).build();
         final int limit = 5;
         String output = transformerUpper.generate(schema, limit);
@@ -238,8 +238,8 @@ class SqlTest {
             .contains("SELECT 1 FROM dual;");
         SqlTransformer<String> transformerLower =
             new SqlTransformer.SqlTransformerBuilder<String>()
-            .batch()
-            .keywordLowerCase()
+                .batch()
+                .keywordLowerCase()
                 .dialect(SqlDialect.ORACLE).build();
         output = transformerLower.generate(schema, limit);
         assertThat(output.split("\\n")).hasSize(limit + 2);
