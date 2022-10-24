@@ -283,6 +283,7 @@ Providers
 * Commerce
 * Community
 * Company
+* Compass
 * Computer
 * Country
 * Credit Card Type
