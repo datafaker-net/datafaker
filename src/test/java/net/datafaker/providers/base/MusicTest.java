@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,8 +22,8 @@ class MusicTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.music().chord()).matches("([A-Z])+([b#])?+(-?[a-zA-Z0-9]{0,4})");
     }
 
-    @Test
+    @RepeatedTest(100)
     void genre() {
-        assertThat(faker.music().genre()).matches("[[ -]?\\w+]+");
+        assertThat(faker.music().genre()).matches("[ -?\\w+]+");
     }
 }

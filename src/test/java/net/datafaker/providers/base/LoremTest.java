@@ -28,13 +28,13 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testCharacter() {
-        assertThat(String.valueOf(faker.lorem().character())).matches("[a-z\\d]{1}");
+        assertThat(String.valueOf(faker.lorem().character())).matches("[a-z\\d]");
     }
 
     @Test
     void testCharacterIncludeUpperCase() {
-        assertThat(String.valueOf(faker.lorem().character(false))).matches("[a-z\\d]{1}");
-        assertThat(String.valueOf(faker.lorem().character(true))).matches("[a-zA-Z\\d]{1}");
+        assertThat(String.valueOf(faker.lorem().character(false))).matches("[a-z\\d]");
+        assertThat(String.valueOf(faker.lorem().character(true))).matches("[a-zA-Z\\d]");
     }
 
     @Test
