@@ -1,6 +1,7 @@
 package net.datafaker.formats;
 
 import net.datafaker.Faker;
+import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SqlDialect;
 import net.datafaker.transformations.SqlTransformer;
@@ -9,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Random;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.field;
@@ -16,6 +18,46 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 class SqlTest {
+    @Test
+    void testGenerateFromSchemaWithLimitSeparatedStatements() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Object, ?> schema = Schema.of(
+            field("Text", () -> faker.name().firstName()),
+            field("Bool", () -> faker.bool().bool())
+        );
+
+        SqlTransformer<Object> transformer = new SqlTransformer.SqlTransformerBuilder<>().build();
+        String sql = transformer.generate(schema, 2);
+
+        String expected =
+            "INSERT INTO \"MyTable\" (\"Text\", \"Bool\") VALUES ('Willis', false);" +
+            System.lineSeparator() +
+            "INSERT INTO \"MyTable\" (\"Text\", \"Bool\") VALUES ('Carlena', true);";
+
+        assertThat(sql).isEqualTo(expected);
+    }
+
+    @Test
+    void testGenerateFromSchemaWithLimitBatchModeStatements() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Object, ?> schema = Schema.of(
+            field("Text", () -> faker.name().firstName()),
+            field("Bool", () -> faker.bool().bool())
+        );
+
+        SqlTransformer<Object> transformer = new SqlTransformer.SqlTransformerBuilder<>()
+            .batch(true)
+            .build();
+        String sql = transformer.generate(schema, 2);
+
+        String expected =
+            "INSERT INTO \"MyTable\" (\"Text\", \"Bool\")\n" +
+            "VALUES ('Willis', false),\n" +
+            "       ('Carlena', true);";
+
+        assertThat(sql).isEqualTo(expected);
+    }
+
     @ParameterizedTest
     @MethodSource("generateTestSchema")
     void simpleSqlTestForSqlTransformer(Schema<String, String> schema, String tableSchemaName, String expected) {
