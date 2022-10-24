@@ -17,7 +17,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
   }
 
   @Override
-  public CharSequence apply(IN input, Schema<IN, ?> schema) {
+  public CharSequence apply(IN input, Schema<IN, ?> schema, int rowId) {
     Field<IN, ?>[] fields = schema.getFields();
     if (fields.length == 0) {
       return "";
@@ -39,7 +39,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
     StringBuilder sb = new StringBuilder();
     generateHeader(schema, sb);
     for (int i = 0; i < input.size(); i++) {
-      sb.append(apply(input.get(i), schema));
+      sb.append(apply(input.get(i), schema, i));
       if (i < input.size() - 1) {
         sb.append(System.lineSeparator());
       }
@@ -83,7 +83,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
     StringBuilder sb = new StringBuilder();
     generateHeader(schema, sb);
     for (int i = 0; i < limit; i++) {
-      sb.append(apply(null, schema));
+      sb.append(apply(null, schema, i));
       if (i < limit - 1) {
         sb.append(System.lineSeparator());
       }

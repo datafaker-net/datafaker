@@ -76,12 +76,11 @@ es-PY:
       linea_baja: ["21", "61", "71", "644"]
       celular: ["71","73", "74", "75", "76", "81", "82", "83", "84", "85", "91", "92", "93", "94", "95"]
       formats:
-        - "0#{PhoneNumber.linea_baja} ### ###"
-        - "0#{PhoneNumber.linea_baja} #### ###"
         - "(0#{PhoneNumber.linea_baja}) ### ###"
-        - "(0#{PhoneNumber.linea_baja}) #### ###"
-        - "0#{PhoneNumber.linea_baja}-###-###"
-        - "(0#{PhoneNumber.linea_baja}) ###-###"
+        - "(0#{PhoneNumber.linea_baja}) ### ####"
+      formats_international:
+        - "+595 #{PhoneNumber.linea_baja} ### ###"
+        - "+595 #{PhoneNumber.linea_baja} ### ####"
     cell_phone:
       formats:
         - "09#{PhoneNumber.celular} ### ###"

@@ -279,7 +279,11 @@ de-CH:
       domain_suffix: [com, net, biz, ch, de, li, at, ch, ch]
 
     phone_number:
-      formats: ['0800 ### ###', '0800 ## ## ##', '0## ### ## ##', '0## ### ## ##', '+41 ## ### ## ##', '0900 ### ###', '076 ### ## ##', '+4178 ### ## ##', '0041 79 ### ## ##']
+      area_code: ['21', '22', '24', '26', '27', '31', '32', '33', '34', '41', '43', '44', '52', '55', '56', '58', '61', '62', '71', '81', '91']
+      formats:
+        - '0#{PhoneNumber.area_code} ### ## ##'
+      formats_international:
+        - '+41 #{PhoneNumber.area_code} ### ## ##'
 
     compass:
       cardinal:
@@ -359,7 +363,11 @@ de-CH:
           product: [Stuhl, Auto, Computer, Handschuh, Hose, Hemd, Tisch, Schuh, Hut, Teller, Messer, Flasche, Mantel, Lampe, Tastatur, Tasche, Bank, Uhr, Armbanduhr, Geldbörse]
 
       phone_number:
-        formats: ['(0###) #########', '(0####) #######', '+49-###-#######', '+49-####-########']
+      area_code: ['21', '22', '24', '26', '27', '31', '32', '33', '34', '41', '43', '44', '52', '55', '56', '58', '61', '62', '71', '81', '91']
+      formats:
+        - '0#{PhoneNumber.area_code} ### ## ##'
+      formats_international:
+        - '+41 #{PhoneNumber.area_code} ### ## ##'
 
       cell_phone:
         formats: ['+49-15##-#######', '+49-16#-#######', '+49-17#-#######']

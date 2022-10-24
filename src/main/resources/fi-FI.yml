@@ -30,10 +30,11 @@ fi-FI:
       name_with_middle:
         - "#{first_name} #{last_name} #{last_name}"
     phone_number:
-      non_geographic_numbers: ['050', '041', '042', '043', '044', '045', '046', '047', '048']
+      non_geographic_numbers: ['50', '41', '42', '43', '44', '45', '46', '47', '48']
       formats:
-        - "+358-#{PhoneNumber.non_geographic_numbers}-###-####"
-        - "#{PhoneNumber.non_geographic_numbers}-###-####"
+        - "0#{PhoneNumber.non_geographic_numbers} #######"
+      formats_international:
+        - '+358 #{PhoneNumber.non_geographic_numbers} #######'
 
     cell_phone:
       formats: ['0##-#######']

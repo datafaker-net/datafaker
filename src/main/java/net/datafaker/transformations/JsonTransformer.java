@@ -8,13 +8,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class JsonTransformer<IN> implements Transformer<IN, Object> {
   private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
 
   @Override
-  public String apply(IN input, Schema<IN, ? extends Object> schema) {
+  public String apply(IN input, Schema<IN, ? extends Object> schema, int rowId) {
     Field<?, ?>[] fields = schema.getFields();
     if (fields.length == 0) {
       return "{}";
@@ -25,7 +24,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
       value2String((fields[i].getName()), sb);
       sb.append(": ");
       if (fields[i] instanceof CompositeField) {
-        sb.append(apply(input, (CompositeField) fields[i]));
+        sb.append(apply(input, (CompositeField) fields[i], i));
       } else {
         value2String(((SimpleField) fields[i]).transform(input), sb);
       }
@@ -39,15 +38,21 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
 
   @Override
   public String generate(List<IN> input, Schema<IN, ?> schema) {
-    String result = input.stream().map(t -> apply(t, schema)).collect(Collectors.joining(",\n"));
-    return input.size() > 1 ? "{\n" + result + "}" : result;
+      StringBuilder result = new StringBuilder();
+      for (int i = 0; i < input.size(); i++) {
+          result.append(apply(input.get(i), schema, i));
+          if (i < input.size() - 1) {
+              result.append(",\n");
+          }
+      }
+      return input.size() > 1 ? "{\n" + result + "}" : result.toString();
   }
 
   @Override
   public String generate(Schema<IN, ?> schema, int limit) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < limit; i++) {
-      sb.append(apply(null, schema));
+      sb.append(apply(null, schema, i));
       if (i < limit - 1) {
         sb.append(",\n");
       }

@@ -318,4 +318,41 @@ class FakeStreamTest extends AbstractFakerTest {
         assertThat(numberOfLines).isEqualTo(limit - 1); // limit - 1 since for the last line there is no comma
     }
 
+    @Test
+    void testIterator() {
+        int fakeSequenceSize = 100;
+        FakeSequence<String> digits = faker
+                .stream(() -> faker.number().digit())
+                .len(fakeSequenceSize)
+                .build();
+
+        int count = 0;
+        for (String digit : digits) {
+            assertThat(digit).matches("\\d");
+            count++;
+        }
+
+        assertThat(count).isEqualTo(fakeSequenceSize);
+    }
+
+    @Test
+    void testIteratorInfinite() {
+        FakeSequence<String> digits = faker
+                .stream(() -> faker.number().digit())
+                .build();
+
+        assertThat(digits.isInfinite()).isTrue();
+
+        int count = 0;
+        int amountOfElementsToTake = 1_000;
+        for (String digit : digits) {
+            assertThat(digit).matches("\\d");
+            count++;
+            if (count == amountOfElementsToTake) {
+                break;
+            }
+        }
+
+        assertThat(count).isEqualTo(amountOfElementsToTake);
+    }
 }

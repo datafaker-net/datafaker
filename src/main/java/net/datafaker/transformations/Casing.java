@@ -8,5 +8,7 @@ public enum Casing {
     TO_UPPER,
 
     /** Identifiers are converted to lower-case. */
-    TO_LOWER
+    TO_LOWER;
+
+    public static final Casing DEFAULT_CASING = Casing.TO_UPPER;
 }

@@ -13,7 +13,19 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
         return faker.numerify(resolve("cell_phone.formats"));
     }
 
+    /**
+     * Generates locale specific phone number in national format.
+     * @return phone number
+     */
     public String phoneNumber() {
+        return phoneNumberNational();
+    }
+
+    public String phoneNumberInternational() {
+        return faker.numerify(resolve("phone_number.formats_international"));
+    }
+
+    public String phoneNumberNational() {
         return faker.numerify(resolve("phone_number.formats"));
     }
 

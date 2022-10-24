@@ -116,7 +116,11 @@ de:
         product: [Stühle, Autos, Computer, Handschuhe, Hosen, Hemden, Tische, Schuhe, Hüte, Teller, Messer, Flaschen, Jacke, Lampe, Tastatur, Tasche, Bank, Uhr, Armbanduhr, Geldbörse]
 
     phone_number:
-      formats: ['(0###) #########', '(0####) #######', '+49-###-#######', '+49-####-########']
+      formats: # National format
+        - '0Ø### #######'
+        - '0Ø### ########'
+      formats_international:
+        - '+49 #### ######'
 
     cell_phone:
       formats: ['+49-15##-#######', '+49-16#-#######', '+49-17#-#######']

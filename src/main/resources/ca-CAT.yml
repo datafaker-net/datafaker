@@ -19,6 +19,9 @@ ca-CAT:
         - "#{street_name}#{building_number} #{secondary_address}"
       default_country: [Catalunya]
     phone_number:
-      formats: ['9##-###-###', '9##.###.###', '9## ### ###', '9########']
+      formats:
+        - '9########'
+      formats_international:
+        - '+34 9########'
     cell_phone:
       formats: ['6##-###-###', '6##.###.###', '6## ### ###', '6########']

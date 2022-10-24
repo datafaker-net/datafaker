@@ -22,23 +22,10 @@ en-CA:
         '306', '639',  # Saskatchewan
         '867'  # Yukon, Northwest Territories and Nunavut
       ]
-      formats:
-        - '#{area_code}-###-####'
-        - '(#{area_code}) ###-####'
-        - '#{country_code}-#{area_code}-###-####'
-        - '#{area_code}.###.####'
-        - '#{area_code}-###-#### x###'
-        - '(#{area_code}) ###-#### x###'
-        - '#{country_code}-###-###-#### x###'
-        - '#{area_code}.###.#### x###'
-        - '#{area_code}-###-#### x####'
-        - '(#{area_code}) ###-#### x####'
-        - '#{country_code}-#{area_code}-###-#### x####'
-        - '#{area_code}.###.#### x####'
-        - '#{area_code}-###-#### x#####'
-        - '(#{area_code}) ###-#### x#####'
-        - '#{country_code}-#{area_code}-###-#### x#####'
-        - '#{area_code}.###.#### x#####'
+      formats: # National format
+        - '(#{PhoneNumber.area_code}) ###-####'
+      formats_international:
+        - '+1 #{PhoneNumber.area_code}-###-####'
     cell_phone:
       country_code: ['1']
       area_code: [

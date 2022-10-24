@@ -57,6 +57,7 @@ en-ZA:
         - "056 ### ####" # Northern Free State: Kroonstad
         - "057 ### ####" # Northern Free State: Welkom (Goldfields region)
         - "058 ### ####" # Eastern Free State: Bethlehem
+      formats_international:
         # International Dialling codes
         - "+2710 ### ####" # New overlay plan for Johannesburg
         - "+2711 ### ####" # Witwatersrand region around Johannesburg, currently code for entire Greater Johannesburg

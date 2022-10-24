@@ -119,7 +119,7 @@ List<String> names = faker.collection(
 System.out.println(names);
 // [Skiles, O'Connell, Lorenzo, West]
 ```
-more examples about that at https://www.datafaker.net/documentation/collections/
+more examples about that at https://www.datafaker.net/documentation/sequences/
 
 ### Streams
 ```java
@@ -131,14 +131,37 @@ Stream<String> names = faker.stream(
                          .generate();
 ```
 
-### File formats
-#### csv
+### Formats
+#### Schema
+There are 2 ways of data generation in specific formats
+1. Generate it from scratch
+2. There is already a sequence of objects and we could extract from them some values and return it in specific format
+For both cases we need a `Schema` which could describe fields and a way of data generation.
+In case of generation from scratch `Suppliers` are enough, in case of transformation `Functions` are required
+#### CSV
 ```java
-String csv = Format.toCsv(faker.collection(faker::name).build())
-                .headers(() -> "first_name", () -> "last_name")
-                .columns(Name::firstName, Name::lastName)
-                .separator(" ; ")
-                .limit(2).build().get();
+// transformer could be the same for both
+CsvTransformer<Name> transformer =
+        new CsvTransformer.CsvTransformerBuilder<Name>().header(true).separator(",").build();
+// Schema for from scratch
+Schema<Name, String> fromScratch =
+    Schema.of(field("firstName", () -> faker.name().firstName()),
+        field("lastname", () -> faker.name().lastName()));
+System.out.println(transformer.generate(fromScratch, 2));
+// POSSIBLE OUTPUT
+// "first_name" ; "last_name"
+// "Kimberely" ; "Considine"
+// "Mariela" ; "Krajcik"
+// ----------------------
+// Schema for transformations
+Schema<Name, String> schemaForTransformations =
+    Schema.of(field("firstName", Name::firstName),
+        field("lastname", Name::lastName));
+// Here we pass a collection of Name objects and extract first and lastnames from each element
+System.out.println(
+    transformer.generate(
+        faker.collection(faker::name).maxLen(2).generate(), schemaForTransformations));
+// POSSIBLE OUTPUT
 // "first_name" ; "last_name"
 // "Kimberely" ; "Considine"
 // "Mariela" ; "Krajcik"
@@ -152,24 +175,33 @@ jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
 
 jshell> import net.datafaker.Faker;
 
-jshell> import net.datafaker.fileformats.Format;
+jshell> import net.datafaker.providers.base.Name;
 
-jshell> import net.datafaker.service.base.Name;
+jshell> import net.datafaker.transformations.Schema;
+
+jshell> import net.datafaker.transformations.CsvTransformer;
+
+jshell> import static net.datafaker.transformations.Field.field;
 
 jshell> var faker = new Faker();
 faker ==> net.datafaker.Faker@c4437c4
 
-jshell> System.out.println(Format.toCsv(faker.collection(faker::name).build())
-   ...>                 .headers(() -> "first_name", () -> "last_name")
-   ...>                 .columns(Name::firstName, Name::lastName)
-   ...>                 .separator(" ; ")
-   ...>                 .limit(2).build().get());
-"first_name" ; "last_name"
-"Lisa" ; "Crooks"
-"Lakita" ; "Powlowski"
+jshell> Schema fromScratch =
+   ...>     Schema.of(field("firstName", () -> faker.name().firstName()),
+   ...>         field("lastname", () -> faker.name().lastName()));
+fromScratch ==> net.datafaker.transformations.Schema@306a30c7
+
+jshell> CsvTransformer<Name> transformer =
+   ...>     new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(",").build();
+transformer ==> net.datafaker.transformations.CsvTransformer@506c589e
+
+jshell> System.out.println(transformer.generate(fromScratch, 2));
+"firstName","lastname"
+"Darcel","Schuppe"
+"Noelle","Smitham"
 ```
 
-#### json
+#### JSON
 ```java
 Faker faker = new Faker();
 String json = Format.toJson(
@@ -183,7 +215,7 @@ String json = Format.toJson(
 // [{"firstName": "Oleta", "lastName": "Toy"},
 // {"firstName": "Gerard", "lastName": "Windler"}]
 ```
-More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/file-formats/
+More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/formats/
 
 ### Unique Values
 ```java
