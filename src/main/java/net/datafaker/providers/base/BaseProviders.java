@@ -111,6 +111,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Company.class, Company::new);
     }
 
+    default Compass compass() {
+        return getProvider(Compass.class, Compass::new);
+    }
+
     default Computer computer() {
         return getProvider(Computer.class, Computer::new);
     }
