@@ -23,7 +23,7 @@ en-AU:
     phone_number:
       formats: # National format #iOS AUS phone formats
         - '04## ### ###'
-        - '0# #### ####'
+        - '0Ø #### ####'
       formats_international:
         - '+61 4## ### ###'
         - '+61 # #### ####'
