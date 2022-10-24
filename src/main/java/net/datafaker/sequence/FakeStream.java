@@ -2,6 +2,7 @@ package net.datafaker.sequence;
 
 import net.datafaker.service.RandomService;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -23,6 +24,11 @@ public class FakeStream<T> extends FakeSequence<T> {
 
     public boolean isInfinite() {
         return maxLength < 0;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return get().iterator();
     }
 
     public static class Builder<T> extends FakeSequence.Builder<T> {

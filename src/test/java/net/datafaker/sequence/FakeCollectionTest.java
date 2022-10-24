@@ -262,4 +262,21 @@ class FakeCollectionTest extends AbstractFakerTest {
             .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
             .build().singleton()).isNotNull();
     }
+
+    @Test
+    void testIterator() {
+        int fakeSequenceSize = 10;
+        FakeSequence<String> digits = faker
+                .collection(() -> faker.number().digit())
+                .len(fakeSequenceSize)
+                .build();
+
+        int count = 0;
+        for (String digit : digits) {
+            assertThat(digit).matches("\\d");
+            count++;
+        }
+
+        assertThat(count).isEqualTo(fakeSequenceSize);
+    }
 }

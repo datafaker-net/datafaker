@@ -3,13 +3,10 @@ package net.datafaker.sequence;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.service.RandomService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
-public abstract class FakeSequence<T> {
+public abstract class FakeSequence<T> implements Iterable<T> {
     protected final RandomService randomService;
     protected final List<Supplier<T>> suppliers;
     protected final double nullRate;
