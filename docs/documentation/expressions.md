@@ -81,7 +81,7 @@ faker.expression("#{csv ' ### ','"','false','3','name_column','#{Name.first_name
 ## Json
 This is available since 1.4.0
 
-The expression will return generated csv based on input parameters
+The expression will return generated json based on input parameters
 ```java
 faker.expression("#{json 'person','#{json ''first_name'',''#{Name.first_name}'',''last_name'',''#{Name.last_name}''}','address','#{json ''country'',''#{Address.country}'',''city'',''#{Address.city}''}'}");
 // {"person": {"first_name": "Barbie", "last_name": "Durgan"}, "address": {"country": "Albania", "city": "East Catarinahaven"}}
