@@ -170,20 +170,37 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         if (value == null) {
             result.append(NULL.getValue(keywordCase));
         } else {
-            boolean quoteRequired = !(value instanceof Number) && !(value instanceof Boolean);
-            if (quoteRequired) {
-                result.append(quote);
-            }
-
-            String strValue = value.toString();
-            for (int k = 0; k < strValue.length(); k++) {
-                if (strValue.charAt(k) == quote) {
+            if (value.getClass().isArray()) {
+                result.append(ARRAY.getValue(keywordCase)).append("[");
+                final Class<?> componentType = value.getClass().getComponentType();
+                result.append(componentType.isPrimitive()
+                    ? handlePrimitivesInArray(componentType, value)
+                    : handleObjectInArray(value));
+                result.append("]");
+            } else if (value instanceof List) {
+                result.append(ARRAY.getValue(keywordCase)).append("[");
+                result.append(handleObjectInCollection(value));
+                result.append("]");
+            } else if (value instanceof Set) {
+                result.append(MULTISET.getValue(keywordCase)).append("[");
+                result.append(handleObjectInCollection(value));
+                result.append("]");
+            } else {
+                boolean quoteRequired = !(value instanceof Number) && !(value instanceof Boolean);
+                if (quoteRequired) {
                     result.append(quote);
                 }
-                result.append(strValue.charAt(k));
-            }
-            if (quoteRequired) {
-                result.append(quote);
+
+                String strValue = value.toString();
+                for (int k = 0; k < strValue.length(); k++) {
+                    if (strValue.charAt(k) == quote) {
+                        result.append(quote);
+                    }
+                    result.append(strValue.charAt(k));
+                }
+                if (quoteRequired) {
+                    result.append(quote);
+                }
             }
         }
         return result.toString();
