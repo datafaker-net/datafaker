@@ -99,6 +99,7 @@ class SqlTest {
             of(Schema.of(field("number", () -> 123.123)), null, "INSERT INTO MY_TABLE (`number`) VALUES (123.123);"),
             of(Schema.of(field("boolean", () -> true)), "", "INSERT INTO MY_TABLE (`boolean`) VALUES (true);"),
             of(Schema.of(field("nullValue", () -> null)), null, "INSERT INTO MY_TABLE (`nullValue`) VALUES (null);"),
+            of(Schema.of(field("nullValue", () -> null)), "My.SCHEMA", "INSERT INTO `My.SCHEMA`.MY_TABLE (`nullValue`) VALUES (null);"),
             of(Schema.of(field("nullValue", () -> null)), "MY_SCHEMA", "INSERT INTO MY_SCHEMA.MY_TABLE (`nullValue`) VALUES (null);"));
     }
 

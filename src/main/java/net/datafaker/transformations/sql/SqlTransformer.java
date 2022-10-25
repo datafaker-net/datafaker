@@ -57,7 +57,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             if (casing == Casing.TO_UPPER && Character.isLowerCase(name.charAt(i))
                 || casing == Casing.TO_LOWER && Character.isUpperCase(name.charAt(i))
                 || name.charAt(i) == openSqlIdentifier
-                || name.charAt(i) == closeSqlIdentifier) {
+                || name.charAt(i) == closeSqlIdentifier
+                || name.charAt(i) == DEFAULT_CATALOG_SEPARATOR) {
                 return true;
             }
         }
