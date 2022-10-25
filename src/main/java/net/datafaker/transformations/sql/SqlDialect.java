@@ -1,16 +1,16 @@
-package net.datafaker.transformations;
+package net.datafaker.transformations.sql;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static net.datafaker.transformations.Casing.DEFAULT_CASING;
-import static net.datafaker.transformations.SqlDialect.AuxiliaryConstants.DEFAULT_FIRST_ROW;
-import static net.datafaker.transformations.SqlDialect.AuxiliaryConstants.DEFAULT_OTHER_ROWS;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.INSERT_ALL;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.INSERT_INTO;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.INTO;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.SELECT_1_FROM_DUAL;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.VALUES;
+import static net.datafaker.transformations.sql.Casing.DEFAULT_CASING;
+import static net.datafaker.transformations.sql.SqlDialect.AuxiliaryConstants.DEFAULT_FIRST_ROW;
+import static net.datafaker.transformations.sql.SqlDialect.AuxiliaryConstants.DEFAULT_OTHER_ROWS;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.INSERT_ALL;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.INSERT_INTO;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.INTO;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.SELECT_1_FROM_DUAL;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.VALUES;
 
 public enum SqlDialect {
     ANSI("`"),

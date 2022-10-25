@@ -1,4 +1,4 @@
-package net.datafaker.transformations;
+package net.datafaker.transformations.sql;
 
 @FunctionalInterface
 public interface TriFunction<A, B, C, R> {
