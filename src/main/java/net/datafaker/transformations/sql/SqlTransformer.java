@@ -1,15 +1,21 @@
-package net.datafaker.transformations;
+package net.datafaker.transformations.sql;
+
+import net.datafaker.transformations.CompositeField;
+import net.datafaker.transformations.Field;
+import net.datafaker.transformations.Schema;
+import net.datafaker.transformations.SimpleField;
+import net.datafaker.transformations.Transformer;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.StringJoiner;
 
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.ARRAY;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.INSERT_INTO;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.MULTISET;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.NULL;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.ROW;
-import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.VALUES;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.ARRAY;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.INSERT_INTO;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.MULTISET;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.NULL;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.ROW;
+import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.VALUES;
 
 public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private static final char DEFAULT_QUOTE = '\'';

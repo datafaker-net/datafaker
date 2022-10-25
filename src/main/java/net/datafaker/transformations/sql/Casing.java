@@ -1,4 +1,4 @@
-package net.datafaker.transformations;
+package net.datafaker.transformations.sql;
 
 public enum Casing {
     /** The case of identifiers is not changed. */
