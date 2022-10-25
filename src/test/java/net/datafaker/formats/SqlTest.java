@@ -305,8 +305,8 @@ class SqlTest {
             of(Schema.of(field("doubles", () -> new double[]{1d, 5d, 3d})), null, "INSERT INTO \"MyTable\" (\"doubles\") VALUES (ARRAY[1.0, 5.0, 3.0]);"),
             of(Schema.of(field("names", () -> new String[]{"hello", "world"})),
                 null, "INSERT INTO \"MyTable\" (\"names\") VALUES (ARRAY['hello', 'world']);"),
-            of(Schema.of(field("names_list", () -> Arrays.asList("hello", "world"))),
-                "", "INSERT INTO \"MyTable\" (\"names_list\") VALUES (ARRAY['hello', 'world']);"),
+            of(Schema.of(field("names_list", () -> Arrays.asList("hello", "hello"))),
+                "", "INSERT INTO \"MyTable\" (\"names_list\") VALUES (MULTISET['hello', 'hello']);"),
             of(Schema.of(field("names_multiset", () -> Collections.singleton("hello"))),
                 "", "INSERT INTO \"MyTable\" (\"names_multiset\") VALUES (MULTISET['hello']);"),
             of(Schema.of(field("ints_ints", () -> new int[][]{new int[]{1}, null, new int[] {3, 4, 5}})),
@@ -317,7 +317,7 @@ class SqlTest {
                 "", "INSERT INTO \"MyTable\" (\"multiset\") VALUES (MULTISET[MULTISET[MULTISET['value']]]);"),
             of(Schema.of(field("multiset_array", () -> Collections.singleton(new int[]{1, 2}))),
                 "", "INSERT INTO \"MyTable\" (\"multiset_array\") VALUES (MULTISET[ARRAY[1, 2]]);"),
-            of(Schema.of(field("array_multiset", () -> Collections.singletonList(Collections.singleton("value")))),
+            of(Schema.of(field("array_multiset", () -> new Object[]{Collections.singleton("value")})),
                 "", "INSERT INTO \"MyTable\" (\"array_multiset\") VALUES (ARRAY[MULTISET['value']]);")
         );
     }

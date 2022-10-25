@@ -2,7 +2,6 @@ package net.datafaker.transformations;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringJoiner;
 
 import static net.datafaker.transformations.SqlTransformer.SQLKeyWords.ARRAY;
@@ -115,11 +114,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                         ? handlePrimitivesInArray(componentType, value)
                         : handleObjectInArray(value));
                     result.append("]");
-                } else if (value instanceof List) {
-                    result.append(ARRAY.getValue(keywordCase)).append("[");
-                    result.append(handleObjectInCollection(value));
-                    result.append("]");
-                } else if (value instanceof Set) {
+                } else if (value instanceof Collection) {
                     result.append(MULTISET.getValue(keywordCase)).append("[");
                     result.append(handleObjectInCollection(value));
                     result.append("]");
@@ -177,11 +172,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     ? handlePrimitivesInArray(componentType, value)
                     : handleObjectInArray(value));
                 result.append("]");
-            } else if (value instanceof List) {
-                result.append(ARRAY.getValue(keywordCase)).append("[");
-                result.append(handleObjectInCollection(value));
-                result.append("]");
-            } else if (value instanceof Set) {
+            } else if (value instanceof Collection) {
                 result.append(MULTISET.getValue(keywordCase)).append("[");
                 result.append(handleObjectInCollection(value));
                 result.append("]");
