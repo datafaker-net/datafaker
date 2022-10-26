@@ -2,6 +2,7 @@ package net.datafaker.formats;
 
 import net.datafaker.Faker;
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.sql.SqlDialect;
 import net.datafaker.transformations.sql.SqlTransformer;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
@@ -319,7 +321,16 @@ class SqlTest {
             of(Schema.of(field("multiset_array", () -> Collections.singleton(new int[]{1, 2}))),
                 "", "INSERT INTO \"MyTable\" (\"multiset_array\") VALUES (MULTISET[ARRAY[1, 2]]);"),
             of(Schema.of(field("array_multiset", () -> new Object[]{Collections.singleton("value")})),
-                "", "INSERT INTO \"MyTable\" (\"array_multiset\") VALUES (ARRAY[MULTISET['value']]);")
+                "", "INSERT INTO \"MyTable\" (\"array_multiset\") VALUES (ARRAY[MULTISET['value']]);"),
+            of(Schema.of(compositeField("row", new Field[]{field("name", () -> "2")})),
+                null, "INSERT INTO \"MyTable\" (\"row\") VALUES (ROW('2'));"),
+            of(Schema.of(compositeField("row_row",
+                    new Field[]{field("name1", () -> "1"), compositeField("row", new Field[]{field("name", () -> "2")})})),
+                    null, "INSERT INTO \"MyTable\" (\"row_row\") VALUES (ROW('1', ROW('2')));"),
+            of(Schema.of(compositeField("row_array",
+                    new Field[]{field("name1", () -> "1"),
+                        compositeField("row", new Field[]{field("name", () -> new int[]{1, 2, 3})})})),
+                null, "INSERT INTO \"MyTable\" (\"row_array\") VALUES (ROW('1', ROW(ARRAY[1, 2, 3])));")
         );
     }
 }
