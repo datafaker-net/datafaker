@@ -3,15 +3,14 @@ package net.datafaker.formats;
 import net.datafaker.AbstractFakerTest;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
+import net.datafaker.sequence.FakeSequence;
 import net.datafaker.transformations.CsvTransformer;
 import net.datafaker.transformations.Schema;
-import net.datafaker.sequence.FakeSequence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -210,27 +209,80 @@ class CsvTest extends AbstractFakerTest {
     void testCsvWithDifferentObjectsFunction() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
-            field("Number", integer -> faker.number().digits(integer)),
-            field("Bool", () -> faker.bool().bool()),
-            field("String", prefix -> prefix + ": " + faker.name().firstName()),
-            field("Text", () -> "The, \"fabulous\" artist'")
+            field("Number", integer -> integer),
+            field("Password", integer -> faker.internet().password(integer, integer))
         );
         CsvTransformer<Integer> transformer =
             new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
 
-        String csv = transformer.generate(Arrays.asList(1, 2, 3), schema);
+		FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
+                .suppliers(() -> faker.number().randomDigit())
+                .len(5)
+                .build();
+        String csv = transformer.generate(fakeSequence, schema);
 
         String expected =
-            "\"Number\",\"Bool\",\"String\",\"Text\""
+            "\"Number\",\"Password\""
                 + System.lineSeparator()
-                + "\"3\",false,\"1: Flor\",\"The, \"\"fabulous\"\" artist'\""
+                + "3,\"l63\""
                 + System.lineSeparator()
-                + "\"66\",false,\"2: Lily\",\"The, \"\"fabulous\"\" artist'\""
+                + "6,\"z5s88e\""
                 + System.lineSeparator()
-                + "\"439\",true,\"3: Dominick\",\"The, \"\"fabulous\"\" artist'\"";
+                + "7,\"0b92c81\""
+                + System.lineSeparator()
+                + "1,\"5\""
+                + System.lineSeparator()
+                + "3,\"zy2\"";
 
         assertThat(csv).isEqualTo(expected);
     }
+
+    @Test
+    void testCsvWithDifferentObjectsFunctionStream() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Integer, ?> schema = Schema.of(
+                field("Number", integer -> integer),
+                field("Password", integer -> faker.internet().password(integer, integer))
+        );
+        CsvTransformer<Integer> transformer =
+                new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
+
+        FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
+                .suppliers(() -> faker.number().randomDigit())
+                .len(3)
+                .build();;
+        String csv = transformer.generate(fakeSequence, schema);
+
+        String expected =
+                "\"Number\",\"Password\""
+                        + System.lineSeparator()
+                        + "3,\"f13\""
+                        + System.lineSeparator()
+                        + "1,\"5\""
+                        + System.lineSeparator()
+                        + "6,\"3z5s88\"";
+
+        assertThat(csv).isEqualTo(expected);
+    }
+
+    @Test
+	void testCsvWithInfiniteSequence() {
+		BaseFaker faker = new BaseFaker(new Random(10L));
+
+		Schema<Integer, ?> schema = Schema.of(
+				field("Number", integer -> faker.number().digits(integer)),
+				field("String", prefix -> prefix + ": " + faker.name().firstName())
+		);
+		CsvTransformer<Integer> transformer =
+				new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
+
+		FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
+				.suppliers(() -> faker.number().randomDigit())
+				.build();
+		assertThatThrownBy(() -> transformer.generate(fakeSequence, schema))
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessage("The sequence should be finite of size");
+	}
 
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 3, 10, 20, 100})
@@ -267,7 +319,7 @@ class CsvTest extends AbstractFakerTest {
             new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(",").build();
         String csv =
             transformer.generate(
-                faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build().get(),
+                faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build(),
                 schema);
 
         int numberOfLines = 0;
@@ -315,7 +367,7 @@ class CsvTest extends AbstractFakerTest {
             new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(" : ").build();
         String csv =
             transformer.generate(
-                faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build().get(),
+                faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build(),
                 schema);
 
         int numberOfLines = 0;

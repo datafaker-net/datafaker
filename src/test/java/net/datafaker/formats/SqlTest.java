@@ -2,6 +2,7 @@ package net.datafaker.formats;
 
 import net.datafaker.Faker;
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.sequence.FakeSequence;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.sql.SqlDialect;
@@ -20,9 +21,92 @@ import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
 import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 class SqlTest {
+    @Test
+    void generateFromFakeSequenceSeparated() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Integer, ?> schema = Schema.of(
+            field("Number", integer -> integer),
+            field("Password", integer -> faker.internet().password(integer, integer))
+        );
+
+        SqlTransformer<Integer> transformer = new SqlTransformer.SqlTransformerBuilder<Integer>().build();
+        FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
+            .suppliers(() -> faker.number().randomDigit())
+            .len(5)
+            .build();
+
+        String sql = transformer.generate(fakeSequence, schema);
+
+        String expected = "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, 'l63');" +
+            System.lineSeparator() +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (6, 'z5s88e');" +
+            System.lineSeparator() +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (7, '0b92c81');" +
+            System.lineSeparator() +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (1, '5');" +
+            System.lineSeparator() +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, 'zy2');";
+
+        assertThat(sql).isEqualTo(expected);
+    }
+
+    @Test
+    void generateFromFakeSequenceBatch() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Integer, ?> schema = Schema.of(
+            field("Number", integer -> integer),
+            field("Password", integer -> faker.internet().password(integer, integer))
+        );
+
+        SqlTransformer<Integer> transformer = new SqlTransformer.SqlTransformerBuilder<Integer>()
+            .batch()
+            .build();
+        FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
+            .suppliers(() -> faker.number().randomDigit())
+            .len(5)
+            .build();
+
+        String sql = transformer.generate(fakeSequence, schema);
+
+        String expected = "INSERT INTO \"MyTable\" (\"Number\", \"Password\")" +
+            System.lineSeparator() +
+            "VALUES (3, 'l63')," +
+            System.lineSeparator() +
+            "       (6, 'z5s88e')," +
+            System.lineSeparator() +
+            "       (7, '0b92c81')," +
+            System.lineSeparator() +
+            "       (1, '5')," +
+            System.lineSeparator() +
+            "       (3, 'zy2');";
+
+        assertThat(sql).isEqualTo(expected);
+    }
+
+    @Test
+    void generateFromInfiniteFakeSequenceBatch() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Integer, ?> schema = Schema.of(
+            field("Number", integer -> integer),
+            field("Password", integer -> faker.internet().password(integer, integer))
+        );
+
+        SqlTransformer<Integer> transformer = new SqlTransformer.SqlTransformerBuilder<Integer>()
+            .batch()
+            .build();
+        FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
+            .suppliers(() -> faker.number().randomDigit())
+            .build();
+
+        assertThatThrownBy(() -> transformer.generate(fakeSequence, schema))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("The sequence should be finite of size");
+    }
+
     @Test
     void testGenerateFromSchemaWithLimitSeparatedStatements() {
         BaseFaker faker = new BaseFaker(new Random(10L));
