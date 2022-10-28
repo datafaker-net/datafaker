@@ -3,6 +3,7 @@ package net.datafaker.transformations.sql;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static net.datafaker.transformations.sql.Casing.DEFAULT_CASING;
 import static net.datafaker.transformations.sql.SqlDialect.AuxiliaryConstants.DEFAULT_FIRST_ROW;
 import static net.datafaker.transformations.sql.SqlDialect.AuxiliaryConstants.DEFAULT_OTHER_ROWS;
@@ -36,7 +37,7 @@ public enum SqlDialect {
             final String into = "    " + INTO.getValue(caze) + " ";
             final String valuesKeyWord = " " + VALUES.getValue(caze) + " ";
             return into + columns.get() + valuesKeyWord + values.get();
-        }, caze -> "\n" + SELECT_1_FROM_DUAL.getValue(caze)),
+        }, caze -> LINE_SEPARATOR + SELECT_1_FROM_DUAL.getValue(caze)),
     PARACCEL("\""),
     PHOENIX("\""),
     POSTGRES("\""),
@@ -103,7 +104,7 @@ public enum SqlDialect {
     static class AuxiliaryConstants {
         static final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> DEFAULT_FIRST_ROW = (supplier, supplier2, caze) -> {
             final String insertAll = INSERT_INTO.getValue(caze) + " ";
-            final String values = "\n" + VALUES.getValue(caze) + " ";
+            final String values = LINE_SEPARATOR + VALUES.getValue(caze) + " ";
             return insertAll + supplier.get() + values + supplier2.get();
         };
         static final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> DEFAULT_OTHER_ROWS =
