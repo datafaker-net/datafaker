@@ -164,6 +164,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(StarWars.class, StarWars::new);
     }
 
+    default StudioGhibli studioGhibli() {
+        return getProvider(StudioGhibli.class, StudioGhibli::new);
+    }
+
     default TheItCrowd theItCrowd() {
         return getProvider(TheItCrowd.class, TheItCrowd::new);
     }

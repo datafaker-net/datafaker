@@ -204,6 +204,7 @@ public class EnFile {
         "stock.yml",
 //            "stranger_thing.yml",
 //            "stripe.yml",
+        "studio_ghibli.yml",
         "subscription.yml",
 //            "super_smash_bros.yml",
         "superhero.yml",

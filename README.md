@@ -400,6 +400,7 @@ Providers
 * Space
 * StarCraft
 * StarTrek
+* Studio Ghibli
 * Stock
 * Subscription
 * Superhero
