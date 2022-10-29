@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
+import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
@@ -55,8 +56,8 @@ class SqlTest {
         String sql = transformer.generate(schema, 2);
 
         String expected =
-            "INSERT INTO \"MyTable\" (\"Text\", \"Bool\")\n" +
-            "VALUES ('Willis', false),\n" +
+            "INSERT INTO \"MyTable\" (\"Text\", \"Bool\")" + LINE_SEPARATOR +
+            "VALUES ('Willis', false)," + LINE_SEPARATOR +
             "       ('Carlena', true);";
 
         assertThat(sql).isEqualTo(expected);
@@ -76,8 +77,8 @@ class SqlTest {
             .build();
         String sql = forceQuotedTransformer.generate(schema, 2);
 
-        String expected = "INSERT INTO \"MY_TABLE\" (\"TEXT\", \"BOOL\")\n" +
-            "VALUES ('Willis', false),\n" +
+        String expected = "INSERT INTO \"MY_TABLE\" (\"TEXT\", \"BOOL\")" + LINE_SEPARATOR +
+            "VALUES ('Willis', false)," + LINE_SEPARATOR +
             "       ('Carlena', true);";
 
         assertThat(sql).isEqualTo(expected);
@@ -202,7 +203,7 @@ class SqlTest {
                 .build();
         final int limit = 5;
         String output = transformer.generate(schema, limit);
-        assertThat(output.split("\\n")).hasSize(limit + 1);
+        assertThat(output.split(LINE_SEPARATOR)).hasSize(limit + 1);
     }
 
     @Test
@@ -235,7 +236,7 @@ class SqlTest {
                 .dialect(SqlDialect.ORACLE).build();
         final int limit = 5;
         String output = transformerUpper.generate(schema, limit);
-        assertThat(output.split("\\n")).hasSize(limit + 2);
+        assertThat(output.split(LINE_SEPARATOR)).hasSize(limit + 2);
         assertThat(output)
             .contains("INSERT ALL")
             .contains("INTO")
@@ -247,7 +248,7 @@ class SqlTest {
                 .keywordCase(SqlTransformer.Case.LOWERCASE)
                 .dialect(SqlDialect.ORACLE).build();
         output = transformerLower.generate(schema, limit);
-        assertThat(output.split("\\n")).hasSize(limit + 2);
+        assertThat(output.split(LINE_SEPARATOR)).hasSize(limit + 2);
         assertThat(output)
             .contains("insert all")
             .contains("into")

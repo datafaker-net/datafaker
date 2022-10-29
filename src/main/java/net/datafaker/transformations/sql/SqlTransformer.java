@@ -84,7 +84,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     SqlDialect.getFirstRow(
                         dialect, () -> appendTableInfo(fields), () -> addValues(input, fields), keywordCase));
             } else {
-                sb.append(",\n")
+                sb.append(",").append(LINE_SEPARATOR)
                     .append(
                         SqlDialect.getOtherRow(
                             dialect, () -> appendTableInfo(fields), () -> addValues(input, fields), keywordCase));

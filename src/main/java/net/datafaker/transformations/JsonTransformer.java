@@ -42,10 +42,10 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
       for (int i = 0; i < input.size(); i++) {
           result.append(apply(input.get(i), schema, i));
           if (i < input.size() - 1) {
-              result.append(",\n");
+              result.append(",").append(LINE_SEPARATOR);
           }
       }
-      return input.size() > 1 ? "{\n" + result + "}" : result.toString();
+      return input.size() > 1 ? "{" + LINE_SEPARATOR + result + "}" : result.toString();
   }
 
   @Override
@@ -54,10 +54,10 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
     for (int i = 0; i < limit; i++) {
       sb.append(apply(null, schema, i));
       if (i < limit - 1) {
-        sb.append(",\n");
+        sb.append(",").append(LINE_SEPARATOR);
       }
     }
-    return limit > 1 ? "{\n" + sb + "}" : sb.toString();
+    return limit > 1 ? "{" + LINE_SEPARATOR + sb + "}" : sb.toString();
   }
 
   private static void value2String(Object value, StringBuilder sb) {
