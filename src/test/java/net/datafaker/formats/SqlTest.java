@@ -41,14 +41,10 @@ class SqlTest {
 
         String sql = transformer.generate(fakeSequence, schema);
 
-        String expected = "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, 'l63');" +
-            System.lineSeparator() +
-            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (6, 'z5s88e');" +
-            System.lineSeparator() +
-            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (7, '0b92c81');" +
-            System.lineSeparator() +
-            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (1, '5');" +
-            System.lineSeparator() +
+        String expected = "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, 'l63');" + LINE_SEPARATOR +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (6, 'z5s88e');" + LINE_SEPARATOR +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (7, '0b92c81');" + LINE_SEPARATOR +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (1, '5');" + LINE_SEPARATOR +
             "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, 'zy2');";
 
         assertThat(sql).isEqualTo(expected);
@@ -72,17 +68,13 @@ class SqlTest {
 
         String sql = transformer.generate(fakeSequence, schema);
 
-        String expected = "INSERT INTO \"MyTable\" (\"Number\", \"Password\")" +
-            System.lineSeparator() +
-            "VALUES (3, 'l63')," +
-            System.lineSeparator() +
-            "       (6, 'z5s88e')," +
-            System.lineSeparator() +
-            "       (7, '0b92c81')," +
-            System.lineSeparator() +
-            "       (1, '5')," +
-            System.lineSeparator() +
-            "       (3, 'zy2');";
+        String expected =
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\")" + LINE_SEPARATOR +
+                "VALUES (3, 'l63')," + LINE_SEPARATOR +
+                "       (6, 'z5s88e')," + LINE_SEPARATOR +
+                "       (7, '0b92c81')," + LINE_SEPARATOR +
+                "       (1, '5')," + LINE_SEPARATOR +
+                "       (3, 'zy2');";
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -119,8 +111,7 @@ class SqlTest {
         String sql = transformer.generate(schema, 2);
 
         String expected =
-            "INSERT INTO \"MyTable\" (\"Text\", \"Bool\") VALUES ('Willis', false);" +
-            System.lineSeparator() +
+            "INSERT INTO \"MyTable\" (\"Text\", \"Bool\") VALUES ('Willis', false);" + LINE_SEPARATOR +
             "INSERT INTO \"MyTable\" (\"Text\", \"Bool\") VALUES ('Carlena', true);";
 
         assertThat(sql).isEqualTo(expected);

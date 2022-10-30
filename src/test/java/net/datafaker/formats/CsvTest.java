@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 import static net.datafaker.transformations.Field.field;
+import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -38,7 +39,7 @@ class CsvTest extends AbstractFakerTest {
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             } else if (csv.regionMatches(i, separator, 0, separator.length())) {
                 numberOfSeparator++;
@@ -67,7 +68,7 @@ class CsvTest extends AbstractFakerTest {
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             } else if (csv.regionMatches(i, separator, 0, separator.length())) {
                 numberOfSeparator++;
@@ -98,7 +99,7 @@ class CsvTest extends AbstractFakerTest {
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             } else if (csv.regionMatches(i, separator, 0, separator.length())) {
                 numberOfSeparator++;
@@ -126,7 +127,7 @@ class CsvTest extends AbstractFakerTest {
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             } else if (csv.regionMatches(i, separator, 0, separator.length())) {
                 numberOfSeparator++;
@@ -152,10 +153,8 @@ class CsvTest extends AbstractFakerTest {
                 .get();
 
         String expected =
-            "\"values\",\"title\""
-                + System.lineSeparator()
-                + "\"1,2,3\",\"The \"\"fabulous\"\" artist\""
-                + System.lineSeparator();
+            "\"values\",\"title\"" + LINE_SEPARATOR +
+                "\"1,2,3\",\"The \"\"fabulous\"\" artist\"" + LINE_SEPARATOR;
 
         assertThat(csv).isEqualTo(expected);
     }
@@ -170,8 +169,7 @@ class CsvTest extends AbstractFakerTest {
         String csv = transformer.generate(schema, 1);
 
         String expected =
-            "\"values\",\"title\""
-                + System.lineSeparator()
+            "\"values\",\"title\"" + LINE_SEPARATOR
                 + "\"1,2,3\",\"The \"\"fabulous\"\" artist\"";
 
         assertThat(csv).isEqualTo(expected);
@@ -192,14 +190,10 @@ class CsvTest extends AbstractFakerTest {
         String csv = transformer.generate(schema, 4);
 
         String expected =
-            "\"Number\",\"Bool\",\"String\",\"Text\""
-                + System.lineSeparator()
-                + "3,false,\"Flor\",\"The, \"\"fabulous\"\" artist'\""
-                + System.lineSeparator()
-                + "6,true,\"Stephnie\",\"The, \"\"fabulous\"\" artist'\""
-                + System.lineSeparator()
-                + "1,false,\"Edythe\",\"The, \"\"fabulous\"\" artist'\""
-                + System.lineSeparator()
+            "\"Number\",\"Bool\",\"String\",\"Text\"" + LINE_SEPARATOR
+                + "3,false,\"Flor\",\"The, \"\"fabulous\"\" artist'\"" + LINE_SEPARATOR
+                + "6,true,\"Stephnie\",\"The, \"\"fabulous\"\" artist'\"" + LINE_SEPARATOR
+                + "1,false,\"Edythe\",\"The, \"\"fabulous\"\" artist'\"" + LINE_SEPARATOR
                 + "1,true,\"Dwight\",\"The, \"\"fabulous\"\" artist'\"";
 
         assertThat(csv).isEqualTo(expected);
@@ -222,16 +216,11 @@ class CsvTest extends AbstractFakerTest {
         String csv = transformer.generate(fakeSequence, schema);
 
         String expected =
-            "\"Number\",\"Password\""
-                + System.lineSeparator()
-                + "3,\"l63\""
-                + System.lineSeparator()
-                + "6,\"z5s88e\""
-                + System.lineSeparator()
-                + "7,\"0b92c81\""
-                + System.lineSeparator()
-                + "1,\"5\""
-                + System.lineSeparator()
+            "\"Number\",\"Password\"" + LINE_SEPARATOR
+                + "3,\"l63\"" + LINE_SEPARATOR
+                + "6,\"z5s88e\"" + LINE_SEPARATOR
+                + "7,\"0b92c81\"" + LINE_SEPARATOR
+                + "1,\"5\"" + LINE_SEPARATOR
                 + "3,\"zy2\"";
 
         assertThat(csv).isEqualTo(expected);
@@ -254,13 +243,10 @@ class CsvTest extends AbstractFakerTest {
         String csv = transformer.generate(fakeSequence, schema);
 
         String expected =
-                "\"Number\",\"Password\""
-                        + System.lineSeparator()
-                        + "3,\"f13\""
-                        + System.lineSeparator()
-                        + "1,\"5\""
-                        + System.lineSeparator()
-                        + "6,\"3z5s88\"";
+            "\"Number\",\"Password\"" + LINE_SEPARATOR
+                + "3,\"f13\"" + LINE_SEPARATOR
+                + "1,\"5\"" + LINE_SEPARATOR
+                + "6,\"3z5s88\"";
 
         assertThat(csv).isEqualTo(expected);
     }
@@ -300,7 +286,7 @@ class CsvTest extends AbstractFakerTest {
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }
@@ -324,7 +310,7 @@ class CsvTest extends AbstractFakerTest {
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }
@@ -348,7 +334,7 @@ class CsvTest extends AbstractFakerTest {
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }
@@ -372,7 +358,7 @@ class CsvTest extends AbstractFakerTest {
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }
@@ -418,7 +404,7 @@ class CsvTest extends AbstractFakerTest {
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }
