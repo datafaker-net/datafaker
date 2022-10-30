@@ -3,19 +3,19 @@ package net.datafaker.formats;
 import net.datafaker.AbstractFakerTest;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
+import net.datafaker.sequence.FakeSequence;
 import net.datafaker.transformations.CsvTransformer;
 import net.datafaker.transformations.Schema;
-import net.datafaker.sequence.FakeSequence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import static net.datafaker.transformations.Field.field;
+import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -39,7 +39,7 @@ class CsvTest extends AbstractFakerTest {
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             } else if (csv.regionMatches(i, separator, 0, separator.length())) {
                 numberOfSeparator++;
@@ -68,7 +68,7 @@ class CsvTest extends AbstractFakerTest {
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             } else if (csv.regionMatches(i, separator, 0, separator.length())) {
                 numberOfSeparator++;
@@ -99,7 +99,7 @@ class CsvTest extends AbstractFakerTest {
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             } else if (csv.regionMatches(i, separator, 0, separator.length())) {
                 numberOfSeparator++;
@@ -127,7 +127,7 @@ class CsvTest extends AbstractFakerTest {
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             } else if (csv.regionMatches(i, separator, 0, separator.length())) {
                 numberOfSeparator++;
@@ -153,10 +153,8 @@ class CsvTest extends AbstractFakerTest {
                 .get();
 
         String expected =
-            "\"values\",\"title\""
-                + System.lineSeparator()
-                + "\"1,2,3\",\"The \"\"fabulous\"\" artist\""
-                + System.lineSeparator();
+            "\"values\",\"title\"" + LINE_SEPARATOR +
+                "\"1,2,3\",\"The \"\"fabulous\"\" artist\"" + LINE_SEPARATOR;
 
         assertThat(csv).isEqualTo(expected);
     }
@@ -171,8 +169,7 @@ class CsvTest extends AbstractFakerTest {
         String csv = transformer.generate(schema, 1);
 
         String expected =
-            "\"values\",\"title\""
-                + System.lineSeparator()
+            "\"values\",\"title\"" + LINE_SEPARATOR
                 + "\"1,2,3\",\"The \"\"fabulous\"\" artist\"";
 
         assertThat(csv).isEqualTo(expected);
@@ -193,14 +190,10 @@ class CsvTest extends AbstractFakerTest {
         String csv = transformer.generate(schema, 4);
 
         String expected =
-            "\"Number\",\"Bool\",\"String\",\"Text\""
-                + System.lineSeparator()
-                + "3,false,\"Flor\",\"The, \"\"fabulous\"\" artist'\""
-                + System.lineSeparator()
-                + "6,true,\"Stephnie\",\"The, \"\"fabulous\"\" artist'\""
-                + System.lineSeparator()
-                + "1,false,\"Edythe\",\"The, \"\"fabulous\"\" artist'\""
-                + System.lineSeparator()
+            "\"Number\",\"Bool\",\"String\",\"Text\"" + LINE_SEPARATOR
+                + "3,false,\"Flor\",\"The, \"\"fabulous\"\" artist'\"" + LINE_SEPARATOR
+                + "6,true,\"Stephnie\",\"The, \"\"fabulous\"\" artist'\"" + LINE_SEPARATOR
+                + "1,false,\"Edythe\",\"The, \"\"fabulous\"\" artist'\"" + LINE_SEPARATOR
                 + "1,true,\"Dwight\",\"The, \"\"fabulous\"\" artist'\"";
 
         assertThat(csv).isEqualTo(expected);
@@ -210,27 +203,72 @@ class CsvTest extends AbstractFakerTest {
     void testCsvWithDifferentObjectsFunction() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
-            field("Number", integer -> faker.number().digits(integer)),
-            field("Bool", () -> faker.bool().bool()),
-            field("String", prefix -> prefix + ": " + faker.name().firstName()),
-            field("Text", () -> "The, \"fabulous\" artist'")
+            field("Number", integer -> integer),
+            field("Password", integer -> faker.internet().password(integer, integer))
         );
         CsvTransformer<Integer> transformer =
             new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
 
-        String csv = transformer.generate(Arrays.asList(1, 2, 3), schema);
+		FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
+                .suppliers(() -> faker.number().randomDigit())
+                .len(5)
+                .build();
+        String csv = transformer.generate(fakeSequence, schema);
 
         String expected =
-            "\"Number\",\"Bool\",\"String\",\"Text\""
-                + System.lineSeparator()
-                + "\"3\",false,\"1: Flor\",\"The, \"\"fabulous\"\" artist'\""
-                + System.lineSeparator()
-                + "\"66\",false,\"2: Lily\",\"The, \"\"fabulous\"\" artist'\""
-                + System.lineSeparator()
-                + "\"439\",true,\"3: Dominick\",\"The, \"\"fabulous\"\" artist'\"";
+            "\"Number\",\"Password\"" + LINE_SEPARATOR
+                + "3,\"l63\"" + LINE_SEPARATOR
+                + "6,\"z5s88e\"" + LINE_SEPARATOR
+                + "7,\"0b92c81\"" + LINE_SEPARATOR
+                + "1,\"5\"" + LINE_SEPARATOR
+                + "3,\"zy2\"";
 
         assertThat(csv).isEqualTo(expected);
     }
+
+    @Test
+    void testCsvWithDifferentObjectsFunctionStream() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Integer, ?> schema = Schema.of(
+                field("Number", integer -> integer),
+                field("Password", integer -> faker.internet().password(integer, integer))
+        );
+        CsvTransformer<Integer> transformer =
+                new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
+
+        FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
+                .suppliers(() -> faker.number().randomDigit())
+                .len(3)
+                .build();;
+        String csv = transformer.generate(fakeSequence, schema);
+
+        String expected =
+            "\"Number\",\"Password\"" + LINE_SEPARATOR
+                + "3,\"f13\"" + LINE_SEPARATOR
+                + "1,\"5\"" + LINE_SEPARATOR
+                + "6,\"3z5s88\"";
+
+        assertThat(csv).isEqualTo(expected);
+    }
+
+    @Test
+	void testCsvWithInfiniteSequence() {
+		BaseFaker faker = new BaseFaker(new Random(10L));
+
+		Schema<Integer, ?> schema = Schema.of(
+				field("Number", integer -> faker.number().digits(integer)),
+				field("String", prefix -> prefix + ": " + faker.name().firstName())
+		);
+		CsvTransformer<Integer> transformer =
+				new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
+
+		FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
+				.suppliers(() -> faker.number().randomDigit())
+				.build();
+		assertThatThrownBy(() -> transformer.generate(fakeSequence, schema))
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessage("The sequence should be finite of size");
+	}
 
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 3, 10, 20, 100})
@@ -248,7 +286,7 @@ class CsvTest extends AbstractFakerTest {
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }
@@ -267,12 +305,12 @@ class CsvTest extends AbstractFakerTest {
             new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(",").build();
         String csv =
             transformer.generate(
-                faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build().get(),
+                faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build(),
                 schema);
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }
@@ -296,7 +334,7 @@ class CsvTest extends AbstractFakerTest {
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }
@@ -315,12 +353,12 @@ class CsvTest extends AbstractFakerTest {
             new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(" : ").build();
         String csv =
             transformer.generate(
-                faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build().get(),
+                faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build(),
                 schema);
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }
@@ -366,7 +404,7 @@ class CsvTest extends AbstractFakerTest {
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
                 numberOfLines++;
             }
         }

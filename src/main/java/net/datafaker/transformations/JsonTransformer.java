@@ -1,13 +1,10 @@
 package net.datafaker.transformations;
 
+import net.datafaker.sequence.FakeSequence;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JsonTransformer<IN> implements Transformer<IN, Object> {
   private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
@@ -15,9 +12,6 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
   @Override
   public String apply(IN input, Schema<IN, ?> schema) {
     Field<?, ?>[] fields = schema.getFields();
-    if (fields.length == 0) {
-      return "{}";
-    }
     StringBuilder sb = new StringBuilder();
     sb.append("{");
     for (int i = 0; i < fields.length; i++) {
@@ -37,15 +31,17 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
   }
 
   @Override
-  public String generate(List<IN> input, Schema<IN, ?> schema) {
-      StringBuilder result = new StringBuilder();
-      for (int i = 0; i < input.size(); i++) {
-          result.append(apply(input.get(i), schema, i));
-          if (i < input.size() - 1) {
-              result.append(",").append(LINE_SEPARATOR);
-          }
-      }
-      return input.size() > 1 ? "{" + LINE_SEPARATOR + result + "}" : result.toString();
+  public String generate(FakeSequence<IN> input, Schema<IN, ?> schema) {
+    if (input.isInfinite()) {
+      throw new IllegalArgumentException("The sequence should be finite of size");
+    }
+
+    StringJoiner data = new StringJoiner(LINE_SEPARATOR);
+    for (IN in : input) {
+      data.add(apply(in, schema));
+    }
+
+    return data.length() > 1 ? "{" + LINE_SEPARATOR + data + LINE_SEPARATOR + "}" : data.toString();
   }
 
   @Override
@@ -57,7 +53,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         sb.append(",").append(LINE_SEPARATOR);
       }
     }
-    return limit > 1 ? "{" + LINE_SEPARATOR + sb + "}" : sb.toString();
+    return limit > 1 ? "{" + LINE_SEPARATOR + sb + LINE_SEPARATOR + "}" : sb.toString();
   }
 
   private static void value2String(Object value, StringBuilder sb) {

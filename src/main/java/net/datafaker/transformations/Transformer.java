@@ -1,6 +1,6 @@
 package net.datafaker.transformations;
 
-import java.util.List;
+import net.datafaker.sequence.FakeSequence;
 
 public interface Transformer<IN, OUT> {
     String LINE_SEPARATOR = System.lineSeparator();
@@ -12,7 +12,7 @@ public interface Transformer<IN, OUT> {
         return apply(input, schema);
     }
 
-    OUT generate(List<IN> input, final Schema<IN, ?> schema);
+    OUT generate(FakeSequence<IN> input, final Schema<IN, ?> schema);
 
     OUT generate(final Schema<IN, ?> schema, int limit);
 }

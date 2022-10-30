@@ -1,5 +1,7 @@
 package net.datafaker.transformations.sql;
 
+import net.datafaker.sequence.FakeSequence;
+import net.datafaker.sequence.FakeStream;
 import net.datafaker.transformations.CompositeField;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
@@ -9,6 +11,8 @@ import net.datafaker.transformations.Transformer;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.ARRAY;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.INSERT_INTO;
@@ -21,6 +25,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private static final char DEFAULT_QUOTE = '\'';
     private static final char DEFAULT_CATALOG_SEPARATOR = '.';
     private static final String DEFAULT_SQL_IDENTIFIER = "\"\"";
+    private static final String EMPTY_RESULT = "";
 
     private final Casing casing;
     private final char quote;
@@ -75,7 +80,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         //noinspection unchecked
         Field<?, ? extends CharSequence>[] fields = (Field<?, ? extends CharSequence>[]) schema.getFields();
         if (fields.length == 0) {
-            return "";
+            return EMPTY_RESULT;
         }
         StringBuilder sb = new StringBuilder();
         if (withBatchMode) {
@@ -84,7 +89,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     SqlDialect.getFirstRow(
                         dialect, () -> appendTableInfo(fields), () -> addValues(input, fields), keywordCase));
             } else {
-                sb.append(",").append(LINE_SEPARATOR)
+                sb.append(",")
+                    .append(LINE_SEPARATOR)
                     .append(
                         SqlDialect.getOtherRow(
                             dialect, () -> appendTableInfo(fields), () -> addValues(input, fields), keywordCase));
@@ -291,33 +297,49 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public String generate(List<IN> input, Schema<IN, ?> schema) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < input.size(); i++) {
-            sb.append(apply(input.get(i), schema, i));
-            if (i == input.size() - 1 && sb.length() > 0 || i % (batchSize - 1) == 0) {
-                if (withBatchMode) {
-                    sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));
-                }
-                sb.append(";");
-            }
+    public String generate(FakeSequence<IN> input, Schema<IN, ?> schema) {
+        if (schema.getFields().length == 0){
+            return EMPTY_RESULT;
         }
-        return sb.toString();
+        if (input.isInfinite()) {
+            throw new IllegalArgumentException("The sequence should be finite of size");
+        }
+
+        List<IN> inputs;
+        if (input instanceof FakeStream) {
+            Stream<IN> stream = input.get();
+            inputs = stream.collect(Collectors.toList());
+        } else {
+            inputs = input.get();
+        }
+
+        int limit = inputs.size();
+        if (withBatchMode) {
+            return generateBatchModeStatements(schema, inputs, limit);
+        } else {
+            return generateSeparatedStatements(schema, inputs, limit);
+        }
     }
 
     @Override
     public String generate(Schema<IN, ?> schema, int limit) {
+        if (schema.getFields().length == 0){
+            return EMPTY_RESULT;
+        }
+
         if (withBatchMode) {
-            return generateBatchModeStatements(schema, limit);
+            return generateBatchModeStatements(schema, null, limit);
         } else {
-            return generateSeparatedStatements(schema, limit);
+            return generateSeparatedStatements(schema, null, limit);
         }
     }
 
-    private String generateBatchModeStatements(Schema<IN, ?> schema, int limit) {
+    private String generateBatchModeStatements(Schema<IN, ?> schema, List<IN> inputs, int limit) {
         StringBuilder sb = new StringBuilder();
+        limit = inputs != null ? Math.min(limit, inputs.size()) : limit;
         for (int i = 0; i < limit; i++) {
-            sb.append(apply(null, schema, i));
+            IN input = inputs != null ? inputs.get(i) : null;
+            sb.append(apply(input, schema, i));
             if (i == limit - 1 && sb.length() > 0 || batchSize > 0 && (i + 1) % batchSize == 0) {
                 sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));
                 sb.append(";");
@@ -329,13 +351,13 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
-    private String generateSeparatedStatements(Schema<IN, ?> schema, int limit) {
+    private String generateSeparatedStatements(Schema<IN, ?> schema, List<IN> inputs, int limit) {
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
-        int limitMin = Math.min(schema.getFields().length, limit);
-        for (int i = 0; i < limitMin; i++) {
-            data.add(apply(null, schema) + ";");
+        limit = inputs != null ? Math.min(limit, inputs.size()) : limit;
+        for (int i = 0; i < limit; i++) {
+            IN input = inputs != null ? inputs.get(i) : null;
+            data.add(apply(input, schema) + ";");
         }
-
         return data.toString();
     }
 
