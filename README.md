@@ -278,6 +278,7 @@ Providers
 * Cat
 * Chuck Norris
 * Clash of Clans
+* Control
 * Code
 * Coin
 * Color

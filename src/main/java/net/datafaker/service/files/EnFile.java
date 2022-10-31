@@ -58,6 +58,7 @@ public class EnFile {
         "cannabis.yml",
         "chuck_norris.yml",
         "clash_of_clans.yml",
+        "control.yml",
         "chiquito.yml",
         "code.yml",
         "coffee.yml",

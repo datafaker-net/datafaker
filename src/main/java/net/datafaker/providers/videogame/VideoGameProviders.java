@@ -11,6 +11,10 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(ClashOfClans.class, ClashOfClans::new);
     }
 
+    default Control control() {
+        return getProvider(Control.class, Control::new);
+    }
+
     default ElderScrolls elderScrolls() {
         return getProvider(ElderScrolls.class, ElderScrolls::new);
     }
