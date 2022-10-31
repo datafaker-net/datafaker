@@ -70,6 +70,7 @@ public class EnFile {
         "computer.yml",
         "compass.yml",
         "detective_conan.yml",
+        "doraemon.yml",
         "construction.yml",
 //            "cosmere.yml",
         "country.yml",
