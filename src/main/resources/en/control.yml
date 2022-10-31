@@ -1,7 +1,6 @@
 en:
   faker:
-    games:
-      control:
+     control:
         character:
           - 'Ahti'
           - 'Alan Wake'
