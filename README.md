@@ -299,6 +299,7 @@ Providers
 * Device
 * Disease
 * Dog
+* Doraemon
 * DC Comics
 * Domain
 * Dragon Ball
