@@ -43,7 +43,7 @@ class CNPJTest extends BaseFakerTest<BaseFaker> {
         assertThat(isCNPJValid(cnpj)).describedAs("Current value " + cnpj).isTrue();
     }
 
-    @Test
+    @RepeatedTest(1000)
     void invalid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
         String cnpj = faker.cnpj().invalid(true, true);
         String branch = cnpj.substring(11, 15);
@@ -51,13 +51,19 @@ class CNPJTest extends BaseFakerTest<BaseFaker> {
         // branches are allowed to be 0001 even in multibranch mode. In this case,
         // we are giving the system 5 chances to generate something different than 0001.
         for (int i = 0; "0001".equals(branch) && i < 5 || "0000".equals(branch); i++) {
-            cnpj = faker.cnpj().valid(true, true);
+            cnpj = faker.cnpj().invalid(true, true);
             branch = cnpj.substring(11, 15);
         }
 
         assertThat(parseInt(branch)).describedAs("Branch " + branch).isGreaterThan(1);
         assertThat(isCNPJValid(cnpj)).describedAs("Current value " + cnpj).isFalse();
     }
+
+    @Test
+    void bug() {
+        System.out.println(isCNPJValid("57.615.644/1633-29"));
+    }
+
 
     /**
      * CNPJ has a main format. This test validate if the number is on the correct format
