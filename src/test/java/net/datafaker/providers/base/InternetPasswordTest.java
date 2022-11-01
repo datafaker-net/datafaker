@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class InternetPasswordTest extends BaseFakerTest<BaseFaker> {
+
     @Test
     void testPassword1000() {
         final Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
