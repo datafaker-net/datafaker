@@ -85,7 +85,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         if (dimension.length == 0) {
             return "";
         } else {
-            return image(Integer.valueOf(dimension[0].trim()), Integer.valueOf(dimension[1].trim()));
+            return image(Integer.parseInt(dimension[0].trim()), Integer.parseInt(dimension[1].trim()));
         }
     }
 
@@ -122,18 +122,18 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        Password.PasswordSymbolsBuilder builder =
-            Password.PasswordSymbolsBuilder.builder()
-                .with(Password.EN_LOWERCASE);
-        if (includeUppercase) builder = builder.with(Password.EN_UPPERCASE, 1);
-        if (includeSpecial) builder = builder.with(Password.DEFAULT_SPECIAL, 1);
-        if (includeDigit) builder = builder.with(Password.DIGITS, 1);
+        Text.TextSymbolsBuilder builder =
+            Text.TextSymbolsBuilder.builder()
+                .with(Text.EN_LOWERCASE);
+        if (includeUppercase) builder = builder.with(Text.EN_UPPERCASE, 1);
+        if (includeSpecial) builder = builder.with(Text.DEFAULT_SPECIAL, 1);
+        if (includeDigit) builder = builder.with(Text.DIGITS, 1);
 
-        Password.PasswordRuleConfig config = builder.withMinLength(minimumLength)
+        Text.TextRuleConfig config = builder.withMinLength(minimumLength)
             .withMaxLength(maximumLength)
             .build(faker);
 
-        return faker.password().password(config);
+        return faker.text().text(config);
     }
 
     /**
