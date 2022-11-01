@@ -8,6 +8,7 @@ import java.math.RoundingMode;
  */
 public class Number extends AbstractProvider<BaseProviders> {
 
+    private static final char[] DIGITS = "0123456789".toCharArray();
     protected Number(BaseProviders faker) {
         super(faker);
     }
@@ -130,11 +131,12 @@ public class Number extends AbstractProvider<BaseProviders> {
     }
 
     public String digits(int count) {
-        final StringBuilder tmp = new StringBuilder(count);
-        for (int i = 0; i < count; i++) {
-            tmp.append(randomDigit());
+        final char[] tmp = new char[count];
+        byte[] input = faker.random().nextRandomBytes(count);
+        for (int i = 0; i < input.length; i++) {
+            tmp[i] = DIGITS[Math.abs(input[i]) % 10];
         }
-        return tmp.toString();
+        return new String(tmp);
     }
 
     public String digit() {
