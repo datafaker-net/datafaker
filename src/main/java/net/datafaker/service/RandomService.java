@@ -67,31 +67,14 @@ public class RandomService {
         return min + (nextDouble() * (max - min));
     }
 
-    /**
-     * Gaussian or normal distribution.
-     * @see <a href="https://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a>
-     * ~ 68 % of generated values will belong to the segment [mean - deviation, mean + deviation]
-     * ~ 95 % of generated values will belong to the segment [mean - 2 * deviation, mean + 2 * deviation]
-     * ~ 99 % of generated values will belong to the segment [mean - 3 * deviation, mean + 3 * deviation]
-     *
-     * @return Returns the next pseudorandom, Gaussian ("normally") distributed double value with mean 0.0
-     * and standard deviation 1.0 from this random number generator's sequence.
-     */
     public double nextGaussian() {
         return random.nextGaussian();
     }
 
     /**
-     * Gaussian or normal distribution with predefined mean and standard deviation.
-     * @see <a href="https://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a>
-     * ~ 68 % of generated values will belong to the segment [mean - deviation, mean + deviation]
-     * ~ 95 % of generated values will belong to the segment [mean - 2 * deviation, mean + 2 * deviation]
-     * ~ 99 % of generated values will belong to the segment [mean - 3 * deviation, mean + 3 * deviation]
-     *
      * @param mean      the mean
      * @param deviation the standard deviation
-     * @return Returns the next pseudorandom, Gaussian ("normally") distributed double value with mean {@code mean}
-     * and standard deviation {@code deviation} from this random number generator's sequence.
+     * @see <a href="https://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a>
      */
     public double nextGaussian(double mean, double deviation) {
         return mean + deviation * nextGaussian();
