@@ -1,14 +1,14 @@
 package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
-import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseFaker;
-import net.datafaker.providers.base.ProviderRegistration;
 import net.datafaker.formats.Csv;
 import net.datafaker.formats.Format;
 import net.datafaker.formats.Json;
+import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
+import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
+import net.datafaker.providers.base.ProviderRegistration;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -227,22 +227,7 @@ public class FakeValuesService {
      * For example, the string "ABC##EFG" could be replaced with a string like "ABC99EFG".
      */
     public String numerify(String numberString, FakerContext context) {
-        char[] res = new char[numberString.length()];
-        for (int i = 0; i < numberString.length(); i++) {
-            switch (numberString.charAt(i)) {
-                case '#':
-                    res[i] = DIGITS[context.getRandomService().nextInt(10)];
-                    break;
-                case 'Ø':
-                    res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
-                    break;
-                default:
-                    res[i] = numberString.charAt(i);
-                    break;
-            }
-        }
-
-        return String.valueOf(res);
+        return bothify(numberString, context, false, true, false);
     }
 
     /**
@@ -250,15 +235,42 @@ public class FakeValuesService {
      * over the incoming string.
      */
     public String bothify(String string, FakerContext context) {
-        return letterify(numerify(string, context), context);
+        return bothify(string, context, false);
     }
 
     /**
      * Applies both a {@link #numerify(String, FakerContext)} and a {@link #letterify(String, FakerContext, boolean)}
      * over the incoming string.
      */
-    public String bothify(String string, FakerContext context, boolean isUpper) {
-        return letterify(numerify(string, context), context, isUpper);
+    public String bothify(String input, FakerContext context, boolean isUpper) {
+        return bothify(input, context, isUpper, true, true);
+    }
+
+    private String bothify(String input, FakerContext context, boolean isUpper, boolean numerify, boolean letterify) {
+        final int baseChar = isUpper ? 65 : 97;
+        char[] res = input.toCharArray();
+        for (int i = 0; i < res.length; i++) {
+            switch (res[i]) {
+            case '#':
+                if (numerify) {
+                    res[i] = DIGITS[context.getRandomService().nextInt(10)];
+                }
+                break;
+            case 'Ø':
+                if (numerify) {
+                   res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
+                }
+                break;
+            case '?':
+                if (letterify) {
+                    res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
+                }
+            default:
+                break;
+            }
+        }
+
+        return String.valueOf(res);
     }
 
     /**
@@ -312,7 +324,7 @@ public class FakeValuesService {
      * For example, the string "12??34" could be replaced with a string like "12AB34".
      */
     public String letterify(String letterString, FakerContext context, boolean isUpper) {
-        return letterHelper((isUpper) ? 65 : 97, letterString, context); // from ascii table
+        return bothify(letterString, context, isUpper, false, true);
     }
 
     /**
@@ -339,17 +351,6 @@ public class FakeValuesService {
             }
         }
         return sb.toString();
-    }
-
-    private String letterHelper(int baseChar, String letterString, FakerContext context) {
-        final char[] res = letterString.toCharArray();
-        for (int i = 0; i < letterString.length(); i++) {
-            if (letterString.charAt(i) == '?') {
-                res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
-            }
-        }
-
-        return String.valueOf(res);
     }
 
     /**
