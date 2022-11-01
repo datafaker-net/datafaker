@@ -3,6 +3,7 @@ package net.datafaker.service;
 import java.util.Random;
 
 public class RandomService {
+    private static final char[] HEX = "0123456789ABCDEF".toCharArray();
     private static final Random SHARED_RANDOM = new Random();
     private final Random random;
 
@@ -88,13 +89,9 @@ public class RandomService {
             return ""; // Keep the existing behavior instead of throwing an error.
         }
         final char[] hexChars = new char[length];
+        final byte[] randomBytes = nextRandomBytes(length);
         for (int i = 0; i < length; i++) {
-            final int nextHex = nextInt(16);
-            if (nextHex < 10) {
-                hexChars[i] = (char) ('0' + nextHex);
-            } else {
-                hexChars[i] = (char) ('A' + nextHex - 10);
-            }
+            hexChars[i] = HEX[Math.abs(randomBytes[i]) % HEX.length];
         }
         return new String(hexChars);
     }
