@@ -131,8 +131,9 @@ public class Number extends AbstractProvider<BaseProviders> {
 
     public String digits(int count) {
         final StringBuilder tmp = new StringBuilder(count);
-        for (int i = 0; i < count; i++) {
-            tmp.append(randomDigit());
+        byte[] input = faker.random().nextRandomBytes(count);
+        for (int i = 0; i < input.length; i++) {
+            tmp.append(Math.abs(input[i]) % 10);
         }
         return tmp.toString();
     }
