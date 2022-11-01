@@ -128,7 +128,7 @@ class TextTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testFixedLengthText() {
+    void testDefaultLengthText() {
         for (int i = 0; i < 100; i++) {
             String text = faker.text().text();
             assertThat(text).hasSizeBetween(20, 80);
