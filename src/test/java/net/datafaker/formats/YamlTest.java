@@ -108,7 +108,6 @@ class YamlTest {
                 faker.<Name>collection().suppliers(faker::name).maxLen(1).build(),
                 schema);
 
-        System.out.println(yaml);
         int numberOfLines = 0;
         for (int i = 0; i < yaml.length(); i++) {
             if (yaml.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
