@@ -2,8 +2,6 @@ package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
 import org.assertj.core.api.Condition;
-import org.assertj.core.data.Offset;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -12,7 +10,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.allOf;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author pmiklos
@@ -90,57 +90,6 @@ class RandomServiceTest extends AbstractFakerTest {
         for (int i = 1; i < 100; i++) {
             assertThat(randomService.nextDouble(-5, 5)).is(allOf(lessThanOrEqual, greaterThanOrEqual));
         }
-    }
-
-    @RepeatedTest(100)
-    void testNextGaussian() {
-        RandomService randomService = new RandomService();
-        int totalAmount = 10_000;
-        int oneSigmaCount = 0;
-        int twoSigmaCount = 0;
-        int threeSigmaCount = 0;
-        double sigma = 1;
-        for (int i = 0; i < totalAmount; i++) {
-            double value = randomService.nextGaussian();
-            if (value >= -sigma && value <= sigma) oneSigmaCount++;
-            if (value >= -2 * sigma && value <= 2 * sigma) twoSigmaCount++;
-            if (value >= -3 * sigma && value <= 3 * sigma) threeSigmaCount++;
-        }
-
-        double oneSigmaProbability = (oneSigmaCount * 1.0) / totalAmount;
-        double twoSigmaProbability = (twoSigmaCount * 1.0) / totalAmount;
-        double threeSigmaProbability = (threeSigmaCount * 1.0) / totalAmount;
-
-        assertThat(oneSigmaProbability).isCloseTo(0.68, Offset.offset(0.02));
-        assertThat(twoSigmaProbability).isCloseTo(0.95, Offset.offset(0.02));
-        assertThat(threeSigmaProbability).isCloseTo(0.99, Offset.offset(0.02));
-    }
-
-    @RepeatedTest(100)
-    void testNextGaussianWithDeviationAndMean() {
-        RandomService randomService = new RandomService();
-        double testMean = 5.0;
-        double testDeviation = 10;
-        int totalAmount = 10_000;
-
-        int oneSigmaCount = 0;
-        int twoSigmaCount = 0;
-        int threeSigmaCount = 0;
-
-        for (int i = 0; i < totalAmount; i++) {
-            double value = randomService.nextGaussian(testMean, testDeviation);
-            if (value >= testMean - testDeviation && value <= testMean + testDeviation) oneSigmaCount++;
-            if (value >= testMean - 2 * testDeviation && value <= testMean + 2 * testDeviation) twoSigmaCount++;
-            if (value >= testMean - 3 * testDeviation && value <= testMean + 3 * testDeviation) threeSigmaCount++;
-        }
-
-        double oneSigmaProbability = (oneSigmaCount * 1.0) / totalAmount;
-        double twoSigmaProbability = (twoSigmaCount * 1.0) / totalAmount;
-        double threeSigmaProbability = (threeSigmaCount * 1.0) / totalAmount;
-
-        assertThat(oneSigmaProbability).isCloseTo(0.68, Offset.offset(0.02));
-        assertThat(twoSigmaProbability).isCloseTo(0.95, Offset.offset(0.02));
-        assertThat(threeSigmaProbability).isCloseTo(0.99, Offset.offset(0.02));
     }
 
     @ParameterizedTest
