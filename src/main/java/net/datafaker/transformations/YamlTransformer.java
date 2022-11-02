@@ -43,7 +43,7 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
         for (int i = 0; i < limit; i++) {
             sb.append(apply(null, schema));
             if (i < limit - 1) {
-                sb.append("\n");
+                sb.append(LINE_SEPARATOR);
             }
         }
         return sb.toString();
