@@ -67,6 +67,14 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
+    void testBetweenWithSameLocalTime() {
+        LocalTime now = LocalTime.now();
+
+        long time = faker.time().between(now, now);
+        assertThat(LocalTime.ofNanoOfDay(time)).isEqualTo(now);
+    }
+
+    @Test
     void testBetweenThenLargerThanNow() {
         LocalTime now = LocalTime.now();
         LocalTime then = now.plus(1, ChronoUnit.SECONDS);
