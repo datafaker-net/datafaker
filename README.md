@@ -298,6 +298,7 @@ Providers
 * Dessert
 * Device
 * Disease
+* Doctor Who
 * Dog
 * Doraemon
 * DC Comics
