@@ -55,6 +55,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(DetectiveConan.class, DetectiveConan::new);
     }
 
+    default DoctorWho doctorWho() {
+        return getProvider(DoctorWho.class, DoctorWho::new);
+    }
+
     default Doraemon doraemon() {
         return getProvider(Doraemon.class, Doraemon::new);
     }
