@@ -341,9 +341,9 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
             throw new IllegalArgumentException("Max period(" + max + ") should be not less than min (" + min + ")");
         }
         return Period.of(
-            faker.random().nextInt(min.getYears(), max.getYears() + 1),
-            faker.random().nextInt(min.getMonths(), max.getMonths() + 1),
-            faker.random().nextInt(min.getDays(), max.getDays() + 1));
+            faker.random().nextInt(min.getYears(), max.getYears()),
+            faker.random().nextInt(min.getMonths(), max.getMonths()),
+            faker.random().nextInt(min.getDays(), max.getDays()));
     }
 
     /**
