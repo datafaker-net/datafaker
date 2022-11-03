@@ -84,6 +84,15 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
+    void testBetweenWithMask() {
+        String pattern = "mm:hh:ss";
+        LocalTime now = LocalTime.now();
+        LocalTime then = now.plus(1, ChronoUnit.MINUTES);
+
+        DateTimeFormatter.ofPattern(pattern).parse(faker.time().between(now, then, pattern));
+    }
+
+    @Test
     void futureWithMask() {
         String pattern = "mm:hh:ss";
         DateTimeFormatter.ofPattern(pattern).parse(faker.time().future(1, ChronoUnit.HOURS, pattern));
