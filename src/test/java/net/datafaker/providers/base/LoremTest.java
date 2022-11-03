@@ -92,7 +92,12 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(10)
     void testCharactersMinimumMaximumLengthEqualsIncludingUppercaseAndIncludingDigit() {
-        assertThat(faker.lorem().characters(8, 8, true, true)).matches("[a-zA-Z\\d]{8}");
+        assertThat(faker.lorem().characters(6, 10, true, true)).matches("[a-zA-Z\\d]{6,10}");
+    }
+
+    @RepeatedTest(10)
+    void testCharactersFixedLengthIncludingUppercaseAndIncludingDigit() {
+        assertThat(faker.lorem().characters(10, true, true)).matches("[a-zA-Z\\d]{10}");
     }
 
     @Test
