@@ -123,7 +123,9 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Construction.class, Construction::new);
     }
 
-    default Cosmere cosmere() { return getProvider(Cosmere.class, Cosmere::new); }
+    default Cosmere cosmere() {
+        return getProvider(Cosmere.class, Cosmere::new);
+    }
 
     default Country country() {
         return getProvider(Country.class, Country::new);

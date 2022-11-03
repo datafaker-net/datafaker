@@ -322,9 +322,9 @@ class FakeStreamTest extends AbstractFakerTest {
     void testIterator() {
         int fakeSequenceSize = 100;
         FakeSequence<String> digits = faker
-                .stream(() -> faker.number().digit())
-                .len(fakeSequenceSize)
-                .build();
+            .stream(() -> faker.number().digit())
+            .len(fakeSequenceSize)
+            .build();
 
         int count = 0;
         for (String digit : digits) {
@@ -338,8 +338,8 @@ class FakeStreamTest extends AbstractFakerTest {
     @Test
     void testIteratorInfinite() {
         FakeSequence<String> digits = faker
-                .stream(() -> faker.number().digit())
-                .build();
+            .stream(() -> faker.number().digit())
+            .build();
 
         assertThat(digits.isInfinite()).isTrue();
 

@@ -251,22 +251,22 @@ public class FakeValuesService {
         char[] res = input.toCharArray();
         for (int i = 0; i < res.length; i++) {
             switch (res[i]) {
-            case '#':
-                if (numerify) {
-                    res[i] = DIGITS[context.getRandomService().nextInt(10)];
-                }
-                break;
-            case 'Ø':
-                if (numerify) {
-                   res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
-                }
-                break;
-            case '?':
-                if (letterify) {
-                    res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
-                }
-            default:
-                break;
+                case '#':
+                    if (numerify) {
+                        res[i] = DIGITS[context.getRandomService().nextInt(10)];
+                    }
+                    break;
+                case 'Ø':
+                    if (numerify) {
+                        res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
+                    }
+                    break;
+                case '?':
+                    if (letterify) {
+                        res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
+                    }
+                default:
+                    break;
             }
         }
 
@@ -718,7 +718,7 @@ public class FakeValuesService {
                     sb.append(Character.toLowerCase(c));
                     cnt--;
                 } else {
-                  sb.append(c);
+                    sb.append(c);
                 }
             } else {
                 sb.append(expression.substring(i));

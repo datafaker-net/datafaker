@@ -26,6 +26,7 @@ public class Compass extends AbstractProvider<BaseProviders> {
 
     /**
      * Specify point of direction. If not specified, point of direction will be randomly selected.
+     *
      * @param compassPoint point of direction.
      * @return itself with specified point of direction.
      * @see CompassPoint

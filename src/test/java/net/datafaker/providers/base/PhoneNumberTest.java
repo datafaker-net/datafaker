@@ -61,7 +61,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
                 if (!util.isValidNumberForRegion(proto, phoneNumberRegion)) {
                     errorCount++;
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 errorCount++;
             }
         }
