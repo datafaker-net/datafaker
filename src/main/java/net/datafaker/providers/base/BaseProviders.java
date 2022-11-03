@@ -179,6 +179,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Domain.class, Domain::new);
     }
 
+    default Drone drone() {
+        return getProvider(Drone.class, Drone::new);
+    }
+
     default DrivingLicense drivingLicense() {
         return getProvider(DrivingLicense.class, DrivingLicense::new);
     }
