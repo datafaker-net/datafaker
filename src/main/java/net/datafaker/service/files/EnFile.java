@@ -91,6 +91,7 @@ public class EnFile {
         "dr_who.yml",
         "dragon_ball.yml",
         "driving_license.yml",
+        "drone.yml",
         "dumb_and_dumber.yml",
         "dune.yml",
         "educator.yml",
