@@ -217,6 +217,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Finance.class, Finance::new);
     }
 
+    default FreshPrinceOfBelAir freshPrinceOfBelAir() {
+        return getProvider(FreshPrinceOfBelAir.class, FreshPrinceOfBelAir::new);
+    }
+
     default FunnyName funnyName() {
         return getProvider(FunnyName.class, FunnyName::new);
     }
