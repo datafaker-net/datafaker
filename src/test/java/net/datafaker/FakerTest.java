@@ -303,6 +303,16 @@ class FakerTest extends AbstractFakerTest {
     }
 
     @Test
+    void doWithLocaleExceptionTest() {
+        BaseFaker localFaker = new BaseFaker();
+        assertThatThrownBy(
+            () -> localFaker.doWith(() -> {
+                throw new Exception();
+            }, Locale.JAPAN))
+            .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
     void differentSeeds() {
         BaseFaker localFaker = new Faker();
         Callable<String> stringCallable = () -> localFaker.name().firstName();
