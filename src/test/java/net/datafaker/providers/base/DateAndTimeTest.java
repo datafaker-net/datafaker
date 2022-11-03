@@ -90,6 +90,15 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
+    void testBetweenWithMaskReturningString() {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Timestamp then = new Timestamp(System.currentTimeMillis() + 1000);
+        String pattern = "YYYY MM.dd mm:hh:ss";
+
+        DateTimeFormatter.ofPattern(pattern).parse(faker.date().between(now, then, pattern));
+    }
+
+    @Test
     void testBetweenDateAsArgument() {
          faker.date().between(new Date(), new Date());
     }
