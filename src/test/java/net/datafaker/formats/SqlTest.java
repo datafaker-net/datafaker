@@ -80,6 +80,21 @@ class SqlTest {
     }
 
     @Test
+    void generateFromEmptySchema() {
+        BaseFaker faker = new BaseFaker();
+        Schema<Integer, Object> schema = Schema.of();
+
+        SqlTransformer<Integer> transformer = new SqlTransformer.SqlTransformerBuilder<Integer>()
+            .build();
+
+        FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
+            .suppliers(() -> faker.number().randomDigit())
+            .build();
+
+        assertThat(transformer.generate(fakeSequence, schema)).isEqualTo("");
+    }
+
+    @Test
     void generateFromInfiniteFakeSequenceBatch() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
@@ -297,6 +312,26 @@ class SqlTest {
             .doesNotContain("INSERT INTO ")
             .contains("values ")
             .doesNotContain("VALUES");
+    }
+
+    @Test
+    void sqlKeywordCapitalCaseCheck() {
+        Faker faker = new Faker();
+        Schema<String, String> schema =
+            Schema.of(field("firstName", () -> faker.name().firstName()),
+                field("lastName", () -> faker.name().lastName()));
+        SqlTransformer<String> transformer =
+            new SqlTransformer.SqlTransformerBuilder<String>()
+                .keywordCase(SqlTransformer.Case.CAPITAL)
+                .dialect(SqlDialect.POSTGRES).build();
+        final int limit = 1;
+        assertThat(transformer.generate(schema, limit))
+            .contains("Insert Into ")
+            .doesNotContain("INSERT INTO ")
+            .doesNotContain("insert into")
+            .contains("Values ")
+            .doesNotContain("VALUES")
+            .doesNotContain("values");
     }
 
     @Test
