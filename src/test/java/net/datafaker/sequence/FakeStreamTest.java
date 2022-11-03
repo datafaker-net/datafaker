@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,6 +76,15 @@ class FakeStreamTest extends AbstractFakerTest {
                 .generate())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Null rate should be between 0 and 1");
+    }
+
+    @Test
+    void generateStreamPassingSuppliersAsList() {
+        BaseFaker faker = new BaseFaker();
+        List<Supplier<String>> suppliers = Arrays.asList(() -> faker.name().firstName(), () -> faker.name().lastName());
+        Stream<String> stream = faker.stream(suppliers).len(3).generate();
+
+        assertThat(stream.collect(Collectors.toList())).hasSize(3);
     }
 
     @Test
