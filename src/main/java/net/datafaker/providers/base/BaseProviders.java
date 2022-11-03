@@ -123,9 +123,7 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Construction.class, Construction::new);
     }
 
-    default Money money() {
-        return getProvider(Money.class, Money::new);
-    }
+    default Cosmere cosmere() { return getProvider(Cosmere.class, Cosmere::new); }
 
     default Country country() {
         return getProvider(Country.class, Country::new);
@@ -133,10 +131,6 @@ public interface BaseProviders extends ProviderRegistration {
 
     default CPF cpf() {
         return getProvider(CPF.class, CPF::new);
-    }
-
-    default Hashing hashing() {
-        return getProvider(Hashing.class, Hashing::new);
     }
 
     default CryptoCoin cryptoCoin() {
@@ -181,6 +175,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Domain domain() {
         return getProvider(Domain.class, Domain::new);
+    }
+
+    default Drone drone() {
+        return getProvider(Drone.class, Drone::new);
     }
 
     default DrivingLicense drivingLicense() {
@@ -241,6 +239,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Hacker hacker() {
         return getProvider(Hacker.class, Hacker::new);
+    }
+
+    default Hashing hashing() {
+        return getProvider(Hashing.class, Hashing::new);
     }
 
     default Hipster hipster() {
@@ -321,6 +323,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Minecraft minecraft() {
         return getProvider(Minecraft.class, Minecraft::new);
+    }
+
+    default Money money() {
+        return getProvider(Money.class, Money::new);
     }
 
     default Mood mood() {
