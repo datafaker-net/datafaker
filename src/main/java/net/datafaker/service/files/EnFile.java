@@ -110,7 +110,7 @@ public class EnFile {
         "food.yml",
         "football.yml",
         "formula1.yml",
-//            "fresh_prince_of_bel_air.yml",
+        "fresh_prince_of_bel_air.yml",
         "friends.yml",
         "fma_brotherhood.yml",
         "funny_name.yml",
