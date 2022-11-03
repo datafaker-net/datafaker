@@ -72,7 +72,7 @@ public class EnFile {
         "detective_conan.yml",
         "doraemon.yml",
         "construction.yml",
-//            "cosmere.yml",
+        "cosmere.yml",
         "country.yml",
         "cricket.yml",
         "crypto_coin.yml",
