@@ -1,6 +1,9 @@
 package net.datafaker;
 
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.service.FakeValuesService;
+import net.datafaker.service.FakerContext;
+import net.datafaker.service.RandomService;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -283,6 +286,8 @@ class FakerTest extends AbstractFakerTest {
         assertThat(new Faker(Locale.CANADA)).isInstanceOf(BaseFaker.class);
         assertThat(new Faker(new Random(1))).isInstanceOf(BaseFaker.class);
         assertThat(new Faker(Locale.CHINA, new Random(2))).isInstanceOf(BaseFaker.class);
+        assertThat(new Faker(Locale.US, new RandomService())).isInstanceOf(BaseFaker.class);
+        assertThat(new Faker(new FakeValuesService(), new FakerContext(Locale.JAPAN, new RandomService()))).isInstanceOf(BaseFaker.class);
     }
 
     @Test
