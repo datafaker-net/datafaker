@@ -42,7 +42,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private final SqlDialect dialect;
 
     private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier,
-        Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
+                           Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
         this.schemaName = schemaName;
         this.quote = quote;
         this.dialect = dialect;
@@ -163,7 +163,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         StringBuilder result = new StringBuilder();
         Collection collection = (Collection) value;
         int i = 0;
-        for (Object elem: collection) {
+        for (Object elem : collection) {
             result.append(handleObject(elem));
             if (i < collection.size() - 1) {
                 result.append(", ");
@@ -217,12 +217,14 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             for (int j = 0; j < array.length; j++) {
                 joiner.add(String.valueOf(array[j]));
             }
-        } if (componentType == short.class) {
+        }
+        if (componentType == short.class) {
             short[] array = (short[]) value;
             for (int j = 0; j < array.length; j++) {
                 joiner.add(String.valueOf(array[j]));
             }
-        } if (componentType == boolean.class) {
+        }
+        if (componentType == boolean.class) {
             boolean[] array = (boolean[]) value;
             for (int j = 0; j < array.length; j++) {
                 joiner.add(String.valueOf(array[j]));
@@ -267,7 +269,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             }
             for (int j = 0; j < fieldName.length(); j++) {
                 if (openSqlIdentifier == fieldName.charAt(j)
-                  || closeSqlIdentifier == fieldName.charAt(j)) {
+                    || closeSqlIdentifier == fieldName.charAt(j)) {
                     result.append(openSqlIdentifier);
                 }
                 result.append(fieldName.charAt(j));
@@ -298,7 +300,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String generate(FakeSequence<IN> input, Schema<IN, ?> schema) {
-        if (schema.getFields().length == 0){
+        if (schema.getFields().length == 0) {
             return EMPTY_RESULT;
         }
         if (input.isInfinite()) {
@@ -323,7 +325,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String generate(Schema<IN, ?> schema, int limit) {
-        if (schema.getFields().length == 0){
+        if (schema.getFields().length == 0) {
             return EMPTY_RESULT;
         }
 
@@ -467,10 +469,14 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
         public String getValue(Case caze) {
             switch (caze) {
-                case UPPERCASE: return upperCaseValue;
-                case LOWERCASE: return lowerCaseValue;
-                case CAPITAL: return capitalValue;
-                default: throw new IllegalArgumentException("Unknown case " + caze);
+                case UPPERCASE:
+                    return upperCaseValue;
+                case LOWERCASE:
+                    return lowerCaseValue;
+                case CAPITAL:
+                    return capitalValue;
+                default:
+                    throw new IllegalArgumentException("Unknown case " + caze);
             }
         }
     }

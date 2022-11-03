@@ -2,6 +2,7 @@ package net.datafaker.providers.base;
 
 
 import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class DroneTest extends net.datafaker.AbstractFakerTest {

@@ -9,6 +9,7 @@ import java.math.RoundingMode;
 public class Number extends AbstractProvider<BaseProviders> {
 
     private static final char[] DIGITS = "0123456789".toCharArray();
+
     protected Number(BaseProviders faker) {
         super(faker);
     }

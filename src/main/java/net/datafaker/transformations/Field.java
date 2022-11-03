@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 public interface Field<IN, OUT> {
     String getName();
+
     OUT transform(IN input);
 
     static <MyObject, MyType> SimpleField<MyObject, MyType> field(

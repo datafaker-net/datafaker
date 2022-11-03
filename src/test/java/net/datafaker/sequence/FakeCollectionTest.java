@@ -267,9 +267,9 @@ class FakeCollectionTest extends AbstractFakerTest {
     void testIterator() {
         int fakeSequenceSize = 10;
         FakeSequence<String> digits = faker
-                .collection(() -> faker.number().digit())
-                .len(fakeSequenceSize)
-                .build();
+            .collection(() -> faker.number().digit())
+            .len(fakeSequenceSize)
+            .build();
 
         int count = 0;
         for (String digit : digits) {

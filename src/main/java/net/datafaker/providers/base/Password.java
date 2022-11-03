@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @deprecated Replaced by Text
  * @since 1.6.0
+ * @deprecated Replaced by Text
  */
 @Deprecated
 public class Password extends AbstractProvider<BaseProviders> {

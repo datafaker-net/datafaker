@@ -91,7 +91,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testBetweenDateAsArgument() {
-         faker.date().between(new Date(), new Date());
+        faker.date().between(new Date(), new Date());
     }
 
     @Test

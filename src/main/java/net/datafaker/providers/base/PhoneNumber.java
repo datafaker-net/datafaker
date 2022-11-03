@@ -15,6 +15,7 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates locale specific phone number in national format.
+     *
      * @return phone number
      */
     public String phoneNumber() {
