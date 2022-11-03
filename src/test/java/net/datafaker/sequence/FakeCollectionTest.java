@@ -11,8 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -114,6 +116,15 @@ class FakeCollectionTest extends AbstractFakerTest {
                 .maxLen(5).build().get())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Null rate should be between 0 and 1");
+    }
+
+    @Test
+    void generateCollectionPassingSuppliersAsList() {
+        BaseFaker seededFaker = new BaseFaker(new Random(10L));
+        List<Supplier<String>> suppliers = Arrays.asList(() -> faker.name().firstName(), () -> faker.name().lastName());
+
+        List<String> names = faker.collection(suppliers).faker(seededFaker).len(3).generate();
+        assertThat(names).hasSize(3);
     }
 
     @Test
