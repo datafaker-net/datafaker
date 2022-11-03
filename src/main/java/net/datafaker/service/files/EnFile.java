@@ -76,7 +76,7 @@ public class EnFile {
         "country.yml",
         "cricket.yml",
         "crypto_coin.yml",
-//            "culture_series.yml",
+        "culture_series.yml",
         "currency.yml",
         "dc_comics.yml",
         "dark_soul.yml",

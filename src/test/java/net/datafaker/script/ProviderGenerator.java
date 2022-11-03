@@ -23,7 +23,7 @@ class ProviderGenerator {
     void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("cosmere.todo.yml"));
+        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("culture_series.todo.yml"));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
@@ -57,14 +57,14 @@ class ProviderGenerator {
     private void createCreator(File file, String key, Set<String> strings) {
         String className = toJavaConvention(file.getName().substring(0, file.getName().indexOf(".")));
 
-        System.out.println("package net.datafaker;");
+        System.out.println("package net.datafaker.providers.base;");
         System.out.println();
         System.out.println("/**");
         System.out.println(" * @since 1.7.0");
         System.out.println(" */");
-        System.out.println("public class " + className + " extends AbstractProvider<MovieProviders> {");
+        System.out.println("public class " + className + " extends AbstractProvider<BaseProviders> {");
         System.out.println();
-        System.out.println("    protected " + className + "(MovieProviders faker) {");
+        System.out.println("    protected " + className + "(BaseProviders faker) {");
         System.out.println("        super(faker);");
         System.out.println("    }");
         System.out.println();
@@ -86,7 +86,7 @@ class ProviderGenerator {
         // replace the first letter with a lowercase letter
         String methodName = StringUtils.uncapitalize(toJavaConvention(className));
 
-        System.out.println("package net.datafaker;");
+        System.out.println("package net.datafaker.providers.base;");
         System.out.println();
         System.out.println("import org.junit.jupiter.api.Test;");
         System.out.println("import static org.assertj.core.api.AssertionsForClassTypes.assertThat;");
