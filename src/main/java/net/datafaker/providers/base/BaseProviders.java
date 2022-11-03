@@ -147,6 +147,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Currency.class, Currency::new);
     }
 
+    default CultureSeries cultureSeries() {
+        return getProvider(CultureSeries.class, CultureSeries::new);
+    }
+
     default DarkSoul darkSoul() {
         return getProvider(DarkSoul.class, DarkSoul::new);
     }
