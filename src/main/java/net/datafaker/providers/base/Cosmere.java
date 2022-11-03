@@ -1,6 +1,8 @@
 package net.datafaker.providers.base;
 
 /**
+ * The cosmere is a fictional shared universe where several of Brandon Sanderson's books take place.
+ *
  * @since 1.7.0
  */
 public class Cosmere extends AbstractProvider<BaseProviders> {
