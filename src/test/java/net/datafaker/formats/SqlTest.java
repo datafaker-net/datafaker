@@ -5,7 +5,6 @@ import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
-import net.datafaker.transformations.sql.Casing;
 import net.datafaker.transformations.sql.SqlDialect;
 import net.datafaker.transformations.sql.SqlTransformer;
 import org.junit.jupiter.api.Test;
@@ -295,21 +294,6 @@ class SqlTest {
         final int limit = 5;
         String output = transformer.generate(schema, limit);
         assertThat(output.split(LINE_SEPARATOR)).hasSize(limit + 1);
-    }
-
-    @Test
-    void sqlCasingCheck() {
-        BaseFaker faker = new BaseFaker();
-        Schema<String, String> schema =
-            Schema.of(field("firstName", () -> faker.name().firstName()),
-                field("lastName", () -> faker.name().lastName()));
-
-        SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
-                .casing(Casing.TO_UPPER)
-                .dialect(SqlDialect.POSTGRES).build();
-
-        assertThat(transformer.generate(schema, 5)).contains("INSERT INTO").contains("VALUES");
     }
 
     @Test
