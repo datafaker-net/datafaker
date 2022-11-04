@@ -256,6 +256,7 @@ Providers
 * Avatar
 * Aviation
 * AWS
+* Azure
 * Babylon 5
 * Back To The Future
 * Barcode
