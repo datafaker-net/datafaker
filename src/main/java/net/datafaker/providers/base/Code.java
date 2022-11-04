@@ -35,7 +35,7 @@ public class Code extends AbstractProvider<BaseProviders> {
      * @return a GS1 code for an ISBN13, currently is only 978 and 979
      */
     public String isbnGs1() {
-        return faker.regexify("978|979");
+        return faker.options().option("978", "979");
     }
 
     /**
@@ -49,7 +49,7 @@ public class Code extends AbstractProvider<BaseProviders> {
      * @return an ISBN group number
      */
     public String isbnGroup() {
-        return faker.regexify("[0-1]");
+        return faker.options().option("0", "1");
     }
 
     /**
