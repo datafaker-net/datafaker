@@ -14,8 +14,8 @@ class FakerIDNTest {
     }
 
     @Test
-    void toASCIIEmptyInput() {
-        assertThatThrownBy(() -> FakerIDN.toASCII(""))
+    void toASCIIResultIsEmptyException() { // http://Ⱥbby.com
+        assertThatThrownBy(() -> FakerIDN.toASCII("Ⱥ"))
             .isInstanceOf(RuntimeException.class);
     }
 
