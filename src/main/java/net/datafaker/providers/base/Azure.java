@@ -3,8 +3,8 @@ package net.datafaker.providers.base;
 
 /**
  * Generates data for Azure services. This is based on the Azure best practices of naming conventions:
- * <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming">...</a>
- * <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations">...</a>
+ * <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming">Naming conventions</a>
+ * <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations">Abbreviation examples</a>
  *
  * @since 1.7.0
  */
