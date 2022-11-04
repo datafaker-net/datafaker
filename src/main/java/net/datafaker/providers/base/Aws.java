@@ -70,6 +70,6 @@ public class Aws extends AbstractProvider<BaseProviders> {
     }
 
     private String randHex() {
-        return faker.regexify("[a-f0-9]{16}");
+        return faker.random().hex(16, false);
     }
 }

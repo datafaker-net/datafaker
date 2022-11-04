@@ -19,11 +19,11 @@ public class Azure extends AbstractProvider<BaseProviders> {
     }
 
     public String subscriptionId() {
-        return faker.regexify("[a-f0-9]{8}") + '-' +
-            faker.regexify("[a-f0-9]{4}") + '-' +
-            faker.regexify("[a-f0-9]{4}") + '-' +
-            faker.regexify("[a-f0-9]{4}") + '-' +
-            faker.regexify("[a-f0-9]{12}");
+        return faker.random().hex(8, false) + '-' +
+            faker.random().hex(4, false) + '-' +
+            faker.random().hex(4, false) + '-' +
+            faker.random().hex(4, false) + '-' +
+            faker.random().hex(12, false);
     }
 
     public String tenantId() {
@@ -142,6 +142,6 @@ public class Azure extends AbstractProvider<BaseProviders> {
     }
 
     private String randHex() {
-        return faker.regexify("[a-f0-9]{16}");
+        return faker.random().hex(16, false);
     }
 }
