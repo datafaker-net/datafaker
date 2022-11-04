@@ -47,6 +47,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Aws.class, Aws::new);
     }
 
+    default Azure azure() {
+        return getProvider(Azure.class, Azure::new);
+    }
+
     default Barcode barcode() {
         return getProvider(Barcode.class, Barcode::new);
     }

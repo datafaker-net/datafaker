@@ -39,6 +39,7 @@ public class EnFile {
         "australia.yml",
         "aviation.yml",
         "aws.yml",
+        "azure.yml",
         "babylon5.yml",
         "back_to_the_future.yml",
         "barcode.yml",
