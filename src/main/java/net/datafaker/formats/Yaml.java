@@ -3,6 +3,7 @@ package net.datafaker.formats;
 import java.util.*;
 import java.util.function.Supplier;
 
+@Deprecated
 public class Yaml {
     private static final String INDENTATION = "  ";
     private final Map<Supplier<String>, Supplier<Object>> map;
