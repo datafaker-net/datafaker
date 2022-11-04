@@ -136,6 +136,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(Movie.class, Movie::new);
     }
 
+    default OnePiece onePiece() {
+        return getProvider(OnePiece.class, OnePiece::new);
+    }
+
     default OscarMovie oscarMovie() {
         return getProvider(OscarMovie.class, OscarMovie::new);
     }
