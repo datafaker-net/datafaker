@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import static net.datafaker.providers.base.Text.EN_UPPERCASE;
 
 /**
  * @since 1.3.0
@@ -50,7 +51,8 @@ public class Aws extends AbstractProvider<BaseProviders> {
     }
 
     public String route53ZoneId() {
-        return faker.regexify("[A-Z]{21}");
+        return faker.text().text(
+            Text.TextSymbolsBuilder.builder().with(EN_UPPERCASE).withMaxLength(21).withMinLength(21).build(faker));
     }
 
     public String securityGroupId() {
