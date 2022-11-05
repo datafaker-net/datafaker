@@ -41,11 +41,11 @@ class SqlTest {
 
         String sql = transformer.generate(fakeSequence, schema);
 
-        String expected = "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, 'l63');" + LINE_SEPARATOR +
-            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (6, 'z5s88e');" + LINE_SEPARATOR +
-            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (7, '0b92c81');" + LINE_SEPARATOR +
+        String expected = "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, '280');" + LINE_SEPARATOR +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (6, 'olp2qk');" + LINE_SEPARATOR +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (7, 'qiid881');" + LINE_SEPARATOR +
             "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (1, '5');" + LINE_SEPARATOR +
-            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, 'zy2');";
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, '42w');";
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -70,11 +70,11 @@ class SqlTest {
 
         String expected =
             "INSERT INTO \"MyTable\" (\"Number\", \"Password\")" + LINE_SEPARATOR +
-                "VALUES (3, 'l63')," + LINE_SEPARATOR +
-                "       (6, 'z5s88e')," + LINE_SEPARATOR +
-                "       (7, '0b92c81')," + LINE_SEPARATOR +
+                "VALUES (3, '280')," + LINE_SEPARATOR +
+                "       (6, 'olp2qk')," + LINE_SEPARATOR +
+                "       (7, 'qiid881')," + LINE_SEPARATOR +
                 "       (1, '5')," + LINE_SEPARATOR +
-                "       (3, 'zy2');";
+                "       (3, '42w');";
 
         assertThat(sql).isEqualTo(expected);
     }

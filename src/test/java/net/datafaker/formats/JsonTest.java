@@ -58,11 +58,11 @@ class JsonTest {
         String json = transformer.generate(fakeSequence, schema);
 
         String expected = "{" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"l63\"}" + LINE_SEPARATOR +
-            "{\"Number\": 6, \"Password\": \"z5s88e\"}" + LINE_SEPARATOR +
-            "{\"Number\": 7, \"Password\": \"0b92c81\"}" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"280\"}" + LINE_SEPARATOR +
+            "{\"Number\": 6, \"Password\": \"olp2qk\"}" + LINE_SEPARATOR +
+            "{\"Number\": 7, \"Password\": \"qiid881\"}" + LINE_SEPARATOR +
             "{\"Number\": 1, \"Password\": \"5\"}" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"zy2\"}" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"42w\"}" + LINE_SEPARATOR +
             "}";
 
         assertThat(json).isEqualTo(expected);
@@ -85,8 +85,8 @@ class JsonTest {
         String json = transformer.generate(fakeSequence, schema);
 
         String expected = "{" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"f13\"}" + LINE_SEPARATOR +
-            "{\"Number\": 1, \"Password\": \"5\"}" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"og4\"}" + LINE_SEPARATOR +
+            "{\"Number\": 1, \"Password\": \"2\"}" + LINE_SEPARATOR +
             "}";
 
         assertThat(json).isEqualTo(expected);
