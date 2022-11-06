@@ -122,18 +122,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        Text.TextSymbolsBuilder builder =
-            Text.TextSymbolsBuilder.builder()
-                .with(Text.EN_LOWERCASE);
-        if (includeUppercase) builder = builder.with(Text.EN_UPPERCASE, 1);
-        if (includeSpecial) builder = builder.with(Text.DEFAULT_SPECIAL, 1);
-        if (includeDigit) builder = builder.with(Text.DIGITS, 1);
-
-        Text.TextRuleConfig config = builder.withMinLength(minimumLength)
-            .withMaxLength(maximumLength)
-            .build(faker);
-
-        return faker.text().text(config);
+        return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
 
     /**

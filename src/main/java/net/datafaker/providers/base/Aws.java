@@ -12,7 +12,7 @@ public class Aws extends AbstractProvider<BaseProviders> {
     protected Aws(BaseProviders faker) {
         super(faker);
         configForRoute53ZoneId = Text.TextSymbolsBuilder.builder()
-                                 .with(EN_UPPERCASE).withMaxLength(21).withMinLength(21).build(faker);
+                                 .with(EN_UPPERCASE).len(21).build();
     }
 
     public String region() {
