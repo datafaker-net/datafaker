@@ -44,9 +44,9 @@ Kotlin Faker
 
 | Project      | Java Version                              | Mode | Cnt | Score               | Units |
 |:-------------|:------------------------------------------|:-----|:----|:--------------------|:------|
-| Datafaker   | openjdk-1.8.0.332.b09-1.fc36.x86_64       | avgt | 10  | 2352.789 ± 61.214   | ms/op |
-| Datafaker   | openjdk-11.0.15.0.10-1.fc36.x86_64        | avgt | 10  | 2428.885 ± 19.153   | ms/op |
-| Datafaker   | openjdk-18.0.1.0.10-1.rolling.fc36.x86_64 | avgt | 10  | 1985.712 ± 27.692   | ms/op |
+| Datafaker    | openjdk-1.8.0.332.b09-1.fc36.x86_64       | avgt | 10  | 2352.789 ± 61.214   | ms/op |
+| Datafaker    | openjdk-11.0.15.0.10-1.fc36.x86_64        | avgt | 10  | 2428.885 ± 19.153   | ms/op |
+| Datafaker    | openjdk-18.0.1.0.10-1.rolling.fc36.x86_64 | avgt | 10  | 1985.712 ± 27.692   | ms/op |
 | Java Faker   | openjdk-1.8.0.332.b09-1.fc36.x86_64       | avgt | 10  | 12026.367 ± 103.005 | ms/op |
 | Java Faker   | openjdk-11.0.15.0.10-1.fc36.x86_64        | avgt | 10  | 11985.717 ± 202.768 | ms/op |
 | Java Faker   | openjdk-18.0.1.0.10-1.rolling.fc36.x86_64 | avgt | 10  | 9910.120 ± 334.016  | ms/op |
