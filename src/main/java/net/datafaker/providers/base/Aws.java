@@ -7,8 +7,12 @@ import static net.datafaker.providers.base.Text.EN_UPPERCASE;
  */
 public class Aws extends AbstractProvider<BaseProviders> {
 
+    private final Text.TextRuleConfig configForRoute53ZoneId;
+
     protected Aws(BaseProviders faker) {
         super(faker);
+        configForRoute53ZoneId = Text.TextSymbolsBuilder.builder()
+                                 .with(EN_UPPERCASE).withMaxLength(21).withMinLength(21).build(faker);
     }
 
     public String region() {
@@ -51,8 +55,7 @@ public class Aws extends AbstractProvider<BaseProviders> {
     }
 
     public String route53ZoneId() {
-        return faker.text().text(
-            Text.TextSymbolsBuilder.builder().with(EN_UPPERCASE).withMaxLength(21).withMinLength(21).build(faker));
+        return faker.text().text(configForRoute53ZoneId);
     }
 
     public String securityGroupId() {
