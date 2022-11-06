@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.WeakHashMap;
 
 /**
  * Generates random text in a flexible way.
@@ -11,6 +13,8 @@ import java.util.Map;
  * @since 1.7.0
  */
 public class Text extends AbstractProvider<BaseProviders> {
+
+    private final Map<TextConfigPojo, TextRuleConfig> configMap = new WeakHashMap<>();
 
     public Character character() {
         return text(1, 1, true).charAt(0);
@@ -65,16 +69,21 @@ public class Text extends AbstractProvider<BaseProviders> {
     }
 
     public String text(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        TextSymbolsBuilder builder =
-            TextSymbolsBuilder.builder()
-                .with(Text.EN_LOWERCASE);
-        if (includeUppercase) builder = builder.with(Text.EN_UPPERCASE, 1);
-        if (includeSpecial) builder = builder.with(Text.DEFAULT_SPECIAL, 1);
-        if (includeDigit) builder = builder.with(Text.DIGITS, 1);
+        final int len = faker.number().numberBetween(minimumLength, maximumLength + 1);
+        TextConfigPojo pojo = new TextConfigPojo(len, includeUppercase, includeSpecial, includeDigit);
+        Text.TextRuleConfig config = configMap.get(pojo);
+        if (config == null) {
+            TextSymbolsBuilder builder =
+                TextSymbolsBuilder.builder()
+                                  .with(Text.EN_LOWERCASE);
+            if (includeUppercase) builder = builder.with(Text.EN_UPPERCASE, 1);
+            if (includeSpecial) builder = builder.with(Text.DEFAULT_SPECIAL, 1);
+            if (includeDigit) builder = builder.with(Text.DIGITS, 1);
 
-        Text.TextRuleConfig config = builder.withMinLength(minimumLength)
-            .withMaxLength(maximumLength)
-            .build(faker);
+            config = builder.len(len).build();
+            configMap.putIfAbsent(pojo, config);
+        }
+
 
         return faker.text().text(config);
     }
@@ -115,8 +124,7 @@ public class Text extends AbstractProvider<BaseProviders> {
     }
 
     public static class TextSymbolsBuilder {
-        private int minLength;
-        private int maxLength;
+        private int length;
         private final Map<TextKey, Integer> map = new HashMap<>();
         private boolean throwIfLengthSmall = false;
 
@@ -139,13 +147,8 @@ public class Text extends AbstractProvider<BaseProviders> {
             return with(listOfSymbols, 0);
         }
 
-        public TextSymbolsBuilder withMinLength(int minLength) {
-            this.minLength = minLength;
-            return this;
-        }
-
-        public TextSymbolsBuilder withMaxLength(int maxLength) {
-            this.maxLength = maxLength;
+        public TextSymbolsBuilder len(int len) {
+            this.length = len;
             return this;
         }
 
@@ -154,16 +157,12 @@ public class Text extends AbstractProvider<BaseProviders> {
             return this;
         }
 
-        public TextRuleConfig build(BaseProviders faker) {
-            if (maxLength < minLength) {
-                throw new IllegalArgumentException("Max length should be not smaller than min length");
-            }
+        public TextRuleConfig build() {
             int minSize = map.values().stream().filter(t -> t > 0).reduce(0, Integer::sum);
-            if (minSize > minLength && throwIfLengthSmall) {
+            if (minSize > length && throwIfLengthSmall) {
                 throw new IllegalArgumentException("Min length should be not smaller than number of required characters");
             }
-            int fixedNumberOfCharacters = faker.number().numberBetween(minLength, maxLength + 1);
-            return new TextRuleConfig(fixedNumberOfCharacters, map, minSize);
+            return new TextRuleConfig(length, map, minSize);
         }
     }
 
@@ -278,6 +277,36 @@ public class Text extends AbstractProvider<BaseProviders> {
             }
             // ASSUMPTION: every TextKey contains unique symbols
             return key[0];
+        }
+    }
+
+    private static class TextConfigPojo {
+        private final int length;
+        private final boolean includeUppercase;
+        private final boolean includeSpecial;
+        private final boolean includeDigit;
+
+        public TextConfigPojo(int length, boolean includeUppercase, boolean includeSpecial,
+            boolean includeDigit) {
+            this.length = length;
+            this.includeUppercase = includeUppercase;
+            this.includeSpecial = includeSpecial;
+            this.includeDigit = includeDigit;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+            TextConfigPojo that = (TextConfigPojo) o;
+            return length == that.length && includeUppercase == that.includeUppercase && includeSpecial == that.includeSpecial && includeDigit == that.includeDigit;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(length, includeUppercase, includeSpecial, includeDigit);
         }
     }
 }

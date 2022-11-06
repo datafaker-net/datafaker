@@ -21,10 +21,9 @@ class TextTest extends BaseFakerTest<BaseFaker> {
         final int ruCnt = 3;
         final int specSmbCnt = 5;
         final Text.TextRuleConfig config = Text.TextSymbolsBuilder.builder()
-            .withMinLength(ruCnt + specSmbCnt)
-            .withMaxLength(Math.max(ruCnt + specSmbCnt, 10))
+            .len(faker.number().numberBetween(ruCnt + specSmbCnt, Math.max(ruCnt + specSmbCnt, 10)))
             .with(ruLowerCase, ruCnt)
-            .with(customSpecialSymbols, specSmbCnt).build(faker);
+            .with(customSpecialSymbols, specSmbCnt).build();
 
         for (int i = 0; i < 1000; i++) {
             final String text = faker.text().text(config);
@@ -50,13 +49,12 @@ class TextTest extends BaseFakerTest<BaseFaker> {
     void exceptionIfLengthIsShorterThanNumberOfRequiredSymbols() {
         assertThatThrownBy(() ->
             faker.text().text(Text.TextSymbolsBuilder.builder()
-                .withMinLength(1)
-                .withMaxLength(1)
+                .len(1)
                 .with(EN_LOWERCASE, 1)
                 .with(EN_UPPERCASE, 1)
                 .with(DIGITS, 1)
                 .throwIfLengthSmall(true)
-                .build(faker)))
+                .build()))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -64,11 +62,10 @@ class TextTest extends BaseFakerTest<BaseFaker> {
     void everyTextShouldContainLowerCaseUpperCaseAndDigit() {
         int count = 0;
         final Text.TextRuleConfig config = Text.TextSymbolsBuilder.builder()
-            .withMinLength(6)
-            .withMaxLength(10)
+            .len(faker.number().numberBetween(6, 10))
             .with(EN_LOWERCASE, 1)
             .with(EN_UPPERCASE, 1)
-            .with(DIGITS, 1).build(faker);
+            .with(DIGITS, 1).build();
         while (count++ < 1000) {
             String text = faker.text().text(config);
             assertThat(text).is(new Condition<>(pw -> {
