@@ -101,6 +101,7 @@ nav:
       - Date format: documentation/date-format.md
       - Expressions: documentation/expressions.md
       - Formats: documentation/formats.md
+      - Transformation schemas: documentation/schemas.md
       - Unique values: documentation/unique-values.md
     - Performance: documentation/performance.md
     - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.6.0/datafaker-1.6.0-javadoc.jar/!/index.html'
