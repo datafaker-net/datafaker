@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import java.io.IOException;
@@ -50,18 +49,14 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     @BeforeEach
     protected void before() {
         super.before();
-        try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
 
-            // always return the first element
-            when(randomService.nextInt(anyInt())).thenReturn(0);
-            context = new FakerContext(new Locale("test"), randomService);
-            when(mockedFaker.getContext()).thenReturn(context);
+        // always return the first element
+        when(randomService.nextInt(anyInt())).thenReturn(0);
+        context = new FakerContext(new Locale("test"), randomService);
+        when(mockedFaker.getContext()).thenReturn(context);
 
-            fakeValuesService = Mockito.spy(new FakeValuesService());
-            fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        fakeValuesService = Mockito.spy(new FakeValuesService());
+        fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
     }
 
     @Test
