@@ -97,7 +97,7 @@ public class RandomService {
         final char[] hexChars = new char[length];
         final byte[] randomBytes = nextRandomBytes(length);
         for (int i = 0; i < length; i++) {
-            hexChars[i] = hexArray[Math.abs(randomBytes[i]) % hexArray.length];
+            hexChars[i] = hexArray[((char) randomBytes[i]) % hexArray.length];
         }
         return new String(hexChars);
     }

@@ -177,8 +177,9 @@ public class Text extends AbstractProvider<BaseProviders> {
         char[] buffer = new char[fixedNumberOfCharacters];
         int idx = 0;
         TextKey[] keys = map.keySet().toArray(new TextKey[0]);
-        int totalDiffSymbols = Arrays.stream(keys).mapToInt(t -> t.key.length).sum();
-        if (totalDiffSymbols <= 256) {
+        int maxDiffSymbols = Math.max(keys.length, Arrays.stream(keys).mapToInt(t -> t.key.length).max().getAsInt());
+        // 256 is a length of byte value range
+        if (maxDiffSymbols <= 256) {
             return textWithNotMoreThan256DiffSymbols(
                 map, faker.random().nextRandomBytes(2 * fixedNumberOfCharacters),
                 fixedNumberOfCharacters, numberOfRequiredSymbols);
@@ -222,20 +223,20 @@ public class Text extends AbstractProvider<BaseProviders> {
                 for (Map.Entry<TextKey, Integer> entry : map.entrySet()) {
                     final TextKey key = entry.getKey();
                     for (int i = 0; i < entry.getValue(); i++) {
-                        buffer[idx++] = key.key[Math.abs(bytes[bytesCounter++]) % key.key.length];
+                        buffer[idx++] = key.key[((char) (bytes[bytesCounter++])) % key.key.length];
                         numberOfRequired++;
                     }
                     map.put(key, 0);
                     if (idx == buffer.length) break;
                 }
             } else {
-                TextKey key = keys[Math.abs(bytes[bytesCounter++]) % keys.length];
+                TextKey key = keys[((char) (bytes[bytesCounter++])) % keys.length];
                 Integer curValue = map.get(key);
                 if (curValue > 0) {
                     map.put(key, curValue - 1);
                     numberOfRequired++;
                 }
-                buffer[idx++] = key.key[Math.abs(bytes[bytesCounter++]) % key.key.length];
+                buffer[idx++] = key.key[((char) bytes[bytesCounter++]) % key.key.length];
             }
         }
         return String.valueOf(buffer);
@@ -275,7 +276,8 @@ public class Text extends AbstractProvider<BaseProviders> {
             if (key.length == 0) {
                 return 1;
             }
-            return key[0] * 31 + key.length;
+            // ASSUMPTION: every TextKey contains unique symbols
+            return key[0];
         }
     }
 }
