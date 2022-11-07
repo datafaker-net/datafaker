@@ -100,7 +100,6 @@ public class Text extends AbstractProvider<BaseProviders> {
         private final char[][] textKeys;
         private final int[] required;
         private final int fixedNumberOfCharacters;
-      //  private final Map<TextKey, Integer> map;
 
         private final int numberOfRequiredSymbols;
 
@@ -176,7 +175,6 @@ public class Text extends AbstractProvider<BaseProviders> {
         if (fixedNumberOfCharacters < numberOfRequiredSymbols) {
             return "";
         }
-        //final Map<TextKey, Integer> map = new HashMap<>(textRuleConfig.getMap());
         char[] buffer = new char[fixedNumberOfCharacters];
         int idx = 0;
         int maxDiffSymbols = 0;
