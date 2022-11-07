@@ -19,7 +19,6 @@ class StarCraftTest extends VideoGameFakerTest {
     @RepeatedTest(1000)
     void testUnitOneThousand() {
         String unit = faker.starCraft().unit();
-        // System.out.println(unit);
         assertThat(unit)
             .isNotEmpty()
             .matches(noLeadingTrailingWhitespaceRegex);
