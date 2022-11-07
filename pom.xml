@@ -6,7 +6,7 @@
     <version>1.7.0-SNAPSHOT</version>
     <name>Data Faker</name>
     <description>
-        This library is a improved port of JavaFaker (as well as Ruby's stympy/faker gem and Perl's Data::Faker library) that
+        This library is a improved fork of JavaFaker (as well as Ruby's stympy/faker gem and Perl's Data::Faker library) that
         generates fake data.
         It's useful when you're developing a new project and need some pretty data for showcase.
     </description>
