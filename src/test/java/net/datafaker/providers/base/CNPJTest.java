@@ -61,7 +61,7 @@ class CNPJTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void bug() {
-        System.out.println(isCNPJValid("57.615.644/1633-29"));
+        isCNPJValid("57.615.644/1633-29");
     }
 
 
