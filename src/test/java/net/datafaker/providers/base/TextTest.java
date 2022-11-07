@@ -25,8 +25,9 @@ class TextTest extends BaseFakerTest<BaseFaker> {
             .with(ruLowerCase, ruCnt)
             .with(customSpecialSymbols, specSmbCnt).build();
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             final String text = faker.text().text(config);
+            System.out.println(text);
             assertThat(text).matches(s -> {
                 int j = 0;
                 int curRuCnt = 0;
