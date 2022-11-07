@@ -1,7 +1,6 @@
 package net.datafaker.providers.base;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -98,23 +97,28 @@ public class Text extends AbstractProvider<BaseProviders> {
     }
 
     public static class TextRuleConfig {
+        private final char[][] textKeys;
+        private final int[] required;
         private final int fixedNumberOfCharacters;
-        private final Map<TextKey, Integer> map;
+      //  private final Map<TextKey, Integer> map;
 
         private final int numberOfRequiredSymbols;
 
-        private TextRuleConfig(int fixedNumberOfCharacters, Map<TextKey, Integer> map, int numberOfRequiredSymbols) {
+        private TextRuleConfig(int fixedNumberOfCharacters, Map<String, Integer> map, int numberOfRequiredSymbols) {
             this.fixedNumberOfCharacters = fixedNumberOfCharacters;
-            this.map = Collections.unmodifiableMap(map);
             this.numberOfRequiredSymbols = numberOfRequiredSymbols;
+            this.textKeys = new char[map.size()][];
+            this.required = new int[map.size()];
+            int i = 0;
+            for (Map.Entry<String, Integer> entry: map.entrySet()) {
+                textKeys[i] = entry.getKey().toCharArray();
+                required[i] = entry.getValue();
+                i++;
+            }
         }
 
         public int getFixedNumberOfCharacters() {
             return fixedNumberOfCharacters;
-        }
-
-        public Map<TextKey, Integer> getMap() {
-            return map;
         }
 
         public int getNumberOfRequiredSymbols() {
@@ -125,7 +129,7 @@ public class Text extends AbstractProvider<BaseProviders> {
 
     public static class TextSymbolsBuilder {
         private int length;
-        private final Map<TextKey, Integer> map = new HashMap<>();
+        private final Map<String, Integer> map = new HashMap<>();
         private boolean throwIfLengthSmall = false;
 
         private TextSymbolsBuilder() {
@@ -139,7 +143,7 @@ public class Text extends AbstractProvider<BaseProviders> {
             if (times < 0) {
                 throw new IllegalArgumentException("times should be non-negative");
             }
-            map.put(new TextKey(listOfSymbols), times);
+            map.put(listOfSymbols, times);
             return this;
         }
 
@@ -172,113 +176,74 @@ public class Text extends AbstractProvider<BaseProviders> {
         if (fixedNumberOfCharacters < numberOfRequiredSymbols) {
             return "";
         }
-        final Map<TextKey, Integer> map = new HashMap<>(textRuleConfig.getMap());
+        //final Map<TextKey, Integer> map = new HashMap<>(textRuleConfig.getMap());
         char[] buffer = new char[fixedNumberOfCharacters];
         int idx = 0;
-        TextKey[] keys = map.keySet().toArray(new TextKey[0]);
-        int maxDiffSymbols = Math.max(keys.length, Arrays.stream(keys).mapToInt(t -> t.key.length).max().getAsInt());
+        int maxDiffSymbols = 0;
+        for (int i = 0; i < textRuleConfig.textKeys.length; i++) {
+            maxDiffSymbols += textRuleConfig.textKeys[i].length;
+        }
         // 256 is a length of byte value range
         if (maxDiffSymbols <= 256) {
             return textWithNotMoreThan256DiffSymbols(
-                map, faker.random().nextRandomBytes(2 * fixedNumberOfCharacters),
+                textRuleConfig, faker.random().nextRandomBytes(2 * fixedNumberOfCharacters),
                 fixedNumberOfCharacters, numberOfRequiredSymbols);
         }
         int numberOfRequired = 0;
+        int[] required = Arrays.copyOf(textRuleConfig.required, textRuleConfig.required.length);
         while (idx < buffer.length) {
             if (numberOfRequiredSymbols > numberOfRequired
                 && numberOfRequiredSymbols - numberOfRequired == buffer.length - idx) {
-                for (Map.Entry<TextKey, Integer> entry : map.entrySet()) {
-                    final TextKey key = entry.getKey();
-                    for (int i = 0; i < entry.getValue(); i++) {
-                        buffer[idx++] = entry.getKey().key[faker.random().nextInt(entry.getKey().key.length)];
+                for (int j = 0; j < textRuleConfig.textKeys.length; j++) {
+                    while (required[j] > 0) {
+                        buffer[idx++] = textRuleConfig.textKeys[j][faker.random().nextInt(textRuleConfig.textKeys[j].length)];
                         numberOfRequired++;
+                        required[j]--;
                     }
-                    map.put(key, 0);
                     if (idx == buffer.length) break;
                 }
             } else {
-                TextKey key = faker.options().option(keys);
-                Integer curValue = map.get(key);
-                if (curValue > 0) {
-                    map.put(key, curValue - 1);
+                int index = faker.random().nextInt(required.length);
+                if (required[index] > 0) {
                     numberOfRequired++;
+                    required[index]--;
                 }
-                buffer[idx++] = key.key[faker.random().nextInt(key.key.length)];
+                buffer[idx++] = textRuleConfig.textKeys[index][faker.random().nextInt(textRuleConfig.textKeys[index].length)];
             }
         }
         return String.valueOf(buffer);
     }
 
     private String textWithNotMoreThan256DiffSymbols(
-        Map<TextKey, Integer> map, byte[] bytes, int fixedNumberOfCharacters, int numberOfRequiredSymbols) {
+        TextRuleConfig textRuleConfig, byte[] bytes, int fixedNumberOfCharacters, int numberOfRequiredSymbols) {
         char[] buffer = new char[fixedNumberOfCharacters];
         int idx = 0;
-        TextKey[] keys = map.keySet().toArray(new TextKey[0]);
         int bytesCounter = 0;
         int numberOfRequired = 0;
+        int[] required = Arrays.copyOf(textRuleConfig.required, textRuleConfig.required.length);
         while (idx < buffer.length) {
             if (numberOfRequiredSymbols > numberOfRequired
                 && numberOfRequiredSymbols - numberOfRequired == buffer.length - idx) {
-                for (Map.Entry<TextKey, Integer> entry : map.entrySet()) {
-                    final TextKey key = entry.getKey();
-                    for (int i = 0; i < entry.getValue(); i++) {
-                        buffer[idx++] = key.key[((char) (bytes[bytesCounter++])) % key.key.length];
+                for (int j = 0; j < textRuleConfig.textKeys.length; j++) {
+                    while (required[j] > 0) {
+                        buffer[idx++] = textRuleConfig.textKeys[j][((char) (bytes[bytesCounter++])) % textRuleConfig.textKeys[j].length];
                         numberOfRequired++;
+                        required[j]--;
                     }
-                    map.put(key, 0);
                     if (idx == buffer.length) break;
                 }
             } else {
-                TextKey key = keys[((char) (bytes[bytesCounter++])) % keys.length];
-                Integer curValue = map.get(key);
-                if (curValue > 0) {
-                    map.put(key, curValue - 1);
+                int index = ((char) (bytes[bytesCounter++])) % textRuleConfig.textKeys.length;
+                if (required[index] > 0) {
                     numberOfRequired++;
+                    required[index]--;
                 }
-                buffer[idx++] = key.key[((char) bytes[bytesCounter++]) % key.key.length];
+                buffer[idx++] = textRuleConfig.textKeys[index][((char) bytes[bytesCounter++]) % textRuleConfig.textKeys[index].length];
             }
         }
         return String.valueOf(buffer);
     }
 
-
-    private static class TextKey {
-        private final char[] key;
-
-        public TextKey(char[] key) {
-            this.key = key;
-        }
-
-        public TextKey(String key) {
-            this.key = key.toCharArray();
-        }
-
-        public char[] getKey() {
-            return key;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (o == null || getClass() != o.getClass())
-                return false;
-            TextKey textKey = (TextKey) o;
-            return Arrays.equals(key, textKey.key);
-        }
-
-        @Override
-        public int hashCode() {
-            if (key == null) {
-                return 0;
-            }
-            if (key.length == 0) {
-                return 1;
-            }
-            // ASSUMPTION: every TextKey contains unique symbols
-            return key[0];
-        }
-    }
 
     private static class TextConfigPojo {
         private final int length;
