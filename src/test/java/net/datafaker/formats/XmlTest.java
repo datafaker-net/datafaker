@@ -1,8 +1,11 @@
 package net.datafaker.formats;
 
+import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.Name;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.XmlTransformer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -23,8 +26,8 @@ class XmlTest {
     @ParameterizedTest
     @MethodSource("generateTestXmlSchema")
     void xmlSchemaTest(Schema<String, String> schema, String expected) {
-        XmlTransformer<String> xml = new XmlTransformer.XmlTransformerBuilder<String>().build();
-        assertThat(xml.generate(schema, 1)).isEqualTo(expected);
+        XmlTransformer<String> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<String>().build();
+        assertThat(xmlTransformer.generate(schema, 1)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestXmlSchema() {
@@ -51,8 +54,8 @@ class XmlTest {
     @ParameterizedTest
     @MethodSource("generateTestXmlPrettySchema")
     void xmlPrettySchemaTest(Schema<String, String> schema, String expected) {
-        XmlTransformer<String> xml = new XmlTransformer.XmlTransformerBuilder<String>().pretty(true).build();
-        assertThat(xml.generate(schema, 1)).isEqualTo(expected);
+        XmlTransformer<String> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<String>().pretty(true).build();
+        assertThat(xmlTransformer.generate(schema, 1)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> generateTestXmlPrettySchema() {
@@ -74,6 +77,27 @@ class XmlTest {
                 "<root attribute1=\"value1\" attribute2=\"value2\">" + System.lineSeparator() + "    <child>value</child>" + System.lineSeparator() + "</root>"),
             of(Schema.of(field("root", () -> "<> value\"")), "<root>&lt;&gt; value&quot;</root>")
         );
+    }
+
+    @Test
+    void generateFromFakeSequence() {
+        final BaseFaker faker = new BaseFaker();
+        Schema<Name, String> schema = Schema.of(field("firstName", Name::firstName));
+
+        XmlTransformer<Name> transformer = new XmlTransformer.XmlTransformerBuilder<Name>().build();
+
+        String xml = transformer.generate(
+            faker.<Name>collection().suppliers(faker::name).maxLen(3).build(),
+            schema);
+
+        int numberOfLines = 1;
+        for (int i = 0; i < xml.length(); i++) {
+            if (xml.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+                numberOfLines++;
+            }
+        }
+
+        assertThat(numberOfLines).isEqualTo(3);
     }
 
     @ParameterizedTest

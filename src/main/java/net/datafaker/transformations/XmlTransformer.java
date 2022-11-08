@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import net.datafaker.sequence.FakeSequence;
 
@@ -26,6 +27,46 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
         StringBuilder sb = new StringBuilder();
         Arrays.stream(schema.getFields()).forEach(it -> apply(input, sb, it));
         return sb.toString();
+    }
+
+    @Override
+    public String generate(FakeSequence<IN> input, Schema<IN, ?> schema) {
+        if (input.isInfinite()) {
+            throw new IllegalArgumentException("The sequence should be finite of size");
+        }
+
+        StringJoiner data = new StringJoiner(LINE_SEPARATOR);
+        for (IN in : input) {
+            data.add(apply(in, schema));
+        }
+
+        return data.toString();
+    }
+
+    @Override
+    public CharSequence generate(Schema<IN, ?> schema, int limit) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < limit; i++) {
+            sb.append(apply(null, schema));
+            if (i < limit - 1) {
+                sb.append(LINE_SEPARATOR);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static class XmlTransformerBuilder<IN> {
+
+        private boolean pretty= false;
+
+        public XmlTransformer.XmlTransformerBuilder<IN> pretty(boolean pretty) {
+            this.pretty = pretty;
+            return this;
+        }
+
+        public XmlTransformer<IN> build() {
+            return new XmlTransformer<>(pretty);
+        }
     }
 
     private void apply(IN input, StringBuilder sb, Field<IN, ?> xmlNode) {
@@ -101,37 +142,6 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
             sb.append("</").append(tag).append(">");
         } else {
             sb.append("/>");
-        }
-    }
-
-    @Override
-    public CharSequence generate(FakeSequence<IN> input, Schema<IN, ?> schema) {
-        return null;
-    }
-
-    @Override
-    public CharSequence generate(Schema<IN, ?> schema, int limit) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < limit; i++) {
-            sb.append(apply(null, schema));
-            if (i < limit - 1) {
-                sb.append(LINE_SEPARATOR);
-            }
-        }
-        return sb.toString();
-    }
-
-    public static class XmlTransformerBuilder<IN> {
-
-        private boolean pretty= false;
-
-        public XmlTransformer.XmlTransformerBuilder<IN> pretty(boolean pretty) {
-            this.pretty = pretty;
-            return this;
-        }
-
-        public XmlTransformer<IN> build() {
-            return new XmlTransformer<>(pretty);
         }
     }
 
