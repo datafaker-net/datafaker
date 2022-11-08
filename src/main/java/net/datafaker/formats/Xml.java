@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class Xml {
     private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
     private static final int INDENTATION_STEP = 4;
