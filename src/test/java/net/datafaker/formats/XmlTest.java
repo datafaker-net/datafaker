@@ -4,6 +4,7 @@ import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
+import net.datafaker.transformations.SimpleField;
 import net.datafaker.transformations.XmlTransformer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,8 +12,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -82,12 +85,16 @@ class XmlTest {
     @Test
     void generateFromFakeSequence() {
         final BaseFaker faker = new BaseFaker();
-        Schema<Name, String> schema = Schema.of(field("firstName", Name::firstName));
 
-        XmlTransformer<Name> transformer = new XmlTransformer.XmlTransformerBuilder<Name>().build();
+        Schema<Name, List<SimpleField<Name, String>>> schema = Schema.of(
+            field("root",
+                () -> Arrays.asList(
+                    field("firstName", Name::firstName),
+                    field("username", Name::username))));
 
+        XmlTransformer<Name> transformer = new XmlTransformer.XmlTransformerBuilder<Name>().pretty(true).build();
         String xml = transformer.generate(
-            faker.<Name>collection().suppliers(faker::name).maxLen(3).build(),
+            faker.<Name>collection().suppliers(faker::name).maxLen(1).build(),
             schema);
 
         int numberOfLines = 1;
@@ -97,7 +104,7 @@ class XmlTest {
             }
         }
 
-        assertThat(numberOfLines).isEqualTo(3);
+        assertThat(numberOfLines).isEqualTo(4);
     }
 
     @ParameterizedTest
