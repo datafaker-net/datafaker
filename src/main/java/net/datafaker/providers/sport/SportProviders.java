@@ -27,4 +27,7 @@ public interface SportProviders extends ProviderRegistration {
         return getProvider(Volleyball.class, Volleyball::new);
     }
 
+    default Baseball baseball() {
+        return getProvider(Baseball.class, Baseball::new);
+    }
 }
