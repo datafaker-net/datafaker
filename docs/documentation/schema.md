@@ -218,7 +218,7 @@ XML transformation could be build with help of `new XmlTransformer.XmlTransforme
 ### Elements and attributes
 
 In case you want to generate XML, Datafaker provides a facility to build XML elements and
-attributes using randomly generated data in the following way:
+attributes using XmlTransformer and randomly generated data in the following way:
 
 === "Java"
 
