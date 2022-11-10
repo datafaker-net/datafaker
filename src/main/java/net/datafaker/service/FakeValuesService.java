@@ -603,12 +603,12 @@ public class FakeValuesService {
         if (directive.isEmpty()) {
             return directive;
         }
-        final boolean dotDirective = isDotDirective(directive);
+        final int dotIndex = getDotIndex(directive);
 
         Object resolved;
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
         // #{ssn_valid} on IdNumber
-        if (!dotDirective) {
+        if (dotIndex == -1) {
             Supplier<Object> supplier = resolveFromMethodOn(current, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 //expression2function.put(expression, supplier);
@@ -616,7 +616,7 @@ public class FakeValuesService {
             }
         }
 
-        final String simpleDirective = (dotDirective || current == null)
+        final String simpleDirective = (dotIndex >= 0 || current == null)
             ? directive
             : classNameToYamlName(current) + "." + directive;
         // simple fetch of a value from the yaml file. the directive may have been mutated
@@ -630,7 +630,7 @@ public class FakeValuesService {
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
-        if (!dotDirective && root != null && (current == null || root.getClass() != current.getClass())) {
+        if (dotIndex == -1 && root != null && (current == null || root.getClass() != current.getClass())) {
             supplier = resolveFromMethodOn(root, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 //       expression2function.put(expression, supplier);
@@ -639,8 +639,8 @@ public class FakeValuesService {
         }
 
         // Resolve Faker Object method references like #{ClassName.method_name}
-        if (dotDirective) {
-            supplier = resolveFakerObjectAndMethod(root, directive, args);
+        if (dotIndex >= 0) {
+            supplier = resolveFakerObjectAndMethod(root, directive, dotIndex, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 // expression2function.put(expression, supplier);
                 return resolved;
@@ -652,7 +652,7 @@ public class FakeValuesService {
         // thru the normal resolution above, but if we will can't resolve it, we once again do a 'safeFetch' as we
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
-        if (dotDirective) {
+        if (dotIndex >= 0) {
             supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), context, null);
             resolved = supplier.get();
         }
@@ -679,8 +679,8 @@ public class FakeValuesService {
         return slashDelimitedRegex.substring(1, slashDelimitedRegex.length() - 1);
     }
 
-    private boolean isDotDirective(String directive) {
-        return directive.indexOf('.') != -1;
+    private int getDotIndex(String directive) {
+        return directive.indexOf('.');
     }
 
     /**
@@ -758,13 +758,12 @@ public class FakeValuesService {
      *
      * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
      */
-    private Supplier<Object> resolveFakerObjectAndMethod(ProviderRegistration faker, String key, String[] args) {
-        int index = key.indexOf('.');
+    private Supplier<Object> resolveFakerObjectAndMethod(ProviderRegistration faker, String key, int dotIndex, String[] args) {
         final String[] classAndMethod;
-        if (index == -1) {
+        if (dotIndex == -1) {
             classAndMethod = new String[]{key};
         } else {
-            classAndMethod = new String[]{key.substring(0, index), index == key.length() - 1 ? "" : key.substring(index + 1)};
+            classAndMethod = new String[]{key.substring(0, dotIndex), dotIndex == key.length() - 1 ? "" : key.substring(dotIndex + 1)};
         }
 
         try {
