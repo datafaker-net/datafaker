@@ -10,10 +10,9 @@ Supported fake sequences:
 Support of fake collections has been added to Datafaker since version 1.2.0.  
 Support of fake streams/fake sequence has been added to Datafaker since version 1.7.0.
 
-For example, the following code will generate a list/stream of first and last names with number of elements in it
-between 3 and 5:
+For example, the following code will generate a list/stream of first and last names with number of elements in it between 3 and 5:
 
-=== "Java"
+=== "List"
 
     ``` java 
     List<String> names = 
@@ -24,7 +23,7 @@ between 3 and 5:
             .generate();
     ```
 
-=== "Java"
+=== "Stream"
 
     ``` java 
     Stream<String> names = 
@@ -86,8 +85,8 @@ By default, it's value is 0, i.e. no null values will be generated.
             .generate();
     ```
 
-will generate a collection/stream where every value is null.
-And to generate a collection/stream with only about 30% values of null `nullRate(0.3)` will do it
+The above will generate a collection/stream where every value is null.
+To generate a collection/stream with only about 30% values of null, `nullRate(0.3)` will do it.
 
 === "List"
 
@@ -136,7 +135,7 @@ FakeStreams based on FakeSequence API:
                 () -> faker.random().nextInt(100))
             .build();
 
-        System.out.println(fakeSequence.isInfinite()); // true
+    System.out.println(fakeSequence.isInfinite()); // true
     ```
 
 For FakeCollection this function will always return false:
@@ -149,5 +148,5 @@ For FakeCollection this function will always return false:
                 () -> faker.random().nextInt(100))
             .build();
 
-        System.out.println(fakeSequence.isInfinite()); // false
+    System.out.println(fakeSequence.isInfinite()); // false
     ```
