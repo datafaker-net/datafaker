@@ -182,8 +182,10 @@ The following is an example on how to use it:
             field("name", () -> faker.name().firstName()),
             field("lastname", () -> faker.name().lastName()),
             field("phones", () -> Schema.of(
-                field("worknumbers", () -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get().toString()),
-                field("cellphones", () -> faker.<String>collection().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get().toString())
+                field("worknumbers", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get())
+                    .collect(Collectors.toList())),
+                field("cellphones", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get())
+                    .collect(Collectors.toList()))
             )),
             field("address", () -> Schema.of(
                 field("city", () -> faker.address().city()),
@@ -198,15 +200,20 @@ The following is an example on how to use it:
 will generate yaml with nested fields:
 
 ```
-name: Katharyn
-lastname: Predovic
+name: Mason
+lastname: Bechtelar
 phones:
-  worknumbers: [(715) 228-3360 x9556, (936) 907-6813 x7053]
-  cellphones: [410.609.5559, 1-720-415-7634, 786-631-7588]
+  worknumbers:
+    - (520) 205-2587 x2139
+    - (248) 225-6912 x4880
+  cellphones:
+    - 714-269-8609
+    - 1-512-606-8850
+    - 1-386-909-7996
 address:
-  city: South Bruce
-  country: Cyprus
-  streetAddress: 320 Howell Roads
+  city: Port Wan
+  country: Trinidad and Tobago
+  streetAddress: 6510 Duncan Landing
   ```
 
 ## XML
