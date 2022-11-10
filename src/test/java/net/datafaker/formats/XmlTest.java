@@ -2,6 +2,7 @@ package net.datafaker.formats;
 
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
+import net.datafaker.sequence.FakeStream;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
@@ -17,6 +18,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
@@ -97,14 +99,71 @@ class XmlTest {
             faker.<Name>collection().suppliers(faker::name).maxLen(1).build(),
             schema);
 
-        int numberOfLines = 1;
-        for (int i = 0; i < xml.length(); i++) {
-            if (xml.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
-                numberOfLines++;
-            }
-        }
-
+        int numberOfLines = getNumberOfLines(xml);
         assertThat(numberOfLines).isEqualTo(4);
+    }
+
+    @Test
+    void generateXMLWithThreeNestedLevels() {
+        final BaseFaker faker = new BaseFaker();
+
+        FakeStream<?> address = (FakeStream<SimpleField<String, List<Object>>>)
+            faker.<SimpleField<String, List<Object>>>stream()
+                .suppliers(() ->
+                    field("address",
+                        () -> Arrays.asList(
+                            field("country", () -> faker.address().country()),
+                            field("city", () -> faker.address().city()),
+                            field("streetAddress", () -> faker.address().streetAddress()))))
+                .maxLen(3).build();
+
+        FakeStream<?> persons = (FakeStream<SimpleField<Object, List<Object>>>)
+            faker.<SimpleField<Object, List<Object>>>stream()
+                .suppliers(() ->
+                    field("person",
+                        () -> Arrays.asList(
+                            field("firstname", () -> faker.name().firstName()),
+                            field("lastname", () -> faker.name().lastName()),
+                            field("addresses", () -> address.get().collect(Collectors.toList())))))
+                .maxLen(3).build();
+
+
+        XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
+        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().collect(Collectors.toList()))), 1).toString();
+        assertThat(xml).isNotEmpty();
+        int numberOfLines = getNumberOfLines(xml);
+        assertThat(numberOfLines).isEqualTo(65);
+    }
+
+    @Test
+    void generateXMLWithThreeNestedLevelsAndAttributes() {
+        final BaseFaker faker = new BaseFaker();
+        FakeStream<Object> address =
+            (FakeStream<Object>) faker.stream()
+                .suppliers(() ->
+                    compositeField("address",
+                        new Field[]{
+                            field("country", () -> faker.address().country()),
+                            field("city", () -> faker.address().city()),
+                            field("streetAddress", () -> faker.address().streetAddress())}))
+                .maxLen(3).build();
+
+        FakeStream<Object> persons =
+            (FakeStream<Object>) faker.stream()
+                .suppliers(() ->
+                    compositeField("person",
+                        new Field[]{
+                            field("firstname", () -> faker.name().firstName()),
+                            field("lastname", () -> faker.name().lastName()),
+                            field(null, () -> Collections.singletonList(
+                                field("addresses", () -> address.get().collect(Collectors.toList()))))}))
+                .maxLen(3).build();
+
+        XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
+        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().collect(Collectors.toList()))), 1).toString();
+        assertThat(xml).isNotEmpty();
+        int numberOfLines = getNumberOfLines(xml);
+        assertThat(numberOfLines).isEqualTo(23);
     }
 
     @ParameterizedTest
@@ -162,5 +221,15 @@ class XmlTest {
             map.put(entry.getKey(), entry.getValue());
         }
         return map;
+    }
+
+    private static int getNumberOfLines(String xml) {
+        int numberOfLines = 1;
+        for (int i = 0; i < xml.length(); i++) {
+            if (xml.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+                numberOfLines++;
+            }
+        }
+        return numberOfLines;
     }
 }
