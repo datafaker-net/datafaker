@@ -52,6 +52,7 @@ public class FakeValuesService {
 
     private final Map<Locale, Map<String, Object>> key2fetchedObject = new WeakHashMap<>();
     private final Map<String, String> name2yaml = new WeakHashMap<>();
+    private final Map<String, String> removedUnderscore = new WeakHashMap<>();
 
     private final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new IdentityHashMap<>();
 
@@ -851,8 +852,13 @@ public class FakeValuesService {
         return null;
     }
 
-    private static String removeUnderscoreChars(String string) {
+    private String removeUnderscoreChars(String string) {
+        String valueWithRemovedUnderscores = removedUnderscore.get(string);
+        if (valueWithRemovedUnderscores != null) {
+            return valueWithRemovedUnderscores;
+        }
         if (string.indexOf('_') == -1) {
+            removedUnderscore.put(string, string);
             return string;
         }
         char[] res = string.toCharArray();
@@ -867,7 +873,9 @@ public class FakeValuesService {
                 length++;
             }
         }
-        return String.valueOf(res, string.length() - length, length);
+        valueWithRemovedUnderscores = String.valueOf(res, string.length() - length, length);
+        removedUnderscore.put(string, valueWithRemovedUnderscores);
+        return valueWithRemovedUnderscores;
     }
 
     /**
