@@ -791,17 +791,18 @@ public class FakeValuesService {
 
     private MethodAndCoercedArgs retrieveMethodAccessor(Object object, String methodName, String[] args) {
         Class<?> clazz = object.getClass();
-        MethodAndCoercedArgs accessor =
+        Map<String[], MethodAndCoercedArgs> accessorMap =
             mapOfMethodAndCoercedArgs
                 .getOrDefault(clazz, Collections.emptyMap())
-                .getOrDefault(methodName, Collections.emptyMap())
-                .get(args);
-        if (accessor == null) {
-            accessor = accessor(clazz, methodName, args);
-            mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
-            mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(methodName, new WeakHashMap<>());
-            mapOfMethodAndCoercedArgs.get(clazz).get(methodName).put(args, accessor);
+                .getOrDefault(methodName, Collections.emptyMap());
+        // value could be null
+        if (accessorMap.containsKey(args)) {
+            return accessorMap.get(args);
         }
+        final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
+        mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
+        mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(methodName, new WeakHashMap<>());
+        mapOfMethodAndCoercedArgs.get(clazz).get(methodName).put(args, accessor);
         return accessor;
     }
 
@@ -835,6 +836,9 @@ public class FakeValuesService {
             }
             class2methodsCache.putIfAbsent(clazz, methodMap);
             methods = methodMap.get(name.toLowerCase(Locale.ROOT));
+        }
+        if (methods == null) {
+            return null;
         }
         for (Method m : methods) {
             if (m.getParameterCount() == args.length || m.getParameterCount() < args.length && m.isVarArgs()) {
