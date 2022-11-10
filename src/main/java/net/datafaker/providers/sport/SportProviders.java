@@ -3,6 +3,10 @@ package net.datafaker.providers.sport;
 import net.datafaker.providers.base.ProviderRegistration;
 
 public interface SportProviders extends ProviderRegistration {
+    default Baseball baseball() {
+        return getProvider(Baseball.class, Baseball::new);
+    }
+
     default Basketball basketball() {
         return getProvider(Basketball.class, Basketball::new);
     }
@@ -27,7 +31,4 @@ public interface SportProviders extends ProviderRegistration {
         return getProvider(Volleyball.class, Volleyball::new);
     }
 
-    default Baseball baseball() {
-        return getProvider(Baseball.class, Baseball::new);
-    }
 }
