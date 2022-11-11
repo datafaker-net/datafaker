@@ -43,6 +43,7 @@ public class EnFile {
         "babylon5.yml",
         "back_to_the_future.yml",
         "barcode.yml",
+        "baseball.yml",
         "basketball.yml",
         "battlefield1.yml",
         "beer.yml",

@@ -92,7 +92,7 @@ nav:
   - Home: index.md
   - Documentation:
     - Getting started: documentation/getting-started.md
-    - Usage: documentation/usage.md
+    - Basic usage: documentation/usage.md
     - Data Providers:
       - All providers: documentation/providers.md
       - Custom providers: documentation/custom-providers.md

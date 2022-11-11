@@ -260,6 +260,7 @@ Providers
 * Babylon 5
 * Back To The Future
 * Barcode
+* Baseball
 * Basketball
 * Battlefield 1  
 * Beer
