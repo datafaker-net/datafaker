@@ -6,8 +6,7 @@ import net.datafaker.providers.base.AbstractProvider;
 
  * Generate random components of baseball game, e.g. teams, coaches, positions and players.
  *
- * @author unknown and irakatz
- * @since 0.8.0
+ * @since 1.7.0
  */
 public class Baseball extends AbstractProvider<SportProviders> {
 
