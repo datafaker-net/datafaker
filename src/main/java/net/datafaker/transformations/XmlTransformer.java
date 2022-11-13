@@ -81,13 +81,12 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
             Field<IN, ?>[] attrs = ((CompositeField) xmlNode).getFields();
             applyAttributes(input, sb, attrs);
 
-            Field<IN, ?> content = Arrays.stream(attrs)
+            xmlNode = Arrays.stream(attrs)
                 .filter(inField -> !isAttribute(inField.getName())).findFirst()
                 .orElse(null);
-            applyTag(input, sb, content, tag);
-        } else {
-            applyTag(input, sb, xmlNode, tag);
         }
+
+        applyTag(input, sb, xmlNode, tag);
     }
 
     private void applyTag(IN input, StringBuilder sb, Field<IN, ?> field, String tag) {
