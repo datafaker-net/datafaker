@@ -8,6 +8,7 @@ It also provides a set of ready to use transformers:
 * JSON
 * SQL
 * YAML
+* XML
 * Java Object
 
 ## Schema
@@ -185,4 +186,227 @@ will lead to
 
 ```
 INSERT INTO "MyTable" ("row") VALUES (ROW('2'));
+```
+
+## YAML transformation
+YAML transformation is very similar to CSV.
+
+The following is an example on how to use it:
+
+=== "Java"
+
+    ``` java
+        final BaseFaker faker = new BaseFaker();
+
+        YamlTransformer<Object> transformer = new YamlTransformer<>();
+        Schema<Object, ?> schema = Schema.of(
+            field("name", () -> faker.name().firstName()),
+            field("lastname", () -> faker.name().lastName()),
+            field("phones", () -> Schema.of(
+                field("worknumbers", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get())
+                    .collect(Collectors.toList())),
+                field("cellphones", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get())
+                    .collect(Collectors.toList()))
+            )),
+            field("address", () -> Schema.of(
+                field("city", () -> faker.address().city()),
+                field("country", () -> faker.address().country()),
+                field("streetAddress", () -> faker.address().streetAddress())
+            ))
+        );
+
+        System.out.println(transformer.generate(schema, 1));
+    ```
+
+will generate yaml with nested fields:
+
+```
+name: Mason
+lastname: Bechtelar
+phones:
+  worknumbers:
+    - (520) 205-2587 x2139
+    - (248) 225-6912 x4880
+  cellphones:
+    - 714-269-8609
+    - 1-512-606-8850
+    - 1-386-909-7996
+address:
+  city: Port Wan
+  country: Trinidad and Tobago
+  streetAddress: 6510 Duncan Landing
+  ```
+
+## XML
+
+XML transformation could be build with help of `new XmlTransformer.XmlTransformerBuilder<>().build()`.
+
+`XmlTransformer.XmlTransformerBuilder.pretty` allows you to specify that the document should be formatted.
+
+### Elements and attributes
+
+In case you want to generate XML, Datafaker provides a facility to build XML elements and
+attributes using XmlTransformer and randomly generated data in the following way:
+
+=== "Java"
+
+    ``` java
+    public static void main(String[] args) {
+        final BaseFaker faker = new BaseFaker();
+        FakeStream<Object> address =
+            (FakeStream<Object>) faker.stream()
+                .suppliers(() ->
+                    compositeField("address",
+                        new Field[]{
+                            field("country", () -> faker.address().country()),
+                            field("city", () -> faker.address().city()),
+                            field("streetAddress", () -> faker.address().streetAddress())}))
+                .maxLen(3).build();
+
+        FakeStream<Object> persons =
+            (FakeStream<Object>) faker.stream()
+                .suppliers(() ->
+                    compositeField("person",
+                        new Field[]{
+                            field("firstname", () -> faker.name().firstName()),
+                            field("lastname", () -> faker.name().lastName()),
+                            field(null, () -> Collections.singletonList(
+                                field("addresses", () -> address.get().collect(Collectors.toList()))))}))
+                .maxLen(3).build();
+
+        XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
+        System.out.println(xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().collect(Collectors.toList()))), 1));
+    }
+    ```
+
+This will produce the following output:
+
+```xml
+<persons>
+    <person firstname="Dianna" lastname="Langworth">
+        <addresses>
+            <address country="Burundi" city="Robbimouth" streetAddress="731 Haley Valleys"/>
+            <address country="Guam" city="McKenziechester" streetAddress="7653 Sonny Crossing"/>
+            <address country="Bangladesh" city="New Rodrigoland" streetAddress="9653 Lester Highway"/>
+        </addresses>
+    </person>
+    <person firstname="Emilie" lastname="Bednar">
+        <addresses>
+            <address country="Iceland" city="Port Garret" streetAddress="4013 Luciano Terrace"/>
+            <address country="Micronesia" city="West Murrayshire" streetAddress="109 Weber Streets"/>
+            <address country="United States Minor Outlying Islands" city="Port Cortney" streetAddress="085 Laci Expressway"/>
+        </addresses>
+    </person>
+    <person firstname="Lina" lastname="Purdy">
+        <addresses>
+            <address country="Liechtenstein" city="New Andree" streetAddress="08276 Treutel Street"/>
+            <address country="Somalia" city="Shirelytown" streetAddress="8482 Hansen Valleys"/>
+            <address country="Indonesia" city="New Earlie" streetAddress="814 Londa Flat"/>
+        </addresses>
+    </person>
+</persons>
+```
+
+### Elements only
+
+In case you only want to generate XML elements, without any attributes, that possible too:
+
+
+=== "Java"
+
+    ``` java
+    final BaseFaker faker = new BaseFaker();
+    FakeStream<?> address = (FakeStream<SimpleField<String, List<Object>>>)
+            faker.<SimpleField<String, List<Object>>>stream()
+                .suppliers(() ->
+                    field("address",
+                        () -> Arrays.asList(
+                            field("country", () -> faker.address().country()),
+                            field("city", () -> faker.address().city()),
+                            field("streetAddress", () -> faker.address().streetAddress()))))
+                .maxLen(3).build();
+
+        FakeStream<?> persons = (FakeStream<SimpleField<Object, List<Object>>>)
+            faker.<SimpleField<Object, List<Object>>>stream()
+                .suppliers(() ->
+                    field("person",
+                        () -> Arrays.asList(
+                            field("firstname", () -> faker.name().firstName()),
+                            field("lastname", () -> faker.name().lastName()),
+                            field("addresses", () -> address.get().collect(Collectors.toList())))))
+                .maxLen(3).build();
+
+
+        XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
+        System.out.println(xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().collect(Collectors.toList()))), 1));  
+    ```
+
+Executing the above will result in:
+
+```xml
+<persons>
+    <person>
+        <firstname>Rosario</firstname>
+        <lastname>Mayert</lastname>
+        <addresses>
+            <address>
+                <country>Marshall Islands</country>
+                <city>Stiedemannside</city>
+                <streetAddress>435 Doyle Harbors</streetAddress>
+            </address>
+            <address>
+                <country>Democratic People&apos;s Republic of Korea</country>
+                <city>Dominiquefort</city>
+                <streetAddress>25135 Hansen Terrace</streetAddress>
+            </address>
+            <address>
+                <country>Greenland</country>
+                <city>Carrollstad</city>
+                <streetAddress>8802 Lueilwitz Tunnel</streetAddress>
+            </address>
+        </addresses>
+    </person>
+    <person>
+        <firstname>Cyrstal</firstname>
+        <lastname>Spinka</lastname>
+        <addresses>
+            <address>
+                <country>Andorra</country>
+                <city>East Lanny</city>
+                <streetAddress>3488 Alejandro Crossroad</streetAddress>
+            </address>
+            <address>
+                <country>Cameroon</country>
+                <city>Lake Kira</city>
+                <streetAddress>30136 Watsica Squares</streetAddress>
+            </address>
+            <address>
+                <country>Ukraine</country>
+                <city>Cassandrabury</city>
+                <streetAddress>5764 Koepp Throughway</streetAddress>
+            </address>
+        </addresses>
+    </person>
+    <person>
+        <firstname>Leigh</firstname>
+        <lastname>Satterfield</lastname>
+        <addresses>
+            <address>
+                <country>Mali</country>
+                <city>South Simonne</city>
+                <streetAddress>0870 Corkery Green</streetAddress>
+            </address>
+            <address>
+                <country>Mongolia</country>
+                <city>Margotland</city>
+                <streetAddress>4280 Lonnie Haven</streetAddress>
+            </address>
+            <address>
+                <country>Zimbabwe</country>
+                <city>Boyleland</city>
+                <streetAddress>4972 Medhurst Extensions</streetAddress>
+            </address>
+        </addresses>
+    </person>
+</persons>
 ```
