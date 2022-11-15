@@ -23,6 +23,7 @@ jobs:
           server-password: MAVEN_PASSWORD
       - name: Publish package
         run: |
+#          git checkout -f main
           git config --global user.email "erik.pragt@gmail.com"
           git config --global user.name "Erik Pragt"
           ./mvnw --batch-mode release:prepare release:perform
