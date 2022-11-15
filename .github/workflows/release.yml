@@ -7,12 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure GPG Key
-        run: echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import --no-tty --batch --yes
+        run: |
+          echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import --no-tty --batch --yes
         env:
           GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
-
       - uses: actions/checkout@v3
-
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v3
         with:
@@ -22,12 +21,11 @@ jobs:
           server-id: ossrh
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-
-      - name: Set projects Maven version to GitHub Action GUI set version
-        run: mvn versions:set "-DnewVersion=${{ github.event.inputs.releaseversion }}"
-
       - name: Publish package
-        run: ./mvnw --batch-mode deploy
+        run: |
+          git config --global user.email "erik.pragt@gmail.com"
+          git config --global user.name "Erik Pragt"
+          ./mvnw --batch-mode release:prepare release:perform
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
