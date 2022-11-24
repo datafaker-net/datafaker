@@ -357,6 +357,7 @@ Providers
 * Lord Of The Rings
 * Locality
 * Lorem
+* Marvel Snap
 * Marketing
 * Mass Effect
 * Matz

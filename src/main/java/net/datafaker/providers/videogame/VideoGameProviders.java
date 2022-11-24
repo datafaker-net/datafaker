@@ -42,6 +42,9 @@ public interface VideoGameProviders extends ProviderRegistration {
     default MassEffect massEffect() {
         return getProvider(MassEffect.class, MassEffect::new);
     }
+    default MarvelSnap marvelSnap() {
+        return getProvider(MarvelSnap.class, MarvelSnap::new);
+    }
 
     default Overwatch overwatch() {
         return getProvider(Overwatch.class, Overwatch::new);
