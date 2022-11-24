@@ -207,6 +207,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(ElectricalComponents.class, ElectricalComponents::new);
     }
 
+    default Emoji emoji() {
+        return getProvider(Emoji.class, Emoji::new);
+    }
+
     default FakeDuration duration() {
         return getProvider(FakeDuration.class, FakeDuration::new);
     }
