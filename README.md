@@ -357,8 +357,8 @@ Providers
 * Lord Of The Rings
 * Locality
 * Lorem
-* Marvel Snap
 * Marketing
+* Marvel Snap
 * Mass Effect
 * Matz
 * MBTI

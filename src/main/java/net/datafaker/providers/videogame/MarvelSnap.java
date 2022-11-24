@@ -9,7 +9,7 @@ public class MarvelSnap extends AbstractProvider<VideoGameProviders> {
     }
 
     public String characters() {
-        return resolve("games.marvel_snap.characters");
+        return faker.marvelSnap().characters();
     }
 
     public String zones() {

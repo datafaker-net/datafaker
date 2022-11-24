@@ -147,7 +147,7 @@ public class EnFile {
         "lorem.yml",
 //            "lovecraft.yml",
 //            "markdown.yml",
-        "marvel_snap",
+        "marvel_snap.yml",
         "marketing.yml",
         "mass_effect.yml",
         "matz.yml",
