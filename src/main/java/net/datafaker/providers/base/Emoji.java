@@ -15,4 +15,8 @@ public class Emoji extends AbstractProvider<BaseProviders> {
         return resolve("emoji.smileys");
     }
 
+    public String cat() {
+        return resolve("emoji.cats");
+    }
+
 }
