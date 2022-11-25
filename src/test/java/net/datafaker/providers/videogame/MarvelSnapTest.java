@@ -8,7 +8,7 @@ public class MarvelSnapTest extends VideoGameFakerTest {
 
     @Test
     void charactersTest() {
-        String character = faker.marvelSnap().characters();
+        String character = faker.marvelSnap().character();
         assertThat(character).matches("[ A-Za-z']+");
     }
 
