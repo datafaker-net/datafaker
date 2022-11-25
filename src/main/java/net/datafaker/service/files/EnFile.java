@@ -100,6 +100,7 @@ public class EnFile {
         "elden_ring.yml",
         "elder_scrolls.yml",
         "electrical_components.yml",
+        "emoji.yml",
         "esport.yml",
         "englandfootball.yml",
 //            "fallout.yml",
