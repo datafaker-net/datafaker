@@ -11,4 +11,9 @@ class EmojiTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.emoji().smiley()).isNotEmpty();
     }
 
+    @Test
+    void cat() {
+        assertThat(faker.emoji().cat()).isNotEmpty();
+    }
+
 }
