@@ -2,6 +2,9 @@ package net.datafaker.providers.movie;
 
 import net.datafaker.providers.base.AbstractProvider;
 
+/**
+ * @since 1.7.0
+ */
 public class StudioGhibli extends AbstractProvider<MovieProviders> {
 
     protected StudioGhibli(MovieProviders faker) {
