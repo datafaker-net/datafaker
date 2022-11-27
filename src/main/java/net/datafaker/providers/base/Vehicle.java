@@ -116,7 +116,7 @@ public class Vehicle extends AbstractProvider<BaseProviders> {
     }
 
     public String licensePlate() {
-        return faker.regexify(faker.bothify(faker.resolve("vehicle.license_plate")));
+        return faker.bothify(faker.resolve("vehicle.license_plate"));
     }
 
     public String licensePlate(String stateAbbreviation) {
@@ -126,6 +126,6 @@ public class Vehicle extends AbstractProvider<BaseProviders> {
         }
 
         String licensePlatesByState = resolve("vehicle.license_plate_by_state." + stateAbbreviation);
-        return licensePlatesByState == null ? null : faker.regexify(faker.bothify(licensePlatesByState)).toUpperCase(Locale.ROOT);
+        return licensePlatesByState == null ? null : faker.bothify(licensePlatesByState).toUpperCase(Locale.ROOT);
     }
 }

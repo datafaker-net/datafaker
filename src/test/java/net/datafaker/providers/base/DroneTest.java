@@ -14,67 +14,67 @@ class DroneTest extends net.datafaker.AbstractFakerTest {
 
     @Test
     void weight() {
-        assertThat(faker.drone().weight()).isNotEmpty();
+        assertThat(faker.drone().weight()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void maxAscentSpeed() {
-        assertThat(faker.drone().maxAscentSpeed()).isNotEmpty();
+        assertThat(faker.drone().maxAscentSpeed()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void maxDescentSpeed() {
-        assertThat(faker.drone().maxDescentSpeed()).isNotEmpty();
+        assertThat(faker.drone().maxDescentSpeed()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void flightTime() {
-        assertThat(faker.drone().flightTime()).isNotEmpty();
+        assertThat(faker.drone().flightTime()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void maxAltitude() {
-        assertThat(faker.drone().maxAltitude()).isNotEmpty();
+        assertThat(faker.drone().maxAltitude()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void maxFlightDistance() {
-        assertThat(faker.drone().maxFlightDistance()).isNotEmpty();
+        assertThat(faker.drone().maxFlightDistance()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void maxSpeed() {
-        assertThat(faker.drone().maxSpeed()).isNotEmpty();
+        assertThat(faker.drone().maxSpeed()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void maxWindResistance() {
-        assertThat(faker.drone().maxWindResistance()).isNotEmpty();
+        assertThat(faker.drone().maxWindResistance()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void maxAngularVelocity() {
-        assertThat(faker.drone().maxAngularVelocity()).isNotEmpty();
+        assertThat(faker.drone().maxAngularVelocity()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void maxTiltAngle() {
-        assertThat(faker.drone().maxTiltAngle()).isNotEmpty();
+        assertThat(faker.drone().maxTiltAngle()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void operatingTemperature() {
-        assertThat(faker.drone().operatingTemperature()).isNotEmpty();
+        assertThat(faker.drone().operatingTemperature()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void batteryCapacity() {
-        assertThat(faker.drone().batteryCapacity()).isNotEmpty();
+        assertThat(faker.drone().batteryCapacity()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void batteryVoltage() {
-        assertThat(faker.drone().batteryVoltage()).isNotEmpty();
+        assertThat(faker.drone().batteryVoltage()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
@@ -84,17 +84,17 @@ class DroneTest extends net.datafaker.AbstractFakerTest {
 
     @Test
     void batteryWeight() {
-        assertThat(faker.drone().batteryWeight()).isNotEmpty();
+        assertThat(faker.drone().batteryWeight()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void chargingTemperature() {
-        assertThat(faker.drone().chargingTemperature()).isNotEmpty();
+        assertThat(faker.drone().chargingTemperature()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
     void maxChargingPower() {
-        assertThat(faker.drone().maxChargingPower()).isNotEmpty();
+        assertThat(faker.drone().maxChargingPower()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
@@ -104,7 +104,7 @@ class DroneTest extends net.datafaker.AbstractFakerTest {
 
     @Test
     void maxResolution() {
-        assertThat(faker.drone().maxResolution()).isNotEmpty();
+        assertThat(faker.drone().maxResolution()).isNotEmpty().doesNotContain("#");
     }
 
     @Test
