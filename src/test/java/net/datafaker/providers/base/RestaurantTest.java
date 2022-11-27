@@ -1,14 +1,18 @@
 package net.datafaker.providers.base;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RestaurantTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
+    @RepeatedTest(100)
     void namePrefix() {
-        assertThat(faker.restaurant().namePrefix()).isNotEmpty();
+        assertThat(faker.restaurant().namePrefix())
+            .isNotEmpty()
+            .doesNotContain("#", "?") // make sure bothify is applied
+            .matches("[A-Z0-9].*");   // and that bothify only uses uppercase characters
     }
 
     @Test
@@ -16,9 +20,12 @@ class RestaurantTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.restaurant().nameSuffix()).isNotEmpty();
     }
 
-    @Test
+    @RepeatedTest(100)
     void name() {
-        assertThat(faker.restaurant().name()).isNotEmpty();
+        assertThat(faker.restaurant().name())
+            .isNotEmpty()
+            .doesNotContain("#", "?") // make sure bothify is applied
+            .matches("[A-Z0-9].*");   // and that bothify only uses uppercase characters
     }
 
     @Test
