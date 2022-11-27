@@ -12,11 +12,11 @@ public class MarvelSnap extends AbstractProvider<VideoGameProviders> {
         return resolve("games.marvel_snap.characters");
     }
 
-    public String zones() {
+    public String zone() {
         return resolve("games.marvel_snap.zones");
     }
 
-    public String events() {
+    public String event() {
         return resolve("games.marvel_snap.events");
     }
 

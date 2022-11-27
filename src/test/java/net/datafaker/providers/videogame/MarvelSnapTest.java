@@ -1,30 +1,30 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MarvelSnapTest extends VideoGameFakerTest {
 
-    @Test
+    @RepeatedTest(10)
     void charactersTest() {
         String character = faker.marvelSnap().character();
         assertThat(character).matches("[ A-Za-z']+");
     }
 
-    @Test
+    @RepeatedTest(10)
     void zonesTest() {
-        String zone = faker.marvelSnap().zones();
-        assertThat(zone).matches("[ A-Za-z]+");
+        String zone = faker.marvelSnap().zone();
+        assertThat(zone).matches("[- A-Za-z']+");
     }
 
-    @Test
+    @RepeatedTest(10)
     void eventsTest() {
-        String event = faker.marvelSnap().events();
-        assertThat(event).matches("[ A-Za-z]+");
+        String event = faker.marvelSnap().event();
+        assertThat(event).matches("[ A-Za-z-]+");
     }
 
-    @Test
+    @RepeatedTest(10)
     void rankTest() {
         String rank = faker.marvelSnap().rank();
         assertThat(rank).matches("[ A-Za-z]+");
