@@ -10,7 +10,7 @@ public class Restaurant extends AbstractProvider<BaseProviders> {
     }
 
     public String namePrefix() {
-        return resolve("restaurant.name_prefix");
+        return faker.bothify(resolve("restaurant.name_prefix"), true);
     }
 
     public String nameSuffix() {
