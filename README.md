@@ -314,6 +314,7 @@ Providers
 * Elden Ring
 * Elder Scrolls
 * Electrical Components
+* Emoji
 * England Football
 * Esports
 * Fallout
