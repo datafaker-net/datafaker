@@ -104,9 +104,17 @@ public class FakeValuesService {
     public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
         Object o = fetchObject(key, context);
-        if (o instanceof ArrayList)
-            valuesArray = (ArrayList<?>) o;
-        return valuesArray == null || valuesArray.isEmpty()
+        if (o instanceof List) {
+            valuesArray = (List<?>) o;
+            final int size = valuesArray.size();
+            if (size == 0) {
+                return null;
+            }
+            if (size == 1) {
+                return valuesArray.get(0);
+            }
+        }
+        return valuesArray == null
             ? null : valuesArray.get(context.getRandomService().nextInt(valuesArray.size()));
     }
 
@@ -136,15 +144,20 @@ public class FakeValuesService {
     @SuppressWarnings("unchecked")
     public String safeFetch(String key, FakerContext context, String defaultIfNull) {
         Object o = fetchObject(key, context);
+        String str;
         if (o == null) return defaultIfNull;
         if (o instanceof List) {
-            List<String> values = (List<String>) o;
-            if (values.size() == 0) {
+            final List<String> values = (List<String>) o;
+            final int size = values.size();
+            if (size == 0) {
                 return defaultIfNull;
             }
-            return values.get(context.getRandomService().nextInt(values.size()));
-        } else if (isSlashDelimitedRegex(o.toString())) {
-            return String.format("#{regexify '%s'}", trimRegexSlashes(o.toString()));
+            if (size == 1) {
+                return values.get(0);
+            }
+            return values.get(context.getRandomService().nextInt(size));
+        } else if (isSlashDelimitedRegex(str = o.toString())) {
+            return String.format("#{regexify '%s'}", trimRegexSlashes(str));
         } else {
             return (String) o;
         }
