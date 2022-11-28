@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.configuration.ProbabilityConfig;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.sequence.FakeStream;
 import net.datafaker.sequence.FakeCollection;
@@ -372,6 +373,12 @@ public class BaseFaker implements BaseProviders {
 
     public final <T> FakeSequence.Builder<T> stream(List<Supplier<T>> suppliers) {
         return new FakeStream.Builder<>(suppliers).faker(this);
+    }
+
+    public final <T extends BaseFaker> T withProbabilityConfig(ProbabilityConfig probabilityConfig) {
+        getContext().getRandomService().setProbabilityConfig(probabilityConfig);
+        //noinspection unchecked
+        return (T) this;
     }
 
     public String resolve(String key) {

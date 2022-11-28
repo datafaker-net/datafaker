@@ -1,5 +1,7 @@
 package net.datafaker.service;
 
+import net.datafaker.configuration.ProbabilityConfig;
+
 import java.util.Random;
 
 public class RandomService {
@@ -7,6 +9,7 @@ public class RandomService {
     private static final char[] HEX_LOWER = "0123456789abcdef".toCharArray();
     private static final Random SHARED_RANDOM = new Random();
     private final Random random;
+    private ProbabilityConfig probabilityConfig = new ProbabilityConfig();
 
     /**
      * Uses a default shared random.
@@ -20,6 +23,10 @@ public class RandomService {
      */
     public RandomService(Random random) {
         this.random = random != null ? random : SHARED_RANDOM;
+    }
+
+    public void setProbabilityConfig(ProbabilityConfig probabilityConfig) {
+        this.probabilityConfig = probabilityConfig;
     }
 
     @SuppressWarnings("unused")
@@ -72,7 +79,12 @@ public class RandomService {
     }
 
     public boolean nextBoolean() {
-        return random.nextBoolean();
+        double boolProbability = probabilityConfig.getBoolProbability();
+        if (boolProbability == ProbabilityConfig.DEFAULT_BOOLEAN_PROBABILITY) {
+            return random.nextBoolean();
+        }
+
+        return random.nextDouble() < boolProbability;
     }
 
     public byte[] nextRandomBytes(int numberOfBytes) {
