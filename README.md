@@ -365,6 +365,7 @@ Providers
 * Locality
 * Lorem
 * Marketing
+* Marvel Snap
 * Mass Effect
 * Matz
 * MBTI
