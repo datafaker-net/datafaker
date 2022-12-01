@@ -19,14 +19,14 @@ class BoolTest extends BaseFakerTest<BaseFaker> {
     @RepeatedTest(100)
     void testBoolFalse() {
         Faker fakerWithProbabilityConfig =
-            new Faker().withProbabilityConfig(new ProbabilityConfig().withBool(0.0));
+            new Faker().withProbabilityConfig(new ProbabilityConfig().with(true, 0.0));
         assertThat(fakerWithProbabilityConfig.bool().bool()).isFalse();
     }
 
     @RepeatedTest(100)
     void testBoolTrue() {
         Faker fakerWithProbabilityConfig =
-            new Faker().withProbabilityConfig(new ProbabilityConfig().withBool(1.0));
+            new Faker().withProbabilityConfig(new ProbabilityConfig().with(true, 1.0));
         assertThat(fakerWithProbabilityConfig.bool().bool()).isTrue();
     }
 
@@ -37,7 +37,7 @@ class BoolTest extends BaseFakerTest<BaseFaker> {
         double[] probabilities = {0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1};
         for (double probability : probabilities) {
             fakerWithProbabilityConfig =
-                new Faker().withProbabilityConfig(new ProbabilityConfig().withBool(probability));
+                new Faker().withProbabilityConfig(new ProbabilityConfig().with(true, probability));
             List<Boolean> randomBooleans = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
                 randomBooleans.add(fakerWithProbabilityConfig.bool().bool());

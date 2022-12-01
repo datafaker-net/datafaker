@@ -129,8 +129,8 @@ class RandomServiceTest extends AbstractFakerTest {
     @RepeatedTest(100)
     void testDistribution() {
         ProbabilityConfig probabilityConfig = new ProbabilityConfig()
-            .withInt(1, 0.4)
-            .withInt(5, 0.5);
+            .with(1, 0.4)
+            .with(5, 0.5);
 
         RandomService randomService = new RandomService();
         randomService.setProbabilityConfig(probabilityConfig);

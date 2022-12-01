@@ -3,8 +3,10 @@ package net.datafaker.service;
 import net.datafaker.configuration.ProbabilityConfig;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class RandomService {
     private static final char[] HEX_UP = "0123456789ABCDEF".toCharArray();
@@ -37,12 +39,20 @@ public class RandomService {
     }
 
     public int nextInt(int n) {
-        Map<Integer, Double> intProbabilityConfig = probabilityConfig.getIntProbability();
-        if (intProbabilityConfig.isEmpty()) {
+        Map<Object, Double> intProbabilityConfig = probabilityConfig.getProbabilities();
+        List<Integer> intKeys = probabilityConfig.getProbabilities()
+            .keySet()
+            .stream()
+            .filter(o -> o instanceof Integer)
+            .map(o -> (Integer) o)
+            .filter(key -> key < n)
+            .collect(Collectors.toList());
+
+        if (intKeys.isEmpty()) {
             return random.nextInt(n);
         }
 
-        double[] probabilities = calculateNumbersProbability(n, intProbabilityConfig);
+        double[] probabilities = calculateNumbersProbability(n, intKeys, intProbabilityConfig);
 
         while (true) {
             double randomDouble = random.nextDouble();
@@ -56,19 +66,17 @@ public class RandomService {
         }
     }
 
-    private double[] calculateNumbersProbability(int n, Map<Integer, Double> intProbabilityConfig) {
+    private double[] calculateNumbersProbability(int n, List<Integer> intKeys, Map<Object, Double> intProbabilityConfig) {
         double[] probabilities = new double[n];
         Arrays.fill(probabilities, -1);
 
         int configuredCount = 0;
         double configuredProbabilities = 0.0;
-        for (Integer key : intProbabilityConfig.keySet()) {
-            if (key < n) {
-                configuredCount++;
-                double probability = intProbabilityConfig.get(key);
-                probabilities[key] = probability;
-                configuredProbabilities += probability;
-            }
+        for (Integer key : intKeys) {
+            configuredCount++;
+            double probability = intProbabilityConfig.get(key);
+            probabilities[key] = probability;
+            configuredProbabilities += probability;
         }
 
         double remainingProbability = (1.0 - configuredProbabilities) / (n - configuredCount);
@@ -122,12 +130,18 @@ public class RandomService {
     }
 
     public boolean nextBoolean() {
-        double boolProbability = probabilityConfig.getBoolProbability();
-        if (boolProbability == ProbabilityConfig.DEFAULT_BOOLEAN_PROBABILITY) {
-            return random.nextBoolean();
+        Map<Object, Double> probabilities = probabilityConfig.getProbabilities();
+        Double trueProbability = probabilities.get(true);
+        if (trueProbability != null) {
+            return random.nextDouble() < trueProbability;
         }
 
-        return random.nextDouble() < boolProbability;
+        Double falseProbability = probabilities.get(false);
+        if (falseProbability != null) {
+            return random.nextDouble() < (1 - falseProbability);
+        }
+
+        return random.nextBoolean();
     }
 
     public byte[] nextRandomBytes(int numberOfBytes) {
