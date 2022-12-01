@@ -1,12 +1,17 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
+import net.datafaker.configuration.ProbabilityConfig;
 import org.assertj.core.api.Condition;
+import org.assertj.core.data.Offset;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -118,5 +123,29 @@ class RandomServiceTest extends AbstractFakerTest {
         return Stream.of(
             Arguments.of(new RandomService(), new RandomService(new Random()))
         );
+    }
+
+
+    @RepeatedTest(100)
+    void testDistribution() {
+        ProbabilityConfig probabilityConfig = new ProbabilityConfig()
+            .withInt(1, 0.4)
+            .withInt(5, 0.5);
+
+        RandomService randomService = new RandomService();
+        randomService.setProbabilityConfig(probabilityConfig);
+
+        int size = 1_000;
+        Map<Integer, Integer> result = new HashMap<>(size);
+        for (int i = 0; i < size; i++) {
+            int randomInt = randomService.nextInt(100);
+            result.compute(randomInt, (key, oldValue) -> oldValue == null ? 1 : oldValue + 1);
+        }
+
+        double oneAppearance = 1.0 * result.get(1) / size;
+        double fiveAppearance = 1.0 * result.get(5) / size;
+
+        assertThat(oneAppearance).isCloseTo(0.4, Offset.offset(0.08));
+        assertThat(fiveAppearance).isCloseTo(0.5, Offset.offset(0.08));
     }
 }

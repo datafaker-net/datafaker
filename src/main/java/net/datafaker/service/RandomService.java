@@ -2,6 +2,8 @@ package net.datafaker.service;
 
 import net.datafaker.configuration.ProbabilityConfig;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Random;
 
 public class RandomService {
@@ -35,7 +37,48 @@ public class RandomService {
     }
 
     public int nextInt(int n) {
-        return random.nextInt(n);
+        Map<Integer, Double> intProbabilityConfig = probabilityConfig.getIntProbability();
+        if (intProbabilityConfig.isEmpty()) {
+            return random.nextInt(n);
+        }
+
+        double[] probabilities = calculateNumbersProbability(n, intProbabilityConfig);
+
+        while (true) {
+            double randomDouble = random.nextDouble();
+            double probabilitySum = 0.0;
+            for (int number = 0; number < probabilities.length; number++) {
+                probabilitySum = probabilitySum + probabilities[number];
+                if (probabilitySum > randomDouble) {
+                    return number;
+                }
+            }
+        }
+    }
+
+    private double[] calculateNumbersProbability(int n, Map<Integer, Double> intProbabilityConfig) {
+        double[] probabilities = new double[n];
+        Arrays.fill(probabilities, -1);
+
+        int configuredCount = 0;
+        double configuredProbabilities = 0.0;
+        for (Integer key : intProbabilityConfig.keySet()) {
+            if (key < n) {
+                configuredCount++;
+                double probability = intProbabilityConfig.get(key);
+                probabilities[key] = probability;
+                configuredProbabilities += probability;
+            }
+        }
+
+        double remainingProbability = (1.0 - configuredProbabilities) / (n - configuredCount);
+        for (int i = 0; i < probabilities.length; i++) {
+            if (probabilities[i] == -1) {
+                probabilities[i] = remainingProbability;
+            }
+        }
+
+        return probabilities;
     }
 
     public Integer nextInt(int min, int max) {
