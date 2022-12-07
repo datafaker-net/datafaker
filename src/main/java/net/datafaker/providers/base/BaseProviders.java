@@ -54,6 +54,10 @@ public interface BaseProviders extends ProviderRegistration {
     default Barcode barcode() {
         return getProvider(Barcode.class, Barcode::new);
     }
+    
+    default NumberBases numberBases() {
+        return getProvider(NumberBases.class, NumberBases::new);
+    }
 
     default BloodType bloodtype() {
         return getProvider(BloodType.class, BloodType::new);
