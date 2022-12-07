@@ -55,9 +55,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Barcode.class, Barcode::new);
     }
     
-    default NumberBases numberBases() {
-        return getProvider(NumberBases.class, NumberBases::new);
-    }
 
     default BloodType bloodtype() {
         return getProvider(BloodType.class, BloodType::new);
@@ -377,6 +374,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Number number() {
         return getProvider(Number.class, Number::new);
+    }
+    
+    default NumberBases numberBases() {
+        return getProvider(NumberBases.class, NumberBases::new);
     }
 
     default Passport passport() {

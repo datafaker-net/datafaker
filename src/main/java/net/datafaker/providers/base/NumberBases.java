@@ -10,7 +10,7 @@ public class NumberBases extends AbstractProvider<BaseProviders>{
 	
 	public String binary(int digits) {
 		String result = "";
-		Random random = new Random(7);
+		Random random = new Random();
 		for(int i = 0 ; i < digits ; i++) {
 			int r = random.nextInt(1);
 			result += num[r];
@@ -20,9 +20,9 @@ public class NumberBases extends AbstractProvider<BaseProviders>{
 	
 	public String octal(int digits) {
 		String result = "";
-		Random random = new Random(7);
+		Random random = new Random();
 		for(int i = 0 ; i < digits ; i++) {
-			int r = random.nextInt(15);
+			int r = random.nextInt(7);
 			result += num[r];
 		}
 		return result;
