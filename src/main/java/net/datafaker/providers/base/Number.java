@@ -130,6 +130,12 @@ public class Number extends AbstractProvider<BaseProviders> {
 
         return trueMin.add(trueMax.subtract(trueMin).multiply(random));
     }
+    
+    private String Hexadecimal() {
+        int n = positive();
+        String hexadecimal = Integer.toHexString(n);
+        return "0x" + hexadecimal;
+    }
 
     public String digits(int count) {
         final char[] tmp = new char[count];
