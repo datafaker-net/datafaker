@@ -21,7 +21,7 @@ Create a custom provider of data:
 === "Java"
 
     ``` java
-    public static class Insect extends AbstractProvider<IProviders> {
+    public static class Insect extends AbstractProvider<BaseProviders> {
         private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
 
         public Insect(Faker faker) {
@@ -82,7 +82,7 @@ First, create the custom provider which loads the data from a file:
 === "Java"
 
     ``` java
-    public static class InsectFromFile extends AbstractProvider<IProviders> {
+    public static class InsectFromFile extends AbstractProvider<BaseProviders> {
         private static final String KEY = "insectsfromfile";
         
         public InsectFromFile(Faker faker) {

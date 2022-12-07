@@ -1,6 +1,5 @@
 
-Data Faker
-==========
+# Data Faker
 
 [![Maven Status](https://maven-badges.herokuapp.com/maven-central/net.datafaker/datafaker/badge.svg?style=flat)](http://mvnrepository.com/artifact/net.datafaker/datafaker)
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -19,8 +18,7 @@ This library generates fake data, similar to other fake data generators, such as
 
 It's useful when you're developing a new project and need some pretty data for showcase.
 
-Usage
------
+## Usage
 
 In the pom.xml, add the following fragment to the `dependencies` section:
 
@@ -28,7 +26,7 @@ In the pom.xml, add the following fragment to the `dependencies` section:
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>1.6.0</version>
+    <version>1.7.0</version>
 </dependency>
 ```
 
@@ -36,16 +34,17 @@ For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:1.6.0'
+    implementation 'net.datafaker:datafaker:1.7.0'
 }
 
 ```
 
-You can also use the snapshot version (`1.7.0-SNAPSHOT`), which automatically gets published
+You can also use the snapshot version (`1.8.0-SNAPSHOT`), which automatically gets published
 after every push to the main branch of this repository. Binary repository URL for snapshots download is
 https://s01.oss.sonatype.org/content/repositories/snapshots/.
 
 ### Get started
+
 In your Java code:
 
 ```java
@@ -132,6 +131,7 @@ Stream<String> names = faker.stream(
 ```
 
 ### Formats
+
 #### Schema
 There are 2 ways of data generation in specific formats
 1. Generate it from scratch
@@ -140,6 +140,7 @@ There are 2 ways of data generation in specific formats
 For both cases we need a `Schema` which could describe fields and a way of data generation.
 In case of generation from scratch `Suppliers` are enough, in case of transformation `Functions` are required
 #### CSV
+
 ```java
 // transformer could be the same for both
 CsvTransformer<Name> transformer =
@@ -167,7 +168,9 @@ System.out.println(
 // "Kimberely" ; "Considine"
 // "Mariela" ; "Krajcik"
 ```
-JShell
+
+#### JShell
+
 ```
 # from project root folder
 jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
@@ -203,6 +206,7 @@ jshell> System.out.println(transformer.generate(fromScratch, 2));
 ```
 
 #### JSON
+
 ```java
 Faker faker = new Faker();
 String json = Format.toJson(
@@ -219,6 +223,7 @@ String json = Format.toJson(
 More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/formats/
 
 ### Unique Values
+
 ```java
 Faker faker = new Faker();
 
@@ -229,6 +234,7 @@ String secondUniqueInstrument = faker.unique().fetchFromYaml("music.instruments"
 More examples can be found in https://www.datafaker.net/documentation/unique-values
 
 ### Custom provider
+
 Add your own custom provider in your app following steps from https://www.datafaker.net/documentation/custom-providers/
 
 Documentation
@@ -359,6 +365,7 @@ Providers
 * Locality
 * Lorem
 * Marketing
+* Marvel Snap
 * Mass Effect
 * Matz
 * MBTI
