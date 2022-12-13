@@ -9,6 +9,6 @@ class AvatarTest extends MovieFakerTest {
     @RepeatedTest(10)
     void testAvatar() {
         String avatar = faker.avatar().image();
-        assertThat(avatar).matches("^https://robohash.org/[a-z]{8}.png$");
+        assertThat(avatar).matches("^https://robohash.org/[a-z]{8}\\?set=set\\d+.png$");
     }
 }
