@@ -33,7 +33,7 @@ class SqlTest {
             field("Password", integer -> faker.internet().password(integer, integer))
         );
 
-        SqlTransformer<Integer> transformer = new SqlTransformer.SqlTransformerBuilder<Integer>().build();
+        SqlTransformer<Integer> transformer = SqlTransformer.<Integer>builder().build();
         FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
             .suppliers(() -> faker.number().randomDigit())
             .len(5)
@@ -58,7 +58,7 @@ class SqlTest {
             field("Password", integer -> faker.internet().password(integer, integer))
         );
 
-        SqlTransformer<Integer> transformer = new SqlTransformer.SqlTransformerBuilder<Integer>()
+        SqlTransformer<Integer> transformer = SqlTransformer.<Integer>builder()
             .batch()
             .build();
         FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
@@ -84,14 +84,14 @@ class SqlTest {
         BaseFaker faker = new BaseFaker();
         Schema<Integer, Object> schema = Schema.of();
 
-        SqlTransformer<Integer> transformer = new SqlTransformer.SqlTransformerBuilder<Integer>()
+        SqlTransformer<Integer> transformer = SqlTransformer.<Integer>builder()
             .build();
 
         FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
             .suppliers(() -> faker.number().randomDigit())
             .build();
 
-        assertThat(transformer.generate(fakeSequence, schema)).isEqualTo("");
+        assertThat(transformer.generate(fakeSequence, schema)).isEmpty();
     }
 
     @Test
@@ -102,7 +102,7 @@ class SqlTest {
             field("Password", integer -> faker.internet().password(integer, integer))
         );
 
-        SqlTransformer<Integer> transformer = new SqlTransformer.SqlTransformerBuilder<Integer>()
+        SqlTransformer<Integer> transformer = SqlTransformer.<Integer>builder()
             .batch()
             .build();
         FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
@@ -122,7 +122,7 @@ class SqlTest {
             field("Bool", () -> faker.bool().bool())
         );
 
-        SqlTransformer<Object> transformer = new SqlTransformer.SqlTransformerBuilder<>().build();
+        SqlTransformer<Object> transformer = SqlTransformer.builder().build();
         String sql = transformer.generate(schema, 2);
 
         String expected =
@@ -140,7 +140,7 @@ class SqlTest {
             field("Bool", () -> faker.bool().bool())
         );
 
-        SqlTransformer<Object> transformer = new SqlTransformer.SqlTransformerBuilder<>()
+        SqlTransformer<Object> transformer = SqlTransformer.builder()
             .batch()
             .build();
         String sql = transformer.generate(schema, 2);
@@ -160,7 +160,7 @@ class SqlTest {
             field("TEXT", () -> faker.name().firstName()),
             field("BOOL", () -> faker.bool().bool()));
 
-        SqlTransformer<Object> forceQuotedTransformer = new SqlTransformer.SqlTransformerBuilder<>()
+        SqlTransformer<Object> forceQuotedTransformer = SqlTransformer.builder()
             .tableName("MY_TABLE")
             .forceUseSqlQuoteIdentifier()
             .batch()
@@ -178,7 +178,7 @@ class SqlTest {
     @MethodSource("generateTestSchema")
     void simpleSqlTestForSqlTransformer(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .sqlQuoteIdentifier("`").schemaName(tableSchemaName).tableName("MY_TABLE").build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
@@ -200,7 +200,7 @@ class SqlTest {
     @MethodSource("generateTestSchemaForOracle")
     void simpleSqlTestForSqlTransformerOracle(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .schemaName(tableSchemaName).dialect(SqlDialect.ORACLE).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
@@ -221,7 +221,7 @@ class SqlTest {
     @MethodSource("generateTestSchemaForPostgres")
     void simpleSqlTestForSqlTransformerPostgres(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .schemaName(tableSchemaName).dialect(SqlDialect.POSTGRES).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
@@ -242,7 +242,7 @@ class SqlTest {
     @MethodSource("generateTestSchemaForMSSQL")
     void simpleSqlTestForSqlTransformerMSSQL(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .schemaName(tableSchemaName).dialect(SqlDialect.MSSQL).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
@@ -263,7 +263,7 @@ class SqlTest {
     @MethodSource("generateTestSchemaForMySQL")
     void simpleSqlTestForSqlTransformerMySQL(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .schemaName(tableSchemaName).dialect(SqlDialect.MYSQL).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
@@ -287,7 +287,7 @@ class SqlTest {
             Schema.of(field("firstName", () -> faker.name().firstName()),
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .batch()
                 .dialect(SqlDialect.POSTGRES)
                 .build();
@@ -303,7 +303,7 @@ class SqlTest {
             Schema.of(field("firstName", () -> faker.name().firstName()),
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .keywordCase(SqlTransformer.Case.LOWERCASE)
                 .dialect(SqlDialect.POSTGRES).build();
         final int limit = 1;
@@ -321,7 +321,7 @@ class SqlTest {
             Schema.of(field("firstName", () -> faker.name().firstName()),
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .keywordCase(SqlTransformer.Case.CAPITAL)
                 .dialect(SqlDialect.POSTGRES).build();
         final int limit = 1;
@@ -341,7 +341,7 @@ class SqlTest {
             Schema.of(field("firstName", () -> faker.name().firstName()),
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformerUpper =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .batch()
                 .dialect(SqlDialect.ORACLE).build();
         final int limit = 5;
@@ -353,7 +353,7 @@ class SqlTest {
             .doesNotContain("INSERT INTO")
             .contains("SELECT 1 FROM dual;");
         SqlTransformer<String> transformerLower =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .batch()
                 .keywordCase(SqlTransformer.Case.LOWERCASE)
                 .dialect(SqlDialect.ORACLE).build();
@@ -373,7 +373,7 @@ class SqlTest {
             Schema.of(field("firstName", () -> faker.name().firstName()),
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformerUpper =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .batch(2)
                 .dialect(SqlDialect.ORACLE).build();
         final int limit = 5;
@@ -389,7 +389,7 @@ class SqlTest {
             Schema.of(field("firstName", () -> faker.name().firstName()),
                 field("lastName", () -> faker.name().lastName()));
         SqlTransformer<String> transformerUpper =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .batch(2)
                 .dialect(SqlDialect.POSTGRES).build();
         final int limit = 5;
@@ -402,7 +402,7 @@ class SqlTest {
     @MethodSource("generateTestSchemaForCalcite")
     void arrayAndMultisetSqlTestForSqlTransformerCalcite(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
-            new SqlTransformer.SqlTransformerBuilder<String>()
+            SqlTransformer.<String>builder()
                 .schemaName(tableSchemaName).dialect(SqlDialect.CALCITE).build();
         assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
     }
