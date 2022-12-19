@@ -62,7 +62,7 @@ class CsvTest extends AbstractFakerTest {
                 field("last_name", () -> faker.name().lastName()),
                 field("address", () -> faker.address().streetAddress()));
         CsvTransformer<String> transformer =
-            new CsvTransformer.CsvTransformerBuilder<String>().header(true).separator(separator).build();
+            CsvTransformer.<String>builder().header(true).separator(separator).build();
 
         String csv = transformer.generate(schema, limit);
         int numberOfLines = 0;
@@ -121,7 +121,7 @@ class CsvTest extends AbstractFakerTest {
                 field("first_name", () -> faker.expression("#{Name.first_name}")),
                 field("last_name", () -> faker.expression("#{Name.last_name}")));
         CsvTransformer<String> transformer =
-            new CsvTransformer.CsvTransformerBuilder<String>().header(true).separator(separator).build();
+            CsvTransformer.<String>builder().header(true).separator(separator).build();
 
         String csv = transformer.generate(schema, limit);
         int numberOfLines = 0;
@@ -164,7 +164,7 @@ class CsvTest extends AbstractFakerTest {
         Schema<Object, ? extends CharSequence> schema =
             Schema.of(field("values", () -> "1,2,3"), field("title", () -> "The \"fabulous\" artist"));
         CsvTransformer<Object> transformer =
-            new CsvTransformer.CsvTransformerBuilder<>().header(true).separator(",").build();
+            CsvTransformer.builder().header(true).separator(",").build();
 
         String csv = transformer.generate(schema, 1);
 
@@ -185,7 +185,7 @@ class CsvTest extends AbstractFakerTest {
             field("Text", () -> "The, \"fabulous\" artist'")
         );
         CsvTransformer<Object> transformer =
-            new CsvTransformer.CsvTransformerBuilder<>().header(true).separator(",").build();
+            CsvTransformer.builder().header(true).separator(",").build();
 
         String csv = transformer.generate(schema, 4);
 
@@ -207,7 +207,7 @@ class CsvTest extends AbstractFakerTest {
             field("Password", integer -> faker.internet().password(integer, integer))
         );
         CsvTransformer<Integer> transformer =
-            new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
+            CsvTransformer.<Integer>builder().header(true).separator(",").build();
 
 		FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
                 .suppliers(() -> faker.number().randomDigit())
@@ -234,7 +234,7 @@ class CsvTest extends AbstractFakerTest {
                 field("Password", integer -> faker.internet().password(integer, integer))
         );
         CsvTransformer<Integer> transformer =
-                new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
+                CsvTransformer.<Integer>builder().header(true).separator(",").build();
 
         FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
                 .suppliers(() -> faker.number().randomDigit())
@@ -260,7 +260,7 @@ class CsvTest extends AbstractFakerTest {
 				field("String", prefix -> prefix + ": " + faker.name().firstName())
 		);
 		CsvTransformer<Integer> transformer =
-				new CsvTransformer.CsvTransformerBuilder<Integer>().header(true).separator(",").build();
+				CsvTransformer.<Integer>builder().header(true).separator(",").build();
 
 		FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
 				.suppliers(() -> faker.number().randomDigit())
@@ -302,7 +302,7 @@ class CsvTest extends AbstractFakerTest {
             Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName));
 
         CsvTransformer<Name> transformer =
-            new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(",").build();
+            CsvTransformer.<Name>builder().header(false).separator(",").build();
         String csv =
             transformer.generate(
                 faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build(),
@@ -350,7 +350,7 @@ class CsvTest extends AbstractFakerTest {
             Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName));
 
         CsvTransformer<Name> transformer =
-            new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(" : ").build();
+            CsvTransformer.<Name>builder().header(false).separator(" : ").build();
         String csv =
             transformer.generate(
                 faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build(),
@@ -417,7 +417,7 @@ class CsvTest extends AbstractFakerTest {
         Schema<Name, String> schema =
             Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName));
         assertThatThrownBy(() ->
-            new CsvTransformer.CsvTransformerBuilder<Name>()
+            CsvTransformer.<Name>builder()
                 .header(false).separator(" : ")
                 .build()
                 .generate(schema, 1))

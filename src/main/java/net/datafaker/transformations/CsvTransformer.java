@@ -18,6 +18,10 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
         this.withHeader = withHeader;
     }
 
+    public static <IN> CsvTransformerBuilder<IN> builder() {
+        return new CsvTransformerBuilder<>();
+    }
+
     @Override
     public CharSequence apply(IN input, Schema<IN, ?> schema) {
         Field<IN, ?>[] fields = schema.getFields();
