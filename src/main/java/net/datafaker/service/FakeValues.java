@@ -13,6 +13,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +24,8 @@ public class FakeValues implements FakeValuesInterface {
     private final String filename;
     private final String path;
     private final Path filePath;
-    private Map<String, Object> values;
+    private volatile Map<String, Object> values;
+    private final Lock lock = new ReentrantLock();
 
     FakeValues(Locale locale) {
         this(locale, getFilename(locale), getFilename(locale), null);
@@ -41,7 +44,14 @@ public class FakeValues implements FakeValuesInterface {
         this.filename = filename;
         this.filePath = filePath;
         if (path == null) {
-            values = loadValues();
+            lock.lock();
+            try {
+                if (values == null) {
+                    values = loadValues();
+                }
+            } finally {
+                lock.unlock();
+            }
             this.path = values == null || values.isEmpty() ? null : values.keySet().iterator().next();
         } else {
             this.path = path;
@@ -70,7 +80,14 @@ public class FakeValues implements FakeValuesInterface {
     @Override
     public Map<String, Object> get(String key) {
         if (values == null) {
-            values = loadValues();
+            lock.lock();
+            try {
+                if (values == null) {
+                    values = loadValues();
+                }
+            } finally {
+                lock.unlock();
+            }
         }
 
         return values == null ? null : (Map) values.get(key);
