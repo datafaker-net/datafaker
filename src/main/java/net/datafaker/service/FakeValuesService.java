@@ -711,8 +711,11 @@ public class FakeValuesService {
         if (result != null) {
             return result;
         }
-        int cnt = 0;
-        for (int i = 0; i < expression.length(); i++) {
+
+        final int length = expression.length();
+        final boolean firstLetterUpperCase = length > 0 && Character.isUpperCase(expression.charAt(0));
+        int cnt = firstLetterUpperCase ? 1 : 0;
+        for (int i = 1; i < length; i++) {
             if (Character.isUpperCase(expression.charAt(i))) {
                 cnt++;
             }
@@ -721,25 +724,25 @@ public class FakeValuesService {
             name2yaml.put(expression, expression);
             return expression;
         }
-        final StringBuilder sb = new StringBuilder(expression.length() + cnt);
-        for (int i = 0; i < expression.length(); i++) {
+        final char[] res = new char[length + (firstLetterUpperCase ? cnt - 1 : cnt)];
+        int pos = 0;
+        for (int i = 0; i < length; i++) {
+            final char c = expression.charAt(i);
             if (cnt > 0) {
-                final char c = expression.charAt(i);
                 if (Character.isUpperCase(c)) {
-                    if (sb.length() > 0) {
-                        sb.append("_");
+                    if (pos > 0) {
+                        res[pos++] = '_';
                     }
-                    sb.append(Character.toLowerCase(c));
+                    res[pos++] = Character.toLowerCase(c);
                     cnt--;
                 } else {
-                    sb.append(c);
+                    res[pos++] = c;
                 }
             } else {
-                sb.append(expression.substring(i));
-                break;
+                res[pos++] = c;
             }
         }
-        result = sb.toString();
+        result = new String(res);
         name2yaml.put(expression, result);
         return result;
     }
