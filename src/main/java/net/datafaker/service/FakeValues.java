@@ -7,12 +7,11 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -139,16 +138,20 @@ public class FakeValues implements FakeValuesInterface {
 
     private void enrichMapWithJavaNames(Map<String, Object> result) {
         if (result != null) {
-            Set<String> set = new HashSet<>();
+            Map<String, Object> map = null;
             for (Map.Entry<String, Object> entry : result.entrySet()) {
                 final String key = entry.getKey();
                 if (key.indexOf('_') != -1) {
-                    set.add(key);
+                    if (map == null) {
+                        map = new HashMap<>();
+                    }
+                    map.put(toJavaNames(key), result.get(key));
                 }
             }
-            for (String str : set) {
-                result.put(toJavaNames(str), result.get(str));
+            if (map == null) {
+                return;
             }
+            result.putAll(map);
         }
     }
 
