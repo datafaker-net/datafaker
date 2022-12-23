@@ -168,6 +168,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(Seinfeld.class, Seinfeld::new);
     }
 
+    default SiliconValley siliconValley() {
+        return getProvider(SiliconValley.class, SiliconValley::new);
+    }
+
     default StarTrek starTrek() {
         return getProvider(StarTrek.class, StarTrek::new);
     }
