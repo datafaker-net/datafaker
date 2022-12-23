@@ -192,7 +192,7 @@ public class EnFile {
         "science.yml",
         "seinfeld.yml",
         "shakespeare.yml",
-//            "silicon_valley.yml",
+        "silicon_valley.yml",
         "simpsons.yml",
 //            "singular_siegler.yml",
         "sip.yml",
