@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 public class BaseFaker implements BaseProviders {
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
-    private static final Map<Class<? extends AbstractProvider<?>>, Map<FakerContext, AbstractProvider<?>>> PROVIDERS_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, Map<FakerContext, AbstractProvider<?>>> PROVIDERS_MAP = new ConcurrentHashMap<>();
 
     public BaseFaker() {
         this(Locale.ENGLISH);
@@ -331,8 +331,11 @@ public class BaseFaker implements BaseProviders {
 
     @SuppressWarnings("unchecked")
     public static <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(Class<AP> clazz, Function<PR, AP> valueSupplier, PR faker) {
-        PROVIDERS_MAP.putIfAbsent(clazz, new ConcurrentHashMap<>());
-        Map<FakerContext, AbstractProvider<?>> map = PROVIDERS_MAP.get(clazz);
+        final String className = clazz.getName();
+        if (!PROVIDERS_MAP.containsKey(className)) {
+            PROVIDERS_MAP.put(className, new ConcurrentHashMap<>());
+        }
+        Map<FakerContext, AbstractProvider<?>> map = PROVIDERS_MAP.get(className);
         final AP result = (AP) map.get(faker.getContext());
         if (result == null) {
             final AP newMapping = valueSupplier.apply(faker);
