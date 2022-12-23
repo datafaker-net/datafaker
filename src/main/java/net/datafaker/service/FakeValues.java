@@ -153,22 +153,34 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     private static String toJavaNames(String string) {
-        if (string == null || string.isEmpty()) {
+        final int length;
+        if (string == null || (length = string.length()) == 0) {
             return string;
         }
-        StringBuilder res = new StringBuilder(string.length());
-        for (int i = 0; i < string.length(); i++) {
-            char c = string.charAt(i);
-            if (i == 0 && Character.isLetter(c)) {
-                res.append(Character.toUpperCase(c));
-            } else if (c == '_' && i < string.length() + 1 && Character.isLetter(string.charAt(i + 1))) {
-                res.append(Character.toUpperCase(string.charAt(i + 1)));
-                i++;
-            } else {
-                res.append(c);
+        int cnt = 0;
+        for (int i = 0; i < length; i++) {
+            if (string.charAt(i) == '_') {
+                cnt++;
             }
         }
-        return res.toString();
+        if (cnt == 0 && Character.isUpperCase(string.charAt(0))) return string;
+        final char[] res = new char[length - cnt];
+        int pos = 0;
+        for (int i = 0; i < length; i++) {
+            char c = string.charAt(i);
+            if (i == 0 && Character.isLetter(c)) {
+                res[pos++] = Character.toUpperCase(c);
+            } else if (c == '_') {
+                final char next = string.charAt(i + 1);
+                if (i < length - 1 && Character.isLetter(next)) {
+                    res[pos++] = Character.toUpperCase(next);
+                    i++;
+                }
+            } else {
+                res[pos++] = c;
+            }
+        }
+        return new String(res);
     }
 
     private Map<String, Object> readFromStream(InputStream stream) {
