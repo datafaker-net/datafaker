@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -107,11 +105,11 @@ public class FakeValues implements FakeValuesInterface {
     private Map<String, Object> loadValues() {
         Map<String, Object> result = loadFromFilePath();
         if (result != null) return result;
-        String pathWithLocaleAndFilename = "/" + locale.getLanguage() + "/" + this.filename;
-        String pathWithFilename = "/" + filename + ".yml";
-        String pathWithLocale = "/" + locale.getLanguage() + ".yml";
+        final String[] paths = new String[] {
+            "/" + locale.getLanguage() + "/" + this.filename,
+            "/" + filename + ".yml",
+            "/" + locale.getLanguage() + ".yml"};
 
-        List<String> paths = Arrays.asList(pathWithLocaleAndFilename, pathWithFilename, pathWithLocale);
         for (String path : paths) {
             try (InputStream stream = getClass().getResourceAsStream(path)) {
                 if (stream != null) {
