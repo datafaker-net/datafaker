@@ -17,6 +17,7 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -170,7 +171,7 @@ public class ProvidersDocsGenerator {
 
         public static String generateRow(char padSymbol, String clazzName, String javaDocComment, String groupName) {
             StringBuilder sb = new StringBuilder();
-            sb.append("|").append(generateColumn(getName(clazzName), padSymbol, NAME.length)).append("|");
+            sb.append("|").append(generateColumn(getName(clazzName, groupName.toLowerCase(Locale.ROOT)), padSymbol, NAME.length)).append("|");
             for (int i = 1; i < values().length; i++) {
                 if (values()[i] == GROUP) {
                     sb.append(generateColumn(groupName, padSymbol, GROUP.length)).append("|");
@@ -196,8 +197,8 @@ public class ProvidersDocsGenerator {
             return "";
         }
 
-        public static String getName(String clazzName) {
-            return "[" + addSpaceBetweenNameOfProvider(clazzName) + "]({{ datafaker.javadoc }}/" + clazzName + ".html)";
+        public static String getName(String clazzName, String groupName) {
+            return "[" + addSpaceBetweenNameOfProvider(clazzName) + "](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/" + groupName + "/" + clazzName + ".html)";
         }
 
         private static String addSpaceBetweenNameOfProvider(String providerName) {
