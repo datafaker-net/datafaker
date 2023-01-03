@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.nio.file.FileSystem;
@@ -48,7 +49,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
 
     public List<String> allSupportedLocales(Set<String> fileMasks) {
         Set<String> langs = new HashSet<>(Arrays.asList(Locale.getISOLanguages()));
-        String[] paths = ManagementFactory.getRuntimeMXBean().getClassPath().split(":");
+        String[] paths = ManagementFactory.getRuntimeMXBean().getClassPath().split(File.pathSeparator);
         Set<String> locales = new HashSet<>();
         for (String s: paths) {
             try {
