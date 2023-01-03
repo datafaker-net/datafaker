@@ -251,10 +251,10 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
      */
     public Timestamp birthday(int minAge, int maxAge) {
-        LocalDateTime nw = LocalDateTime.now();
+        OffsetDateTime nw = OffsetDateTime.now();
         LocalDateTime from = LocalDateTime.of(nw.getYear() - maxAge, nw.getMonth(), nw.getDayOfMonth(), 0, 0, 0);
         LocalDateTime to = LocalDateTime.of(nw.getYear() - minAge, nw.getMonth(), nw.getDayOfMonth(), 0, 0, 0);
-        ZoneOffset offset = OffsetDateTime.now().getOffset();
+        ZoneOffset offset = nw.getOffset();
         final long start = from.toEpochSecond(offset);
         final long stop = to.toEpochSecond(offset);
         if (start == stop) {
