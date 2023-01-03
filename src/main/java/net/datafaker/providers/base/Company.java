@@ -4,6 +4,8 @@ import net.datafaker.service.FakerIDN;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
 /**
@@ -12,6 +14,8 @@ import java.util.regex.Pattern;
 public class Company extends AbstractProvider<BaseProviders> {
 
     private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[.,' ]");
+    private volatile List<String> allBuzzwords = null;
+    private final Lock lock = new ReentrantLock();
 
     protected Company(BaseProviders faker) {
         super(faker);
@@ -34,13 +38,23 @@ public class Company extends AbstractProvider<BaseProviders> {
     }
 
     public String buzzword() {
-        @SuppressWarnings("unchecked")
-        List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
-        List<String> buzzwords = new ArrayList<>();
-        for (List<String> buzzwordList : buzzwordLists) {
-            buzzwords.addAll(buzzwordList);
+        if (allBuzzwords == null) {
+            try {
+                lock.lock();
+                if (allBuzzwords == null) {
+                    @SuppressWarnings("unchecked")
+                    List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
+                    List<String> buzzwords = new ArrayList<>();
+                    for (List<String> buzzwordList : buzzwordLists) {
+                        buzzwords.addAll(buzzwordList);
+                    }
+                    allBuzzwords = buzzwords;
+                }
+            } finally {
+                lock.unlock();
+            }
         }
-        return buzzwords.get(faker.random().nextInt(buzzwords.size()));
+        return allBuzzwords.get(faker.random().nextInt(allBuzzwords.size()));
     }
 
     /**
