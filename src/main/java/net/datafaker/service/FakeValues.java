@@ -105,10 +105,12 @@ public class FakeValues implements FakeValuesInterface {
     private Map<String, Object> loadValues() {
         Map<String, Object> result = loadFromFilePath();
         if (result != null) return result;
-        final String[] paths = new String[] {
-            "/" + locale.getLanguage() + "/" + this.filename,
-            "/" + filename + ".yml",
-            "/" + locale.getLanguage() + ".yml"};
+        final String[] paths = this.filename.isEmpty()
+            ? new String[] {"/" + locale.getLanguage() + ".yml"}
+            : new String[] {
+                "/" + locale.getLanguage() + "/" + this.filename,
+                "/" + filename + ".yml",
+                "/" + locale.getLanguage() + ".yml"};
 
         for (String path : paths) {
             try (InputStream stream = getClass().getResourceAsStream(path)) {
