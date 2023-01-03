@@ -1,11 +1,23 @@
 package net.datafaker.providers.base;
 
-import java.util.List;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Locale;
-import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Generates random locales in different forms.
@@ -14,7 +26,6 @@ import java.util.Collections;
  */
 public class Locality extends AbstractProvider<BaseProviders> {
 
-    private final static String resourcePath = "./src/main/resources";
     private final List<String> locales;
     private List<String> shuffledLocales = new ArrayList<>();
 
@@ -32,26 +43,64 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * @return a List of Strings with the name of the locale (eg. "es", "es-MX")
      */
     public List<String> allSupportedLocales() {
+        return allSupportedLocales(new HashSet<>(Collections.singletonList("datafaker")));
+    }
 
-        // Retrieve list of all supported locale based on files in "resources" folder
-        List<String> locales = new ArrayList<>();
+    public List<String> allSupportedLocales(Set<String> fileMasks) {
+        Set<String> langs = new HashSet<>(Arrays.asList(Locale.getISOLanguages()));
+        String[] paths = ManagementFactory.getRuntimeMXBean().getClassPath().split(":");
+        Set<String> locales = new HashSet<>();
+        for (String s: paths) {
+            try {
+                Files.walkFileTree(Paths.get(s).toAbsolutePath(), new SimpleFileVisitor<Path>() {
 
-        String[] resourceFiles = new File(resourcePath).list();
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        final String filename;
+                        if (Files.isDirectory(file) || Files.isHidden(file) || !Files.isReadable(file)) {
+                            return super.visitFile(file, attrs);
+                        }
+                        if ((filename = file.getFileName().toString().toLowerCase(Locale.ROOT)).endsWith(".yml") || filename.endsWith(".yaml")) {
+                            final String parentFileName = file.getParent().getFileName().toString();
+                            if (langs.contains(parentFileName)) {
+                                locales.add(parentFileName);
+                            } else {
+                                locales.add(filename.substring(0, filename.indexOf('.')));
+                            }
+                        } else if (filename.endsWith(".jar") && fileMasks.stream().anyMatch(filename::contains)) {
+                            try (FileSystem zipfs = FileSystems.newFileSystem(file, (ClassLoader) null)) {
+                                for (Path rootPath : zipfs.getRootDirectories()) {
+                                    Files.walkFileTree(rootPath, new SimpleFileVisitor<Path>() {
 
-        int numResourceFiles = 0;
-        if (resourceFiles != null) {
-            numResourceFiles = resourceFiles.length;
-        }
-
-        for (int i = 0; i < numResourceFiles; i++) {
-            String resourceFileName = resourceFiles[i];
-            if (resourceFileName.endsWith(".yml")) {
-                String localeName = resourceFileName.substring(0, resourceFileName.lastIndexOf('.'));
-                locales.add(localeName);
+                                        @Override
+                                        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                                            final String filename;
+                                            if (file.getNameCount() > 2 || Files.isDirectory(file) || Files.isHidden(file) || !Files.isReadable(file)) {
+                                                return super.visitFile(file, attrs);
+                                            }
+                                            if ((filename = file.getFileName().toString()).endsWith(".yml") || filename.endsWith(".yaml")) {
+                                                final Path parentFileName = file.getParent().getFileName();
+                                                if (parentFileName == null) {
+                                                    locales.add(filename.substring(0, filename.indexOf('.')));
+                                                } else {
+                                                    locales.add(parentFileName.toString());
+                                                }
+                                            }
+                                            return super.visitFile(file, attrs);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        return super.visitFile(file, attrs);
+                    }
+                });
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
 
-        return locales;
+        return new ArrayList<>(locales);
     }
 
     /**
@@ -63,12 +112,13 @@ public class Locality extends AbstractProvider<BaseProviders> {
         int randomIndex = faker.random().nextInt(locales.size());
         Locale locale = Locale.forLanguageTag(locales.get(randomIndex));
 
-        String displayLanguage = locale.getDisplayLanguage(Locale.ENGLISH);
-        String displayCountry = locale.getDisplayCountry(Locale.ENGLISH);
+        String displayLanguage = locale.getDisplayLanguage(Locale.ROOT);
+        String displayCountry = locale.getDisplayCountry(Locale.ROOT);
         if (!displayCountry.isEmpty()) {
             displayLanguage += " (" + displayCountry + ")";
         }
-        return displayLanguage;
+
+        return displayLanguage.isEmpty() ? Locale.ENGLISH.getDisplayLanguage(Locale.ROOT) : displayLanguage;
     }
 
     /**
