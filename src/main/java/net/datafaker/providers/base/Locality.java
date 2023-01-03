@@ -53,7 +53,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
         Set<String> locales = new HashSet<>();
         for (String s: paths) {
             try {
-                Files.walkFileTree(Paths.get(s).toAbsolutePath(), new SimpleFileVisitor<Path>() {
+                final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
 
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -96,7 +96,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
                         }
                         return super.visitFile(file, attrs);
                     }
-                });
+                };
+                Files.walkFileTree(Paths.get(s).toAbsolutePath(), visitor);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
