@@ -799,9 +799,7 @@ public class FakeValuesService {
             String nestedMethodName = removeUnderscoreChars(classAndMethod[1]);
             final MethodAndCoercedArgs accessor = retrieveMethodAccessor(objectWithMethodToInvoke, nestedMethodName, args);
             if (accessor == null) {
-                throw new Exception("Can't find method on "
-                    + objectWithMethodToInvoke.getClass().getSimpleName()
-                    + " called " + nestedMethodName + ".");
+                return () -> null;
             }
 
             return () -> invokeAndToString(accessor, objectWithMethodToInvoke);
@@ -826,6 +824,11 @@ public class FakeValuesService {
         final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap = mapOfMethodAndCoercedArgs.get(clazz);
         stringMapMap.putIfAbsent(methodName, new WeakHashMap<>());
         stringMapMap.get(methodName).put(args, accessor);
+        if (accessor == null) {
+            LOG.fine("Can't find method on "
+                + object.getClass().getSimpleName()
+                + " called " + methodName + ".");
+        }
         return accessor;
     }
 
