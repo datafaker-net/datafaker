@@ -21,8 +21,9 @@ public class Time extends AbstractProvider<BaseProviders> {
      * @return a future time from now.
      */
     public long future(int atMost, ChronoUnit unit) {
-        long atMostTime = LocalTime.now().plus(atMost, unit).toNanoOfDay();
-        long time = LocalTime.now().toNanoOfDay();
+        final LocalTime now = LocalTime.now();
+        final long atMostTime = now.plus(atMost, unit).toNanoOfDay();
+        final long time = now.toNanoOfDay();
         return faker.number().numberBetween(time, atMostTime);
     }
 
@@ -48,8 +49,9 @@ public class Time extends AbstractProvider<BaseProviders> {
      * @return a future time from now, with a minimum time.
      */
     public long future(int atMost, int minimum, ChronoUnit unit) {
-        long atMostTime = LocalTime.now().plus(atMost, unit).toNanoOfDay();
-        long time = LocalTime.now().plus(minimum, unit).toNanoOfDay();
+        final LocalTime now = LocalTime.now();
+        final long atMostTime = now.plus(atMost, unit).toNanoOfDay();
+        final long time = now.plus(minimum, unit).toNanoOfDay();
         return faker.number().numberBetween(time, atMostTime);
     }
 
@@ -75,8 +77,9 @@ public class Time extends AbstractProvider<BaseProviders> {
      * @return a past time from now.
      */
     public long past(int atLeast, ChronoUnit unit) {
-        long atLeastTime = LocalTime.now().minus(atLeast, unit).toNanoOfDay();
-        long time = LocalTime.now().toNanoOfDay();
+        final LocalTime now = LocalTime.now();
+        final long atLeastTime = now.minus(atLeast, unit).toNanoOfDay();
+        final long time = now.toNanoOfDay();
         return faker.number().numberBetween(atLeastTime, time);
     }
 
@@ -102,8 +105,9 @@ public class Time extends AbstractProvider<BaseProviders> {
      * @return a past time from now.
      */
     public long past(int atMost, int minimum, ChronoUnit unit) {
-        long atMostTime = LocalTime.now().minus(atMost, unit).toNanoOfDay();
-        long time = LocalTime.now().minus(minimum, unit).toNanoOfDay();
+        final LocalTime now = LocalTime.now();
+        final long atMostTime = now.minus(atMost, unit).toNanoOfDay();
+        final long time = now.minus(minimum, unit).toNanoOfDay();
         return faker.number().numberBetween(atMostTime, time);
     }
 
