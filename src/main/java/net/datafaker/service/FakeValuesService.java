@@ -171,19 +171,21 @@ public class FakeValuesService {
      */
     public Object fetchObject(String key, FakerContext context) {
         Object result = null;
-        for (Locale locale : context.getLocaleChain()) {
+        final List<Locale> localeChain = context.getLocaleChain();
+        for (Locale locale : localeChain) {
             // exclude default locale from cache checks
-            if (locale.equals(DEFAULT_LOCALE) && context.getLocaleChain().size() > 1) {
+            if (locale.equals(DEFAULT_LOCALE) && localeChain.size() > 1) {
                 continue;
             }
-            if (key2fetchedObject.get(locale) != null && (result = key2fetchedObject.get(locale).get(key)) != null) {
+            final Map<String, Object> stringObjectMap = key2fetchedObject.get(locale);
+            if (stringObjectMap != null && (result = stringObjectMap.get(key)) != null) {
                 return result;
             }
         }
 
         String[] path = split(key);
         Locale local2Add = null;
-        for (Locale locale : context.getLocaleChain()) {
+        for (Locale locale : localeChain) {
             Object currentValue = fakeValuesInterfaceMap.get(locale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
@@ -212,17 +214,18 @@ public class FakeValuesService {
             return result;
         }
         int size = 0;
-        char splitChar = '.';
-        for (int i = 0; i < string.length(); i++) {
+        final char splitChar = '.';
+        final int length = string.length();
+        for (int i = 0; i < length; i++) {
             if (string.charAt(i) == splitChar) {
                 size++;
             }
         }
         result = new String[size + 1];
-        char[] chars = string.toCharArray();
+        final char[] chars = string.toCharArray();
         int start = 0;
         int j = 0;
-        for (int i = 0; i < string.length(); i++) {
+        for (int i = 0; i < length; i++) {
             if (string.charAt(i) == splitChar) {
                 if (i - start > 0) {
                     result[j++] = String.valueOf(chars, start, i - start);
@@ -262,7 +265,7 @@ public class FakeValuesService {
 
     private String bothify(String input, FakerContext context, boolean isUpper, boolean numerify, boolean letterify) {
         final int baseChar = isUpper ? 65 : 97;
-        char[] res = input.toCharArray();
+        final char[] res = input.toCharArray();
         for (int i = 0; i < res.length; i++) {
             switch (res[i]) {
                 case '#':
@@ -307,7 +310,7 @@ public class FakeValuesService {
         if (example == null) {
             return null;
         }
-        char[] chars = example.toCharArray();
+        final char[] chars = example.toCharArray();
 
         for (int i = 0; i < chars.length; i++) {
             if (Character.isLetter(chars[i])) {
@@ -506,18 +509,19 @@ public class FakeValuesService {
         final StringBuilder result = new StringBuilder(expressions.size() * expression.length());
         for (int i = 0; i < expressions.size(); i++) {
             // odd are expressions, even are not expressions, just strings
+            final String expr = expressions.get(i);
             if (i % 2 == 0) {
-                if (!expressions.get(i).isEmpty()) {
-                    result.append(expressions.get(i));
+                if (!expr.isEmpty()) {
+                    result.append(expr);
                 }
                 continue;
             }
-            String expr = expressions.get(i);
             int j = 0;
-            while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
+            final int length = expr.length();
+            while (j < length && !Character.isWhitespace(expr.charAt(j))) j++;
             String directive = expr.substring(0, j);
-            while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
-            final String arguments = j == expr.length() ? "" : expr.substring(j);
+            while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
+            final String arguments = j == length ? "" : expr.substring(j);
             final String[] args = splitArguments(arguments);
 
             final Object resolved = resolveExpression(directive, args, current, root, context);
@@ -530,7 +534,8 @@ public class FakeValuesService {
     }
 
     private String[] splitArguments(String arguments) {
-        if (arguments == null || arguments.length() == 0) {
+        final int length;
+        if (arguments == null || (length = arguments.length()) == 0) {
             return EMPTY_ARRAY;
         }
         String[] res = args2splittedArgs.get(arguments);
@@ -540,10 +545,10 @@ public class FakeValuesService {
         List<String> result = new ArrayList<>();
         int start = 0;
         boolean argsStarted = false;
-        for (int i = 0; i < arguments.length(); i++) {
+        for (int i = 0; i < length; i++) {
             if (argsStarted) {
                 int cnt = 0;
-                while (i < arguments.length() && arguments.charAt(i) == '\'') {
+                while (i < length && arguments.charAt(i) == '\'') {
                     cnt++;
                     i++;
                 }
@@ -567,7 +572,8 @@ public class FakeValuesService {
             return result;
         }
         int cnt = 0;
-        for (int i = 0; i < expression.length(); i++) {
+        final int length = expression.length();
+        for (int i = 0; i < length; i++) {
             if (expression.charAt(i) == '}') {
                 cnt++;
             }
@@ -576,7 +582,7 @@ public class FakeValuesService {
         boolean isExpression = false;
         int start = 0;
         int quoteCnt = 0;
-        for (int i = 0; i < expression.length(); i++) {
+        for (int i = 0; i < length; i++) {
             if (isExpression) {
                 if (expression.charAt(i) == '}' && quoteCnt % 2 == 0) {
                     result.add(expression.substring(start, i));
@@ -585,14 +591,14 @@ public class FakeValuesService {
                 } else if (expression.charAt(i) == '\'') {
                     quoteCnt++;
                 }
-            } else if (i < expression.length() - 2 && expression.charAt(i) == '#' && expression.charAt(i + 1) == '{') {
+            } else if (i < length - 2 && expression.charAt(i) == '#' && expression.charAt(i + 1) == '{') {
                 result.add(expression.substring(start, i));
                 isExpression = true;
                 start = i + 2;
                 i++;
             }
         }
-        if (start < expression.length()) {
+        if (start < length) {
             result.add(expression.substring(start));
         }
         EXPRESSION_2_SPLITTED.put(expression, result);
@@ -817,8 +823,9 @@ public class FakeValuesService {
         }
         final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
         mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
-        mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(methodName, new WeakHashMap<>());
-        mapOfMethodAndCoercedArgs.get(clazz).get(methodName).put(args, accessor);
+        final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap = mapOfMethodAndCoercedArgs.get(clazz);
+        stringMapMap.putIfAbsent(methodName, new WeakHashMap<>());
+        stringMapMap.get(methodName).put(args, accessor);
         return accessor;
     }
 
@@ -838,20 +845,21 @@ public class FakeValuesService {
     private MethodAndCoercedArgs accessor(Class<?> clazz, String name, String[] args) {
         final String finalName = name;
         LOG.log(Level.FINE, () -> "Find accessor named " + finalName + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
-        name = removeUnderscoreChars(name);
+        name = removeUnderscoreChars(name).toLowerCase(Locale.ROOT);
         final Collection<Method> methods;
         if (class2methodsCache.containsKey(clazz)) {
-            methods = class2methodsCache.get(clazz).getOrDefault(name.toLowerCase(Locale.ROOT), Collections.emptyList());
+            methods = class2methodsCache.get(clazz).getOrDefault(name, Collections.emptyList());
         } else {
             Method[] classMethods = clazz.getMethods();
-            Map<String, Collection<Method>> methodMap = new HashMap<>(classMethods.length);
+            Map<String, Collection<Method>> methodMap =
+                classMethods.length == 0 ? Collections.emptyMap() : new HashMap<>(classMethods.length);
             for (Method m : classMethods) {
                 final String key = m.getName().toLowerCase(Locale.ROOT);
                 methodMap.computeIfAbsent(key, k -> new ArrayList<>());
                 methodMap.get(key).add(m);
             }
             class2methodsCache.putIfAbsent(clazz, methodMap);
-            methods = methodMap.get(name.toLowerCase(Locale.ROOT));
+            methods = methodMap.get(name);
         }
         if (methods == null) {
             return null;
@@ -876,10 +884,11 @@ public class FakeValuesService {
             removedUnderscore.put(string, string);
             return string;
         }
-        char[] res = string.toCharArray();
+        final char[] res = string.toCharArray();
         int offset = 0;
         int length = 0;
-        for (int i = string.length() - 1; i >= offset; i--) {
+        final int strLen = string.length();
+        for (int i = strLen - 1; i >= offset; i--) {
             while (i > offset && string.charAt(i - offset) == '_') {
                 offset++;
             }
@@ -888,7 +897,7 @@ public class FakeValuesService {
                 length++;
             }
         }
-        valueWithRemovedUnderscores = String.valueOf(res, string.length() - length, length);
+        valueWithRemovedUnderscores = String.valueOf(res, strLen - length, length);
         removedUnderscore.put(string, valueWithRemovedUnderscores);
         return valueWithRemovedUnderscores;
     }
