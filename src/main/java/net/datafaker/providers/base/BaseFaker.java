@@ -8,7 +8,10 @@ import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
 
+import java.lang.reflect.Method;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,7 +30,9 @@ import java.util.function.Supplier;
 public class BaseFaker implements BaseProviders {
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
-    private static final Map<String, Map<FakerContext, AbstractProvider<?>>> PROVIDERS_MAP = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, Map<FakerContext, AbstractProvider<?>>> PROVIDERS_MAP = new IdentityHashMap<>();
+    private static final Map<String, Map<FakerContext, AbstractProvider<?>>> CLASSES = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, Map<String, Method>> METHODS = new IdentityHashMap<>();
 
     public BaseFaker() {
         this(Locale.ENGLISH);
@@ -331,15 +336,47 @@ public class BaseFaker implements BaseProviders {
 
     @SuppressWarnings("unchecked")
     public static <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(Class<AP> clazz, Function<PR, AP> valueSupplier, PR faker) {
-        final String className = clazz.getName();
-        if (!PROVIDERS_MAP.containsKey(className)) {
-            PROVIDERS_MAP.put(className, new ConcurrentHashMap<>());
+        Map<FakerContext, AbstractProvider<?>> map = PROVIDERS_MAP.get(clazz);
+        if (map == null) {
+            synchronized (BaseFaker.class) {
+                map = PROVIDERS_MAP.get(clazz);
+                if (map == null) {
+                    PROVIDERS_MAP.put(clazz, new ConcurrentHashMap<>());
+                    map = PROVIDERS_MAP.get(clazz);
+                }
+            }
         }
-        Map<FakerContext, AbstractProvider<?>> map = PROVIDERS_MAP.get(className);
         final AP result = (AP) map.get(faker.getContext());
         if (result == null) {
             final AP newMapping = valueSupplier.apply(faker);
+            CLASSES.put(clazz.getSimpleName(), new ConcurrentHashMap<>());
+
+            METHODS.putIfAbsent(newMapping.getClass(), new ConcurrentHashMap<>());
+            for (Method method: clazz.getMethods()) {
+                if (method.getParameterCount() > 0) continue;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < method.getName().length(); i++) {
+                    char ch = method.getName().charAt(i);
+                    if (i > 0 && Character.isUpperCase(ch)) {
+                        sb.append('_').append(Character.toLowerCase(ch));
+                    } else {
+                        sb.append(ch);
+                    }
+                }
+                Map<String, Method> methodMap = METHODS.get(newMapping.getClass());
+                if (methodMap == null) {
+                    synchronized (BaseFaker.class) {
+                        methodMap = METHODS.get(newMapping.getClass());
+                        if (methodMap == null) {
+                            METHODS.put(newMapping.getClass(), new HashMap<>());
+                            methodMap = METHODS.get(newMapping.getClass());
+                        }
+                    }
+                }
+                methodMap.put(sb.toString(), method);
+            }
             map.putIfAbsent(faker.getContext(), newMapping);
+            CLASSES.get(clazz.getSimpleName()).put(faker.getContext(), newMapping);
             return newMapping;
         }
         return result;
@@ -409,5 +446,17 @@ public class BaseFaker implements BaseProviders {
     @Override
     public final <B extends ProviderRegistration> B getFaker() {
         return (B) this;
+    }
+
+    public static AbstractProvider<?> getProvider(String className, FakerContext context) {
+        final Map<FakerContext, AbstractProvider<?>> map = CLASSES.get(className);
+        if (map == null) return null;
+        return map.get(context);
+    }
+
+    public static Method getMethod(AbstractProvider<?> ap, String methodName) {
+        Map<String, Method> map;
+        if (ap == null || (map = METHODS.get(ap.getClass())) == null) return null;
+        return map.get(methodName);
     }
 }

@@ -141,11 +141,19 @@ public class FakeValues implements FakeValuesInterface {
             Map<String, Object> map = null;
             for (Map.Entry<String, Object> entry : result.entrySet()) {
                 final String key = entry.getKey();
+                Object value = entry.getValue();
+                if (entry.getValue() instanceof Map) {
+                    Map<String, Object> nestedMap = new HashMap<>();
+                    for (Map.Entry<String, Object> e: ((Map<String, Object>) entry.getValue()).entrySet()) {
+                        nestedMap.put(toJavaNames(e.getKey(), true), e.getValue());
+                    }
+                    ((Map<String, Object>) entry.getValue()).putAll(nestedMap);
+                }
                 if (key.indexOf('_') != -1) {
                     if (map == null) {
                         map = new HashMap<>();
                     }
-                    map.put(toJavaNames(key), result.get(key));
+                    map.put(toJavaNames(key, false), value);
                 }
             }
             if (map == null) {
@@ -155,7 +163,7 @@ public class FakeValues implements FakeValuesInterface {
         }
     }
 
-    private static String toJavaNames(String string) {
+    private static String toJavaNames(String string, boolean isMethod) {
         final int length;
         if (string == null || (length = string.length()) == 0) {
             return string;
@@ -166,13 +174,13 @@ public class FakeValues implements FakeValuesInterface {
                 cnt++;
             }
         }
-        if (cnt == 0 && Character.isUpperCase(string.charAt(0))) return string;
+        if (cnt == 0 && (Character.isUpperCase(string.charAt(0)) && !isMethod || isMethod && Character.isLowerCase(string.charAt(0)))) return string;
         final char[] res = new char[length - cnt];
         int pos = 0;
         for (int i = 0; i < length; i++) {
             char c = string.charAt(i);
             if (i == 0 && Character.isLetter(c)) {
-                res[pos++] = Character.toUpperCase(c);
+                res[pos++] = isMethod ? Character.toLowerCase(c) : Character.toUpperCase(c);
             } else if (c == '_') {
                 final char next = string.charAt(i + 1);
                 if (i < length - 1 && Character.isLetter(next)) {
