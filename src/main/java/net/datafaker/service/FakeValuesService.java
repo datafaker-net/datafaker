@@ -381,7 +381,7 @@ public class FakeValuesService {
         return resolve(key, current, root, () -> key + " resulted in null expression", context);
     }
 
-    public String resolve(String key, AbstractProvider provider, FakerContext context) {
+    public String resolve(String key, AbstractProvider<?> provider, FakerContext context) {
         return resolve(key, provider, provider.getFaker(), () -> key + " resulted in null expression", context);
     }
 
@@ -502,11 +502,18 @@ public class FakeValuesService {
      * {@link BaseFaker#address()}'s {@link Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, ProviderRegistration root, FakerContext context) {
-        if (expression.indexOf('}') == -1 || !expression.contains("#{")) {
+        int cnt = 0;
+        final int expressionLength = expression.length();
+        for (int i = 0; i < expressionLength; i++) {
+            if (expression.charAt(i) == '}') {
+                cnt++;
+            }
+        }
+        if (cnt == 0) {
             return expression;
         }
-        final List<String> expressions = splitExpressions(expression);
-        final StringBuilder result = new StringBuilder(expressions.size() * expression.length());
+        final List<String> expressions = splitExpressions(expression, cnt, expressionLength);
+        final StringBuilder result = new StringBuilder(expressions.size() * expressionLength);
         for (int i = 0; i < expressions.size(); i++) {
             // odd are expressions, even are not expressions, just strings
             final String expr = expressions.get(i);
@@ -566,17 +573,10 @@ public class FakeValuesService {
         return resultArray;
     }
 
-    private List<String> splitExpressions(String expression) {
+    private List<String> splitExpressions(String expression, int cnt, int length) {
         List<String> result = EXPRESSION_2_SPLITTED.get(expression);
         if (result != null) {
             return result;
-        }
-        int cnt = 0;
-        final int length = expression.length();
-        for (int i = 0; i < length; i++) {
-            if (expression.charAt(i) == '}') {
-                cnt++;
-            }
         }
         result = new ArrayList<>(2 * cnt + 1);
         boolean isExpression = false;
@@ -628,13 +628,33 @@ public class FakeValuesService {
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
         // #{ssn_valid} on IdNumber
         if (dotIndex == -1) {
+            if (current instanceof AbstractProvider) {
+                final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
+                if (method != null) {
+                    try {
+                        return args.length == 0 ? method.invoke(current) : method.invoke(current, (Object[]) args);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e + " " + Arrays.toString(args));
+                    }
+                }
+            }
             Supplier<Object> supplier = resolveFromMethodOn(current, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 //expression2function.put(expression, supplier);
                 return resolved;
             }
         }
-
+        if (dotIndex > 0) {
+            final AbstractProvider<?> ap = BaseFaker.getProvider(directive.substring(0, dotIndex), context);
+            final Method method = BaseFaker.getMethod(ap, directive.substring(dotIndex + 1));
+            if (method != null) {
+                try {
+                    return args.length == 0 ? method.invoke(ap) : method.invoke(ap, args);
+                } catch (Exception e) {
+                    throw new RuntimeException(e + " " + Arrays.toString(args));
+                }
+            }
+        }
         final String simpleDirective = (dotIndex >= 0 || current == null)
             ? directive
             : classNameToYamlName(current) + "." + directive;
