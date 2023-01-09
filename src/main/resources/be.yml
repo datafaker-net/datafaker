@@ -1,5 +1,5 @@
 #NOTE: please keep the contents of this file identical to its deprecated `by.yml` version.
-by:
+be:
   faker:
     separator: " і "
     address:
