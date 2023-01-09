@@ -30,7 +30,7 @@
         <generex.version>1.0.2</generex.version>
         <google.javaformat.version>1.7</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
-        <jbanking.version>4.0.0</jbanking.version>
+        <jbanking.version>4.1.0</jbanking.version>
         <junit.version>5.9.1</junit.version>
         <libphonenumber.version>8.13.2</libphonenumber.version>
         <maven.compiler.source>1.8</maven.compiler.source>
