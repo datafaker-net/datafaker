@@ -136,6 +136,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(Movie.class, Movie::new);
     }
 
+    default Naruto naruto() {
+        return getProvider(Naruto.class, Naruto::new);
+    }
+
     default OnePiece onePiece() {
         return getProvider(OnePiece.class, OnePiece::new);
     }

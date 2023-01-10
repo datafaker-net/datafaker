@@ -381,6 +381,7 @@ Providers
 * Movie
 * Music
 * Name
+* Naruto
 * Nation
 * Nato Phonetic Alphabet
 * Nigeria

@@ -167,6 +167,7 @@ public class EnFile {
         "music.yml",
 //            "myst.yml",
         "name.yml",
+        "naruto.yml",
         "nation.yml",
         "nato_phonetic_alphabet.yml",
 //            "new_girl.yml",
