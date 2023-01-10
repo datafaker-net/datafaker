@@ -333,6 +333,7 @@ Providers
 * Formula 1 (:racing_car:)
 * Friends
 * Fullmetal Alchemist: Brotherhood
+* Futurama
 * Funny Name
 * Game Of Thrones
 * Garment Size

@@ -117,6 +117,7 @@ public class EnFile {
         "friends.yml",
         "fma_brotherhood.yml",
         "funny_name.yml",
+        "futurama.yml",
         "game_of_thrones.yml",
         "garments_sizes.yml",
 //            "game.yml",
