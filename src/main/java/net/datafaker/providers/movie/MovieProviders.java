@@ -91,6 +91,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(FullmetalAlchemist.class, FullmetalAlchemist::new);
     }
 
+    default Futurama futurama() {
+        return getProvider(Futurama.class, Futurama::new);
+    }
+
     default GameOfThrones gameOfThrones() {
         return getProvider(GameOfThrones.class, GameOfThrones::new);
     }
