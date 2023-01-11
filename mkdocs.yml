@@ -103,7 +103,8 @@ nav:
       - Formats: documentation/formats.md
       - Transformation schemas: documentation/schemas.md
       - Unique values: documentation/unique-values.md
-    - Performance: documentation/performance.md
+    - Performance:
+      - Datafaker 1.4.0: documentation/performance140.md
     - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.7.0/datafaker-1.7.0-javadoc.jar/!/index.html'
     - Contributing: documentation/contributing.md
     - License: documentation/license.md
