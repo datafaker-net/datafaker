@@ -1,7 +1,7 @@
 package net.datafaker;
 
 import net.datafaker.providers.food.FoodProviders;
-import net.datafaker.providers.movie.MovieProviders;
+import net.datafaker.providers.show.ShowProviders;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
@@ -13,7 +13,7 @@ import net.datafaker.providers.videogame.VideoGameProviders;
 import java.util.Locale;
 import java.util.Random;
 
-public class Faker extends BaseFaker implements BaseProviders, SportProviders, FoodProviders, MovieProviders, VideoGameProviders {
+public class Faker extends BaseFaker implements BaseProviders, SportProviders, FoodProviders, ShowProviders, VideoGameProviders {
     public Faker() {
     }
 
