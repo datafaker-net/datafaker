@@ -43,6 +43,7 @@ public class ProvidersDocsGenerator {
 
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
+        providersDocsGenerator.initSubtypes();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DESTINATION_PLACE_OF_PROVIDERS_FILE))) {
             providersDocsGenerator.constructHeaderInProvidersFile(writer);
             providersDocsGenerator.generateProvidersDocs(writer);
@@ -52,12 +53,15 @@ public class ProvidersDocsGenerator {
         }
     }
 
-    void generateProvidersDocs(BufferedWriter writer) throws IOException {
+    private void initSubtypes() {
         subTypes.addAll(
             reflections.get(SubTypes.of(AbstractProvider.class).asClass())
                 .stream()
                 .filter(t -> !providersToExcludeFromGeneration.contains(t.getSimpleName()))
                 .collect(Collectors.toSet()));
+    }
+
+    void generateProvidersDocs(BufferedWriter writer) throws IOException {
 
         Set<String> fakersWithoutSinceTag = new HashSet<>();
         for (Class<?> clazz : subTypes) {
@@ -119,7 +123,7 @@ public class ProvidersDocsGenerator {
      */
     private void constructHeaderInProvidersFile(Writer writer) throws IOException {
         final String header = "# Fake Data Providers\n"
-            + "\nDatafaker comes with the following list of data providers:" + "\n\n";
+            + "\nDatafaker comes with a total of " + subTypes.size() + " data providers:" + "\n\n";
 
         writer.write(header);
         writer.write(Column.generateHeaderRow(' '));
