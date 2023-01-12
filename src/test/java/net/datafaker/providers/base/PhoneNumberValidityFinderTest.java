@@ -3,7 +3,6 @@ package net.datafaker.providers.base;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * These tests use System.out.printlns because the error rate is quite high.
  */
-class PhoneNumberValidityFinderTest extends AbstractFakerTest {
+class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testAllCellPhoneForLocale() throws NumberParseException {

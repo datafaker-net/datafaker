@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BusinessTest extends BaseFakerTest<BaseFaker> {
+
     @Test
     void creditCardNumber() {
         assertThat(faker.business().creditCardNumber()).isNotEmpty();

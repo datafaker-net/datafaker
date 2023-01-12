@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class DungeonsAndDragonsTest extends net.datafaker.AbstractFakerTest {
+class DungeonsAndDragonsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void alignments() {

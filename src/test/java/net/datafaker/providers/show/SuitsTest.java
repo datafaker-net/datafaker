@@ -3,7 +3,7 @@ package net.datafaker.providers.show;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SuitsTest extends net.datafaker.AbstractFakerTest {
+class SuitsTest extends ShowFakerTest {
 
     @Test
     void characters() {

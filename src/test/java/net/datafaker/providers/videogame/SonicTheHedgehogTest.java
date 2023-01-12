@@ -3,7 +3,7 @@ package net.datafaker.providers.videogame;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SonicTheHedgehogTest extends net.datafaker.AbstractFakerTest {
+class SonicTheHedgehogTest extends VideoGameFakerTest {
 
     @Test
     void zone() {
