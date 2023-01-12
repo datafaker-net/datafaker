@@ -218,6 +218,7 @@ public class EnFile {
         "suits.yml",
 //            "super_smash_bros.yml",
         "superhero.yml",
+        "supernatural.yml",
 //            "sword_art_online.yml",
         "tea.yml",
         "team.yml",

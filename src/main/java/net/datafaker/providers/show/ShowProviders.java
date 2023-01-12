@@ -216,6 +216,10 @@ public interface ShowProviders extends ProviderRegistration {
         return getProvider(Suits.class, Suits::new);
     }
 
+    default Supernatural supernatural() {
+        return getProvider(Supernatural.class, Supernatural::new);
+    }
+
     default TheItCrowd theItCrowd() {
         return getProvider(TheItCrowd.class, TheItCrowd::new);
     }
