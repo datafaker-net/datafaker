@@ -1,16 +1,15 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * Stargate is a military science fiction media franchise.
  *
  * @since 1.8.0
  */
-public class Stargate extends AbstractProvider<BaseProviders> {
+public class Stargate extends AbstractProvider<ShowProviders> {
 
-    protected Stargate(BaseProviders faker) {
+    protected Stargate(ShowProviders faker) {
         super(faker);
     }
 

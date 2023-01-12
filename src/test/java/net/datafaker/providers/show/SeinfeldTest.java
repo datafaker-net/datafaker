@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SeinfeldTest extends MovieFakerTest {
+class SeinfeldTest extends ShowFakerTest {
 
     @Test
     void character() {

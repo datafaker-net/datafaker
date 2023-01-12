@@ -15,6 +15,14 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(Control.class, Control::new);
     }
 
+    default DarkSouls darkSouls() {
+        return getProvider(DarkSouls.class, DarkSouls::new);
+    }
+
+    default EldenRing eldenRing() {
+        return getProvider(EldenRing.class, EldenRing::new);
+    }
+
     default ElderScrolls elderScrolls() {
         return getProvider(ElderScrolls.class, ElderScrolls::new);
     }
@@ -25,6 +33,10 @@ public interface VideoGameProviders extends ProviderRegistration {
 
     default Fallout fallout() {
         return getProvider(Fallout.class, Fallout::new);
+    }
+
+    default HalfLife halfLife() {
+        return getProvider(HalfLife.class, HalfLife::new);
     }
 
     default Hearthstone hearthstone() {
@@ -47,8 +59,20 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(MassEffect.class, MassEffect::new);
     }
 
+    default Minecraft minecraft() {
+        return getProvider(Minecraft.class, Minecraft::new);
+    }
+
+    default Myst myst() {
+        return getProvider(Myst.class, Myst::new);
+    }
+
     default Overwatch overwatch() {
         return getProvider(Overwatch.class, Overwatch::new);
+    }
+
+    default SonicTheHedgehog sonicTheHedgehog() {
+        return getProvider(SonicTheHedgehog.class, SonicTheHedgehog::new);
     }
 
     default SoulKnight soulKnight() {
@@ -59,12 +83,32 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(StarCraft.class, StarCraft::new);
     }
 
+    default StreetFighter streetFighter() {
+        return getProvider(StreetFighter.class, StreetFighter::new);
+    }
+
     default SuperMario superMario() {
         return getProvider(SuperMario.class, SuperMario::new);
     }
 
+    default SuperSmashBros superSmashBros() {
+        return getProvider(SuperSmashBros.class, SuperSmashBros::new);
+    }
+
     default Touhou touhou() {
         return getProvider(Touhou.class, Touhou::new);
+    }
+
+    default VideoGame videoGame() {
+        return getProvider(VideoGame.class, VideoGame::new);
+    }
+
+    default WarhammerFantasy warhammerFantasy() {
+        return getProvider(WarhammerFantasy.class, WarhammerFantasy::new);
+    }
+
+    default WorldOfWarcraft worldOfWarcraft() {
+        return getProvider(WorldOfWarcraft.class, WorldOfWarcraft::new);
     }
 
     default Zelda zelda() {

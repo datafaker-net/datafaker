@@ -1,16 +1,15 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * V for Vendetta is a 2005 dystopian political action film directed by James McTeigue from a screenplay by the Wachowskis.
  *
  * @since 1.8.0
  */
-public class VForVendetta extends AbstractProvider<BaseProviders> {
+public class VForVendetta extends AbstractProvider<ShowProviders> {
 
-    protected VForVendetta(BaseProviders faker) {
+    protected VForVendetta(ShowProviders faker) {
         super(faker);
     }
 

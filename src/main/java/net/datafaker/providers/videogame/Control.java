@@ -3,6 +3,8 @@ package net.datafaker.providers.videogame;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
+ * Control is an action-adventure game developed by Remedy Entertainment and published by 505 Games.
+ *
  * @since 1.7.0
  */
 public class Control extends AbstractProvider<VideoGameProviders> {

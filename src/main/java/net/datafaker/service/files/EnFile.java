@@ -81,7 +81,7 @@ public class EnFile {
         "culture_series.yml",
         "currency.yml",
         "dc_comics.yml",
-        "dark_soul.yml",
+        "dark_souls.yml",
         "demographic.yml",
         "departed.yml",
         "dessert.yml",
@@ -177,6 +177,7 @@ public class EnFile {
 //            "opera.yml",
         "nigeria.yml",
         "overwatch.yml",
+        "olympic_sport.yml",
         "oscar_movie.yml",
 //            "parks_and_rec.yml",
 //            "phish.yml",
@@ -231,6 +232,7 @@ public class EnFile {
         "university.yml",
         "v_for_vendetta.yml",
         "vehicle.yml",
+        "video_game.yml",
         "volleyball.yml",
         "the_venture_bros.yml",
         "verbs.yml",
@@ -247,19 +249,29 @@ public class EnFile {
         new EnFile("animal.yml", "creature"),
         new EnFile("cat.yml", "creature"),
         new EnFile("dog.yml", "creature"),
+
+        new EnFile("elder_scrolls.yml", "games"),
+        new EnFile("half_life.yml", "games"),
+        new EnFile("hearthstone.yml", "games"),
         new EnFile("horse.yml", "creature"),
         new EnFile("league_of_legends.yml", "games"),
+        new EnFile("marvel_snap.yml", "games"),
+        new EnFile("myst.yml", "games"),
         new EnFile("overwatch.yml", "games"),
 //            new EnFile("dota.yml", "games"),
         new EnFile("pokemon.yml", "games"),
-        new EnFile("super_mario.yml", "games"),
-        new EnFile("witcher.yml", "games"),
-        new EnFile("zelda.yml", "games"),
-        new EnFile("elder_scrolls.yml", "games"),
-        new EnFile("phone_number.yml", "cell_phone"), // load phone number again with a different path
         new EnFile("resident_evil.yml", "games"),
-        new EnFile("hearthstone.yml", "games"),
-        new EnFile("marvel_snap.yml", "games"));
+        new EnFile("sonic_the_hedgehog.yml", "games"),
+        new EnFile("super_mario.yml", "games"),
+        new EnFile("super_smash_bros.yml", "games"),
+        new EnFile("street_fighter.yml", "games"),
+        new EnFile("witcher.yml", "games"),
+        new EnFile("warhammer_fantasy.yml", "games"),
+        new EnFile("world_of_warcraft.yml", "games"),
+        new EnFile("zelda.yml", "games"),
+
+        new EnFile("phone_number.yml", "cell_phone") // load phone number again with a different path
+    );
 
     private static final List<EnFile> ALL_FILES;
 

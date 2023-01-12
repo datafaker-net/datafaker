@@ -1,11 +1,5 @@
 package net.datafaker.providers.base;
 
-
-import net.datafaker.providers.show.DarkSoul;
-import net.datafaker.providers.show.Lebowski;
-import net.datafaker.providers.show.Simpsons;
-import net.datafaker.providers.videogame.Minecraft;
-
 /**
  * The interface to register providers for {@link BaseFaker}.
  */
@@ -151,10 +145,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(CultureSeries.class, CultureSeries::new);
     }
 
-    default DarkSoul darkSoul() {
-        return getProvider(DarkSoul.class, DarkSoul::new);
-    }
-
     default DateAndTime date() {
         return getProvider(DateAndTime.class, DateAndTime::new);
     }
@@ -199,10 +189,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Educator.class, Educator::new);
     }
 
-    default EldenRing eldenRing() {
-        return getProvider(EldenRing.class, EldenRing::new);
-    }
-
     default ElectricalComponents electricalComponents() {
         return getProvider(ElectricalComponents.class, ElectricalComponents::new);
     }
@@ -225,10 +211,6 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Finance finance() {
         return getProvider(Finance.class, Finance::new);
-    }
-
-    default FreshPrinceOfBelAir freshPrinceOfBelAir() {
-        return getProvider(FreshPrinceOfBelAir.class, FreshPrinceOfBelAir::new);
     }
 
     default FunnyName funnyName() {
@@ -303,10 +285,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Locality.class, Locality::new);
     }
 
-    default Lebowski lebowski() {
-        return getProvider(Lebowski.class, Lebowski::new);
-    }
-
     default Lorem lorem() {
         return getProvider(Lorem.class, Lorem::new);
     }
@@ -333,10 +311,6 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Military military() {
         return getProvider(Military.class, Military::new);
-    }
-
-    default Minecraft minecraft() {
-        return getProvider(Minecraft.class, Minecraft::new);
     }
 
     default Money money() {
@@ -377,6 +351,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Number number() {
         return getProvider(Number.class, Number::new);
+    }
+
+    default OlympicSport olympicSport() {
+        return getProvider(OlympicSport.class, OlympicSport::new);
     }
 
     default Passport passport() {
@@ -435,10 +413,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Size.class, Size::new);
     }
 
-    default Simpsons simpsons() {
-        return getProvider(Simpsons.class, Simpsons::new);
-    }
-
     default Space space() {
         return getProvider(Space.class, Space::new);
     }
@@ -461,10 +435,6 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Time time() {
         return getProvider(Time.class, Time::new);
-    }
-
-    default Tron tron() {
-        return getProvider(Tron.class, Tron::new);
     }
 
     default Twitter twitter() {

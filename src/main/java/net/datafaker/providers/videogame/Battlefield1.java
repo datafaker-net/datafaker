@@ -3,7 +3,7 @@ package net.datafaker.providers.videogame;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
- * A class for generating random value of Battlefield1 contents.
+ * Battlefield 1 is a first-person shooter game developed by DICE and published by Electronic Arts.
  *
  * @author coolestjj
  * @since 1.4.0

@@ -1,16 +1,15 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * Sword Art Online is a Japanese light novel series written by Reki Kawahara and illustrated by abec.
  *
  * @since 1.8.0
  */
-public class SwordArtOnline extends AbstractProvider<BaseProviders> {
+public class SwordArtOnline extends AbstractProvider<ShowProviders> {
 
-    protected SwordArtOnline(BaseProviders faker) {
+    protected SwordArtOnline(ShowProviders faker) {
         super(faker);
     }
 

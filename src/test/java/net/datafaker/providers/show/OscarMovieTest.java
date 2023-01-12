@@ -5,7 +5,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Strings.isNullOrEmpty;
 
-class OscarMovieTest extends MovieFakerTest {
+class OscarMovieTest extends ShowFakerTest {
 
     @RepeatedTest(100)
     void actor() {

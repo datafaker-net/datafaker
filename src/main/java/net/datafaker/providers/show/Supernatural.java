@@ -1,16 +1,15 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * Supernatural is an American dark fantasy drama television series created by Eric Kripke.
  *
  * @since 1.8.0
  */
-public class Supernatural extends AbstractProvider<BaseProviders> {
+public class Supernatural extends AbstractProvider<ShowProviders> {
 
-    protected Supernatural(BaseProviders faker) {
+    protected Supernatural(ShowProviders faker) {
         super(faker);
     }
 

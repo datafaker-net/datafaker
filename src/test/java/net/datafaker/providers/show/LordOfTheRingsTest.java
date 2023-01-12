@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Luka Obradovic (luka@vast.com)
  */
-class LordOfTheRingsTest extends MovieFakerTest {
+class LordOfTheRingsTest extends ShowFakerTest {
 
     @Test
     void character() {

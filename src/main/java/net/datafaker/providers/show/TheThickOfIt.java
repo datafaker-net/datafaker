@@ -1,14 +1,13 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * @since 1.8.0
  */
-public class TheThickOfIt extends AbstractProvider<BaseProviders> {
+public class TheThickOfIt extends AbstractProvider<ShowProviders> {
 
-    protected TheThickOfIt(BaseProviders faker) {
+    protected TheThickOfIt(ShowProviders faker) {
         super(faker);
     }
 

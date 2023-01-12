@@ -1,10 +1,10 @@
-package net.datafaker.providers.base;
+package net.datafaker.providers.show;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TronTest extends BaseFakerTest<BaseFaker> {
+class TronTest extends ShowFakerTest {
 
     @Test
     void characters() {

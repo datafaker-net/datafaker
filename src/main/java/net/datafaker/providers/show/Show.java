@@ -1,14 +1,13 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * @since 1.8.0
  */
-public class Show extends AbstractProvider<BaseProviders> {
+public class Show extends AbstractProvider<ShowProviders> {
 
-    protected Show(BaseProviders faker) {
+    protected Show(ShowProviders faker) {
         super(faker);
     }
 

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BigBangTheoryTest extends MovieFakerTest {
+class BigBangTheoryTest extends ShowFakerTest {
 
     @RepeatedTest(50)
     void testCharacter() {
