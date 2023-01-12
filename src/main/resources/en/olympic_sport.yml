@@ -1,6 +1,6 @@
 en:
   faker:
-    sport:
+    olympic_sport:
       summer_olympics: # Source https://olympics.com/en/sports/summer-olympics
         - 3x3 basketball
         - Archery
