@@ -85,7 +85,6 @@ extra:
   datafaker:
     version: 1.7.0
     snapshot: 1.8.0-SNAPSHOT
-    javadoc: https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.7.0/datafaker-1.7.0-javadoc.jar/!/net/datafaker
 
 # Page tree
 nav:
