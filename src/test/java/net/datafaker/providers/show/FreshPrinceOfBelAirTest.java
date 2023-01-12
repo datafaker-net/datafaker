@@ -1,10 +1,10 @@
-package net.datafaker.providers.base;
+package net.datafaker.providers.show;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class FreshPrinceOfBelAirTest extends net.datafaker.AbstractFakerTest {
+class FreshPrinceOfBelAirTest extends ShowFakerTest {
 
     @Test
     void characters() {

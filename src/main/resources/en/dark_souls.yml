@@ -1,6 +1,6 @@
 en:
   faker:
-    dark_soul:
+    dark_souls:
       stats: [ "Vitality","Attunement","Endurance","Strength","Dexterity","Resistance","Intelligence","Faith","Humanity","Soul Level" ]
       covenants: [ "Blade of the Darkmoon","Chaos Servant","Darkwraith","Forest Hunter","Gravelord Servant","Path of the Dragon","Princess's Guard","Warrior of Sunlight","Way of White" ]
       classes: [ "Warrior","Knight","Wanderer","Thief","Bandit","Hunter","Sorcerer","Pyromancer","Cleric","Deprived" ]

@@ -3,6 +3,8 @@ package net.datafaker.providers.videogame;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
+ * Marvel Snap is a digital collectible card game developed by Second Dinner and published by Nuverse for Microsoft Windows, Android and iOS.
+ *
  * @since 1.8.0
  */
 public class MarvelSnap extends AbstractProvider<VideoGameProviders> {

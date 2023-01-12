@@ -4,7 +4,7 @@ package net.datafaker.providers.videogame;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
- * A class for generating random values for Soul Knight.
+ * Soul Knight is a game made by ChillyRoom Inc.
  *
  * @author zhou mintao
  * @since 1.4.0

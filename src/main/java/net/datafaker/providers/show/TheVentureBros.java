@@ -1,16 +1,15 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * The Venture Bros. is an American adult animated action comedy TV series.
  *
  * @since 1.8.0
  */
-public class TheVentureBros extends AbstractProvider<BaseProviders> {
+public class TheVentureBros extends AbstractProvider<ShowProviders> {
 
-    protected TheVentureBros(BaseProviders faker) {
+    protected TheVentureBros(ShowProviders faker) {
         super(faker);
     }
 

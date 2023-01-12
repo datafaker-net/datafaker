@@ -4,7 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RuPaulDragRaceTest extends MovieFakerTest {
+class RuPaulDragRaceTest extends ShowFakerTest {
 
     @RepeatedTest(100)
     void queens() {

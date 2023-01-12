@@ -3,6 +3,8 @@ package net.datafaker.providers.videogame;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
+ * Minecraft is a sandbox game developed by Mojang Studios.
+ *
  * @since 0.9.0
  */
 public class Minecraft extends AbstractProvider<VideoGameProviders> {

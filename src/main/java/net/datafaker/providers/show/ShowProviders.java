@@ -83,6 +83,10 @@ public interface ShowProviders extends ProviderRegistration {
         return getProvider(FinalSpace.class, FinalSpace::new);
     }
 
+    default FreshPrinceOfBelAir freshPrinceOfBelAir() {
+        return getProvider(FreshPrinceOfBelAir.class, FreshPrinceOfBelAir::new);
+    }
+
     default Friends friends() {
         return getProvider(Friends.class, Friends::new);
     }
@@ -130,6 +134,10 @@ public interface ShowProviders extends ProviderRegistration {
 
     default Kaamelott kaamelott() {
         return getProvider(Kaamelott.class, Kaamelott::new);
+    }
+
+    default Lebowski lebowski() {
+        return getProvider(Lebowski.class, Lebowski::new);
     }
 
     default LordOfTheRings lordOfTheRings() {
@@ -192,6 +200,10 @@ public interface ShowProviders extends ProviderRegistration {
         return getProvider(SiliconValley.class, SiliconValley::new);
     }
 
+    default Simpsons simpsons() {
+        return getProvider(Simpsons.class, Simpsons::new);
+    }
+
     default SouthPark southPark() {
         return getProvider(SouthPark.class, SouthPark::new);
     }
@@ -246,6 +258,10 @@ public interface ShowProviders extends ProviderRegistration {
 
     default TheVentureBros theVentureBros() {
         return getProvider(TheVentureBros.class, TheVentureBros::new);
+    }
+
+    default Tron tron() {
+        return getProvider(Tron.class, Tron::new);
     }
 
     default TwinPeaks twinPeaks() {

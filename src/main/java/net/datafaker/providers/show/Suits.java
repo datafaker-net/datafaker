@@ -1,16 +1,15 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * Suits is an American legal drama television series created and written by Aaron Korsh.
  *
  * @since 1.8.0
  */
-public class Suits extends AbstractProvider<BaseProviders> {
+public class Suits extends AbstractProvider<ShowProviders> {
 
-    protected Suits(BaseProviders faker) {
+    protected Suits(ShowProviders faker) {
         super(faker);
     }
 

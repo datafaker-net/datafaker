@@ -1,16 +1,15 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * How to Train Your Dragon is a 2010 American computer-animated action fantasy film loosely based on the 2003 book of the same name by Cressida Cowell.
  *
  * @since 1.8.0
  */
-public class HowToTrainYourDragon extends AbstractProvider<BaseProviders> {
+public class HowToTrainYourDragon extends AbstractProvider<ShowProviders> {
 
-    protected HowToTrainYourDragon(BaseProviders faker) {
+    protected HowToTrainYourDragon(ShowProviders faker) {
         super(faker);
     }
 

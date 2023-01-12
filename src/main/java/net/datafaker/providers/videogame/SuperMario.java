@@ -3,6 +3,8 @@ package net.datafaker.providers.videogame;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
+ * Super Mario is a platform game series created by Nintendo starring their mascot, Mario.
+ *
  * @since 1.3.0
  */
 public class SuperMario extends AbstractProvider<VideoGameProviders> {
