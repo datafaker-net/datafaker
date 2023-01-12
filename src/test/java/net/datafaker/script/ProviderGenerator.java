@@ -26,7 +26,7 @@ class ProviderGenerator {
     void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith("supernatural.yml"));
+        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().contains("the_venture_bros"));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
