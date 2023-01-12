@@ -124,6 +124,10 @@ public interface ShowProviders extends ProviderRegistration {
         return getProvider(HowIMetYourMother.class, HowIMetYourMother::new);
     }
 
+    default HowToTrainYourDragon howToTrainYourDragon() {
+        return getProvider(HowToTrainYourDragon.class, HowToTrainYourDragon::new);
+    }
+
     default Kaamelott kaamelott() {
         return getProvider(Kaamelott.class, Kaamelott::new);
     }
@@ -142,6 +146,10 @@ public interface ShowProviders extends ProviderRegistration {
 
     default Naruto naruto() {
         return getProvider(Naruto.class, Naruto::new);
+    }
+
+    default NewGirl newGirl() {
+        return getProvider(NewGirl.class, NewGirl::new);
     }
 
     default OnePiece onePiece() {
@@ -180,6 +188,14 @@ public interface ShowProviders extends ProviderRegistration {
         return getProvider(SiliconValley.class, SiliconValley::new);
     }
 
+    default SouthPark southPark() {
+        return getProvider(SouthPark.class, SouthPark::new);
+    }
+
+    default Stargate stargate() {
+        return getProvider(Stargate.class, Stargate::new);
+    }
+
     default StarTrek starTrek() {
         return getProvider(StarTrek.class, StarTrek::new);
     }
@@ -188,8 +204,16 @@ public interface ShowProviders extends ProviderRegistration {
         return getProvider(StarWars.class, StarWars::new);
     }
 
+    default StrangerThings strangerThings() {
+        return getProvider(StrangerThings.class, StrangerThings::new);
+    }
+
     default StudioGhibli studioGhibli() {
         return getProvider(StudioGhibli.class, StudioGhibli::new);
+    }
+
+    default Suits suits() {
+        return getProvider(Suits.class, Suits::new);
     }
 
     default TheItCrowd theItCrowd() {
