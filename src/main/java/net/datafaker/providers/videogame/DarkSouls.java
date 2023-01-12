@@ -1,7 +1,6 @@
 package net.datafaker.providers.videogame;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.show.ShowProviders;
 
 /**
  * Dark Souls is a series of action role-playing games created by Hidetaka Miyazaki of FromSoftware and published by Bandai Namco Entertainment.

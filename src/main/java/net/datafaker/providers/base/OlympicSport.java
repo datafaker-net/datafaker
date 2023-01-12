@@ -1,8 +1,5 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
-
 /**
  * @since 1.8.0
  */
