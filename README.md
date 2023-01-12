@@ -248,7 +248,7 @@ See [CONTRIBUTING.md](https://github.com/datafaker-net/datafaker/blob/main/CONTR
 
 Providers
 -----
-[Full list of providers](https://www.datafaker.net/documentation/providers/).
+The list below is not complete and shows only a part of available providers. To view the full list of providers, please follow the link: [Full list of providers](https://www.datafaker.net/documentation/providers/).
 
 
 * Address
@@ -280,8 +280,8 @@ Providers
 * Brooklyn Nine-Nine
 * Buffy
 * Business
-* CNPJ [Brazilian National Registry of Legal Entities](https://en.wikipedia.org/wiki/CNPJ)
-* CPF [Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number)
+* CNPJ ([Brazilian National Registry of Legal Entities](https://en.wikipedia.org/wiki/CNPJ))
+* CPF ([Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number))
 * Camera
 * Cat
 * Chuck Norris
