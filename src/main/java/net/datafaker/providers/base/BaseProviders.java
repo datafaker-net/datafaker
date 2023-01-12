@@ -1,9 +1,9 @@
 package net.datafaker.providers.base;
 
 
-import net.datafaker.providers.movie.DarkSoul;
-import net.datafaker.providers.movie.Lebowski;
-import net.datafaker.providers.movie.Simpsons;
+import net.datafaker.providers.show.DarkSoul;
+import net.datafaker.providers.show.Lebowski;
+import net.datafaker.providers.show.Simpsons;
 import net.datafaker.providers.videogame.Minecraft;
 
 /**
