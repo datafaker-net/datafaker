@@ -184,6 +184,10 @@ public interface ShowProviders extends ProviderRegistration {
         return getProvider(Seinfeld.class, Seinfeld::new);
     }
 
+    default Show show() {
+        return getProvider(Show.class, Show::new);
+    }
+
     default SiliconValley siliconValley() {
         return getProvider(SiliconValley.class, SiliconValley::new);
     }
@@ -220,12 +224,36 @@ public interface ShowProviders extends ProviderRegistration {
         return getProvider(Supernatural.class, Supernatural::new);
     }
 
+    default SwordArtOnline swordArtOnline() {
+        return getProvider(SwordArtOnline.class, SwordArtOnline::new);
+    }
+
+    default TheExpanse theExpanse() {
+        return getProvider(TheExpanse.class, TheExpanse::new);
+    }
+
     default TheItCrowd theItCrowd() {
         return getProvider(TheItCrowd.class, TheItCrowd::new);
     }
 
+    default TheRoom theRoom() {
+        return getProvider(TheRoom.class, TheRoom::new);
+    }
+
+    default TheThickOfIt theThickOfIt() {
+        return getProvider(TheThickOfIt.class, TheThickOfIt::new);
+    }
+
+    default TheVentureBros theVentureBros() {
+        return getProvider(TheVentureBros.class, TheVentureBros::new);
+    }
+
     default TwinPeaks twinPeaks() {
         return getProvider(TwinPeaks.class, TwinPeaks::new);
+    }
+
+    default VForVendetta vForVendetta() {
+        return getProvider(VForVendetta.class, VForVendetta::new);
     }
 
     default Witcher witcher() {
