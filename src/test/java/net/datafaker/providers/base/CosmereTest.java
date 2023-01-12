@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class CosmereTest extends net.datafaker.AbstractFakerTest {
+class CosmereTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void aons() {

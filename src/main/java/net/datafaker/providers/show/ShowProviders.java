@@ -47,6 +47,10 @@ public interface ShowProviders extends ProviderRegistration {
         return getProvider(ChuckNorris.class, ChuckNorris::new);
     }
 
+    default CowboyBebop cowboyBebop() {
+        return getProvider(CowboyBebop.class, CowboyBebop::new);
+    }
+
     default Departed departed() {
         return getProvider(Departed.class, Departed::new);
     }
@@ -206,6 +210,10 @@ public interface ShowProviders extends ProviderRegistration {
 
     default SouthPark southPark() {
         return getProvider(SouthPark.class, SouthPark::new);
+    }
+
+    default Spongebob spongebob() {
+        return getProvider(Spongebob.class, Spongebob::new);
     }
 
     default Stargate stargate() {
