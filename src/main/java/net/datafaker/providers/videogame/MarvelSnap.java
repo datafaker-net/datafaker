@@ -2,6 +2,9 @@ package net.datafaker.providers.videogame;
 
 import net.datafaker.providers.base.AbstractProvider;
 
+/**
+ * @since 1.8.0
+ */
 public class MarvelSnap extends AbstractProvider<VideoGameProviders> {
 
     protected MarvelSnap(final VideoGameProviders faker) {
