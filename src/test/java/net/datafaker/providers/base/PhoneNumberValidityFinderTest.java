@@ -3,7 +3,6 @@ package net.datafaker.providers.base;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
