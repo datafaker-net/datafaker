@@ -6,13 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +21,8 @@ public class FakeValues implements FakeValuesInterface {
     private final String filename;
     private final String path;
     private final Path filePath;
-    private Map<String, Object> values;
+    private volatile Map<String, Object> values;
+    private final Lock lock = new ReentrantLock();
 
     FakeValues(Locale locale) {
         this(locale, getFilename(locale), getFilename(locale), null);
@@ -41,7 +41,14 @@ public class FakeValues implements FakeValuesInterface {
         this.filename = filename;
         this.filePath = filePath;
         if (path == null) {
-            values = loadValues();
+            lock.lock();
+            try {
+                if (values == null) {
+                    values = loadValues();
+                }
+            } finally {
+                lock.unlock();
+            }
             this.path = values == null || values.isEmpty() ? null : values.keySet().iterator().next();
         } else {
             this.path = path;
@@ -70,7 +77,14 @@ public class FakeValues implements FakeValuesInterface {
     @Override
     public Map<String, Object> get(String key) {
         if (values == null) {
-            values = loadValues();
+            lock.lock();
+            try {
+                if (values == null) {
+                    values = loadValues();
+                }
+            } finally {
+                lock.unlock();
+            }
         }
 
         return values == null ? null : (Map) values.get(key);
@@ -91,11 +105,13 @@ public class FakeValues implements FakeValuesInterface {
     private Map<String, Object> loadValues() {
         Map<String, Object> result = loadFromFilePath();
         if (result != null) return result;
-        String pathWithLocaleAndFilename = "/" + locale.getLanguage() + "/" + this.filename;
-        String pathWithFilename = "/" + filename + ".yml";
-        String pathWithLocale = "/" + locale.getLanguage() + ".yml";
+        final String[] paths = this.filename.isEmpty()
+            ? new String[] {"/" + locale.getLanguage() + ".yml"}
+            : new String[] {
+                "/" + locale.getLanguage() + "/" + this.filename,
+                "/" + filename + ".yml",
+                "/" + locale.getLanguage() + ".yml"};
 
-        List<String> paths = Arrays.asList(pathWithLocaleAndFilename, pathWithFilename, pathWithLocale);
         for (String path : paths) {
             try (InputStream stream = getClass().getResourceAsStream(path)) {
                 if (stream != null) {
@@ -122,36 +138,60 @@ public class FakeValues implements FakeValuesInterface {
 
     private void enrichMapWithJavaNames(Map<String, Object> result) {
         if (result != null) {
-            Set<String> set = new HashSet<>();
+            Map<String, Object> map = null;
             for (Map.Entry<String, Object> entry : result.entrySet()) {
                 final String key = entry.getKey();
+                Object value = entry.getValue();
+                if (entry.getValue() instanceof Map) {
+                    Map<String, Object> nestedMap = new HashMap<>();
+                    for (Map.Entry<String, Object> e: ((Map<String, Object>) entry.getValue()).entrySet()) {
+                        nestedMap.put(toJavaNames(e.getKey(), true), e.getValue());
+                    }
+                    ((Map<String, Object>) entry.getValue()).putAll(nestedMap);
+                }
                 if (key.indexOf('_') != -1) {
-                    set.add(key);
+                    if (map == null) {
+                        map = new HashMap<>();
+                    }
+                    map.put(toJavaNames(key, false), value);
                 }
             }
-            for (String str : set) {
-                result.put(toJavaNames(str), result.get(str));
+            if (map == null) {
+                return;
             }
+            result.putAll(map);
         }
     }
 
-    private static String toJavaNames(String string) {
-        if (string == null || string.isEmpty()) {
+    private static String toJavaNames(String string, boolean isMethod) {
+        final int length;
+        if (string == null || (length = string.length()) == 0) {
             return string;
         }
-        StringBuilder res = new StringBuilder(string.length());
-        for (int i = 0; i < string.length(); i++) {
-            char c = string.charAt(i);
-            if (i == 0 && Character.isLetter(c)) {
-                res.append(Character.toUpperCase(c));
-            } else if (c == '_' && i < string.length() + 1 && Character.isLetter(string.charAt(i + 1))) {
-                res.append(Character.toUpperCase(string.charAt(i + 1)));
-                i++;
-            } else {
-                res.append(c);
+        int cnt = 0;
+        for (int i = 0; i < length; i++) {
+            if (string.charAt(i) == '_') {
+                cnt++;
             }
         }
-        return res.toString();
+        if (cnt == 0 && (Character.isUpperCase(string.charAt(0)) && !isMethod || isMethod && Character.isLowerCase(string.charAt(0)))) return string;
+        final char[] res = new char[length - cnt];
+        int pos = 0;
+        for (int i = 0; i < length; i++) {
+            char c = string.charAt(i);
+            if (i == 0 && Character.isLetter(c)) {
+                res[pos++] = isMethod ? Character.toLowerCase(c) : Character.toUpperCase(c);
+            } else if (c == '_') {
+                final char next = string.charAt(i + 1);
+                if (i < length - 1 && Character.isLetter(next)) {
+                    res[pos++] = Character.toUpperCase(next);
+                    i++;
+                }
+            } else {
+                res[pos++] = c;
+            }
+        }
+        return new String(res);
     }
 
     private Map<String, Object> readFromStream(InputStream stream) {

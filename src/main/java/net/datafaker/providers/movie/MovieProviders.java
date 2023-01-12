@@ -91,6 +91,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(FullmetalAlchemist.class, FullmetalAlchemist::new);
     }
 
+    default Futurama futurama() {
+        return getProvider(Futurama.class, Futurama::new);
+    }
+
     default GameOfThrones gameOfThrones() {
         return getProvider(GameOfThrones.class, GameOfThrones::new);
     }
@@ -136,6 +140,10 @@ public interface MovieProviders extends ProviderRegistration {
         return getProvider(Movie.class, Movie::new);
     }
 
+    default Naruto naruto() {
+        return getProvider(Naruto.class, Naruto::new);
+    }
+
     default OnePiece onePiece() {
         return getProvider(OnePiece.class, OnePiece::new);
     }
@@ -166,6 +174,10 @@ public interface MovieProviders extends ProviderRegistration {
 
     default Seinfeld seinfeld() {
         return getProvider(Seinfeld.class, Seinfeld::new);
+    }
+
+    default SiliconValley siliconValley() {
+        return getProvider(SiliconValley.class, SiliconValley::new);
     }
 
     default StarTrek starTrek() {

@@ -383,11 +383,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Passport.class, Passport::new);
     }
 
-    @Deprecated
-    default Password password() {
-        return getProvider(Password.class, Password::new);
-    }
-
     default Text text() {
         return getProvider(Text.class, Text::new);
     }

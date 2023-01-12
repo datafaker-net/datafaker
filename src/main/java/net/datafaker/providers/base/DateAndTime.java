@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.Period;
 import java.time.ZoneId;
@@ -251,17 +252,19 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
      */
     public Timestamp birthday(int minAge, int maxAge) {
-        LocalDateTime nw = LocalDateTime.now();
-        LocalDateTime from = LocalDateTime.of(nw.getYear() - maxAge, nw.getMonth(), nw.getDayOfMonth(), 0, 0, 0);
-        LocalDateTime to = LocalDateTime.of(nw.getYear() - minAge, nw.getMonth(), nw.getDayOfMonth(), 0, 0, 0);
-        ZoneOffset offset = OffsetDateTime.now().getOffset();
+        final OffsetDateTime nw = OffsetDateTime.now();
+        final Month month = nw.getMonth();
+        final int dayOfMonth = nw.getDayOfMonth();
+        final LocalDateTime from = LocalDateTime.of(nw.getYear() - maxAge, month, dayOfMonth, 0, 0, 0);
+        final LocalDateTime to = LocalDateTime.of(nw.getYear() - minAge, month, dayOfMonth, 0, 0, 0);
+        final ZoneOffset offset = nw.getOffset();
         final long start = from.toEpochSecond(offset);
         final long stop = to.toEpochSecond(offset);
         if (start == stop) {
             return Timestamp.from(from.toInstant(ZoneId.systemDefault().getRules().getOffset(from)));
         }
         final long offsetMillis = faker.random().nextLong(stop - start);
-        LocalDateTime res = LocalDateTime.ofEpochSecond(start + offsetMillis, 0, offset);
+        final LocalDateTime res = LocalDateTime.ofEpochSecond(start + offsetMillis, 0, offset);
         return Timestamp.from(res.toInstant(ZoneId.systemDefault().getRules().getOffset(res)));
     }
 

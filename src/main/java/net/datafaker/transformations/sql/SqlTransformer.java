@@ -41,6 +41,10 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private final SqlDialect dialect;
 
+    public static <IN> SqlTransformer.SqlTransformerBuilder<IN> builder() {
+        return new SqlTransformer.SqlTransformerBuilder<>();
+    }
+
     private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier,
                            Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
         this.schemaName = schemaName;

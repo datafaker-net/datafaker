@@ -286,7 +286,6 @@ Providers
 * Cat
 * Chuck Norris
 * Clash of Clans
-* Control
 * Code
 * Coin
 * Color
@@ -295,12 +294,14 @@ Providers
 * Company
 * Compass
 * Computer
+* Control
 * Country
 * Credit Card Type
 * Cricket
 * Crypto
 * Currency
 * Date and Time
+* DC Comics
 * Demographic
 * Departed
 * Dessert
@@ -308,9 +309,8 @@ Providers
 * Disease
 * Doctor Who
 * Dog
-* Doraemon
-* DC Comics
 * Domain
+* Doraemon
 * Dragon Ball
 * Driving License
 * Dumb and Dumber
@@ -334,6 +334,7 @@ Providers
 * Friends
 * Fullmetal Alchemist: Brotherhood
 * Funny Name
+* Futurama
 * Game Of Thrones
 * Garment Size
 * Gender
@@ -357,12 +358,12 @@ Providers
 * Industry Segments
 * Internet
 * Job
-* Kaamelott
 * K-pop (Korean popular music)
+* Kaamelott
 * League Of Legends
 * Lebowski
-* Lord Of The Rings
 * Locality
+* Lord Of The Rings
 * Lorem
 * Marketing
 * Marvel Snap
@@ -376,11 +377,12 @@ Providers
 * Money
 * Money Heist
 * Mood
-* Mountains
 * Mountaineering
+* Mountains
 * Movie
 * Music
 * Name
+* Naruto
 * Nation
 * Nato Phonetic Alphabet
 * Nigeria
@@ -406,19 +408,20 @@ Providers
 * Science
 * Seinfeld
 * Shakespeare
+* Silicon Valley
+* Simpsons
 * Sip
 * Size
-* Simpsons
 * Slack Emoji
 * Soul Knight
 * Space
 * StarCraft
 * StarTrek
-* Studio Ghibli
 * Stock
+* Studio Ghibli
 * Subscription
-* Superhero
 * Super Mario
+* Superhero
 * Tea
 * Team
 * The IT Crowd

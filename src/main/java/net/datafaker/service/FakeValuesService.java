@@ -171,19 +171,21 @@ public class FakeValuesService {
      */
     public Object fetchObject(String key, FakerContext context) {
         Object result = null;
-        for (Locale locale : context.getLocaleChain()) {
+        final List<Locale> localeChain = context.getLocaleChain();
+        for (Locale locale : localeChain) {
             // exclude default locale from cache checks
-            if (locale.equals(DEFAULT_LOCALE) && context.getLocaleChain().size() > 1) {
+            if (locale.equals(DEFAULT_LOCALE) && localeChain.size() > 1) {
                 continue;
             }
-            if (key2fetchedObject.get(locale) != null && (result = key2fetchedObject.get(locale).get(key)) != null) {
+            final Map<String, Object> stringObjectMap = key2fetchedObject.get(locale);
+            if (stringObjectMap != null && (result = stringObjectMap.get(key)) != null) {
                 return result;
             }
         }
 
         String[] path = split(key);
         Locale local2Add = null;
-        for (Locale locale : context.getLocaleChain()) {
+        for (Locale locale : localeChain) {
             Object currentValue = fakeValuesInterfaceMap.get(locale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
@@ -212,17 +214,18 @@ public class FakeValuesService {
             return result;
         }
         int size = 0;
-        char splitChar = '.';
-        for (int i = 0; i < string.length(); i++) {
+        final char splitChar = '.';
+        final int length = string.length();
+        for (int i = 0; i < length; i++) {
             if (string.charAt(i) == splitChar) {
                 size++;
             }
         }
         result = new String[size + 1];
-        char[] chars = string.toCharArray();
+        final char[] chars = string.toCharArray();
         int start = 0;
         int j = 0;
-        for (int i = 0; i < string.length(); i++) {
+        for (int i = 0; i < length; i++) {
             if (string.charAt(i) == splitChar) {
                 if (i - start > 0) {
                     result[j++] = String.valueOf(chars, start, i - start);
@@ -262,7 +265,7 @@ public class FakeValuesService {
 
     private String bothify(String input, FakerContext context, boolean isUpper, boolean numerify, boolean letterify) {
         final int baseChar = isUpper ? 65 : 97;
-        char[] res = input.toCharArray();
+        final char[] res = input.toCharArray();
         for (int i = 0; i < res.length; i++) {
             switch (res[i]) {
                 case '#':
@@ -307,7 +310,7 @@ public class FakeValuesService {
         if (example == null) {
             return null;
         }
-        char[] chars = example.toCharArray();
+        final char[] chars = example.toCharArray();
 
         for (int i = 0; i < chars.length; i++) {
             if (Character.isLetter(chars[i])) {
@@ -378,7 +381,7 @@ public class FakeValuesService {
         return resolve(key, current, root, () -> key + " resulted in null expression", context);
     }
 
-    public String resolve(String key, AbstractProvider provider, FakerContext context) {
+    public String resolve(String key, AbstractProvider<?> provider, FakerContext context) {
         return resolve(key, provider, provider.getFaker(), () -> key + " resulted in null expression", context);
     }
 
@@ -499,25 +502,33 @@ public class FakeValuesService {
      * {@link BaseFaker#address()}'s {@link Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, ProviderRegistration root, FakerContext context) {
-        if (expression.indexOf('}') == -1 || !expression.contains("#{")) {
+        int cnt = 0;
+        final int expressionLength = expression.length();
+        for (int i = 0; i < expressionLength; i++) {
+            if (expression.charAt(i) == '}') {
+                cnt++;
+            }
+        }
+        if (cnt == 0) {
             return expression;
         }
-        final List<String> expressions = splitExpressions(expression);
-        final StringBuilder result = new StringBuilder(expressions.size() * expression.length());
+        final List<String> expressions = splitExpressions(expression, cnt, expressionLength);
+        final StringBuilder result = new StringBuilder(expressions.size() * expressionLength);
         for (int i = 0; i < expressions.size(); i++) {
             // odd are expressions, even are not expressions, just strings
+            final String expr = expressions.get(i);
             if (i % 2 == 0) {
-                if (!expressions.get(i).isEmpty()) {
-                    result.append(expressions.get(i));
+                if (!expr.isEmpty()) {
+                    result.append(expr);
                 }
                 continue;
             }
-            String expr = expressions.get(i);
             int j = 0;
-            while (j < expr.length() && !Character.isWhitespace(expr.charAt(j))) j++;
+            final int length = expr.length();
+            while (j < length && !Character.isWhitespace(expr.charAt(j))) j++;
             String directive = expr.substring(0, j);
-            while (j < expr.length() && Character.isWhitespace(expr.charAt(j))) j++;
-            final String arguments = j == expr.length() ? "" : expr.substring(j);
+            while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
+            final String arguments = j == length ? "" : expr.substring(j);
             final String[] args = splitArguments(arguments);
 
             final Object resolved = resolveExpression(directive, args, current, root, context);
@@ -530,7 +541,8 @@ public class FakeValuesService {
     }
 
     private String[] splitArguments(String arguments) {
-        if (arguments == null || arguments.length() == 0) {
+        final int length;
+        if (arguments == null || (length = arguments.length()) == 0) {
             return EMPTY_ARRAY;
         }
         String[] res = args2splittedArgs.get(arguments);
@@ -540,10 +552,10 @@ public class FakeValuesService {
         List<String> result = new ArrayList<>();
         int start = 0;
         boolean argsStarted = false;
-        for (int i = 0; i < arguments.length(); i++) {
+        for (int i = 0; i < length; i++) {
             if (argsStarted) {
                 int cnt = 0;
-                while (i < arguments.length() && arguments.charAt(i) == '\'') {
+                while (i < length && arguments.charAt(i) == '\'') {
                     cnt++;
                     i++;
                 }
@@ -561,22 +573,16 @@ public class FakeValuesService {
         return resultArray;
     }
 
-    private List<String> splitExpressions(String expression) {
+    private List<String> splitExpressions(String expression, int cnt, int length) {
         List<String> result = EXPRESSION_2_SPLITTED.get(expression);
         if (result != null) {
             return result;
-        }
-        int cnt = 0;
-        for (int i = 0; i < expression.length(); i++) {
-            if (expression.charAt(i) == '}') {
-                cnt++;
-            }
         }
         result = new ArrayList<>(2 * cnt + 1);
         boolean isExpression = false;
         int start = 0;
         int quoteCnt = 0;
-        for (int i = 0; i < expression.length(); i++) {
+        for (int i = 0; i < length; i++) {
             if (isExpression) {
                 if (expression.charAt(i) == '}' && quoteCnt % 2 == 0) {
                     result.add(expression.substring(start, i));
@@ -585,14 +591,14 @@ public class FakeValuesService {
                 } else if (expression.charAt(i) == '\'') {
                     quoteCnt++;
                 }
-            } else if (i < expression.length() - 2 && expression.charAt(i) == '#' && expression.charAt(i + 1) == '{') {
+            } else if (i < length - 2 && expression.charAt(i) == '#' && expression.charAt(i + 1) == '{') {
                 result.add(expression.substring(start, i));
                 isExpression = true;
                 start = i + 2;
                 i++;
             }
         }
-        if (start < expression.length()) {
+        if (start < length) {
             result.add(expression.substring(start));
         }
         EXPRESSION_2_SPLITTED.put(expression, result);
@@ -622,13 +628,33 @@ public class FakeValuesService {
         // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
         // #{ssn_valid} on IdNumber
         if (dotIndex == -1) {
+            if (current instanceof AbstractProvider) {
+                final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
+                if (method != null) {
+                    try {
+                        return args.length == 0 ? method.invoke(current) : method.invoke(current, (Object[]) args);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e + " " + Arrays.toString(args));
+                    }
+                }
+            }
             Supplier<Object> supplier = resolveFromMethodOn(current, directive, args);
             if (supplier != null && (resolved = supplier.get()) != null) {
                 //expression2function.put(expression, supplier);
                 return resolved;
             }
         }
-
+        if (dotIndex > 0) {
+            final AbstractProvider<?> ap = BaseFaker.getProvider(directive.substring(0, dotIndex), context);
+            final Method method = BaseFaker.getMethod(ap, directive.substring(dotIndex + 1));
+            if (method != null) {
+                try {
+                    return args.length == 0 ? method.invoke(ap) : method.invoke(ap, args);
+                } catch (Exception e) {
+                    throw new RuntimeException(e + " " + Arrays.toString(args));
+                }
+            }
+        }
         final String simpleDirective = (dotIndex >= 0 || current == null)
             ? directive
             : classNameToYamlName(current) + "." + directive;
@@ -711,8 +737,11 @@ public class FakeValuesService {
         if (result != null) {
             return result;
         }
-        int cnt = 0;
-        for (int i = 0; i < expression.length(); i++) {
+
+        final int length = expression.length();
+        final boolean firstLetterUpperCase = length > 0 && Character.isUpperCase(expression.charAt(0));
+        int cnt = firstLetterUpperCase ? 1 : 0;
+        for (int i = 1; i < length; i++) {
             if (Character.isUpperCase(expression.charAt(i))) {
                 cnt++;
             }
@@ -721,25 +750,25 @@ public class FakeValuesService {
             name2yaml.put(expression, expression);
             return expression;
         }
-        final StringBuilder sb = new StringBuilder(expression.length() + cnt);
-        for (int i = 0; i < expression.length(); i++) {
+        final char[] res = new char[length + (firstLetterUpperCase ? cnt - 1 : cnt)];
+        int pos = 0;
+        for (int i = 0; i < length; i++) {
+            final char c = expression.charAt(i);
             if (cnt > 0) {
-                final char c = expression.charAt(i);
                 if (Character.isUpperCase(c)) {
-                    if (sb.length() > 0) {
-                        sb.append("_");
+                    if (pos > 0) {
+                        res[pos++] = '_';
                     }
-                    sb.append(Character.toLowerCase(c));
+                    res[pos++] = Character.toLowerCase(c);
                     cnt--;
                 } else {
-                    sb.append(c);
+                    res[pos++] = c;
                 }
             } else {
-                sb.append(expression.substring(i));
-                break;
+                res[pos++] = c;
             }
         }
-        result = sb.toString();
+        result = new String(res);
         name2yaml.put(expression, result);
         return result;
     }
@@ -790,9 +819,7 @@ public class FakeValuesService {
             String nestedMethodName = removeUnderscoreChars(classAndMethod[1]);
             final MethodAndCoercedArgs accessor = retrieveMethodAccessor(objectWithMethodToInvoke, nestedMethodName, args);
             if (accessor == null) {
-                throw new Exception("Can't find method on "
-                    + objectWithMethodToInvoke.getClass().getSimpleName()
-                    + " called " + nestedMethodName + ".");
+                return () -> null;
             }
 
             return () -> invokeAndToString(accessor, objectWithMethodToInvoke);
@@ -814,8 +841,14 @@ public class FakeValuesService {
         }
         final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
         mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
-        mapOfMethodAndCoercedArgs.get(clazz).putIfAbsent(methodName, new WeakHashMap<>());
-        mapOfMethodAndCoercedArgs.get(clazz).get(methodName).put(args, accessor);
+        final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap = mapOfMethodAndCoercedArgs.get(clazz);
+        stringMapMap.putIfAbsent(methodName, new WeakHashMap<>());
+        stringMapMap.get(methodName).put(args, accessor);
+        if (accessor == null) {
+            LOG.fine("Can't find method on "
+                + object.getClass().getSimpleName()
+                + " called " + methodName + ".");
+        }
         return accessor;
     }
 
@@ -835,20 +868,21 @@ public class FakeValuesService {
     private MethodAndCoercedArgs accessor(Class<?> clazz, String name, String[] args) {
         final String finalName = name;
         LOG.log(Level.FINE, () -> "Find accessor named " + finalName + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
-        name = removeUnderscoreChars(name);
+        name = removeUnderscoreChars(name).toLowerCase(Locale.ROOT);
         final Collection<Method> methods;
         if (class2methodsCache.containsKey(clazz)) {
-            methods = class2methodsCache.get(clazz).getOrDefault(name.toLowerCase(Locale.ROOT), Collections.emptyList());
+            methods = class2methodsCache.get(clazz).getOrDefault(name, Collections.emptyList());
         } else {
             Method[] classMethods = clazz.getMethods();
-            Map<String, Collection<Method>> methodMap = new HashMap<>(classMethods.length);
+            Map<String, Collection<Method>> methodMap =
+                classMethods.length == 0 ? Collections.emptyMap() : new HashMap<>(classMethods.length);
             for (Method m : classMethods) {
                 final String key = m.getName().toLowerCase(Locale.ROOT);
                 methodMap.computeIfAbsent(key, k -> new ArrayList<>());
                 methodMap.get(key).add(m);
             }
             class2methodsCache.putIfAbsent(clazz, methodMap);
-            methods = methodMap.get(name.toLowerCase(Locale.ROOT));
+            methods = methodMap.get(name);
         }
         if (methods == null) {
             return null;
@@ -873,10 +907,11 @@ public class FakeValuesService {
             removedUnderscore.put(string, string);
             return string;
         }
-        char[] res = string.toCharArray();
+        final char[] res = string.toCharArray();
         int offset = 0;
         int length = 0;
-        for (int i = string.length() - 1; i >= offset; i--) {
+        final int strLen = string.length();
+        for (int i = strLen - 1; i >= offset; i--) {
             while (i > offset && string.charAt(i - offset) == '_') {
                 offset++;
             }
@@ -885,7 +920,7 @@ public class FakeValuesService {
                 length++;
             }
         }
-        valueWithRemovedUnderscores = String.valueOf(res, string.length() - length, length);
+        valueWithRemovedUnderscores = String.valueOf(res, strLen - length, length);
         removedUnderscore.put(string, valueWithRemovedUnderscores);
         return valueWithRemovedUnderscores;
     }
@@ -988,11 +1023,10 @@ public class FakeValuesService {
     }
 
     public static Class<?> primitiveToWrapper(final Class<?> cls) {
-        Class<?> convertedClass = cls;
         if (cls != null && cls.isPrimitive()) {
-            convertedClass = PRIMITIVE_WRAPPER_MAP.get(cls);
+            return PRIMITIVE_WRAPPER_MAP.get(cls);
         }
-        return convertedClass;
+        return cls;
     }
 
     /**

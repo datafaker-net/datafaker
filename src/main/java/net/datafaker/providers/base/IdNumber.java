@@ -4,6 +4,7 @@ import net.datafaker.idnumbers.EnIdNumber;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.EsMXIdNumber;
 import net.datafaker.idnumbers.IdNumbers;
+import net.datafaker.idnumbers.KoKrIdNumber;
 import net.datafaker.idnumbers.NricNumber;
 import net.datafaker.idnumbers.NricNumber.Type;
 import net.datafaker.idnumbers.PeselNumber;
@@ -150,5 +151,16 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      */
     public String peselNumber(LocalDate birthDate, Gender gender) {
         return new PeselNumber(faker).get(birthDate, gender);
+    }
+
+    /**
+     * Generates a valid RRN (Resident Registration Number) for a person of random binary gender and default random age
+     *
+     * @return A valid RRN
+     * @since 1.8.0
+     */
+    public String validKoKrRrn() {
+        KoKrIdNumber koKrIdNumber = (KoKrIdNumber) map.computeIfAbsent(KoKrIdNumber.class, aClass -> new KoKrIdNumber());
+        return koKrIdNumber.getValidRrn(faker);
     }
 }
