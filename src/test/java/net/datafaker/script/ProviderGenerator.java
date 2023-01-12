@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 class ProviderGenerator {
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final String packageName = "net.datafaker.providers.show";
+    private final String packageName = "net.datafaker.providers.base";
 
     public static void main(String[] args) throws FileNotFoundException {
         new ProviderGenerator().generateProvider();
@@ -26,7 +26,7 @@ class ProviderGenerator {
     void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().contains("the_venture_bros"));
+        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().contains("olympic_sport.yml"));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
@@ -48,6 +48,13 @@ class ProviderGenerator {
     private void processFaker(File file, Map<String, Object> faker) {
         String key = (String) faker.keySet().toArray()[0];
         Map<String, Object> subject = (Map<String, Object>) faker.get(key);
+
+        // Special case for games
+        if(key.equals("games")) {
+            String key2 = subject.keySet().iterator().next();
+            subject = (Map<String, Object>) subject.get(key2);
+            key = key + "." + key2;
+        }
 
         Set<String> strings = subject.keySet();
 

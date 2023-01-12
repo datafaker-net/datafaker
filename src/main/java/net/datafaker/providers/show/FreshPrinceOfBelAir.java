@@ -1,13 +1,15 @@
-package net.datafaker.providers.base;
+package net.datafaker.providers.show;
+
+import net.datafaker.providers.base.AbstractProvider;
 
 /**
  * The Fresh Prince of Bel-Air is an American television sitcom created by Andy and Susan Borowitz for NBC.
  *
  * @since 1.7.0
  */
-public class FreshPrinceOfBelAir extends AbstractProvider<BaseProviders> {
+public class FreshPrinceOfBelAir extends AbstractProvider<ShowProviders> {
 
-    protected FreshPrinceOfBelAir(BaseProviders faker) {
+    protected FreshPrinceOfBelAir(ShowProviders faker) {
         super(faker);
     }
 

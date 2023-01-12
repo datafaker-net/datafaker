@@ -1,10 +1,10 @@
-package net.datafaker.providers.base;
+package net.datafaker.providers.videogame;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EldenRingTest extends BaseFakerTest<BaseFaker> {
+class EldenRingTest extends VideoGameFakerTest {
     @Test
     void location() {
         assertThat(faker.eldenRing().location()).matches("[A-Za-z0-9 .]+");

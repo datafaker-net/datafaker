@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PrincessBrideTest extends MovieFakerTest {
+class PrincessBrideTest extends ShowFakerTest {
     @Test
     void character() {
         assertThat(faker.princessBride().character()).matches("[A-Za-z .-]+");

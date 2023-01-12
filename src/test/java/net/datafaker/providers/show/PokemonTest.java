@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PokemonTest extends MovieFakerTest {
+class PokemonTest extends ShowFakerTest {
 
     @Test
     void name() {

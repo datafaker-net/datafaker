@@ -1,6 +1,6 @@
 en:
   faker:
-    game:
+    video_game:
       title:
         - 'Half-Life'
         - 'Half-Life: Opposing Force'

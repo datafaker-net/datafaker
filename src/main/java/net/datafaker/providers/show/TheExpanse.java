@@ -1,16 +1,15 @@
 package net.datafaker.providers.show;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  * The Expanse is an American science fiction television series developed by Mark Fergus and Hawk Ostby for the Syfy network.
  *
  * @since 1.8.0
  */
-public class TheExpanse extends AbstractProvider<BaseProviders> {
+public class TheExpanse extends AbstractProvider<ShowProviders> {
 
-    protected TheExpanse(BaseProviders faker) {
+    protected TheExpanse(ShowProviders faker) {
         super(faker);
     }
 

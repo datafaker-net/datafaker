@@ -1,13 +1,15 @@
-package net.datafaker.providers.base;
+package net.datafaker.providers.show;
+
+import net.datafaker.providers.base.AbstractProvider;
 
 /**
  * Tron is a 1982 American science fiction action-adventure film.
  *
  * @since 1.4.0
  */
-public class Tron extends AbstractProvider<BaseProviders> {
+public class Tron extends AbstractProvider<ShowProviders> {
 
-    protected Tron(BaseProviders faker) {
+    protected Tron(ShowProviders faker) {
         super(faker);
     }
 

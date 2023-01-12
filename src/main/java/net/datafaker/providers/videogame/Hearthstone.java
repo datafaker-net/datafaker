@@ -3,6 +3,8 @@ package net.datafaker.providers.videogame;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
+ * Hearthstone is a free-to-play online digital collectible card game developed and published by Blizzard Entertainment.
+ *
  * @since 0.9.0
  */
 public class Hearthstone extends AbstractProvider<VideoGameProviders> {

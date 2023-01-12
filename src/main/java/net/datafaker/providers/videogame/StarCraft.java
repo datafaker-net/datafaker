@@ -3,6 +3,8 @@ package net.datafaker.providers.videogame;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
+ * StarCraft is a 1998 military science fiction real-time strategy game developed and published by Blizzard Entertainment.
+ *
  * @since 0.8.0
  */
 public class StarCraft extends AbstractProvider<VideoGameProviders> {
