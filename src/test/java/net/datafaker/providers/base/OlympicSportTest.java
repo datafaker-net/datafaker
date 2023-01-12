@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class OlympicSportTest extends net.datafaker.AbstractFakerTest {
+class OlympicSportTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void summerOlympics() {

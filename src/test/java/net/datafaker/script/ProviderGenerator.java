@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 class ProviderGenerator {
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final String packageName = "net.datafaker.providers.base";
+    private final ProviderType providerType = ProviderType.SHOW;
 
     public static void main(String[] args) throws FileNotFoundException {
         new ProviderGenerator().generateProvider();
@@ -26,7 +26,7 @@ class ProviderGenerator {
     void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().contains("olympic_sport.yml"));
+        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().contains("cowboy_bebop.yml"));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
@@ -50,7 +50,7 @@ class ProviderGenerator {
         Map<String, Object> subject = (Map<String, Object>) faker.get(key);
 
         // Special case for games
-        if(key.equals("games")) {
+        if (key.equals("games")) {
             String key2 = subject.keySet().iterator().next();
             subject = (Map<String, Object>) subject.get(key2);
             key = key + "." + key2;
@@ -58,12 +58,12 @@ class ProviderGenerator {
 
         Set<String> strings = subject.keySet();
 
-        createCreator(file, key, strings, packageName);
-        createTest(file, strings, packageName);
-        createFakerRegistration(file, strings, packageName);
+        createCreator(file, key, strings, providerType);
+        createTest(file, strings, providerType);
+        createFakerRegistration(file);
     }
 
-    private void createFakerRegistration(File file, Set<String> strings, String packageName) {
+    private void createFakerRegistration(File file) {
         String className = toJavaConvention(file.getName().substring(0, file.getName().indexOf(".")));
         String methodName = StringUtils.uncapitalize(toJavaConvention(className));
 
@@ -73,20 +73,19 @@ class ProviderGenerator {
         System.out.println("}");
     }
 
-    private void createCreator(File file, String key, Set<String> strings, String packageName) {
+    private void createCreator(File file, String key, Set<String> strings, ProviderType providerType) {
         String className = toJavaConvention(file.getName().substring(0, file.getName().indexOf(".")));
 
-        System.out.println("package " + packageName + ";");
+        System.out.println("package " + providerType.getPackageName() + ";");
         System.out.println();
         System.out.println("import net.datafaker.providers.base.AbstractProvider;");
-        System.out.println("import net.datafaker.providers.base.BaseProviders;");
         System.out.println();
         System.out.println("/**");
         System.out.println(" * @since 1.8.0");
         System.out.println(" */");
-        System.out.println("public class " + className + " extends AbstractProvider<BaseProviders> {");
+        System.out.println("public class " + className + " extends AbstractProvider<" + providerType.getProviderRegistryName() + "> {");
         System.out.println();
-        System.out.println("    protected " + className + "(BaseProviders faker) {");
+        System.out.println("    protected " + className + "(" + providerType.getProviderRegistryName() + " faker) {");
         System.out.println("        super(faker);");
         System.out.println("    }");
         System.out.println();
@@ -103,18 +102,18 @@ class ProviderGenerator {
         System.out.println("}");
     }
 
-    private void createTest(File file, Set<String> strings, String packageName) {
+    private void createTest(File file, Set<String> strings, ProviderType providerType) {
         String className = toJavaConvention(file.getName().substring(0, file.getName().indexOf(".")));
         // replace the first letter with a lowercase letter
         String methodName = StringUtils.uncapitalize(toJavaConvention(className));
 
-        System.out.println("package " + packageName + ";");
+        System.out.println("package " + providerType.getPackageName() + ";");
         System.out.println();
         System.out.println("import org.junit.jupiter.api.Test;");
         System.out.println("import static org.assertj.core.api.AssertionsForClassTypes.assertThat;");
 
         System.out.println();
-        System.out.println("class " + className + "Test extends net.datafaker.AbstractFakerTest {");
+        System.out.println("class " + className + "Test extends " + providerType.getTestSuperclassName() + " {");
         System.out.println();
 
         for (String string : strings) {
@@ -138,5 +137,33 @@ class ProviderGenerator {
         String capitalizedWords = WordUtils.capitalize(withoutUnderscore);
         // remove all spaces
         return capitalizedWords.replaceAll(" ", "");
+    }
+}
+
+enum ProviderType {
+    SHOW("ShowProviders", "net.datafaker.providers.show", "ShowFakerTest"),
+    VIDEO_GAME("VideoGameProviders", "net.datafaker.providers.videogame", "VideoGameFakerTest"),
+    ;
+
+    private final String providerRegistryName;
+    private final String packageName;
+    private final String testSuperclassName;
+
+    ProviderType(String providerRegistryName, String packageName, String testSuperclassName) {
+        this.providerRegistryName = providerRegistryName;
+        this.packageName = packageName;
+        this.testSuperclassName = testSuperclassName;
+    }
+
+    public String getProviderRegistryName() {
+        return providerRegistryName;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public String getTestSuperclassName() {
+        return testSuperclassName;
     }
 }

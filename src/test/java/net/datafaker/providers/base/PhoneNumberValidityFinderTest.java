@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * These tests use System.out.printlns because the error rate is quite high.
  */
-class PhoneNumberValidityFinderTest extends AbstractFakerTest {
+class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testAllCellPhoneForLocale() throws NumberParseException {

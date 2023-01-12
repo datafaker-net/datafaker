@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class CultureSeriesTest extends net.datafaker.AbstractFakerTest {
+class CultureSeriesTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void books() {
