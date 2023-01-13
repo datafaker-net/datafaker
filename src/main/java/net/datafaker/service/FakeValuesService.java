@@ -282,6 +282,7 @@ public class FakeValuesService {
                     if (letterify) {
                         res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
                     }
+                    break;
                 default:
                     break;
             }
