@@ -61,7 +61,13 @@ public class FakerContext {
     }
 
     public List<Locale> getLocaleChain() {
-        return LOCALE_2_LOCALES_CHAIN.get(locale);
+        final List<Locale> res = LOCALE_2_LOCALES_CHAIN.get(locale);
+        if (res == null) {
+            synchronized (FakerContext.class) {
+                return LOCALE_2_LOCALES_CHAIN.get(locale);
+            }
+        }
+        return res;
     }
 
     /**
@@ -91,11 +97,11 @@ public class FakerContext {
     public void setCurrentLocale(Locale locale) {
         Objects.requireNonNull(locale);
         this.locale = normalizeLocale(locale);
-        if (LOCALE_2_LOCALES_CHAIN.containsKey(getLocale())) {
+        if (LOCALE_2_LOCALES_CHAIN.containsKey(this.locale)) {
             return;
         }
         synchronized (FakerContext.class) {
-            LOCALE_2_LOCALES_CHAIN.put(getLocale(), localeChain());
+            LOCALE_2_LOCALES_CHAIN.put(this.locale, localeChain());
         }
     }
 
@@ -152,7 +158,6 @@ public class FakerContext {
     @Override
     public String toString() {
         return "FakerContext{" +
-            "locale2localesChain=" + LOCALE_2_LOCALES_CHAIN +
             ", locale=" + locale +
             ", randomService=" + randomService +
             '}';
