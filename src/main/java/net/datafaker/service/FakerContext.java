@@ -17,7 +17,7 @@ import static net.datafaker.service.FakeValuesService.DEFAULT_LOCALE;
 public class FakerContext {
     private static final Pattern LOCALE = Pattern.compile("[-_]");
     private static final Map<Locale, List<Locale>> LOCALE_2_LOCALES_CHAIN = new HashMap<>();
-    private static final Map<String, Locale> STRING_LOCALE_HASH_MAP = new HashMap<>();
+    private static final Map<Locale, Locale> STRING_LOCALE_HASH_MAP = new HashMap<>();
     private Locale locale;
     private RandomService randomService;
 
@@ -76,20 +76,26 @@ public class FakerContext {
      * with new Locale("pt","BR").
      */
     private Locale normalizeLocale(Locale locale) {
-        String localeStr = locale.toString();
-        Locale res = STRING_LOCALE_HASH_MAP.get(localeStr);
+        Locale res = STRING_LOCALE_HASH_MAP.get(locale);
         if (res != null) {
             return res;
         }
-        final String[] parts = LOCALE.split(localeStr);
+        final String[] parts;
+        if (locale.getCountry().isEmpty()) {
+            parts = LOCALE.split(locale.getLanguage());
+        } else {
+            parts = new String[] {locale.getLanguage(), locale.getCountry()};
+        }
 
         if (parts.length == 1) {
-            res = new Locale(parts[0]);
+            if ((res = Locale.forLanguageTag(parts[0])) == null) {
+                res = new Locale(parts[0]);
+            }
         } else {
             res = new Locale(parts[0], parts[1]);
         }
         synchronized (FakerContext.class) {
-            STRING_LOCALE_HASH_MAP.put(localeStr, res);
+            STRING_LOCALE_HASH_MAP.put(locale, res);
         }
         return res;
     }
