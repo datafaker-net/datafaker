@@ -4,6 +4,7 @@ import com.mifmif.common.regex.Generex;
 import net.datafaker.formats.Csv;
 import net.datafaker.formats.Format;
 import net.datafaker.formats.Json;
+import net.datafaker.internal.helper.FLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
@@ -40,17 +41,17 @@ public class FakeValuesService {
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
 
-    private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
-    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+    private final Map<FLocale, FakeValuesInterface> fakeValuesInterfaceMap = new IdentityHashMap<>();
+    public static final FLocale DEFAULT_LOCALE = FLocale.get(Locale.ENGLISH);
 
     private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new IdentityHashMap<>();
     private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new IdentityHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
-    private final Map<Locale, Map<String, String>> key2Expression = new WeakHashMap<>();
+    private final Map<FLocale, Map<String, String>> key2Expression = new IdentityHashMap<>();
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
     private final Map<String, String[]> key2splittedKey = new WeakHashMap<>();
 
-    private final Map<Locale, Map<String, Object>> key2fetchedObject = new WeakHashMap<>();
+    private final Map<FLocale, Map<String, Object>> key2fetchedObject = new IdentityHashMap<>();
     private final Map<String, String> name2yaml = new WeakHashMap<>();
     private final Map<String, String> removedUnderscore = new WeakHashMap<>();
 
@@ -61,17 +62,17 @@ public class FakeValuesService {
     public FakeValuesService() {
     }
 
-    public void updateFakeValuesInterfaceMap(List<Locale> locales) {
-        for (final Locale l : locales) {
+    public void updateFakeValuesInterfaceMap(List<FLocale> locales) {
+        for (final FLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
         }
     }
 
-    private FakeValuesInterface getCachedFakeValue(Locale locale) {
-        if (DEFAULT_LOCALE.equals(locale)) {
+    private FakeValuesInterface getCachedFakeValue(FLocale locale) {
+        if (DEFAULT_LOCALE == locale) {
             return FakeValuesGrouping.getEnglishFakeValueGrouping();
         }
-        return new FakeValues(locale);
+        return new FakeValues(locale.getLocale());
     }
 
     /**
@@ -87,14 +88,15 @@ public class FakeValuesService {
             throw new IllegalArgumentException("Path should be an existing readable file");
         }
         FakeValues fakeValues = new FakeValues(locale, path);
-        FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(locale);
+        FLocale fLocale = FLocale.get(locale);
+        FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(fLocale);
         if (existingFakeValues == null) {
-            fakeValuesInterfaceMap.putIfAbsent(locale, fakeValues);
+            fakeValuesInterfaceMap.putIfAbsent(fLocale, fakeValues);
         } else {
             FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
             fakeValuesGrouping.add(existingFakeValues);
             fakeValuesGrouping.add(fakeValues);
-            fakeValuesInterfaceMap.put(locale, fakeValuesGrouping);
+            fakeValuesInterfaceMap.put(fLocale, fakeValuesGrouping);
         }
     }
 
@@ -171,22 +173,22 @@ public class FakeValuesService {
      */
     public Object fetchObject(String key, FakerContext context) {
         Object result = null;
-        final List<Locale> localeChain = context.getLocaleChain();
-        for (Locale locale : localeChain) {
+        final List<FLocale> localeChain = context.getLocaleChain();
+        for (FLocale fLocale : localeChain) {
             // exclude default locale from cache checks
-            if (locale.equals(DEFAULT_LOCALE) && localeChain.size() > 1) {
+            if (fLocale == DEFAULT_LOCALE && localeChain.size() > 1) {
                 continue;
             }
-            final Map<String, Object> stringObjectMap = key2fetchedObject.get(locale);
+            final Map<String, Object> stringObjectMap = key2fetchedObject.get(fLocale);
             if (stringObjectMap != null && (result = stringObjectMap.get(key)) != null) {
                 return result;
             }
         }
 
         String[] path = split(key);
-        Locale local2Add = null;
-        for (Locale locale : localeChain) {
-            Object currentValue = fakeValuesInterfaceMap.get(locale);
+        FLocale local2Add = null;
+        for (FLocale fLocale : localeChain) {
+            Object currentValue = fakeValuesInterfaceMap.get(fLocale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
                 if (currentValue instanceof Map) {
@@ -197,7 +199,7 @@ public class FakeValuesService {
             }
             result = currentValue;
             if (result != null) {
-                local2Add = locale;
+                local2Add = fLocale;
                 key2fetchedObject.putIfAbsent(local2Add, new HashMap<>());
                 break;
             }
@@ -394,12 +396,12 @@ public class FakeValuesService {
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
     public String resolve(String key, Object current, ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
-        String expression = root == null ? key2Expression.get(context.getLocale()).get(key) : null;
+        String expression = root == null ? key2Expression.get(context.getFLocale()).get(key) : null;
         if (expression == null) {
             expression = safeFetch(key, context, null);
             if (root == null) {
-                key2Expression.putIfAbsent(context.getLocale(), new HashMap<>());
-                key2Expression.get(context.getLocale()).put(key, expression);
+                key2Expression.putIfAbsent(context.getFLocale(), new HashMap<>());
+                key2Expression.get(context.getFLocale()).put(key, expression);
             }
         }
 
