@@ -29,6 +29,20 @@ Example of schema definition:
                 field("last_name", () -> faker.name().lastName()),
                 field("address", () -> faker.address().streetAddress()));
     ```
+
+=== "Kotlin"
+
+    ``` kotlin
+        val schema = Schema.of(
+            field("first_name",
+                Supplier { faker.name().firstName() }),
+            field("last_name",
+                Supplier { faker.name().lastName() }),
+            field<String, String>("address",
+                Supplier { faker.address().streetAddress() })
+        )
+    ```
+
 It is also supported nested(composite) fields e.g.:
 
 === "Java"
@@ -37,6 +51,13 @@ It is also supported nested(composite) fields e.g.:
         Schema.of(
             compositeField("key", new Field[]{field("key", () -> "value")}));
     ```
+
+=== "Kotlin"
+
+    ``` kotlin
+        Schema.of(compositeField("key", arrayOf(field("key", Supplier { "value" }))))
+    ```
+
 ## CSV transformation
 
 CSV transformer could be build with help of `CsvTransformer.CsvTransformerBuilder` e.g.
@@ -47,6 +68,13 @@ CSV transformer could be build with help of `CsvTransformer.CsvTransformerBuilde
          CsvTransformer<String> transformer =
             new CsvTransformer.CsvTransformerBuilder<String>().header(true).separator(separator).build();
     ```
+
+=== "Kotlin"
+
+    ``` kotlin
+        val transformer = CsvTransformer.CsvTransformerBuilder<String>().header(true).separator(separator).build()
+    ```
+
 The following can be configured:
 
 * the separator and quotes could be specified with `separator()` and `quote()`
@@ -59,6 +87,13 @@ To generate data based on a schema just call `generate` against `schema`:
     ``` java
          String csv = transformer.generate(schema, limit);
     ```
+
+=== "Kotlin"
+
+    ```kotlin
+        val csv = transformer.generate(schema, limit)
+    ```
+
 Also it's possible to use schemas to transform existing data. E.g. there is a collection of `Name` objects 
 and we are going to build csv of first and last names based on this collection:
 
@@ -74,6 +109,17 @@ and we are going to build csv of first and last names based on this collection:
             transformer.generate(
                 faker.<Name>collection().suppliers(faker::name).maxLen(limit).build(),
                 schema);
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+        val schema = Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName))
+
+        val transformer = CsvTransformerBuilder<Name>().header(false).separator(" : ").build()
+        val csv = transformer.generate(
+            faker.collection<Name>().suppliers(Supplier { faker.name() }).maxLen(limit).build(), schema
+        )
     ```
 
 ## JSON transformation
@@ -93,6 +139,19 @@ Example of JSON generation:
         JsonTransformer<Object> transformer = new JsonTransformer<>();
         String json = transformer.generate(schema, 2);
     ```
+
+=== "Kotlin"
+
+    ```kotlin
+        val schema: Schema<String, *> = Schema.of(
+            field("Text", Supplier { faker.name().firstName() }),
+            field("Bool", Supplier { faker.bool().bool() })
+        )
+
+        val transformer = JsonTransformer<String>()
+        val json = transformer.generate(schema, 2)
+    ```
+
 To use composite fields it should be defined on `Schema` level and nothing more.
 
 ## SQL Transformation
@@ -112,6 +171,14 @@ Dialect could be specified during `SQLTransformaer` build e.g:
             new SqlTransformer.SqlTransformerBuilder<String>()
                 .schemaName(tableSchemaName).dialect(SqlDialect.ORACLE).build();
     ```
+
+=== "Kotlin"
+
+    ```kotlin
+        val transformer = SqlTransformerBuilder<String>()
+            .schemaName(tableSchemaName).dialect(SqlDialect.ORACLE).build()
+    ```
+
 Dialect also handle SQL quote identifiers, quotes and other SQL dialect specifics.
 
 An example of batch mode:
@@ -131,6 +198,22 @@ An example of batch mode:
                 .build();
         String output = transformer.generate(schema, 10);
     ```
+=== "Kotlin"
+
+    ``` kotlin
+        val faker = Faker()
+        val schema: Schema<String, String> = Schema.of(
+            field("firstName", Supplier { faker.name().firstName() }),
+            field("lastName", Supplier { faker.name().lastName() })
+        )
+        val transformer = SqlTransformerBuilder<String>()
+            .batch(5)
+            .tableName("MY_TABLE")
+            .dialect(SqlDialect.POSTGRES)
+            .build()
+        val output = transformer.generate(schema, 10)
+    ```
+
 will generate 2 `INSERT` each containing 5 rows e.g.
 ```
 INSERT INTO MY_TABLE ("firstName", "lastName")
@@ -162,6 +245,13 @@ e.g.
     ``` java
         Schema.of(field("ints", () -> new int[]{1, 2, 3}));
     ```
+
+=== "Kotlin"
+
+    ```kotlin
+        val schema: Schema<String, IntArray> = Schema.of(field("ints", Supplier { intArrayOf(1, 2, 3) }))
+    ```
+
 will lead to
 
 ```
@@ -172,6 +262,13 @@ INSERT INTO "MyTable" ("ints") VALUES (ARRAY[1, 2, 3]);
     ``` java
         Schema.of(field("names_multiset", () -> Collections.singleton("hello"));
     ```
+
+=== "Kotlin"
+
+    ```kotlin
+        val schema: Schema<String, Set<String>> = Schema.of(field("names_multiset", Supplier { Collections.singleton("hello") } ))
+    ```
+
 will lead to
 
 ```
@@ -180,8 +277,15 @@ INSERT INTO "MyTable" ("names_multiset") VALUES (MULTISET['hello']);
 === "Java"
 
     ``` java
-        chema.of(compositeField("row", new Field[]{field("name", () -> "2")});
+        schema.of(compositeField("row", new Field[]{field("name", () -> "2")});
     ```
+
+=== "Kotlin"
+
+    ```kotlin
+        schema.of(compositeField("row", arrayOf(field("name", Supplier { "2" }))))
+    ```
+
 will lead to
 
 ```
