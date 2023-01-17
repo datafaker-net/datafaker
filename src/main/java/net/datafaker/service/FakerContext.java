@@ -1,6 +1,6 @@
 package net.datafaker.service;
 
-import net.datafaker.internal.helper.FLocale;
+import net.datafaker.internal.helper.SingletonLocale;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,10 +18,10 @@ import static net.datafaker.service.FakeValuesService.DEFAULT_LOCALE;
  */
 public class FakerContext {
     private static final Pattern LOCALE = Pattern.compile("[-_]");
-    private static final Map<FLocale, List<FLocale>> LOCALE_2_LOCALES_CHAIN = new IdentityHashMap<>();
-    private static final Map<FLocale, FLocale> STRING_LOCALE_HASH_MAP = new IdentityHashMap<>();
-    public static final List<FLocale> DEFAULT_FLOCALE = Collections.singletonList(DEFAULT_LOCALE);
-    private FLocale fLocale;
+    private static final Map<SingletonLocale, List<SingletonLocale>> LOCALE_2_LOCALES_CHAIN = new IdentityHashMap<>();
+    private static final Map<SingletonLocale, SingletonLocale> STRING_LOCALE_HASH_MAP = new IdentityHashMap<>();
+    public static final List<SingletonLocale> DEFAULT_SINGLETON_LOCALE_LIST = Collections.singletonList(DEFAULT_LOCALE);
+    private SingletonLocale sLocale;
     private RandomService randomService;
 
 
@@ -42,13 +42,13 @@ public class FakerContext {
      * </ul>
      */
     public FakerContext(Locale locale, RandomService randomService) {
-        this.fLocale = FLocale.get(locale);
+        this.sLocale = SingletonLocale.get(locale);
         this.randomService = randomService;
         setCurrentLocale(locale);
     }
 
     public void setLocale(Locale locale) {
-        this.fLocale = FLocale.get(locale);
+        this.sLocale = SingletonLocale.get(locale);
     }
 
     public void setRandomService(RandomService randomService) {
@@ -56,22 +56,22 @@ public class FakerContext {
     }
 
     public Locale getLocale() {
-        return fLocale.getLocale();
+        return sLocale.getLocale();
     }
 
-    public FLocale getFLocale() {
-        return fLocale;
+    public SingletonLocale getSingletonLocale() {
+        return sLocale;
     }
 
     public RandomService getRandomService() {
         return randomService;
     }
 
-    public List<FLocale> getLocaleChain() {
-        final List<FLocale> res = LOCALE_2_LOCALES_CHAIN.get(fLocale);
+    public List<SingletonLocale> getLocaleChain() {
+        final List<SingletonLocale> res = LOCALE_2_LOCALES_CHAIN.get(sLocale);
         if (res == null) {
             synchronized (FakerContext.class) {
-                return LOCALE_2_LOCALES_CHAIN.get(fLocale);
+                return LOCALE_2_LOCALES_CHAIN.get(sLocale);
             }
         }
         return res;
@@ -82,13 +82,13 @@ public class FakerContext {
      * it was instantiated.  new Locale("pt-br") will be normalized to a locale constructed
      * with new Locale("pt","BR").
      */
-    private FLocale normalizeLocale(FLocale flocale) {
-        FLocale res = STRING_LOCALE_HASH_MAP.get(flocale);
+    private SingletonLocale normalizeLocale(SingletonLocale singletonLocale) {
+        SingletonLocale res = STRING_LOCALE_HASH_MAP.get(singletonLocale);
         if (res != null) {
             return res;
         }
         final String[] parts;
-        final Locale locale = flocale.getLocale();
+        final Locale locale = singletonLocale.getLocale();
         if (locale.getCountry().isEmpty()) {
             parts = LOCALE.split(locale.getLanguage());
         } else {
@@ -96,26 +96,26 @@ public class FakerContext {
         }
 
         if (parts.length == 1) {
-            if ((res = FLocale.get(Locale.forLanguageTag(parts[0]))) == null) {
-                res = FLocale.get(new Locale(parts[0]));
+            if ((res = SingletonLocale.get(Locale.forLanguageTag(parts[0]))) == null) {
+                res = SingletonLocale.get(new Locale(parts[0]));
             }
         } else {
-            res = FLocale.get(new Locale(parts[0], parts[1]));
+            res = SingletonLocale.get(new Locale(parts[0], parts[1]));
         }
         synchronized (FakerContext.class) {
-            STRING_LOCALE_HASH_MAP.put(flocale, res);
+            STRING_LOCALE_HASH_MAP.put(singletonLocale, res);
         }
         return res;
     }
 
     public void setCurrentLocale(Locale locale) {
         Objects.requireNonNull(locale);
-        this.fLocale = normalizeLocale(FLocale.get(locale));
-        if (LOCALE_2_LOCALES_CHAIN.containsKey(this.fLocale)) {
+        this.sLocale = normalizeLocale(SingletonLocale.get(locale));
+        if (LOCALE_2_LOCALES_CHAIN.containsKey(this.sLocale)) {
             return;
         }
         synchronized (FakerContext.class) {
-            LOCALE_2_LOCALES_CHAIN.put(this.fLocale, localeChain());
+            LOCALE_2_LOCALES_CHAIN.put(this.sLocale, localeChain());
         }
     }
 
@@ -126,31 +126,31 @@ public class FakerContext {
      *
      * @return a list of {@link Locale} instances
      */
-    protected List<FLocale> localeChain(Locale from) {
+    protected List<SingletonLocale> localeChain(Locale from) {
         if (DEFAULT_LOCALE.getLocale().equals(from)) {
-            return DEFAULT_FLOCALE;
+            return DEFAULT_SINGLETON_LOCALE_LIST;
         }
 
-        final FLocale normalized = normalizeLocale(FLocale.get(from));
+        final SingletonLocale normalized = normalizeLocale(SingletonLocale.get(from));
 
-        final List<FLocale> chain = new ArrayList<>(3);
+        final List<SingletonLocale> chain = new ArrayList<>(3);
         chain.add(normalized);
         if (!"".equals(normalized.getLocale().getCountry()) && !DEFAULT_LOCALE.getLocale().getLanguage().equals(normalized.getLocale().getLanguage())) {
-            chain.add(FLocale.get(new Locale(normalized.getLocale().getLanguage())));
+            chain.add(SingletonLocale.get(new Locale(normalized.getLocale().getLanguage())));
         }
         chain.add(DEFAULT_LOCALE); // default
         return chain;
     }
 
-    protected List<FLocale> localeChain() {
-        if (DEFAULT_LOCALE == fLocale) {
-            return DEFAULT_FLOCALE;
+    protected List<SingletonLocale> localeChain() {
+        if (DEFAULT_LOCALE == sLocale) {
+            return DEFAULT_SINGLETON_LOCALE_LIST;
         }
 
-        final List<FLocale> chain = new ArrayList<>(3);
-        chain.add(fLocale);
-        if (!"".equals(fLocale.getLocale().getCountry()) && !DEFAULT_LOCALE.getLocale().getLanguage().equals(fLocale.getLocale().getLanguage())) {
-            chain.add(FLocale.get(new Locale(fLocale.getLocale().getLanguage())));
+        final List<SingletonLocale> chain = new ArrayList<>(3);
+        chain.add(sLocale);
+        if (!"".equals(sLocale.getLocale().getCountry()) && !DEFAULT_LOCALE.getLocale().getLanguage().equals(sLocale.getLocale().getLanguage())) {
+            chain.add(SingletonLocale.get(new Locale(sLocale.getLocale().getLanguage())));
         }
         chain.add(DEFAULT_LOCALE); // default
         return chain;
@@ -161,18 +161,18 @@ public class FakerContext {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FakerContext that = (FakerContext) o;
-        return Objects.equals(fLocale, that.fLocale) && Objects.equals(randomService, that.randomService);
+        return Objects.equals(sLocale, that.sLocale) && Objects.equals(randomService, that.randomService);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fLocale, randomService);
+        return Objects.hash(sLocale, randomService);
     }
 
     @Override
     public String toString() {
         return "FakerContext{" +
-            ", locale=" + fLocale +
+            ", locale=" + sLocale +
             ", randomService=" + randomService +
             '}';
     }

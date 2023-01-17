@@ -1,7 +1,7 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.internal.helper.FLocale;
+import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Superhero;
 import org.junit.jupiter.api.BeforeEach;
@@ -202,37 +202,37 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void testLocaleChain() {
-        final List<FLocale> chain = context.localeChain(Locale.SIMPLIFIED_CHINESE);
+        final List<SingletonLocale> chain = context.localeChain(Locale.SIMPLIFIED_CHINESE);
 
-        assertThat(chain).map(FLocale::getLocale).contains(Locale.SIMPLIFIED_CHINESE, Locale.CHINESE, Locale.ENGLISH);
+        assertThat(chain).map(SingletonLocale::getLocale).contains(Locale.SIMPLIFIED_CHINESE, Locale.CHINESE, Locale.ENGLISH);
     }
 
     @Test
     void testLocaleChainEnglish() {
-        final List<FLocale> chain = new FakerContext(Locale.ENGLISH, null).localeChain(Locale.ENGLISH);
+        final List<SingletonLocale> chain = new FakerContext(Locale.ENGLISH, null).localeChain(Locale.ENGLISH);
 
-        assertThat(chain).map(FLocale::getLocale).contains(Locale.ENGLISH);
+        assertThat(chain).map(SingletonLocale::getLocale).contains(Locale.ENGLISH);
     }
 
     @Test
     void testLocaleChainLanguageOnly() {
-        final List<FLocale> chain = new FakerContext(Locale.CHINESE, null).localeChain(Locale.CHINESE);
+        final List<SingletonLocale> chain = new FakerContext(Locale.CHINESE, null).localeChain(Locale.CHINESE);
 
-        assertThat(chain).map(FLocale::getLocale).contains(Locale.CHINESE, Locale.ENGLISH);
+        assertThat(chain).map(SingletonLocale::getLocale).contains(Locale.CHINESE, Locale.ENGLISH);
     }
 
     @Test
     void testLocalesChainGetter() {
-        final List<FLocale> chain = context.getLocaleChain();
+        final List<SingletonLocale> chain = context.getLocaleChain();
 
-        assertThat(chain).map(FLocale::getLocale).contains(new Locale("test"), Locale.ENGLISH);
+        assertThat(chain).map(SingletonLocale::getLocale).contains(new Locale("test"), Locale.ENGLISH);
     }
 
     @Test
     void testLocalesChainGetterRu() {
         final FakerContext FVS = new FakerContext(new Locale("ru"), randomService);
-        final List<FLocale> processedChain = FVS.localeChain(new Locale("ru"));
-        final List<FLocale> chain = FVS.getLocaleChain();
+        final List<SingletonLocale> processedChain = FVS.localeChain(new Locale("ru"));
+        final List<SingletonLocale> chain = FVS.getLocaleChain();
 
         assertThat(chain).isEqualTo(processedChain);
     }
