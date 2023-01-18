@@ -31,7 +31,7 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
      * Test to check that list of all locales support is loaded
      */
     @Test
-    void testAllSuppportedLocales() {
+    void testAllSupportedLocales() {
         // Check that directory of locale resources exists
         File resourceDirectory = new File("./src/main/resources");
         assertThat(resourceDirectory).exists();

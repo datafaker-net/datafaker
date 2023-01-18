@@ -174,7 +174,7 @@ So, the tests are done based on [Kotlin Faker's doc page](https://serpro69.githu
 | Datafaker    | JDK 1.8.0_352, OpenJDK 64-Bit Server VM, 25.352-b08 | thrpt | 10  | 43284.011 ± 2480.512 | ops/ms |
 | Datafaker    | JDK 11.0.17, OpenJDK 64-Bit Server VM, 11.0.17+8    | thrpt | 10  | 41784.591 ± 930.326  | ops/ms |
 | Datafaker    | JDK 17.0.5, OpenJDK 64-Bit Server VM, 17.0.5+8      | thrpt | 10  | 44165.964 ± 906.038  | ops/ms |
-| Datafaker    | JDK 17.0.5, OpenJDK 64-Bit Server VM, 17.0.5+8      | thrpt | 10  | 43090.660 ± 1431.219  | ops/ms |
+| Datafaker    | JDK 17.0.5, OpenJDK 64-Bit Server VM, 17.0.5+8      | thrpt | 10  | 43090.660 ± 1431.219 | ops/ms |
 | Java Faker   | JDK 1.8.0_352, OpenJDK 64-Bit Server VM, 25.352-b08 | thrpt | 10  | 26869.455 ± 171.590  | ops/ms |
 | Java Faker   | JDK 11.0.17, OpenJDK 64-Bit Server VM, 11.0.17+8    | thrpt | 10  | 24186.835 ± 452.751  | ops/ms |
 | Java Faker   | JDK 17.0.5, OpenJDK 64-Bit Server VM, 17.0.5+8      | thrpt | 10  | 24898.424 ± 910.303  | ops/ms |

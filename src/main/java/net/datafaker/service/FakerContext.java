@@ -16,7 +16,8 @@ import static net.datafaker.service.FakeValuesService.DEFAULT_LOCALE;
  */
 public class FakerContext {
     private static final Pattern LOCALE = Pattern.compile("[-_]");
-    private final Map<Locale, List<Locale>> locale2localesChain = new HashMap<>();
+    private static final Map<Locale, List<Locale>> LOCALE_2_LOCALES_CHAIN = new HashMap<>();
+    private static final Map<Locale, Locale> STRING_LOCALE_HASH_MAP = new HashMap<>();
     private Locale locale;
     private RandomService randomService;
 
@@ -60,7 +61,13 @@ public class FakerContext {
     }
 
     public List<Locale> getLocaleChain() {
-        return locale2localesChain.get(locale);
+        final List<Locale> res = LOCALE_2_LOCALES_CHAIN.get(locale);
+        if (res == null) {
+            synchronized (FakerContext.class) {
+                return LOCALE_2_LOCALES_CHAIN.get(locale);
+            }
+        }
+        return res;
     }
 
     /**
@@ -69,22 +76,39 @@ public class FakerContext {
      * with new Locale("pt","BR").
      */
     private Locale normalizeLocale(Locale locale) {
-        final String[] parts = LOCALE.split(locale.toString());
+        Locale res = STRING_LOCALE_HASH_MAP.get(locale);
+        if (res != null) {
+            return res;
+        }
+        final String[] parts;
+        if (locale.getCountry().isEmpty()) {
+            parts = LOCALE.split(locale.getLanguage());
+        } else {
+            parts = new String[] {locale.getLanguage(), locale.getCountry()};
+        }
 
         if (parts.length == 1) {
-            return new Locale(parts[0]);
+            if ((res = Locale.forLanguageTag(parts[0])) == null) {
+                res = new Locale(parts[0]);
+            }
         } else {
-            return new Locale(parts[0], parts[1]);
+            res = new Locale(parts[0], parts[1]);
         }
+        synchronized (FakerContext.class) {
+            STRING_LOCALE_HASH_MAP.put(locale, res);
+        }
+        return res;
     }
 
     public void setCurrentLocale(Locale locale) {
         Objects.requireNonNull(locale);
         this.locale = normalizeLocale(locale);
-        if (locale2localesChain.containsKey(getLocale())) {
+        if (LOCALE_2_LOCALES_CHAIN.containsKey(this.locale)) {
             return;
         }
-        locale2localesChain.put(getLocale(), localeChain(getLocale()));
+        synchronized (FakerContext.class) {
+            LOCALE_2_LOCALES_CHAIN.put(this.locale, localeChain());
+        }
     }
 
     /**
@@ -110,6 +134,20 @@ public class FakerContext {
         return chain;
     }
 
+    protected List<Locale> localeChain() {
+        if (DEFAULT_LOCALE.equals(locale)) {
+            return Collections.singletonList(DEFAULT_LOCALE);
+        }
+
+        final List<Locale> chain = new ArrayList<>(3);
+        chain.add(locale);
+        if (!"".equals(locale.getCountry()) && !DEFAULT_LOCALE.getLanguage().equals(locale.getLanguage())) {
+            chain.add(new Locale(locale.getLanguage()));
+        }
+        chain.add(DEFAULT_LOCALE); // default
+        return chain;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -126,7 +164,6 @@ public class FakerContext {
     @Override
     public String toString() {
         return "FakerContext{" +
-            "locale2localesChain=" + locale2localesChain +
             ", locale=" + locale +
             ", randomService=" + randomService +
             '}';

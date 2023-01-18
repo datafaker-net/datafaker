@@ -43,8 +43,8 @@ public class FakeValuesService {
     private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
-    private final Map<Class<?>, Map<String, Collection<Method>>> class2methodsCache = new IdentityHashMap<>();
-    private final Map<Class<?>, Constructor<?>> class2constructorCache = new IdentityHashMap<>();
+    private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new IdentityHashMap<>();
+    private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new IdentityHashMap<>();
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<Locale, Map<String, String>> key2Expression = new WeakHashMap<>();
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
@@ -56,7 +56,7 @@ public class FakeValuesService {
 
     private final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new IdentityHashMap<>();
 
-    private final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
+    private static final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
 
     public FakeValuesService() {
     }
@@ -282,6 +282,7 @@ public class FakeValuesService {
                     if (letterify) {
                         res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
                     }
+                    break;
                 default:
                     break;
             }
@@ -868,10 +869,10 @@ public class FakeValuesService {
     private MethodAndCoercedArgs accessor(Class<?> clazz, String name, String[] args) {
         final String finalName = name;
         LOG.log(Level.FINE, () -> "Find accessor named " + finalName + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
-        name = removeUnderscoreChars(name).toLowerCase(Locale.ROOT);
+        name = removeUnderscoreChars(name);
         final Collection<Method> methods;
-        if (class2methodsCache.containsKey(clazz)) {
-            methods = class2methodsCache.get(clazz).getOrDefault(name, Collections.emptyList());
+        if (CLASS_2_METHODS_CACHE.containsKey(clazz)) {
+            methods = CLASS_2_METHODS_CACHE.get(clazz).getOrDefault(name, Collections.emptyList());
         } else {
             Method[] classMethods = clazz.getMethods();
             Map<String, Collection<Method>> methodMap =
@@ -881,7 +882,7 @@ public class FakeValuesService {
                 methodMap.computeIfAbsent(key, k -> new ArrayList<>());
                 methodMap.get(key).add(m);
             }
-            class2methodsCache.putIfAbsent(clazz, methodMap);
+            CLASS_2_METHODS_CACHE.putIfAbsent(clazz, methodMap);
             methods = methodMap.get(name);
         }
         if (methods == null) {
@@ -904,7 +905,7 @@ public class FakeValuesService {
             return valueWithRemovedUnderscores;
         }
         if (string.indexOf('_') == -1) {
-            removedUnderscore.put(string, string);
+            removedUnderscore.put(string, string.toLowerCase(Locale.ROOT));
             return string;
         }
         final char[] res = string.toCharArray();
@@ -921,7 +922,7 @@ public class FakeValuesService {
             }
         }
         valueWithRemovedUnderscores = String.valueOf(res, strLen - length, length);
-        removedUnderscore.put(string, valueWithRemovedUnderscores);
+        removedUnderscore.put(string, valueWithRemovedUnderscores.toLowerCase(Locale.ROOT));
         return valueWithRemovedUnderscores;
     }
 
@@ -954,13 +955,13 @@ public class FakeValuesService {
                     }
                 } else {
                     if (isVarArg) {
-                        Constructor<?> ctor = class2constructorCache.get(toType);
+                        Constructor<?> ctor = CLASS_2_CONSTRUCTOR_CACHE.get(toType);
                         if (ctor == null) {
                             final Constructor<?>[] constructors = toType.getConstructors();
                             for (Constructor<?> c : constructors) {
                                 if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == String.class) {
                                     ctor = toType.getConstructor(String.class);
-                                    class2constructorCache.put(toType, ctor);
+                                    CLASS_2_CONSTRUCTOR_CACHE.put(toType, ctor);
                                     break;
                                 }
                             }
