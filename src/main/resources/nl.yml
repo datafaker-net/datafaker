@@ -50,7 +50,7 @@ nl:
       default_country: [Nederland]
 
     company:
-      suffix: [ "BV", "NV", "V.O.F.", "Group", "CV", "Mts", "en Zonen" ]
+      suffix: [ "BV", "NV", "VOF", "Groep", "CV", "Mts", "en Zonen" ]
       name:
         - "#{Name.last_name} #{suffix}"
         - "#{Name.last_name}-#{Name.last_name}"
