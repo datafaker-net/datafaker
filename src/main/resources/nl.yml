@@ -50,12 +50,11 @@ nl:
       default_country: [Nederland]
 
     company:
-      company:
-        suffix: [ "BV", "NV", "V.O.F.", "Group", "CV", "Mts", "en Zonen" ]
-        name:
-          - "#{Name.last_name} #{suffix}"
-          - "#{Name.last_name}-#{Name.last_name}"
-          - "#{Name.last_name}, #{Name.last_name} en #{Name.last_name}"
+      suffix: [ "BV", "NV", "V.O.F.", "Group", "CV", "Mts", "en Zonen" ]
+      name:
+        - "#{Name.last_name} #{suffix}"
+        - "#{Name.last_name}-#{Name.last_name}"
+        - "#{Name.last_name}, #{Name.last_name} en #{Name.last_name}"
 
     internet:
       free_email: [gmail.com, yahoo.com, hotmail.nl, live.nl, outlook.com, kpnmail.nl]
