@@ -6,7 +6,9 @@ en-PH:
     name:
       male_first_name: [Michael, Christian, Jeffrey, Jayson, Richard, Ryan, Jonathan, Joseph, Alvin, Marvin, Joel, Christopher, Julius, Angelo, Emmanuel]
       female_first_name: [Michelle, Jennifer, Catherine, Mary Grace, Angelica, Maricel, Rowena, Joan, Jocelyn, Mary Ann, Jessica, Arlene, Melanie, Mary Jane, Janice, Rosemarie, Christine, Marjorie, Analyn, Josephine]
-      first_name: [Michael, Christian, Jeffrey, Jayson, Richard, Ryan, Jonathan, Joseph, Alvin, Marvin, Joel, Christopher, Julius, Angelo, Emmanuel, Michelle, Jennifer, Catherine, Mary Grace, Angelica, Maricel, Rowena, Joan, Jocelyn, Mary Ann, Jessica, Arlene, Melanie, Mary Jane, Janice, Rosemarie, Christine, Marjorie, Analyn, Josephine]
+      first_name:
+        - "#{male_first_name}"
+        - "#{female_first_name}"
       last_name: [Garcia, Reyes, Cruz, Mendoza, Ramos, Bautista, Gonzales, Flores, Fernandez, Villanueva, Lopez, Perez, Castillo, Francisco, Rodriguez, Santiago, Diaz]
     phone_number:
       # see: https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Philippines#:~:text=As%20such%2C%20a%20typical%20telephone,63%2D2%2D8123%2D4567
