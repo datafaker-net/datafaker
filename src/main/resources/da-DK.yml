@@ -76,3 +76,6 @@ da-DK:
         product: [Stol, Bil, Computer, Buks, Trøje, Bord, Hat, Tallerken, Kniv, Flaske, Jakke, Lampe, Tastatur, Taske, Bænk, Ur, Pung]
       name:
         - "#{Address.city} #{suffix}"
+
+    passport:
+      valid: "[0-9]{9}"
