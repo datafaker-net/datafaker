@@ -225,6 +225,7 @@ public class EnFile {
         "team.yml",
         "the_expanse.yml",
         "the_it_crowd.yml",
+        "the_kingkiller_chronicle.yml",
         "the_room.yml",
         "the_thick_of_it.yml",
         "tron.yml",
