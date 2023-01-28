@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ComputerTest extends BaseFakerTest<BaseFaker> {
+class ComputerTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testType() {
@@ -34,5 +34,10 @@ public class ComputerTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testWindows() {
         assertThat(faker.computer().windows()).isNotEmpty();
+    }
+
+    @Test
+    void testBrand() {
+        assertThat(faker.computer().brand()).isNotEmpty();
     }
 }
