@@ -47,6 +47,7 @@
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.24.9</javaparser.version>
         <snakeyaml.version>1.33</snakeyaml.version>
+        <jsonassert.version>1.5.1</jsonassert.version>
         <spotless-maven-plugin.version>2.30.0</spotless-maven-plugin.version>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
@@ -155,6 +156,13 @@
             <version>${libphonenumber.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
     <distributionManagement>
         <snapshotRepository>
