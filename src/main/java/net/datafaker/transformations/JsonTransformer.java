@@ -56,8 +56,8 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             data.add(apply(in, schema));
         }
 
-        char[] delimitedBy = delimitedBy(formatAsArray);
-        return data.length() > 1 ? delimitedBy[0] + LINE_SEPARATOR + data + LINE_SEPARATOR + delimitedBy[1]
+        char[] wrappers = wrappers(formatAsArray);
+        return data.length() > 1 ? wrappers[0] + LINE_SEPARATOR + data + LINE_SEPARATOR + wrappers[1]
             : data.toString();
     }
 
@@ -71,8 +71,8 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
                 sb.append(",").append(LINE_SEPARATOR);
             }
         }
-        char[] delimitedBy = delimitedBy(this.formatAsArray);
-        return limit > 1 ? delimitedBy[0] + LINE_SEPARATOR + sb + LINE_SEPARATOR + delimitedBy[1] : sb.toString();
+        char[] wrappers = wrappers(this.formatAsArray);
+        return limit > 1 ? wrappers[0] + LINE_SEPARATOR + sb + LINE_SEPARATOR + wrappers[1] : sb.toString();
     }
 
     private static void value2String(Object value, StringBuilder sb) {
@@ -172,8 +172,8 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         map.put('\u001F', "\\u001F");
         return Collections.unmodifiableMap(map);
     }
-    private static char[] delimitedBy(boolean formatAsArray) {
-        return formatAsArray ? ARRAY_DELIM : OBJ_DELIM;
+    private static char[] wrappers(boolean wrapAsArray) {
+        return wrapAsArray ? ARRAY_DELIM : OBJ_DELIM;
     }
 
     public static class JsonTransformerBuilder<IN> {
