@@ -23,14 +23,10 @@ import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.JsonTransformer.JsonTransformerBuilder;
 import net.datafaker.transformations.JsonTransformer.JsonTransformerBuilder.FormattedAs;
 import net.datafaker.transformations.Schema;
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.comparator.ArraySizeComparator;
 
 class JsonTest {
     @Test
@@ -135,14 +131,23 @@ class JsonTest {
     @ParameterizedTest
     @MethodSource("generateTestSchema")
     void outputArrayJsonTestForJsonTransformer(
-        Schema<String, String> schema, String expected) throws JSONException {
-
+        Schema<String, String> schema, String expected) {
         JsonTransformerBuilder<String> jsonTransformerBuilder = new JsonTransformerBuilder<>();
         JsonTransformer<String> transformer = jsonTransformerBuilder.formattedAs(FormattedAs.JSON_ARRAY).build();
-        String jsonOutput = transformer.generate(schema, 2);
 
-        JSONAssert.assertEquals("{generatedJson: [2]}",
-            String.format("{generatedJson: %s}", jsonOutput), new ArraySizeComparator(JSONCompareMode.LENIENT));
+        assertThat(transformer.generate(schema, 2).replaceAll(System.lineSeparator(), ""))
+            .isEqualTo("[" + expected + "," + expected + "]");
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateTestSchema")
+    void outputWithoutCommaForJsonTransformer(
+        Schema<String, String> schema, String expected) {
+        JsonTransformerBuilder<String> jsonTransformerBuilder = new JsonTransformerBuilder<>();
+        JsonTransformer<String> transformer = jsonTransformerBuilder.withCommaBetweenObjects(false).build();
+
+        assertThat(transformer.generate(schema, 2).replaceAll(System.lineSeparator(), ""))
+            .isEqualTo("{" + expected +  expected + "}");
     }
 
     private static Stream<Arguments> generateTestSchema() {

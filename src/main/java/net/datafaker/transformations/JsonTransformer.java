@@ -4,24 +4,23 @@ import net.datafaker.sequence.FakeSequence;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
 
 public class JsonTransformer<IN> implements Transformer<IN, Object> {
 
     private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
 
-    private static final char[] ARRAY_DELIM = {'[', ']'};
+    private final char[] wrappers;
+    private final boolean commaBetweenObjects;
 
-    private static final char[] OBJ_DELIM = {'{', '}'};
-
-    private final boolean formatAsArray;
-
-    private JsonTransformer() {
-        this(false);
-    }
-
-    private JsonTransformer(boolean asArray) {
-        this.formatAsArray = asArray;
+    private JsonTransformer(char[] wrappers, boolean commaBetweenObjects) {
+        this.wrappers = wrappers;
+        this.commaBetweenObjects = commaBetweenObjects;
     }
 
     @Override
@@ -56,22 +55,19 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             data.add(apply(in, schema));
         }
 
-        char[] wrappers = wrappers(formatAsArray);
         return data.length() > 1 ? wrappers[0] + LINE_SEPARATOR + data + LINE_SEPARATOR + wrappers[1]
             : data.toString();
     }
-
 
     @Override
     public String generate(Schema<IN, ?> schema, int limit) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < limit; i++) {
             sb.append(apply(null, schema, i));
-            if (i < limit - 1) {
+            if (commaBetweenObjects && i < limit - 1) {
                 sb.append(",").append(LINE_SEPARATOR);
             }
         }
-        char[] wrappers = wrappers(this.formatAsArray);
         return limit > 1 ? wrappers[0] + LINE_SEPARATOR + sb + LINE_SEPARATOR + wrappers[1] : sb.toString();
     }
 
@@ -84,9 +80,9 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             || value instanceof BigInteger
             || value instanceof Boolean
             || (value instanceof Double
-            && BigDecimal.valueOf((Double) value).remainder(BigDecimal.ONE).doubleValue() == 0)
+                && BigDecimal.valueOf((Double) value).remainder(BigDecimal.ONE).doubleValue() == 0)
             || (value instanceof BigDecimal
-            && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
+                && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
             sb.append(value);
         } else if (value instanceof Collection) {
             sb.append(generate((Collection) value));
@@ -172,24 +168,33 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         map.put('\u001F', "\\u001F");
         return Collections.unmodifiableMap(map);
     }
-    private static char[] wrappers(boolean wrapAsArray) {
-        return wrapAsArray ? ARRAY_DELIM : OBJ_DELIM;
-    }
 
     public static class JsonTransformerBuilder<IN> {
 
-        public enum FormattedAs {JSON_ARRAY, JSON_OBJECT}
+        public enum FormattedAs {
+            JSON_ARRAY("[]"),
+            JSON_OBJECT("{}");
+            private final char[] wrappers;
+            FormattedAs(String input) {
+                wrappers = input.toCharArray();
+            }
+        }
 
         private FormattedAs formattedAs = FormattedAs.JSON_OBJECT;
+        private boolean commaBetweenObjects = true;
 
         public JsonTransformerBuilder<IN> formattedAs(FormattedAs formattedAs) {
             this.formattedAs = formattedAs;
             return this;
         }
 
-        public JsonTransformer<IN> build() {
-            return new JsonTransformer<>(formattedAs == FormattedAs.JSON_ARRAY);
+        public JsonTransformerBuilder<IN> withCommaBetweenObjects(boolean commaBetweenObjects) {
+            this.commaBetweenObjects = commaBetweenObjects;
+            return this;
+        }
 
+        public JsonTransformer<IN> build() {
+            return new JsonTransformer<>(formattedAs.wrappers, commaBetweenObjects);
         }
     }
 }

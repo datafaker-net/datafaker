@@ -32,7 +32,6 @@
         <google.javaformat.version>1.7</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <jbanking.version>4.1.0</jbanking.version>
-        <jsonassert.version>1.5.1</jsonassert.version>
         <junit.version>5.9.2</junit.version>
         <libphonenumber.version>8.13.2</libphonenumber.version>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -156,13 +155,6 @@
             <version>${libphonenumber.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
-            <version>${jsonassert.version}</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
     <distributionManagement>
         <snapshotRepository>
