@@ -22,6 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <additionalparam>-Xdoclint:none</additionalparam>
+        <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
         <assertj-core.version>3.24.2</assertj-core.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
@@ -31,6 +32,7 @@
         <google.javaformat.version>1.7</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <jbanking.version>4.1.0</jbanking.version>
+        <jsonassert.version>1.5.1</jsonassert.version>
         <junit.version>5.9.2</junit.version>
         <libphonenumber.version>8.13.2</libphonenumber.version>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -47,9 +49,7 @@
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.24.9</javaparser.version>
         <snakeyaml.version>1.33</snakeyaml.version>
-        <jsonassert.version>1.5.1</jsonassert.version>
         <spotless-maven-plugin.version>2.30.0</spotless-maven-plugin.version>
-        <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
