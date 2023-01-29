@@ -10,7 +10,11 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
 
     private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
 
-    private boolean formatAsArray;
+    private static final char[] ARRAY_DELIM = {'[', ']'};
+
+    private static final char[] OBJ_DELIM = {'{', '}'};
+
+    private final boolean formatAsArray;
 
     private JsonTransformer() {
         this(false);
@@ -169,7 +173,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         return Collections.unmodifiableMap(map);
     }
     private static char[] delimitedBy(boolean formatAsArray) {
-        return formatAsArray ? new char[]{'[',']'} : new char[] {'{','}'};
+        return formatAsArray ? ARRAY_DELIM : OBJ_DELIM;
     }
 
     public static class JsonTransformerBuilder<IN> {
