@@ -1,20 +1,13 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class MountainTest extends AbstractBasicProviderTest<BaseFaker> {
 
-class MountainTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void testMountainName() {
-        String mountainName = faker.mountain().name();
-        assertThat(mountainName).isNotEmpty();
-    }
-
-    @Test
-    void testMountainLeague() {
-        String mountainLeague = faker.mountain().range();
-        assertThat(mountainLeague).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.mountain().name(), "mountain.name"),
+                TestSpec.of(() -> faker.mountain().range(), "mountain.range"));
     }
 }

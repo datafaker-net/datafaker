@@ -4,15 +4,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ApplianceTest extends BaseFakerTest<BaseFaker> {
+import java.util.Arrays;
+import java.util.Collection;
+
+class ApplianceTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @Test
     void brand() {
         assertThat(faker.appliance().brand()).matches("[A-Za-z .-]+");
     }
 
-    @Test
-    void equipment() {
-        assertThat(faker.appliance().equipment()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.appliance().equipment(), "appliance.equipment"));
     }
 }

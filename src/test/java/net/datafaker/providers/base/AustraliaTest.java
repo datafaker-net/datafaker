@@ -1,23 +1,15 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class AustraliaTest extends AbstractBasicProviderTest<BaseFaker> {
 
-class AustraliaTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void locations() {
-        assertThat(faker.australia().locations()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.australia().locations(), "australia.locations"),
+            TestSpec.of(() -> faker.australia().animals(), "australia.animals"),
+            TestSpec.of(() -> faker.australia().states(), "australia.states"));
     }
 
-    @Test
-    void animals() {
-        assertThat(faker.australia().animals()).isNotEmpty();
-    }
-
-    @Test
-    void states() {
-        assertThat(faker.australia().states()).isNotEmpty();
-    }
 }

@@ -1,13 +1,12 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class CryptoCoinTest extends AbstractBasicProviderTest<BaseFaker> {
 
-class CryptoCoinTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void coin() {
-        assertThat(faker.cryptoCoin().coin()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.cryptoCoin().coin(), "crypto_coin.coin"));
     }
 }

@@ -1,39 +1,18 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+class CultureSeriesTest extends AbstractBasicProviderTest<BaseFaker> {
 
-class CultureSeriesTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void books() {
-        assertThat(faker.cultureSeries().books()).isNotEmpty();
-    }
-
-    @Test
-    void cultureShips() {
-        assertThat(faker.cultureSeries().cultureShips()).isNotEmpty();
-    }
-
-    @Test
-    void cultureShipClasses() {
-        assertThat(faker.cultureSeries().cultureShipClasses()).isNotEmpty();
-    }
-
-    @Test
-    void cultureShipClassAbvs() {
-        assertThat(faker.cultureSeries().cultureShipClassAbvs()).isNotEmpty();
-    }
-
-    @Test
-    void civs() {
-        assertThat(faker.cultureSeries().civs()).isNotEmpty();
-    }
-
-    @Test
-    void planets() {
-        assertThat(faker.cultureSeries().planets()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.cultureSeries().books(), "culture_series.books"),
+                TestSpec.of(() -> faker.cultureSeries().cultureShips(), "culture_series.culture_ships"),
+                TestSpec.of(() -> faker.cultureSeries().cultureShipClasses(), "culture_series.culture_ship_classes"),
+                TestSpec.of(() -> faker.cultureSeries().cultureShipClassAbvs(), "culture_series.culture_ship_class_abvs"),
+                TestSpec.of(() -> faker.cultureSeries().civs(), "culture_series.civs"),
+                TestSpec.of(() -> faker.cultureSeries().planets(), "culture_series.planets"));
     }
 
 }

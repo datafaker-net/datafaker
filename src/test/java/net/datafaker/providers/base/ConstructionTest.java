@@ -1,38 +1,17 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class ConstructionTest extends AbstractBasicProviderTest<BaseFaker> {
 
-class ConstructionTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void heavyEquipment() {
-        assertThat(faker.construction().heavyEquipment()).isNotEmpty();
-    }
-
-    @Test
-    void materials() {
-        assertThat(faker.construction().materials()).isNotEmpty();
-    }
-
-    @Test
-    void subcontractCategories() {
-        assertThat(faker.construction().subcontractCategories()).isNotEmpty();
-    }
-
-    @Test
-    void roles() {
-        assertThat(faker.construction().roles()).isNotEmpty();
-    }
-
-    @Test
-    void trades() {
-        assertThat(faker.construction().trades()).isNotEmpty();
-    }
-
-    @Test
-    void standardCostCodes() {
-        assertThat(faker.construction().standardCostCodes()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.construction().heavyEquipment(), "construction.heavy_equipment"),
+                TestSpec.of(() -> faker.construction().materials(), "construction.materials"),
+                TestSpec.of(() -> faker.construction().subcontractCategories(), "construction.subcontract_categories"),
+                TestSpec.of(() -> faker.construction().roles(), "construction.roles"),
+                TestSpec.of(() -> faker.construction().trades(), "construction.trades"),
+                TestSpec.of(() -> faker.construction().standardCostCodes(), "construction.standard_cost_codes"));
     }
 }

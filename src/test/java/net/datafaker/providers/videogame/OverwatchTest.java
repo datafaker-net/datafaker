@@ -1,6 +1,5 @@
-package net.datafaker.providers.base;
+package net.datafaker.providers.videogame;
 
-import net.datafaker.providers.videogame.VideoGameFakerTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
