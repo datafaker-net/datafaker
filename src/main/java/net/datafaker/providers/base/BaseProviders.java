@@ -465,4 +465,8 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Yoda.class, Yoda::new);
     }
 
+    default Zodiac zodiac() {
+        return getProvider(Zodiac.class, Zodiac::new);
+    }
+
 }
