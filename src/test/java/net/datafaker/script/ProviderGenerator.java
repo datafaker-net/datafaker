@@ -141,7 +141,7 @@ class ProviderGenerator {
 }
 
 enum ProviderType {
-    SHOW("ShowProviders", "net.datafaker.providers.show", "ShowFakerTest"),
+    SHOW("EntertainmentProviders", "net.datafaker.providers.entertainment", "EntertainmentFakerTest"),
     VIDEO_GAME("VideoGameProviders", "net.datafaker.providers.videogame", "VideoGameFakerTest"),
     ;
 
