@@ -24,7 +24,7 @@ Create a custom provider of data:
     public static class Insect extends AbstractProvider<BaseProviders> {
         private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
 
-        public Insect(Faker faker) {
+        public Insect(BaseProviders faker) {
             super(faker);
         }
 
