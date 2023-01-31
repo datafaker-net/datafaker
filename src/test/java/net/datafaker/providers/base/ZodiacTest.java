@@ -1,14 +1,12 @@
 package net.datafaker.providers.base;
 
+import java.util.Arrays;
+import java.util.Collection;
 
-import org.junit.jupiter.api.Test;
+class ZodiacTest extends AbstractBasicProviderTest<BaseFaker> {
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class ZodiacTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void testSign() {
-        assertThat(faker.zodiac().sign()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of((() -> faker.zodiac().sign()), "zodiac.signs"));
     }
 }

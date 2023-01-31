@@ -1,28 +1,15 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class IndustrySegmentsTest extends AbstractBasicProviderTest<BaseFaker> {
 
-public class IndustrySegmentsTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void testIndustry() {
-        assertThat(faker.industrySegments().industry()).isNotEmpty();
-    }
-
-    @Test
-    void testSuperSector() {
-        assertThat(faker.industrySegments().superSector()).isNotEmpty();
-    }
-
-    @Test
-    void testSector() {
-        assertThat(faker.industrySegments().sector()).isNotEmpty();
-    }
-
-    @Test
-    void testSubSector() {
-        assertThat(faker.industrySegments().subSector()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.industrySegments().industry(), "industry_segments.industry"),
+                TestSpec.of(() -> faker.industrySegments().superSector(), "industry_segments.super_sector"),
+                TestSpec.of(() -> faker.industrySegments().sector(), "industry_segments.sector"),
+                TestSpec.of(() -> faker.industrySegments().subSector(), "industry_segments.sub_sector"));
     }
 }
