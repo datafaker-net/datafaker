@@ -57,7 +57,7 @@ class JsonTest {
         );
 
         JsonTransformerBuilder<Integer> jsonTransformerBuilder = new JsonTransformerBuilder<>();
-        JsonTransformer<Integer> transformer = jsonTransformerBuilder.build();
+        JsonTransformer<Integer> transformer = jsonTransformerBuilder.withCommaBetweenObjects(false).build();
         FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
             .suppliers(() -> faker.number().randomDigit())
             .len(5)
@@ -85,7 +85,7 @@ class JsonTest {
         );
 
         JsonTransformer<Integer> transformer = new JsonTransformer.JsonTransformerBuilder<Integer>()
-            .formattedAs(FormattedAs.JSON_ARRAY).build();
+            .formattedAs(FormattedAs.JSON_ARRAY).withCommaBetweenObjects(false).build();
         FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
             .suppliers(() -> faker.number().randomDigit())
             .len(2)
