@@ -50,6 +50,9 @@ public class FakeValuesService {
 
     private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new IdentityHashMap<>();
     private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new IdentityHashMap<>();
+
+    private static final JsonTransformer<Object> JSON_TRANSFORMER = new JsonTransformer.JsonTransformerBuilder<>().build();
+
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<SingletonLocale, Map<String, String>> key2Expression = new IdentityHashMap<>();
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
@@ -466,8 +469,6 @@ public class FakeValuesService {
         if (fieldExpressions.length % 2 != 0) {
             throw new IllegalArgumentException("Total number of field names and field values should be even");
         }
-        JsonTransformer.JsonTransformerBuilder<Object> jsonTransformerBuilder = new JsonTransformer.JsonTransformerBuilder<>();
-        JsonTransformer<Object> transformer = jsonTransformerBuilder.build();
 
         List<SimpleField<Object, ?>> fields = new ArrayList<>();
         for (int i = 0; i < fieldExpressions.length; i += 2) {
@@ -475,7 +476,7 @@ public class FakeValuesService {
             fields.add(field(fieldExpressions[index], () -> fieldExpressions[index + 1]));
         }
         Schema<Object, ?> schema = Schema.of(fields.toArray(new SimpleField[0]));
-        return transformer.generate(schema, 1);
+        return JSON_TRANSFORMER.generate(schema, 1);
     }
 
 
@@ -486,8 +487,6 @@ public class FakeValuesService {
         if (fieldExpressions.length % 3 != 0) {
             throw new IllegalArgumentException("Total number of field names and field values should be dividable by 3");
         }
-        JsonTransformer.JsonTransformerBuilder<Object> jsonTransformerBuilder = new JsonTransformer.JsonTransformerBuilder<>();
-        JsonTransformer<Object> transformer = jsonTransformerBuilder.build();
 
         List<SimpleField<Object, ?>> fields = new ArrayList<>();
         for (int i = 0; i < fieldExpressions.length; i += 3) {
@@ -501,7 +500,7 @@ public class FakeValuesService {
             }
         }
         Schema<Object, ?> schema = Schema.of(fields.toArray(new SimpleField[0]));
-        return transformer.generate(schema, 1);
+        return JSON_TRANSFORMER.generate(schema, 1);
     }
 
     /**
