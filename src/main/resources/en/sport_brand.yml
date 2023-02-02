@@ -1,0 +1,24 @@
+en:
+  faker:
+    sport_brand:
+      brand:
+        - Adidas
+        - ASICS
+        - Brooks
+        - Champion
+        - Columbia
+        - Diadora
+        - Ellesse
+        - Fila
+        - Joma
+        - Kappa
+        - Lotto
+        - New Balance
+        - Nike
+        - Peak
+        - Puma
+        - Quick
+        - Reebok
+        - Umbro
+        - Under Armor
+        - Wilson
