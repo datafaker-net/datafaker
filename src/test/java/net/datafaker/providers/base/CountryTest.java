@@ -5,7 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CountryTest extends BaseFakerTest<BaseFaker> {
+import java.util.Arrays;
+import java.util.Collection;
+
+class CountryTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @RepeatedTest(10)
     void testFlag() {
@@ -38,8 +41,8 @@ class CountryTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.country().currencyCode()).matches("([\\w-’í]+ ?)+");
     }
 
-    @Test
-    void testName() {
-        assertThat(faker.country().name()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.country().name(), "country.name"));
     }
 }

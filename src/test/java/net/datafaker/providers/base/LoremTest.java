@@ -5,13 +5,20 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LoremTest extends BaseFakerTest<BaseFaker> {
+class LoremTest extends AbstractBasicProviderTest<BaseFaker> {
+
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.lorem().word(), "lorem.words"));
+    }
 
     @Test
     void shouldCreateFixedLengthString() {
@@ -19,11 +26,6 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.lorem().fixedString(50)).hasSize(50);
         assertThat(faker.lorem().fixedString(0)).isEmpty();
         assertThat(faker.lorem().fixedString(-1)).isEmpty();
-    }
-
-    @Test
-    void wordShouldNotBeNullOrEmpty() {
-        assertThat(faker.lorem().word()).isNotEmpty();
     }
 
     @Test

@@ -1,38 +1,18 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
-class OlympicSportTest extends BaseFakerTest<BaseFaker> {
+class OlympicSportTest extends AbstractBasicProviderTest<BaseFaker> {
 
-    @Test
-    void summerOlympics() {
-        assertThat(faker.olympicSport().summerOlympics()).isNotEmpty();
-    }
-
-    @Test
-    void winterOlympics() {
-        assertThat(faker.olympicSport().winterOlympics()).isNotEmpty();
-    }
-
-    @Test
-    void summerParalympics() {
-        assertThat(faker.olympicSport().summerParalympics()).isNotEmpty();
-    }
-
-    @Test
-    void winterParalympics() {
-        assertThat(faker.olympicSport().winterParalympics()).isNotEmpty();
-    }
-
-    @Test
-    void ancientOlympics() {
-        assertThat(faker.olympicSport().ancientOlympics()).isNotEmpty();
-    }
-
-    @Test
-    void unusual() {
-        assertThat(faker.olympicSport().unusual()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.olympicSport().summerOlympics(), "olympic_sport.summer_olympics"),
+                TestSpec.of(() -> faker.olympicSport().winterOlympics(), "olympic_sport.winter_olympics"),
+                TestSpec.of(() -> faker.olympicSport().summerParalympics(), "olympic_sport.summer_paralympics"),
+                TestSpec.of(() -> faker.olympicSport().winterParalympics(), "olympic_sport.winter_paralympics"),
+                TestSpec.of(() -> faker.olympicSport().ancientOlympics(), "olympic_sport.ancient_olympics"),
+                TestSpec.of(() -> faker.olympicSport().unusual(), "olympic_sport.unusual"));
     }
 
 }

@@ -1,14 +1,13 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class MarketingTest extends AbstractBasicProviderTest<BaseFaker> {
 
-class MarketingTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void buzzwords() {
-        assertThat(faker.marketing().buzzwords()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.marketing().buzzwords(), "marketing.buzzwords"));
     }
 
 }

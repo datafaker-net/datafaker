@@ -1,34 +1,17 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class SubscriptionTest extends AbstractBasicProviderTest<BaseFaker> {
 
-class SubscriptionTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void plans() {
-        assertThat(faker.subscription().plans()).isNotEmpty();
-    }
-
-    @Test
-    void statuses() {
-        assertThat(faker.subscription().statuses()).isNotEmpty();
-    }
-
-    @Test
-    void paymentMethods() {
-        assertThat(faker.subscription().paymentMethods()).isNotEmpty();
-    }
-
-    @Test
-    void subscriptionTerms() {
-        assertThat(faker.subscription().subscriptionTerms()).isNotEmpty();
-    }
-
-    @Test
-    void paymentTerms() {
-        assertThat(faker.subscription().paymentTerms()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.subscription().plans(), "subscription.plans"),
+                TestSpec.of(() -> faker.subscription().statuses(), "subscription.statuses"),
+                TestSpec.of(() -> faker.subscription().paymentMethods(), "subscription.payment_methods"),
+                TestSpec.of(() -> faker.subscription().subscriptionTerms(), "subscription.subscription_terms"),
+                TestSpec.of(() -> faker.subscription().paymentTerms(), "subscription.payment_terms"));
     }
 
 }
