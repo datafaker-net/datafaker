@@ -54,7 +54,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
         Iterator<IN> iterator = input.iterator();
         while (iterator.hasNext()){
-            data.add(apply(iterator.next(), schema) + (commaBetweenObjects & iterator.hasNext() ? "," : ""));
+            data.add(apply(iterator.next(), schema) + (commaBetweenObjects && iterator.hasNext() ? "," : ""));
         }
 
         return data.length() > 1 ? wrappers[0] + LINE_SEPARATOR + data + LINE_SEPARATOR + wrappers[1]

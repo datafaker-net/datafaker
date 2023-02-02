@@ -266,8 +266,6 @@ class FakeStreamTest extends AbstractFakerTest {
             field("unit", Data::unit)
         ));
 
-        System.out.println(json);
-
         int numberOfLines = 0;
         for (int i = 0; i < json.length(); i++) {
             if (json.regionMatches(i, "},", 0, "},".length())) {

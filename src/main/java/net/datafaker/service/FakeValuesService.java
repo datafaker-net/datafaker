@@ -479,7 +479,6 @@ public class FakeValuesService {
         return JSON_TRANSFORMER.generate(schema, 1);
     }
 
-
     /**
      * Generates json based on input.
      */
