@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -51,8 +52,9 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         }
 
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
-        for (IN in : input) {
-            data.add(apply(in, schema));
+        Iterator<IN> iterator = input.iterator();
+        while (iterator.hasNext()){
+            data.add(apply(iterator.next(), schema) + (commaBetweenObjects && iterator.hasNext() ? "," : ""));
         }
 
         return data.length() > 1 ? wrappers[0] + LINE_SEPARATOR + data + LINE_SEPARATOR + wrappers[1]
