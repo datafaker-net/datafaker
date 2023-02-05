@@ -176,6 +176,25 @@
                     <configuration>
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
+                        <compilerArgs>
+                            <arg>-Xlint:cast</arg>
+                            <arg>-Xlint:classfile</arg>
+                            <arg>-Xlint:dep-ann</arg>
+                            <arg>-Xlint:divzero</arg>
+                            <arg>-Xlint:empty</arg>
+                            <arg>-Xlint:fallthrough</arg>
+                            <arg>-Xlint:finally</arg>
+                            <arg>-Xlint:options</arg>
+                            <arg>-Xlint:overrides</arg>
+                            <arg>-Xlint:path</arg>
+                            <arg>-Xlint:processing</arg>
+                            <arg>-Xlint:rawtypes</arg>
+                            <arg>-Xlint:serial</arg>
+                            <arg>-Xlint:static</arg>
+                            <arg>-Xlint:try</arg>
+                            <arg>-Xlint:varargs</arg>
+                            <arg>-Werror</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>
