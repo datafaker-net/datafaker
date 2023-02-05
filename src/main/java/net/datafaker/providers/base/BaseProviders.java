@@ -61,6 +61,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Bool.class, Bool::new);
     }
 
+    default Brand brand() {
+        return getProvider(Brand.class, Brand::new);
+    }
+
     default Business business() {
         return getProvider(Business.class, Business::new);
     }
