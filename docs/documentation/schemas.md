@@ -136,7 +136,7 @@ Example of JSON generation:
             field("Bool", () -> faker.bool().bool())
         );
 
-        JsonTransformer<Object> transformer = new JsonTransformer<>();
+        JsonTransformer<Object> transformer = JsonTransformer.builder().build();
         String json = transformer.generate(schema, 2);
     ```
 
@@ -148,7 +148,7 @@ Example of JSON generation:
             field("Bool", Supplier { faker.bool().bool() })
         )
 
-        val transformer = JsonTransformer<String>()
+        val transformer = JsonTransformer.builder().build();
         val json = transformer.generate(schema, 2)
     ```
 
