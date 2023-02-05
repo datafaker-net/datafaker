@@ -30,8 +30,4 @@ public interface SportProviders extends ProviderRegistration {
     default Volleyball volleyball() {
         return getProvider(Volleyball.class, Volleyball::new);
     }
-
-    default SportBrand sportbrand() {
-        return getProvider(SportBrand.class, SportBrand::new);
-    }
 }

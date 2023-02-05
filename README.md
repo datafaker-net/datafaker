@@ -276,6 +276,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Book
 * Bool
 * Bossa Nova
+* Brand
 * Breaking Bad
 * Brooklyn Nine-Nine
 * Buffy

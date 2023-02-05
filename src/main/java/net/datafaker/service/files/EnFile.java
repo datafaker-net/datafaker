@@ -52,6 +52,7 @@ public class EnFile {
         "bojack_horseman.yml",
         "book.yml",
         "bossa_nova.yml",
+        "brand.yml",
         "breaking_bad.yml",
         "brooklyn_nine_nine.yml",
         "buffy.yml",

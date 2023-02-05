@@ -65,6 +65,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Business.class, Business::new);
     }
 
+    default Brand brand() {
+        return getProvider(Brand.class, Brand::new);
+    }
+
     default Camera camera() {
         return getProvider(Camera.class, Camera::new);
     }
