@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.formats.Json;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
@@ -142,9 +141,9 @@ public interface ProviderRegistration {
      */
     String csv(String separator, char quote, boolean withHeader, int limit, String... columnExpressions);
 
-    Json json(String... fieldExpressions);
+    String json(String... fieldExpressions);
 
-    Json jsona(String... fieldExpressions);
+    String jsona(String... fieldExpressions);
 
     RandomService random();
 

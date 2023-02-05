@@ -3,13 +3,15 @@ package net.datafaker.service;
 import com.mifmif.common.regex.Generex;
 import net.datafaker.formats.Csv;
 import net.datafaker.formats.Format;
-import net.datafaker.formats.Json;
 import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.providers.base.ProviderRegistration;
+import net.datafaker.transformations.JsonTransformer;
+import net.datafaker.transformations.Schema;
+import net.datafaker.transformations.SimpleField;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -36,6 +38,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static net.datafaker.transformations.Field.field;
+
 public class FakeValuesService {
     private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
@@ -46,6 +50,9 @@ public class FakeValuesService {
 
     private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new IdentityHashMap<>();
     private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new IdentityHashMap<>();
+
+    private static final JsonTransformer<Object> JSON_TRANSFORMER = new JsonTransformer.JsonTransformerBuilder<>().build();
+
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<SingletonLocale, Map<String, String>> key2Expression = new IdentityHashMap<>();
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
@@ -458,39 +465,41 @@ public class FakeValuesService {
     /**
      * Generates json based on input.
      */
-    public Json json(String... fieldExpressions) {
+    public String json(String... fieldExpressions) {
         if (fieldExpressions.length % 2 != 0) {
             throw new IllegalArgumentException("Total number of field names and field values should be even");
         }
-        Json.JsonBuilder jsonBuilder = new Json.JsonBuilder();
+
+        List<SimpleField<Object, ?>> fields = new ArrayList<>();
         for (int i = 0; i < fieldExpressions.length; i += 2) {
             final int index = i;
-            jsonBuilder.set(fieldExpressions[index], () -> fieldExpressions[index + 1]);
+            fields.add(field(fieldExpressions[index], () -> fieldExpressions[index + 1]));
         }
-        return jsonBuilder.build();
+        Schema<Object, ?> schema = Schema.of(fields.toArray(new SimpleField[0]));
+        return JSON_TRANSFORMER.generate(schema, 1);
     }
 
     /**
      * Generates json based on input.
      */
-    public Json jsona(String... fieldExpressions) {
+    public String jsona(String... fieldExpressions) {
         if (fieldExpressions.length % 3 != 0) {
             throw new IllegalArgumentException("Total number of field names and field values should be dividable by 3");
         }
-        Json.JsonBuilder jsonBuilder = new Json.JsonBuilder();
 
+        List<SimpleField<Object, ?>> fields = new ArrayList<>();
         for (int i = 0; i < fieldExpressions.length; i += 3) {
             final int index = i;
             if (fieldExpressions[i] != null && Integer.parseInt(fieldExpressions[index]) > 0) {
                 Object[] objects = new Object[Integer.parseInt(fieldExpressions[index])];
                 Arrays.fill(objects, fieldExpressions[index + 2]);
-                jsonBuilder.set(fieldExpressions[index + 1], () -> objects).build();
+                fields.add(field(fieldExpressions[index + 1], () -> objects));
             } else {
-                jsonBuilder.set(fieldExpressions[index + 1], () -> fieldExpressions[index + 2]);
+                fields.add(field(fieldExpressions[index + 1], () -> fieldExpressions[index + 2]));
             }
         }
-
-        return jsonBuilder.build();
+        Schema<Object, ?> schema = Schema.of(fields.toArray(new SimpleField[0]));
+        return JSON_TRANSFORMER.generate(schema, 1);
     }
 
     /**

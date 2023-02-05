@@ -49,7 +49,7 @@ class JsonTest {
     }
 
     @Test
-    void testGenerateFromFakeSequenceCollection() {
+    void testGenerateFromFakeSequenceCollectionWithoutComma() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
@@ -57,7 +57,7 @@ class JsonTest {
         );
 
         JsonTransformerBuilder<Integer> jsonTransformerBuilder = new JsonTransformerBuilder<>();
-        JsonTransformer<Integer> transformer = jsonTransformerBuilder.build();
+        JsonTransformer<Integer> transformer = jsonTransformerBuilder.withCommaBetweenObjects(false).build();
         FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
             .suppliers(() -> faker.number().randomDigit())
             .len(5)
@@ -76,6 +76,34 @@ class JsonTest {
         assertThat(json).isEqualTo(expected);
     }
 
+    @Test
+    void testGenerateFromFakeSequenceCollection() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Integer, ?> schema = Schema.of(
+            field("Number", integer -> integer),
+            field("Password", integer -> faker.internet().password(integer, integer))
+        );
+
+        JsonTransformerBuilder<Integer> jsonTransformerBuilder = new JsonTransformerBuilder<>();
+        JsonTransformer<Integer> transformer = jsonTransformerBuilder.build();
+        FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
+            .suppliers(() -> faker.number().randomDigit())
+            .len(5)
+            .build();
+
+        String json = transformer.generate(fakeSequence, schema);
+
+        String expected = "{" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"wo9\"}," + LINE_SEPARATOR +
+            "{\"Number\": 6, \"Password\": \"691u00\"}," + LINE_SEPARATOR +
+            "{\"Number\": 7, \"Password\": \"2249sil\"}," + LINE_SEPARATOR +
+            "{\"Number\": 1, \"Password\": \"5\"}," + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"mq6\"}" + LINE_SEPARATOR +
+            "}";
+
+        assertThat(json).isEqualTo(expected);
+    }
+
 	@Test
     void testGenerateFromFakeSequenceStream() {
         BaseFaker faker = new BaseFaker(new Random(10L));
@@ -85,7 +113,7 @@ class JsonTest {
         );
 
         JsonTransformer<Integer> transformer = new JsonTransformer.JsonTransformerBuilder<Integer>()
-            .formattedAs(FormattedAs.JSON_ARRAY).build();
+            .formattedAs(FormattedAs.JSON_ARRAY).withCommaBetweenObjects(false).build();
         FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
             .suppliers(() -> faker.number().randomDigit())
             .len(2)

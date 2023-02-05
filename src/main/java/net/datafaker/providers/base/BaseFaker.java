@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.formats.Json;
 import net.datafaker.sequence.FakeCollection;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.sequence.FakeStream;
@@ -307,11 +306,11 @@ public class BaseFaker implements BaseProviders {
         return fakeValuesService().csv(separator, quote, withHeader, limit, columnExpressions);
     }
 
-    public Json json(String... fieldExpressions) {
+    public String json(String... fieldExpressions) {
         return fakeValuesService().json(fieldExpressions);
     }
 
-    public Json jsona(String... fieldExpressions) {
+    public String jsona(String... fieldExpressions) {
         return fakeValuesService().jsona(fieldExpressions);
     }
 
