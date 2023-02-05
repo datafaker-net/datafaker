@@ -211,8 +211,7 @@ class FakeCollectionTest extends AbstractFakerTest {
     void toJson() {
         int limit = 10;
 
-        JsonTransformer.JsonTransformerBuilder<Data> jsonTransformerBuilder = new JsonTransformer.JsonTransformerBuilder<>();
-        JsonTransformer<Data> transformer = jsonTransformerBuilder.build();
+        JsonTransformer<Data> transformer = JsonTransformer.<Data>builder().build();
 
         String json = transformer.generate(
             faker.<Data>collection().minLen(limit).maxLen(limit)

@@ -256,8 +256,7 @@ class FakeStreamTest extends AbstractFakerTest {
             .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
             .build();
 
-        JsonTransformer.JsonTransformerBuilder<Data> jsonTransformerBuilder = new JsonTransformer.JsonTransformerBuilder<>();
-        JsonTransformer<Data> transformer = jsonTransformerBuilder.build();
+        JsonTransformer<Data> transformer = JsonTransformer.<Data>builder().build();
 
         String json = transformer.generate(stream, Schema.of(
             field("name", Data::name),
