@@ -24,6 +24,10 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         this.commaBetweenObjects = commaBetweenObjects;
     }
 
+    public static <IN> JsonTransformer.JsonTransformerBuilder<IN> builder() {
+        return new JsonTransformer.JsonTransformerBuilder<>();
+    }
+
     @Override
     public String apply(IN input, Schema<IN, ?> schema) {
         Field<?, ?>[] fields = schema.getFields();
@@ -181,6 +185,8 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
                 wrappers = input.toCharArray();
             }
         }
+
+        private JsonTransformerBuilder() {}
 
         private FormattedAs formattedAs = FormattedAs.JSON_OBJECT;
         private boolean commaBetweenObjects = true;

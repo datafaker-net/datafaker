@@ -51,7 +51,7 @@ public class FakeValuesService {
     private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new IdentityHashMap<>();
     private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new IdentityHashMap<>();
 
-    private static final JsonTransformer<Object> JSON_TRANSFORMER = new JsonTransformer.JsonTransformerBuilder<>().build();
+    private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
 
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
     private final Map<SingletonLocale, Map<String, String>> key2Expression = new IdentityHashMap<>();
