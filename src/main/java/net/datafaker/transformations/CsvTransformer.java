@@ -5,7 +5,7 @@ import net.datafaker.sequence.FakeSequence;
 import java.util.StringJoiner;
 
 public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
-    private static final String DEFAULT_SEPARATOR = ";";
+    public static final String DEFAULT_SEPARATOR = ";";
     public static final char DEFAULT_QUOTE = '"';
 
     private final String separator;
