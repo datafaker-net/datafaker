@@ -1,14 +1,14 @@
 package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
-import net.datafaker.formats.Csv;
-import net.datafaker.formats.Format;
 import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.providers.base.ProviderRegistration;
+import net.datafaker.transformations.CsvTransformer;
+import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
@@ -444,7 +444,7 @@ public class FakeValuesService {
      * This method uses default separator, quote and always prints header.
      */
     public String csv(int limit, String... columnExpressions) {
-        return csv(Csv.DEFAULT_SEPARATOR, Csv.DEFAULT_QUOTE, true, limit, columnExpressions);
+        return csv(CsvTransformer.DEFAULT_SEPARATOR, CsvTransformer.DEFAULT_QUOTE, true, limit, columnExpressions);
     }
 
     /**
@@ -454,12 +454,14 @@ public class FakeValuesService {
         if (columnExpressions.length % 2 != 0) {
             throw new IllegalArgumentException("Total number of column names and column values should be even");
         }
-        Csv.Column[] columns = new Csv.Column[columnExpressions.length / 2];
+        Field<String, String>[] fields = new Field[columnExpressions.length / 2];
         for (int i = 0; i < columnExpressions.length; i += 2) {
             final int index = i;
-            columns[i / 2] = Csv.Column.of(() -> columnExpressions[index], () -> columnExpressions[index + 1]);
+            fields[i / 2] = Field.field(columnExpressions[index], () -> columnExpressions[index + 1]);
         }
-        return Format.toCsv(columns).separator(delimiter).quote(quote).header(withHeader).limit(limit).build().get();
+        Schema<String, String> schema = Schema.of(fields);
+        return CsvTransformer.<String>builder().separator(delimiter).quote(quote).header(withHeader)
+            .build().generate(schema, limit + 1);
     }
 
     /**
