@@ -509,4 +509,4 @@ Supported Locales
 
 LICENSE
 -------
-Copyright (c) 2022 DataFaker.net See the LICENSE file for license rights and limitations.
+Copyright (c) 2023 DataFaker.net See the LICENSE file for license rights and limitations.
