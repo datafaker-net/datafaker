@@ -1,18 +1,16 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class BossaNovaTest extends EntertainmentFakerTest {
 
-    @RepeatedTest(10)
-    void artists() {
-        assertThat(faker.bossaNova().artist()).matches("[A-Za-z .-]+");
-    }
+    private final BossaNova bossaNova = getFaker().bossaNova();
 
-    @RepeatedTest(10)
-    void songs() {
-        assertThat(faker.bossaNova().song()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(bossaNova::artist, "bossa_nova.artists"),
+            TestSpec.of(bossaNova::song, "bossa_nova.songs"));
     }
 }

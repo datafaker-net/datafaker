@@ -1,29 +1,20 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class HobbitTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.hobbit().character()).matches("^(\\(?\\w+\\.?\\s?\\)?)+$");
-    }
+    private final Hobbit hobbit = getFaker().hobbit();
 
-    @Test
-    void thorinsCompany() {
-        assertThat(faker.hobbit().thorinsCompany()).matches("^(\\w+\\s?)+$");
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.hobbit().quote()).isNotEmpty();
-    }
-
-    @Test
-    void location() {
-        assertThat(faker.hobbit().location()).matches("^(\\w+'?-?\\s?)+$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(hobbit::character, "hobbit.character"),
+            TestSpec.of(hobbit::location, "hobbit.location"),
+            TestSpec.of(hobbit::thorinsCompany, "hobbit.thorins_company"),
+            TestSpec.of(hobbit::quote, "hobbit.quote")
+        );
     }
 }

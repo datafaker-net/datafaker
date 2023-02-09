@@ -1,24 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 public class SimpsonsTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.simpsons().character()).isNotEmpty();
-    }
+    private final Simpsons simpsons = getFaker().simpsons();
 
-    @Test
-    void location() {
-        assertThat(faker.simpsons().location()).isNotEmpty();
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.simpsons().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(simpsons::character, "simpsons.characters"),
+            TestSpec.of(simpsons::location, "simpsons.locations"),
+            TestSpec.of(simpsons::quote, "simpsons.quotes")
+        );
     }
 }

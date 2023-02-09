@@ -1,23 +1,17 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class BojackHorsemanTest extends EntertainmentFakerTest {
 
-    @Test
-    void testCharacters1() {
-        assertThat(faker.bojackHorseman().characters()).matches("[\\p{L}'()., 0-9-’]+");
-    }
+    private final BojackHorseman bojackHorseman = getFaker().bojackHorseman();
 
-    @Test
-    void testQuotes1() {
-        assertThat(faker.bojackHorseman().quotes()).isNotEmpty();
-    }
-
-    @Test
-    void testTongueTwisters1() {
-        assertThat(faker.bojackHorseman().tongueTwisters()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(bojackHorseman::characters, "bojack_horseman.characters"),
+            TestSpec.of(bojackHorseman::quotes, "bojack_horseman.quotes"),
+            TestSpec.of(bojackHorseman::tongueTwisters, "bojack_horseman.tongue_twisters"));
     }
 }

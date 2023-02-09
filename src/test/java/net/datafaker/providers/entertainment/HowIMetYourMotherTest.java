@@ -1,28 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class HowIMetYourMotherTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.howIMetYourMother().character()).matches("^(\\w+\\.?\\s?)+$");
-    }
+    private final HowIMetYourMother howIMetYourMother = getFaker().howIMetYourMother();
 
-    @Test
-    void catchPhrase() {
-        assertThat(faker.howIMetYourMother().catchPhrase()).isNotEmpty();
-    }
-
-    @Test
-    void highFive() {
-        assertThat(faker.howIMetYourMother().highFive()).matches("^(\\w+-?\\s?)+$");
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.howIMetYourMother().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(howIMetYourMother::catchPhrase, "how_i_met_your_mother.catch_phrase"),
+            TestSpec.of(howIMetYourMother::character, "how_i_met_your_mother.character"),
+            TestSpec.of(howIMetYourMother::highFive, "how_i_met_your_mother.high_five"),
+            TestSpec.of(howIMetYourMother::quote, "how_i_met_your_mother.quote")
+        );
     }
 }

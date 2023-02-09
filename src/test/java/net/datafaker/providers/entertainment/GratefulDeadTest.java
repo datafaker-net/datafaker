@@ -1,19 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
+import net.datafaker.providers.base.GratefulDead;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class GratefulDeadTest extends EntertainmentFakerTest {
 
-    @Test
-    void players() {
-        assertThat(faker.gratefulDead().players()).isNotEmpty();
-    }
+    private final GratefulDead gratefulDead = getFaker().gratefulDead();
 
-    @Test
-    void songs() {
-        assertThat(faker.gratefulDead().songs()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(gratefulDead::players, "grateful_dead.players"),
+            TestSpec.of(gratefulDead::songs, "grateful_dead.songs")
+        );
     }
-
 }

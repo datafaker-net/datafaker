@@ -1,23 +1,18 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class StudioGhibliTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.studioGhibli().character()).isNotEmpty();
-    }
+    private final StudioGhibli studioGhibli = getFaker().studioGhibli();
 
-    @Test
-    void quote() {
-        assertThat(faker.studioGhibli().quote()).isNotEmpty();
-    }
-
-    @Test
-    void movie() {
-        assertThat(faker.studioGhibli().movie()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(studioGhibli::character, "studio_ghibli.characters"),
+            TestSpec.of(studioGhibli::movie, "studio_ghibli.movies"),
+            TestSpec.of(studioGhibli::quote, "studio_ghibli.quotes")
+        );
     }
 }

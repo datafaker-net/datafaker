@@ -1,43 +1,22 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class DoctorWhoTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.doctorWho().character()).isNotEmpty();
-    }
+    private final DoctorWho doctorWho = getFaker().doctorWho();
 
-    @Test
-    void doctor() {
-        assertThat(faker.doctorWho().doctor()).isNotEmpty();
-    }
-
-    @Test
-    void actor() {
-        assertThat(faker.doctorWho().actor()).isNotEmpty();
-    }
-
-    @Test
-    void catchPhrase() {
-        assertThat(faker.doctorWho().catchPhrase()).isNotEmpty();
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.doctorWho().quote()).isNotEmpty();
-    }
-
-    @Test
-    void villain() {
-        assertThat(faker.doctorWho().villain()).isNotEmpty();
-    }
-
-    @Test
-    void species() {
-        assertThat(faker.doctorWho().species()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(doctorWho::character, "dr_who.character"),
+            TestSpec.of(doctorWho::doctor, "dr_who.the_doctors"),
+            TestSpec.of(doctorWho::actor, "dr_who.actors"),
+            TestSpec.of(doctorWho::catchPhrase, "dr_who.catch_phrases"),
+            TestSpec.of(doctorWho::quote, "dr_who.quotes"),
+            TestSpec.of(doctorWho::villain, "dr_who.villains"),
+            TestSpec.of(doctorWho::species, "dr_who.species")
+        );
     }
 }

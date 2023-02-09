@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AddressTest extends BaseFakerTest<BaseFaker> {
 
-    private final char decimalSeparator = new DecimalFormatSymbols(faker.getContext().getLocale()).getDecimalSeparator();
+    private final char decimalSeparator = new DecimalFormatSymbols(getFaker().getContext().getLocale()).getDecimalSeparator();
     private static final Faker US_FAKER = new Faker(new Locale("en", "US"));
     private static final Faker NL_FAKER = new Faker(new Locale("nl", "NL"));
     private static final Faker RU_FAKER = new Faker(new Locale("ru", "RU"));

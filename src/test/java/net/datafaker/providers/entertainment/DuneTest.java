@@ -1,48 +1,42 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class DuneTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.dune().character()).matches("[A-Za-z '\\-\"]+");
-    }
+    private final Dune dune = getFaker().dune();
 
-    @Test
-    void title() {
-        assertThat(faker.dune().title()).matches("[A-Za-z ]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(dune::character, "dune.characters"),
+            TestSpec.of(dune::title, "dune.titles"),
+            TestSpec.of(dune::planet, "dune.planets"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.ALIA), "dune.quotes.alia"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.DUNCAN), "dune.quotes.duncan"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.EMPEROR), "dune.quotes.emperor"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.GURNEY), "dune.quotes.gurney"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.IRULAN), "dune.quotes.irulan"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.LETO), "dune.quotes.leto"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.JESSICA), "dune.quotes.jessica"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.BARON_HARKONNEN), "dune.quotes.baron_harkonnen"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.GUILD_NAVIGATOR), "dune.quotes.guild_navigator"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.LIET_KYNES), "dune.quotes.liet_kynes"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.MAPES), "dune.quotes.mapes"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.MOHIAM), "dune.quotes.mohiam"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.PARDOT_KYNES), "dune.quotes.pardot_kynes"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.PAUL), "dune.quotes.paul"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.PITER), "dune.quotes.piter"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.STILGAR), "dune.quotes.stilgar"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.THUFIR), "dune.quotes.thufir"),
+            TestSpec.of(() -> dune.quote(Dune.Quote.YUEH), "dune.quotes.yueh"),
+            TestSpec.of(() -> dune.saying(Dune.Saying.BENE_GESSERIT), "dune.sayings.bene_gesserit"),
+            TestSpec.of(() -> dune.saying(Dune.Saying.MENTAT), "dune.sayings.mentat"),
+            TestSpec.of(() -> dune.saying(Dune.Saying.FREMEN), "dune.sayings.fremen"),
+            TestSpec.of(() -> dune.saying(Dune.Saying.MUADDIB), "dune.sayings.muaddib"),
+            TestSpec.of(() -> dune.saying(Dune.Saying.ORANGE_CATHOLIC_BIBLE), "dune.sayings.orange_catholic_bible")
+        );
     }
-
-    @Test
-    void planet() {
-        assertThat(faker.dune().planet()).matches("[A-Za-z ]+");
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.dune().quote()).matches("\\P{Cc}+");
-    }
-
-    @RepeatedTest(100)
-    void randomQuote() {
-        assertThat(
-            faker.dune().quote(faker.options().option(Dune.Quote.class))).matches("\\P{Cc}+");
-    }
-
-    @Test
-    void saying() {
-        assertThat(faker.dune().saying()).matches("\\P{Cc}+");
-    }
-
-    @RepeatedTest(100)
-    void randomSaying() {
-        assertThat(
-            faker.dune().saying(faker.options().option(Dune.Saying.class))).matches("\\P{Cc}+");
-    }
-
 }

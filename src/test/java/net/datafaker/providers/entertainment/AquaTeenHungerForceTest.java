@@ -1,13 +1,14 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class AquaTeenHungerForceTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.aquaTeenHungerForce().character()).matches("[A-Za-z .]+");
+    private final AquaTeenHungerForce aquaTeenHungerForce = getFaker().aquaTeenHungerForce();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(aquaTeenHungerForce::character, "aqua_teen_hunger_force.character"));
     }
 }

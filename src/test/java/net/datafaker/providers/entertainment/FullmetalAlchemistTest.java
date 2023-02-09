@@ -1,24 +1,17 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class FullmetalAlchemistTest extends EntertainmentFakerTest {
 
-    @Test
-    void characterTest() {
-        assertThat(faker.fullMetalAlchemist().character()).isNotEmpty();
+    private final FullmetalAlchemist fullmetalAlchemist = getFaker().fullMetalAlchemist();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(fullmetalAlchemist::character, "fma_brotherhood.characters"),
+            TestSpec.of(fullmetalAlchemist::city, "fma_brotherhood.cities"),
+            TestSpec.of(fullmetalAlchemist::country, "fma_brotherhood.countries")
+        );
     }
-
-    @Test
-    void cityTest() {
-        assertThat(faker.fullMetalAlchemist().city()).isNotEmpty();
-    }
-
-    @Test
-    void countryTest() {
-        assertThat(faker.fullMetalAlchemist().country()).isNotEmpty();
-    }
-
 }

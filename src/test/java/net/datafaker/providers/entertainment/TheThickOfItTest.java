@@ -1,23 +1,18 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class TheThickOfItTest extends EntertainmentFakerTest {
 
-    @Test
-    void characters() {
-        assertThat(faker.theThickOfIt().characters()).isNotEmpty();
-    }
+    private final TheThickOfIt theThickOfIt = getFaker().theThickOfIt();
 
-    @Test
-    void positions() {
-        assertThat(faker.theThickOfIt().positions()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(theThickOfIt::characters, "the_thick_of_it.characters"),
+            TestSpec.of(theThickOfIt::departments, "the_thick_of_it.departments"),
+            TestSpec.of(theThickOfIt::positions, "the_thick_of_it.positions")
+        );
     }
-
-    @Test
-    void departments() {
-        assertThat(faker.theThickOfIt().departments()).isNotEmpty();
-    }
-
 }

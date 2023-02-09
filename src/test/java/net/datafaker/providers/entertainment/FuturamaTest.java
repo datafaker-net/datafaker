@@ -1,28 +1,18 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class FuturamaTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.futurama().character()).isNotEmpty();
-    }
-
-    @Test
-    void location() {
-        assertThat(faker.futurama().location()).isNotEmpty();
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.futurama().quote()).isNotEmpty();
-    }
-
-    @Test
-    void hermesCatchPhrase() {
-        assertThat(faker.futurama().hermesCatchPhrase()).isNotEmpty();
+    private final Futurama futurama = getFaker().futurama();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(futurama::character, "futurama.characters"),
+            TestSpec.of(futurama::location, "futurama.locations"),
+            TestSpec.of(futurama::hermesCatchPhrase, "futurama.hermes_catchphrases"),
+            TestSpec.of(futurama::quote, "futurama.quotes")
+        );
     }
 }

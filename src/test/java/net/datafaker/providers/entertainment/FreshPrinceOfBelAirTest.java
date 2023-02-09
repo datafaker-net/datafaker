@@ -1,25 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class FreshPrinceOfBelAirTest extends EntertainmentFakerTest {
 
-    @Test
-    void characters() {
-        assertThat(faker.freshPrinceOfBelAir().characters()).isNotEmpty();
-    }
+    private final FreshPrinceOfBelAir freshPrinceOfBelAir = getFaker().freshPrinceOfBelAir();
 
-    @Test
-    void celebrities() {
-        assertThat(faker.freshPrinceOfBelAir().celebrities()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(freshPrinceOfBelAir::characters, "fresh_prince_of_bel_air.characters"),
+            TestSpec.of(freshPrinceOfBelAir::celebrities, "fresh_prince_of_bel_air.celebrities"),
+            TestSpec.of(freshPrinceOfBelAir::quotes, "fresh_prince_of_bel_air.quotes")
+        );
     }
-
-    @Test
-    void quotes() {
-        assertThat(faker.freshPrinceOfBelAir().quotes()).isNotEmpty();
-    }
-
 }
 

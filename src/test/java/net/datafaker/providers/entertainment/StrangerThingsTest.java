@@ -1,18 +1,17 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class StrangerThingsTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.strangerThings().character()).isNotEmpty();
-    }
+    private final StrangerThings strangerThings = getFaker().strangerThings();
 
-    @Test
-    void quote() {
-        assertThat(faker.strangerThings().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(strangerThings::character, "stranger_things.character"),
+            TestSpec.of(strangerThings::quote, "stranger_things.quote")
+        );
     }
-
 }

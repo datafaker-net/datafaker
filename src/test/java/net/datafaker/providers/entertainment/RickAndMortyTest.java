@@ -1,23 +1,18 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class RickAndMortyTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.rickAndMorty().character()).matches("^([\\w'-.]+ ?){2,}$");
-    }
+    private final RickAndMorty rickAndMorty = getFaker().rickAndMorty();
 
-    @Test
-    void location() {
-        assertThat(faker.rickAndMorty().location()).matches("^([\\w-.]+ ?){2,}$");
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.rickAndMorty().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(rickAndMorty::character, "rick_and_morty.characters"),
+            TestSpec.of(rickAndMorty::location, "rick_and_morty.locations"),
+            TestSpec.of(rickAndMorty::quote, "rick_and_morty.quotes")
+        );
     }
 }

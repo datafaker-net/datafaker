@@ -1,23 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class LebowskiTest extends EntertainmentFakerTest {
-    @Test
-    void actor() {
-        assertThat(faker.lebowski().actor()).matches("^([\\w]+ ?){1,3}$");
-    }
 
-    @Test
-    void character() {
-        assertThat(faker.lebowski().character()).matches("^([\\w]+ ?){1,3}$");
-    }
+    private final Lebowski lebowski = getFaker().lebowski();
 
-    @Test
-    void quote() {
-        assertThat(faker.lebowski().quote()).matches("^([\\w.,!?'-]+ ?)+$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(lebowski::actor, "lebowski.actors"),
+            TestSpec.of(lebowski::character, "lebowski.characters"),
+            TestSpec.of(lebowski::quote, "lebowski.quotes")
+        );
     }
 }

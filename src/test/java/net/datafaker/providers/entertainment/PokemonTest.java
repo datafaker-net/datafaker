@@ -1,35 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class PokemonTest extends EntertainmentFakerTest {
 
-    @Test
-    void name() {
-        assertThat(faker.pokemon().name()).matches("[\\w']+.?( \\w+)?");
-    }
+    private final Pokemon pokemon = getFaker().pokemon();
 
-    @Test
-    void location() {
-        assertThat(faker.pokemon().location()).matches("\\w+( \\w+)?( \\w+)?");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(pokemon::location, "games.pokemon.locations"),
+            TestSpec.of(pokemon::move, "games.pokemon.moves"),
+            TestSpec.of(pokemon::name, "games.pokemon.names"),
+            TestSpec.of(pokemon::type, "games.pokemon.types")
+        );
     }
-
-    @RepeatedTest(100)
-    void move() {
-        assertThat(faker.pokemon().move()).matches("[ \\-\\w+]+");
-    }
-
-    @RepeatedTest(100)
-    void move2() {
-        assertThat(faker.pokemon().move()).matches("\\w+(\\s|-)?(\\w+)?(\\s|-)?(\\w+)?");
-    }
-
-    @RepeatedTest(50)
-    void type() {
-        assertThat(faker.pokemon().type()).matches("\\w+");
-    }
-
 }

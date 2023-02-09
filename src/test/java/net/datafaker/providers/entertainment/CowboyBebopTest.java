@@ -1,28 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class CowboyBebopTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.cowboyBebop().character()).isNotEmpty();
-    }
+    private final CowboyBebop cowboyBebop = getFaker().cowboyBebop();
 
-    @Test
-    void episode() {
-        assertThat(faker.cowboyBebop().episode()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(cowboyBebop::character, "cowboy_bebop.character"),
+            TestSpec.of(cowboyBebop::episode, "cowboy_bebop.episode"),
+            TestSpec.of(cowboyBebop::song, "cowboy_bebop.song"),
+            TestSpec.of(cowboyBebop::quote, "cowboy_bebop.quote")
+        );
     }
-
-    @Test
-    void song() {
-        assertThat(faker.cowboyBebop().song()).isNotEmpty();
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.cowboyBebop().quote()).isNotEmpty();
-    }
-
 }

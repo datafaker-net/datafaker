@@ -1,18 +1,16 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class BrooklynNineNineTest extends EntertainmentFakerTest {
 
-    @Test
-    void characters() {
-        assertThat(faker.brooklynNineNine().characters()).isNotEmpty();
-    }
+    private final BrooklynNineNine brooklynNineNine = getFaker().brooklynNineNine();
 
-    @Test
-    void quotes() {
-        assertThat(faker.brooklynNineNine().quotes()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(brooklynNineNine::characters, "brooklyn_nine_nine.characters"),
+            TestSpec.of(brooklynNineNine::quotes, "brooklyn_nine_nine.quotes"));
     }
 }

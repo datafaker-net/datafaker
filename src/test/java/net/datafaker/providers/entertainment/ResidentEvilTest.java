@@ -1,51 +1,20 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class ResidentEvilTest extends EntertainmentFakerTest {
 
-    static private final String WORDS_WITH_SPECIAL_CHAR_REGEX = "^(?! )[A-Za-z0-9αγβ'.()\\- ]*(?<! )$";
+    private final ResidentEvil residentEvil = getFaker().residentEvil();
 
-    @Test
-    void testCharacter() {
-        String character = faker.residentEvil().character();
-        assertThat(character)
-            .isNotEmpty()
-            .matches(WORDS_WITH_SPECIAL_CHAR_REGEX);
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(residentEvil::biologicalAgent, "games.resident_evil.biological-agents"),
+            TestSpec.of(residentEvil::character, "games.resident_evil.characters"),
+            TestSpec.of(residentEvil::creature, "games.resident_evil.creatures"),
+            TestSpec.of(residentEvil::equipment, "games.resident_evil.equipments"),
+            TestSpec.of(residentEvil::location, "games.resident_evil.locations")
+        );
     }
-
-    @Test
-    void testBiologicalAgent() {
-        String biologicalAgent = faker.residentEvil().biologicalAgent();
-        assertThat(biologicalAgent)
-            .isNotEmpty()
-            .matches(WORDS_WITH_SPECIAL_CHAR_REGEX);
-    }
-
-    @Test
-    void testEquipment() {
-        String equipment = faker.residentEvil().equipment();
-        assertThat(equipment)
-            .isNotEmpty()
-            .matches(WORDS_WITH_SPECIAL_CHAR_REGEX);
-    }
-
-    @Test
-    void testLocation() {
-        String location = faker.residentEvil().location();
-        assertThat(location)
-            .isNotEmpty()
-            .matches(WORDS_WITH_SPECIAL_CHAR_REGEX);
-    }
-
-    @Test
-    void testCreature() {
-        String creature = faker.residentEvil().creature();
-        assertThat(creature)
-            .isNotEmpty()
-            .matches(WORDS_WITH_SPECIAL_CHAR_REGEX);
-    }
-
 }

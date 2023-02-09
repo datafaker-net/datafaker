@@ -1,23 +1,18 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class DepartedTest extends EntertainmentFakerTest {
 
-    @RepeatedTest(100)
-    void testActor() {
-        assertThat(faker.departed().actor()).matches("^[a-zA-Z ']+$");
-    }
+    private final Departed departed = getFaker().departed();
 
-    @RepeatedTest(100)
-    void testCharacter() {
-        assertThat(faker.departed().character()).matches("^[a-zA-Z ]+$");
-    }
-
-    @RepeatedTest(100)
-    void testQuote() {
-        assertThat(faker.departed().quote()).matches("^[a-zA-Z '.?!,]+$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(departed::actor, "departed.actors"),
+            TestSpec.of(departed::character, "departed.characters"),
+            TestSpec.of(departed::quote, "departed.quotes")
+        );
     }
 }

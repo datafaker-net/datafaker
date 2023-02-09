@@ -1,39 +1,21 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.util.Strings.isNullOrEmpty;
+import java.util.Arrays;
+import java.util.Collection;
 
 class HarryPotterTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.harryPotter().character()).matches("[A-Za-z,\\-.() ]+");
-    }
+    private final HarryPotter harryPotter = getFaker().harryPotter();
 
-    @Test
-    void location() {
-        assertThat(faker.harryPotter().location()).matches("[A-Za-z0-9'. &,/]+");
-    }
-
-    @Test
-    void quote() {
-        assertThat(isNullOrEmpty(faker.harryPotter().quote())).isFalse();
-    }
-
-    @Test
-    void book() {
-        assertThat(faker.harryPotter().book()).matches("Harry Potter and the ([A-Za-z'\\-]+ ?)+");
-    }
-
-    @Test
-    void house() {
-        assertThat(faker.harryPotter().house()).matches("[A-Za-z ]+");
-    }
-
-    @Test
-    void spell() {
-        assertThat(faker.harryPotter().spell()).matches("[A-Za-z ]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(harryPotter::book, "harry_potter.books"),
+            TestSpec.of(harryPotter::character, "harry_potter.characters"),
+            TestSpec.of(harryPotter::house, "harry_potter.houses"),
+            TestSpec.of(harryPotter::location, "harry_potter.locations"),
+            TestSpec.of(harryPotter::quote, "harry_potter.quotes"),
+            TestSpec.of(harryPotter::spell, "harry_potter.spells")
+        );
     }
 }

@@ -1,19 +1,17 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class Babylon5Test extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.babylon5().character()).isNotEmpty();
-    }
+    private final Babylon5 babylon5 = getFaker().babylon5();
 
-    @Test
-    void quote() {
-        assertThat(faker.babylon5().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(babylon5::character, "babylon5.characters"),
+            TestSpec.of(babylon5::quote, "babylon5.quotes"));
     }
 }

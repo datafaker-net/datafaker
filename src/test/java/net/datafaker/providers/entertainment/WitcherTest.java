@@ -1,53 +1,24 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class WitcherTest extends EntertainmentFakerTest {
 
-    @Test
-    void testCharacter() {
-        assertThat(faker.witcher().character()).matches("[A-Za-z' -éúï]+");
-    }
+    private final Witcher witcher = getFaker().witcher();
 
-    @Test
-    void testWitcher() {
-        assertThat(faker.witcher().witcher()).matches("[A-Za-z -ëúï]+");
-    }
-
-    @Test
-    void testSchool() {
-        assertThat(faker.witcher().school()).matches("[A-Za-z]+");
-    }
-
-    @Test
-    void testLocation() {
-        assertThat(faker.witcher().location()).matches("[A-Za-z -áâé]+");
-    }
-
-    @Test
-    void testQuote() {
-        assertThat(faker.witcher().quote()).matches("[-A-Za-z0-9 —;…?!.’‘'”“,\\[\\]]+");
-    }
-
-    @Test
-    void testMonster() {
-        assertThat(faker.witcher().monster()).matches("[A-Za-z -]+");
-    }
-
-    @Test
-    void testSign() {
-        assertThat(faker.witcher().sign()).matches("[A-Za-z -]+");
-    }
-
-    @Test
-    void testPotion() {
-        assertThat(faker.witcher().potion()).matches("[A-Za-z '-]+");
-    }
-
-    @Test
-    void testBook() {
-        assertThat(faker.witcher().book()).matches("[A-Za-z -]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(witcher::book, "games.witcher.books"),
+            TestSpec.of(witcher::character, "games.witcher.characters"),
+            TestSpec.of(witcher::location, "games.witcher.locations"),
+            TestSpec.of(witcher::monster, "games.witcher.monsters"),
+            TestSpec.of(witcher::potion, "games.witcher.potions"),
+            TestSpec.of(witcher::quote, "games.witcher.quotes"),
+            TestSpec.of(witcher::sign, "games.witcher.signs"),
+            TestSpec.of(witcher::school, "games.witcher.schools"),
+            TestSpec.of(witcher::witcher, "games.witcher.witchers")
+        );
     }
 }

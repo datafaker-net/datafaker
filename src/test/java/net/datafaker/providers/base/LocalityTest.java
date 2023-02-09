@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class LocalityTest extends BaseFakerTest<BaseFaker> {
 
+    private BaseFaker f;
     private Locality locality;
     private List<String> allLocales;
 
@@ -23,7 +25,8 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
      */
     @BeforeEach
     void init() {
-        locality = faker.locality();
+        f = new Faker();
+        locality = f.locality();
         allLocales = locality.allSupportedLocales();
     }
 
@@ -42,7 +45,7 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void displayName() {
-        assertThat(faker.locality().displayName()).isNotEmpty();
+        assertThat(f.locality().displayName()).isNotEmpty();
     }
 
     /**

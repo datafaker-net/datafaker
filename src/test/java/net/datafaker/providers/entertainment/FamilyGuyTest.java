@@ -1,24 +1,18 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class FamilyGuyTest extends EntertainmentFakerTest {
 
-    @Test
-    void characterTest() {
-        assertThat(faker.familyGuy().character()).isNotEmpty();
-    }
+    private final FamilyGuy familyGuy = getFaker().familyGuy();
 
-    @Test
-    void locationTest() {
-        assertThat(faker.familyGuy().location()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(familyGuy::character, "family_guy.character"),
+            TestSpec.of(familyGuy::location, "family_guy.location"),
+            TestSpec.of(familyGuy::quote, "family_guy.quote")
+        );
     }
-
-    @Test
-    void quoteTest() {
-        assertThat(faker.familyGuy().quote()).isNotEmpty();
-    }
-
 }

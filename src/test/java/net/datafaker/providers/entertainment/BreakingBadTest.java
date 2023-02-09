@@ -1,18 +1,16 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class BreakingBadTest extends EntertainmentFakerTest {
 
-    @RepeatedTest(10)
-    void character() {
-        assertThat(faker.breakingBad().character()).matches("[\\p{L}A-Za-z0-9 .\\-;']+");
-    }
+    private final BreakingBad breakingBad = getFaker().breakingBad();
 
-    @RepeatedTest(10)
-    void episodes() {
-        assertThat(faker.breakingBad().episode()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(breakingBad::character, "breaking_bad.characters"),
+            TestSpec.of(breakingBad::episode, "breaking_bad.episodes"));
     }
 }

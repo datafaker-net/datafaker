@@ -1,28 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class TheExpanseTest extends EntertainmentFakerTest {
 
-    @Test
-    void characters() {
-        assertThat(faker.theExpanse().characters()).isNotEmpty();
-    }
+    private final TheExpanse theExpanse = getFaker().theExpanse();
 
-    @Test
-    void locations() {
-        assertThat(faker.theExpanse().locations()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(theExpanse::characters, "the_expanse.characters"),
+            TestSpec.of(theExpanse::locations, "the_expanse.locations"),
+            TestSpec.of(theExpanse::quotes, "the_expanse.quotes"),
+            TestSpec.of(theExpanse::ships, "the_expanse.ships")
+        );
     }
-
-    @Test
-    void ships() {
-        assertThat(faker.theExpanse().ships()).isNotEmpty();
-    }
-
-    @Test
-    void quotes() {
-        assertThat(faker.theExpanse().quotes()).isNotEmpty();
-    }
-
 }
