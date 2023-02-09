@@ -1,24 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class FinalSpaceTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.finalSpace().character()).isNotEmpty();
-    }
+    private final FinalSpace finalSpace = getFaker().finalSpace();
 
-    @Test
-    void vehicle() {
-        assertThat(faker.finalSpace().vehicle()).isNotEmpty();
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.finalSpace().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(finalSpace::character, "final_space.characters"),
+            TestSpec.of(finalSpace::quote, "final_space.quotes"),
+            TestSpec.of(finalSpace::vehicle, "final_space.vehicles")
+        );
     }
 }

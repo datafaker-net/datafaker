@@ -1,24 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class SupernaturalTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.supernatural().character()).isNotEmpty();
-    }
+    private final Supernatural supernatural = getFaker().supernatural();
 
-    @Test
-    void creature() {
-        assertThat(faker.supernatural().creature()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(supernatural::character, "supernatural.character"),
+            TestSpec.of(supernatural::creature, "supernatural.creature"),
+            TestSpec.of(supernatural::weapon, "supernatural.weapon")
+        );
     }
-
-    @Test
-    void weapon() {
-        assertThat(faker.supernatural().weapon()).isNotEmpty();
-    }
-
 }
 

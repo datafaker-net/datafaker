@@ -1,18 +1,17 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class RuPaulDragRaceTest extends EntertainmentFakerTest {
 
-    @RepeatedTest(100)
-    void queens() {
-        assertThat(faker.ruPaulDragRace().queen()).matches("([\\w'/.,&]+ ?)+");
-    }
+    private final RuPaulDragRace ruPaulDragRace = getFaker().ruPaulDragRace();
 
-    @RepeatedTest(100)
-    void quotes() {
-        assertThat(faker.ruPaulDragRace().quote()).matches("([\\w'/.,\\-!&?\"]+ ?)+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(ruPaulDragRace::queen, "rupaul.queens"),
+            TestSpec.of(ruPaulDragRace::quote, "rupaul.quotes")
+        );
     }
 }

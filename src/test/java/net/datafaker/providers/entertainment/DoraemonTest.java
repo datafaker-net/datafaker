@@ -1,24 +1,18 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class DoraemonTest extends EntertainmentFakerTest {
 
-    @Test
-    void testCharacter() {
-        assertThat(faker.doraemon().character()).isNotEmpty();
-    }
+    private final Doraemon doraemon = getFaker().doraemon();
 
-    @Test
-    void testGadget() {
-        assertThat(faker.doraemon().gadget()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(doraemon::character, "doraemon.characters"),
+            TestSpec.of(doraemon::gadget, "doraemon.gadgets"),
+            TestSpec.of(doraemon::location, "doraemon.locations")
+        );
     }
-
-    @Test
-    void testLocation() {
-        assertThat(faker.doraemon().location()).isNotEmpty();
-    }
-
 }

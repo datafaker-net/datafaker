@@ -1,18 +1,17 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class KaamelottTest extends EntertainmentFakerTest {
 
-    @Test
-    void testCharacter() {
-        assertThat(faker.kaamelott().character()).matches("[A-Za-z' -ÇÉàçêèéïîüùú]+");
-    }
+    private final Kaamelott kaamelott = getFaker().kaamelott();
 
-    @Test
-    void testQuote() {
-        assertThat(faker.kaamelott().quote()).matches("[-A-Za-z0-9 —ÇÉàçêèéïîüùú;:…?!.’‘'”“,\\[\\]]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(kaamelott::character, "kaamelott.characters"),
+            TestSpec.of(kaamelott::quote, "kaamelott.quotes")
+        );
     }
 }

@@ -1,13 +1,16 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class ChuckNorrisTest extends EntertainmentFakerTest {
 
-    @Test
-    void testFact() {
-        assertThat(faker.chuckNorris().fact()).isNotEmpty();
+    private final ChuckNorris chuckNorris = getFaker().chuckNorris();
+
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(chuckNorris::fact, "chuck_norris.fact")
+        );
     }
 }

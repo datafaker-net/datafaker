@@ -1,21 +1,20 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * @author Luka Obradovic (luka@vast.com)
  */
 class LordOfTheRingsTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.lordOfTheRings().character()).matches("(?U)([\\w ]+ ?)+");
-    }
+    private final LordOfTheRings lordOfTheRings = getFaker().lordOfTheRings();
 
-    @Test
-    void location() {
-        assertThat(faker.lordOfTheRings().location()).matches("(?U)([\\w'\\- ]+ ?)+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(lordOfTheRings::character, "lord_of_the_rings.characters"),
+            TestSpec.of(lordOfTheRings::location, "lord_of_the_rings.locations")
+        );
     }
 }

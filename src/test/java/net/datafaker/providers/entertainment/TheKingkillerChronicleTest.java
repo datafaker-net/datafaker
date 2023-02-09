@@ -1,28 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class TheKingkillerChronicleTest extends EntertainmentFakerTest {
 
-    @Test
-    void book() {
-        assertThat(faker.theKingkillerChronicle().book()).isNotEmpty();
-    }
+    private final TheKingkillerChronicle theKingkillerChronicle = getFaker().theKingkillerChronicle();
 
-    @Test
-    void character() {
-        assertThat(faker.theKingkillerChronicle().character()).isNotEmpty();
-    }
-
-    @Test
-    void creature() {
-        assertThat(faker.theKingkillerChronicle().creature()).isNotEmpty();
-    }
-
-    @Test
-    void location() {
-        assertThat(faker.theKingkillerChronicle().location()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(theKingkillerChronicle::book, "the_kingkiller_chronicle.books"),
+            TestSpec.of(theKingkillerChronicle::character, "the_kingkiller_chronicle.characters"),
+            TestSpec.of(theKingkillerChronicle::creature, "the_kingkiller_chronicle.creatures"),
+            TestSpec.of(theKingkillerChronicle::location, "the_kingkiller_chronicle.locations")
+        );
     }
 }

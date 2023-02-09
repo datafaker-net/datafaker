@@ -1,23 +1,18 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class DumbAndDumberTest extends EntertainmentFakerTest {
 
-    @Test
-    void actor() {
-        assertThat(faker.dumbAndDumber().actor()).isNotEmpty();
-    }
+    private final DumbAndDumber dumbAndDumber = getFaker().dumbAndDumber();
 
-    @Test
-    void character() {
-        assertThat(faker.dumbAndDumber().character()).isNotEmpty();
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.dumbAndDumber().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(dumbAndDumber::actor, "dumb_and_dumber.actors"),
+            TestSpec.of(dumbAndDumber::character, "dumb_and_dumber.characters"),
+            TestSpec.of(dumbAndDumber::quote, "dumb_and_dumber.quotes")
+        );
     }
 }

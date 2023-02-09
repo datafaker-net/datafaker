@@ -1,32 +1,20 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class BuffyTest extends EntertainmentFakerTest {
-    @Test
-    void testCharacters() {
-        assertThat(faker.buffy().characters()).isNotEmpty();
-    }
 
-    @Test
-    void testQuotes() {
-        assertThat(faker.buffy().quotes()).isNotEmpty();
-    }
+    private final Buffy buffy = getFaker().buffy();
 
-    @Test
-    void testCelebrities() {
-        assertThat(faker.buffy().celebrities()).isNotEmpty();
-    }
-
-    @Test
-    void testBigBads() {
-        assertThat(faker.buffy().bigBads()).isNotEmpty();
-    }
-
-    @Test
-    void testEpisodes() {
-        assertThat(faker.buffy().episodes()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(buffy::characters, "buffy.characters"),
+            TestSpec.of(buffy::quotes, "buffy.quotes"),
+            TestSpec.of(buffy::celebrities, "buffy.celebrities"),
+            TestSpec.of(buffy::bigBads, "buffy.big_bads"),
+            TestSpec.of(buffy::episodes, "buffy.episodes")
+        );
     }
 }

@@ -1,24 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class TwinPeaksTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.twinPeaks().character()).matches("^([\\w']+ ?){2,}$");
-    }
+    private final TwinPeaks twinPeaks = getFaker().twinPeaks();
 
-    @Test
-    void location() {
-        assertThat(faker.twinPeaks().location()).matches("^[A-Za-z\\d'&,\\- ]+$");
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.twinPeaks().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(twinPeaks::character, "twin_peaks.characters"),
+            TestSpec.of(twinPeaks::location, "twin_peaks.locations"),
+            TestSpec.of(twinPeaks::quote, "twin_peaks.quotes")
+        );
     }
 }

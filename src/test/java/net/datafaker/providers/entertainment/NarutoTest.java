@@ -1,27 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class NarutoTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.naruto().character()).isNotEmpty();
-    }
+    private final Naruto naruto = getFaker().naruto();
 
-    @Test
-    void village() {
-        assertThat(faker.naruto().village()).isNotEmpty();
-    }
-
-    @Test
-    void eye() {
-        assertThat(faker.naruto().eye()).isNotEmpty();
-    }
-
-    @Test
-    void demon() {
-        assertThat(faker.naruto().demon()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(naruto::character, "naruto.characters"),
+            TestSpec.of(naruto::demon, "naruto.demons"),
+            TestSpec.of(naruto::eye, "naruto.eyes"),
+            TestSpec.of(naruto::village, "naruto.villages")
+        );
     }
 }

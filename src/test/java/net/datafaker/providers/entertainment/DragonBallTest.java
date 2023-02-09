@@ -1,13 +1,16 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class DragonBallTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.dragonBall().character()).matches("^(\\w+\\.?\\s?-?)+$");
+    private final DragonBall dragonBall = getFaker().dragonBall();
+
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(dragonBall::character, "dragon_ball.characters")
+        );
     }
 }

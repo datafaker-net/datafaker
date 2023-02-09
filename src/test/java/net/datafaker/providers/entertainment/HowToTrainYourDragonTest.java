@@ -1,24 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class HowToTrainYourDragonTest extends EntertainmentFakerTest {
 
-    @Test
-    void characters() {
-        assertThat(faker.howToTrainYourDragon().characters()).isNotEmpty();
-    }
+    private final HowToTrainYourDragon howToTrainYourDragon = getFaker().howToTrainYourDragon();
 
-    @Test
-    void dragons() {
-        assertThat(faker.howToTrainYourDragon().dragons()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(howToTrainYourDragon::characters, "how_to_train_your_dragon.characters"),
+            TestSpec.of(howToTrainYourDragon::dragons, "how_to_train_your_dragon.dragons"),
+            TestSpec.of(howToTrainYourDragon::locations, "how_to_train_your_dragon.locations")
+        );
     }
-
-    @Test
-    void locations() {
-        assertThat(faker.howToTrainYourDragon().locations()).isNotEmpty();
-    }
-
 }
 

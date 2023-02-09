@@ -1,33 +1,20 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class GameOfThronesTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.gameOfThrones().character()).matches("[A-Za-z'\\-() ]+");
-    }
+    private final GameOfThrones gameOfThrones = getFaker().gameOfThrones();
 
-    @Test
-    void house() {
-        assertThat(faker.gameOfThrones().house()).matches("[A-Za-z' ]+");
-    }
-
-    @Test
-    void city() {
-        assertThat(faker.gameOfThrones().city()).matches("[A-Za-z' ]+");
-    }
-
-    @Test
-    void dragon() {
-        assertThat(faker.gameOfThrones().dragon()).matches("\\w+");
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.gameOfThrones().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(gameOfThrones::character, "game_of_thrones.characters"),
+            TestSpec.of(gameOfThrones::city, "game_of_thrones.cities"),
+            TestSpec.of(gameOfThrones::dragon, "game_of_thrones.dragons"),
+            TestSpec.of(gameOfThrones::house, "game_of_thrones.houses"),
+            TestSpec.of(gameOfThrones::quote, "game_of_thrones.quotes")
+        );
     }
 }

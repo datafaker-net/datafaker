@@ -1,23 +1,18 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class FriendsTest extends EntertainmentFakerTest {
 
-    @Test
-    void character() {
-        assertThat(faker.friends().character()).matches("[A-Za-z .,]+");
-    }
+    private final Friends friends = getFaker().friends();
 
-    @Test
-    void location() {
-        assertThat(faker.friends().location()).matches("[\\w.', ]+");
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.friends().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(friends::character, "friends.characters"),
+            TestSpec.of(friends::quote, "friends.quotes"),
+            TestSpec.of(friends::location, "friends.locations")
+        );
     }
 }

@@ -1,28 +1,19 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class SwordArtOnlineTest extends EntertainmentFakerTest {
 
-    @Test
-    void realName() {
-        assertThat(faker.swordArtOnline().realName()).isNotEmpty();
-    }
+    private final SwordArtOnline swordArtOnline = getFaker().swordArtOnline();
 
-    @Test
-    void gameName() {
-        assertThat(faker.swordArtOnline().gameName()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(swordArtOnline::gameName, "sword_art_online.game_name"),
+            TestSpec.of(swordArtOnline::item, "sword_art_online.item"),
+            TestSpec.of(swordArtOnline::location, "sword_art_online.location"),
+            TestSpec.of(swordArtOnline::realName, "sword_art_online.real_name")
+        );
     }
-
-    @Test
-    void location() {
-        assertThat(faker.swordArtOnline().location()).isNotEmpty();
-    }
-
-    @Test
-    void item() {
-        assertThat(faker.swordArtOnline().item()).isNotEmpty();
-    }
-
 }

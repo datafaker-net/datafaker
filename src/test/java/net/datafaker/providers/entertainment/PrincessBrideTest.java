@@ -1,17 +1,17 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class PrincessBrideTest extends EntertainmentFakerTest {
-    @Test
-    void character() {
-        assertThat(faker.princessBride().character()).matches("[A-Za-z .-]+");
-    }
 
-    @Test
-    void quote() {
-        assertThat(faker.princessBride().quote()).isNotEmpty();
+    private final PrincessBride princessBride = getFaker().princessBride();
+
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(princessBride::character, "princess_bride.characters"),
+            TestSpec.of(princessBride::quote, "princess_bride.quotes")
+        );
     }
 }

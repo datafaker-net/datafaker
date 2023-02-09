@@ -1,25 +1,19 @@
 package net.datafaker.providers.entertainment;
 
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class DetectiveConanTest extends EntertainmentFakerTest {
 
-    @Test
-    void characters() {
-        assertThat(faker.detectiveConan().characters()).isNotEmpty();
-    }
+    private final DetectiveConan detectiveConan = getFaker().detectiveConan();
 
-    @Test
-    void gadgets() {
-        assertThat(faker.detectiveConan().gadgets()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(detectiveConan::characters, "detective_conan.characters"),
+            TestSpec.of(detectiveConan::gadgets, "detective_conan.gadgets"),
+            TestSpec.of(detectiveConan::vehicles, "detective_conan.vehicles")
+        );
     }
-
-    @Test
-    void vehicles() {
-        assertThat(faker.detectiveConan().vehicles()).isNotEmpty();
-    }
-
 }

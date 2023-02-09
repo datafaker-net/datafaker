@@ -1,28 +1,18 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class StreetFighterTest extends VideoGameFakerTest {
 
-    @Test
-    void characters() {
-        assertThat(faker.streetFighter().characters()).isNotEmpty();
+    private final StreetFighter streetFighter = getFaker().streetFighter();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(streetFighter::characters, "games.street_fighter.characters"),
+            TestSpec.of(streetFighter::moves, "games.street_fighter.moves"),
+            TestSpec.of(streetFighter::stages, "games.street_fighter.stages"),
+            TestSpec.of(streetFighter::quotes, "games.street_fighter.quotes")
+        );
     }
-
-    @Test
-    void stages() {
-        assertThat(faker.streetFighter().stages()).isNotEmpty();
-    }
-
-    @Test
-    void quotes() {
-        assertThat(faker.streetFighter().quotes()).isNotEmpty();
-    }
-
-    @Test
-    void moves() {
-        assertThat(faker.streetFighter().moves()).isNotEmpty();
-    }
-
 }

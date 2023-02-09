@@ -1,18 +1,16 @@
 package net.datafaker.providers.entertainment;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class BigBangTheoryTest extends EntertainmentFakerTest {
 
-    @RepeatedTest(50)
-    void testCharacter() {
-        assertThat(faker.bigBangTheory().character()).matches("^[A-Z][a-zA-Z .]+$");
-    }
+    private final BigBangTheory bigBangTheory = getFaker().bigBangTheory();
 
-    @RepeatedTest(50)
-    void testQuote() {
-        assertThat(faker.bigBangTheory().quote()).matches("^[A-Z][a-zA-Z .’'!,?]+$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(bigBangTheory::character, "big_bang_theory.characters"),
+            TestSpec.of(bigBangTheory::quote, "big_bang_theory.quotes"));
     }
 }
