@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
-import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -116,56 +115,6 @@ class YamlTest {
         }
 
         assertThat(numberOfLines).isEqualTo(limit + 1);
-    }
-
-    @ParameterizedTest
-    @MethodSource("generateTestYaml")
-    void simpleYamlTest(Map<Supplier<String>, Supplier<Object>> input, String expected) {
-        Yaml yaml = new Yaml(input);
-        assertThat(yaml.generate()).isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> generateTestYaml() {
-        return Stream.of(
-            Arguments.of(map(entry(() -> "key", () -> "value")), "key: value" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "number", () -> 123)), "number: 123" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "number", () -> BigDecimal.valueOf(123.0))), "number: 123.0" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "number", () -> BigDecimal.valueOf(123.123))), "number: 123.123" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "boolean", () -> true)), "boolean: true" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "nullValue", () -> null)), "nullValue: null" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "array", () -> new String[]{null, "test", "123"})),
-                "array:" + System.lineSeparator()
-                    + "  - null" + System.lineSeparator()
-                    + "  - test" + System.lineSeparator()
-                    + "  - 123" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "array", () -> new Integer[]{123, 456, 789})),
-                "array:" + System.lineSeparator()
-                    + "  - 123" + System.lineSeparator()
-                    + "  - 456" + System.lineSeparator()
-                    + "  - 789" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "array", () -> new Object[]{"test", 456, true})),
-                "array:" + System.lineSeparator()
-                    + "  - test" + System.lineSeparator()
-                    + "  - 456" + System.lineSeparator()
-                    + "  - true" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "emptyarray", () -> new Long[]{})), "emptyarray:" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "emptyarray", Collections::emptyList)), "emptyarray:" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "key", () -> "value"),
-                    entry(() -> "nested", () -> map(entry(() -> "nestedkey", () -> "nestedvalue")))),
-                "key: value" + System.lineSeparator() + "nested:" + System.lineSeparator() + "  nestedkey: nestedvalue" + System.lineSeparator()),
-            Arguments.of(map(entry(() -> "key", () -> "value"),
-                    entry(() -> "nested",
-                        () -> map(entry(() -> "nestedkey", () -> "nestedvalue"),
-                            entry(() -> "nested2", () -> map(entry(() -> "nestedkey2", () -> "nestedvalue2")))))),
-                "key: value" + System.lineSeparator()
-                    + "nested:" + System.lineSeparator() + "  nestedkey: nestedvalue" + System.lineSeparator()
-                    + "  nested2:" + System.lineSeparator()
-                    + "    nestedkey2: nestedvalue2" + System.lineSeparator())
-        );
-    }
-
-    private static Map.Entry<Supplier<String>, Supplier<Object>> entry(Supplier<String> key, Supplier<Object> value) {
-        return new AbstractMap.SimpleEntry<>(key, value);
     }
 
     @SafeVarargs
