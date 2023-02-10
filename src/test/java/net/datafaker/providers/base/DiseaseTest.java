@@ -41,8 +41,8 @@ class DiseaseTest extends AbstractBasicProviderTest<BaseFaker> {
     }
 
     @Test
-    void testDermatolory() {
-        assertThat(faker.disease().dermatolory()).matches("[\\p{L}'()., 0-9-’]+");
+    void testDermatology() {
+        assertThat(faker.disease().dermatology()).matches("[\\p{L}'()., 0-9-’]+");
     }
 
 
@@ -85,7 +85,7 @@ class DiseaseTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @RepeatedTest(10000)
     void testDermatoloryWith10000Times() {
-        assertThat(faker.disease().dermatolory()).isNotEmpty();
+        assertThat(faker.disease().dermatology()).isNotEmpty();
     }
 
     @Override
@@ -95,6 +95,6 @@ class DiseaseTest extends AbstractBasicProviderTest<BaseFaker> {
                 TestSpec.of(() -> faker.disease().paediatrics(), "disease.paediatrics"),
                 TestSpec.of(() -> faker.disease().gynecologyAndObstetrics(), "disease.gynecology_and_obstetrics"),
                 TestSpec.of(() -> faker.disease().ophthalmologyAndOtorhinolaryngology(), "disease.ophthalmology_and_otorhinolaryngology"),
-                TestSpec.of(() -> faker.disease().dermatolory(), "disease.dermatolory"));
+                TestSpec.of(() -> faker.disease().dermatology(), "disease.dermatology"));
     }
 }
