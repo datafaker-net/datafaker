@@ -1,28 +1,19 @@
 package net.datafaker.providers.sport;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class BaseballTest extends SportFakerTest {
 
-    @Test
-    void testTeams() {
-        assertThat(faker.baseball().teams()).matches("[\\p{L}'()., 0-9-’]+");
-    }
+    private final Baseball baseball = getFaker().baseball();
 
-    @Test
-    void testCoaches() {
-        assertThat(faker.baseball().coaches()).matches("[\\p{L}'()., 0-9-’]+");
-    }
-
-    @Test
-    void testPositions() {
-        assertThat(faker.baseball().positions()).matches("[\\p{L}'()., 0-9-’]+");
-    }
-
-    @Test
-    void testPlayers() {
-        assertThat(faker.baseball().players()).matches("[\\p{L}'()., 0-9-’]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(baseball::coaches, "baseball.coaches"),
+            TestSpec.of(baseball::players, "baseball.players"),
+            TestSpec.of(baseball::positions, "baseball.positions"),
+            TestSpec.of(baseball::teams, "baseball.teams")
+        );
     }
 }

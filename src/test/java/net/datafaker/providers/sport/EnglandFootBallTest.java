@@ -1,21 +1,18 @@
 package net.datafaker.providers.sport;
 
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class EnglandFootBallTest extends SportFakerTest {
 
-    @Test
-    void testLeague() {
-        String league = faker.englandfootball().league();
-        assertThat(league).isNotEmpty();
-    }
+    private final EnglandFootBall englandFootBall = getFaker().englandfootball();
 
-    @Test
-    void testTeam() {
-        String team = faker.englandfootball().team();
-        assertThat(team).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(englandFootBall::league, "englandfootball.leagues"),
+            TestSpec.of(englandFootBall::team, "englandfootball.teams")
+        );
     }
 }

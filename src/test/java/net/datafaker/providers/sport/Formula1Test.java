@@ -1,28 +1,19 @@
 package net.datafaker.providers.sport;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class Formula1Test extends SportFakerTest {
 
-    @Test
-    void driver() {
-        assertThat(faker.formula1().driver()).matches("[A-Za-zà-úÀ-Ú- ]+");
-    }
+    private final Formula1 formula1 = getFaker().formula1();
 
-    @Test
-    void team() {
-        assertThat(faker.formula1().team()).matches("[A-Za-zà-úÀ-Ú- ]+");
-    }
-
-    @Test
-    void circuit() {
-        assertThat(faker.formula1().circuit()).matches("[A-Za-zà-úÀ-Ú- ]+");
-    }
-
-    @Test
-    void grandPrix() {
-        assertThat(faker.formula1().grandPrix()).matches("[A-Za-zà-úÀ-Ú- ]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(formula1::circuit, "formula1.circuit"),
+            TestSpec.of(formula1::driver, "formula1.driver"),
+            TestSpec.of(formula1::grandPrix, "formula1.grand_prix"),
+            TestSpec.of(formula1::team, "formula1.team")
+        );
     }
 }
