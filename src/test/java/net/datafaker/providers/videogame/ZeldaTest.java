@@ -1,19 +1,18 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class ZeldaTest extends VideoGameFakerTest {
 
-    @Test
-    void game() {
-        assertThat(faker.zelda().game()).matches("[A-Za-z'\\- :]+");
-    }
+    private final Zelda zelda = getFaker().zelda();
 
-    @Test
-    void character() {
-        assertThat(faker.zelda().character()).matches("(?U)([\\w'\\-.()]+ ?)+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(zelda::character, "games.zelda.characters"),
+            TestSpec.of(zelda::game, "games.zelda.games")
+        );
     }
 }

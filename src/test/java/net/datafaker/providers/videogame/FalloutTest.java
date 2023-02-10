@@ -1,29 +1,20 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 public class FalloutTest extends VideoGameFakerTest {
 
-    @Test
-    void testCharacter() {
-        assertThat(faker.fallout().character()).isNotEmpty();
-    }
+    private final Fallout fallout = getFaker().fallout();
 
-    @Test
-    void testFaction() {
-        assertThat(faker.fallout().faction()).isNotEmpty();
-    }
-
-    @Test
-    void testLocation() {
-        assertThat(faker.fallout().location()).isNotEmpty();
-    }
-
-    @Test
-    void testQuote() {
-        assertThat(faker.fallout().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(fallout::character, "fallout.characters"),
+            TestSpec.of(fallout::faction, "fallout.factions"),
+            TestSpec.of(fallout::location, "fallout.locations"),
+            TestSpec.of(fallout::quote, "fallout.quotes")
+        );
     }
 }

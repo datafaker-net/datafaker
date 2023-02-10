@@ -1,36 +1,21 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class TouhouTest extends VideoGameFakerTest {
 
-    @RepeatedTest(100)
-    void testCharacterName() {
-        assertThat(faker.touhou().characterName()).matches("[a-zA-Z0-9 \\-']+");
-    }
+    private final Touhou touhou = getFaker().touhou();
 
-    @RepeatedTest(100)
-    void testCharacterFirstName() {
-        assertThat(faker.touhou().characterFirstName()).matches("[a-zA-Z0-9 \\-']+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(touhou::characterFirstName, "touhou.first_name"),
+            TestSpec.of(touhou::characterLastName, "touhou.last_name"),
+            TestSpec.of(touhou::characterName, "touhou.full_name"),
+            TestSpec.of(touhou::gameName, "touhou.game_name"),
+            TestSpec.of(touhou::trackName, "touhou.track_name")
+        );
     }
-
-    @RepeatedTest(100)
-    void testCharacterLastName() {
-        assertThat(faker.touhou().characterLastName()).matches("[a-zA-Z0-9 \\-']+");
-    }
-
-    @RepeatedTest(100)
-    void testTrackName() {
-        assertThat(faker.touhou().trackName()).matches(".+");
-    }
-
-    @RepeatedTest(100)
-    void testGameName() {
-        String s = faker.touhou().gameName();
-        assertThat(s).matches("[a-zA-Z0-9 \\-'.]+");
-    }
-
 }

@@ -1,23 +1,18 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class SonicTheHedgehogTest extends VideoGameFakerTest {
 
-    @Test
-    void zone() {
-        assertThat(faker.sonicTheHedgehog().zone()).isNotEmpty();
-    }
+    private final SonicTheHedgehog sonicTheHedgehog = getFaker().sonicTheHedgehog();
 
-    @Test
-    void character() {
-        assertThat(faker.sonicTheHedgehog().character()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(sonicTheHedgehog::character, "games.sonic_the_hedgehog.character"),
+            TestSpec.of(sonicTheHedgehog::game, "games.sonic_the_hedgehog.game"),
+            TestSpec.of(sonicTheHedgehog::zone, "games.sonic_the_hedgehog.zone")
+        );
     }
-
-    @Test
-    void game() {
-        assertThat(faker.sonicTheHedgehog().game()).isNotEmpty();
-    }
-
 }

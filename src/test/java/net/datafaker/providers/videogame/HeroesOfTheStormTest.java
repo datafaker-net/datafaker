@@ -1,29 +1,19 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class HeroesOfTheStormTest extends VideoGameFakerTest {
 
-    @Test
-    void testBattleground() {
-        assertThat(faker.heroesOfTheStorm().battleground()).isNotEmpty();
-    }
+    private final HeroesOfTheStorm heroesOfTheStorm = getFaker().heroesOfTheStorm();
 
-    @Test
-    void testHeroClass() {
-        assertThat(faker.heroesOfTheStorm().heroClass()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(heroesOfTheStorm::battleground, "heroes_of_the_storm.battlegrounds"),
+            TestSpec.of(heroesOfTheStorm::hero, "heroes_of_the_storm.heroes"),
+            TestSpec.of(heroesOfTheStorm::heroClass, "heroes_of_the_storm.classes"),
+            TestSpec.of(heroesOfTheStorm::quote, "heroes_of_the_storm.quotes")
+        );
     }
-
-    @Test
-    void testHero() {
-        assertThat(faker.heroesOfTheStorm().hero()).isNotEmpty();
-    }
-
-    @Test
-    void testQuote() {
-        assertThat(faker.heroesOfTheStorm().quote()).isNotEmpty();
-    }
-
 }

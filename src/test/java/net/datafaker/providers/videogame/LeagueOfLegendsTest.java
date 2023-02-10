@@ -1,39 +1,22 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class LeagueOfLegendsTest extends VideoGameFakerTest {
 
-    @Test
-    void champion() {
-        assertThat(faker.leagueOfLegends().champion()).matches("^(\\w+\\.?-?'?\\s?&?\\s?)+$");
-    }
+    private final LeagueOfLegends leagueOfLegends = getFaker().leagueOfLegends();
 
-    @Test
-    void location() {
-        assertThat(faker.leagueOfLegends().location()).matches("^(\\w+\\s?)+$");
-    }
-
-    @Test
-    void quote() {
-        assertThat(faker.leagueOfLegends().quote()).isNotEmpty();
-    }
-
-    @Test
-    void summonerSpell() {
-        assertThat(faker.leagueOfLegends().summonerSpell()).matches("^(\\w+\\s?!?)+$");
-    }
-
-    @Test
-    void masteries() {
-        assertThat(faker.leagueOfLegends().masteries()).matches("^(\\w+\\s?'?)+$");
-    }
-
-    @Test
-    void rank() {
-        assertThat(faker.leagueOfLegends().rank()).matches("^\\w+(\\s[IV]+)?$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(leagueOfLegends::champion, "games.league_of_legends.champion"),
+            TestSpec.of(leagueOfLegends::location, "games.league_of_legends.location"),
+            TestSpec.of(leagueOfLegends::masteries, "games.league_of_legends.masteries"),
+            TestSpec.of(leagueOfLegends::quote, "games.league_of_legends.quote"),
+            TestSpec.of(leagueOfLegends::rank, "games.league_of_legends.rank"),
+            TestSpec.of(leagueOfLegends::summonerSpell, "games.league_of_legends.summoner_spell")
+        );
     }
 }

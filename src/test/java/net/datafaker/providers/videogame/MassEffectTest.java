@@ -1,33 +1,20 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class MassEffectTest extends VideoGameFakerTest {
 
-    @RepeatedTest(10)
-    void character() {
-        assertThat(faker.massEffect().character()).isNotEmpty();
-    }
+    private final MassEffect massEffect = getFaker().massEffect();
 
-    @RepeatedTest(10)
-    void species() {
-        assertThat(faker.massEffect().specie()).isNotEmpty();
-    }
-
-    @RepeatedTest(10)
-    void cluster() {
-        assertThat(faker.massEffect().cluster()).isNotEmpty();
-    }
-
-    @RepeatedTest(10)
-    void planets() {
-        assertThat(faker.massEffect().planet()).isNotEmpty();
-    }
-
-    @RepeatedTest(10)
-    void quote() {
-        assertThat(faker.massEffect().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(massEffect::character, "mass_effect.characters"),
+            TestSpec.of(massEffect::cluster, "mass_effect.cluster"),
+            TestSpec.of(massEffect::planet, "mass_effect.planets"),
+            TestSpec.of(massEffect::quote, "mass_effect.quotes"),
+            TestSpec.of(massEffect::specie, "mass_effect.species")
+        );
     }
 }

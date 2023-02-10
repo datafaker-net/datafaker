@@ -1,33 +1,20 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class WarhammerFantasyTest extends VideoGameFakerTest {
 
-    @Test
-    void heros() {
-        assertThat(faker.warhammerFantasy().heros()).isNotEmpty();
-    }
+    private final WarhammerFantasy warhammerFantasy = getFaker().warhammerFantasy();
 
-    @Test
-    void quotes() {
-        assertThat(faker.warhammerFantasy().quotes()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(warhammerFantasy::creatures, "games.warhammer_fantasy.creatures"),
+            TestSpec.of(warhammerFantasy::factions, "games.warhammer_fantasy.factions"),
+            TestSpec.of(warhammerFantasy::heros, "games.warhammer_fantasy.heros"),
+            TestSpec.of(warhammerFantasy::locations, "games.warhammer_fantasy.locations"),
+            TestSpec.of(warhammerFantasy::quotes, "games.warhammer_fantasy.quotes")
+        );
     }
-
-    @Test
-    void locations() {
-        assertThat(faker.warhammerFantasy().locations()).isNotEmpty();
-    }
-
-    @Test
-    void factions() {
-        assertThat(faker.warhammerFantasy().factions()).isNotEmpty();
-    }
-
-    @Test
-    void creatures() {
-        assertThat(faker.warhammerFantasy().creatures()).isNotEmpty();
-    }
-
 }
