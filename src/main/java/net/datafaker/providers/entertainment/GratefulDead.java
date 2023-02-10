@@ -1,4 +1,6 @@
-package net.datafaker.providers.base;
+package net.datafaker.providers.entertainment;
+
+import net.datafaker.providers.base.AbstractProvider;
 
 /**
  * The Grateful Dead was an American rock band formed in 1965 in Palo Alto, California.
@@ -6,9 +8,9 @@ package net.datafaker.providers.base;
  *
  * @since 1.4.0
  */
-public class GratefulDead extends AbstractProvider<BaseProviders> {
+public class GratefulDead extends AbstractProvider<EntertainmentProviders> {
 
-    protected GratefulDead(BaseProviders faker) {
+    protected GratefulDead(EntertainmentProviders faker) {
         super(faker);
     }
 
