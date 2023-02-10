@@ -1,9 +1,7 @@
 package net.datafaker.providers.foods;
 
-import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.food.Food;
 import net.datafaker.providers.food.FoodFaker;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
