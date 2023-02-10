@@ -248,6 +248,7 @@ class FakeCollectionTest extends AbstractFakerTest {
                 .build()
                 .generate();
 
+        System.out.println(json);
         int numberOfLines = 0;
         for (int i = 0; i < json.length(); i++) {
             if (json.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
