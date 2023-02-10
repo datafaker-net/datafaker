@@ -1,7 +1,5 @@
 package net.datafaker.providers.entertainment;
 
-import net.datafaker.providers.base.GratefulDead;
-
 import java.util.Arrays;
 import java.util.Collection;
 

@@ -229,10 +229,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Gender.class, Gender::new);
     }
 
-    default GratefulDead gratefulDead() {
-        return getProvider(GratefulDead.class, GratefulDead::new);
-    }
-
     default GreekPhilosopher greekPhilosopher() {
         return getProvider(GreekPhilosopher.class, GreekPhilosopher::new);
     }
