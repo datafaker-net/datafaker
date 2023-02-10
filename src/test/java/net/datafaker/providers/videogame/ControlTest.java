@@ -1,49 +1,23 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class ControlTest extends VideoGameFakerTest {
 
-    @Test
-    void testCharacter() {
-        assertThat(faker.control().character()).isNotEmpty();
-    }
+    private final Control control = getFaker().control();
 
-    @Test
-    void testLocation() {
-        assertThat(faker.control().location()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(control::alteredItem, "control.altered_item"),
+            TestSpec.of(control::alteredWorldEvent, "control.altered_world_event"),
+            TestSpec.of(control::character, "control.character"),
+            TestSpec.of(control::hiss, "control.hiss"),
+            TestSpec.of(control::location, "control.location"),
+            TestSpec.of(control::objectOfPower, "control.object_of_power"),
+            TestSpec.of(control::quote, "control.quote"),
+            TestSpec.of(control::theBoard, "control.the_board")
+        );
     }
-
-    @Test
-    void testObjectOfPower() {
-        assertThat(faker.control().objectOfPower()).isNotEmpty();
-    }
-
-    @Test
-    void testAlteredItem() {
-        assertThat(faker.control().alteredItem()).isNotEmpty();
-    }
-
-    @Test
-    void testAlteredWorldEvent() {
-        assertThat(faker.control().alteredWorldEvent()).isNotEmpty();
-    }
-
-    @Test
-    void testHiss() {
-        assertThat(faker.control().hiss()).isNotEmpty();
-    }
-
-    @Test
-    void testTheBoard() {
-        assertThat(faker.control().theBoard()).isNotEmpty();
-    }
-
-    @Test
-    void testQuote() {
-        assertThat(faker.control().quote()).isNotEmpty();
-    }
-
 }

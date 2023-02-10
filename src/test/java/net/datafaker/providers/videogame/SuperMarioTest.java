@@ -1,25 +1,19 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class SuperMarioTest extends VideoGameFakerTest {
 
-    @Test
-    void characters() {
-        assertThat(faker.superMario().characters()).isNotEmpty();
-    }
+    private final SuperMario superMario = getFaker().superMario();
 
-    @Test
-    void games() {
-        assertThat(faker.superMario().games()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(superMario::characters, "games.super_mario.characters"),
+            TestSpec.of(superMario::games, "games.super_mario.games"),
+            TestSpec.of(superMario::locations, "games.super_mario.locations")
+        );
     }
-
-    @Test
-    void locations() {
-        assertThat(faker.superMario().locations()).isNotEmpty();
-    }
-
 }

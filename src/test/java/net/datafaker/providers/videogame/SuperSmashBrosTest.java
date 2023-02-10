@@ -1,18 +1,17 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class SuperSmashBrosTest extends VideoGameFakerTest {
 
-    @Test
-    void fighter() {
-        assertThat(faker.superSmashBros().fighter()).isNotEmpty();
-    }
+    private final SuperSmashBros superSmashBros = getFaker().superSmashBros();
 
-    @Test
-    void stage() {
-        assertThat(faker.superSmashBros().stage()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(superSmashBros::fighter, "games.super_smash_bros.fighter"),
+            TestSpec.of(superSmashBros::stage, "games.super_smash_bros.stage")
+        );
     }
-
 }

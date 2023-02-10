@@ -1,23 +1,18 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class VideoGameTest extends VideoGameFakerTest {
 
-    @Test
-    void title() {
-        assertThat(faker.videoGame().title()).isNotEmpty();
-    }
+    private final VideoGame videoGame = getFaker().videoGame();
 
-    @Test
-    void genre() {
-        assertThat(faker.videoGame().genre()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(videoGame::genre, "video_game.genre"),
+            TestSpec.of(videoGame::platform, "video_game.platform"),
+            TestSpec.of(videoGame::title, "video_game.title")
+        );
     }
-
-    @Test
-    void platform() {
-        assertThat(faker.videoGame().platform()).isNotEmpty();
-    }
-
 }

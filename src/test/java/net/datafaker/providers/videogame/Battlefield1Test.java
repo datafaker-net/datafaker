@@ -1,34 +1,21 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class Battlefield1Test extends VideoGameFakerTest {
 
-    @RepeatedTest(50)
-    void classes() {
-        assertThat(faker.battlefield1().classes()).matches("[A-Za-z ]+");
-    }
+    private final Battlefield1 battlefield1 = getFaker().battlefield1();
 
-    @RepeatedTest(200)
-    void weapon() {
-        assertThat(faker.battlefield1().weapon()).matches("[A-Za-z0-9,\\- .()/]+");
-    }
-
-    @RepeatedTest(200)
-    void vehicle() {
-        assertThat(faker.battlefield1().vehicle()).matches("[A-Za-z0-9,\\- .()/]+");
-    }
-
-    @RepeatedTest(100)
-    void map() {
-        assertThat(faker.battlefield1().map()).matches("[A-Za-z0-9,\\- .()']+");
-    }
-
-    @RepeatedTest(20)
-    void faction() {
-        assertThat(faker.battlefield1().faction()).matches("[A-Za-z,\\- ]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(battlefield1::classes, "battlefield1.classes"),
+            TestSpec.of(battlefield1::faction, "battlefield1.faction"),
+            TestSpec.of(battlefield1::map, "battlefield1.map"),
+            TestSpec.of(battlefield1::vehicle, "battlefield1.vehicle"),
+            TestSpec.of(battlefield1::weapon, "battlefield1.weapon")
+        );
     }
 }

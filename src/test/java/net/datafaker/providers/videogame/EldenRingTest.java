@@ -1,32 +1,20 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class EldenRingTest extends VideoGameFakerTest {
-    @Test
-    void location() {
-        assertThat(faker.eldenRing().location()).matches("[A-Za-z0-9 .]+");
-    }
 
-    @Test
-    void weapon() {
-        assertThat(faker.eldenRing().weapon()).matches("[A-Za-z ]+");
-    }
+    private final EldenRing eldenRing = getFaker().eldenRing();
 
-    @Test
-    void skill() {
-        assertThat(faker.eldenRing().skill()).matches("[A-Za-z' ]+");
-    }
-
-    @Test
-    void spell() {
-        assertThat(faker.eldenRing().spell()).matches("[A-Za-z' ]+");
-    }
-
-    @Test
-    void npc() {
-        assertThat(faker.eldenRing().npc()).matches("[A-Za-z ]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(eldenRing::location, "elden_ring.location"),
+            TestSpec.of(eldenRing::npc, "elden_ring.npc"),
+            TestSpec.of(eldenRing::skill, "elden_ring.skill"),
+            TestSpec.of(eldenRing::spell, "elden_ring.spell"),
+            TestSpec.of(eldenRing::weapon, "elden_ring.weapon")
+        );
     }
 }

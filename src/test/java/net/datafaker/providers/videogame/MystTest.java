@@ -1,33 +1,20 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class MystTest extends VideoGameFakerTest {
 
-    @Test
-    void games() {
-        assertThat(faker.myst().games()).isNotEmpty();
-    }
+    private final Myst myst = getFaker().myst();
 
-    @Test
-    void creatures() {
-        assertThat(faker.myst().creatures()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(myst::ages, "games.myst.ages"),
+            TestSpec.of(myst::characters, "games.myst.characters"),
+            TestSpec.of(myst::creatures, "games.myst.creatures"),
+            TestSpec.of(myst::games, "games.myst.games"),
+            TestSpec.of(myst::quotes, "games.myst.quotes")
+        );
     }
-
-    @Test
-    void characters() {
-        assertThat(faker.myst().characters()).isNotEmpty();
-    }
-
-    @Test
-    void ages() {
-        assertThat(faker.myst().ages()).isNotEmpty();
-    }
-
-    @Test
-    void quotes() {
-        assertThat(faker.myst().quotes()).isNotEmpty();
-    }
-
 }

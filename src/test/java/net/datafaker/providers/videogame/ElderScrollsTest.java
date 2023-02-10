@@ -2,50 +2,25 @@
 
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class ElderScrollsTest extends VideoGameFakerTest {
 
-    @Test
-    void testCity() {
-        assertThat(faker.elderScrolls().city()).isNotEmpty();
-    }
+    private final ElderScrolls elderScrolls = getFaker().elderScrolls();
 
-    @Test
-    void testCreature() {
-        assertThat(faker.elderScrolls().creature()).isNotEmpty();
-    }
-
-    @Test
-    void testDragon() {
-        assertThat(faker.elderScrolls().dragon()).isNotEmpty();
-    }
-
-    @Test
-    void testFirstName() {
-        assertThat(faker.elderScrolls().firstName()).isNotEmpty();
-    }
-
-    @Test
-    void testLastName() {
-        assertThat(faker.elderScrolls().lastName()).isNotEmpty();
-    }
-
-    @Test
-    void testRace() {
-        assertThat(faker.elderScrolls().race()).isNotEmpty();
-    }
-
-    @Test
-    void testRegion() {
-        assertThat(faker.elderScrolls().region()).isNotEmpty();
-    }
-
-    @Test
-    void testQuote() {
-        assertThat(faker.elderScrolls().quote()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(elderScrolls::city, "games.elder_scrolls.city"),
+            TestSpec.of(elderScrolls::creature, "games.elder_scrolls.creature"),
+            TestSpec.of(elderScrolls::dragon, "games.elder_scrolls.dragon"),
+            TestSpec.of(elderScrolls::firstName, "games.elder_scrolls.first_name"),
+            TestSpec.of(elderScrolls::lastName, "games.elder_scrolls.last_name"),
+            TestSpec.of(elderScrolls::quote, "games.elder_scrolls.quote"),
+            TestSpec.of(elderScrolls::race, "games.elder_scrolls.race"),
+            TestSpec.of(elderScrolls::region, "games.elder_scrolls.region")
+        );
     }
 }
