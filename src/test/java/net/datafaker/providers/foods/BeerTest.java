@@ -1,33 +1,23 @@
 package net.datafaker.providers.foods;
 
-import org.junit.jupiter.api.Test;
+import net.datafaker.providers.food.Beer;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class BeerTest extends FoodFakerTest {
 
-    @Test
-    void testName() {
-        assertThat(faker.beer().name()).matches("[\\p{L}'()., 0-9-’]+");
-    }
+    private final Beer beer = getFaker().beer();
 
-    @Test
-    void testStyle() {
-        assertThat(faker.beer().style()).matches("[A-Za-z'() 0-9-]+");
-    }
-
-    @Test
-    void testHop() {
-        assertThat(faker.beer().hop()).matches("[A-Za-z'’(). 0-9-]+");
-    }
-
-    @Test
-    void testMalt() {
-        assertThat(faker.beer().malt()).matches("[A-Za-z'() 0-9-]+");
-    }
-
-    @Test
-    void testYeast() {
-        assertThat(faker.beer().yeast()).matches("[\\p{L}'() 0-9-ö]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(beer::brand, "beer.brand"),
+            TestSpec.of(beer::hop, "beer.hop"),
+            TestSpec.of(beer::malt, "beer.malt"),
+            TestSpec.of(beer::name, "beer.name"),
+            TestSpec.of(beer::style, "beer.style"),
+            TestSpec.of(beer::yeast, "beer.yeast")
+        );
     }
 }

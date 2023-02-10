@@ -11,6 +11,10 @@ public class Beer extends AbstractProvider<FoodProviders> {
         super(faker);
     }
 
+    public String brand() {
+        return resolve("beer.brand");
+    }
+
     public String name() {
         return resolve("beer.name");
     }

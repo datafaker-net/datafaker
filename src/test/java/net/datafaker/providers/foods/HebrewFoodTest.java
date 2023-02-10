@@ -1,46 +1,44 @@
 package net.datafaker.providers.foods;
 
+import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.food.Food;
 import net.datafaker.providers.food.FoodFaker;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HebrewFoodTest extends FoodFakerTest {
-
-    private final String matchHebrewFood = "[\\u0590-\\u05FF ']+";
-    private static FoodFaker food;
+    private Food food = getFaker().food();
 
     @BeforeEach
     protected void before() {
-        super.before();
-        food = new FoodFaker(new Locale("he"));
+        food = getFaker().food();
+    }
+
+    protected FoodFaker getFaker() {
+        return new FoodFaker(new Locale("he"));
     }
 
     @Test
-    void hebrewIngredient() {
-        assertThat(food.food().ingredient()).matches(matchHebrewFood);
+    void measurement() {
+        assertThat(food.measurement()).matches("([A-Za-z1-9/ ]+){2}");
     }
 
-    @Test
-    void hebrewFruit() {
-        assertThat(food.food().fruit()).matches(matchHebrewFood);
-    }
-
-    @Test
-    void hebrewVegetable() {
-        assertThat(food.food().vegetable()).matches(matchHebrewFood);
-    }
-
-    @Test
-    void hebrewSpice() {
-        assertThat(food.food().spice()).matches(matchHebrewFood);
-    }
-
-    @Test
-    void hebrewSushi() {
-        assertThat(food.food().sushi()).matches(matchHebrewFood);
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(food::dish, "food.dish"),
+            TestSpec.of(food::fruit, "food.fruits"),
+            TestSpec.of(food::ingredient, "food.ingredients"),
+            TestSpec.of(food::spice, "food.spices"),
+            TestSpec.of(food::sushi, "food.sushi"),
+            TestSpec.of(food::vegetable, "food.vegetables")
+        );
     }
 }
