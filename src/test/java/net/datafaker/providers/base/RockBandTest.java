@@ -1,13 +1,13 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class RockBandTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void name() {
-        assertThat(faker.rockBand().name()).matches("([\\w'/.,&]+ ?)+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        RockBand band = faker.rockBand();
+        return Arrays.asList(TestSpec.of(band::name, "rock_band.name", "([\\w'/.,&]+ ?)+"));
     }
 }

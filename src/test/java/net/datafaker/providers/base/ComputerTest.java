@@ -7,20 +7,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.Collection;
 
-class ComputerTest extends AbstractBasicProviderTest<BaseFaker> {
+class ComputerTest extends BaseFakerTest<BaseFaker> {
+
+    Computer computer = faker.computer();
 
     @Test
     void testOperatingSystem() {
-        assertThat(faker.computer().operatingSystem()).isNotEmpty();
+        assertThat(computer.operatingSystem()).isNotEmpty();
     }
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.computer().type(), "computer.type"),
-                TestSpec.of(() -> faker.computer().platform(), "computer.platform"),
-                TestSpec.of(() -> faker.computer().linux(), "computer.os.linux"),
-                TestSpec.of(() -> faker.computer().macos(), "computer.os.macos"),
-                TestSpec.of(() -> faker.computer().windows(), "computer.os.windows"),
-                TestSpec.of(() -> faker.computer().brand(), "computer.brand"));
+        return Arrays.asList(TestSpec.of(computer::type, "computer.type"),
+                TestSpec.of(computer::platform, "computer.platform"),
+                TestSpec.of(computer::linux, "computer.os.linux"),
+                TestSpec.of(computer::macos, "computer.os.macos"),
+                TestSpec.of(computer::windows, "computer.os.windows"),
+                TestSpec.of(computer::brand, "computer.brand"));
     }
 }

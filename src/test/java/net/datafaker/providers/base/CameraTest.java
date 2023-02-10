@@ -1,23 +1,15 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class CameraTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void testBrand() {
-        assertThat(faker.camera().brand()).matches("^[a-zA-Z0-9 -]+$");
-    }
-
-    @Test
-    void testModel() {
-        assertThat(faker.camera().model()).matches("^[a-zA-Z0-9 -]+$");
-    }
-
-    @Test
-    void testBrandWithModel() {
-        assertThat(faker.camera().brandWithModel()).matches("^[a-zA-Z0-9 -]+$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Camera camera = faker.camera();
+        return Arrays.asList(TestSpec.of(camera::brand, "camera.brand", "^[a-zA-Z0-9 -]+$"),
+            TestSpec.of(camera::model, "camera.model", "^[a-zA-Z0-9 -]+$"),
+            TestSpec.of(camera::brandWithModel, "camera.brand_with_model", "^[a-zA-Z0-9 -]+$"));
     }
 }

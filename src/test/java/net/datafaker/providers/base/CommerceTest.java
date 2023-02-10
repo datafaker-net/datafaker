@@ -3,6 +3,8 @@ package net.datafaker.providers.base;
 import org.junit.jupiter.api.Test;
 
 import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,48 +16,42 @@ class CommerceTest extends BaseFakerTest<BaseFaker> {
 
     private static final String PROMOTION_CODE_REGEX = CAPITALIZED_WORD_REGEX + "(-" + CAPITALIZED_WORD_REGEX + ")*";
 
+    private Commerce commerce = faker.commerce();
+
     @Test
     void testDepartment() {
-        assertThat(faker.commerce().department()).matches("(\\w+(, | & )?){1,3}");
+        assertThat(commerce.department()).matches("(\\w+(, | & )?){1,3}");
     }
 
     @Test
     void testProductName() {
-        assertThat(faker.commerce().productName()).matches("(\\w+ ?){3,4}");
+        assertThat(commerce.productName()).matches("(\\w+ ?){3,4}");
     }
 
-    @Test
-    void testMaterial() {
-        assertThat(faker.commerce().material()).matches("\\w+");
-    }
-
-    @Test
-    void testBrand() {
-        assertThat(faker.commerce().brand()).matches("\\w+");
-    }
-
-    @Test
-    void testVendor() {
-        assertThat(faker.commerce().vendor()).matches("[A-Za-z'() 0-9-,]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(commerce::material, "commerce.product_name.material"),
+            TestSpec.of(commerce::brand, "commerce.brand"),
+            TestSpec.of(commerce::vendor, "commerce.vendor"));
     }
 
     @Test
     void testPrice() {
-        assertThat(faker.commerce().price()).matches("\\d{1,3}\\" + decimalSeparator + "\\d{2}");
+        assertThat(commerce.price()).matches("\\d{1,3}\\" + decimalSeparator + "\\d{2}");
     }
 
     @Test
     void testPriceMinMax() {
-        assertThat(faker.commerce().price(100, 1000)).matches("\\d{3,4}\\" + decimalSeparator + "\\d{2}");
+        assertThat(commerce.price(100, 1000)).matches("\\d{3,4}\\" + decimalSeparator + "\\d{2}");
     }
 
     @Test
     void testPromotionCode() {
-        assertThat(faker.commerce().promotionCode()).matches(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{6}");
+        assertThat(commerce.promotionCode()).matches(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{6}");
     }
 
     @Test
     void testPromotionCodeDigits() {
-        assertThat(faker.commerce().promotionCode(3)).matches(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{3}");
+        assertThat(commerce.promotionCode(3)).matches(PROMOTION_CODE_REGEX + PROMOTION_CODE_REGEX + "\\d{3}");
     }
 }

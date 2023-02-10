@@ -7,17 +7,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.Collection;
 
-class BusinessTest extends AbstractBasicProviderTest<BaseFaker> {
+class BusinessTest extends BaseFakerTest<BaseFaker> {
+
+    private Business business = faker.business();
 
     @Test
     void creditCardNumber() {
-        assertThat(faker.business().creditCardNumber()).isNotEmpty();
+        assertThat(business.creditCardNumber()).isNotEmpty();
     }
 
     @Test
     void creditCardExpiry() {
         // Given / When
-        String date = faker.business().creditCardExpiry();
+        String date = business.creditCardExpiry();
         // Then
         assertThat(date).isNotEmpty();
         assertThat(date).matches("\\d{4}-\\d{2}-\\d{2}");
@@ -25,11 +27,11 @@ class BusinessTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @Test
     void securityCode() {
-        assertThat(faker.business().securityCode()).isNotEmpty();
+        assertThat(business.securityCode()).isNotEmpty();
     }
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.business().creditCardType(), "business.credit_card_types"));
+        return Arrays.asList(TestSpec.of(business::creditCardType, "business.credit_card_types"));
     }
 }

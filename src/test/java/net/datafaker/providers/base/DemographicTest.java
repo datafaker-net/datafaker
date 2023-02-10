@@ -1,33 +1,17 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class DemographicTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void race() {
-        assertThat(faker.demographic().race()).matches("(\\w+ ?)+");
-    }
-
-    @Test
-    void educationalAttainment() {
-        assertThat(faker.demographic().educationalAttainment()).matches("(?U)([\\w'-]+ ?)+");
-    }
-
-    @Test
-    void demonym() {
-        assertThat(faker.demographic().demonym()).matches("(?U)([\\w'-]+ ?)+");
-    }
-
-    @Test
-    void maritalStatus() {
-        assertThat(faker.demographic().maritalStatus()).matches("(\\w+ ?)+");
-    }
-
-    @Test
-    void sex() {
-        assertThat(faker.demographic().sex()).matches("\\w+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Demographic demographic = faker.demographic();
+        return Arrays.asList(TestSpec.of(demographic::race, "demographic.race", "(\\w+ ?)+"),
+            TestSpec.of(demographic::educationalAttainment, "demographic.educational_attainment", "(?U)([\\w'-]+ ?)+"),
+            TestSpec.of(demographic::demonym, "demographic.demonym", "(?U)([\\w'-]+ ?)+"),
+            TestSpec.of(demographic::maritalStatus, "demographic.marital_status", "(\\w+ ?)+"),
+            TestSpec.of(demographic::sex, "demographic.sex"));
     }
 }

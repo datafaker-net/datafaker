@@ -1,13 +1,13 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class HipsterTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void word() {
-        assertThat(faker.hipster().word()).matches("^([\\w-+&']+ ?)+$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Hipster hipster = faker.hipster();
+        return Arrays.asList(TestSpec.of(hipster::word, "hipster.words", "^([\\w-+&']+ ?)+$"));
     }
 }

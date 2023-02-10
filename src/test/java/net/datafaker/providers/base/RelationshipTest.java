@@ -13,9 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-class RelationshipTest extends AbstractBasicProviderTest<BaseFaker> {
+class RelationshipTest extends BaseFakerTest<BaseFaker> {
 
     private BaseFaker mockFaker;
+    private Relationship relationship = faker.relationships();
 
     @BeforeEach
     protected void before() {
@@ -25,17 +26,17 @@ class RelationshipTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @RepeatedTest(100)
     void anyTest() {
-        assertThat(faker.relationships().any()).isNotEmpty();
+        assertThat(relationship.any()).isNotEmpty();
     }
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.relationships().direct(), "relationship.familial.direct"),
-                TestSpec.of(() -> faker.relationships().extended(), "relationship.familial.extended"),
-                TestSpec.of(() -> faker.relationships().inLaw(), "relationship.in_law"),
-                TestSpec.of(() -> faker.relationships().spouse(), "relationship.spouse"),
-                TestSpec.of(() -> faker.relationships().parent(), "relationship.parent"),
-                TestSpec.of(() -> faker.relationships().sibling(), "relationship.sibling"));
+        return Arrays.asList(TestSpec.of(relationship::direct, "relationship.familial.direct"),
+                TestSpec.of(relationship::extended, "relationship.familial.extended"),
+                TestSpec.of(relationship::inLaw, "relationship.in_law"),
+                TestSpec.of(relationship::spouse, "relationship.spouse"),
+                TestSpec.of(relationship::parent, "relationship.parent"),
+                TestSpec.of(relationship::sibling, "relationship.sibling"));
     }
 
     @Test

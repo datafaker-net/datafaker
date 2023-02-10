@@ -1,19 +1,14 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class CurrencyTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void testName() {
-        assertThat(faker.currency().name()).matches("[\\w'.\\-() ]+");
-    }
-
-    @Test
-    void testCode() {
-        final Currency currency = faker.currency();
-        assertThat(currency.code()).matches("[A-Z]{3}");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Currency currency = faker.currency();
+        return Arrays.asList(TestSpec.of(currency::name, "currency.name", "[\\w'.\\-() ]+"),
+            TestSpec.of(currency::code, "currency.code", "[A-Z]{3}"));
     }
 }

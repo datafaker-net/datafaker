@@ -1,13 +1,13 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class RobinTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void quote() {
-        assertThat(faker.robin().quote()).matches("^(\\w+\\.?-?'?\\s?)+(\\(?)?(\\w+\\s?\\.?)+(\\))?$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Robin robin = faker.robin();
+        return Arrays.asList(TestSpec.of(robin::quote, "robin.quotes", "^(\\w+\\.?-?'?\\s?)+(\\(?)?(\\w+\\s?\\.?)+(\\))?$"));
     }
 }

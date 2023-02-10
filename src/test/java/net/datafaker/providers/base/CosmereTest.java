@@ -4,20 +4,21 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.Collection;
 
-class CosmereTest extends AbstractBasicProviderTest<BaseFaker> {
+class CosmereTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.cosmere().aons(), "cosmere.aons"),
-                TestSpec.of(() -> faker.cosmere().shardWorlds(), "cosmere.shard_worlds"),
-                TestSpec.of(() -> faker.cosmere().shards(), "cosmere.shards"),
-                TestSpec.of(() -> faker.cosmere().surges(), "cosmere.surges"),
-                TestSpec.of(() -> faker.cosmere().knightsRadiant(), "cosmere.knights_radiant"),
-                TestSpec.of(() -> faker.cosmere().metals(), "cosmere.metals"),
-                TestSpec.of(() -> faker.cosmere().allomancers(), "cosmere.allomancers"),
-                TestSpec.of(() -> faker.cosmere().feruchemists(), "cosmere.feruchemists"),
-                TestSpec.of(() -> faker.cosmere().heralds(), "cosmere.heralds"),
-                TestSpec.of(() -> faker.cosmere().sprens(), "cosmere.sprens")
+        Cosmere cosmere = faker.cosmere();
+        return Arrays.asList(TestSpec.of(cosmere::aons, "cosmere.aons"),
+                TestSpec.of(cosmere::shardWorlds, "cosmere.shard_worlds"),
+                TestSpec.of(cosmere::shards, "cosmere.shards"),
+                TestSpec.of(cosmere::surges, "cosmere.surges"),
+                TestSpec.of(cosmere::knightsRadiant, "cosmere.knights_radiant"),
+                TestSpec.of(cosmere::metals, "cosmere.metals"),
+                TestSpec.of(cosmere::allomancers, "cosmere.allomancers"),
+                TestSpec.of(cosmere::feruchemists, "cosmere.feruchemists"),
+                TestSpec.of(cosmere::heralds, "cosmere.heralds"),
+                TestSpec.of(cosmere::sprens, "cosmere.sprens")
                 );
     }
 

@@ -15,6 +15,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,6 +26,7 @@ public class BaseFakerTest<T extends BaseFaker> {
     protected final T faker = getFaker();
 
     @BeforeEach
+    @SuppressWarnings("unchecked")
     protected void before() {
         try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
 
@@ -39,6 +41,7 @@ public class BaseFakerTest<T extends BaseFaker> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected T getFaker() {
         return (T) new BaseFaker();
     }
@@ -68,26 +71,36 @@ public class BaseFakerTest<T extends BaseFaker> {
         assertThat(item).as("Check item isn't empty").isNotEmpty();
         assertThat(actual).as("Check actual list isn't empty and contains the item for the key \"" + testSpec.key + "\"").isNotEmpty()
             .anyMatch(item::equals);
+        if (!testSpec.regex.isEmpty()) {
+            assertThat(item).as("Check item matches regex").matches(Pattern.compile(testSpec.regex));
+        }
     }
 
     protected Collection<TestSpec> providerListTest() {
         // dummy test since parameterized test requires non-empty collection
-        return Collections.singleton(new TestSpec(null, null));
+        return Collections.singleton(new TestSpec(null, null, null));
     }
 
     protected static class TestSpec {
         private final Supplier<?> supplier;
         private final String key;
         private final boolean isDummy;
+        @SuppressWarnings("unused")
+        private final String regex;
 
-        private TestSpec(Supplier<?> supplier, String key) {
+        private TestSpec(Supplier<?> supplier, String key, String regex) {
             this.supplier = supplier;
             this.key = key;
             this.isDummy = key == null || supplier == null;
+            this.regex = regex;
         }
 
         public static TestSpec of(Supplier<?> supplier, String key) {
-            return new TestSpec(supplier, key);
+            return new TestSpec(supplier, key, "");
+        }
+
+        public static TestSpec of(Supplier<?> supplier, String key, String regex) {
+            return new TestSpec(supplier, key, regex);
         }
 
         @Override

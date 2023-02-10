@@ -3,15 +3,16 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.Collection;
 
-class MilitaryTest extends AbstractBasicProviderTest<BaseFaker> {
+class MilitaryTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.military().armyRank(), "military.army_rank"),
-                TestSpec.of(() -> faker.military().marinesRank(), "military.marines_rank"),
-                TestSpec.of(() -> faker.military().navyRank(), "military.navy_rank"),
-                TestSpec.of(() -> faker.military().airForceRank(), "military.air_force_rank"),
-                TestSpec.of(() -> faker.military().dodPaygrade(), "military.dod_paygrade"));
+        Military military = faker.military();
+        return Arrays.asList(TestSpec.of(military::armyRank, "military.army_rank"),
+                TestSpec.of(military::marinesRank, "military.marines_rank"),
+                TestSpec.of(military::navyRank, "military.navy_rank"),
+                TestSpec.of(military::airForceRank, "military.air_force_rank"),
+                TestSpec.of(military::dodPaygrade, "military.dod_paygrade"));
     }
 
 }

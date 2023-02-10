@@ -7,37 +7,39 @@ import static org.assertj.core.util.Strings.isNullOrEmpty;
 
 class MbtiTest extends BaseFakerTest<BaseFaker> {
 
+    private Mbti mbti = faker.mbti();
+
     @Test
     void type() {
-        assertThat(isNullOrEmpty(faker.mbti().type())).isFalse();
-        assertThat(faker.mbti().type()).matches("[A-Za-z,\\-.() ]+");
+        assertThat(isNullOrEmpty(mbti.type())).isFalse();
+        assertThat(mbti.type()).matches("[A-Za-z,\\-.() ]+");
     }
 
     @Test
     void name() {
-        assertThat(isNullOrEmpty(faker.mbti().name())).isFalse();
-        assertThat(faker.mbti().name()).matches("[A-Za-z,\\-.();:'$ ]+");
+        assertThat(isNullOrEmpty(mbti.name())).isFalse();
+        assertThat(mbti.name()).matches("[A-Za-z,\\-.();:'$ ]+");
     }
 
     @Test
     void characteristic() {
-        assertThat(isNullOrEmpty(faker.mbti().characteristic())).isFalse();
+        assertThat(isNullOrEmpty(mbti.characteristic())).isFalse();
     }
 
     @Test
     void personage() {
-        assertThat(isNullOrEmpty(faker.mbti().personage())).isFalse();
-        assertThat(faker.mbti().personage()).matches("[A-Za-z,\\-.()';:$ ]+");
+        assertThat(isNullOrEmpty(mbti.personage())).isFalse();
+        assertThat(mbti.personage()).matches("[A-Za-z,\\-.()';:$ ]+");
     }
 
     @Test
     void merit() {
-        assertThat(isNullOrEmpty(faker.mbti().merit())).isFalse();
+        assertThat(isNullOrEmpty(mbti.merit())).isFalse();
     }
 
     @Test
     void weakness() {
-        assertThat(isNullOrEmpty(faker.mbti().weakness())).isFalse();
+        assertThat(isNullOrEmpty(mbti.weakness())).isFalse();
     }
 
 }

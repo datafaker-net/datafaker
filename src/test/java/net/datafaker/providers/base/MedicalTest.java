@@ -9,14 +9,15 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MedicalTest extends AbstractBasicProviderTest<BaseFaker> {
+class MedicalTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.medical().medicineName(), "medical.medicine_name"),
-                TestSpec.of(() -> faker.medical().diseaseName(), "medical.disease_name"),
-                TestSpec.of(() -> faker.medical().hospitalName(), "medical.hospital_name"),
-                TestSpec.of(() -> faker.medical().symptoms(), "medical.symptoms"));
+        Medical medical = faker.medical();
+        return Arrays.asList(TestSpec.of(medical::medicineName, "medical.medicine_name"),
+                TestSpec.of(medical::diseaseName, "medical.disease_name"),
+                TestSpec.of(medical::hospitalName, "medical.hospital_name"),
+                TestSpec.of(medical::symptoms, "medical.symptoms"));
     }
 
     @Test

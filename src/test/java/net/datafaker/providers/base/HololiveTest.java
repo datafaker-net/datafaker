@@ -2,17 +2,20 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HololiveTest extends BaseFakerTest<BaseFaker> {
+class HololiveTest extends BaseFakerTest<BaseFaker> {
 
     private static final BaseFaker JA_FAKER = new BaseFaker(new Locale("ja"));
 
-    @Test
-    void talent() {
-        assertThat(faker.hololive().talent()).matches("^[A-Za-z '+-]+$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Hololive hl = faker.hololive();
+        return Arrays.asList(TestSpec.of(hl::talent, "hololive.talent", "^[A-Za-z '+-]+$"));
     }
 
     @Test

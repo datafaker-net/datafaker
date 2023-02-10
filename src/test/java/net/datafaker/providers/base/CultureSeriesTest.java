@@ -3,16 +3,17 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.Collection;
 
-class CultureSeriesTest extends AbstractBasicProviderTest<BaseFaker> {
+class CultureSeriesTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.cultureSeries().books(), "culture_series.books"),
-                TestSpec.of(() -> faker.cultureSeries().cultureShips(), "culture_series.culture_ships"),
-                TestSpec.of(() -> faker.cultureSeries().cultureShipClasses(), "culture_series.culture_ship_classes"),
-                TestSpec.of(() -> faker.cultureSeries().cultureShipClassAbvs(), "culture_series.culture_ship_class_abvs"),
-                TestSpec.of(() -> faker.cultureSeries().civs(), "culture_series.civs"),
-                TestSpec.of(() -> faker.cultureSeries().planets(), "culture_series.planets"));
+        CultureSeries cultureSeries = faker.cultureSeries();
+        return Arrays.asList(TestSpec.of(cultureSeries::books, "culture_series.books"),
+                TestSpec.of(cultureSeries::cultureShips, "culture_series.culture_ships"),
+                TestSpec.of(cultureSeries::cultureShipClasses, "culture_series.culture_ship_classes"),
+                TestSpec.of(cultureSeries::cultureShipClassAbvs, "culture_series.culture_ship_class_abvs"),
+                TestSpec.of(cultureSeries::civs, "culture_series.civs"),
+                TestSpec.of(cultureSeries::planets, "culture_series.planets"));
     }
 
 }

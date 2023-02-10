@@ -6,24 +6,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class NationTest extends BaseFakerTest<BaseFaker> {
 
+    Nation nation = faker.nation();
+
     @Test
     void nationality() {
-        assertThat(faker.nation().nationality()).matches("\\P{Cc}+");
+        assertThat(nation.nationality()).matches("\\P{Cc}+");
     }
 
     @Test
     void language() {
-        assertThat(faker.nation().language()).matches("[A-Za-z ]+");
+        assertThat(nation.language()).matches("[A-Za-z ]+");
     }
 
     @Test
     void capitalCity() {
-        assertThat(faker.nation().capitalCity()).matches("[A-Za-z .'()-]+");
+        assertThat(nation.capitalCity()).matches("[A-Za-z .'()-]+");
     }
 
     @Test
     void flag() {
-        String flag = faker.nation().flag();
+        String flag = nation.flag();
 
         // all utf8 emoji flags are at least 4 characters long and start with the same char
         assertThat(flag).hasSizeGreaterThanOrEqualTo(4);
@@ -32,11 +34,11 @@ class NationTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void isoLanguage() {
-        assertThat(faker.nation().isoLanguage()).matches("[a-z]{2}");
+        assertThat(nation.isoLanguage()).matches("[a-z]{2}");
     }
 
     @Test
     void isoCountry() {
-        assertThat(faker.nation().isoCountry()).matches("[A-Z]{2}");
+        assertThat(nation.isoCountry()).matches("[A-Z]{2}");
     }
 }

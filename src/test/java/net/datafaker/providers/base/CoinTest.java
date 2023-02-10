@@ -1,13 +1,13 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class CoinTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void coinFlip() {
-        assertThat(faker.coin().flip()).matches("\\w+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Coin coin = faker.coin();
+        return Arrays.asList(TestSpec.of(coin::flip, "coin.flip"));
     }
 }
