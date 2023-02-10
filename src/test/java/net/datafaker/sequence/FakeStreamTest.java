@@ -4,6 +4,7 @@ import net.datafaker.AbstractFakerTest;
 import net.datafaker.formats.Format;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.transformations.CsvTransformer;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.RepeatedTest;
@@ -162,12 +163,14 @@ class FakeStreamTest extends AbstractFakerTest {
             .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
             .build();
 
-        String csv = Format.toCsv(stream)
-            .headers(() -> "name", () -> "value", () -> "range", () -> "unit")
-            .columns(Data::name, Data::value, Data::range, Data::unit)
-            .separator(separator)
-            .build()
-            .get();
+        CsvTransformer<Data> csvTransformer = CsvTransformer
+            .<Data>builder().header(true).separator(separator).build();
+        String csv = csvTransformer.generate(stream,
+            Schema.of(
+                field("name", Data::name),
+                field("value", Data::value),
+                field("range", Data::range),
+                field("unit", Data::unit)));
 
         int numberOfLines = 0;
         int numberOfSeparator = 0;
@@ -179,7 +182,7 @@ class FakeStreamTest extends AbstractFakerTest {
             }
         }
 
-        assertThat(numberOfLines).isEqualTo(6);
+        assertThat(numberOfLines).isEqualTo(5);
         assertThat(numberOfSeparator).isEqualTo(18); // number of lines * (number of columns - 1)
     }
 
@@ -191,43 +194,15 @@ class FakeStreamTest extends AbstractFakerTest {
             .build();
 
         assertThatThrownBy(() ->
-            Format.toCsv(infiniteStream)
-                .headers(() -> "name", () -> "value", () -> "range", () -> "unit")
-                .columns(Data::name, Data::value, Data::range, Data::unit)
-                .separator(separator)
-                .build()
-                .get()
+            CsvTransformer.<Data>builder().separator(separator).build()
+                .generate(infiniteStream,
+                    Schema.of(
+                        field("name", Data::name),
+                        field("value", Data::value),
+                        field("range", Data::range),
+                        field("unit", Data::unit)))
         ).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("The sequence should be finite of size");
-    }
-
-    @Test
-    void toCsvFromInfiniteSequenceWithLimit() {
-        String separator = "$$$";
-        int limit = 5;
-        FakeSequence<Data> infiniteStream = faker.<Data>stream()
-            .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
-            .build();
-        String csv = Format.toCsv(infiniteStream)
-            .headers(() -> "name", () -> "value", () -> "range", () -> "unit")
-            .columns(Data::name, Data::value, Data::range, Data::unit)
-            .separator(separator)
-            .limit(limit) // <- adding a limit for CSV
-            .build()
-            .get();
-
-        int numberOfLines = 0;
-        int numberOfSeparator = 0;
-        for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
-                numberOfLines++;
-            } else if (csv.regionMatches(i, separator, 0, separator.length())) {
-                numberOfSeparator++;
-            }
-        }
-
-        assertThat(numberOfLines).isEqualTo(6);
-        assertThat(numberOfSeparator).isEqualTo(18); // number of lines * (number of columns - 1)
     }
 
     @Test
