@@ -24,8 +24,8 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public String generate(FakeSequence<IN> input, Schema<IN, ?> schema) {
-        if (input.isInfinite()) {
+    public String generate(Iterable<IN> input, Schema<IN, ?> schema) {
+        if (input instanceof FakeSequence && ((FakeSequence)input).isInfinite()) {
             throw new IllegalArgumentException("The sequence should be finite of size");
         }
 

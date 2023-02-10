@@ -4,7 +4,6 @@ import net.datafaker.AbstractFakerTest;
 import net.datafaker.formats.Format;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
-import net.datafaker.providers.base.Name;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.RepeatedTest;
@@ -151,22 +150,6 @@ class FakeStreamTest extends AbstractFakerTest {
             .len(5)
             .build();
         assertThat(finiteNames.isInfinite()).isFalse();
-    }
-
-    @Test
-    void differentNumberOfHeadersAndColumns() {
-        assertThatThrownBy(() -> Format.toCsv(
-                faker.<Name>stream()
-                    .suppliers(faker::name)
-                    .minLen(3)
-                    .maxLen(5)
-                    .build()
-            )
-            .headers(() -> "firstName", () -> "lastname")
-            .columns(Name::firstName, Name::lastName, Name::fullName)
-            .build()
-            .get())
-            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

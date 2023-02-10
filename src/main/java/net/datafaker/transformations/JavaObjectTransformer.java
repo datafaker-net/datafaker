@@ -40,11 +40,19 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
     }
 
     @Override
-    public Collection<Object> generate(FakeSequence<Object> input, Schema<Object, ?> schema) {
-        if (input.isInfinite()) {
-            throw new IllegalArgumentException("Should be finite size");
+    public Collection<Object> generate(Iterable<Object> input, Schema<Object, ?> schema) {
+        Collection<Object> collection;
+        if (input instanceof FakeSequence) {
+            if (((FakeSequence) input).isInfinite()) {
+                throw new IllegalArgumentException("Should be finite size");
+            }
+            collection = new ArrayList<>(((FakeSequence<Object>) input).get());
+        } else {
+            collection = new ArrayList<>();
+            for (Object o: input) {
+                collection.add(o);
+            }
         }
-        Collection<Object> collection = new ArrayList<>(input.get());
         for (Object elem: collection) {
             apply(elem, schema);
         }
