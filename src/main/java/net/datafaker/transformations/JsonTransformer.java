@@ -39,7 +39,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             if (fields[i] instanceof CompositeField) {
                 sb.append(apply(input, (CompositeField) fields[i], i));
             } else {
-                value2String(((SimpleField) fields[i]).transform(input), sb);
+                applyValue(input, sb, fields[i]);
             }
             if (i < fields.length - 1) {
                 sb.append(", ");
@@ -77,6 +77,36 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         return limit > 1 ? wrappers[0] + LINE_SEPARATOR + sb + LINE_SEPARATOR + wrappers[1] : sb.toString();
     }
 
+    private void applyValue(IN input, StringBuilder sb, Field<?, ?> fields) {
+        Object value = ((SimpleField) fields).transform(input);
+        if (value instanceof Collection<?>) {
+            sb.append(generate(input,(Collection) value));
+        } else if (value != null && value.getClass().isArray()) {
+            sb.append(generate(input, Arrays.asList((Object[]) value)));
+        } else {
+            value2String(value, sb);
+        }
+    }
+
+    private String generate(IN input, Collection<Object> collection) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        int i = 0;
+        for (Object value : collection) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+            i++;
+            if (value instanceof CompositeField<?,?>) {
+                sb.append(apply(input,((CompositeField) value)));
+            } else {
+                value2String(value, sb);
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
     private static void value2String(Object value, StringBuilder sb) {
         if (value == null) {
             sb.append("null");
@@ -90,10 +120,6 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             || (value instanceof BigDecimal
                 && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
             sb.append(value);
-        } else if (value instanceof Collection) {
-            sb.append(generate((Collection) value));
-        } else if (value.getClass().isArray()) {
-            sb.append(generate(Arrays.asList((Object[]) value)));
         } else {
             String val = String.valueOf(value);
             boolean toWrap = !val.startsWith("#{json");
@@ -108,22 +134,6 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             }
         }
     }
-
-    private static String generate(Collection<Object> collection) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        int i = 0;
-        for (Object value : collection) {
-            if (i > 0) {
-                sb.append(", ");
-            }
-            i++;
-            value2String(value, sb);
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
 
     private static Map<Character, String> createEscapeMap() {
         final Map<Character, String> map = new HashMap<>();
