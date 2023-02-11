@@ -4,70 +4,31 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 class SpaceTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void planet() {
-        assertThat(faker.space().planet()).matches("(\\w+ ?){2,3}");
-    }
-
-    @Test
-    void moon() {
-        assertThat(faker.space().moon()).matches("(\\w+ ?){2,3}");
-    }
-
-    @Test
-    void galaxy() {
-        assertThat(faker.space().galaxy()).matches("(\\w+ ?){2,3}");
-    }
-
-    @Test
-    void nebula() {
-        assertThat(faker.space().nebula()).matches("(\\w+ ?){2,3}");
-    }
-
-    @Test
-    void starCluster() {
-        assertThat(faker.space().starCluster()).matches("(\\w+[ -]?){1,3}");
-    }
-
-    @Test
-    void constellation() {
-        assertThat(faker.space().constellation()).matches("(\\w+ ?){2,3}");
-    }
-
-    @Test
-    void star() {
-        assertThat(faker.space().star()).matches("(\\w+[ -]?){2,3}");
-    }
-
-    @Test
-    void agency() {
-        assertThat(faker.space().agency()).matches("(\\w+ ?){2,5}");
-    }
-
-    @Test
-    void agencyAbbreviation() {
-        assertThat(faker.space().agencyAbbreviation()).matches("(\\w+ ?){2,3}");
-    }
-
-    @Test
-    void nasaSpaceCraft() {
-        assertThat(faker.space().nasaSpaceCraft()).matches("(\\w+ ?){2,3}");
-    }
-
-    @Test
-    void company() {
-        assertThat(faker.space().company()).matches("((\\w|')+ ?){2,4}");
+    private static String SPACE_REGEX = "(\\w+ ?){2,3}";
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Space space = faker.space();
+        return Arrays.asList(TestSpec.of(space::planet, "space.planet", SPACE_REGEX),
+            TestSpec.of(space::moon, "space.moon", SPACE_REGEX),
+            TestSpec.of(space::galaxy, "space.galaxy", SPACE_REGEX),
+            TestSpec.of(space::nebula, "space.nebula", SPACE_REGEX),
+            TestSpec.of(space::starCluster, "space.star_cluster", "(:?\\w+[ -]?){1,3}"),
+            TestSpec.of(space::constellation, "space.constellation", SPACE_REGEX),
+            TestSpec.of(space::star, "space.star", "(\\w+[ -]?){2,3}"),
+            TestSpec.of(space::agency, "space.agency", "(:?\\w+ ?){2,5}"),
+            TestSpec.of(space::agencyAbbreviation, "space.agency_abv", SPACE_REGEX),
+            TestSpec.of(space::nasaSpaceCraft, "space.nasa_space_craft", SPACE_REGEX),
+            TestSpec.of(space::company, "space.company", "(:?(:?\\w|')+ ?){2,4}"),
+            TestSpec.of(space::meteorite, "space.meteorite", "(?U)(:?[\\w()]+[ -–]?){1,4}"));
     }
 
     @Test
     void distanceMeasurement() {
-        assertThat(faker.space().distanceMeasurement()).matches("(\\w+ ?){2,3}");
-    }
-
-    @Test
-    void meteorite() {
-        assertThat(faker.space().meteorite()).matches("(?U)([\\w()]+[ -–]?){1,4}");
+        assertThat(faker.space().distanceMeasurement()).matches("(:?\\w+ ?){2,3}");
     }
 }

@@ -1,19 +1,14 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.util.Strings.isNullOrEmpty;
+import java.util.Arrays;
+import java.util.Collection;
 
 class MoneyTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void testCurrency() {
-        assertThat(isNullOrEmpty(faker.money().currency())).isFalse();
-    }
-
-    @Test
-    void testCurrencyCode() {
-        assertThat(isNullOrEmpty(faker.money().currencyCode())).isFalse();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Money money = faker.money();
+        return Arrays.asList(TestSpec.of(money::currency, "money.currency"),
+            TestSpec.of(money::currencyCode, "money.code"));
     }
 }

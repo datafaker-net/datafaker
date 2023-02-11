@@ -1,52 +1,26 @@
 package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-class DiseaseTest extends AbstractBasicProviderTest<BaseFaker> {
+class DiseaseTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void testInternalDisease() {
-        assertThat(faker.disease().internalDisease()).matches("[\\p{L}'()., 0-9-’]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Disease disease = faker.disease();
+        return Arrays.asList(TestSpec.of(disease::internalDisease, "disease.internal_disease", "[\\p{L}'()., 0-9-’]+"),
+                TestSpec.of(disease::neurology, "disease.neurology", "[\\p{L}'()., 0-9-’]+"),
+                TestSpec.of(disease::surgery, "disease.surgery", "[\\p{L}'()., 0-9-’]+"),
+                TestSpec.of(disease::paediatrics, "disease.paediatrics", "[\\p{L}'()., 0-9-’]+"),
+                TestSpec.of(disease::gynecologyAndObstetrics, "disease.gynecology_and_obstetrics", "[\\p{L}'()., 0-9-’]+"),
+                TestSpec.of(disease::ophthalmologyAndOtorhinolaryngology, "disease.ophthalmology_and_otorhinolaryngology", "[\\p{L}'()., 0-9-’]+"),
+                TestSpec.of(disease::dermatology, "disease.dermatology", "[\\p{L}'()., 0-9-’]+"));
     }
 
-    @Test
-    void testNeurology() {
-        assertThat(faker.disease().neurology()).matches("[\\p{L}'()., 0-9-’]+");
-    }
-
-    @Test
-    void testSurgery() {
-        assertThat(faker.disease().surgery()).matches("[\\p{L}'()., 0-9-’]+");
-    }
-
-    @Test
-    void testPaediatrics() {
-        assertThat(faker.disease().paediatrics()).matches("[\\p{L}'()., 0-9-’]+");
-    }
-
-    @Test
-    void testGynecologyAndObstetrics() {
-        assertThat(faker.disease().gynecologyAndObstetrics()).matches("[\\p{L}'()., 0-9-’]+");
-    }
-
-    @Test
-    void testOphthalmologyAndOtorhinolaryngology() {
-        assertThat(faker.disease().ophthalmologyAndOtorhinolaryngology()).matches("[\\p{L}'()., 0-9-’]+");
-    }
-
-    @Test
-    void testDermatology() {
-        assertThat(faker.disease().dermatology()).matches("[\\p{L}'()., 0-9-’]+");
-    }
-
-
-    @Test
     void testInternalDiseaseWith10000Times() {
         boolean isExist = false;
         for (int i = 0; i < 10000; i++) {
@@ -86,15 +60,5 @@ class DiseaseTest extends AbstractBasicProviderTest<BaseFaker> {
     @RepeatedTest(10000)
     void testDermatoloryWith10000Times() {
         assertThat(faker.disease().dermatology()).isNotEmpty();
-    }
-
-    @Override
-    protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.disease().neurology(), "disease.neurology"),
-                TestSpec.of(() -> faker.disease().surgery(), "disease.surgery"),
-                TestSpec.of(() -> faker.disease().paediatrics(), "disease.paediatrics"),
-                TestSpec.of(() -> faker.disease().gynecologyAndObstetrics(), "disease.gynecology_and_obstetrics"),
-                TestSpec.of(() -> faker.disease().ophthalmologyAndOtorhinolaryngology(), "disease.ophthalmology_and_otorhinolaryngology"),
-                TestSpec.of(() -> faker.disease().dermatology(), "disease.dermatology"));
     }
 }

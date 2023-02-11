@@ -3,11 +3,12 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.Collection;
 
-class MarketingTest extends AbstractBasicProviderTest<BaseFaker> {
+class MarketingTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.marketing().buzzwords(), "marketing.buzzwords"));
+        Marketing marketing = faker.marketing();
+        return Arrays.asList(TestSpec.of(marketing::buzzwords, "marketing.buzzwords"));
     }
 
 }

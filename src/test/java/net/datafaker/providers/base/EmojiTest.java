@@ -1,19 +1,15 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class EmojiTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void smiley() {
-        assertThat(faker.emoji().smiley()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Emoji emoji = faker.emoji();
+        
+        return Arrays.asList(TestSpec.of(emoji::smiley, "emoji.smileys"),
+            TestSpec.of(emoji::cat, "emoji.cats"));
     }
-
-    @Test
-    void cat() {
-        assertThat(faker.emoji().cat()).isNotEmpty();
-    }
-
 }

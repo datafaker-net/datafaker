@@ -6,10 +6,11 @@ import java.util.Collection;
 /**
  * @author Luka Obradovic (luka@vast.com)
  */
-class YodaTest extends AbstractBasicProviderTest<BaseFaker> {
+class YodaTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.yoda().quote(), "yoda.quotes"));
+        Yoda yoda = faker.yoda();
+        return Arrays.asList(TestSpec.of(yoda::quote, "yoda.quotes"));
     }
 }

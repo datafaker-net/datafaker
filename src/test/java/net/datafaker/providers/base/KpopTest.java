@@ -4,15 +4,16 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.Collection;
 
-class KpopTest extends AbstractBasicProviderTest<BaseFaker> {
+class KpopTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.kpop().iGroups(), "kpop.i_groups"),
-                TestSpec.of(() -> faker.kpop().iiGroups(), "kpop.ii_groups"),
-                TestSpec.of(() -> faker.kpop().iiiGroups(), "kpop.iii_groups"),
-                TestSpec.of(() -> faker.kpop().girlGroups(), "kpop.girl_groups"),
-                TestSpec.of(() -> faker.kpop().boyBands(), "kpop.boy_bands"),
-                TestSpec.of(() -> faker.kpop().solo(), "kpop.solo"));
+        Kpop kpop = faker.kpop();
+        return Arrays.asList(TestSpec.of(kpop::iGroups, "kpop.i_groups"),
+                TestSpec.of(kpop::iiGroups, "kpop.ii_groups"),
+                TestSpec.of(kpop::iiiGroups, "kpop.iii_groups"),
+                TestSpec.of(kpop::girlGroups, "kpop.girl_groups"),
+                TestSpec.of(kpop::boyBands, "kpop.boy_bands"),
+                TestSpec.of(kpop::solo, "kpop.solo"));
     }
 }

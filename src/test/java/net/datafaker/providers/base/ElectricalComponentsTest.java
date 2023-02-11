@@ -1,26 +1,15 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class ElectricalComponentsTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void testActive() {
-        String activeComponent = faker.electricalComponents().active();
-        assertThat(activeComponent).isNotEmpty();
-    }
-
-    @Test
-    void testPassive() {
-        String passiveComponent = faker.electricalComponents().passive();
-        assertThat(passiveComponent).isNotEmpty();
-    }
-
-    @Test
-    void testElectromechanical() {
-        String electromechanicalComponent = faker.electricalComponents().electromechanical();
-        assertThat(electromechanicalComponent).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        ElectricalComponents electricalComponents = faker.electricalComponents();
+        return Arrays.asList(TestSpec.of(electricalComponents::active, "electrical_components.active"),
+            TestSpec.of(electricalComponents::passive, "electrical_components.passive"),
+            TestSpec.of(electricalComponents::electromechanical, "electrical_components.electromechanical"));
     }
 }

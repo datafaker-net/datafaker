@@ -6,23 +6,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ShakespeareTest extends BaseFakerTest<BaseFaker> {
 
+    private Shakespeare shakespeare = faker.shakespeare();
+
     @Test
     void testHamletQuote() {
-        assertThat(faker.shakespeare().hamletQuote()).isNotEmpty();
+        assertThat(shakespeare.hamletQuote()).isNotEmpty();
     }
 
     @Test
     void testAsYouLikeItQuote() {
-        assertThat(faker.shakespeare().asYouLikeItQuote()).isNotEmpty();
+        assertThat(shakespeare.asYouLikeItQuote()).isNotEmpty();
     }
 
     @Test
     void testKingRichardIIIQuote() {
-        assertThat(faker.shakespeare().kingRichardIIIQuote()).isNotEmpty();
+        assertThat(shakespeare.kingRichardIIIQuote()).isNotEmpty();
     }
 
     @Test
     void testRomeoAndJulietQuote() {
-        assertThat(faker.shakespeare().romeoAndJulietQuote()).isNotEmpty();
+        assertThat(shakespeare.romeoAndJulietQuote()).isNotEmpty();
     }
 }

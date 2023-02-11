@@ -1,18 +1,14 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class HouseTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void testFurniture() {
-        assertThat(faker.house().furniture()).matches("^[a-zA-Z ]+$");
-    }
-
-    @Test
-    void testRoom() {
-        assertThat(faker.house().room()).matches("^[a-zA-Z ]+$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        House house = faker.house();
+        return Arrays.asList(TestSpec.of(house::furniture, "house.furniture"),
+            TestSpec.of(house::room, "house.rooms"));
     }
 }

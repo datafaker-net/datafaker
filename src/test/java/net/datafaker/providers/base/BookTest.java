@@ -4,25 +4,22 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 class BookTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void testTitle() {
-        assertThat(faker.book().title()).matches("([\\p{L}'\\-?]+[!,]? ?){2,9}");
-    }
+    private Book book = faker.book();
 
     @Test
     void testAuthor() {
-        assertThat(faker.book().author()).matches("([\\w']+\\.? ?){2,3}");
+        assertThat(book.author()).matches("([\\w']+\\.? ?){2,3}");
     }
 
-    @Test
-    void testPublisher() {
-        assertThat(faker.book().publisher()).matches("([\\p{L}'&\\-]+[,.]? ?){1,5}");
-    }
-
-    @Test
-    void testGenre() {
-        assertThat(faker.book().genre()).matches("([\\w/]+ ?){2,4}");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.book().title(), "book.title", "([\\p{L}'\\-?]+[!,]? ?){2,9}"),
+            TestSpec.of(() -> faker.book().publisher(), "book.publisher", "([\\p{L}'&\\-]+[,.]? ?){1,5}"),
+            TestSpec.of(() -> faker.book().genre(), "book.genre", "([\\w/]+ ?){2,4}"));
     }
 }

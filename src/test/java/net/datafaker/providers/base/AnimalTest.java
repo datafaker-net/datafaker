@@ -1,29 +1,32 @@
 package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 class AnimalTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void name() {
-        assertThat(faker.animal().name()).matches("[A-Za-z ]+");
+    private Animal animal = faker.animal();
+
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(animal::name, "creature.animal.name"));
     }
 
     @RepeatedTest(100)
     void scientificName() {
-        assertThat(faker.animal().scientificName()).matches("[A-Z][a-z]+ [a-z]+");
+        assertThat(animal.scientificName()).matches("[A-Z][a-z]+ [a-z]+");
     }
 
     @RepeatedTest(100)
     void genus() {
-        assertThat(faker.animal().genus()).matches("[A-Z][a-z]+");
+        assertThat(animal.genus()).matches("[A-Z][a-z]+");
     }
 
     @RepeatedTest(100)
     void species() {
-        assertThat(faker.animal().species()).matches("[a-z]+");
+        assertThat(animal.species()).matches("[a-z]+");
     }
 }

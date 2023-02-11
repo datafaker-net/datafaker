@@ -1,29 +1,16 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class AncientTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void god() {
-        assertThat(faker.ancient().god()).matches("\\w+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Ancient ancient = faker.ancient();
+        return Arrays.asList(TestSpec.of(ancient::god, "ancient.god"),
+            TestSpec.of(ancient::primordial, "ancient.primordial"),
+            TestSpec.of(ancient::titan, "ancient.titan"),
+            TestSpec.of(ancient::hero, "ancient.hero"));
     }
-
-    @Test
-    void primordial() {
-        assertThat(faker.ancient().primordial()).matches("\\w+");
-    }
-
-    @Test
-    void titan() {
-        assertThat(faker.ancient().titan()).matches("\\w+");
-    }
-
-    @Test
-    void hero() {
-        assertThat(faker.ancient().hero()).matches("(?U)\\w+");
-    }
-
 }

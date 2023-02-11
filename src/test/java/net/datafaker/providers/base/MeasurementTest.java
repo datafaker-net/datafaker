@@ -1,50 +1,22 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class MeasurementTest extends BaseFakerTest<BaseFaker> {
 
     public static final String WORDS = "^[a-z ]+$";
 
-    @RepeatedTest(10)
-    void testHeight() {
-        assertThat(faker.measurement().height()).matches(WORDS);
-    }
-
-    @RepeatedTest(10)
-    void testLength() {
-        assertThat(faker.measurement().length()).matches(WORDS);
-    }
-
-    @RepeatedTest(10)
-    void testVolume() {
-        assertThat(faker.measurement().volume()).matches(WORDS);
-    }
-
-    @RepeatedTest(10)
-    void testWeight() {
-        assertThat(faker.measurement().weight()).matches(WORDS);
-    }
-
-    @RepeatedTest(10)
-    void testMetricHeight() {
-        assertThat(faker.measurement().metricHeight()).matches(WORDS);
-    }
-
-    @RepeatedTest(10)
-    void testMetricLength() {
-        assertThat(faker.measurement().metricLength()).matches(WORDS);
-    }
-
-    @RepeatedTest(10)
-    void testMetricVolume() {
-        assertThat(faker.measurement().metricVolume()).matches(WORDS);
-    }
-
-    @RepeatedTest(10)
-    void testMetricWeight() {
-        assertThat(faker.measurement().metricWeight()).matches(WORDS);
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Measurement measurement = faker.measurement();
+        return Arrays.asList(TestSpec.of(measurement::height, "measurement.height"),
+            TestSpec.of(measurement::length, "measurement.length"),
+            TestSpec.of(measurement::volume, "measurement.volume"),
+            TestSpec.of(measurement::weight, "measurement.weight"),
+            TestSpec.of(measurement::metricLength, "measurement.metric_length"),
+            TestSpec.of(measurement::metricHeight, "measurement.metric_height"),
+            TestSpec.of(measurement::metricVolume, "measurement.metric_volume"),
+            TestSpec.of(measurement::metricWeight, "measurement.metric_weight"));
     }
 }

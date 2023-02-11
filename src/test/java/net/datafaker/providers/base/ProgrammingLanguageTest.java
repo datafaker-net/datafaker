@@ -1,18 +1,14 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class ProgrammingLanguageTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void name() {
-        assertThat(faker.programmingLanguage().name()).matches("[A-Za-z\\d :,.+*()#/–\\-@πéöü'′!]+");
-    }
-
-    @Test
-    void creator() {
-        assertThat(faker.programmingLanguage().creator()).matches("[A-Za-z .,\\-]+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        ProgrammingLanguage lang = faker.programmingLanguage();
+        return Arrays.asList(TestSpec.of(lang::name, "programming_language.name", "[A-Za-z\\d :,.+*()#/–\\-@πéöü'′!]+"),
+            TestSpec.of(lang::creator, "programming_language.creator", "[A-Za-z .,\\-]+"));
     }
 }

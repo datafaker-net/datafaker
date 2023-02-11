@@ -14,15 +14,16 @@ class NameTest extends BaseFakerTest<BaseFaker> {
 
     @Spy
     private BaseFaker mockedFaker;
+    private Name name = faker.name();
 
     @Test
     void testName() {
-        assertThat(faker.name().name()).matches("([\\w']+\\.?( )?){2,3}");
+        assertThat(name.name()).matches("([\\w']+\\.?( )?){2,3}");
     }
 
     @Test
     void testNameWithMiddle() {
-        assertThat(faker.name().nameWithMiddle()).matches("([\\w']+\\.?( )?){3,4}");
+        assertThat(name.nameWithMiddle()).matches("([\\w']+\\.?( )?){3,4}");
     }
 
     @Test
@@ -30,7 +31,7 @@ class NameTest extends BaseFakerTest<BaseFaker> {
         int theSameNameCnt = 0;
         int total = 100;
         for (int i = 0; i < total; i++) {
-            String nameWithMiddle = faker.name().nameWithMiddle();
+            String nameWithMiddle = name.nameWithMiddle();
             String[] splitNames = nameWithMiddle.split(" ");
             if (splitNames[0].equals(splitNames[1])) {
                 theSameNameCnt++;
@@ -41,7 +42,7 @@ class NameTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testFullName() {
-        assertThat(faker.name().fullName()).matches("([\\w']+\\.?( )?){2,4}");
+        assertThat(name.fullName()).matches("([\\w']+\\.?( )?){2,4}");
     }
 
     @Test
@@ -55,32 +56,32 @@ class NameTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testFirstName() {
-        assertThat(faker.name().firstName()).matches("\\w+");
+        assertThat(name.firstName()).matches("\\w+");
     }
 
     @Test
     void testLastName() {
-        assertThat(faker.name().lastName()).matches("[A-Za-z']+");
+        assertThat(name.lastName()).matches("[A-Za-z']+");
     }
 
     @Test
     void testPrefix() {
-        assertThat(faker.name().prefix()).matches("\\w+\\.?");
+        assertThat(name.prefix()).matches("\\w+\\.?");
     }
 
     @Test
     void testSuffix() {
-        assertThat(faker.name().suffix()).matches("\\w+\\.?");
+        assertThat(name.suffix()).matches("\\w+\\.?");
     }
 
     @Test
     void testTitle() {
-        assertThat(faker.name().title()).matches("(\\w+\\.?( )?){3}");
+        assertThat(name.title()).matches("(\\w+\\.?( )?){3}");
     }
 
     @RepeatedTest(100)
     void testUsername() {
-        assertThat(faker.name().username()).matches("^(\\w+)\\.(\\w+)$");
+        assertThat(name.username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
     @Test

@@ -7,44 +7,47 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.Collection;
 
-class ScienceTest extends AbstractBasicProviderTest<BaseFaker> {
+class ScienceTest extends BaseFakerTest<BaseFaker> {
+
+    Science science = faker.science();
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.science().unit(), "science.unit"));
+        return Arrays.asList(TestSpec.of(science::unit, "science.unit"));
     }
+
     @RepeatedTest(10)
     void element() {
-        assertThat(faker.science().element()).matches("[A-Za-z ]+");
+        assertThat(science.element()).matches("[A-Za-z ]+");
     }
 
     @RepeatedTest(10)
     void elementSymbol() {
-        assertThat(faker.science().elementSymbol()).matches("[A-Za-z]{1,2}");
+        assertThat(science.elementSymbol()).matches("[A-Za-z]{1,2}");
     }
 
     @RepeatedTest(10)
     void scientist() {
-        assertThat(faker.science().scientist()).matches("[A-Za-z. -]+");
+        assertThat(science.scientist()).matches("[A-Za-z. -]+");
     }
 
     @RepeatedTest(10)
     void tool() {
-        assertThat(faker.science().tool()).matches("[0-9A-Za-z. -]+");
+        assertThat(science.tool()).matches("[0-9A-Za-z. -]+");
     }
 
     @RepeatedTest(10)
     void quark() {
-        assertThat(faker.science().quark()).matches("[A-Za-z]+");
+        assertThat(science.quark()).matches("[A-Za-z]+");
     }
 
     @RepeatedTest(10)
     void leptons() {
-        assertThat(faker.science().leptons()).matches("[A-Za-z ]+");
+        assertThat(science.leptons()).matches("[A-Za-z ]+");
     }
 
     @RepeatedTest(10)
     void bosons() {
-        assertThat(faker.science().bosons()).matches("[A-Za-z ]+");
+        assertThat(science.bosons()).matches("[A-Za-z ]+");
     }
 }

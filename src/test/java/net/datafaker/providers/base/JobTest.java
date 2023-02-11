@@ -1,33 +1,16 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class JobTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void field() {
-        assertThat(faker.job().field()).matches("^[A-Z][A-Za-z-]+$");
-    }
-
-    @Test
-    void seniority() {
-        assertThat(faker.job().seniority()).matches("^[A-Z][a-z]+$");
-    }
-
-    @Test
-    void position() {
-        assertThat(faker.job().position()).matches("^[A-Z][a-z]+$");
-    }
-
-    @Test
-    void keySkills() {
-        assertThat(faker.job().keySkills()).matches("([A-Za-z-]+ ?){1,3}");
-    }
-
-    @Test
-    void title() {
-        assertThat(faker.job().title()).matches("([A-Za-z-]+ ?){2,3}");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Job job = faker.job();
+        return Arrays.asList(TestSpec.of(job::field, "job.field"),
+            TestSpec.of(job::seniority, "job.seniority"),
+            TestSpec.of(job::position, "job.position"),
+            TestSpec.of(job::keySkills, "job.key_skills", "(:?[A-Za-z-]+ ?){1,3}"));
     }
 }

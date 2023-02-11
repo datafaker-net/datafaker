@@ -3,15 +3,16 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.Collection;
 
-class ConstructionTest extends AbstractBasicProviderTest<BaseFaker> {
+class ConstructionTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.construction().heavyEquipment(), "construction.heavy_equipment"),
-                TestSpec.of(() -> faker.construction().materials(), "construction.materials"),
-                TestSpec.of(() -> faker.construction().subcontractCategories(), "construction.subcontract_categories"),
-                TestSpec.of(() -> faker.construction().roles(), "construction.roles"),
-                TestSpec.of(() -> faker.construction().trades(), "construction.trades"),
-                TestSpec.of(() -> faker.construction().standardCostCodes(), "construction.standard_cost_codes"));
+        Construction construction = faker.construction();
+        return Arrays.asList(TestSpec.of(construction::heavyEquipment, "construction.heavy_equipment"),
+                TestSpec.of(construction::materials, "construction.materials"),
+                TestSpec.of(construction::subcontractCategories, "construction.subcontract_categories"),
+                TestSpec.of(construction::roles, "construction.roles"),
+                TestSpec.of(construction::trades, "construction.trades"),
+                TestSpec.of(construction::standardCostCodes, "construction.standard_cost_codes"));
     }
 }

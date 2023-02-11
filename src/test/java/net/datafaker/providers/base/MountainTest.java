@@ -3,11 +3,12 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.Collection;
 
-class MountainTest extends AbstractBasicProviderTest<BaseFaker> {
+class MountainTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.mountain().name(), "mountain.name"),
-                TestSpec.of(() -> faker.mountain().range(), "mountain.range"));
+        Mountain mountain = faker.mountain();
+        return Arrays.asList(TestSpec.of(mountain::name, "mountain.name"),
+                TestSpec.of(mountain::range, "mountain.range"));
     }
 }

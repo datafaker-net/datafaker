@@ -3,16 +3,17 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.Collection;
 
-class OlympicSportTest extends AbstractBasicProviderTest<BaseFaker> {
+class OlympicSportTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.olympicSport().summerOlympics(), "olympic_sport.summer_olympics"),
-                TestSpec.of(() -> faker.olympicSport().winterOlympics(), "olympic_sport.winter_olympics"),
-                TestSpec.of(() -> faker.olympicSport().summerParalympics(), "olympic_sport.summer_paralympics"),
-                TestSpec.of(() -> faker.olympicSport().winterParalympics(), "olympic_sport.winter_paralympics"),
-                TestSpec.of(() -> faker.olympicSport().ancientOlympics(), "olympic_sport.ancient_olympics"),
-                TestSpec.of(() -> faker.olympicSport().unusual(), "olympic_sport.unusual"));
+        OlympicSport olympicSport = faker.olympicSport();
+        return Arrays.asList(TestSpec.of(olympicSport::summerOlympics, "olympic_sport.summer_olympics"),
+                TestSpec.of(olympicSport::winterOlympics, "olympic_sport.winter_olympics"),
+                TestSpec.of(olympicSport::summerParalympics, "olympic_sport.summer_paralympics"),
+                TestSpec.of(olympicSport::winterParalympics, "olympic_sport.winter_paralympics"),
+                TestSpec.of(olympicSport::ancientOlympics, "olympic_sport.ancient_olympics"),
+                TestSpec.of(olympicSport::unusual, "olympic_sport.unusual"));
     }
 
 }
