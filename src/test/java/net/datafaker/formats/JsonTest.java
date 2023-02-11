@@ -311,6 +311,35 @@ class JsonTest {
             "\"objectCollection\": [{\"country\": \"Denmark\", \"city\": \"Port Angel\"}, {\"two\": \"Denmark\", \"one\": \"Port Angel\"}]}");
     }
 
+    @Test
+    void jsonCollectionOfCollectionsTest() {
+        JsonTransformer<Name> transformer = JsonTransformer.<Name>builder().build();
+
+        String json = transformer.generate(
+            Schema.of(
+                field("text", () -> "Mrs. Brian Braun"),
+                field("objectCollection", () -> List.of(
+                        List.of(
+                            List.of(
+                                compositeField(null, new Field[]{
+                                        field("country", () -> "Denmark"),
+                                        field("city", () -> "Port Angel")
+                                    }
+                                ),
+                                compositeField(null, new Field[]{
+                                        field("two", () -> "Denmark"),
+                                        field("one", () -> "Port Angel")
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+            ), 1);
+        assertThat(json).isEqualTo("{\"text\": \"Mrs. Brian Braun\", " +
+            "\"objectCollection\": [[[{\"country\": \"Denmark\", \"city\": \"Port Angel\"}, {\"two\": \"Denmark\", \"one\": \"Port Angel\"}]]]}");
+    }
+
     private static Map.Entry<Supplier<String>, Supplier<Object>> entry(
         Supplier<String> key, Supplier<Object> value) {
         return new AbstractMap.SimpleEntry<>(key, value);

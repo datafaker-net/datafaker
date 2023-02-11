@@ -39,7 +39,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             if (fields[i] instanceof CompositeField) {
                 sb.append(apply(input, (CompositeField) fields[i], i));
             } else {
-                applyValue(input, sb, fields[i]);
+                applyValue(input, sb, ((SimpleField) fields[i]).transform(input));
             }
             if (i < fields.length - 1) {
                 sb.append(", ");
@@ -77,8 +77,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         return limit > 1 ? wrappers[0] + LINE_SEPARATOR + sb + LINE_SEPARATOR + wrappers[1] : sb.toString();
     }
 
-    private void applyValue(IN input, StringBuilder sb, Field<?, ?> fields) {
-        Object value = ((SimpleField) fields).transform(input);
+    private void applyValue(IN input, StringBuilder sb, Object value) {
         if (value instanceof Collection<?>) {
             sb.append(generate(input,(Collection) value));
         } else if (value != null && value.getClass().isArray()) {
@@ -100,7 +99,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             if (value instanceof CompositeField<?,?>) {
                 sb.append(apply(input,((CompositeField) value)));
             } else {
-                value2String(value, sb);
+                applyValue(input, sb, value);
             }
         }
         sb.append("]");
