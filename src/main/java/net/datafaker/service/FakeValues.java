@@ -1,5 +1,6 @@
 package net.datafaker.service;
 
+import net.datafaker.internal.helper.SingletonLocale;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
 
 public class FakeValues implements FakeValuesInterface {
     private static final Logger LOG = Logger.getLogger("faker");
-    private final Locale locale;
+    private final SingletonLocale sLocale;
     private final String filename;
     private final String path;
     private final Path filePath;
@@ -37,7 +38,7 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     FakeValues(Locale locale, String filename, String path, Path filePath) {
-        this.locale = locale;
+        this.sLocale = SingletonLocale.get(locale);
         this.filename = filename;
         this.filePath = filePath;
         if (path == null) {
@@ -105,6 +106,7 @@ public class FakeValues implements FakeValuesInterface {
     private Map<String, Object> loadValues() {
         Map<String, Object> result = loadFromFilePath();
         if (result != null) return result;
+        final Locale locale = sLocale.getLocale();
         final String[] paths = this.filename.isEmpty()
             ? new String[] {"/" + locale.getLanguage() + ".yml"}
             : new String[] {
@@ -197,7 +199,7 @@ public class FakeValues implements FakeValuesInterface {
     private Map<String, Object> readFromStream(InputStream stream) {
         if (stream == null) return null;
         final Map<String, Object> valuesMap = new Yaml().loadAs(stream, Map.class);
-        Map<String, Object> localeBased = (Map<String, Object>) valuesMap.get(locale.getLanguage());
+        Map<String, Object> localeBased = (Map<String, Object>) valuesMap.get(sLocale.getLocale().getLanguage());
         if (localeBased == null) {
             localeBased = (Map<String, Object>) valuesMap.get(filename);
         }
@@ -213,7 +215,7 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     Locale getLocale() {
-        return locale;
+        return sLocale.getLocale();
     }
 
     @Override
@@ -221,11 +223,11 @@ public class FakeValues implements FakeValuesInterface {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FakeValues that = (FakeValues) o;
-        return Objects.equals(locale, that.locale) && Objects.equals(filename, that.filename) && Objects.equals(path, that.path) && Objects.equals(filePath, that.filePath);
+        return sLocale == that.sLocale && Objects.equals(filename, that.filename) && Objects.equals(path, that.path) && Objects.equals(filePath, that.filePath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(locale, filename, path, filePath);
+        return Objects.hash(sLocale, filename, path, filePath);
     }
 }

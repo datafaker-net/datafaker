@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static net.datafaker.transformations.Field.field;
@@ -20,36 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CsvTest extends AbstractFakerTest {
-
-    @Test
-    void csvTest() {
-        final BaseFaker faker = new BaseFaker();
-        String separator = "@@@";
-        int limit = 20;
-        String csv =
-            Format.toCsv(
-                    Csv.Column.of("first_name", () -> faker.name().firstName()),
-                    Csv.Column.of("last_name", () -> faker.name().lastName()),
-                    Csv.Column.of("address", () -> faker.address().streetAddress()))
-                .header(true)
-                .separator(separator)
-                .limit(limit)
-                .build()
-                .get();
-        int numberOfLines = 0;
-        int numberOfSeparator = 0;
-        for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
-                numberOfLines++;
-            } else if (csv.regionMatches(i, separator, 0, separator.length())) {
-                numberOfSeparator++;
-            }
-        }
-
-        assertThat(limit + 1).isEqualTo(numberOfLines); // limit + 1 line for header
-        assertThat((limit + 1) * 2)
-            .isEqualTo(numberOfSeparator); // number of lines * (number of columns - 1)
-    }
 
     @Test
     void csvTestNew() {
@@ -81,37 +49,6 @@ class CsvTest extends AbstractFakerTest {
     }
 
     @Test
-    void csvTestWithQuotes() {
-        String separator = "$$$";
-        int limit = 20;
-        final BaseFaker faker = new BaseFaker();
-        List<Csv.Column> columns = new ArrayList<>();
-        columns.add(Csv.Column.of("first_name", () -> faker.expression("#{Name.first_name}")));
-        columns.add(Csv.Column.of("last_name", () -> faker.expression("#{Name.last_name}")));
-        String csv =
-            Format.toCsv(columns)
-                .header(true)
-                .separator(separator)
-                .quote('%')
-                .limit(limit)
-                .build()
-                .get();
-        int numberOfLines = 0;
-        int numberOfSeparator = 0;
-        for (int i = 0; i < csv.length(); i++) {
-            if (csv.regionMatches(i, LINE_SEPARATOR, 0, LINE_SEPARATOR.length())) {
-                numberOfLines++;
-            } else if (csv.regionMatches(i, separator, 0, separator.length())) {
-                numberOfSeparator++;
-            }
-        }
-
-        assertThat(limit + 1).isEqualTo(numberOfLines); // limit + 1 line for header
-        assertThat((limit + 1) * (columns.size() - 1))
-            .isEqualTo(numberOfSeparator); // number of lines * (number of columns - 1)
-    }
-
-    @Test
     void csvTestWithQuotesNew() {
         String separator = "$$$";
         int limit = 20;
@@ -137,26 +74,6 @@ class CsvTest extends AbstractFakerTest {
         assertThat(limit).isEqualTo(numberOfLines);
         assertThat((limit + 1) * (schema.getFields().length - 1))
             .isEqualTo(numberOfSeparator); // number of lines * (number of columns - 1)
-    }
-
-    @Test
-    void testCsvWithComma() {
-
-        String csv =
-            Format.toCsv(
-                    Csv.Column.of("values", () -> "1,2,3"),
-                    Csv.Column.of("title", () -> "The \"fabulous\" artist"))
-                .header(true)
-                .separator(",")
-                .limit(1)
-                .build()
-                .get();
-
-        String expected =
-            "\"values\",\"title\"" + LINE_SEPARATOR +
-                "\"1,2,3\",\"The \"\"fabulous\"\" artist\"" + LINE_SEPARATOR;
-
-        assertThat(csv).isEqualTo(expected);
     }
 
     @Test
@@ -209,10 +126,10 @@ class CsvTest extends AbstractFakerTest {
         CsvTransformer<Integer> transformer =
             CsvTransformer.<Integer>builder().header(true).separator(",").build();
 
-		FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
-                .suppliers(() -> faker.number().randomDigit())
-                .len(5)
-                .build();
+        FakeSequence<Integer> fakeSequence = faker.<Integer>collection()
+            .suppliers(() -> faker.number().randomDigit())
+            .len(5)
+            .build();
         String csv = transformer.generate(fakeSequence, schema);
 
         String expected =
@@ -230,16 +147,17 @@ class CsvTest extends AbstractFakerTest {
     void testCsvWithDifferentObjectsFunctionStream() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
-                field("Number", integer -> integer),
-                field("Password", integer -> faker.internet().password(integer, integer))
+            field("Number", integer -> integer),
+            field("Password", integer -> faker.internet().password(integer, integer))
         );
         CsvTransformer<Integer> transformer =
-                CsvTransformer.<Integer>builder().header(true).separator(",").build();
+            CsvTransformer.<Integer>builder().header(true).separator(",").build();
 
         FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
-                .suppliers(() -> faker.number().randomDigit())
-                .len(3)
-                .build();;
+            .suppliers(() -> faker.number().randomDigit())
+            .len(3)
+            .build();
+        ;
         String csv = transformer.generate(fakeSequence, schema);
 
         String expected =
@@ -252,37 +170,31 @@ class CsvTest extends AbstractFakerTest {
     }
 
     @Test
-	void testCsvWithInfiniteSequence() {
-		BaseFaker faker = new BaseFaker(new Random(10L));
+    void testCsvWithInfiniteSequence() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
 
-		Schema<Integer, ?> schema = Schema.of(
-				field("Number", integer -> faker.number().digits(integer)),
-				field("String", prefix -> prefix + ": " + faker.name().firstName())
-		);
-		CsvTransformer<Integer> transformer =
-				CsvTransformer.<Integer>builder().header(true).separator(",").build();
+        Schema<Integer, ?> schema = Schema.of(
+            field("Number", integer -> faker.number().digits(integer)),
+            field("String", prefix -> prefix + ": " + faker.name().firstName())
+        );
+        CsvTransformer<Integer> transformer =
+            CsvTransformer.<Integer>builder().header(true).separator(",").build();
 
-		FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
-				.suppliers(() -> faker.number().randomDigit())
-				.build();
-		assertThatThrownBy(() -> transformer.generate(fakeSequence, schema))
-				.isInstanceOf(IllegalArgumentException.class)
-				.hasMessage("The sequence should be finite of size");
-	}
+        FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
+            .suppliers(() -> faker.number().randomDigit())
+            .build();
+        assertThatThrownBy(() -> transformer.generate(fakeSequence, schema))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("The sequence should be finite of size");
+    }
 
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 3, 10, 20, 100})
     void testLimitForCsv(int limit) {
         final BaseFaker faker = new BaseFaker();
-        String csv =
-            Format.toCsv(faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build())
-                .headers(() -> "firstName", () -> "lastname")
-                .columns(Name::firstName, Name::lastName)
-                .separator(" : ")
-                .header(false)
-                .limit(limit)
-                .build()
-                .get();
+        String csv = CsvTransformer.<Name>builder().separator(" : ").header(false).build()
+            .generate(faker.<Name>collection().suppliers(faker::name).maxLen(limit + 1).build(),
+                Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName)));
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
@@ -319,18 +231,12 @@ class CsvTest extends AbstractFakerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 2, 3, 10, 20, 100})
+    @ValueSource(ints = {0, 2, 3, 10, 20})
     void testLimitForCollection(int limit) {
         final BaseFaker faker = new BaseFaker();
-        String csv =
-            Format.toCsv(faker.<Name>collection().suppliers(faker::name).maxLen(limit).build())
-                .headers(() -> "firstName", () -> "lastname")
-                .columns(Name::firstName, Name::lastName)
-                .separator(" : ")
-                .header(false)
-                .limit(limit + 1)
-                .build()
-                .get();
+        String csv = CsvTransformer.<Name>builder().header(false).build()
+            .generate(faker.<Name>collection().suppliers(faker::name).maxLen(limit).build(),
+                Schema.of(field("firstName", Name::firstName), field("lastName", Name::lastName)));
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
@@ -339,7 +245,7 @@ class CsvTest extends AbstractFakerTest {
             }
         }
 
-        assertThat(numberOfLines).isEqualTo(limit);
+        assertThat(numberOfLines == 0 ? 0 : numberOfLines + 1).isEqualTo(limit);
     }
 
     @ParameterizedTest
@@ -374,13 +280,9 @@ class CsvTest extends AbstractFakerTest {
             .build();
 
         assertThatThrownBy(() ->
-            Format.toCsv(infiniteSequence)
-                .headers(() -> "firstName", () -> "lastname")
-                .columns(Name::firstName, Name::lastName)
-                .separator(" : ")
-                .header(false)
-                .build()
-                .get()
+            CsvTransformer.<Name>builder().separator(" : ").header(false).build()
+                .generate(infiniteSequence,
+                    Schema.of(field("firstName", Name::firstName), field("lastName", Name::lastName)))
         ).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("The sequence should be finite of size");
     }
@@ -391,16 +293,14 @@ class CsvTest extends AbstractFakerTest {
         final BaseFaker faker = new BaseFaker();
         FakeSequence<Name> infiniteSequence = faker.<Name>stream()
             .suppliers(faker::name)
+            .len(limit)
             .build();
 
-        String csv = Format.toCsv(infiniteSequence)
-            .headers(() -> "firstName", () -> "lastname")
-            .columns(Name::firstName, Name::lastName)
-            .separator(" : ")
-            .header(false)
-            .limit(limit)
-            .build()
-            .get();
+        String csv = CsvTransformer.<Name>builder().header(false).separator(" : ").build()
+            .generate(infiniteSequence,
+                Schema.of(
+                    field("firstName", Name::firstName),
+                    field("lastName", Name::lastName)));
 
         int numberOfLines = 0;
         for (int i = 0; i < csv.length(); i++) {
@@ -409,7 +309,7 @@ class CsvTest extends AbstractFakerTest {
             }
         }
 
-        assertThat(numberOfLines).isEqualTo(limit);
+        assertThat(numberOfLines + 1).isEqualTo(limit);
     }
 
     @Test

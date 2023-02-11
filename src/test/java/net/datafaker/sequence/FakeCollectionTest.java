@@ -4,8 +4,10 @@ import net.datafaker.AbstractFakerTest;
 import net.datafaker.formats.Format;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
-import net.datafaker.providers.base.Name;
 import net.datafaker.providers.base.Number;
+import net.datafaker.transformations.CsvTransformer;
+import net.datafaker.transformations.JsonTransformer;
+import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -165,31 +168,18 @@ class FakeCollectionTest extends AbstractFakerTest {
     }
 
     @Test
-    void differentNumberOfHeadersAndColumns() {
-        assertThatThrownBy(() -> Format.toCsv(
-                faker.<Name>collection()
-                    .suppliers(faker::name)
-                    .minLen(3)
-                    .maxLen(5)
-                    .build())
-            .headers(() -> "firstName", () -> "lastname")
-            .columns(Name::firstName, Name::lastName, Name::fullName).build().get())
-            .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
     void toCsv() {
         String separator = "$$$";
         int limit = 5;
-        String csv = Format.toCsv(
-                faker.<Data>collection().minLen(limit).maxLen(limit)
-                    .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
-                    .build())
-            .headers(() -> "name", () -> "value", () -> "range", () -> "unit")
-            .columns(Data::name, Data::value, Data::range, Data::unit)
-            .separator(separator)
-            .build().get();
-
+        CsvTransformer<Data> csvTransformer = CsvTransformer.<Data>builder().header(true).separator(separator).build();
+        String csv = csvTransformer.generate(
+            faker.collection(BloodPressure::new, Glucose::new, Temperature::new)
+                .len(limit).generate(),
+            Schema.of(
+                field("name", Data::name),
+                field("value", Data::value),
+                field("range", Data::range),
+                field("unit", Data::unit)));
         int numberOfLines = 0;
         int numberOfSeparator = 0;
         for (int i = 0; i < csv.length(); i++) {
@@ -199,24 +189,25 @@ class FakeCollectionTest extends AbstractFakerTest {
                 numberOfSeparator++;
             }
         }
-
-        assertThat(limit + 1).isEqualTo(numberOfLines); // limit + 1 line for header
+        assertThat(limit).isEqualTo(numberOfLines);
         assertThat((limit + 1) * (4 - 1)).isEqualTo(numberOfSeparator); // number of lines * (number of columns - 1)
     }
 
     @Test
     void toJson() {
         int limit = 10;
-        String json = Format.toJson(
-                faker.<Data>collection().minLen(limit).maxLen(limit)
-                    .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
-                    .build())
-            .set("name", Data::name)
-            .set("value", Data::value)
-            .set("range", Data::range)
-            .set("unit", Data::unit)
-            .build()
-            .generate();
+
+        JsonTransformer<Data> transformer = JsonTransformer.<Data>builder().build();
+
+        String json = transformer.generate(
+            faker.<Data>collection().minLen(limit).maxLen(limit)
+                .suppliers(BloodPressure::new, Glucose::new, Temperature::new)
+                .build(), Schema.of(
+                field("name", Data::name),
+                field("value", Data::value),
+                field("range", Data::range),
+                field("unit", Data::unit)
+            ));
 
         int numberOfLines = 0;
         for (int i = 0; i < json.length(); i++) {
@@ -257,6 +248,7 @@ class FakeCollectionTest extends AbstractFakerTest {
                 .build()
                 .generate();
 
+        System.out.println(json);
         int numberOfLines = 0;
         for (int i = 0; i < json.length(); i++) {
             if (json.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {

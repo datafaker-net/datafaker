@@ -61,6 +61,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Bool.class, Bool::new);
     }
 
+    default Brand brand() {
+        return getProvider(Brand.class, Brand::new);
+    }
+
     default Business business() {
         return getProvider(Business.class, Business::new);
     }
@@ -223,10 +227,6 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Gender gender() {
         return getProvider(Gender.class, Gender::new);
-    }
-
-    default GratefulDead gratefulDead() {
-        return getProvider(GratefulDead.class, GratefulDead::new);
     }
 
     default GreekPhilosopher greekPhilosopher() {
@@ -463,6 +463,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Yoda yoda() {
         return getProvider(Yoda.class, Yoda::new);
+    }
+
+    default Zodiac zodiac() {
+        return getProvider(Zodiac.class, Zodiac::new);
     }
 
 }

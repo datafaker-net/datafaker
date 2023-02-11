@@ -5,11 +5,21 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class DroneTest extends BaseFakerTest<BaseFaker> {
+import java.util.Arrays;
+import java.util.Collection;
 
-    @Test
-    void name() {
-        assertThat(faker.drone().name()).isNotEmpty();
+class DroneTest extends AbstractBasicProviderTest<BaseFaker> {
+
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.drone().name(), "drone.name"),
+                TestSpec.of(() -> faker.drone().batteryType(), "drone.battery_type"),
+                TestSpec.of(() -> faker.drone().iso(), "drone.iso"),
+                TestSpec.of(() -> faker.drone().photoFormat(), "drone.photo_format"),
+                TestSpec.of(() -> faker.drone().videoFormat(), "drone.video_format"),
+                TestSpec.of(() -> faker.drone().maxShutterSpeed(), "drone.max_shutter_speed"),
+                TestSpec.of(() -> faker.drone().minShutterSpeed(), "drone.min_shutter_speed"),
+                TestSpec.of(() -> faker.drone().shutterSpeedUnits(), "drone.shutter_speed_units"));
     }
 
     @Test
@@ -78,11 +88,6 @@ class DroneTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void batteryType() {
-        assertThat(faker.drone().batteryType()).isNotEmpty();
-    }
-
-    @Test
     void batteryWeight() {
         assertThat(faker.drone().batteryWeight()).isNotEmpty().doesNotContain("#");
     }
@@ -98,38 +103,8 @@ class DroneTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void iso() {
-        assertThat(faker.drone().iso()).isNotEmpty();
-    }
-
-    @Test
     void maxResolution() {
         assertThat(faker.drone().maxResolution()).isNotEmpty().doesNotContain("#");
-    }
-
-    @Test
-    void photoFormat() {
-        assertThat(faker.drone().photoFormat()).isNotEmpty();
-    }
-
-    @Test
-    void videoFormat() {
-        assertThat(faker.drone().videoFormat()).isNotEmpty();
-    }
-
-    @Test
-    void maxShutterSpeed() {
-        assertThat(faker.drone().maxShutterSpeed()).isNotEmpty();
-    }
-
-    @Test
-    void minShutterSpeed() {
-        assertThat(faker.drone().minShutterSpeed()).isNotEmpty();
-    }
-
-    @Test
-    void shutterSpeedUnits() {
-        assertThat(faker.drone().shutterSpeedUnits()).isNotEmpty();
     }
 
 }

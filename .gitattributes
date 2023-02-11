@@ -1,5 +1,5 @@
 # Auto detect text files and perform LF normalization
-*        text=auto
+*        text=auto eol=lf
 
 *.cs     text diff=csharp
 *.java   text diff=java
@@ -14,6 +14,7 @@
 *.js     text
 *.sql    text
 *.q      text
+*.xml    text
 *.yml    text
 *.yaml   text
 

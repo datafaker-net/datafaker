@@ -1,14 +1,14 @@
 package net.datafaker.providers.base;
 
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class GarmentSizeTest extends AbstractBasicProviderTest<BaseFaker> {
 
-public class GarmentSizeTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void size() {
-        assertThat(faker.garmentSize().size()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of((() -> faker.garmentSize().size()), "garments_sizes.sizes"));
     }
+
 }

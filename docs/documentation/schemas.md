@@ -66,13 +66,13 @@ CSV transformer could be build with help of `CsvTransformer.CsvTransformerBuilde
 
     ``` java
          CsvTransformer<String> transformer =
-            new CsvTransformer.CsvTransformerBuilder<String>().header(true).separator(separator).build();
+            CsvTransformer.<String>builder().header(true).separator(separator).build();
     ```
 
 === "Kotlin"
 
     ``` kotlin
-        val transformer = CsvTransformer.CsvTransformerBuilder<String>().header(true).separator(separator).build()
+        val transformer = CsvTransformer.<String>builder().header(true).separator(separator).build()
     ```
 
 The following can be configured:
@@ -104,7 +104,7 @@ and we are going to build csv of first and last names based on this collection:
             Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName));
 
         CsvTransformer<Name> transformer =
-            new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(" : ").build();
+            CsvTransformer.<Name>builder().header(false).separator(" : ").build();
         String csv =
             transformer.generate(
                 faker.<Name>collection().suppliers(faker::name).maxLen(limit).build(),
@@ -116,7 +116,7 @@ and we are going to build csv of first and last names based on this collection:
     ```kotlin
         val schema = Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName))
 
-        val transformer = CsvTransformerBuilder<Name>().header(false).separator(" : ").build()
+        val transformer = CsvTransformer.<Name>builder().header(false).separator(" : ").build()
         val csv = transformer.generate(
             faker.collection<Name>().suppliers(Supplier { faker.name() }).maxLen(limit).build(), schema
         )
@@ -136,7 +136,7 @@ Example of JSON generation:
             field("Bool", () -> faker.bool().bool())
         );
 
-        JsonTransformer<Object> transformer = new JsonTransformer<>();
+        JsonTransformer<Object> transformer = JsonTransformer.builder().build();
         String json = transformer.generate(schema, 2);
     ```
 
@@ -148,7 +148,7 @@ Example of JSON generation:
             field("Bool", Supplier { faker.bool().bool() })
         )
 
-        val transformer = JsonTransformer<String>()
+        val transformer = JsonTransformer.builder().build();
         val json = transformer.generate(schema, 2)
     ```
 

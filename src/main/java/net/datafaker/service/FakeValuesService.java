@@ -1,14 +1,17 @@
 package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
-import net.datafaker.formats.Csv;
-import net.datafaker.formats.Format;
-import net.datafaker.formats.Json;
+import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.providers.base.ProviderRegistration;
+import net.datafaker.transformations.CsvTransformer;
+import net.datafaker.transformations.Field;
+import net.datafaker.transformations.JsonTransformer;
+import net.datafaker.transformations.Schema;
+import net.datafaker.transformations.SimpleField;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -35,22 +38,27 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static net.datafaker.transformations.Field.field;
+
 public class FakeValuesService {
     private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
 
-    private final Map<Locale, FakeValuesInterface> fakeValuesInterfaceMap = new HashMap<>();
-    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+    private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new IdentityHashMap<>();
+    public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.get(Locale.ENGLISH);
 
     private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new IdentityHashMap<>();
     private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new IdentityHashMap<>();
+
+    private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
+
     private final Map<String, Generex> expression2generex = new WeakHashMap<>();
-    private final Map<Locale, Map<String, String>> key2Expression = new WeakHashMap<>();
+    private final Map<SingletonLocale, Map<String, String>> key2Expression = new IdentityHashMap<>();
     private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
     private final Map<String, String[]> key2splittedKey = new WeakHashMap<>();
 
-    private final Map<Locale, Map<String, Object>> key2fetchedObject = new WeakHashMap<>();
+    private final Map<SingletonLocale, Map<String, Object>> key2fetchedObject = new IdentityHashMap<>();
     private final Map<String, String> name2yaml = new WeakHashMap<>();
     private final Map<String, String> removedUnderscore = new WeakHashMap<>();
 
@@ -61,17 +69,17 @@ public class FakeValuesService {
     public FakeValuesService() {
     }
 
-    public void updateFakeValuesInterfaceMap(List<Locale> locales) {
-        for (final Locale l : locales) {
+    public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
+        for (final SingletonLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
         }
     }
 
-    private FakeValuesInterface getCachedFakeValue(Locale locale) {
-        if (DEFAULT_LOCALE.equals(locale)) {
+    private FakeValuesInterface getCachedFakeValue(SingletonLocale locale) {
+        if (DEFAULT_LOCALE == locale) {
             return FakeValuesGrouping.getEnglishFakeValueGrouping();
         }
-        return new FakeValues(locale);
+        return new FakeValues(locale.getLocale());
     }
 
     /**
@@ -87,14 +95,15 @@ public class FakeValuesService {
             throw new IllegalArgumentException("Path should be an existing readable file");
         }
         FakeValues fakeValues = new FakeValues(locale, path);
-        FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(locale);
+        SingletonLocale sLocale = SingletonLocale.get(locale);
+        FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(sLocale);
         if (existingFakeValues == null) {
-            fakeValuesInterfaceMap.putIfAbsent(locale, fakeValues);
+            fakeValuesInterfaceMap.putIfAbsent(sLocale, fakeValues);
         } else {
             FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
             fakeValuesGrouping.add(existingFakeValues);
             fakeValuesGrouping.add(fakeValues);
-            fakeValuesInterfaceMap.put(locale, fakeValuesGrouping);
+            fakeValuesInterfaceMap.put(sLocale, fakeValuesGrouping);
         }
     }
 
@@ -171,22 +180,22 @@ public class FakeValuesService {
      */
     public Object fetchObject(String key, FakerContext context) {
         Object result = null;
-        final List<Locale> localeChain = context.getLocaleChain();
-        for (Locale locale : localeChain) {
+        final List<SingletonLocale> localeChain = context.getLocaleChain();
+        for (SingletonLocale sLocale : localeChain) {
             // exclude default locale from cache checks
-            if (locale.equals(DEFAULT_LOCALE) && localeChain.size() > 1) {
+            if (sLocale == DEFAULT_LOCALE && localeChain.size() > 1) {
                 continue;
             }
-            final Map<String, Object> stringObjectMap = key2fetchedObject.get(locale);
+            final Map<String, Object> stringObjectMap = key2fetchedObject.get(sLocale);
             if (stringObjectMap != null && (result = stringObjectMap.get(key)) != null) {
                 return result;
             }
         }
 
         String[] path = split(key);
-        Locale local2Add = null;
-        for (Locale locale : localeChain) {
-            Object currentValue = fakeValuesInterfaceMap.get(locale);
+        SingletonLocale local2Add = null;
+        for (SingletonLocale sLocale : localeChain) {
+            Object currentValue = fakeValuesInterfaceMap.get(sLocale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
                 if (currentValue instanceof Map) {
@@ -197,7 +206,7 @@ public class FakeValuesService {
             }
             result = currentValue;
             if (result != null) {
-                local2Add = locale;
+                local2Add = sLocale;
                 key2fetchedObject.putIfAbsent(local2Add, new HashMap<>());
                 break;
             }
@@ -394,12 +403,12 @@ public class FakeValuesService {
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
     public String resolve(String key, Object current, ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
-        String expression = root == null ? key2Expression.get(context.getLocale()).get(key) : null;
+        String expression = root == null ? key2Expression.get(context.getSingletonLocale()).get(key) : null;
         if (expression == null) {
             expression = safeFetch(key, context, null);
             if (root == null) {
-                key2Expression.putIfAbsent(context.getLocale(), new HashMap<>());
-                key2Expression.get(context.getLocale()).put(key, expression);
+                key2Expression.putIfAbsent(context.getSingletonLocale(), new HashMap<>());
+                key2Expression.get(context.getSingletonLocale()).put(key, expression);
             }
         }
 
@@ -435,7 +444,7 @@ public class FakeValuesService {
      * This method uses default separator, quote and always prints header.
      */
     public String csv(int limit, String... columnExpressions) {
-        return csv(Csv.DEFAULT_SEPARATOR, Csv.DEFAULT_QUOTE, true, limit, columnExpressions);
+        return csv(CsvTransformer.DEFAULT_SEPARATOR, CsvTransformer.DEFAULT_QUOTE, true, limit, columnExpressions);
     }
 
     /**
@@ -445,50 +454,54 @@ public class FakeValuesService {
         if (columnExpressions.length % 2 != 0) {
             throw new IllegalArgumentException("Total number of column names and column values should be even");
         }
-        Csv.Column[] columns = new Csv.Column[columnExpressions.length / 2];
+        Field<String, String>[] fields = new Field[columnExpressions.length / 2];
         for (int i = 0; i < columnExpressions.length; i += 2) {
             final int index = i;
-            columns[i / 2] = Csv.Column.of(() -> columnExpressions[index], () -> columnExpressions[index + 1]);
+            fields[i / 2] = Field.field(columnExpressions[index], () -> columnExpressions[index + 1]);
         }
-        return Format.toCsv(columns).separator(delimiter).quote(quote).header(withHeader).limit(limit).build().get();
+        Schema<String, String> schema = Schema.of(fields);
+        return CsvTransformer.<String>builder().separator(delimiter).quote(quote).header(withHeader)
+            .build().generate(schema, limit + 1);
     }
 
     /**
      * Generates json based on input.
      */
-    public Json json(String... fieldExpressions) {
+    public String json(String... fieldExpressions) {
         if (fieldExpressions.length % 2 != 0) {
             throw new IllegalArgumentException("Total number of field names and field values should be even");
         }
-        Json.JsonBuilder jsonBuilder = new Json.JsonBuilder();
+
+        List<SimpleField<Object, ?>> fields = new ArrayList<>();
         for (int i = 0; i < fieldExpressions.length; i += 2) {
             final int index = i;
-            jsonBuilder.set(fieldExpressions[index], () -> fieldExpressions[index + 1]);
+            fields.add(field(fieldExpressions[index], () -> fieldExpressions[index + 1]));
         }
-        return jsonBuilder.build();
+        Schema<Object, ?> schema = Schema.of(fields.toArray(new SimpleField[0]));
+        return JSON_TRANSFORMER.generate(schema, 1);
     }
 
     /**
      * Generates json based on input.
      */
-    public Json jsona(String... fieldExpressions) {
+    public String jsona(String... fieldExpressions) {
         if (fieldExpressions.length % 3 != 0) {
             throw new IllegalArgumentException("Total number of field names and field values should be dividable by 3");
         }
-        Json.JsonBuilder jsonBuilder = new Json.JsonBuilder();
 
+        List<SimpleField<Object, ?>> fields = new ArrayList<>();
         for (int i = 0; i < fieldExpressions.length; i += 3) {
             final int index = i;
             if (fieldExpressions[i] != null && Integer.parseInt(fieldExpressions[index]) > 0) {
                 Object[] objects = new Object[Integer.parseInt(fieldExpressions[index])];
                 Arrays.fill(objects, fieldExpressions[index + 2]);
-                jsonBuilder.set(fieldExpressions[index + 1], () -> objects).build();
+                fields.add(field(fieldExpressions[index + 1], () -> objects));
             } else {
-                jsonBuilder.set(fieldExpressions[index + 1], () -> fieldExpressions[index + 2]);
+                fields.add(field(fieldExpressions[index + 1], () -> fieldExpressions[index + 2]));
             }
         }
-
-        return jsonBuilder.build();
+        Schema<Object, ?> schema = Schema.of(fields.toArray(new SimpleField[0]));
+        return JSON_TRANSFORMER.generate(schema, 1);
     }
 
     /**

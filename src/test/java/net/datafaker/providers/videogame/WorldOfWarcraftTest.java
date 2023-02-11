@@ -1,18 +1,17 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class WorldOfWarcraftTest extends VideoGameFakerTest {
 
-    @Test
-    void hero() {
-        assertThat(faker.worldOfWarcraft().hero()).isNotEmpty();
-    }
+    private final WorldOfWarcraft worldOfWarcraft = getFaker().worldOfWarcraft();
 
-    @Test
-    void quotes() {
-        assertThat(faker.worldOfWarcraft().quotes()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(worldOfWarcraft::hero, "games.world_of_warcraft.hero"),
+            TestSpec.of(worldOfWarcraft::quotes, "games.world_of_warcraft.quotes")
+        );
     }
-
 }

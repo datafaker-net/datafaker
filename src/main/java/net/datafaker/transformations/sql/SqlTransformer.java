@@ -8,6 +8,7 @@ import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
 import net.datafaker.transformations.Transformer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringJoiner;
@@ -303,20 +304,27 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public String generate(FakeSequence<IN> input, Schema<IN, ?> schema) {
+    public String generate(Iterable<IN> input, Schema<IN, ?> schema) {
         if (schema.getFields().length == 0) {
             return EMPTY_RESULT;
         }
-        if (input.isInfinite()) {
+        if (input instanceof FakeSequence && ((FakeSequence) input).isInfinite()) {
             throw new IllegalArgumentException("The sequence should be finite of size");
         }
 
         List<IN> inputs;
         if (input instanceof FakeStream) {
-            Stream<IN> stream = input.get();
+            Stream<IN> stream = ((FakeStream) input).get();
             inputs = stream.collect(Collectors.toList());
+        } else if (input instanceof FakeSequence) {
+            inputs = ((FakeSequence<Object>) input).get();
+        } else if (input instanceof List) {
+            inputs = (List<IN>) input;
         } else {
-            inputs = input.get();
+            inputs = new ArrayList<>();
+            for (IN o: input) {
+                inputs.add(o);
+            }
         }
 
         int limit = inputs.size();

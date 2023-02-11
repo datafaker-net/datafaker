@@ -1,19 +1,14 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class StockTest extends AbstractBasicProviderTest<BaseFaker> {
 
-class StockTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void testNasdaq() {
-        assertThat(faker.stock().nsdqSymbol()).isNotEmpty();
-    }
-
-    @Test
-    void testNYSE() {
-        assertThat(faker.stock().nyseSymbol()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.stock().nsdqSymbol(), "stock.symbol_nsdq"),
+                TestSpec.of(() -> faker.stock().nyseSymbol(), "stock.symbol_nyse"));
     }
 
 }

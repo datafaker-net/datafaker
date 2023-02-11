@@ -5,7 +5,7 @@ import net.datafaker.sequence.FakeSequence;
 import java.util.StringJoiner;
 
 public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
-    private static final String DEFAULT_SEPARATOR = ";";
+    public static final String DEFAULT_SEPARATOR = ";";
     public static final char DEFAULT_QUOTE = '"';
 
     private final String separator;
@@ -38,8 +38,8 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public String generate(FakeSequence<IN> input, Schema<IN, ?> schema) {
-        if (input.isInfinite()) {
+    public String generate(Iterable<IN> input, Schema<IN, ?> schema) {
+        if (input instanceof FakeSequence && ((FakeSequence) input).isInfinite()) {
             throw new IllegalArgumentException("The sequence should be finite of size");
         }
 

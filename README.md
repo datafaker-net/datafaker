@@ -144,7 +144,7 @@ In case of generation from scratch `Suppliers` are enough, in case of transforma
 ```java
 // transformer could be the same for both
 CsvTransformer<Name> transformer =
-        new CsvTransformer.CsvTransformerBuilder<Name>().header(true).separator(",").build();
+        CsvTransformer.<Name>builder().header(true).separator(",").build();
 // Schema for from scratch
 Schema<Name, String> fromScratch =
     Schema.of(field("firstName", () -> faker.name().firstName()),
@@ -196,7 +196,7 @@ jshell> Schema fromScratch =
 fromScratch ==> net.datafaker.transformations.Schema@306a30c7
 
 jshell> CsvTransformer<Name> transformer =
-   ...>     new CsvTransformer.CsvTransformerBuilder<Name>().header(false).separator(",").build();
+   ...>     CsvTransformer.<Name>builder().header(false).separator(",").build();
 transformer ==> net.datafaker.transformations.CsvTransformer@506c589e
 
 jshell> System.out.println(transformer.generate(fromScratch, 2));
@@ -276,6 +276,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Book
 * Bool
 * Bossa Nova
+* Brand
 * Breaking Bad
 * Brooklyn Nine-Nine
 * Buffy
@@ -508,4 +509,4 @@ Supported Locales
 
 LICENSE
 -------
-Copyright (c) 2022 DataFaker.net See the LICENSE file for license rights and limitations.
+Copyright (c) 2023 DataFaker.net See the LICENSE file for license rights and limitations.

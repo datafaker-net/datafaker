@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
@@ -22,6 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <additionalparam>-Xdoclint:none</additionalparam>
+        <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
         <assertj-core.version>3.24.2</assertj-core.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
@@ -48,7 +49,6 @@
         <javaparser.version>3.24.9</javaparser.version>
         <snakeyaml.version>1.33</snakeyaml.version>
         <spotless-maven-plugin.version>2.30.0</spotless-maven-plugin.version>
-        <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
@@ -176,6 +176,25 @@
                     <configuration>
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
+                        <compilerArgs>
+                            <arg>-Xlint:cast</arg>
+                            <arg>-Xlint:classfile</arg>
+                            <arg>-Xlint:dep-ann</arg>
+                            <arg>-Xlint:divzero</arg>
+                            <arg>-Xlint:empty</arg>
+                            <arg>-Xlint:fallthrough</arg>
+                            <arg>-Xlint:finally</arg>
+                            <arg>-Xlint:options</arg>
+                            <arg>-Xlint:overrides</arg>
+                            <arg>-Xlint:path</arg>
+                            <arg>-Xlint:processing</arg>
+                            <arg>-Xlint:rawtypes</arg>
+                            <arg>-Xlint:serial</arg>
+                            <arg>-Xlint:static</arg>
+                            <arg>-Xlint:try</arg>
+                            <arg>-Xlint:varargs</arg>
+                            <arg>-Werror</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>

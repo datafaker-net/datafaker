@@ -1,30 +1,19 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.RepeatedTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class DarkSoulsTest extends VideoGameFakerTest {
 
-    public static final String DARK_SOUL_REGEX = "[A-Za-z '-]+";
+    private final DarkSouls darkSouls = getFaker().darkSouls();
 
-    @RepeatedTest(10)
-    void testClasses() {
-        assertThat(faker.darkSouls().classes()).matches(DARK_SOUL_REGEX);
-    }
-
-    @RepeatedTest(10)
-    void testCovenants() {
-        assertThat(faker.darkSouls().covenants()).matches(DARK_SOUL_REGEX);
-    }
-
-    @RepeatedTest(10)
-    void testShield() {
-        assertThat(faker.darkSouls().shield()).matches(DARK_SOUL_REGEX);
-    }
-
-    @RepeatedTest(10)
-    void testStats() {
-        assertThat(faker.darkSouls().stats()).matches(DARK_SOUL_REGEX);
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(darkSouls::classes, "dark_souls.classes"),
+            TestSpec.of(darkSouls::covenants, "dark_souls.covenants"),
+            TestSpec.of(darkSouls::shield, "dark_souls.shield"),
+            TestSpec.of(darkSouls::stats, "dark_souls.stats")
+        );
     }
 }

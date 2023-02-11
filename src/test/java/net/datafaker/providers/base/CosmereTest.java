@@ -1,60 +1,24 @@
 package net.datafaker.providers.base;
 
 
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+class CosmereTest extends AbstractBasicProviderTest<BaseFaker> {
 
-class CosmereTest extends BaseFakerTest<BaseFaker> {
-
-    @Test
-    void aons() {
-        assertThat(faker.cosmere().aons()).isNotEmpty();
-    }
-
-    @Test
-    void shardWorlds() {
-        assertThat(faker.cosmere().shardWorlds()).isNotEmpty();
-    }
-
-    @Test
-    void shards() {
-        assertThat(faker.cosmere().shards()).isNotEmpty();
-    }
-
-    @Test
-    void surges() {
-        assertThat(faker.cosmere().surges()).isNotEmpty();
-    }
-
-    @Test
-    void knightsRadiant() {
-        assertThat(faker.cosmere().knightsRadiant()).isNotEmpty();
-    }
-
-    @Test
-    void metals() {
-        assertThat(faker.cosmere().metals()).isNotEmpty();
-    }
-
-    @Test
-    void allomancers() {
-        assertThat(faker.cosmere().allomancers()).isNotEmpty();
-    }
-
-    @Test
-    void feruchemists() {
-        assertThat(faker.cosmere().feruchemists()).isNotEmpty();
-    }
-
-    @Test
-    void heralds() {
-        assertThat(faker.cosmere().heralds()).isNotEmpty();
-    }
-
-    @Test
-    void sprens() {
-        assertThat(faker.cosmere().sprens()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.cosmere().aons(), "cosmere.aons"),
+                TestSpec.of(() -> faker.cosmere().shardWorlds(), "cosmere.shard_worlds"),
+                TestSpec.of(() -> faker.cosmere().shards(), "cosmere.shards"),
+                TestSpec.of(() -> faker.cosmere().surges(), "cosmere.surges"),
+                TestSpec.of(() -> faker.cosmere().knightsRadiant(), "cosmere.knights_radiant"),
+                TestSpec.of(() -> faker.cosmere().metals(), "cosmere.metals"),
+                TestSpec.of(() -> faker.cosmere().allomancers(), "cosmere.allomancers"),
+                TestSpec.of(() -> faker.cosmere().feruchemists(), "cosmere.feruchemists"),
+                TestSpec.of(() -> faker.cosmere().heralds(), "cosmere.heralds"),
+                TestSpec.of(() -> faker.cosmere().sprens(), "cosmere.sprens")
+                );
     }
 
 }

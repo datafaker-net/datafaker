@@ -52,6 +52,7 @@ public class EnFile {
         "bojack_horseman.yml",
         "book.yml",
         "bossa_nova.yml",
+        "brand.yml",
         "breaking_bad.yml",
         "brooklyn_nine_nine.yml",
         "buffy.yml",
@@ -62,6 +63,7 @@ public class EnFile {
         "clash_of_clans.yml",
         "control.yml",
         "chiquito.yml",
+        "chess.yml",
         "code.yml",
         "coffee.yml",
         "coin.yml",
@@ -225,6 +227,7 @@ public class EnFile {
         "team.yml",
         "the_expanse.yml",
         "the_it_crowd.yml",
+        "the_kingkiller_chronicle.yml",
         "the_room.yml",
         "the_thick_of_it.yml",
         "tron.yml",
@@ -244,7 +247,8 @@ public class EnFile {
         "touhou.yml",
 //            "world_of_warcraft.yml",
         "yoda.yml",
-        "zelda.yml").map(EnFile::new).collect(Collectors.toList());
+        "zelda.yml",
+        "zodiac.yml").map(EnFile::new).collect(Collectors.toList());
 
     // files where the search path can't be derived from the filename
     private static final List<EnFile> FILES_WITH_A_DIFFERENT_PATH = Arrays.asList(

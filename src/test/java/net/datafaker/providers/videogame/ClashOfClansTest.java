@@ -1,24 +1,19 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class ClashOfClansTest extends VideoGameFakerTest {
 
-    @Test
-    void troop() {
-        assertThat(faker.clashOfClans().troop()).isNotEmpty();
-    }
+    private final ClashOfClans clashOfClans = getFaker().clashOfClans();
 
-    @Test
-    void rank() {
-        assertThat(faker.clashOfClans().rank()).isNotEmpty();
-    }
-
-    @Test
-    void defensiveBuilding() {
-        assertThat(faker.clashOfClans().defensiveBuilding()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(clashOfClans::defensiveBuilding, "clash_of_clans.defensive_buildings"),
+            TestSpec.of(clashOfClans::rank, "clash_of_clans.ranks"),
+            TestSpec.of(clashOfClans::troop, "clash_of_clans.troops")
+        );
     }
 }

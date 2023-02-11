@@ -1,34 +1,21 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 class EsportsTest extends VideoGameFakerTest {
 
-    @Test
-    void player() {
-        assertThat(faker.esports().player()).matches("(\\w|.)+");
-    }
+    private final Esports esports = getFaker().esports();
 
-    @Test
-    void team() {
-        assertThat(faker.esports().team()).matches("((\\w|.)+ ?)+");
-    }
-
-    @Test
-    void event() {
-        assertThat(faker.esports().event()).matches("(\\w+ ?)+");
-    }
-
-    @Test
-    void league() {
-        assertThat(faker.esports().league()).matches("\\w+");
-    }
-
-    @Test
-    void game() {
-        assertThat(faker.esports().game()).matches("([\\w:.]+ ?)+");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(esports::event, "esport.events"),
+            TestSpec.of(esports::game, "esport.games"),
+            TestSpec.of(esports::league, "esport.leagues"),
+            TestSpec.of(esports::player, "esport.players"),
+            TestSpec.of(esports::team, "esport.teams")
+        );
     }
 }

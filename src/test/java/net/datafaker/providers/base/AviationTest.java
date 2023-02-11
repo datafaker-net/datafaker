@@ -4,21 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AviationTest extends BaseFakerTest<BaseFaker> {
+import java.util.Arrays;
+import java.util.Collection;
+
+class AviationTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @Test
     void airport() {
         assertThat(faker.aviation().airport()).matches("\\w{4}");
-    }
-
-    @Test
-    void aircraft() {
-        assertThat(faker.aviation().aircraft()).isNotEmpty();
-    }
-
-    @Test
-    void metar() {
-        assertThat(faker.aviation().METAR()).isNotEmpty();
     }
 
     @Test
@@ -36,8 +29,10 @@ class AviationTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.aviation().flight()).matches("[A-Z]{2}[0-9]+");
     }
 
-    @Test
-    void airline() {
-        assertThat(faker.aviation().airline()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(TestSpec.of(() -> faker.aviation().aircraft(), "aviation.aircraft"),
+            TestSpec.of(() -> faker.aviation().METAR(), "aviation.metar"),
+            TestSpec.of(() -> faker.aviation().airline(), "aviation.airline"));
     }
 }

@@ -1,59 +1,19 @@
 package net.datafaker.providers.videogame;
 
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.Collection;
 
 class StarCraftTest extends VideoGameFakerTest {
-    private final String noLeadingTrailingWhitespaceRegex = "^(?! )[-A-Za-z\\d' ]*(?<! )$";
 
-    @Test
-    void testUnit() {
-        String unit = faker.starCraft().unit();
-        assertThat(unit)
-            .isNotEmpty()
-            .matches(noLeadingTrailingWhitespaceRegex);
+    private final StarCraft starCraft = getFaker().starCraft();
+
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return Arrays.asList(
+            TestSpec.of(starCraft::building, "starcraft.buildings"),
+            TestSpec.of(starCraft::character, "starcraft.characters"),
+            TestSpec.of(starCraft::planet, "starcraft.planets"),
+            TestSpec.of(starCraft::unit, "starcraft.units")
+        );
     }
-
-    @RepeatedTest(1000)
-    void testUnitOneThousand() {
-        String unit = faker.starCraft().unit();
-        assertThat(unit)
-            .isNotEmpty()
-            .matches(noLeadingTrailingWhitespaceRegex);
-    }
-
-    @Test
-    void testBuilding() {
-        String building = faker.starCraft().building();
-        assertThat(building)
-            .isNotEmpty()
-            .matches(noLeadingTrailingWhitespaceRegex);
-    }
-
-    @Test
-    void testCharacter() {
-        String character = faker.starCraft().character();
-        assertThat(character)
-            .isNotEmpty()
-            .matches(noLeadingTrailingWhitespaceRegex);
-    }
-
-    @Test
-    void testPlanet() {
-        String planet = faker.starCraft().planet();
-        assertThat(planet)
-            .isNotEmpty()
-            .matches(noLeadingTrailingWhitespaceRegex);
-    }
-
-    @RepeatedTest(1000)
-    void testPlanetOneThousand() {
-        String planet = faker.starCraft().planet();
-        assertThat(planet)
-            .isNotEmpty()
-            .matches(noLeadingTrailingWhitespaceRegex);
-    }
-
 }
