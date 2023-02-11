@@ -12,7 +12,6 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -44,11 +43,11 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * @return a List of Strings with the name of the locale (eg. "es", "es-MX")
      */
     public List<String> allSupportedLocales() {
-        return allSupportedLocales(new HashSet<>(Collections.singletonList("datafaker")));
+        return allSupportedLocales(new HashSet<>(List.of("datafaker")));
     }
 
     public List<String> allSupportedLocales(Set<String> fileMasks) {
-        Set<String> langs = new HashSet<>(Arrays.asList(Locale.getISOLanguages()));
+        Set<String> langs = new HashSet<>(List.of(Locale.getISOLanguages()));
         String[] paths = ManagementFactory.getRuntimeMXBean().getClassPath().split(File.pathSeparator);
         Set<String> locales = new HashSet<>();
         for (String s: paths) {

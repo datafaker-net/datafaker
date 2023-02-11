@@ -72,7 +72,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void fetchObjectShouldReturnValue() {
-        assertThat((Iterable<?>) fakeValuesService.fetchObject("property.dummy", mockedFaker.getContext())).isEqualTo(Arrays.asList("x", "y", "z"));
+        assertThat((Iterable<?>) fakeValuesService.fetchObject("property.dummy", mockedFaker.getContext())).isEqualTo(List.of("x", "y", "z"));
     }
 
     @Test

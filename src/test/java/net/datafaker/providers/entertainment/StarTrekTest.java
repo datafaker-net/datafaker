@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 
@@ -10,7 +10,7 @@ class StarTrekTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(starTrek::character, "star_trek.character"),
             TestSpec.of(starTrek::location, "star_trek.location"),
             TestSpec.of(starTrek::klingon, "star_trek.klingon"),

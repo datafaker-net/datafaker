@@ -90,11 +90,11 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String image(int width, int height) {
-        return String.format("https://picsum.photos/%s/%s", width, height);
+        return "https://picsum.photos/%s/%s".formatted(width, height);
     }
 
     public String image(int width, int height, String seed) {
-        return String.format("https://picsum.photos/seed/%s/%s/%s", seed, width, height);
+        return "https://picsum.photos/seed/%s/%s/%s".formatted(seed, width, height);
     }
 
     public String httpMethod() {
@@ -193,6 +193,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     /**
      * @return a valid private IPV4 address in dot notation
      */
+    @SuppressWarnings("unused")
     public String privateIpV4Address() {
         try {
             return getPrivateIpV4Address().getHostAddress();
@@ -215,15 +216,9 @@ public class Internet extends AbstractProvider<BaseProviders> {
             fourth = (byte) r.nextInt(256);
 
         switch (first) {
-            case (byte) 172:
-                second = random(PRIVATE_SECOND_OCTET_172);
-                break;
-            case (byte) 192:
-                second = (byte) 168;
-                break;
-            case (byte) 169:
-                second = (byte) 254;
-                break;
+            case (byte) 172 -> second = random(PRIVATE_SECOND_OCTET_172);
+            case (byte) 192 -> second = (byte) 168;
+            case (byte) 169 -> second = (byte) 254;
         }
         return Inet4Address.getByAddress(new byte[]{first, second, third, fourth});
     }
@@ -231,6 +226,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     /**
      * @return a valid public IPV4 address in dot notation
      */
+    @SuppressWarnings("unused")
     public String publicIpV4Address() {
         try {
             return getPublicIpV4Address().getHostAddress();

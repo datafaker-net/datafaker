@@ -66,7 +66,7 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
     Faker faker1 = new Faker(new Locale("nl"));
     Faker faker2 = new Faker(new Locale("ar"));
 
-    List<Faker> fakers = Arrays.asList(faker1, faker2);
+    List<Faker> fakers = List.of(faker1, faker2);
 
     for (int i = 0; i < 10; i++) {
         Faker randomFaker = new Faker().options().nextElement(fakers);

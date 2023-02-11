@@ -254,7 +254,7 @@ attributes using randomly generated data in the following way:
     }
 
     private static <T> Collection<T> of(T... elems) {
-        return Arrays.asList(elems);
+        return List.of(elems);
     }
 
     private static Map.Entry<String, String> entry(String key, String value) {

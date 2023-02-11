@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @author pmiklos
  * @since 0.8.0
  */
+@SuppressWarnings("unchecked")
 public class DateAndTime extends AbstractProvider<BaseProviders> {
     private static final int DEFAULT_MIN_AGE = 18;
     private static final int DEFAULT_MAX_AGE = 65;
@@ -360,31 +361,16 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
         if (unit == null || unit.trim().isEmpty()) {
             throw new IllegalArgumentException("Illegal duration unit '" + unit + "'");
         }
-        switch (unit.toUpperCase(Locale.ROOT)) {
-            case "NANO":
-            case "NANOS":
-                return ChronoUnit.NANOS;
-            case "MICRO":
-            case "MICROS":
-                return ChronoUnit.MICROS;
-            case "MILLI":
-            case "MILLIS":
-                return ChronoUnit.MILLIS;
-            case "SECOND":
-            case "SECONDS":
-                return ChronoUnit.SECONDS;
-            case "MINUTE":
-            case "MINUTES":
-                return ChronoUnit.MINUTES;
-            case "HOUR":
-            case "HOURS":
-                return ChronoUnit.HOURS;
-            case "DAY":
-            case "DAYS":
-                return ChronoUnit.DAYS;
-            default:
-                throw new IllegalArgumentException("Illegal duration unit '" + unit + "'");
-        }
+        return switch (unit.toUpperCase(Locale.ROOT)) {
+            case "NANO", "NANOS" -> ChronoUnit.NANOS;
+            case "MICRO", "MICROS" -> ChronoUnit.MICROS;
+            case "MILLI", "MILLIS" -> ChronoUnit.MILLIS;
+            case "SECOND", "SECONDS" -> ChronoUnit.SECONDS;
+            case "MINUTE", "MINUTES" -> ChronoUnit.MINUTES;
+            case "HOUR", "HOURS" -> ChronoUnit.HOURS;
+            case "DAY", "DAYS" -> ChronoUnit.DAYS;
+            default -> throw new IllegalArgumentException("Illegal duration unit '" + unit + "'");
+        };
     }
 
     private Duration generateDuration(long value, ChronoUnit unit) {

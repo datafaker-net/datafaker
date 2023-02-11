@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -13,7 +13,7 @@ class MedicalTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.medical().medicineName(), "medical.medicine_name"),
+        return List.of(TestSpec.of(() -> faker.medical().medicineName(), "medical.medicine_name"),
                 TestSpec.of(() -> faker.medical().diseaseName(), "medical.disease_name"),
                 TestSpec.of(() -> faker.medical().hospitalName(), "medical.hospital_name"),
                 TestSpec.of(() -> faker.medical().symptoms(), "medical.symptoms"));

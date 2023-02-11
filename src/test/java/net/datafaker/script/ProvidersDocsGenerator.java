@@ -14,7 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.Writer;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Locale;
@@ -41,7 +41,7 @@ public class ProvidersDocsGenerator {
     private final Set<Class<?>> subTypes = new TreeSet<>(providersComparatorBySimpleName);
 
     // Exclude non-providers from generation
-    private final Set<String> providersToExcludeFromGeneration = new HashSet<>(Arrays.asList("CustomFakerTest", "InsectFromFile", "Insect"));
+    private final Set<String> providersToExcludeFromGeneration = new HashSet<>(List.of("CustomFakerTest", "InsectFromFile", "Insect"));
 
     private final Set<String> fakersWithoutSinceTag = new HashSet<>();
 
@@ -95,7 +95,7 @@ public class ProvidersDocsGenerator {
             Optional<CommentsCollection> commentsCollection =
                 parser.parse(file).getCommentsCollection();
 
-            if (!commentsCollection.isPresent()) {
+            if (commentsCollection.isEmpty()) {
                 fakersWithoutSinceTag.add(filePath);
                 return "";
             }
@@ -104,7 +104,7 @@ public class ProvidersDocsGenerator {
                 .stream()
                 .findFirst();
 
-            if (!javadocComments.isPresent()) {
+            if (javadocComments.isEmpty()) {
                 fakersWithoutSinceTag.add(filePath);
                 return "";
             }
@@ -159,7 +159,7 @@ public class ProvidersDocsGenerator {
     }
 
     /**
-     * Searching through all providers {@link subTypes}, getting since tag, and building
+     * Searching through all providers subTypes, getting since tag, and building
      * {@link TreeMap} with count of each since tag (version).
      * @return {@link TreeMap} with count of providers per each version
      */
@@ -275,12 +275,14 @@ public class ProvidersDocsGenerator {
 
     private enum TextBlock {
         HEADER("# Fake Data Providers\n"),
-        GROUP_DESCRIPTIONS("\n#### Provider groups:\n"
-            + "- Base (Providers of everyday data)\n"
-            + "- Entertainment (Providers for movies, shows, books)\n"
-            + "- Food (Providers for different types of food)\n"
-            + "- Sport (Providers for different types of sport)\n"
-            + "- Videogame (Video game providers)\n");
+        GROUP_DESCRIPTIONS("""
+            #### Provider groups:
+            - Base (Providers of everyday data)
+            - Entertainment (Providers for movies, shows, books)
+            - Food (Providers for different types of food)
+            - Sport (Providers for different types of sport)
+            - Videogame (Video game providers)
+            """);
 
         private final String text;
 

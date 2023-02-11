@@ -7,7 +7,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,7 @@ class ProviderGenerator {
 
         File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().contains("cowboy_bebop.yml"));
 
-        List<File> fileList = Arrays.asList(files);
+        List<File> fileList = List.of(files);
         Collections.shuffle(fileList);
         List<File> filesToProcess = fileList.stream().limit(5).collect(Collectors.toList());
 

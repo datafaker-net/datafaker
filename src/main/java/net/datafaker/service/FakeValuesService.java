@@ -24,11 +24,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -166,7 +166,7 @@ public class FakeValuesService {
             }
             return values.get(context.getRandomService().nextInt(size));
         } else if (isSlashDelimitedRegex(str = o.toString())) {
-            return String.format("#{regexify '%s'}", trimRegexSlashes(str));
+            return "#{regexify '%s'}".formatted(trimRegexSlashes(str));
         } else {
             return (String) o;
         }
@@ -277,23 +277,23 @@ public class FakeValuesService {
         final char[] res = input.toCharArray();
         for (int i = 0; i < res.length; i++) {
             switch (res[i]) {
-                case '#':
+                case '#' -> {
                     if (numerify) {
                         res[i] = DIGITS[context.getRandomService().nextInt(10)];
                     }
-                    break;
-                case 'Ø':
+                }
+                case 'Ø' -> {
                     if (numerify) {
                         res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
                     }
-                    break;
-                case '?':
+                }
+                case '?' -> {
                     if (letterify) {
                         res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
                     }
-                    break;
-                default:
-                    break;
+                }
+                default -> {
+                }
             }
         }
 
@@ -359,7 +359,7 @@ public class FakeValuesService {
      * characters from options
      */
     public String templatify(String letterString, char char2replace, FakerContext context, String... options) {
-        return templatify(letterString, Collections.singletonMap(char2replace, options), context);
+        return templatify(letterString, Map.of(char2replace, options), context);
     }
 
     /**

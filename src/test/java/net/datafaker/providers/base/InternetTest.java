@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -314,7 +314,7 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(10)
     void testSlugWithParams() {
-        assertThat(faker.internet().slug(Arrays.asList("a", "b"), "-")).matches("[a-zA-Z]+-[a-zA-Z]+");
+        assertThat(faker.internet().slug(List.of("a", "b"), "-")).matches("[a-zA-Z]+-[a-zA-Z]+");
     }
 
     @RepeatedTest(10)

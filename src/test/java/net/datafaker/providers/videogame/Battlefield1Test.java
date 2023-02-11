@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 
@@ -10,7 +10,7 @@ class Battlefield1Test extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(battlefield1::classes, "battlefield1.classes"),
             TestSpec.of(battlefield1::faction, "battlefield1.faction"),
             TestSpec.of(battlefield1::map, "battlefield1.map"),

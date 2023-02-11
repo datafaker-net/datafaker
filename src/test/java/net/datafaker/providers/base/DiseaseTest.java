@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class DiseaseTest extends AbstractBasicProviderTest<BaseFaker> {
@@ -90,7 +90,7 @@ class DiseaseTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.disease().neurology(), "disease.neurology"),
+        return List.of(TestSpec.of(() -> faker.disease().neurology(), "disease.neurology"),
                 TestSpec.of(() -> faker.disease().surgery(), "disease.surgery"),
                 TestSpec.of(() -> faker.disease().paediatrics(), "disease.paediatrics"),
                 TestSpec.of(() -> faker.disease().gynecologyAndObstetrics(), "disease.gynecology_and_obstetrics"),

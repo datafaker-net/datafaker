@@ -424,7 +424,7 @@ In case you only want to generate XML elements, without any attributes, that pos
             faker.<SimpleField<String, List<Object>>>stream()
                 .suppliers(() ->
                     field("address",
-                        () -> Arrays.asList(
+                        () -> List.of(
                             field("country", () -> faker.address().country()),
                             field("city", () -> faker.address().city()),
                             field("streetAddress", () -> faker.address().streetAddress()))))
@@ -434,7 +434,7 @@ In case you only want to generate XML elements, without any attributes, that pos
             faker.<SimpleField<Object, List<Object>>>stream()
                 .suppliers(() ->
                     field("person",
-                        () -> Arrays.asList(
+                        () -> List.of(
                             field("firstname", () -> faker.name().firstName()),
                             field("lastname", () -> faker.name().lastName()),
                             field("addresses", () -> address.get().collect(Collectors.toList())))))

@@ -3,7 +3,7 @@ package net.datafaker.integration;
 import net.datafaker.providers.base.BaseFaker;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,8 +28,8 @@ class UkLocalDirectivesTest {
 
         final String streetName = new BaseFaker(uk).address().streetName();
 
-        final List<String> masc = Arrays.asList("пр.", "проспект", "пров.", "провулок");
-        final List<String> fem = Arrays.asList("вул.", "вулиця", "пл.", "площа");
+        final List<String> masc = List.of("пр.", "проспект", "пров.", "провулок");
+        final List<String> fem = List.of("вул.", "вулиця", "пл.", "площа");
 
         boolean startsWithMascPrefix = false;
         boolean startsWithFemPrefix = false;

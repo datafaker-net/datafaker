@@ -3,7 +3,6 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.WeakHashMap;
 
 /**
@@ -74,7 +73,7 @@ public class Text extends AbstractProvider<BaseProviders> {
         if (config == null) {
             TextSymbolsBuilder builder =
                 TextSymbolsBuilder.builder()
-                                  .with(Text.EN_LOWERCASE);
+                    .with(Text.EN_LOWERCASE);
             if (includeUppercase) builder = builder.with(Text.EN_UPPERCASE, 1);
             if (includeSpecial) builder = builder.with(Text.DEFAULT_SPECIAL, 1);
             if (includeDigit) builder = builder.with(Text.DIGITS, 1);
@@ -109,7 +108,7 @@ public class Text extends AbstractProvider<BaseProviders> {
             this.textKeys = new char[map.size()][];
             this.required = new int[map.size()];
             int i = 0;
-            for (Map.Entry<String, Integer> entry: map.entrySet()) {
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
                 textKeys[i] = entry.getKey().toCharArray();
                 required[i] = entry.getValue();
                 i++;
@@ -243,33 +242,5 @@ public class Text extends AbstractProvider<BaseProviders> {
     }
 
 
-    private static class TextConfigPojo {
-        private final int length;
-        private final boolean includeUppercase;
-        private final boolean includeSpecial;
-        private final boolean includeDigit;
-
-        public TextConfigPojo(int length, boolean includeUppercase, boolean includeSpecial,
-            boolean includeDigit) {
-            this.length = length;
-            this.includeUppercase = includeUppercase;
-            this.includeSpecial = includeSpecial;
-            this.includeDigit = includeDigit;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (o == null || getClass() != o.getClass())
-                return false;
-            TextConfigPojo that = (TextConfigPojo) o;
-            return length == that.length && includeUppercase == that.includeUppercase && includeSpecial == that.includeSpecial && includeDigit == that.includeDigit;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(length, includeUppercase, includeSpecial, includeDigit);
-        }
-    }
+    private record TextConfigPojo(int length, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {}
 }

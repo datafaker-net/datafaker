@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class StreetFighterTest extends VideoGameFakerTest {
@@ -8,7 +8,7 @@ class StreetFighterTest extends VideoGameFakerTest {
     private final StreetFighter streetFighter = getFaker().streetFighter();
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(streetFighter::characters, "games.street_fighter.characters"),
             TestSpec.of(streetFighter::moves, "games.street_fighter.moves"),
             TestSpec.of(streetFighter::stages, "games.street_fighter.stages"),

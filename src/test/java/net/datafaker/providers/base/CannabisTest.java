@@ -1,13 +1,13 @@
 package net.datafaker.providers.base;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class CannabisTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.cannabis().strains(), "cannabis.strains"),
+        return List.of(TestSpec.of(() -> faker.cannabis().strains(), "cannabis.strains"),
                 TestSpec.of(() -> faker.cannabis().cannabinoidAbbreviations(), "cannabis.cannabinoid_abbreviations"),
                 TestSpec.of(() -> faker.cannabis().cannabinoids(), "cannabis.cannabinoids"),
                 TestSpec.of(() -> faker.cannabis().terpenes(), "cannabis.terpenes"),

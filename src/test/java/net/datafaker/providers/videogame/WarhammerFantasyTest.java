@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class WarhammerFantasyTest extends VideoGameFakerTest {
@@ -9,7 +9,7 @@ class WarhammerFantasyTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(warhammerFantasy::creatures, "games.warhammer_fantasy.creatures"),
             TestSpec.of(warhammerFantasy::factions, "games.warhammer_fantasy.factions"),
             TestSpec.of(warhammerFantasy::heros, "games.warhammer_fantasy.heros"),

@@ -2,7 +2,6 @@ package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -103,7 +102,7 @@ public class EsMXIdNumber implements IdNumbers {
      */
     private int validDay(int year, int month, BaseProviders f) {
 
-        List<Integer> bigMonths = Arrays.asList(1, 3, 5, 7, 8, 10, 12);
+        List<Integer> bigMonths = List.of(1, 3, 5, 7, 8, 10, 12);
 
         if (month == 2) {
             if (year % 4 == 0) {

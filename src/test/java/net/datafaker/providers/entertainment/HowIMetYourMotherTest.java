@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class HowIMetYourMotherTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class HowIMetYourMotherTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(howIMetYourMother::catchPhrase, "how_i_met_your_mother.catch_phrase"),
             TestSpec.of(howIMetYourMother::character, "how_i_met_your_mother.character"),
             TestSpec.of(howIMetYourMother::highFive, "how_i_met_your_mother.high_five"),
