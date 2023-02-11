@@ -8,11 +8,8 @@ First and foremost thanks to anyone who contributes, very much appreciated.
 - Submit a PR with your change and if there are no comments, changes will be merged in.
 - If you're not sure about the change, raise an issue and have a discussion before spending time coding it up.
 - Try and make one logical change per PR. That is not make many changes in one PR. Submit multiple PRs instead.
-- Java 8 is our target version. If you need anything older than that, we recommend using [Java Faker](https://github.com/DiUS/java-faker) instead.
+- Starting with Datafaker 2.x, Java 17 is our target version. If you need anything older than that, we recommend using the 1.x versions of Datafaker instead. Note that while the 1.x is stable and free of known bugs, this branch won't receive future updates.
 
 ## Building
 
-- Should be as easy as running `mvn clean install` on the root directory.
-- When you do not have [GnuPG](https://gnupg.org/) in your path, and you cannot install it, to be able to build without error you may
-  - specify the property `gpg.skip=true` when running maven, for example `mvn clean install '-Dgpg.skip=true'`.
-  - use the profile `noGpg`, for example `mvn clean install -PnoGpg`
+- Should be as easy as running `mvnw clean install` on the root directory.

@@ -7,7 +7,6 @@ target
 !.idea/vcs.xml
 !.idea/icon.png
 *.iml
-.java-version
 /dependency-reduced-pom.xml
 META-INF/
 bin/
