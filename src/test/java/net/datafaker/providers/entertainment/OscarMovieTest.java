@@ -7,28 +7,29 @@ import static org.assertj.core.util.Strings.isNullOrEmpty;
 
 class OscarMovieTest extends EntertainmentFakerTest {
 
+    private OscarMovie oscarMovie = getFaker().oscarMovie();
     @RepeatedTest(100)
     void actor() {
-        assertThat(faker.oscarMovie().actor()).matches("\\P{Cc}+");
+        assertThat(oscarMovie.actor()).matches("\\P{Cc}+");
     }
 
     @RepeatedTest(10)
     void movieName() {
-        assertThat(isNullOrEmpty(faker.oscarMovie().movieName())).isFalse();
+        assertThat(isNullOrEmpty(oscarMovie.movieName())).isFalse();
     }
 
     @RepeatedTest(10)
     void quote() {
-        assertThat(isNullOrEmpty(faker.oscarMovie().quote())).isFalse();
+        assertThat(isNullOrEmpty(oscarMovie.quote())).isFalse();
     }
 
     @RepeatedTest(100)
     void character() {
-        assertThat(faker.oscarMovie().character()).matches("\\P{Cc}+");
+        assertThat(oscarMovie.character()).matches("\\P{Cc}+");
     }
 
     @RepeatedTest(100)
     void releaseDate() {
-        assertThat(faker.oscarMovie().releaseDate()).matches("[A-Za-z,0-9 ]+");
+        assertThat(oscarMovie.releaseDate()).matches("[A-Za-z,0-9 ]+");
     }
 }

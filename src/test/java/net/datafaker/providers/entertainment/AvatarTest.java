@@ -8,7 +8,7 @@ class AvatarTest extends EntertainmentFakerTest {
 
     @RepeatedTest(10)
     void testAvatar() {
-        String avatar = faker.avatar().image();
+        String avatar = getFaker().avatar().image();
         assertThat(avatar).matches("^https://robohash.org/[a-z]{8}.png$");
     }
 }
