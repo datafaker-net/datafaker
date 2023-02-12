@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 class ProviderGenerator {
 
@@ -30,7 +29,7 @@ class ProviderGenerator {
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
-        List<File> filesToProcess = fileList.stream().limit(5).collect(Collectors.toList());
+        List<File> filesToProcess = fileList.stream().limit(5).toList();
 
         System.out.println(files.length + " files");
 

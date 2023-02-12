@@ -10,7 +10,7 @@ import java.util.Collection;
 
 class AppTest extends BaseFakerTest<BaseFaker> {
 
-    private App app = faker.app();
+    private final App app = faker.app();
 
     @Test
     void testVersion() {

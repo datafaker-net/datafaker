@@ -16,7 +16,7 @@ class CommerceTest extends BaseFakerTest<BaseFaker> {
 
     private static final String PROMOTION_CODE_REGEX = CAPITALIZED_WORD_REGEX + "(-" + CAPITALIZED_WORD_REGEX + ")*";
 
-    private Commerce commerce = faker.commerce();
+    private final Commerce commerce = faker.commerce();
 
     @Test
     void testDepartment() {

@@ -8,7 +8,7 @@ import java.util.Collection;
 
 class AnimalTest extends BaseFakerTest<BaseFaker> {
 
-    private Animal animal = faker.animal();
+    private final Animal animal = faker.animal();
 
     @Override
     protected Collection<TestSpec> providerListTest() {

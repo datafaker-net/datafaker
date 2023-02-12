@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 class RelationshipTest extends BaseFakerTest<BaseFaker> {
 
     private BaseFaker mockFaker;
-    private Relationship relationship = faker.relationships();
+    private final Relationship relationship = faker.relationships();
 
     @BeforeEach
     protected void before() {

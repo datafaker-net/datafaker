@@ -9,7 +9,8 @@ import java.util.Collection;
 
 class SpaceTest extends BaseFakerTest<BaseFaker> {
 
-    private static String SPACE_REGEX = "(\\w+ ?){2,3}";
+    private static final String SPACE_REGEX = "(\\w+ ?){2,3}";
+    
     @Override
     protected Collection<TestSpec> providerListTest() {
         Space space = faker.space();

@@ -10,7 +10,7 @@ import java.util.Collection;
 
 class CompanyTest extends BaseFakerTest<BaseFaker> {
 
-    private Company company = faker.company();
+    private final Company company = faker.company();
 
     @Test
     void testName() {

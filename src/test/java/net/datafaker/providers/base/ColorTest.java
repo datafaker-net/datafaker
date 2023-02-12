@@ -9,7 +9,7 @@ import java.util.Collection;
 
 class ColorTest extends BaseFakerTest<BaseFaker> {
 
-    private Color color = faker.color();
+    private final Color color = faker.color();
 
     @Override
     protected Collection<TestSpec> providerListTest() {

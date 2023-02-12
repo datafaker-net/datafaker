@@ -9,7 +9,7 @@ import java.util.Collection;
 
 class WeatherTest extends BaseFakerTest<BaseFaker> {
 
-    private Weather weather = faker.weather();
+    private final Weather weather = faker.weather();
 
     @Override
     protected Collection<TestSpec> providerListTest() {

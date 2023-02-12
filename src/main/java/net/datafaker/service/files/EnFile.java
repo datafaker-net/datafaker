@@ -3,7 +3,6 @@ package net.datafaker.service.files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class EnFile {
@@ -248,7 +247,7 @@ public class EnFile {
 //            "world_of_warcraft.yml",
         "yoda.yml",
         "zelda.yml",
-        "zodiac.yml").map(EnFile::new).collect(Collectors.toList());
+        "zodiac.yml").map(EnFile::new).toList();
 
     // files where the search path can't be derived from the filename
     private static final List<EnFile> FILES_WITH_A_DIFFERENT_PATH = Arrays.asList(
