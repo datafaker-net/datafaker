@@ -11,7 +11,7 @@ import java.util.Collection;
 
 class FinanceTest extends BaseFakerTest<BaseFaker> {
 
-    private Finance finance = faker.finance();
+    private final Finance finance = faker.finance();
 
     @RepeatedTest(100)
     void creditCard() {

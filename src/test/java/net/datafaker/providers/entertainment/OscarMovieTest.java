@@ -7,7 +7,8 @@ import static org.assertj.core.util.Strings.isNullOrEmpty;
 
 class OscarMovieTest extends EntertainmentFakerTest {
 
-    private OscarMovie oscarMovie = getFaker().oscarMovie();
+    private final OscarMovie oscarMovie = getFaker().oscarMovie();
+
     @RepeatedTest(100)
     void actor() {
         assertThat(oscarMovie.actor()).matches("\\P{Cc}+");

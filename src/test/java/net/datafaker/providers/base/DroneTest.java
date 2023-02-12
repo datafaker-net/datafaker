@@ -10,7 +10,7 @@ import java.util.Collection;
 
 class DroneTest extends BaseFakerTest<BaseFaker> {
 
-    private Drone drone = faker.drone();
+    private final Drone drone = faker.drone();
 
     @Override
     protected Collection<TestSpec> providerListTest() {

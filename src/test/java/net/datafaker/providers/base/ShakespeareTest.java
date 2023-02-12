@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ShakespeareTest extends BaseFakerTest<BaseFaker> {
 
-    private Shakespeare shakespeare = faker.shakespeare();
+    private final Shakespeare shakespeare = faker.shakespeare();
 
     @Test
     void testHamletQuote() {

@@ -12,8 +12,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class OptionsTest extends BaseFakerTest<BaseFaker> {
 
-    private String[] options = {"A", "B", "C"};
-    private Options opt = faker.options();
+    private final String[] options = {"A", "B", "C"};
+    private final Options opt = faker.options();
 
     @Test
     void testOptionWithArray() {

@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TeamTest extends BaseFakerTest<BaseFaker> {
 
-    private Team team = faker.team();
+    private final Team team = faker.team();
 
     @Test
     void testName() {

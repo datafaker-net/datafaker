@@ -14,7 +14,7 @@ class NameTest extends BaseFakerTest<BaseFaker> {
 
     @Spy
     private BaseFaker mockedFaker;
-    private Name name = faker.name();
+    private final Name name = faker.name();
 
     @Test
     void testName() {

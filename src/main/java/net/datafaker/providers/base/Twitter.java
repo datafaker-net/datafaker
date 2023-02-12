@@ -115,7 +115,7 @@ public class Twitter extends AbstractProvider<BaseProviders> {
             text.add(sb.toString());
             sb.setLength(0);
         }
-        if (keywords != null && keywords.length > 0) {
+        if (keywords != null) {
             for (String keyword : keywords) {
                 int position = random.nextInt(text.size());
                 text.add(position, keyword);

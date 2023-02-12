@@ -8,7 +8,7 @@ import java.util.Collection;
 
 class RestaurantTest extends BaseFakerTest<BaseFaker> {
 
-    private Restaurant restaurant = faker.restaurant();
+    private final Restaurant restaurant = faker.restaurant();
 
     @Override
     protected Collection<TestSpec> providerListTest() {

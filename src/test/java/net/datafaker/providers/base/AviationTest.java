@@ -9,7 +9,7 @@ import java.util.Collection;
 
 class AviationTest extends BaseFakerTest<BaseFaker> {
 
-    private Aviation aviation = faker.aviation();
+    private final Aviation aviation = faker.aviation();
 
     @Test
     void flight_ICAO() {

@@ -7,7 +7,7 @@ import static org.assertj.core.util.Strings.isNullOrEmpty;
 
 class MbtiTest extends BaseFakerTest<BaseFaker> {
 
-    private Mbti mbti = faker.mbti();
+    private final Mbti mbti = faker.mbti();
 
     @Test
     void type() {

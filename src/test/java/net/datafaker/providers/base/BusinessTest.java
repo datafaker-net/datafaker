@@ -9,7 +9,7 @@ import java.util.Collection;
 
 class BusinessTest extends BaseFakerTest<BaseFaker> {
 
-    private Business business = faker.business();
+    private final Business business = faker.business();
 
     @Test
     void creditCardNumber() {

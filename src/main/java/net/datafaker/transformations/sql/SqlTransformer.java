@@ -484,7 +484,6 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                 case UPPERCASE -> upperCaseValue;
                 case LOWERCASE -> lowerCaseValue;
                 case CAPITAL -> capitalValue;
-                default -> throw new IllegalArgumentException("Unknown case " + caze);
             };
         }
     }

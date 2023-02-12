@@ -9,7 +9,7 @@ import java.util.Collection;
 
 class BookTest extends BaseFakerTest<BaseFaker> {
 
-    private Book book = faker.book();
+    private final Book book = faker.book();
 
     @Test
     void testAuthor() {

@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SlackEmojiTest extends BaseFakerTest<BaseFaker> {
 
     private static final String EMOTICON_REGEX = ":(:?[\\w-]+):";
-    private SlackEmoji slackEmoji = faker.slackEmoji();
+    private final SlackEmoji slackEmoji = faker.slackEmoji();
 
     @Test
     void people() {

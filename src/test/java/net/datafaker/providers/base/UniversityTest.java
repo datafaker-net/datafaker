@@ -9,7 +9,7 @@ import java.util.Collection;
 
 class UniversityTest extends BaseFakerTest<BaseFaker> {
 
-    private University university = faker.university();
+    private final University university = faker.university();
 
     @Test
     void testName() {

@@ -50,7 +50,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
 
     @ParameterizedTest
     @MethodSource("generateLanguageAndRegionOfLocales")
-    void testAllPhoneNumberNational(Locale locale, String phoneNumberRegion) throws NumberParseException {
+    void testAllPhoneNumberNational(Locale locale, String phoneNumberRegion) {
         final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
         int errorCount = 0;
         final BaseFaker faker = new BaseFaker(locale);

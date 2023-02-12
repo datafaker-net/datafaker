@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class LoremTest extends BaseFakerTest<BaseFaker> {
 
-    private Lorem lorem = faker.lorem();
+    private final Lorem lorem = faker.lorem();
 
     @Override
     protected Collection<TestSpec> providerListTest() {
