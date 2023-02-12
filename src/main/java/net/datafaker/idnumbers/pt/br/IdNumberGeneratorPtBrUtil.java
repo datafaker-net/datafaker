@@ -140,10 +140,9 @@ public final class IdNumberGeneratorPtBrUtil {
 
     private static String leftPad(char pad, int length, String string) {
         StringBuilder appender = new StringBuilder();
-        for (int i = 0; i < length - string.length(); i++) {
-            appender.append(pad);
-        }
-        return appender.append(string).toString();
+        appender.append(String.valueOf(pad).repeat(Math.max(0, length - string.length())));
+        appender.append(string);
+        return appender.toString();
     }
 
 }

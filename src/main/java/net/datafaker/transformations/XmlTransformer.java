@@ -144,11 +144,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private String offset(int length) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length * INDENTATION_STEP; i++) {
-            sb.append(" ");
-        }
-        return sb.toString();
+        return " ".repeat(Math.max(0, length * INDENTATION_STEP));
     }
 
     private String escape(String str) {
