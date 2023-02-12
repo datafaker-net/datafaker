@@ -1,10 +1,8 @@
-package net.datafaker.formats;
+package net.datafaker.transformations;
 
 import net.datafaker.Faker;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.sequence.FakeSequence;
-import net.datafaker.transformations.Field;
-import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.sql.SqlDialect;
 import net.datafaker.transformations.sql.SqlTransformer;
 import org.junit.jupiter.api.Test;
@@ -24,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
-class SqlTest {
+class SqlTransformerTest {
     @Test
     void generateFromFakeSequenceSeparated() {
         BaseFaker faker = new BaseFaker(new Random(10L));

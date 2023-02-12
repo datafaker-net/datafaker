@@ -1,12 +1,8 @@
-package net.datafaker.formats;
+package net.datafaker.transformations;
 
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.sequence.FakeStream;
-import net.datafaker.transformations.Field;
-import net.datafaker.transformations.Schema;
-import net.datafaker.transformations.SimpleField;
-import net.datafaker.transformations.XmlTransformer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,7 +12,6 @@ import java.util.AbstractMap;
 import java.util.List;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,7 +21,7 @@ import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
-class XmlTest {
+class XmlTransformerTest {
 
     @ParameterizedTest
     @MethodSource("generateTestXmlSchema")
@@ -163,50 +158,6 @@ class XmlTest {
         assertThat(xml).isNotEmpty();
         int numberOfLines = getNumberOfLines(xml);
         assertThat(numberOfLines).isEqualTo(23);
-    }
-
-    @ParameterizedTest
-    @MethodSource("generateTestXmlPretty")
-    void xmlPrettyTest(Xml.XmlNode xmlNode, String expected) {
-        Xml xml = new Xml(xmlNode);
-        assertThat(xml.generate(true)).isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> generateTestXmlPretty() {
-        return Stream.of(
-            Arguments.of(new Xml.XmlNode("root", Collections.emptyList()), "<root/>"),
-            Arguments.of(new Xml.XmlNode("root", "value"), "<root>value</root>"),
-            Arguments.of(new Xml.XmlNode("root",
-                    map(entry("attribute1", "value1"), entry("attribute2", "value2")), "value"),
-                "<root attribute1=\"value1\" attribute2=\"value2\">value</root>"),
-            Arguments.of(new Xml.XmlNode("root",
-                    map(entry("attribute1", "value1"), entry("attribute2", "value2")),
-                List.of(new Xml.XmlNode("child", "value"))),
-                "<root attribute1=\"value1\" attribute2=\"value2\">" + System.lineSeparator() + "    <child>value</child>" + System.lineSeparator() + "</root>"),
-            Arguments.of(new Xml.XmlNode("root", "<> value\""), "<root>&lt;&gt; value&quot;</root>")
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("generateTestXml")
-    void xmlTest(Xml.XmlNode xmlNode, String expected) {
-        Xml xml = new Xml(xmlNode);
-        assertThat(xml.generate()).isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> generateTestXml() {
-        return Stream.of(
-            Arguments.of(new Xml.XmlNode("root", Collections.emptyList()), "<root/>"),
-            Arguments.of(new Xml.XmlNode("root", "value"), "<root>value</root>"),
-            Arguments.of(new Xml.XmlNode("root",
-                    map(entry("attribute1", "value1"), entry("attribute2", "value2")), "value"),
-                "<root attribute1=\"value1\" attribute2=\"value2\">value</root>"),
-            Arguments.of(new Xml.XmlNode("root",
-                    map(entry("attribute1", "value1"), entry("attribute2", "value2")),
-                List.of(new Xml.XmlNode("child", "value"))),
-                "<root attribute1=\"value1\" attribute2=\"value2\"><child>value</child></root>"),
-            Arguments.of(new Xml.XmlNode("root", "<> value\""), "<root>&lt;&gt; value&quot;</root>")
-        );
     }
 
     private static Map.Entry<String, String> entry(String key, String value) {

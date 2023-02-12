@@ -1,11 +1,9 @@
-package net.datafaker.formats;
+package net.datafaker.transformations;
 
 import net.datafaker.AbstractFakerTest;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.sequence.FakeSequence;
-import net.datafaker.transformations.CsvTransformer;
-import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -17,7 +15,7 @@ import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class CsvTest extends AbstractFakerTest {
+class CsvTransformerTest extends AbstractFakerTest {
 
     @Test
     void csvTestNew() {

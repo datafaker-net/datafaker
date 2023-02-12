@@ -1,6 +1,8 @@
 package net.datafaker.providers.base;
 
 /**
+ * An address is a collection of information used to give the location of a building or other structure or a plot of land.
+ *
  * @since 0.8.0
  */
 public class Address extends AbstractProvider<BaseProviders> {

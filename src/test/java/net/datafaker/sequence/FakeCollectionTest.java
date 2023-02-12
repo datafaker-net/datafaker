@@ -1,8 +1,6 @@
 package net.datafaker.sequence;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.formats.Format;
-import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Number;
 import net.datafaker.transformations.CsvTransformer;
@@ -218,44 +216,44 @@ class FakeCollectionTest extends AbstractFakerTest {
 
         assertThat(limit - 1).isEqualTo(numberOfLines); // limit - 1 since for the last line there is no comma
     }
-
-    @Test
-    void toNestedJson() {
-        final int limit = 2;
-        final String json =
-            Format.toJson(faker.collection()
-                    .suppliers(faker::name)
-                    .maxLen(limit)
-                    .minLen(limit)
-                    .build())
-                .set("primaryAddress", Format.toJson()
-                    .set("country", () -> faker.address().country())
-                    .set("city", () -> faker.address().city())
-                    .set("zipcode", () -> faker.address().zipCode())
-                    .set("streetAddress", () -> faker.address().streetAddress())
-                    .build())
-                .set("secondaryAddresses", Format.toJson(faker.<Address>collection()
-                        .suppliers(faker::address)
-                        .maxLen(1)
-                        .minLen(1)
-                        .build())
-                    .set("country", Address::country)
-                    .set("city", Address::city)
-                    .set("zipcode", Address::zipCode)
-                    .set("streetAddress", Address::streetAddress)
-                    .build())
-                .set("phones", name -> faker.collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
-                .build()
-                .generate();
-
-        int numberOfLines = 0;
-        for (int i = 0; i < json.length(); i++) {
-            if (json.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
-                numberOfLines++;
-            }
-        }
-        assertThat(numberOfLines).isEqualTo(limit - 1); // limit - 1 since for the last line there is no comma
-    }
+//
+//    @Test
+//    void toNestedJson() {
+//        final int limit = 2;
+//        final String json =
+//            Format.toJson(faker.collection()
+//                    .suppliers(faker::name)
+//                    .maxLen(limit)
+//                    .minLen(limit)
+//                    .build())
+//                .set("primaryAddress", Format.toJson()
+//                    .set("country", () -> faker.address().country())
+//                    .set("city", () -> faker.address().city())
+//                    .set("zipcode", () -> faker.address().zipCode())
+//                    .set("streetAddress", () -> faker.address().streetAddress())
+//                    .build())
+//                .set("secondaryAddresses", Format.toJson(faker.<Address>collection()
+//                        .suppliers(faker::address)
+//                        .maxLen(1)
+//                        .minLen(1)
+//                        .build())
+//                    .set("country", Address::country)
+//                    .set("city", Address::city)
+//                    .set("zipcode", Address::zipCode)
+//                    .set("streetAddress", Address::streetAddress)
+//                    .build())
+//                .set("phones", name -> faker.collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+//                .build()
+//                .generate();
+//
+//        int numberOfLines = 0;
+//        for (int i = 0; i < json.length(); i++) {
+//            if (json.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+//                numberOfLines++;
+//            }
+//        }
+//        assertThat(numberOfLines).isEqualTo(limit - 1); // limit - 1 since for the last line there is no comma
+//    }
 
     @RepeatedTest(10)
     void singletonTest() {

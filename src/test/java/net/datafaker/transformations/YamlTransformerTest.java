@@ -1,9 +1,7 @@
-package net.datafaker.formats;
+package net.datafaker.transformations;
 
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
-import net.datafaker.transformations.Schema;
-import net.datafaker.transformations.YamlTransformer;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -23,7 +21,7 @@ import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
-class YamlTest {
+class YamlTransformerTest {
 
     @ParameterizedTest
     @MethodSource("generateTestSchema")
