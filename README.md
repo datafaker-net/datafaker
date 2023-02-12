@@ -1,7 +1,7 @@
 
 # Data Faker
 
-[![Maven Status](https://maven-badges.herokuapp.com/maven-central/net.datafaker/datafaker/badge.svg?style=flat)](http://mvnrepository.com/artifact/net.datafaker/datafaker)
+[![Maven Status](https://img.shields.io/maven-central/v/net.datafaker/datafaker?color=brightgreen)](http://mvnrepository.com/artifact/net.datafaker/datafaker)
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![codecov](https://codecov.io/gh/datafaker-net/datafaker/branch/main/graph/badge.svg?token=FJ6EXMUTFD)](https://codecov.io/gh/datafaker-net/datafaker)
 
