@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class ComputerTest extends BaseFakerTest<BaseFaker> {
@@ -18,7 +18,7 @@ class ComputerTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(computer::type, "computer.type"),
+        return List.of(TestSpec.of(computer::type, "computer.type"),
                 TestSpec.of(computer::platform, "computer.platform"),
                 TestSpec.of(computer::linux, "computer.os.linux"),
                 TestSpec.of(computer::macos, "computer.os.macos"),

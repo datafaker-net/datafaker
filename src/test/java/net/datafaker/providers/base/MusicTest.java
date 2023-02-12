@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class MusicTest extends BaseFakerTest<BaseFaker> {
@@ -13,7 +13,7 @@ class MusicTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Music music = faker.music();
-        return Arrays.asList(TestSpec.of(music::instrument, "music.instruments", "\\w+ ?\\w+"));
+        return List.of(TestSpec.of(music::instrument, "music.instruments", "\\w+ ?\\w+"));
     }
 
     @Test

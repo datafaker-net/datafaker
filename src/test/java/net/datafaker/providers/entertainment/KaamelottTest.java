@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class KaamelottTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class KaamelottTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(kaamelott::character, "kaamelott.characters"),
             TestSpec.of(kaamelott::quote, "kaamelott.quotes")
         );

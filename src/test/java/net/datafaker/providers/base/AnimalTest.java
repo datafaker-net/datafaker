@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import org.junit.jupiter.api.RepeatedTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class AnimalTest extends BaseFakerTest<BaseFaker> {
@@ -12,7 +12,7 @@ class AnimalTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(animal::name, "creature.animal.name"));
+        return List.of(TestSpec.of(animal::name, "creature.animal.name"));
     }
 
     @RepeatedTest(100)

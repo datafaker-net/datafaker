@@ -4,7 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class DiseaseTest extends BaseFakerTest<BaseFaker> {
@@ -12,7 +12,7 @@ class DiseaseTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Disease disease = faker.disease();
-        return Arrays.asList(TestSpec.of(disease::internalDisease, "disease.internal_disease", "[\\p{L}'()., 0-9-’]+"),
+        return List.of(TestSpec.of(disease::internalDisease, "disease.internal_disease", "[\\p{L}'()., 0-9-’]+"),
                 TestSpec.of(disease::neurology, "disease.neurology", "[\\p{L}'()., 0-9-’]+"),
                 TestSpec.of(disease::surgery, "disease.surgery", "[\\p{L}'()., 0-9-’]+"),
                 TestSpec.of(disease::paediatrics, "disease.paediatrics", "[\\p{L}'()., 0-9-’]+"),

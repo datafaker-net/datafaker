@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class BigBangTheoryTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class BigBangTheoryTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(bigBangTheory::character, "big_bang_theory.characters"),
             TestSpec.of(bigBangTheory::quote, "big_bang_theory.quotes"));
     }

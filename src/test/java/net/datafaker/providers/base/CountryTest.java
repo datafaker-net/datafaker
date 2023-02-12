@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import org.junit.jupiter.api.RepeatedTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class CountryTest extends BaseFakerTest<BaseFaker> {
@@ -18,7 +18,7 @@ class CountryTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(country::countryCode2, "country.code2", "[a-z]{2}"),
+        return List.of(TestSpec.of(country::countryCode2, "country.code2", "[a-z]{2}"),
                 TestSpec.of(country::countryCode3, "country.code3", "[a-z]{3}"),
                 TestSpec.of(country::capital, "country.capital", "([\\p{L}0-9+,. '-])+"),
                 TestSpec.of(country::currency, "country.currency", "([A-Za-zÀ-ÿ'’()-]+ ?)+"),

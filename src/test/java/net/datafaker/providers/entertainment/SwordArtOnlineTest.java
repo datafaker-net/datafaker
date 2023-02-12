@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class SwordArtOnlineTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class SwordArtOnlineTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(swordArtOnline::gameName, "sword_art_online.game_name"),
             TestSpec.of(swordArtOnline::item, "sword_art_online.item"),
             TestSpec.of(swordArtOnline::location, "sword_art_online.location"),

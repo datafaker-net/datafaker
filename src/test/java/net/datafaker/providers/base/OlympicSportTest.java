@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class OlympicSportTest extends BaseFakerTest<BaseFaker> {
@@ -8,7 +8,7 @@ class OlympicSportTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         OlympicSport olympicSport = faker.olympicSport();
-        return Arrays.asList(TestSpec.of(olympicSport::summerOlympics, "olympic_sport.summer_olympics"),
+        return List.of(TestSpec.of(olympicSport::summerOlympics, "olympic_sport.summer_olympics"),
                 TestSpec.of(olympicSport::winterOlympics, "olympic_sport.winter_olympics"),
                 TestSpec.of(olympicSport::summerParalympics, "olympic_sport.summer_paralympics"),
                 TestSpec.of(olympicSport::winterParalympics, "olympic_sport.winter_paralympics"),

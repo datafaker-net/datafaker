@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class BookTest extends BaseFakerTest<BaseFaker> {
@@ -18,7 +18,7 @@ class BookTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.book().title(), "book.title", "([\\p{L}'\\-?]+[!,]? ?){2,9}"),
+        return List.of(TestSpec.of(() -> faker.book().title(), "book.title", "([\\p{L}'\\-?]+[!,]? ?){2,9}"),
             TestSpec.of(() -> faker.book().publisher(), "book.publisher", "([\\p{L}'&\\-]+[,.]? ?){1,5}"),
             TestSpec.of(() -> faker.book().genre(), "book.genre", "([\\w/]+ ?){2,4}"));
     }

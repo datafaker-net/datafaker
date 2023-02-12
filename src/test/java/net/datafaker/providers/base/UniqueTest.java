@@ -6,7 +6,6 @@ import org.mockito.Mockito;
 
 import java.util.*;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
@@ -15,7 +14,7 @@ class UniqueTest {
 
     private BaseFaker faker = new BaseFaker(new Locale("test"));
 
-    private final List<String> defaultValues = asList(
+    private final List<String> defaultValues = List.of(
         "firstValue",
         "secondValue",
         "thirdValue",

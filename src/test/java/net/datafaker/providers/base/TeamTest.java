@@ -2,7 +2,7 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -24,7 +24,7 @@ class TeamTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(team::creature, "team.creature"),
+        return List.of(TestSpec.of(team::creature, "team.creature"),
             TestSpec.of(team::sport, "team.sport", "(:?\\p{L}|\\s)+"));
     }
 

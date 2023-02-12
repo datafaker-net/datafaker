@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class TheThickOfItTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class TheThickOfItTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(theThickOfIt::characters, "the_thick_of_it.characters"),
             TestSpec.of(theThickOfIt::departments, "the_thick_of_it.departments"),
             TestSpec.of(theThickOfIt::positions, "the_thick_of_it.positions")

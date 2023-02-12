@@ -42,7 +42,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
                 + "418|438|450|514|579|581|819|873|306|639|867";
             for (int i = 0; i < 100; i++) {
                 assertThat(f.phoneNumber().cellPhone()).matches(
-                    String.format("((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}",
+                    "((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}".formatted(
                         canadianAreaCode, canadianAreaCode));
             }
         }

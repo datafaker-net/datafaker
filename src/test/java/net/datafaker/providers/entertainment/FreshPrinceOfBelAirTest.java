@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class FreshPrinceOfBelAirTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class FreshPrinceOfBelAirTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(freshPrinceOfBelAir::characters, "fresh_prince_of_bel_air.characters"),
             TestSpec.of(freshPrinceOfBelAir::celebrities, "fresh_prince_of_bel_air.celebrities"),
             TestSpec.of(freshPrinceOfBelAir::quotes, "fresh_prince_of_bel_air.quotes")

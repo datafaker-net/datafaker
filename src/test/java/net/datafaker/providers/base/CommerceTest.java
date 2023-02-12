@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import org.junit.jupiter.api.Test;
 
 import java.text.DecimalFormatSymbols;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +30,7 @@ class CommerceTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(commerce::material, "commerce.product_name.material"),
+        return List.of(TestSpec.of(commerce::material, "commerce.product_name.material"),
             TestSpec.of(commerce::brand, "commerce.brand"),
             TestSpec.of(commerce::vendor, "commerce.vendor"));
     }

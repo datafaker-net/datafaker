@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 
@@ -10,7 +10,7 @@ class HitchhikersGuideToTheGalaxyTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(hitchhikersGuideToTheGalaxy::character, "hitchhikers_guide_to_the_galaxy.characters"),
             TestSpec.of(hitchhikersGuideToTheGalaxy::location, "hitchhikers_guide_to_the_galaxy.locations"),
             TestSpec.of(hitchhikersGuideToTheGalaxy::marvinQuote, "hitchhikers_guide_to_the_galaxy.marvin_quote"),

@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class WitcherTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class WitcherTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(witcher::book, "games.witcher.books"),
             TestSpec.of(witcher::character, "games.witcher.characters"),
             TestSpec.of(witcher::location, "games.witcher.locations"),

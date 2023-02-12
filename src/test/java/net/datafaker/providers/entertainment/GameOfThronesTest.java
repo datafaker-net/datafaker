@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class GameOfThronesTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class GameOfThronesTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(gameOfThrones::character, "game_of_thrones.characters"),
             TestSpec.of(gameOfThrones::city, "game_of_thrones.cities"),
             TestSpec.of(gameOfThrones::dragon, "game_of_thrones.dragons"),

@@ -96,8 +96,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         Object xmlNodeValue = field.transform(input);
-        if (xmlNodeValue instanceof Collection) {
-            Collection<?> children = (Collection<?>) xmlNodeValue;
+        if (xmlNodeValue instanceof Collection<?> children) {
             if (children.isEmpty()) {
                 applyValue(sb, tag, null);
             } else {

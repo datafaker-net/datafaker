@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class DroneTest extends BaseFakerTest<BaseFaker> {
@@ -14,7 +14,7 @@ class DroneTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(drone::name, "drone.name"),
+        return List.of(TestSpec.of(drone::name, "drone.name"),
                 TestSpec.of(drone::batteryType, "drone.battery_type"),
                 TestSpec.of(drone::iso, "drone.iso"),
                 TestSpec.of(drone::photoFormat, "drone.photo_format"),

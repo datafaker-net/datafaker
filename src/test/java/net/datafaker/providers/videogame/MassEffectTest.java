@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class MassEffectTest extends VideoGameFakerTest {
@@ -9,7 +9,7 @@ class MassEffectTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(massEffect::character, "mass_effect.characters"),
             TestSpec.of(massEffect::cluster, "mass_effect.cluster"),
             TestSpec.of(massEffect::planet, "mass_effect.planets"),

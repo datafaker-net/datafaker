@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class PhotographyTest extends BaseFakerTest<BaseFaker> {
@@ -8,7 +8,7 @@ class PhotographyTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Photography photo = faker.photography();
-        return Arrays.asList(TestSpec.of(photo::aperture, "photography.aperture"),
+        return List.of(TestSpec.of(photo::aperture, "photography.aperture"),
             TestSpec.of(photo::term, "photography.term"),
             TestSpec.of(photo::brand, "photography.brand"),
             TestSpec.of(photo::camera, "photography.camera"),

@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class DungeonsAndDragonsTest extends BaseFakerTest<BaseFaker> {
@@ -8,7 +8,7 @@ class DungeonsAndDragonsTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         DungeonsAndDragons dnd = faker.dungeonsAndDragons();
-        return Arrays.asList(TestSpec.of(dnd::alignments, "dnd.alignments"),
+        return List.of(TestSpec.of(dnd::alignments, "dnd.alignments"),
             TestSpec.of(dnd::backgrounds, "dnd.backgrounds"),
             TestSpec.of(dnd::cities, "dnd.cities"),
             TestSpec.of(dnd::klasses, "dnd.klasses"),

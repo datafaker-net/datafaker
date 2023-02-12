@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 
@@ -10,7 +10,7 @@ class DuneTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(dune::character, "dune.characters"),
             TestSpec.of(dune::title, "dune.titles"),
             TestSpec.of(dune::planet, "dune.planets"),

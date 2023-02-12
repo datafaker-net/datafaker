@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class WeatherTest extends BaseFakerTest<BaseFaker> {
@@ -13,7 +13,7 @@ class WeatherTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(weather::description, "weather.description"));
+        return List.of(TestSpec.of(weather::description, "weather.description"));
     }
 
     @Test

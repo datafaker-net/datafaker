@@ -2,7 +2,7 @@ package net.datafaker.providers.foods;
 
 import net.datafaker.providers.food.Beer;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class BeerTest extends FoodFakerTest {
@@ -11,7 +11,7 @@ class BeerTest extends FoodFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(beer::brand, "beer.brand"),
             TestSpec.of(beer::hop, "beer.hop"),
             TestSpec.of(beer::malt, "beer.malt"),

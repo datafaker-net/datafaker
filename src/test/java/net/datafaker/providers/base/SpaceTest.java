@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class SpaceTest extends BaseFakerTest<BaseFaker> {
@@ -13,7 +13,7 @@ class SpaceTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Space space = faker.space();
-        return Arrays.asList(TestSpec.of(space::planet, "space.planet", SPACE_REGEX),
+        return List.of(TestSpec.of(space::planet, "space.planet", SPACE_REGEX),
             TestSpec.of(space::moon, "space.moon", SPACE_REGEX),
             TestSpec.of(space::galaxy, "space.galaxy", SPACE_REGEX),
             TestSpec.of(space::nebula, "space.nebula", SPACE_REGEX),

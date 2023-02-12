@@ -5,7 +5,7 @@ import net.datafaker.providers.food.FoodFaker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -30,7 +30,7 @@ class HebrewFoodTest extends FoodFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(food::dish, "food.dish"),
             TestSpec.of(food::fruit, "food.fruits"),
             TestSpec.of(food::ingredient, "food.ingredients"),

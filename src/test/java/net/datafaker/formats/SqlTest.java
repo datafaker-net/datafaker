@@ -12,9 +12,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
@@ -419,19 +419,19 @@ class SqlTest {
             of(Schema.of(field("doubles", () -> new double[]{1d, 5d, 3d})), null, "INSERT INTO \"MyTable\" (\"doubles\") VALUES (ARRAY[1.0, 5.0, 3.0]);"),
             of(Schema.of(field("names", () -> new String[]{"hello", "world"})),
                 null, "INSERT INTO \"MyTable\" (\"names\") VALUES (ARRAY['hello', 'world']);"),
-            of(Schema.of(field("names_list", () -> Arrays.asList("hello", "hello"))),
+            of(Schema.of(field("names_list", () -> List.of("hello", "hello"))),
                 "", "INSERT INTO \"MyTable\" (\"names_list\") VALUES (MULTISET['hello', 'hello']);"),
-            of(Schema.of(field("names_multiset", () -> Collections.singleton("hello"))),
+            of(Schema.of(field("names_multiset", () -> Set.of("hello"))),
                 "", "INSERT INTO \"MyTable\" (\"names_multiset\") VALUES (MULTISET['hello']);"),
             of(Schema.of(field("ints_ints", () -> new int[][]{new int[]{1}, null, new int[] {3, 4, 5}})),
                 "", "INSERT INTO \"MyTable\" (\"ints_ints\") VALUES (ARRAY[ARRAY[1], NULL, ARRAY[3, 4, 5]]);"),
             of(Schema.of(field("ints_ints", () -> new int[][]{new int[]{1}, new int[]{2}, new int[] {3, 4, 5}})),
                 "", "INSERT INTO \"MyTable\" (\"ints_ints\") VALUES (ARRAY[ARRAY[1], ARRAY[2], ARRAY[3, 4, 5]]);"),
-            of(Schema.of(field("multiset", () -> Collections.singleton(Collections.singleton(Collections.singleton("value"))))),
+            of(Schema.of(field("multiset", () -> Set.of(Set.of(Set.of("value"))))),
                 "", "INSERT INTO \"MyTable\" (\"multiset\") VALUES (MULTISET[MULTISET[MULTISET['value']]]);"),
-            of(Schema.of(field("multiset_array", () -> Collections.singleton(new int[]{1, 2}))),
+            of(Schema.of(field("multiset_array", () -> Set.of(new int[]{1, 2}))),
                 "", "INSERT INTO \"MyTable\" (\"multiset_array\") VALUES (MULTISET[ARRAY[1, 2]]);"),
-            of(Schema.of(field("array_multiset", () -> new Object[]{Collections.singleton("value")})),
+            of(Schema.of(field("array_multiset", () -> new Object[]{Set.of("value")})),
                 "", "INSERT INTO \"MyTable\" (\"array_multiset\") VALUES (ARRAY[MULTISET['value']]);"),
             of(Schema.of(compositeField("row", new Field[]{field("name", () -> "2")})),
                 null, "INSERT INTO \"MyTable\" (\"row\") VALUES (ROW('2'));"),

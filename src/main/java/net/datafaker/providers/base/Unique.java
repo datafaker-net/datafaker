@@ -42,11 +42,9 @@ public class Unique extends AbstractProvider<BaseProviders> {
         }
 
         if (values.isEmpty()) {
-            throw new NoSuchElementException(String.format(
-                "All possible values have been generated for key %s under locale %s",
+            throw new NoSuchElementException("All possible values have been generated for key %s under locale %s".formatted(
                 key,
-                locale
-            ));
+                locale));
         }
 
         int index = faker.random().nextInt(0, values.size() - 1);
@@ -84,9 +82,7 @@ public class Unique extends AbstractProvider<BaseProviders> {
     }
 
     private NoSuchElementException noValuesFoundException(String key) {
-        return new NoSuchElementException(String.format(
-            "No values found for key %s",
-            key
-        ));
+        return new NoSuchElementException("No values found for key %s".formatted(
+            key));
     }
 }

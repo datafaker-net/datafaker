@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 
@@ -10,7 +10,7 @@ class TouhouTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(touhou::characterFirstName, "touhou.first_name"),
             TestSpec.of(touhou::characterLastName, "touhou.last_name"),
             TestSpec.of(touhou::characterName, "touhou.full_name"),

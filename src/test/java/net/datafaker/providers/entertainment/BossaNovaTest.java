@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class BossaNovaTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class BossaNovaTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(bossaNova::artist, "bossa_nova.artists"),
             TestSpec.of(bossaNova::song, "bossa_nova.songs"));
     }

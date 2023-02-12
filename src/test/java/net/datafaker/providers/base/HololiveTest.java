@@ -2,7 +2,7 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -15,7 +15,7 @@ class HololiveTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Hololive hl = faker.hololive();
-        return Arrays.asList(TestSpec.of(hl::talent, "hololive.talent", "^[A-Za-z '+-]+$"));
+        return List.of(TestSpec.of(hl::talent, "hololive.talent", "^[A-Za-z '+-]+$"));
     }
 
     @Test

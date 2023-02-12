@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.AbstractMap;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -50,7 +50,7 @@ class XmlTest {
             of(Schema.of(
                     compositeField("root",
                         new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2"),
-                            field(null, () -> Collections.singletonList(field("child", () -> "value")))})),
+                            field(null, () -> List.of(field("child", () -> "value")))})),
                 "<root attribute1=\"value1\" attribute2=\"value2\"><child>value</child></root>"),
             of(Schema.of(field("root", () -> "<> value\"")), "<root>&lt;&gt; value&quot;</root>")
         );
@@ -78,7 +78,7 @@ class XmlTest {
             of(Schema.of(
                     compositeField("root",
                         new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2"),
-                            field(null, () -> Collections.singletonList(field("child", () -> "value")))})),
+                            field(null, () -> List.of(field("child", () -> "value")))})),
                 "<root attribute1=\"value1\" attribute2=\"value2\">" + System.lineSeparator() + "    <child>value</child>" + System.lineSeparator() + "</root>"),
             of(Schema.of(field("root", () -> "<> value\"")), "<root>&lt;&gt; value&quot;</root>")
         );
@@ -90,7 +90,7 @@ class XmlTest {
 
         Schema<Name, List<SimpleField<Name, String>>> schema = Schema.of(
             field("root",
-                () -> Arrays.asList(
+                () -> List.of(
                     field("firstName", Name::firstName),
                     field("username", Name::username))));
 
@@ -111,7 +111,7 @@ class XmlTest {
             faker.<SimpleField<String, List<Object>>>stream()
                 .suppliers(() ->
                     field("address",
-                        () -> Arrays.asList(
+                        () -> List.of(
                             field("country", () -> faker.address().country()),
                             field("city", () -> faker.address().city()),
                             field("streetAddress", () -> faker.address().streetAddress()))))
@@ -121,7 +121,7 @@ class XmlTest {
             faker.<SimpleField<Object, List<Object>>>stream()
                 .suppliers(() ->
                     field("person",
-                        () -> Arrays.asList(
+                        () -> List.of(
                             field("firstname", () -> faker.name().firstName()),
                             field("lastname", () -> faker.name().lastName()),
                             field("addresses", () -> address.get().collect(Collectors.toList())))))
@@ -155,8 +155,7 @@ class XmlTest {
                         new Field[]{
                             field("firstname", () -> faker.name().firstName()),
                             field("lastname", () -> faker.name().lastName()),
-                            field(null, () -> Collections.singletonList(
-                                field("addresses", () -> address.get().collect(Collectors.toList()))))}))
+                            field(null, () -> List.of(field("addresses", () -> address.get().collect(Collectors.toList()))))}))
                 .maxLen(3).build();
 
         XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
@@ -182,7 +181,7 @@ class XmlTest {
                 "<root attribute1=\"value1\" attribute2=\"value2\">value</root>"),
             Arguments.of(new Xml.XmlNode("root",
                     map(entry("attribute1", "value1"), entry("attribute2", "value2")),
-                    Collections.singletonList(new Xml.XmlNode("child", "value"))),
+                List.of(new Xml.XmlNode("child", "value"))),
                 "<root attribute1=\"value1\" attribute2=\"value2\">" + System.lineSeparator() + "    <child>value</child>" + System.lineSeparator() + "</root>"),
             Arguments.of(new Xml.XmlNode("root", "<> value\""), "<root>&lt;&gt; value&quot;</root>")
         );
@@ -204,7 +203,7 @@ class XmlTest {
                 "<root attribute1=\"value1\" attribute2=\"value2\">value</root>"),
             Arguments.of(new Xml.XmlNode("root",
                     map(entry("attribute1", "value1"), entry("attribute2", "value2")),
-                    Collections.singletonList(new Xml.XmlNode("child", "value"))),
+                List.of(new Xml.XmlNode("child", "value"))),
                 "<root attribute1=\"value1\" attribute2=\"value2\"><child>value</child></root>"),
             Arguments.of(new Xml.XmlNode("root", "<> value\""), "<root>&lt;&gt; value&quot;</root>")
         );

@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 public class OnePieceTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ public class OnePieceTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(onePiece::akumasNoMi, "one_piece.akumas_no_mi"),
             TestSpec.of(onePiece::character, "one_piece.characters"),
             TestSpec.of(onePiece::island, "one_piece.islands"),

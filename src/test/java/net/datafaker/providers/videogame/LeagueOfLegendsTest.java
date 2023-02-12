@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 
@@ -10,7 +10,7 @@ class LeagueOfLegendsTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(leagueOfLegends::champion, "games.league_of_legends.champion"),
             TestSpec.of(leagueOfLegends::location, "games.league_of_legends.location"),
             TestSpec.of(leagueOfLegends::masteries, "games.league_of_legends.masteries"),

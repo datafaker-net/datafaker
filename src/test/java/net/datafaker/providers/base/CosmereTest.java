@@ -1,7 +1,7 @@
 package net.datafaker.providers.base;
 
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class CosmereTest extends BaseFakerTest<BaseFaker> {
@@ -9,7 +9,7 @@ class CosmereTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Cosmere cosmere = faker.cosmere();
-        return Arrays.asList(TestSpec.of(cosmere::aons, "cosmere.aons"),
+        return List.of(TestSpec.of(cosmere::aons, "cosmere.aons"),
                 TestSpec.of(cosmere::shardWorlds, "cosmere.shard_worlds"),
                 TestSpec.of(cosmere::shards, "cosmere.shards"),
                 TestSpec.of(cosmere::surges, "cosmere.surges"),
