@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class StarCraftTest extends VideoGameFakerTest {
@@ -9,7 +9,7 @@ class StarCraftTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(starCraft::building, "starcraft.buildings"),
             TestSpec.of(starCraft::character, "starcraft.characters"),
             TestSpec.of(starCraft::planet, "starcraft.planets"),

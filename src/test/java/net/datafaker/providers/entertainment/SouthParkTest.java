@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class SouthParkTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class SouthParkTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(southPark::characters, "south_park.characters"),
             TestSpec.of(southPark::quotes, "south_park.quotes")
         );

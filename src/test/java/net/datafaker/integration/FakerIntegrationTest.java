@@ -14,7 +14,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,7 +64,7 @@ class FakerIntegrationTest {
         public static SkippedMethods of(Class clazz, String... methodNames) {
             SkippedMethods sm = new SkippedMethods();
             sm.class2methodNames.putIfAbsent(clazz, new HashSet<>());
-            sm.class2methodNames.get(clazz).addAll(Arrays.asList(methodNames));
+            sm.class2methodNames.get(clazz).addAll(List.of(methodNames));
             return sm;
         }
     }

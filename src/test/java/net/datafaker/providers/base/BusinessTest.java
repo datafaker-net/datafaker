@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class BusinessTest extends AbstractBasicProviderTest<BaseFaker> {
@@ -30,6 +30,6 @@ class BusinessTest extends AbstractBasicProviderTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(() -> faker.business().creditCardType(), "business.credit_card_types"));
+        return List.of(TestSpec.of(() -> faker.business().creditCardType(), "business.credit_card_types"));
     }
 }

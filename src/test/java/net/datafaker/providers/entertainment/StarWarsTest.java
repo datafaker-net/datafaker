@@ -2,7 +2,7 @@ package net.datafaker.providers.entertainment;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +24,7 @@ class StarWarsTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(starWars::character, "star_wars.characters"),
             TestSpec.of(starWars::droids, "star_wars.droids"),
             TestSpec.of(starWars::planets, "star_wars.planets"),

@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 public class HeroesOfTheStormTest extends VideoGameFakerTest {
@@ -9,7 +9,7 @@ public class HeroesOfTheStormTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(heroesOfTheStorm::battleground, "heroes_of_the_storm.battlegrounds"),
             TestSpec.of(heroesOfTheStorm::hero, "heroes_of_the_storm.heroes"),
             TestSpec.of(heroesOfTheStorm::heroClass, "heroes_of_the_storm.classes"),

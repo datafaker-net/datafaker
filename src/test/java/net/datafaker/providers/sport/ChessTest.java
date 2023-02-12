@@ -1,6 +1,6 @@
 package net.datafaker.providers.sport;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 public class ChessTest extends SportFakerTest {
@@ -9,7 +9,7 @@ public class ChessTest extends SportFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(chess::opening, "chess.openings"),
             TestSpec.of(chess::player, "chess.players"),
             TestSpec.of(chess::title, "chess.titles"),

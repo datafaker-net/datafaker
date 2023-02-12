@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class HalfLifeTest extends VideoGameFakerTest {
@@ -9,7 +9,7 @@ class HalfLifeTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(halfLife::character, "games.half_life.character"),
             TestSpec.of(halfLife::enemy, "games.half_life.enemy"),
             TestSpec.of(halfLife::location, "games.half_life.location")

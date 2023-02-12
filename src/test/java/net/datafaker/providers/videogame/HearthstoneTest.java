@@ -2,7 +2,7 @@ package net.datafaker.providers.videogame;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +31,7 @@ class HearthstoneTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(hearthstone::mainCharacter, "games.hearthstone.characters"),
             TestSpec.of(hearthstone::mainPattern, "games.hearthstone.patterns"),
             TestSpec.of(hearthstone::mainProfession, "games.hearthstone.professions")

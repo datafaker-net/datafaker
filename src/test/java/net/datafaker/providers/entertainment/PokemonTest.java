@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class PokemonTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class PokemonTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(pokemon::location, "games.pokemon.locations"),
             TestSpec.of(pokemon::move, "games.pokemon.moves"),
             TestSpec.of(pokemon::name, "games.pokemon.names"),

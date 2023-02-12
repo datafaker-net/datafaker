@@ -44,7 +44,7 @@ class Glucose implements Data {
 
     @Override
     public String value() {
-        return String.format("%.1f", new BaseFaker().random().nextDouble(3.2, 5.5));
+        return "%.1f".formatted(new BaseFaker().random().nextDouble(3.2, 5.5));
     }
 
     @Override

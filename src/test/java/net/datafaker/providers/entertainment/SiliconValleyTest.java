@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 public class SiliconValleyTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ public class SiliconValleyTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(siliconValley::app, "silicon_valley.apps"),
             TestSpec.of(siliconValley::character, "silicon_valley.characters"),
             TestSpec.of(siliconValley::company, "silicon_valley.companies"),

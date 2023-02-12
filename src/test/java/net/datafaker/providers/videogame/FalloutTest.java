@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 
@@ -10,7 +10,7 @@ public class FalloutTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(fallout::character, "fallout.characters"),
             TestSpec.of(fallout::faction, "fallout.factions"),
             TestSpec.of(fallout::location, "fallout.locations"),

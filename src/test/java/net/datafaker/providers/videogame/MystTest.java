@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class MystTest extends VideoGameFakerTest {
@@ -9,7 +9,7 @@ class MystTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(myst::ages, "games.myst.ages"),
             TestSpec.of(myst::characters, "games.myst.characters"),
             TestSpec.of(myst::creatures, "games.myst.creatures"),

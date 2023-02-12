@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
+import java.util.List;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,29 +56,29 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
     void testSubset() {
         Integer[] integerOptions = new Integer[]{1, 3, 4, 5};
         assertThat(faker.options().subset(1, integerOptions))
-            .doesNotContainAnyElementsOf(Arrays.asList(2, 6))
-            .containsAnyElementsOf(Arrays.asList(integerOptions));
+            .doesNotContainAnyElementsOf(List.of(2, 6))
+            .containsAnyElementsOf(List.of(integerOptions));
         Long[] longOptions = new Long[]{1L, 3L, 4L, 5L};
         assertThat(faker.options().subset(1, longOptions))
-            .doesNotContainAnyElementsOf(Arrays.asList(2L, 6L))
-            .containsAnyElementsOf(Arrays.asList(longOptions));
+            .doesNotContainAnyElementsOf(List.of(2L, 6L))
+            .containsAnyElementsOf(List.of(longOptions));
 
         assertThat(faker.options().subset(longOptions.length, longOptions))
-            .doesNotContainAnyElementsOf(Arrays.asList(2L, 6L))
-            .containsAnyElementsOf(Arrays.asList(longOptions)).hasSameSizeAs(longOptions);
+            .doesNotContainAnyElementsOf(List.of(2L, 6L))
+            .containsAnyElementsOf(List.of(longOptions)).hasSameSizeAs(longOptions);
 
         assertThat(faker.options().subset(longOptions.length + 1, longOptions))
-            .doesNotContainAnyElementsOf(Arrays.asList(2L, 6L))
-            .containsAnyElementsOf(Arrays.asList(longOptions)).hasSameSizeAs(longOptions);
+            .doesNotContainAnyElementsOf(List.of(2L, 6L))
+            .containsAnyElementsOf(List.of(longOptions)).hasSameSizeAs(longOptions);
 
         String[] strOptions = new String[]{"1", "2", "3"};
         assertThat(faker.options().subset(strOptions.length + 1, strOptions))
-            .doesNotContainAnyElementsOf(Arrays.asList("q", "w"))
-            .containsAnyElementsOf(Arrays.asList(strOptions)).hasSameSizeAs(strOptions);
+            .doesNotContainAnyElementsOf(List.of("q", "w"))
+            .containsAnyElementsOf(List.of(strOptions)).hasSameSizeAs(strOptions);
 
         assertThat(faker.options().subset(1, strOptions))
-            .doesNotContainAnyElementsOf(Arrays.asList("q", "w"))
-            .containsAnyElementsOf(Arrays.asList(strOptions))
+            .doesNotContainAnyElementsOf(List.of("q", "w"))
+            .containsAnyElementsOf(List.of(strOptions))
             .hasSize(1);
 
     }
@@ -118,7 +118,7 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testNextListElement() {
-        List<Integer> list = Arrays.asList(1, 2, 3, 5, 8, 13, 21);
+        List<Integer> list = List.of(1, 2, 3, 5, 8, 13, 21);
         for (int i = 1; i < 10; i++) {
             assertThat(faker.options().nextElement(list)).isIn(list);
         }

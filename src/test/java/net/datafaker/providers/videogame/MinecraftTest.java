@@ -2,7 +2,7 @@ package net.datafaker.providers.videogame;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +19,7 @@ class MinecraftTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(minecraft::animalName, "minecraft.animal_name"),
             TestSpec.of(minecraft::entityName, "minecraft.entity_name"),
             TestSpec.of(minecraft::itemName, "minecraft.item_name"),
