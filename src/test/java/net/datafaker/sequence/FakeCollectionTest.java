@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -124,7 +124,7 @@ class FakeCollectionTest extends AbstractFakerTest {
     @Test
     void generateCollectionPassingSuppliersAsList() {
         BaseFaker seededFaker = new BaseFaker(new Random(10L));
-        List<Supplier<String>> suppliers = Arrays.asList(() -> faker.name().firstName(), () -> faker.name().lastName());
+        List<Supplier<String>> suppliers = List.of(() -> faker.name().firstName(), () -> faker.name().lastName());
 
         List<String> names = faker.collection(suppliers).faker(seededFaker).len(3).generate();
         assertThat(names).hasSize(3);
@@ -248,7 +248,6 @@ class FakeCollectionTest extends AbstractFakerTest {
                 .build()
                 .generate();
 
-        System.out.println(json);
         int numberOfLines = 0;
         for (int i = 0; i < json.length(); i++) {
             if (json.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {

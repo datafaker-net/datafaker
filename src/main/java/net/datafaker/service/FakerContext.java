@@ -3,7 +3,6 @@ package net.datafaker.service;
 import net.datafaker.internal.helper.SingletonLocale;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -20,7 +19,7 @@ public class FakerContext {
     private static final Pattern LOCALE = Pattern.compile("[-_]");
     private static final Map<SingletonLocale, List<SingletonLocale>> LOCALE_2_LOCALES_CHAIN = new IdentityHashMap<>();
     private static final Map<SingletonLocale, SingletonLocale> STRING_LOCALE_HASH_MAP = new IdentityHashMap<>();
-    public static final List<SingletonLocale> DEFAULT_SINGLETON_LOCALE_LIST = Collections.singletonList(DEFAULT_LOCALE);
+    public static final List<SingletonLocale> DEFAULT_SINGLETON_LOCALE_LIST = List.of(DEFAULT_LOCALE);
     private SingletonLocale sLocale;
     private RandomService randomService;
 

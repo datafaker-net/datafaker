@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class WorldOfWarcraftTest extends VideoGameFakerTest {
@@ -9,7 +9,7 @@ class WorldOfWarcraftTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(worldOfWarcraft::hero, "games.world_of_warcraft.hero"),
             TestSpec.of(worldOfWarcraft::quotes, "games.world_of_warcraft.quotes")
         );

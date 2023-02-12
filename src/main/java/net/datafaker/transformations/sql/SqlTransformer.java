@@ -480,16 +480,12 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         public String getValue(Case caze) {
-            switch (caze) {
-                case UPPERCASE:
-                    return upperCaseValue;
-                case LOWERCASE:
-                    return lowerCaseValue;
-                case CAPITAL:
-                    return capitalValue;
-                default:
-                    throw new IllegalArgumentException("Unknown case " + caze);
-            }
+            return switch (caze) {
+                case UPPERCASE -> upperCaseValue;
+                case LOWERCASE -> lowerCaseValue;
+                case CAPITAL -> capitalValue;
+                default -> throw new IllegalArgumentException("Unknown case " + caze);
+            };
         }
     }
 }

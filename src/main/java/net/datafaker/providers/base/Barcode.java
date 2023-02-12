@@ -44,18 +44,13 @@ public class Barcode extends AbstractProvider<BaseProviders> {
     }
 
     private long ean(int length) {
-        long first_part = 0;
-        switch (length) {
-            case 8:
-            case 12:
-            case 13:
-            case 14:
-                first_part = this.faker.number().randomNumber(length - 1, true);
-                break;
-        }
+        long firstPart = switch (length) {
+            case 8, 12, 13, 14 -> this.faker.number().randomNumber(length - 1, true);
+            default -> 0;
+        };
         int odd = 0;
         int even = 0;
-        long number = first_part;
+        long number = firstPart;
         int i = 0;
         while (number > 0) {
             i++;
@@ -86,7 +81,7 @@ public class Barcode extends AbstractProvider<BaseProviders> {
         while (product <= checkDigit) {
             product *= 10;
         }
-        return first_part * product + checkDigit;
+        return firstPart * product + checkDigit;
     }
 
     public String type() {

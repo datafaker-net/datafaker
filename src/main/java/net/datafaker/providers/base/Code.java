@@ -64,22 +64,15 @@ public class Code extends AbstractProvider<BaseProviders> {
      */
     public String isbnRegistrant() {
         int ct = faker.random().nextInt(6) + 1;
-        switch (ct) {
-            case 6:
-                return faker.number().numberBetween(0, 1) + faker.number().digit() + "-" + faker.number().digits(6);
-            case 5:
-                return faker.number().numberBetween(200, 699) + "-" + faker.number().digits(5);
-            case 4:
-                return faker.number().numberBetween(7000, 8499) + "-" + faker.number().digits(4);
-            case 3:
-                return faker.number().numberBetween(85000, 89999) + "-" + faker.number().digits(3);
-            case 2:
-                return faker.number().numberBetween(900000, 949999) + "-" + faker.number().digits(2);
-            case 1:
-                return faker.number().numberBetween(9500000, 9999999) + "-" + faker.number().digits(1);
-            default:
-                throw new IllegalStateException("Invalid random " + ct);
-        }
+        return switch (ct) {
+            case 6 -> faker.number().numberBetween(0, 1) + faker.number().digit() + "-" + faker.number().digits(6);
+            case 5 -> faker.number().numberBetween(200, 699) + "-" + faker.number().digits(5);
+            case 4 -> faker.number().numberBetween(7000, 8499) + "-" + faker.number().digits(4);
+            case 3 -> faker.number().numberBetween(85000, 89999) + "-" + faker.number().digits(3);
+            case 2 -> faker.number().numberBetween(900000, 949999) + "-" + faker.number().digits(2);
+            case 1 -> faker.number().numberBetween(9500000, 9999999) + "-" + faker.number().digits(1);
+            default -> throw new IllegalStateException("Invalid random " + ct);
+        };
     }
 
     /**

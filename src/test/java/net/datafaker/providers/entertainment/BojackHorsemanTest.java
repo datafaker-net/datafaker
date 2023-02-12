@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class BojackHorsemanTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class BojackHorsemanTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(bojackHorseman::characters, "bojack_horseman.characters"),
             TestSpec.of(bojackHorseman::quotes, "bojack_horseman.quotes"),
             TestSpec.of(bojackHorseman::tongueTwisters, "bojack_horseman.tongue_twisters"));

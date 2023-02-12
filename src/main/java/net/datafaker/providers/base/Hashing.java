@@ -43,7 +43,7 @@ public class Hashing extends AbstractProvider<BaseProviders> {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
             String characters = faker.lorem().characters();
             messageDigest.update(characters.getBytes(StandardCharsets.UTF_8), 0, characters.length());
-            return String.format(format, new BigInteger(1, messageDigest.digest()));
+            return format.formatted(new BigInteger(1, messageDigest.digest()));
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
             throw new RuntimeException(noSuchAlgorithmException);
         }

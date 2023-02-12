@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -84,7 +84,7 @@ class FakeStreamTest extends AbstractFakerTest {
     @Test
     void generateStreamPassingSuppliersAsList() {
         BaseFaker faker = new BaseFaker();
-        List<Supplier<String>> suppliers = Arrays.asList(() -> faker.name().firstName(), () -> faker.name().lastName());
+        List<Supplier<String>> suppliers = List.of(() -> faker.name().firstName(), () -> faker.name().lastName());
         Stream<String> stream = faker.stream(suppliers).len(3).generate();
 
         assertThat(stream.collect(Collectors.toList())).hasSize(3);

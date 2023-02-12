@@ -67,14 +67,11 @@ public class PeselNumber implements IdNumbers {
     }
 
     private int getGenderDigit(Gender gender) {
-        switch (gender) {
-            case FEMALE:
-                return faker.random().nextInt(5) * 2;
-            case MALE:
-                return faker.random().nextInt(5) * 2 + 1;
-            default:
-                return randomDigit();
-        }
+        return switch (gender) {
+            case FEMALE -> faker.random().nextInt(5) * 2;
+            case MALE -> faker.random().nextInt(5) * 2 + 1;
+            default -> randomDigit();
+        };
     }
 
     private int getMonthEncoded(int year, int month) {

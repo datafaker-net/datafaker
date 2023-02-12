@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
@@ -85,9 +85,9 @@ class FakerTest extends AbstractFakerTest {
     void templatify() {
         assertThat(faker.templatify("12??34", '?', "тест", "test", "测试测试")).hasSize(12);
         assertThat(faker.templatify("12??34",
-            Collections.singletonMap('1', new String[]{"тест", "test", "测试测试"}))).hasSize(9);
+            Map.of('1', new String[]{"тест", "test", "测试测试"}))).hasSize(9);
         assertThat(faker.templatify("12??34",
-            Collections.singletonMap('1', new String[]{""}))).hasSize(5);
+            Map.of('1', new String[]{""}))).hasSize(5);
     }
 
     @Test

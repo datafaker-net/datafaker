@@ -3,7 +3,6 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.WeakHashMap;
 
 /**
@@ -242,34 +241,5 @@ public class Text extends AbstractProvider<BaseProviders> {
         return String.valueOf(buffer);
     }
 
-
-    private static class TextConfigPojo {
-        private final int length;
-        private final boolean includeUppercase;
-        private final boolean includeSpecial;
-        private final boolean includeDigit;
-
-        public TextConfigPojo(int length, boolean includeUppercase, boolean includeSpecial,
-            boolean includeDigit) {
-            this.length = length;
-            this.includeUppercase = includeUppercase;
-            this.includeSpecial = includeSpecial;
-            this.includeDigit = includeDigit;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (o == null || getClass() != o.getClass())
-                return false;
-            TextConfigPojo that = (TextConfigPojo) o;
-            return length == that.length && includeUppercase == that.includeUppercase && includeSpecial == that.includeSpecial && includeDigit == that.includeDigit;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(length, includeUppercase, includeSpecial, includeDigit);
-        }
-    }
+    private record TextConfigPojo(int length, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) { }
 }

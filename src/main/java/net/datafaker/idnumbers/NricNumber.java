@@ -14,31 +14,20 @@ public class NricNumber implements IdNumbers {
 
     public enum Type {SINGAPOREAN_TWENTIETH_CENTURY, FOREIGNER_TWENTIETH_CENTURY, SINGAPOREAN_TWENTY_FIRST_CENTURY, FOREIGNER_TWENTY_FIRST_CENTURY}
 
-    private static class NricType {
-        private final char firstLetter;
-        private final String matchLetters;
-        private final int[] code;
-        private final int initialValue;
-
-        public NricType(char firstLetter, String matchLetters, int[] code, int initialValue) {
-            this.firstLetter = firstLetter;
-            this.matchLetters = matchLetters;
-            this.code = code;
-            this.initialValue = initialValue;
-        }
+    private record NricType(char firstLetter, String matchLetters, int[] code, int initialValue) {
 
         public String format(int[] digits) {
-            int value = initialValue;
-            StringBuilder id = new StringBuilder(firstLetter + "");
-            for (int i = 0; i < digits.length; i++) {
-                value += digits[i] * code[i];
-                id.append(digits[i]);
+                int value = initialValue;
+                StringBuilder id = new StringBuilder(firstLetter + "");
+                for (int i = 0; i < digits.length; i++) {
+                    value += digits[i] * code[i];
+                    id.append(digits[i]);
+                }
+                value %= 11;
+                id.append(matchLetters.charAt(value));
+                return id.toString();
             }
-            value %= 11;
-            id.append(matchLetters.charAt(value));
-            return id.toString();
         }
-    }
 
     private static final int[] CODE = new int[]{0, 2, 7, 6, 5, 4, 3, 2};
     private static final String FIN_LETTERS = "XWUTRQPNMLK";

@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class MatzTest extends BaseFakerTest<BaseFaker> {
@@ -8,6 +8,6 @@ class MatzTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Matz matz = faker.matz();
-        return Arrays.asList(TestSpec.of(matz::quote, "matz.quotes"));
+        return List.of(TestSpec.of(matz::quote, "matz.quotes"));
     }
 }

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class FinanceTest extends BaseFakerTest<BaseFaker> {
@@ -36,7 +36,7 @@ class FinanceTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(finance::stockMarket, "finance.stock_market"));
+        return List.of(TestSpec.of(finance::stockMarket, "finance.stock_market"));
     }
 
     @Test

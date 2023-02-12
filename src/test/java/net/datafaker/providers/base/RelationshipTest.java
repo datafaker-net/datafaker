@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +31,7 @@ class RelationshipTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(TestSpec.of(relationship::direct, "relationship.familial.direct"),
+        return List.of(TestSpec.of(relationship::direct, "relationship.familial.direct"),
                 TestSpec.of(relationship::extended, "relationship.familial.extended"),
                 TestSpec.of(relationship::inLaw, "relationship.in_law"),
                 TestSpec.of(relationship::spouse, "relationship.spouse"),

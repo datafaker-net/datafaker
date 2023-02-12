@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class CannabisTest extends BaseFakerTest<BaseFaker> {
@@ -8,7 +8,7 @@ class CannabisTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Cannabis cannabis = faker.cannabis();
-        return Arrays.asList(TestSpec.of(cannabis::strains, "cannabis.strains"),
+        return List.of(TestSpec.of(cannabis::strains, "cannabis.strains"),
                 TestSpec.of(cannabis::cannabinoidAbbreviations, "cannabis.cannabinoid_abbreviations"),
                 TestSpec.of(cannabis::cannabinoids, "cannabis.cannabinoids"),
                 TestSpec.of(cannabis::terpenes, "cannabis.terpenes"),

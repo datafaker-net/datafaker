@@ -3,7 +3,7 @@ package net.datafaker.providers.foods;
 import net.datafaker.providers.food.Tea;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +19,7 @@ class TeaTest extends FoodFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(tea::type, "tea.type")
         );
     }

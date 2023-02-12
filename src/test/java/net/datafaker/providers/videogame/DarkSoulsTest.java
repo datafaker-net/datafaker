@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class DarkSoulsTest extends VideoGameFakerTest {
@@ -9,7 +9,7 @@ class DarkSoulsTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(darkSouls::classes, "dark_souls.classes"),
             TestSpec.of(darkSouls::covenants, "dark_souls.covenants"),
             TestSpec.of(darkSouls::shield, "dark_souls.shield"),

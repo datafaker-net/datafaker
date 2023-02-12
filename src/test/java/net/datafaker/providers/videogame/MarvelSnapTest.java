@@ -1,6 +1,6 @@
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 public class MarvelSnapTest extends VideoGameFakerTest {
@@ -9,7 +9,7 @@ public class MarvelSnapTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(marvelSnap::character, "games.marvel_snap.characters"),
             TestSpec.of(marvelSnap::event, "games.marvel_snap.events"),
             TestSpec.of(marvelSnap::rank, "games.marvel_snap.rank"),

@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 /**
@@ -11,6 +11,6 @@ class YodaTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Yoda yoda = faker.yoda();
-        return Arrays.asList(TestSpec.of(yoda::quote, "yoda.quotes"));
+        return List.of(TestSpec.of(yoda::quote, "yoda.quotes"));
     }
 }

@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class TronTest extends EntertainmentFakerTest {
@@ -9,7 +9,7 @@ class TronTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(() -> tron.alternateCharacterSpelling(Tron.AlternateCharacterSpelling.ALAN_BRADLEY), "tron.alternate_character_spellings.alan_bradley"),
             TestSpec.of(() -> tron.alternateCharacterSpelling(Tron.AlternateCharacterSpelling.CLU), "tron.alternate_character_spellings.clu"),
             TestSpec.of(() -> tron.alternateCharacterSpelling(Tron.AlternateCharacterSpelling.DR_LORA_BAINES), "tron.alternate_character_spellings.dr_lora_baines"),

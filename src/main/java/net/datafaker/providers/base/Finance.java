@@ -31,7 +31,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
         createCountryCodeToBasicBankAccountNumberPatternMap();
 
     public String creditCard(CreditCardType creditCardType) {
-        final String key = String.format("finance.credit_card.%s", creditCardType.toString().toLowerCase(Locale.ROOT));
+        final String key = "finance.credit_card.%s".formatted(creditCardType.toString().toLowerCase(Locale.ROOT));
         String value = resolve(key);
         final String template = faker.numerify(value);
 

@@ -1,6 +1,6 @@
 package net.datafaker.providers.entertainment;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 
@@ -10,7 +10,7 @@ class HobbitTest extends EntertainmentFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(hobbit::character, "hobbit.character"),
             TestSpec.of(hobbit::location, "hobbit.location"),
             TestSpec.of(hobbit::thorinsCompany, "hobbit.thorins_company"),

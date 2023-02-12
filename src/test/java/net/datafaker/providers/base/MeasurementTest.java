@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 class MeasurementTest extends BaseFakerTest<BaseFaker> {
@@ -10,7 +10,7 @@ class MeasurementTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Measurement measurement = faker.measurement();
-        return Arrays.asList(TestSpec.of(measurement::height, "measurement.height"),
+        return List.of(TestSpec.of(measurement::height, "measurement.height"),
             TestSpec.of(measurement::length, "measurement.length"),
             TestSpec.of(measurement::volume, "measurement.volume"),
             TestSpec.of(measurement::weight, "measurement.weight"),

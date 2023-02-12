@@ -8,8 +8,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -78,7 +78,7 @@ public class BaseFakerTest<T extends BaseFaker> {
 
     protected Collection<TestSpec> providerListTest() {
         // dummy test since parameterized test requires non-empty collection
-        return Collections.singleton(new TestSpec(null, null, null));
+        return Set.of(new TestSpec(null, null, null));
     }
 
     protected static class TestSpec {

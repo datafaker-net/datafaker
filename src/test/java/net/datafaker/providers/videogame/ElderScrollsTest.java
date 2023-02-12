@@ -2,7 +2,7 @@
 
 package net.datafaker.providers.videogame;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Collection;
 
 
@@ -12,7 +12,7 @@ class ElderScrollsTest extends VideoGameFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return Arrays.asList(
+        return List.of(
             TestSpec.of(elderScrolls::city, "games.elder_scrolls.city"),
             TestSpec.of(elderScrolls::creature, "games.elder_scrolls.creature"),
             TestSpec.of(elderScrolls::dragon, "games.elder_scrolls.dragon"),
