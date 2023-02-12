@@ -1,10 +1,12 @@
 package net.datafaker.sequence;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.formats.Format;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.Name;
+import net.datafaker.transformations.CompositeField;
 import net.datafaker.transformations.CsvTransformer;
+import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.RepeatedTest;
@@ -13,12 +15,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
-import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -240,52 +242,56 @@ class FakeStreamTest extends AbstractFakerTest {
             .build();
 
         assertThatThrownBy(() ->
-            Format.toJson(infiniteStream)
-                .set("name", Data::name)
-                .set("value", Data::value)
-                .set("range", Data::range)
-                .set("unit", Data::unit)
-                .build()
-                .generate()
+            JsonTransformer.<Data>builder().build()
+                .generate(infiniteStream,
+                    Schema.of(
+                        field("name", Data::name),
+                        field("value", Data::value),
+                        field("range", Data::range),
+                        field("unit", Data::unit)))
         ).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("The sequence should be finite of size");
     }
 
     @Test
     void toNestedJson() {
-        final int limit = 2;
-        FakeSequence<Object> stream = faker.stream()
-            .suppliers(faker::name)
-            .maxLen(limit)
-            .minLen(limit)
-            .build();
+        final int limit = 3;
+        JsonTransformer<Name> transformer = JsonTransformer.<Name>builder().formattedAs(JsonTransformer.JsonTransformerBuilder.FormattedAs.JSON_ARRAY).build();
 
-        final String json =
-            Format.toJson(stream)
-                .set("primaryAddress",
-                    Format.toJson()
-                        .set("country", () -> faker.address().country())
-                        .set("city", () -> faker.address().city())
-                        .set("zipcode", () -> faker.address().zipCode())
-                        .set("streetAddress", () -> faker.address().streetAddress())
-                        .build())
-                .set("secondaryAddresses", Format.toJson(faker.<Address>stream()
-                        .suppliers(faker::address)
-                        .maxLen(1)
-                        .minLen(1)
-                        .build())
-                    .set("country", Address::country)
-                    .set("city", Address::city)
-                    .set("zipcode", Address::zipCode)
-                    .set("streetAddress", Address::streetAddress)
-                    .build())
-                .set("phones", name -> faker.stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
-                .build()
-                .generate();
+        FakeSequence<CompositeField<Address, String>> secondaryAddresses =
+            faker.<CompositeField<Address, String>>collection()
+                .suppliers(() ->
+                    compositeField(null, new Field[]{
+                        field("country", () -> faker.address().country()),
+                        field("city", () -> faker.address().city()),
+                        field("zipcode", () -> faker.address().zipCode()),
+                        field("streetAddress", () -> faker.address().streetAddress())
+                    })
+                )
+                .maxLen(1)
+                .minLen(1)
+                .build();
+
+        String json = transformer.generate(
+            faker.<Name>stream()
+                .suppliers(faker::name)
+                .maxLen(limit)
+                .minLen(limit)
+                .build(),
+            Schema.<Name, Object>of(
+                compositeField("primaryAddress", new Field[]{
+                    field("country", () -> faker.address().country()),
+                    field("city", () -> faker.address().city()),
+                    field("zipcode", () -> faker.address().zipCode()),
+                    field("streetAddress", () -> faker.address().streetAddress())
+                }),
+                field("secondaryAddresses", secondaryAddresses::get),
+                field("phones", name -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+            ));
 
         int numberOfLines = 0;
         for (int i = 0; i < json.length(); i++) {
-            if (json.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (json.regionMatches(i, "}," + System.lineSeparator(), 0, ("}," + System.lineSeparator()).length())) {
                 numberOfLines++;
             }
         }
