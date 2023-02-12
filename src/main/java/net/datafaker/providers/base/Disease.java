@@ -74,17 +74,6 @@ public class Disease extends AbstractProvider<BaseProviders> {
      * Generate random dermatology disease
      *
      * @return A dermatology disease
-     * @deprecated use {@link #dermatology()} instead.
-     */
-    @Deprecated
-    public String dermatolory() {
-        return dermatology();
-    }
-
-    /**
-     * Generate random dermatology disease
-     *
-     * @return A dermatology disease
      * @since 1.8.0
      */
     public String dermatology() {

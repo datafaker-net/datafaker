@@ -59,54 +59,6 @@ public class BaseFaker implements BaseProviders {
         fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
     }
 
-    /**
-     * Constructs Faker instance with default argument.
-     *
-     * @return {@link BaseFaker#BaseFaker()}
-     * @deprecated Use the default constructor instead
-     */
-    @Deprecated // Use the default constructor instead
-    public static BaseFaker instance() {
-        return new BaseFaker();
-    }
-
-    /**
-     * Constructs Faker instance with provided {@link Locale}.
-     *
-     * @param locale - {@link Locale}
-     * @return {@link BaseFaker#BaseFaker(Locale)}
-     * @deprecated Use the constructor with locale instead
-     */
-    @Deprecated
-    public static BaseFaker instance(Locale locale) {
-        return new BaseFaker(locale);
-    }
-
-    /**
-     * Constructs Faker instance with provided {@link Random}.
-     *
-     * @param random - {@link Random}
-     * @return {@link BaseFaker#BaseFaker(Random)}
-     * @deprecated Use the constructor with random instead
-     */
-    @Deprecated
-    public static BaseFaker instance(Random random) {
-        return new BaseFaker(random);
-    }
-
-    /**
-     * Constructs Faker instance with provided {@link Locale} and {@link Random}.
-     *
-     * @param locale - {@link Locale}
-     * @param random - {@link Random}
-     * @return {@link BaseFaker#BaseFaker(Locale, Random)}
-     * @deprecated Use the constructor with locale and random instead
-     */
-    @Deprecated
-    public static BaseFaker instance(Locale locale, Random random) {
-        return new BaseFaker(locale, random);
-    }
-
     public FakerContext getContext() {
         return context;
     }
