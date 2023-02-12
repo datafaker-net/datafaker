@@ -12,11 +12,13 @@ import java.math.BigDecimal;
 import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.Name;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
@@ -253,6 +255,89 @@ class JsonTest {
                     entry(() -> "key", () -> "value"),
                     entry(() -> "nested", () -> map(entry(() -> "nestedkey", () -> "nestedvalue")))),
                 "{\"key\": \"value\", \"nested\": {\"nestedkey\": \"nestedvalue\"}}"));
+    }
+
+    @Test
+    void jsonWithDifferentFieldFormatsInOneObjectTest() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        final int limit = 2;
+        JsonTransformer<Object> transformer = JsonTransformer.builder().build();
+
+        String json = transformer.generate(
+            faker.collection().minLen(limit).maxLen(limit)
+                .suppliers(faker::name)
+                .build(), Schema.<Object, Object>of(
+                field("text", () -> faker.name().firstName()),
+                field("array", () ->
+                    faker
+                        .collection()
+                        .suppliers(() -> faker.phoneNumber().phoneNumber())
+                        .maxLen(3)
+                        .generate()
+                )
+            ));
+
+        int numberOfLines = 0;
+        for (int i = 0; i < json.length(); i++) {
+            if (json.regionMatches(i, "},", 0, "},".length())) {
+                numberOfLines++;
+            }
+        }
+        assertThat(numberOfLines).isEqualTo(limit - 1);
+    }
+
+    @Test
+    void jsonObjectCollectionTest() {
+        JsonTransformer<Name> transformer = JsonTransformer.<Name>builder().build();
+
+        String json = transformer.generate(
+            Schema.of(
+                field("text", () -> "Mrs. Brian Braun"),
+                field("objectCollection", () -> List.of(
+                    compositeField(null, new Field[]{
+                            field("country", () -> "Denmark"),
+                            field("city", () -> "Port Angel")
+                        }
+                    ),
+                    compositeField(null, new Field[]{
+                            field("two", () -> "Denmark"),
+                            field("one", () -> "Port Angel")
+                        }
+                    )
+                    )
+                )
+            ), 1);
+        assertThat(json).isEqualTo("{\"text\": \"Mrs. Brian Braun\", " +
+            "\"objectCollection\": [{\"country\": \"Denmark\", \"city\": \"Port Angel\"}, {\"two\": \"Denmark\", \"one\": \"Port Angel\"}]}");
+    }
+
+    @Test
+    void jsonCollectionOfCollectionsTest() {
+        JsonTransformer<Name> transformer = JsonTransformer.<Name>builder().build();
+
+        String json = transformer.generate(
+            Schema.of(
+                field("text", () -> "Mrs. Brian Braun"),
+                field("objectCollection", () -> List.of(
+                        List.of(
+                            List.of(
+                                compositeField(null, new Field[]{
+                                        field("country", () -> "Denmark"),
+                                        field("city", () -> "Port Angel")
+                                    }
+                                ),
+                                compositeField(null, new Field[]{
+                                        field("two", () -> "Denmark"),
+                                        field("one", () -> "Port Angel")
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+            ), 1);
+        assertThat(json).isEqualTo("{\"text\": \"Mrs. Brian Braun\", " +
+            "\"objectCollection\": [[[{\"country\": \"Denmark\", \"city\": \"Port Angel\"}, {\"two\": \"Denmark\", \"one\": \"Port Angel\"}]]]}");
     }
 
     private static Map.Entry<Supplier<String>, Supplier<Object>> entry(
