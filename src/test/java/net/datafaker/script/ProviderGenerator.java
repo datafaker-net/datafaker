@@ -3,6 +3,7 @@ package net.datafaker.script;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,7 +35,7 @@ class ProviderGenerator {
         System.out.println(files.length + " files");
 
         for (File file : filesToProcess) {
-            final Map<String, Object> valuesMap = new Yaml().loadAs(new FileReader(file), Map.class);
+            final Map<String, Object> valuesMap = new Yaml(new SafeConstructor()).loadAs(new FileReader(file), Map.class);
 
             Map<String, Object> en = (Map<String, Object>) valuesMap.get("en");
             Map<String, Object> faker = (Map<String, Object>) en.get("faker");

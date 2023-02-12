@@ -2,6 +2,7 @@ package net.datafaker.service;
 
 import net.datafaker.internal.helper.SingletonLocale;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -198,7 +199,7 @@ public class FakeValues implements FakeValuesInterface {
 
     private Map<String, Object> readFromStream(InputStream stream) {
         if (stream == null) return null;
-        final Map<String, Object> valuesMap = new Yaml().loadAs(stream, Map.class);
+        final Map<String, Object> valuesMap = new Yaml(new SafeConstructor()).loadAs(stream, Map.class);
         Map<String, Object> localeBased = (Map<String, Object>) valuesMap.get(sLocale.getLocale().getLanguage());
         if (localeBased == null) {
             localeBased = (Map<String, Object>) valuesMap.get(filename);
