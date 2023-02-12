@@ -11,6 +11,6 @@ class JobTest extends BaseFakerTest<BaseFaker> {
         return List.of(TestSpec.of(job::field, "job.field"),
             TestSpec.of(job::seniority, "job.seniority"),
             TestSpec.of(job::position, "job.position"),
-            TestSpec.of(job::keySkills, "job.key_skills", "(:?[A-Za-z-]+ ?){1,3}"));
+            TestSpec.of(job::keySkills, "job.key_skills", "(?:[A-Za-z-]+ ?){1,3}"));
     }
 }

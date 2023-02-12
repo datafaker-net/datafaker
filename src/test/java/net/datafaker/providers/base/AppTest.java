@@ -14,12 +14,12 @@ class AppTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testVersion() {
-        assertThat(app.version()).matches("\\d\\.(\\d){1,2}(\\.\\d)?");
+        assertThat(app.version()).matches("\\d\\.(?:\\d){1,2}(?:\\.\\d)?");
     }
 
     @Test
     void testAuthor() {
-        assertThat(app.author()).matches("([\\w']+[-&,.]? ?){2,9}");
+        assertThat(app.author()).matches("(?:[\\w']+[-&,.]? ?){2,9}");
     }
 
     @Override
