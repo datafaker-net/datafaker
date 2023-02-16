@@ -16,6 +16,26 @@ en:
         - iPhone 7 / 7 Plus
         - iPhone 8 / 8 Plus
         - iPhone X
+        - iPhone XR
+        - iPhone XS
+        - iPhone XS Max
+        - iPhone 11
+        - iPhone 11 Pro
+        - iPhone 11 Pro Max
+        - iPhone SE (2nd gen)
+        - iPhone 12
+        - iPhone 12 mini
+        - iPhone 12 Pro
+        - iPhone 12 Pro Max
+        - iPhone 13
+        - iPhone 13 mini
+        - iPhone 13 Pro
+        - iPhone 13 Pro Max
+        - iPhone SE (3rd gen)
+        - iPhone 14
+        - iPhone 14 Plus
+        - iPhone 14 Pro
+        - iPhone 14 Pro Max
         - OnePlus 6T
         - OnePlus 6
         - OnePlus 5T
@@ -53,6 +73,18 @@ en:
         - Google Pixel 2 XL
         - Google Pixel 3
         - Google Pixel 3 XL
+        - Google Pixel 3a
+        - Google Pixel 3a XL
+        - Google Pixel 4
+        - Google Pixel 4 XL
+        - Google Pixel 4a
+        - Google Pixel 5
+        - Google Pixel 5a 5G
+        - Google Pixel 6
+        - Google Pixel 6 Pro
+        - Google Pixel 6a
+        - Google Pixel 7
+        - Google Pixel 7 Pro
         - Xiaomi Redmi Note 6 Pro
         - Xiaomi Mi 8 Pro
         - Xiaomi Mi 8 Lite
@@ -76,14 +108,30 @@ en:
         - Windows 10 Mobile
         - Windows Phone
       manufacturer:
-        - Dell
-        - HP
         - ASUS
         - Acer
-        - Lenovo
+        - Amazon
         - Apple
+        - BlackBerry
+        - Dell
+        - HP
+        - HTC
         - Huawei
+        - Lenovo
+        - Microsoft
+        - Motorola
+        - Nokia
         - OnePlus
+        - Oppo
+        - Panasonic
+        - Philips
+        - Plum
+        - QMobile
+        - Sharp
+        - Siemens
+        - Sony
+        - Sony Ericsson
+        - T-Mobile
         - Xiamomi
       serial:
         - pEekWH7zGxVITv6NTa5KHjLSwr5Ie4
