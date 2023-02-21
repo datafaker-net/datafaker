@@ -107,6 +107,7 @@ nav:
       - Datafaker 1.7.0: documentation/performance170.md
     - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/1.8.0/datafaker-1.8.0-javadoc.jar/!/index.html'
     - Contributing: documentation/contributing.md
+    - First time contributor: documentation/first-time-contributor.md
     - License: documentation/license.md
 #    - Changelog:
 #      - Changes: changelog/index.md
