@@ -247,6 +247,8 @@ Contributions
 -------------
 See [CONTRIBUTING.md](https://github.com/datafaker-net/datafaker/blob/main/CONTRIBUTING.md)
 
+If this is your first time contributing then you may find it helpful to read [FIRST_TIME_CONTRIBUTOR.md](https://github.com/datafaker-net/datafaker/blob/main/FIRST_TIME_CONTRIBUTOR.md)
+
 Providers
 -----
 The list below is not complete and shows only a part of available providers. To view the full list of providers, please follow the link: [Full list of providers](https://www.datafaker.net/documentation/providers/).
