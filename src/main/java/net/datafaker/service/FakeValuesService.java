@@ -639,33 +639,35 @@ public class FakeValuesService {
         final int dotIndex = getDotIndex(directive);
 
         Object resolved;
-        // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
-        // #{ssn_valid} on IdNumber
-        if (dotIndex == -1) {
-            if (current instanceof AbstractProvider) {
-                final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
+        if (args.length == 0) {
+            // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
+            // #{ssn_valid} on IdNumber
+            if (dotIndex == -1) {
+                if (current instanceof AbstractProvider) {
+                    final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
+                    if (method != null) {
+                        try {
+                            return method.invoke(current);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e + " " + Arrays.toString(args));
+                        }
+                    }
+                }
+                Supplier<Object> supplier = resolveFromMethodOn(current, directive, args);
+                if (supplier != null && (resolved = supplier.get()) != null) {
+                    //expression2function.put(expression, supplier);
+                    return resolved;
+                }
+            }
+            if (dotIndex > 0) {
+                final AbstractProvider<?> ap = BaseFaker.getProvider(directive.substring(0, dotIndex), context);
+                final Method method = BaseFaker.getMethod(ap, directive.substring(dotIndex + 1));
                 if (method != null) {
                     try {
-                        return args.length == 0 ? method.invoke(current) : method.invoke(current, (Object[]) args);
+                        return method.invoke(ap);
                     } catch (Exception e) {
                         throw new RuntimeException(e + " " + Arrays.toString(args));
                     }
-                }
-            }
-            Supplier<Object> supplier = resolveFromMethodOn(current, directive, args);
-            if (supplier != null && (resolved = supplier.get()) != null) {
-                //expression2function.put(expression, supplier);
-                return resolved;
-            }
-        }
-        if (dotIndex > 0) {
-            final AbstractProvider<?> ap = BaseFaker.getProvider(directive.substring(0, dotIndex), context);
-            final Method method = BaseFaker.getMethod(ap, directive.substring(dotIndex + 1));
-            if (method != null) {
-                try {
-                    return args.length == 0 ? method.invoke(ap) : method.invoke(ap, args);
-                } catch (Exception e) {
-                    throw new RuntimeException(e + " " + Arrays.toString(args));
                 }
             }
         }

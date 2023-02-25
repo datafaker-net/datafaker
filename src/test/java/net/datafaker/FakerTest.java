@@ -334,4 +334,18 @@ class FakerTest extends AbstractFakerTest {
             }, Locale.ENGLISH, 123))
             .isInstanceOf(RuntimeException.class);
     }
+
+    @Test
+    void shouldNotApplyCachingToMethodsWithParameters() {
+        // Test for issue: https://github.com/datafaker-net/datafaker/issues/716.
+        // No exception should be thrown
+
+        // Warm up start
+        String flight1 = faker.expression("#{Aviation.flight}");
+        assertThat(flight1).matches("[A-z]{2}\\d{1,4}");
+        // Warm up end
+
+        String flight2 = faker.expression("#{Aviation.flight 'ICAO'}");
+        assertThat(flight2).matches("[A-z]{3}\\d{1,4}");
+    }
 }
