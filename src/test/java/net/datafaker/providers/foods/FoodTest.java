@@ -20,6 +20,7 @@ class FoodTest extends FoodFakerTest {
     @Override
     protected Collection<TestSpec> providerListTest() {
         return List.of(
+            TestSpec.of(food::allergen, "food.allergens"),
             TestSpec.of(food::dish, "food.dish"),
             TestSpec.of(food::fruit, "food.fruits"),
             TestSpec.of(food::ingredient, "food.ingredients"),

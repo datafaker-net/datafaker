@@ -15,6 +15,10 @@ public class Food extends AbstractProvider<FoodProviders> {
         return resolve("food.ingredients");
     }
 
+    public String allergen() {
+        return resolve("food.allergens");
+    }
+
     public String spice() {
         return resolve("food.spices");
     }
