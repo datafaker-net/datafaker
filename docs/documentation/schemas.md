@@ -33,6 +33,8 @@ Example of schema definition:
 === "Kotlin"
 
     ``` kotlin
+        val faker = BaseFaker()
+
         val schema = Schema.of(
             field("first_name",
                 Supplier { faker.name().firstName() }),
@@ -72,7 +74,7 @@ CSV transformer could be build with help of `CsvTransformer.CsvTransformerBuilde
 === "Kotlin"
 
     ``` kotlin
-        val transformer = CsvTransformer.<String>builder().header(true).separator(separator).build()
+        val transformer = CsvTransformer.builder<String>().header(true).separator(separator).build()
     ```
 
 The following can be configured:
@@ -114,9 +116,11 @@ and we are going to build csv of first and last names based on this collection:
 === "Kotlin"
 
     ```kotlin
+        val faker = BaseFaker()
+
         val schema = Schema.of(field("firstName", Name::firstName), field("lastname", Name::lastName))
 
-        val transformer = CsvTransformer.<Name>builder().header(false).separator(" : ").build()
+        val transformer = CsvTransformer.builder<Name>().header(false).separator(" : ").build()
         val csv = transformer.generate(
             faker.collection<Name>().suppliers(Supplier { faker.name() }).maxLen(limit).build(), schema
         )
@@ -143,12 +147,14 @@ Example of JSON generation:
 === "Kotlin"
 
     ```kotlin
+        val faker = BaseFaker()
+    
         val schema: Schema<String, *> = Schema.of(
             field("Text", Supplier { faker.name().firstName() }),
             field("Bool", Supplier { faker.bool().bool() })
         )
 
-        val transformer = JsonTransformer.builder().build();
+        val transformer = JsonTransformer.builder<String>().build();
         val json = transformer.generate(schema, 2)
     ```
 
@@ -175,7 +181,7 @@ Dialect could be specified during `SQLTransformaer` build e.g:
 === "Kotlin"
 
     ```kotlin
-        val transformer = SqlTransformerBuilder<String>()
+        val transformer = SqlTransformer.SqlTransformerBuilder<String>()
             .schemaName(tableSchemaName).dialect(SqlDialect.ORACLE).build()
     ```
 
@@ -206,7 +212,7 @@ An example of batch mode:
             field("firstName", Supplier { faker.name().firstName() }),
             field("lastName", Supplier { faker.name().lastName() })
         )
-        val transformer = SqlTransformerBuilder<String>()
+        val transformer = SqlTransformer.SqlTransformerBuilder<String>()
             .batch(5)
             .tableName("MY_TABLE")
             .dialect(SqlDialect.POSTGRES)
@@ -283,7 +289,7 @@ INSERT INTO "MyTable" ("names_multiset") VALUES (MULTISET['hello']);
 === "Kotlin"
 
     ```kotlin
-        schema.of(compositeField("row", arrayOf(field("name", Supplier { "2" }))))
+        Schema.of(compositeField("row", arrayOf(field("name", Supplier { "2" }))))
     ```
 
 will lead to
