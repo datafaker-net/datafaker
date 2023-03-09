@@ -26,10 +26,18 @@ class AviationTest extends BaseFakerTest<BaseFaker> {
         assertThat(aviation.flight()).matches("[A-Z]{2}[0-9]+");
     }
 
+    @Test
+    void aircraft() {
+        assertThat(aviation.aircraft()).isNotEmpty();
+    }
+
     @Override
     protected Collection<TestSpec> providerListTest() {
         return List.of(TestSpec.of(aviation::airport, "aviation.airport", "\\w{4}"),
-            TestSpec.of(aviation::aircraft, "aviation.aircraft"),
+            TestSpec.of(aviation::airplane, "aviation.aircraft.airplane"),
+            TestSpec.of(aviation::warplane, "aviation.aircraft.warplane"),
+            TestSpec.of(aviation::civilHelicopter, "aviation.aircraft.civil_helicopter"),
+            TestSpec.of(aviation::armyHelicopter, "aviation.aircraft.army_helicopter"),
             TestSpec.of(aviation::METAR, "aviation.metar"),
             TestSpec.of(aviation::airline, "aviation.airline"));
     }
