@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import java.util.List;
+
 /**
  * Generates aviation related strings.
  *
@@ -12,10 +14,26 @@ public class Aviation extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return some aircraft name/model/make e.g. "An-2".
+     * @return one of the 4 types of aircraft: airplane, warplane, army helicopter, civil helicopter.
      */
     public String aircraft() {
-        return resolve("aviation.aircraft");
+        return resolve(List.of("aviation.aircraft.airplane", "aviation.aircraft.warplane", "aviation.aircraft.army_helicopter", "aviation.aircraft.civil_helicopter").get(faker.number().numberBetween(0, 4)));
+    }
+
+    public String airplane() {
+        return resolve("aviation.aircraft.airplane");
+    }
+
+    public String warplane() {
+        return resolve("aviation.aircraft.warplane");
+    }
+
+    public String armyHelicopter() {
+        return resolve("aviation.aircraft.army_helicopter");
+    }
+
+    public String civilHelicopter() {
+        return resolve("aviation.aircraft.civil_helicopter");
     }
 
     /**
