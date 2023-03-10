@@ -5,6 +5,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -22,25 +23,31 @@ public class FakeValues implements FakeValuesInterface {
     private final String filename;
     private final String path;
     private final Path filePath;
+    private final URL url;
     private volatile Map<String, Object> values;
     private final Lock lock = new ReentrantLock();
 
     FakeValues(Locale locale) {
-        this(locale, getFilename(locale), getFilename(locale), null);
+        this(locale, getFilename(locale), getFilename(locale), null, null);
     }
 
     FakeValues(Locale locale, Path filePath) {
-        this(locale, getFilename(locale), null, filePath);
+        this(locale, getFilename(locale), null, filePath, null);
+    }
+
+    FakeValues(Locale locale, URL url) {
+        this(locale, getFilename(locale), null, null, url);
     }
 
     FakeValues(Locale locale, String filename, String path) {
-        this(locale, filename, path, null);
+        this(locale, filename, path, null, null);
     }
 
-    FakeValues(Locale locale, String filename, String path, Path filePath) {
+    FakeValues(Locale locale, String filename, String path, Path filePath, URL url) {
         this.sLocale = SingletonLocale.get(locale);
         this.filename = filename;
         this.filePath = filePath;
+        this.url = url;
         if (path == null) {
             lock.lock();
             try {
@@ -103,8 +110,22 @@ public class FakeValues implements FakeValuesInterface {
         return null;
     }
 
+    private Map<String, Object> loadFromUrl() {
+        if (url == null) {
+            return null;
+        }
+        try (InputStream stream = url.openStream()) {
+            return readFromStream(stream);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "Exception: ", e);
+        }
+        return null;
+    }
+
     private Map<String, Object> loadValues() {
         Map<String, Object> result = loadFromFilePath();
+        if (result != null) return result;
+        result = loadFromUrl();
         if (result != null) return result;
         final Locale locale = sLocale.getLocale();
         final String[] paths = this.filename.isEmpty()

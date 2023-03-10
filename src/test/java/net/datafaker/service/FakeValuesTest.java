@@ -137,8 +137,8 @@ class FakeValuesTest {
             of(new FakeValues(Locale.ENGLISH), new FakeValues(Locale.ENGLISH, "filepath", "path"), false),
             of(new FakeValues(Locale.ENGLISH, "filepath", null), new FakeValues(Locale.ENGLISH, "filepath", "path"), false),
             of(new FakeValues(Locale.ENGLISH, "filepath", "path"), new FakeValues(Locale.ENGLISH, "filepath", "path"), true),
-            of(new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), true),
-            of(new FakeValues(Locale.ENGLISH, "filepath", "path", Paths.get("tmp2")), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), false)
+            of(new FakeValues(Locale.ENGLISH, "filepath", "path", tmp, null), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp, null), true),
+            of(new FakeValues(Locale.ENGLISH, "filepath", "path", Paths.get("tmp2"), null), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp, null), false)
         );
     }
 }
