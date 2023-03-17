@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.annotaions.FakeFactory;
 import net.datafaker.sequence.FakeCollection;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.sequence.FakeStream;
@@ -77,6 +78,11 @@ public class BaseFaker implements BaseProviders {
             context.setCurrentLocale(current);
             fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
         }
+    }
+
+    public static <T> T generate(Class<T> clazz) {
+        var fakeFactory = new FakeFactory<>(clazz);
+        return fakeFactory.get();
     }
 
     public <T> T doWith(Callable<T> callable, long seed) {
