@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.annotaions.FakeFactory;
+import net.datafaker.annotaions.FakeResolver;
 import net.datafaker.sequence.FakeCollection;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.sequence.FakeStream;
@@ -81,7 +81,7 @@ public class BaseFaker implements BaseProviders {
     }
 
     public static <T> T generate(Class<T> clazz) {
-        var fakeFactory = new FakeFactory<>(clazz);
+        var fakeFactory = new FakeResolver<>(clazz);
         return fakeFactory.get();
     }
 
