@@ -1,4 +1,4 @@
-package net.datafaker.annotaions;
+package net.datafaker.annotations;
 
 import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;

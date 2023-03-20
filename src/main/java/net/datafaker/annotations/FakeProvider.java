@@ -1,4 +1,4 @@
-package net.datafaker.annotaions;
+package net.datafaker.annotations;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -38,7 +38,7 @@ class FakeProvider implements ObjectProvider {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(FieldFake.class)) {
                 var fieldValue = fieldFakeProvider.getValue(field);
-                setField(object, field, fieldValue);
+                setFieldValue(object, field, fieldValue);
             } else if (field.isAnnotationPresent(EmbeddedFake.class)) {
                 var childObject = embeddedFakeProvider.getValue(field);
                 setChildObject(object, field, childObject);
@@ -48,14 +48,10 @@ class FakeProvider implements ObjectProvider {
         return object;
     }
 
-    private <K> void setField(K object, Field field, Object fieldValue) {
+    private <K> void setFieldValue(K object, Field field, Object fieldValue) {
         try {
-            if (fieldValue instanceof String fieldValueString) {
-                setFieldValue(object, field, fieldValueString);
-            } else {
-                field.setAccessible(true);
-                field.set(object, fieldValue);
-            }
+            field.setAccessible(true);
+            field.set(object, fieldValue);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -69,14 +65,4 @@ class FakeProvider implements ObjectProvider {
             throw new RuntimeException(e);
         }
     }
-
-    private <K> void setFieldValue(K object, Field field, String fieldValue) throws IllegalAccessException {
-        field.setAccessible(true);
-        if (field.getType() == Integer.TYPE) {
-            field.setInt(object, Integer.parseInt(fieldValue));
-        } else {
-            field.set(object, fieldValue);
-        }
-    }
-
 }

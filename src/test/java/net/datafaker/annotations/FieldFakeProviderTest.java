@@ -1,4 +1,4 @@
-package net.datafaker.annotaions;
+package net.datafaker.annotations;
 
 import java.sql.Timestamp;
 
@@ -84,7 +84,7 @@ public class FieldFakeProviderTest {
         @FieldFake(method = "net.datafaker.providers.base.DateAndTime#birthday")
         private Timestamp birthTimestamp;
 
-        @FieldFake(expression = "#{numerify '#'}")
+        @FieldFake(method = "net.datafaker.providers.base.Number#positive")
         private int id;
 
         @Override
@@ -134,7 +134,7 @@ public class FieldFakeProviderTest {
     @Fake(languageTag = "de", seed = 1)
     public static class PersonWithNotAnnotatedField {
 
-        @FieldFake(expression = "#{numerify '#'}")
+        @FieldFake(method = "net.datafaker.providers.base.Number#positive")
         private int id;
 
         private String name;

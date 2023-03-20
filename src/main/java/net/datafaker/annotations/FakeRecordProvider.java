@@ -1,4 +1,4 @@
-package net.datafaker.annotaions;
+package net.datafaker.annotations;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.RecordComponent;

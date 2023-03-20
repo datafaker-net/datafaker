@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.annotaions.FakeResolver;
+import net.datafaker.annotations.FakeResolver;
 import net.datafaker.sequence.FakeCollection;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.sequence.FakeStream;
