@@ -12,9 +12,9 @@ public class EmbeddedFakeProviderTest {
         var person = Faker.generate(ParentPerson.class);
 
         assertThat(person).isNotNull();
-        assertThat(person.firstName).isNotNull();
+        assertThat(person.firstName).isEqualTo("Lina");
         assertThat(person.childPerson).isNotNull();
-        assertThat(person.childPerson.firstName).isNotNull();
+        assertThat(person.childPerson.firstName).isEqualTo("Walter");
     }
 
     @Fake(languageTag = "fr-en", seed = 1)
@@ -27,7 +27,7 @@ public class EmbeddedFakeProviderTest {
         private ChildPerson childPerson;
     }
 
-    @Fake(languageTag = "en-en", seed = 1)
+    @Fake(languageTag = "en-en", seed = 2)
     public static class ChildPerson {
 
         @FieldFake(expression = "#{Name.first_name}")

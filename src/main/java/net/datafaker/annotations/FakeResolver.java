@@ -42,9 +42,9 @@ public class FakeResolver<T> {
 
     private static BaseFaker createFaker(Fake fakeAnnotation, String classLanguageTag, long[] classSeed) {
         if (!classLanguageTag.isEmpty() && classSeed.length != 0) {
-            return new BaseFaker(new Locale(fakeAnnotation.languageTag()), new Random(classSeed[0]));
+            return new BaseFaker(Locale.forLanguageTag(fakeAnnotation.languageTag()), new Random(classSeed[0]));
         } else if (!classLanguageTag.isEmpty()) {
-            return new BaseFaker(new Locale(fakeAnnotation.languageTag()));
+            return new BaseFaker(Locale.forLanguageTag(fakeAnnotation.languageTag()));
         } else if (classSeed.length != 0) {
             return new BaseFaker(new Random(classSeed[0]));
         } else {

@@ -13,7 +13,7 @@ public @interface FieldFake {
 
     String method() default "";
 
-    String languageTag() default "en";
+    String[] languageTag() default {};
 
     long[] seed() default {};
 }

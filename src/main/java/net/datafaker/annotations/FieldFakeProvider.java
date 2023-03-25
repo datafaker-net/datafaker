@@ -2,7 +2,6 @@ package net.datafaker.annotations;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.RecordComponent;
 import java.util.Locale;
@@ -32,7 +31,7 @@ class FieldFakeProvider<R extends AnnotatedElement> implements Provider<R> {
         if (field instanceof RecordComponent recordComponent) {
             return recordComponent.getAnnotation(FieldFake.class);
         }
-        return ((Field) field).getAnnotation(FieldFake.class);
+        return field.getAnnotation(FieldFake.class);
     }
 
     private Object getValueByProviderAnnotation(FieldFake fieldFakeAnnotation) throws Exception {
@@ -42,12 +41,12 @@ class FieldFakeProvider<R extends AnnotatedElement> implements Provider<R> {
             throw new IllegalArgumentException("Expression and method parameters cannot be defined at the same time.");
         } else if (fieldFakeAnnotation.method().isEmpty()) {
             Callable<String> expressionCallable = () -> faker.expression(fieldFakeAnnotation.expression());
-            String languageTag = fieldFakeAnnotation.languageTag();
+            String[] languageTag = fieldFakeAnnotation.languageTag();
             long[] seed = fieldFakeAnnotation.seed();
 
             return generateValue(faker, fieldFakeAnnotation, expressionCallable, languageTag, seed);
         } else {
-            String languageTag = fieldFakeAnnotation.languageTag();
+            String[] languageTag = fieldFakeAnnotation.languageTag();
             long[] seed = fieldFakeAnnotation.seed();
 
             String[] classAndMethod = fieldFakeAnnotation.method().split("#");
@@ -57,8 +56,7 @@ class FieldFakeProvider<R extends AnnotatedElement> implements Provider<R> {
             Callable<Object> methodCallable = () -> {
                 Object provider = declaredConstructor.newInstance(faker);
                 Method method = clazzProvider.getMethod(classAndMethod[1]);
-                Object result = method.invoke(provider);
-                return result;
+                return method.invoke(provider);
             };
             return generateValue(faker, fieldFakeAnnotation, methodCallable, languageTag, seed);
         }
@@ -72,11 +70,11 @@ class FieldFakeProvider<R extends AnnotatedElement> implements Provider<R> {
         return !fieldFakeAnnotation.expression().isEmpty() && !fieldFakeAnnotation.method().isEmpty();
     }
 
-    private <R> R generateValue(BaseFaker faker, FieldFake fieldFakeAnnotation, Callable<R> expressionCallable, String languageTag, long[] seed) throws Exception {
-        if (!languageTag.isEmpty() && seed.length != 0) {
-            return faker.doWith(expressionCallable, Locale.forLanguageTag(languageTag), fieldFakeAnnotation.seed()[0]);
-        } else if (!languageTag.isEmpty()) {
-            return faker.doWith(expressionCallable, Locale.forLanguageTag(languageTag));
+    private <R> R generateValue(BaseFaker faker, FieldFake fieldFakeAnnotation, Callable<R> expressionCallable, String[] languageTag, long[] seed) throws Exception {
+        if (languageTag.length != 0 && seed.length != 0) {
+            return faker.doWith(expressionCallable, Locale.forLanguageTag(languageTag[0]), fieldFakeAnnotation.seed()[0]);
+        } else if (languageTag.length != 0) {
+            return faker.doWith(expressionCallable, Locale.forLanguageTag(languageTag[0]));
         } else if (seed.length != 0) {
             return faker.doWith(expressionCallable, fieldFakeAnnotation.seed()[0]);
         } else {
