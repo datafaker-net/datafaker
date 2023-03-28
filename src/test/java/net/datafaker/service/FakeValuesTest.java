@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
@@ -127,7 +128,7 @@ class FakeValuesTest {
         }
     }
 
-    static Stream<Arguments> fakeValuesProvider() {
+    static Stream<Arguments> fakeValuesProvider() throws MalformedURLException {
         Path tmp = Paths.get("tmp");
         return Stream.of(
             of(new FakeValues(Locale.CANADA), new FakeValues(Locale.CANADA), true),
@@ -137,8 +138,8 @@ class FakeValuesTest {
             of(new FakeValues(Locale.ENGLISH), new FakeValues(Locale.ENGLISH, "filepath", "path"), false),
             of(new FakeValues(Locale.ENGLISH, "filepath", null), new FakeValues(Locale.ENGLISH, "filepath", "path"), false),
             of(new FakeValues(Locale.ENGLISH, "filepath", "path"), new FakeValues(Locale.ENGLISH, "filepath", "path"), true),
-            of(new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), true),
-            of(new FakeValues(Locale.ENGLISH, "filepath", "path", Paths.get("tmp2")), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp), false)
+            of(new FakeValues(Locale.ENGLISH, "filepath", "path", tmp.toUri().toURL()), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp.toUri().toURL()), true),
+            of(new FakeValues(Locale.ENGLISH, "filepath", "path", Paths.get("tmp2").toUri().toURL()), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp.toUri().toURL()), false)
         );
     }
 }
