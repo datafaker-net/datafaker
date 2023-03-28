@@ -8,6 +8,7 @@ import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
 
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -283,6 +284,18 @@ public class BaseFaker implements BaseProviders {
      */
     public void addPath(Locale locale, Path path) {
         fakeValuesService().addPath(locale, path);
+    }
+
+    /**
+     * Allows to add urls of files with custom data. Data should be in YAML format.
+     *
+     * @param locale the locale for which an url is going to be added.
+     * @param url   url of a file with YAML structure
+     * @throws IllegalArgumentException in case of invalid url
+     */
+
+    public void addUrl(Locale locale, URL url) {
+        fakeValuesService().addUrl(locale, url);
     }
 
     @SuppressWarnings("unchecked")
