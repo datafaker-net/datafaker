@@ -79,19 +79,11 @@ public class Barcode extends AbstractProvider<BaseProviders> {
 
     // Implementation Refactoring: Extract Method- to calculate the output and return it to ean()
     private int calculateOutput(int length, int odd, int even) {
-        int output = odd + even;
-        switch(length) {
-            case 13: output += (even << 1);
-                    break;
-            case 8:
-            case 14:
-            case 12: output += (odd << 1);
-                     break;
-            default: output = 0;
-                     break;
-        }
-
-        return output;
+        return switch(length) {
+            case 13 -> odd + even + (even << 1);
+            case 8, 14, 12 -> odd + even + (odd << 1);
+            default -> 0;
+        };
     }
 
     public String type() {
