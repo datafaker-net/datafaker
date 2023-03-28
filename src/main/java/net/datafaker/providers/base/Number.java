@@ -52,11 +52,17 @@ public class Number extends AbstractProvider<BaseProviders> {
         if (min == max) return min;
         final int realMin = Math.min(min, max);
         final int realMax = Math.max(min, max);
-        if (realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax)) {
+        if (isValidRange(realMin, realMax)) {
             return faker.random().nextInt(realMax - realMin) + realMin;
         }
         return decimalBetween(realMin, realMax).intValue();
     }
+
+    // Implementation Refactoring: Adding a method to help with conditional decomposition.
+    private boolean isValidRange(int realMin, int realMax) {
+        return realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax);
+    }
+
 
     /**
      * @param min the lower bound (include min)
@@ -68,10 +74,14 @@ public class Number extends AbstractProvider<BaseProviders> {
         if (min == max) return min;
         final long realMin = Math.min(min, max);
         final long realMax = Math.max(min, max);
-        if (realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax)) {
+        if (isValidRangeLong(realMin, realMax)) {
             return faker.random().nextLong(realMax - realMin) + realMin;
         }
         return decimalBetween(realMin, realMax).longValue();
+    }
+    //  Implementation Refactoring: Adding a method to help with conditional decomposition.
+    private boolean isValidRangeLong(long realMin, long realMax) {
+        return realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax);
     }
 
     /**
