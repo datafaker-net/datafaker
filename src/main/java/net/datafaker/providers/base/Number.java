@@ -58,7 +58,7 @@ public class Number extends AbstractProvider<BaseProviders> {
         return decimalBetween(realMin, realMax).intValue();
     }
 
-    // Implementation Refactoring: Adding a method to help with conditional decomposition.
+   
     private boolean isValidRange(int realMin, int realMax) {
         return realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax);
     }
@@ -79,7 +79,7 @@ public class Number extends AbstractProvider<BaseProviders> {
         }
         return decimalBetween(realMin, realMax).longValue();
     }
-    //  Implementation Refactoring: Adding a method to help with conditional decomposition.
+
     private boolean isValidRangeLong(long realMin, long realMax) {
         return realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax);
     }

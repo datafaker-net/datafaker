@@ -77,7 +77,6 @@ public class Barcode extends AbstractProvider<BaseProviders> {
         return firstPart * product + checkDigit;
     }
 
-    // Implementation Refactoring: Extract Method- to calculate the output and return it to ean()
     private int calculateOutput(int length, int odd, int even) {
         return switch(length) {
             case 13 -> odd + even + (even << 1);

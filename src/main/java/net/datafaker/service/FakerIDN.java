@@ -17,7 +17,7 @@ public class FakerIDN {
         } catch (Exception e) {
             // let's continue with the character by character encoding hack.
         }
-        // Implementation refactoring: renaming resultASCII to resultASCII
+
         final StringBuilder resultASCII = new StringBuilder();
         for (int i = 0; i < in.length(); i++) {
             try {
