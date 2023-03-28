@@ -4,6 +4,7 @@ import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
@@ -156,4 +157,6 @@ public interface ProviderRegistration {
     }
 
     void addPath(Locale locale, Path path);
+
+    void addUrl(Locale locale, URL url);
 }

@@ -5,8 +5,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -21,7 +20,7 @@ public class FakeValues implements FakeValuesInterface {
     private final SingletonLocale sLocale;
     private final String filename;
     private final String path;
-    private final Path filePath;
+    private final URL url;
     private volatile Map<String, Object> values;
     private final Lock lock = new ReentrantLock();
 
@@ -29,18 +28,18 @@ public class FakeValues implements FakeValuesInterface {
         this(locale, getFilename(locale), getFilename(locale), null);
     }
 
-    FakeValues(Locale locale, Path filePath) {
-        this(locale, getFilename(locale), null, filePath);
+    FakeValues(Locale locale, URL url) {
+        this(locale, getFilename(locale), null, url);
     }
 
     FakeValues(Locale locale, String filename, String path) {
         this(locale, filename, path, null);
     }
 
-    FakeValues(Locale locale, String filename, String path, Path filePath) {
+    FakeValues(Locale locale, String filename, String path, URL url) {
         this.sLocale = SingletonLocale.get(locale);
         this.filename = filename;
-        this.filePath = filePath;
+        this.url = url;
         if (path == null) {
             lock.lock();
             try {
@@ -91,11 +90,11 @@ public class FakeValues implements FakeValuesInterface {
         return values == null ? null : (Map) values.get(key);
     }
 
-    private Map<String, Object> loadFromFilePath() {
-        if (filePath == null || !Files.exists(filePath) || Files.isDirectory(filePath) || !Files.isReadable(filePath)) {
+    private Map<String, Object> loadFromUrl() {
+        if (url == null) {
             return null;
         }
-        try (InputStream stream = Files.newInputStream(filePath)) {
+        try (InputStream stream = url.openStream()) {
             return readFromStream(stream);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, "Exception: ", e);
@@ -104,7 +103,9 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     private Map<String, Object> loadValues() {
-        Map<String, Object> result = loadFromFilePath();
+        Map<String, Object> result = loadFromUrl();
+        if (result != null) return result;
+        result = loadFromUrl();
         if (result != null) return result;
         final Locale locale = sLocale.getLocale();
         final String[] paths = this.filename.isEmpty()
@@ -223,11 +224,11 @@ public class FakeValues implements FakeValuesInterface {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FakeValues that = (FakeValues) o;
-        return sLocale == that.sLocale && Objects.equals(filename, that.filename) && Objects.equals(path, that.path) && Objects.equals(filePath, that.filePath);
+        return sLocale == that.sLocale && Objects.equals(filename, that.filename) && Objects.equals(path, that.path) && Objects.equals(url, that.url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sLocale, filename, path, filePath);
+        return Objects.hash(sLocale, filename, path, url);
     }
 }

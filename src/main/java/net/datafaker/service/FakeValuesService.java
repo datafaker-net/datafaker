@@ -13,6 +13,7 @@ import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
 
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -20,6 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -94,7 +97,26 @@ public class FakeValuesService {
         if (path == null || Files.notExists(path) || Files.isDirectory(path) || !Files.isReadable(path)) {
             throw new IllegalArgumentException("Path should be an existing readable file");
         }
-        FakeValues fakeValues = new FakeValues(locale, path);
+        try {
+            addUrl(locale, path.toUri().toURL());
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    /**
+     * Allows adding urls of files with custom data. Data should be in YAML format.
+     *
+     * @param locale  the locale for which an url is going to be added.
+     * @param url     url of a file with YAML structure
+     * @throws IllegalArgumentException in case of invalid url
+     */
+    public void addUrl(Locale locale, URL url) {
+        Objects.requireNonNull(locale);
+        if (url == null) {
+            throw new IllegalArgumentException("url should be an existing readable file");
+        }
+        FakeValues fakeValues = new FakeValues(locale, url);
         SingletonLocale sLocale = SingletonLocale.get(locale);
         FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(sLocale);
         if (existingFakeValues == null) {
