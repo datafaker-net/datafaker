@@ -67,10 +67,9 @@ public class Barcode extends AbstractProvider<BaseProviders> {
             even = odd;
             odd = tmp;
         }
-        int var = calculateVar(length, odd, even);
-
-        int rounded = roundToHighestMultiplyOfTen((var));
-        int checkDigit = rounded - var;
+        int output = calculateOutput(length, odd, even);
+        int rounded = roundToHighestMultiplyOfTen((output));
+        int checkDigit = rounded - output;
         int product = 10;
         while (product <= checkDigit) {
             product *= 10;
@@ -78,17 +77,21 @@ public class Barcode extends AbstractProvider<BaseProviders> {
         return firstPart * product + checkDigit;
     }
 
-    // Implementation Refactoring: Extract Method- to calculate the var and return it to ean()
-    private int calculateVar(int length, int odd, int even) {
-        int var = 0;
-
-        if (length == 13) {
-            var = odd + even + (even << 1);
-        } else if (length == 8 || length == 14 || length == 12) {
-            var = odd + even + (odd << 1);
+    // Implementation Refactoring: Extract Method- to calculate the output and return it to ean()
+    private int calculateOutput(int length, int odd, int even) {
+        int output = odd + even;
+        switch(length) {
+            case 13: output += (even << 1);
+                    break;
+            case 8:
+            case 14:
+            case 12: output += (odd << 1);
+                     break;
+            default: output = 0;
+                     break;
         }
 
-        return var;
+        return output;
     }
 
     public String type() {
