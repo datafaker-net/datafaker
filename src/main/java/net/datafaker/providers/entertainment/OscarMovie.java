@@ -2,6 +2,8 @@ package net.datafaker.providers.entertainment;
 
 import net.datafaker.providers.base.AbstractProvider;
 
+import java.util.function.Supplier;
+
 /**
  * The Academy Awards, popularly known as the Oscars, are awards for artistic and technical merit in the film industry.
  *
@@ -10,10 +12,10 @@ import net.datafaker.providers.base.AbstractProvider;
  */
 public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
 
-    private final String year;
-    private final String choice;
+    private final Supplier<String> year;
+    private final Supplier<String> choice;
 
-    private final String str;
+    private final Supplier<String> str;
 
     /**
      * This is the constructor initialize faker and two other
@@ -23,23 +25,23 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      */
     protected OscarMovie(final EntertainmentProviders faker) {
         super(faker);
-        this.year = this.faker.resolve("oscar_movie.year.years");
-        this.choice = this.faker.resolve("oscar_movie.year.choice");
-        this.str = "oscar_movie.".concat(year).concat(".").concat(choice);
+        this.year = () -> this.faker.resolve("oscar_movie.year.years");
+        this.choice = () -> this.faker.resolve("oscar_movie.year.choice");
+        this.str = () -> "oscar_movie.".concat(year.get()).concat(".").concat(choice.get());
     }
 
     /**
      * @return year
      */
     public String getYear() {
-        return year;
+        return year.get();
     }
 
     /**
      * @return choice
      */
     public String getChoice() {
-        return choice;
+        return choice.get();
     }
 
     /**
@@ -48,7 +50,7 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random actor
      */
     public String actor() {
-        return resolve(str.concat(".actor"));
+        return resolve(str.get().concat(".actor"));
     }
 
     /**
@@ -57,7 +59,7 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random movieName
      */
     public String movieName() {
-        return resolve(str.concat(".movieName"));
+        return resolve(str.get().concat(".movieName"));
     }
 
     /**
@@ -66,7 +68,7 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random quote
      */
     public String quote() {
-        return resolve(str.concat(".quote"));
+        return resolve(str.get().concat(".quote"));
     }
 
     /**
@@ -75,7 +77,7 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random character
      */
     public String character() {
-        return resolve(str.concat(".character"));
+        return resolve(str.get().concat(".character"));
     }
 
     /**
@@ -84,6 +86,6 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random releaseDate
      */
     public String releaseDate() {
-        return resolve(str.concat(".releaseDate"));
+        return resolve(str.get().concat(".releaseDate"));
     }
 }
