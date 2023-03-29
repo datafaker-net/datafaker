@@ -17,16 +17,16 @@ public class FakerIDN {
         } catch (Exception e) {
             // let's continue with the character by character encoding hack.
         }
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder resultASCII = new StringBuilder();
         for (int i = 0; i < in.length(); i++) {
             try {
-                sb.append(IDN.toASCII(in.substring(i, i + 1)));
+                resultASCII.append(IDN.toASCII(in.substring(i, i + 1)));
             } catch (Exception ignored) {
             }
         }
-        if (sb.length() == 0) {
+        if (resultASCII.length() == 0) {
             throw new RuntimeException("Unable to convert " + in + " to ASCII");
         }
-        return sb.toString();
+        return resultASCII.toString();
     }
 }
