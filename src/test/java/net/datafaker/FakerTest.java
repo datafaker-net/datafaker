@@ -364,21 +364,22 @@ class FakerTest extends AbstractFakerTest {
 
     @Test
     void testDeterministicAndNonDeterministicProvidersReturnValues() {
+        final int numberOfTestsPerMethod = 100;
         final Reflections reflections = new Reflections("net.datafaker.providers");
-        Set<Class<?>> classes = reflections.get(SubTypes.of(AbstractProvider.class).asClass());
+        final Set<Class<?>> classes = reflections.get(SubTypes.of(AbstractProvider.class).asClass());
         for (var clazz: classes) {
-            Collection<Method> methods = Arrays.stream(clazz.getDeclaredMethods())
+            final Collection<Method> methods = Arrays.stream(clazz.getDeclaredMethods())
                 .filter(m -> Modifier.isPublic(m.getModifiers()) && m.getParameterCount() == 0).collect(Collectors.toSet());
             if (methods.isEmpty()) continue;
             Constructor<AbstractProvider<?>> constructor = null;
             final AbstractProvider<?> ap;
             try {
-                Set<Constructor<AbstractProvider<?>>> constructorsWith1Arg =
+                final Set<Constructor<AbstractProvider<?>>> constructorsWith1Arg =
                     Arrays.stream(clazz.getDeclaredConstructors())
                         .filter(c -> c.getParameterCount() == 1).map(c -> (Constructor<AbstractProvider<?>>) c)
                         .collect(Collectors.toSet());
                 for (var c: constructorsWith1Arg) {
-                     Class<?>[] types = c.getParameterTypes();
+                     final Class<?>[] types = c.getParameterTypes();
                      if (types[0].isAssignableFrom(Faker.class)) {
                          constructor = c;
                          break;
@@ -392,10 +393,12 @@ class FakerTest extends AbstractFakerTest {
                 throw new RuntimeException(e);
             }
             for (Method m: methods) {
-                var set = new HashSet<>();
+                final var set = new HashSet<>();
                 try {
-                    for (int i = 0; i < 10; i++) {
+                    int currentSize = 0;
+                    for (int i = 0; i < numberOfTestsPerMethod && currentSize <= 1; i++) {
                         set.add(m.invoke(ap));
+                        currentSize = set.size();
                     }
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
