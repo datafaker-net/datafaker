@@ -57,6 +57,7 @@ public class Number extends AbstractProvider<BaseProviders> {
         }
         return decimalBetween(realMin, realMax).intValue();
     }
+
     private boolean isValidRange(int realMin, int realMax) {
         final int amplitude = realMax - realMin;
         return amplitude >= realMin && (realMin >= 0 || amplitude >= realMax);
@@ -81,8 +82,6 @@ public class Number extends AbstractProvider<BaseProviders> {
         final long amplitude = realMax - realMin;
         return amplitude >= realMin && (realMin >= 0 || amplitude >= realMax);
     }
-
-
 
     /**
      * @param numberOfDigits the number of digits the generated value should have
