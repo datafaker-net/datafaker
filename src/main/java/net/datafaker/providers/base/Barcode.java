@@ -67,9 +67,9 @@ public class Barcode extends AbstractProvider<BaseProviders> {
             even = odd;
             odd = tmp;
         }
-        int output = calculateOutput(length, odd, even);
-        int rounded = roundToHighestMultiplyOfTen((output));
-        int checkDigit = rounded - output;
+        final int output = calculateOutput(length, odd, even);
+        final int rounded = roundToHighestMultiplyOfTen((output));
+        final int checkDigit = rounded - output;
         int product = 10;
         while (product <= checkDigit) {
             product *= 10;
