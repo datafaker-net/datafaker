@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.annotations.Deterministic;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -42,6 +44,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
      *
      * @return a List of Strings with the name of the locale (eg. "es", "es-MX")
      */
+    @Deterministic
     public List<String> allSupportedLocales() {
         return allSupportedLocales(Set.of("datafaker"));
     }

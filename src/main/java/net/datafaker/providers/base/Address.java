@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.annotations.Deterministic;
+
 /**
  * @since 0.8.0
  */
@@ -67,6 +69,7 @@ public class Address extends AbstractProvider<BaseProviders> {
         return resolve("address.street_suffix");
     }
 
+    @Deterministic
     public String streetPrefix() {
         return resolve("address.street_prefix");
     }
