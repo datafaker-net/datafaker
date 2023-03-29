@@ -80,7 +80,7 @@ public class Barcode extends AbstractProvider<BaseProviders> {
     private int calculateOutput(int length, int odd, int even) {
         return switch(length) {
             case 13 -> odd + even + (even << 1);
-            case 8, 14, 12 -> odd + even + (odd << 1);
+            case 8, 12, 14 -> odd + even + (odd << 1);
             default -> 0;
         };
     }

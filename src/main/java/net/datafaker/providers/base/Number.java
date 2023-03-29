@@ -58,9 +58,10 @@ public class Number extends AbstractProvider<BaseProviders> {
         return decimalBetween(realMin, realMax).intValue();
     }
 
-   
+
     private boolean isValidRange(int realMin, int realMax) {
-        return realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax);
+        int amplitude = realMax - realMin;
+        return amplitude >= realMin && (realMin >= 0 || amplitude >= realMax);
     }
 
 
@@ -74,14 +75,15 @@ public class Number extends AbstractProvider<BaseProviders> {
         if (min == max) return min;
         final long realMin = Math.min(min, max);
         final long realMax = Math.max(min, max);
-        if (isValidRangeLong(realMin, realMax)) {
+        if (isValidRange(realMin, realMax)) {
             return faker.random().nextLong(realMax - realMin) + realMin;
         }
         return decimalBetween(realMin, realMax).longValue();
     }
 
-    private boolean isValidRangeLong(long realMin, long realMax) {
-        return realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax);
+    private boolean isValidRange(float realMin, float realMax) {
+        float amplitude = realMax - realMin;
+        return amplitude >= realMin && (realMin >= 0 || amplitude >= realMax);
     }
 
     /**
