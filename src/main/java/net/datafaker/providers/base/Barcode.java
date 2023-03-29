@@ -67,21 +67,22 @@ public class Barcode extends AbstractProvider<BaseProviders> {
             even = odd;
             odd = tmp;
         }
-        int var = 0;
-
-        if (length == 13) {
-            var = odd + even + (even << 1);
-        } else if (length == 8 || length == 14 || length == 12) {
-            var = odd + even + (odd << 1);
-        }
-
-        int rounded = roundToHighestMultiplyOfTen((var));
-        int checkDigit = rounded - var;
+        final int output = calculateOutput(length, odd, even);
+        final int rounded = roundToHighestMultiplyOfTen((output));
+        final int checkDigit = rounded - output;
         int product = 10;
         while (product <= checkDigit) {
             product *= 10;
         }
         return firstPart * product + checkDigit;
+    }
+
+    private int calculateOutput(int length, int odd, int even) {
+        return switch(length) {
+            case 13 -> odd + even + (even << 1);
+            case 8, 12, 14 -> odd + even + (odd << 1);
+            default -> 0;
+        };
     }
 
     public String type() {
