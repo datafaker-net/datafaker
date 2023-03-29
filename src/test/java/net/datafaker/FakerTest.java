@@ -1,18 +1,31 @@
 package net.datafaker;
 
+import net.datafaker.annotations.Deterministic;
+import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.reflections.Reflections;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.reflections.scanners.Scanners.SubTypes;
 
 class FakerTest extends AbstractFakerTest {
 
@@ -347,5 +360,58 @@ class FakerTest extends AbstractFakerTest {
 
         String flight2 = faker.expression("#{Aviation.flight 'ICAO'}");
         assertThat(flight2).matches("[A-z]{3}\\d{1,4}");
+    }
+
+    @Test
+    void testDeterministicAndNonDeterministicProvidersReturnValues() {
+        final Reflections reflections = new Reflections("net.datafaker.providers");
+        Set<Class<?>> classes = reflections.get(SubTypes.of(AbstractProvider.class).asClass());
+        for (Class<?> clazz: classes) {
+            Collection<Method> methods = Arrays.stream(clazz.getDeclaredMethods())
+                .filter(m -> Modifier.isPublic(m.getModifiers()) && m.getParameterCount() == 0).collect(Collectors.toSet());
+            if (methods.isEmpty()) continue;
+            Constructor<AbstractProvider<?>> constructor = null;
+            final AbstractProvider<?> ap;
+            try {
+                Set<Constructor<AbstractProvider<?>>> constructorsWith1Arg =
+                    Arrays.stream(clazz.getDeclaredConstructors())
+                        .filter(c -> c.getParameterCount() == 1).map(c -> (Constructor<AbstractProvider<?>>) c)
+                        .collect(Collectors.toSet());
+                for (Constructor<AbstractProvider<?>> c: constructorsWith1Arg) {
+                     Class<?>[] types = c.getParameterTypes();
+                     if (types[0].isAssignableFrom(Faker.class)) {
+                         constructor = c;
+                         break;
+                     }
+                 }
+                 assertThat(constructor).isNotNull();
+                 constructor.setAccessible(true);
+                 ap = constructor.newInstance(faker);
+            } catch (InvocationTargetException | InstantiationException |
+                     IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+            for (Method m: methods) {
+                Set<Object> set = new HashSet<>();
+                try {
+                    for (int i = 0; i < 10; i++) {
+                        set.add(m.invoke(ap));
+                    }
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+                if (m.isAnnotationPresent(Deterministic.class)) {
+                    assertThat(set)
+                        .as("Class: " + ap.getClass().getName()
+                            + ", method: " + m.getName() + " should have the same return value")
+                        .hasSize(1);
+                } else {
+                    assertThat(set)
+                        .as("Class: " + ap.getClass().getName()
+                            + ", method: " + m.getName() + " should generate different return values")
+                        .hasSizeGreaterThan(1);
+                }
+            }
+        }
     }
 }

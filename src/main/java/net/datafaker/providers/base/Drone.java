@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.annotations.Deterministic;
+
 /**
  * An unmanned aerial vehicle (UAV), commonly known as a drone, is an aircraft without any human pilot, crew, or passengers on board.
  *
@@ -107,6 +109,7 @@ public class Drone extends AbstractProvider<BaseProviders> {
         return resolve("drone.min_shutter_speed");
     }
 
+    @Deterministic
     public String shutterSpeedUnits() {
         return resolve("drone.shutter_speed_units");
     }
