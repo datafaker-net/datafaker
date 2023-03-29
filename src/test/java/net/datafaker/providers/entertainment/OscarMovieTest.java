@@ -1,14 +1,7 @@
 package net.datafaker.providers.entertainment;
 
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Strings.isNullOrEmpty;
