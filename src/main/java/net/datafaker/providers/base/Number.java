@@ -52,10 +52,14 @@ public class Number extends AbstractProvider<BaseProviders> {
         if (min == max) return min;
         final int realMin = Math.min(min, max);
         final int realMax = Math.max(min, max);
-        if (realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax)) {
+        if (isValidRange(realMin, realMax)) {
             return faker.random().nextInt(realMax - realMin) + realMin;
         }
         return decimalBetween(realMin, realMax).intValue();
+    }
+    private boolean isValidRange(int realMin, int realMax) {
+        int amplitude = realMax - realMin;
+        return amplitude >= realMin && (realMin >= 0 || amplitude >= realMax);
     }
 
     /**
@@ -73,6 +77,7 @@ public class Number extends AbstractProvider<BaseProviders> {
         }
         return decimalBetween(realMin, realMax).longValue();
     }
+
 
     /**
      * @param numberOfDigits the number of digits the generated value should have
