@@ -58,7 +58,7 @@ public class Number extends AbstractProvider<BaseProviders> {
         return decimalBetween(realMin, realMax).intValue();
     }
     private boolean isValidRange(int realMin, int realMax) {
-        int amplitude = realMax - realMin;
+        final int amplitude = realMax - realMin;
         return amplitude >= realMin && (realMin >= 0 || amplitude >= realMax);
     }
 
