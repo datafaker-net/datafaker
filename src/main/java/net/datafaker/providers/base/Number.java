@@ -44,7 +44,7 @@ public class Number extends AbstractProvider<BaseProviders> {
 
     /**
      * @param min the lower bound (include min)
-     * @param max the lower bound (not include max)
+     * @param max the upper bound (not include max)
      * @return a random number on faker.number() between min and max
      * if min = max, return min
      */
@@ -64,7 +64,7 @@ public class Number extends AbstractProvider<BaseProviders> {
 
     /**
      * @param min the lower bound (include min)
-     * @param max the lower bound (not include max)
+     * @param max the upper bound (not include max)
      * @return a random number on faker.number() between min and max
      * if min = max, return min
      */
@@ -72,11 +72,16 @@ public class Number extends AbstractProvider<BaseProviders> {
         if (min == max) return min;
         final long realMin = Math.min(min, max);
         final long realMax = Math.max(min, max);
-        if (realMax - realMin >= realMin && (realMin >= 0 || realMax - realMin >= realMax)) {
+        if (isValidRange(realMin, realMax)) {
             return faker.random().nextLong(realMax - realMin) + realMin;
         }
         return decimalBetween(realMin, realMax).longValue();
     }
+    private boolean isValidRange(long realMin, long realMax) {
+        final long amplitude = realMax - realMin;
+        return amplitude >= realMin && (realMin >= 0 || amplitude >= realMax);
+    }
+
 
 
     /**
@@ -120,7 +125,7 @@ public class Number extends AbstractProvider<BaseProviders> {
 
     /**
      * @param min the lower bound (include min)
-     * @param max the lower bound (not include max)
+     * @param max the upper bound (not include max)
      * @return decimalBetween on faker.number() between min and max
      * if min = max, return min
      */
