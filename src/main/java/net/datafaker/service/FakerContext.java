@@ -82,29 +82,7 @@ public class FakerContext {
      * with new Locale("pt","BR").
      */
     private SingletonLocale normalizeLocale(SingletonLocale singletonLocale) {
-        SingletonLocale res = STRING_LOCALE_HASH_MAP.get(singletonLocale);
-        if (res != null) {
-            return res;
-        }
-        final String[] parts;
-        final Locale locale = singletonLocale.getLocale();
-        if (locale.getCountry().isEmpty()) {
-            parts = LOCALE.split(locale.getLanguage());
-        } else {
-            parts = new String[] {locale.getLanguage(), locale.getCountry()};
-        }
-
-        if (parts.length == 1) {
-            if ((res = SingletonLocale.get(Locale.forLanguageTag(parts[0]))) == null) {
-                res = SingletonLocale.get(new Locale(parts[0]));
-            }
-        } else {
-            res = SingletonLocale.get(new Locale(parts[0], parts[1]));
-        }
-        synchronized (FakerContext.class) {
-            STRING_LOCALE_HASH_MAP.put(singletonLocale, res);
-        }
-        return res;
+        return SingletonLocale.normalizeLocale(singletonLocale);
     }
 
     public void setCurrentLocale(Locale locale) {
