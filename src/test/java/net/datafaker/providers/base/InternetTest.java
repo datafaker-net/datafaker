@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import org.apache.commons.validator.routines.EmailValidator;
+
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -20,59 +20,6 @@ import static org.assertj.core.api.Assertions.fail;
 
 class InternetTest extends BaseFakerTest<BaseFaker> {
 
-    @Test
-    void testEmailAddress() {
-        String emailAddress = faker.internet().emailAddress();
-        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
-    }
-
-    @Test
-    void testEmailAddressWithLocalPartParameter() {
-        String emailAddress = faker.internet().emailAddress("john");
-        assertThat(emailAddress).startsWith("john@");
-        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
-    }
-
-    @Test
-    void testSafeEmailAddress() {
-        List<String> emails = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            String emailAddress = faker.internet().safeEmailAddress();
-            assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
-            emails.add(emailAddress);
-        }
-        final String safeDomain = faker.internet().resolve("internet.safe_email");
-
-        assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).collect(Collectors.toList()))
-            .isNotEmpty();
-    }
-
-    @Test
-    void testSafeEmailAddressWithLocalPartParameter() {
-        List<String> emails = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            String emailAddress = faker.internet().safeEmailAddress("john");
-            assertThat(emailAddress).startsWith("john@");
-            assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
-            emails.add(emailAddress);
-        }
-        final String safeDomain = faker.internet().resolve("internet.safe_email");
-
-        assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).collect(Collectors.toList()))
-            .isNotEmpty();
-    }
-
-    @Test
-    void testEmailAddressDoesNotIncludeAccentsInTheLocalPart() {
-        String emailAddress = faker.internet().emailAddress("áéíóú");
-        assertThat(emailAddress).startsWith("aeiou@");
-    }
-
-    @Test
-    void testSafeEmailAddressDoesNotIncludeAccentsInTheLocalPart() {
-        String emailAddress = faker.internet().safeEmailAddress("áéíóú");
-        assertThat(emailAddress).startsWith("aeiou@");
-    }
 
     @Test
     void testUrl() {
@@ -357,8 +304,6 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         // there have been issues with Farsi not being produced.
         final BaseFaker f = new BaseFaker(new Locale("fa"));
         assertThat(f.internet().domainName()).isNotEmpty();
-        assertThat(f.internet().emailAddress()).isNotEmpty();
-        assertThat(f.internet().safeEmailAddress()).isNotEmpty();
         assertThat(f.internet().url()).isNotEmpty();
     }
 

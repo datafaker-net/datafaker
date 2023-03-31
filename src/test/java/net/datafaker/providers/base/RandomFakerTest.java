@@ -53,10 +53,10 @@ class RandomFakerTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testEmailRandomnessCanBeControlled() {
         resetRandomSeed();
-        final String firstInvocation = faker.internet().emailAddress();
+        final String firstInvocation = faker.email().emailAddress();
 
         resetRandomSeed();
-        final String secondInvocation = faker.internet().emailAddress();
+        final String secondInvocation = faker.email().emailAddress();
         assertThat(firstInvocation).isEqualTo(secondInvocation);
     }
 

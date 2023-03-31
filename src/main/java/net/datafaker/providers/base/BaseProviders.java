@@ -469,4 +469,7 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Zodiac.class, Zodiac::new);
     }
 
+    default Email email() {
+        return getProvider(Email.class, Email::new);
+    }
 }
