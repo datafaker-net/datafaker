@@ -130,15 +130,7 @@ public class FakerContext {
             return DEFAULT_SINGLETON_LOCALE_LIST;
         }
 
-        final SingletonLocale normalized = normalizeLocale(SingletonLocale.get(from));
-
-        final List<SingletonLocale> chain = new ArrayList<>(3);
-        chain.add(normalized);
-        if (!"".equals(normalized.getLocale().getCountry()) && !DEFAULT_LOCALE.getLocale().getLanguage().equals(normalized.getLocale().getLanguage())) {
-            chain.add(SingletonLocale.get(new Locale(normalized.getLocale().getLanguage())));
-        }
-        chain.add(DEFAULT_LOCALE); // default
-        return chain;
+        return calculateLocaleChain(normalizeLocale(SingletonLocale.get(from)));
     }
 
     protected List<SingletonLocale> localeChain() {
@@ -146,10 +138,15 @@ public class FakerContext {
             return DEFAULT_SINGLETON_LOCALE_LIST;
         }
 
+        return calculateLocaleChain(sLocale);
+    }
+
+    private List<SingletonLocale> calculateLocaleChain(SingletonLocale locale) {
         final List<SingletonLocale> chain = new ArrayList<>(3);
-        chain.add(sLocale);
-        if (!"".equals(sLocale.getLocale().getCountry()) && !DEFAULT_LOCALE.getLocale().getLanguage().equals(sLocale.getLocale().getLanguage())) {
-            chain.add(SingletonLocale.get(new Locale(sLocale.getLocale().getLanguage())));
+        chain.add(locale);
+        if (!"".equals(locale.getLocale().getCountry())
+            && !DEFAULT_LOCALE.getLocale().getLanguage().equals(locale.getLocale().getLanguage())) {
+            chain.add(SingletonLocale.get(new Locale(locale.getLocale().getLanguage())));
         }
         chain.add(DEFAULT_LOCALE); // default
         return chain;
