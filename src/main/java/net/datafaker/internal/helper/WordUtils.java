@@ -1,13 +1,13 @@
 package net.datafaker.internal.helper;
 
-import java.util.Locale;
 
 public class WordUtils {
 
     public static String capitalize(String input) {
         if (input == null) return null;
-        if (input.equals("")) return "";
-        if (Character.isUpperCase(input.charAt(0))) return input;
-        return input.substring(0, 1).toUpperCase(Locale.ROOT) + input.substring(1);
+        if (input.isEmpty()) return "";
+        final char ch0 = input.charAt(0);
+        if (Character.isUpperCase(ch0)) return input;
+        return Character.toUpperCase(ch0) + input.substring(1);
     }
 }
