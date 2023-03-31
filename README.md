@@ -210,15 +210,13 @@ jshell> System.out.println(transformer.generate(fromScratch, 2));
 #### JSON
 
 ```java
-Faker faker = new Faker();
-String json = Format.toJson(
-                faker.collection(faker::name)
-                  .maxLen(2)
-                  .build())
-              .set("firstName", Name::firstName)
-              .set("lastName", Name::lastName)
-              .build()
-              .generate();
+Schema<Object, ?> schema = Schema.of(
+    field("firstName", () -> faker.name().firstName()),
+    field("lastName", () -> faker.name().lastName())
+    );
+
+JsonTransformer<Object> transformer = JsonTransformer.builder().build();
+String json = transformer.generate(schema, 2);
 // [{"firstName": "Oleta", "lastName": "Toy"},
 // {"firstName": "Gerard", "lastName": "Windler"}]
 ```
