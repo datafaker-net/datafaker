@@ -1,11 +1,13 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.annotations.FakeResolver;
 import net.datafaker.sequence.FakeCollection;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.sequence.FakeStream;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
+import net.datafaker.transformations.Schema;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -296,6 +298,16 @@ public class BaseFaker implements BaseProviders {
 
     public void addUrl(Locale locale, URL url) {
         fakeValuesService().addUrl(locale, url);
+    }
+
+    public static <T> T populate(Class<T> clazz) {
+        var fakeFactory = new FakeResolver<>(clazz);
+        return fakeFactory.generate(null);
+    }
+
+    public static <T> T populate(Class<T> clazz, Schema<Object, ?> schema) {
+        var fakeFactory = new FakeResolver<>(clazz);
+        return fakeFactory.generate(schema);
     }
 
     @SuppressWarnings("unchecked")
