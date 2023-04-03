@@ -73,3 +73,8 @@ nb-NO:
       - "9## ## ###"
       - "58# ## ###"
       - "59# ## ###"
+
+    hacker:
+      abbreviation: [TCP,HTTP,SDD,RAM,GB,CSS,SSL,AGP,SQL,FTP,PCI,AI,ADP,RSS,XML,EXE,COM,HDD,THX,SMTP,SMS,USB,PNG,SAS,IB,SCSI,JSON,XSS,JBOD]
+      adjective: [online,multiplattform,virtuell,digital,backend,frontend,åpen kilde,primær,blåtann,trådløs,nevral,mobil,optisk,]
+      noun: [driver,protokoll,båndbredde,mikrochip,program,port,kort,tabell,liste,grensesnitt,system,brannmur,harddisk,piksel,sensor,alarm,monitor,applikasjon,feed,buss,krets,kondensator,matrise]
