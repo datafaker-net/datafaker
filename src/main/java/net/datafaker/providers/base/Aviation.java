@@ -15,12 +15,12 @@ public class Aviation extends AbstractProvider<BaseProviders> {
 
     /**
      * @return one of the 6 types of aircraft:
-     * airplane, warplane, general, transport, army helicopter, civil helicopter.
+     * airplane, warplane, general, cargo, army helicopter, civil helicopter.
      */
     public String aircraft() {
         return resolve(List.of("aviation.aircraft.airplane", "aviation.aircraft.warplane",
             "aviation.aircraft.army_helicopter", "aviation.aircraft.civil_helicopter",
-            "aviation.aircraft.general", "aviation.aircraft.transport")
+            "aviation.aircraft.general", "aviation.aircraft.cargo")
             .get(faker.number().numberBetween(0, 6)));
     }
 
@@ -32,12 +32,19 @@ public class Aviation extends AbstractProvider<BaseProviders> {
         return resolve("aviation.aircraft.warplane");
     }
 
+    /**
+     * @return general aviation aircraft.
+     * See also: <a href="https://www.iaopa.eu/what-is-general-aviation">...ICAO defines general aviation operation by exception: those flight activities not involving commercial air transportation or aerial work.</a>
+     */
     public String general() {
         return resolve("aviation.aircraft.general");
     }
 
-    public String transport() {
-        return resolve("aviation.aircraft.transport");
+    /**
+     * @return a cargo aircraft which is dedicated to transport freight.
+     */
+    public String cargo() {
+        return resolve("aviation.aircraft.cargo");
     }
 
     public String armyHelicopter() {
