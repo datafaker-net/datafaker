@@ -14,10 +14,14 @@ public class Aviation extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return one of the 4 types of aircraft: airplane, warplane, army helicopter, civil helicopter.
+     * @return one of the 6 types of aircraft:
+     * airplane, warplane, general, transport, army helicopter, civil helicopter.
      */
     public String aircraft() {
-        return resolve(List.of("aviation.aircraft.airplane", "aviation.aircraft.warplane", "aviation.aircraft.army_helicopter", "aviation.aircraft.civil_helicopter").get(faker.number().numberBetween(0, 4)));
+        return resolve(List.of("aviation.aircraft.airplane", "aviation.aircraft.warplane",
+            "aviation.aircraft.army_helicopter", "aviation.aircraft.civil_helicopter",
+            "aviation.aircraft.general", "aviation.aircraft.transport")
+            .get(faker.number().numberBetween(0, 6)));
     }
 
     public String airplane() {
@@ -26,6 +30,14 @@ public class Aviation extends AbstractProvider<BaseProviders> {
 
     public String warplane() {
         return resolve("aviation.aircraft.warplane");
+    }
+
+    public String general() {
+        return resolve("aviation.aircraft.general");
+    }
+
+    public String transport() {
+        return resolve("aviation.aircraft.transport");
     }
 
     public String armyHelicopter() {

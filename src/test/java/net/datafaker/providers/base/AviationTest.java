@@ -36,6 +36,8 @@ class AviationTest extends BaseFakerTest<BaseFaker> {
         return List.of(TestSpec.of(aviation::airport, "aviation.airport", "\\w{4}"),
             TestSpec.of(aviation::airplane, "aviation.aircraft.airplane"),
             TestSpec.of(aviation::warplane, "aviation.aircraft.warplane"),
+            TestSpec.of(aviation::general, "aviation.aircraft.general"),
+            TestSpec.of(aviation::transport, "aviation.aircraft.transport"),
             TestSpec.of(aviation::civilHelicopter, "aviation.aircraft.civil_helicopter"),
             TestSpec.of(aviation::armyHelicopter, "aviation.aircraft.army_helicopter"),
             TestSpec.of(aviation::METAR, "aviation.metar"),
