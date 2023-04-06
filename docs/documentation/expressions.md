@@ -24,7 +24,7 @@ Applies both letterify and numerify e.g.
 ```java
 Faker faker = new Faker();
 faker.expression("#{bothify '?#?#?#?#'}"); // could give a1b2c3d4
-faker.expression("#{bothify '?#?#?#?#', true}"); // could give A1B2C3D4
+faker.expression("#{bothify '?#?#?#?#', 'true'}"); // could give A1B2C3D4
 ```
 
 ## Templatify
