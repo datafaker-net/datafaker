@@ -24,7 +24,7 @@ Applies both letterify and numerify e.g.
 ```java
 Faker faker = new Faker();
 faker.expression("#{bothify '?#?#?#?#'}"); // could give a1b2c3d4
-faker.expression("#{bothify '?#?#?#?#', true}"); // could give A1B2C3D4
+faker.expression("#{bothify '?#?#?#?#', 'true'}"); // could give A1B2C3D4
 ```
 
 ## Templatify
@@ -72,7 +72,7 @@ The expression will return generated csv based on input parameters
 faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
 // "name_column","last_name_column"
 // "Sabrina","Kihn"
-faker.expression("#{csv ' ### ','"','false','3','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
+faker.expression("#{csv ' ### ','\"','false','3','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
 // "Thad" ### "Crist"
 // "Kathryne" ### "Wuckert"
 // "Sybil" ### "Connelly"
