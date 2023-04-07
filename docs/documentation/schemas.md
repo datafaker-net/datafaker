@@ -346,3 +346,133 @@ address:
   country: Trinidad and Tobago
   streetAddress: 6510 Duncan Landing
 ```
+
+## Java Object transformation
+
+Java Object transformer could be built with help of JavaObjectTransformer. 
+
+When building JavaObjectTransformer you should provide a class to be used as a template for generated objects.
+=== "Java"
+
+    ``` java
+
+        public static class Person {
+           private String firstName;
+           private String lastName;
+           private Date birthDate;
+           private int id;
+        }
+    ```
+=== "Kotlin"
+
+    ``` kotlin
+
+        data class Person(
+            var firstName: String,
+            var lastName: String,
+            var birthDate: Date,
+            var id: Int
+        )
+    ```
+
+Then you should provide a schema for the class.
+
+=== "Java"
+
+    ``` java
+
+        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
+        Schema<Object, ?> schema = Schema.of(
+            field("firstName", () -> faker.name().firstName()),
+            field("lastName", () -> faker.name().lastName()),
+            field("birthDate", () -> faker.date().birthday()),
+            field("id", () -> faker.number().positive()));
+
+        System.out.println(jTransformer.apply(Person.class, schema));
+    ```
+
+=== "Kotlin"
+
+    ``` kotlin
+
+        val jTransformer = JavaObjectTransformer()
+        val schema: Schema<Any, Any> = Schema.of(
+            field("firstName", Supplier { faker.name().firstName() }),
+            field("lastName", Supplier { faker.name().lastName() }),
+            field("birthDate", Supplier { faker.date().birthday() }),
+            field("id", Supplier { faker.number().positive() }))
+
+        println(jTransformer.apply(Person::class.java, schema))
+    ```
+
+will generate object with fields populated with random values.
+
+### Populating Java Object with predefined Schema
+
+You can use predefined schema to populate Java Object or default schema for the class.
+Schema should be declared as a static method with return type `Schema<Object, ?>`.
+
+=== "Java"
+
+    ```java
+          public static Schema<Object, ?> defaultSchema() {
+            var faker = new Faker(Locale.forLanguageTag("fr-en"), new RandomService(new Random(1)));
+            return Schema.of(field("name", () -> faker.name().fullName()));
+          }
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+        fun defaultSchema(): Schema<Any, Any> {
+            val faker = Faker(Locale.forLanguageTag("fr-en"), RandomService(Random(1)))
+            return Schema.of(field("name", Supplier { faker.name().fullName() }))
+        }
+    ```
+
+Then you should provide a class to be used as a template for generated objects. Class should be annotated with `@FakeForSchema` annotation with path to the schema method as a value.
+
+> Note: If default schema and class template are in the same class, you can omit full path to the method and use only method name.
+ 
+=== "Java"
+
+    ```java
+        @FakeForSchema("net.datafaker.annotations.FakeAnnotationTest#defaultSchema")
+        public class Person {
+            private String fullName;
+        
+            public String getFullName() {
+                return fullName;
+            }
+        
+            public void setFullName(String fullName) {
+                this.fullName = fullName;
+            }
+        }
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+        @FakeForSchema("net.datafaker.annotations.FakeAnnotationTest#defaultSchema")
+        data class Person(
+            var fullName: String
+        )
+    ```
+
+Then you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Class<T>)` to populate object with default predefined schema.
+Or you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Class<T>, net.datafaker.schema.Schema<java.lang.Object, ?>)` to populate object with custom schema.
+
+=== "Java"
+
+    ```java
+        BaseFaker faker = new BaseFaker();
+        Person person = faker.populate(Person.class);
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+        val faker = BaseFaker()
+        val person = faker.populate(Person::class.java)
+    ```
