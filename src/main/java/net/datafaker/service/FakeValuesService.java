@@ -24,16 +24,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -55,18 +46,18 @@ public class FakeValuesService {
 
     private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
 
-    private final Cache<String, Generex> expression2generex = CacheBuilder.newBuilder().weakKeys().build();
+    private final Map<String, Generex> expression2generex = Collections.synchronizedMap(new WeakHashMap<>());
     private final Map<SingletonLocale, Map<String, String>> key2Expression = new ConcurrentHashMap<>();
-    private final Cache<String, String[]> args2splittedArgs = CacheBuilder.newBuilder().weakKeys().build();
-    private final Cache<String, String[]> key2splittedKey = CacheBuilder.newBuilder().weakKeys().build();
+    private final Map<String, String[]> args2splittedArgs = Collections.synchronizedMap(new WeakHashMap<>());
+    private final Map<String, String[]> key2splittedKey = Collections.synchronizedMap(new WeakHashMap<>());
 
     private final Map<SingletonLocale, Map<String, Object>> key2fetchedObject = new ConcurrentHashMap<>();
-    private final Cache<String, String> name2yaml = CacheBuilder.newBuilder().weakKeys().build();
-    private final Cache<String, String> removedUnderscore = CacheBuilder.newBuilder().weakKeys().build();
+    private final Map<String, String> name2yaml = Collections.synchronizedMap(new WeakHashMap<>());
+    private final Map<String, String> removedUnderscore = Collections.synchronizedMap(new WeakHashMap<>());
 
-    private final Map<Class<?>, Cache<String, Cache<String[], Optional<MethodAndCoercedArgs>>>> mapOfMethodAndCoercedArgs = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Map<String, Map<String[], Optional<MethodAndCoercedArgs>>>> mapOfMethodAndCoercedArgs = new ConcurrentHashMap<>();
 
-    private static final Cache<String, List<String>> EXPRESSION_2_SPLITTED = CacheBuilder.newBuilder().weakKeys().build();  // Should this be static?
+    private static final Map<String, List<String>> EXPRESSION_2_SPLITTED = Collections.synchronizedMap(new WeakHashMap<>());  // Should this be static?
 
     public FakeValuesService() {
     }
@@ -216,7 +207,7 @@ public class FakeValuesService {
     }
 
     private String[] split(String string) {
-        String[] result = key2splittedKey.getIfPresent(string);
+        String[] result = key2splittedKey.get(string);
         if (result != null) {
             return result;
         }
@@ -282,7 +273,7 @@ public class FakeValuesService {
      * Generates a String that matches the given regular expression.
      */
     public String regexify(String regex, FakerContext context) {
-        Generex generex = expression2generex.getIfPresent(regex);
+        Generex generex = expression2generex.get(regex);
         if (generex == null) {
             generex = new Generex(regex);
             generex.setSeed(context.getRandomService().nextLong());
@@ -536,7 +527,7 @@ public class FakeValuesService {
         if (arguments == null || (length = arguments.length()) == 0) {
             return EMPTY_ARRAY;
         }
-        String[] res = args2splittedArgs.getIfPresent(arguments);
+        String[] res = args2splittedArgs.get(arguments);
         if (res != null) {
             return res;
         }
@@ -565,7 +556,7 @@ public class FakeValuesService {
     }
 
     private List<String> splitExpressions(String expression, int cnt, int length) {
-        List<String> result = EXPRESSION_2_SPLITTED.getIfPresent(expression);
+        List<String> result = EXPRESSION_2_SPLITTED.get(expression);
         if (result != null) {
             return result;
         }
@@ -726,7 +717,7 @@ public class FakeValuesService {
      * @return a yaml style name like 'phone_number' from a java style name like 'PhoneNumber'
      */
     private String javaNameToYamlName(String expression) {
-        String result = name2yaml.getIfPresent(expression);
+        String result = name2yaml.get(expression);
         if (result != null) {
             return result;
         }
@@ -824,12 +815,12 @@ public class FakeValuesService {
 
     private MethodAndCoercedArgs retrieveMethodAccessor(Object object, String methodName, String[] args) {
         Class<?> clazz = object.getClass();
-        Cache<String[], Optional<MethodAndCoercedArgs>> accessorMap =
+        Map<String[], Optional<MethodAndCoercedArgs>> accessorMap =
             mapOfMethodAndCoercedArgs
-                .computeIfAbsent(clazz, c -> CacheBuilder.newBuilder().weakKeys().build()).asMap()
-                .computeIfAbsent(methodName, m -> CacheBuilder.newBuilder().weakKeys().build());
+                .computeIfAbsent(clazz, c -> Collections.synchronizedMap(new WeakHashMap<>()))
+                .computeIfAbsent(methodName, m -> Collections.synchronizedMap(new WeakHashMap<>()));
 
-        Optional<MethodAndCoercedArgs> acc = accessorMap.getIfPresent(args);
+        Optional<MethodAndCoercedArgs> acc = accessorMap.get(args);
         if (acc != null) {
             return acc.get();  // value could be null
         }
@@ -884,7 +875,7 @@ public class FakeValuesService {
     }
 
     private String removeUnderscoreChars(String string) {
-        String valueWithRemovedUnderscores = removedUnderscore.getIfPresent(string);
+        String valueWithRemovedUnderscores = removedUnderscore.get(string);
         if (valueWithRemovedUnderscores != null) {
             return valueWithRemovedUnderscores;
         }
