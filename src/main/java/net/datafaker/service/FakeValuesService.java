@@ -2,8 +2,16 @@ package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
 import net.datafaker.internal.helper.SingletonLocale;
-import net.datafaker.providers.base.*;
-import net.datafaker.transformations.*;
+import net.datafaker.providers.base.AbstractProvider;
+import net.datafaker.providers.base.Address;
+import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.Name;
+import net.datafaker.providers.base.ProviderRegistration;
+import net.datafaker.transformations.CsvTransformer;
+import net.datafaker.transformations.Field;
+import net.datafaker.transformations.JsonTransformer;
+import net.datafaker.transformations.Schema;
+import net.datafaker.transformations.SimpleField;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
