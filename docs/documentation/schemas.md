@@ -461,7 +461,6 @@ Then you should provide a class to be used as a template for generated objects. 
     ```
 
 Then you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Class<T>)` to populate object with default predefined schema.
-Or you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Class<T>, net.datafaker.schema.Schema<java.lang.Object, ?>)` to populate object with custom schema.
 
 === "Java"
 
@@ -475,4 +474,20 @@ Or you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Class<
     ```kotlin
         val faker = BaseFaker()
         val person = faker.populate(Person::class.java)
+    ```
+
+Or you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Class<T>, net.datafaker.schema.Schema<java.lang.Object, ?>)` to populate object with custom schema.
+
+=== "Java"
+
+    ```java
+        BaseFaker faker = new BaseFaker();
+        Person person = faker.populate(Person.class, Schema.of(field("name", () -> faker.superhero().name())));
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+        val faker = BaseFaker()
+        val person = faker.populate(Person::class.java, Schema.of(field("name", Supplier { faker.superhero().name() })))
     ```
