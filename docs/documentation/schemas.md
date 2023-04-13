@@ -405,7 +405,7 @@ Then you should provide a schema for the class.
         println(jTransformer.apply(Person::class.java, schema))
     ```
 
-will generate object with fields populated with random values.
+will generate object with fields populated with random values based on specified suppliers.
 
 ### Populating Java Object with predefined Schema
 
