@@ -71,6 +71,10 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(Overwatch.class, Overwatch::new);
     }
 
+    default RedDeadRedemption2 redDeadRedemption2() {
+        return getProvider(RedDeadRedemption2.class, RedDeadRedemption2::new);
+    }
+
     default SonicTheHedgehog sonicTheHedgehog() {
         return getProvider(SonicTheHedgehog.class, SonicTheHedgehog::new);
     }
