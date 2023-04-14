@@ -18,12 +18,12 @@ class AviationTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void flight_IATA() {
-        assertThat(aviation.flight("IATA")).matches("[A-Z|0-9]{2}[0-9]+");
+        assertThat(aviation.flight("IATA")).matches("[A-Z0-9]{2}[0-9]+");
     }
 
     @Test
     void flight_default() {
-        assertThat(aviation.flight()).matches("[A-Z|0-9]{2}[0-9]+");
+        assertThat(aviation.flight()).matches("[A-Z0-9]{2}[0-9]+");
     }
 
     @Test
