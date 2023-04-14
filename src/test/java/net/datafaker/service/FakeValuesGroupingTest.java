@@ -15,7 +15,7 @@ class FakeValuesGroupingTest {
     @BeforeEach
     void before() {
         fakeValuesGrouping = new FakeValuesGrouping();
-        addressValues = new FakeValues(Locale.ENGLISH, "address.yml", "address");
+        addressValues = FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "address.yml", "address"));
         fakeValuesGrouping.add(addressValues);
     }
 
@@ -27,7 +27,7 @@ class FakeValuesGroupingTest {
 
     @Test
     void handlesMultipleFakeValues() {
-        FakeValues catValues = new FakeValues(Locale.ENGLISH, "cat.yml", "creature");
+        FakeValues catValues = FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "cat.yml", "creature"));
         fakeValuesGrouping.add(catValues);
 
         assertThat(fakeValuesGrouping.get("address")).isEqualTo(addressValues.get("address"))
