@@ -189,6 +189,7 @@ public class EnFile {
         "pokemon.yml",
         "princess_bride.yml",
         "programming_language.yml",
+        "red_dead_redemption2.yml",
         "relationship.yml",
         "restaurant.yml",
         "rick_and_morty.yml",
