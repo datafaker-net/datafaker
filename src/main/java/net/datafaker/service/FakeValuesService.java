@@ -2,6 +2,7 @@ package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
 import net.datafaker.internal.helper.SingletonLocale;
+import net.datafaker.internal.helper.StampedLockMap;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
@@ -12,7 +13,6 @@ import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
-
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
+import java.util.concurrent.locks.StampedLock;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,26 +50,28 @@ public class FakeValuesService {
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
 
-    private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new IdentityHashMap<>();
+    private final StampedLockMap<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new StampedLockMap<>(IdentityHashMap::new);
     public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.get(Locale.ENGLISH);
 
-    private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new IdentityHashMap<>();
-    private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new IdentityHashMap<>();
+    private static final StampedLockMap<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new StampedLockMap<>(IdentityHashMap::new);
+    private static final StampedLockMap<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new StampedLockMap<>(IdentityHashMap::new);
 
     private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
 
-    private final Map<String, Generex> expression2generex = new WeakHashMap<>();
-    private final Map<SingletonLocale, Map<String, String>> key2Expression = new IdentityHashMap<>();
-    private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
-    private final Map<String, String[]> key2splittedKey = new WeakHashMap<>();
+    private final StampedLockMap<String, Generex> expression2generex = new StampedLockMap<>(WeakHashMap::new);
+    private final StampedLockMap<SingletonLocale, Map<String, String>> key2Expression = new StampedLockMap<>(IdentityHashMap::new);
+    private static final StampedLockMap<String, String[]> ARGS_2_SPLITTED_ARGS = new StampedLockMap<>(WeakHashMap::new);
 
-    private final Map<SingletonLocale, Map<String, Object>> key2fetchedObject = new IdentityHashMap<>();
-    private final Map<String, String> name2yaml = new WeakHashMap<>();
-    private final Map<String, String> removedUnderscore = new WeakHashMap<>();
+    private static final StampedLockMap<String, String[]> KEY_2_SPLITTED_KEY = new StampedLockMap<>(WeakHashMap::new);
 
-    private final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new IdentityHashMap<>();
+    private final StampedLockMap<SingletonLocale, Map<String, Object>> key2fetchedObject = new StampedLockMap<>(IdentityHashMap::new);
 
-    private static final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
+    private static final StampedLockMap<String, String> NAME_2_YAML = new StampedLockMap<>(WeakHashMap::new);
+
+    private static final StampedLockMap<String, String> REMOVED_UNDERSCORE = new StampedLockMap<>(WeakHashMap::new);
+    private static final StampedLockMap<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> MAP_OF_METHOD_AND_COERCED_ARGS = new StampedLockMap<>(IdentityHashMap::new);
+
+    private static final StampedLockMap<String, List<String>> EXPRESSION_2_SPLITTED = new StampedLockMap<>(WeakHashMap::new);
 
     private static final Map<RegExpContext, Supplier<?>> map = new HashMap<>();
     public FakeValuesService() {
@@ -119,17 +122,15 @@ public class FakeValuesService {
         if (url == null) {
             throw new IllegalArgumentException("url should be an existing readable file");
         }
-        FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(locale, url));
-        SingletonLocale sLocale = SingletonLocale.get(locale);
-        FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(sLocale);
-        if (existingFakeValues == null) {
-            fakeValuesInterfaceMap.putIfAbsent(sLocale, fakeValues);
-        } else {
-            FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
-            fakeValuesGrouping.add(existingFakeValues);
-            fakeValuesGrouping.add(fakeValues);
-            fakeValuesInterfaceMap.put(sLocale, fakeValuesGrouping);
-        }
+        final FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(locale, url));
+        final SingletonLocale sLocale = SingletonLocale.get(locale);
+        fakeValuesInterfaceMap.merge(sLocale, fakeValues,
+            (prevValue, newValue) -> {
+                FakeValuesGrouping fvg = new FakeValuesGrouping();
+                fvg.add(prevValue);
+                fvg.add(newValue);
+                return fvg;
+            });
     }
 
     /**
@@ -137,7 +138,7 @@ public class FakeValuesService {
      */
     public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
-        Object o = fetchObject(key, context);
+        final Object o = fetchObject(key, context);
         if (o instanceof List) {
             valuesArray = (List<?>) o;
             final int size = valuesArray.size();
@@ -211,7 +212,7 @@ public class FakeValuesService {
             if (sLocale == DEFAULT_LOCALE && localeChain.size() > 1) {
                 continue;
             }
-            final Map<String, Object> stringObjectMap = key2fetchedObject.get(sLocale);
+            Map<String, Object> stringObjectMap = key2fetchedObject.get(sLocale);
             if (stringObjectMap != null && (result = stringObjectMap.get(key)) != null) {
                 return result;
             }
@@ -232,18 +233,33 @@ public class FakeValuesService {
             result = currentValue;
             if (result != null) {
                 local2Add = sLocale;
-                key2fetchedObject.putIfAbsent(local2Add, new HashMap<>());
                 break;
             }
         }
         if (local2Add != null) {
-            key2fetchedObject.get(local2Add).put(key, result);
+            final Object result2Insert = result;
+            key2fetchedObject.updateValue(local2Add,
+                new StampedLockMap<>(WeakHashMap::new), value -> value.putIfAbsent(key, result2Insert));
         }
         return result;
     }
 
+    private <K, V> V read(Map<K, V> map, K key, StampedLock lock) {
+        long stamp = lock.tryOptimisticRead();
+        V value = map.get(key);
+        if (!lock.validate(stamp)) {
+            stamp = lock.readLock();
+            try {
+                value = map.get(key);
+            } finally {
+                lock.unlockRead(stamp);
+            }
+        }
+        return value;
+    }
+
     private String[] split(String string) {
-        String[] result = key2splittedKey.get(string);
+        String[] result = KEY_2_SPLITTED_KEY.get(string);
         if (result != null) {
             return result;
         }
@@ -268,7 +284,7 @@ public class FakeValuesService {
             }
         }
         result[j] = String.valueOf(chars, start, chars.length - start);
-        key2splittedKey.put(string, result);
+        KEY_2_SPLITTED_KEY.putIfAbsent(string, result);
         return result;
     }
 
@@ -334,7 +350,7 @@ public class FakeValuesService {
         if (generex == null) {
             generex = new Generex(regex);
             generex.setSeed(context.getRandomService().nextLong());
-            expression2generex.put(regex, generex);
+            expression2generex.putIfAbsent(regex, generex);
         }
         return generex.random();
     }
@@ -433,8 +449,9 @@ public class FakeValuesService {
         if (expression == null) {
             expression = safeFetch(key, context, null);
             if (root == null) {
-                key2Expression.putIfAbsent(context.getSingletonLocale(), new HashMap<>());
-                key2Expression.get(context.getSingletonLocale()).put(key, expression);
+                String finalExpression = expression;
+                key2Expression.updateValue(context.getSingletonLocale(),
+                    new StampedLockMap<>(WeakHashMap::new), value -> value.putIfAbsent(key, finalExpression));
             }
         }
 
@@ -591,7 +608,7 @@ public class FakeValuesService {
         if (arguments == null || (length = arguments.length()) == 0) {
             return EMPTY_ARRAY;
         }
-        String[] res = args2splittedArgs.get(arguments);
+        String[] res = ARGS_2_SPLITTED_ARGS.get(arguments);
         if (res != null) {
             return res;
         }
@@ -615,7 +632,8 @@ public class FakeValuesService {
             }
         }
         final String[] resultArray = result.toArray(EMPTY_ARRAY);
-        args2splittedArgs.put(arguments, resultArray);
+
+        ARGS_2_SPLITTED_ARGS.putIfAbsent(arguments, resultArray);
         return resultArray;
     }
 
@@ -647,7 +665,7 @@ public class FakeValuesService {
         if (start < length) {
             result.add(expression.substring(start));
         }
-        EXPRESSION_2_SPLITTED.put(expression, result);
+        EXPRESSION_2_SPLITTED.putIfAbsent(expression, result);
         return result;
     }
 
@@ -796,7 +814,7 @@ public class FakeValuesService {
      * @return a yaml style name like 'phone_number' from a java style name like 'PhoneNumber'
      */
     private String javaNameToYamlName(String expression) {
-        String result = name2yaml.get(expression);
+        String result = NAME_2_YAML.get(expression);
         if (result != null) {
             return result;
         }
@@ -810,7 +828,7 @@ public class FakeValuesService {
             }
         }
         if (cnt == 0) {
-            name2yaml.put(expression, expression);
+            NAME_2_YAML.putIfAbsent(expression, expression);
             return expression;
         }
         final char[] res = new char[length + (firstLetterUpperCase ? cnt - 1 : cnt)];
@@ -832,7 +850,7 @@ public class FakeValuesService {
             }
         }
         result = new String(res);
-        name2yaml.put(expression, result);
+        NAME_2_YAML.putIfAbsent(expression, result);
         return result;
     }
 
@@ -895,7 +913,7 @@ public class FakeValuesService {
     private MethodAndCoercedArgs retrieveMethodAccessor(Object object, String methodName, String[] args) {
         Class<?> clazz = object.getClass();
         Map<String[], MethodAndCoercedArgs> accessorMap =
-            mapOfMethodAndCoercedArgs
+            MAP_OF_METHOD_AND_COERCED_ARGS
                 .getOrDefault(clazz, Collections.emptyMap())
                 .getOrDefault(methodName, Collections.emptyMap());
         // value could be null
@@ -903,10 +921,10 @@ public class FakeValuesService {
             return accessorMap.get(args);
         }
         final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
-        mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
-        final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap = mapOfMethodAndCoercedArgs.get(clazz);
-        stringMapMap.putIfAbsent(methodName, new WeakHashMap<>());
-        stringMapMap.get(methodName).put(args, accessor);
+        final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap =
+            MAP_OF_METHOD_AND_COERCED_ARGS.computeIfAbsent(clazz, t -> new StampedLockMap<>(WeakHashMap::new));
+        stringMapMap.putIfAbsent(methodName, new StampedLockMap<>(WeakHashMap::new));
+        stringMapMap.get(methodName).putIfAbsent(args, accessor);
         if (accessor == null) {
             LOG.fine("Can't find method on "
                 + object.getClass().getSimpleName()
@@ -962,12 +980,12 @@ public class FakeValuesService {
     }
 
     private String removeUnderscoreChars(String string) {
-        String valueWithRemovedUnderscores = removedUnderscore.get(string);
+        String valueWithRemovedUnderscores = REMOVED_UNDERSCORE.get(string);
         if (valueWithRemovedUnderscores != null) {
             return valueWithRemovedUnderscores;
         }
         if (string.indexOf('_') == -1) {
-            removedUnderscore.put(string, string.toLowerCase(Locale.ROOT));
+            REMOVED_UNDERSCORE.putIfAbsent(string, string.toLowerCase(Locale.ROOT));
             return string;
         }
         final char[] res = string.toCharArray();
@@ -984,7 +1002,7 @@ public class FakeValuesService {
             }
         }
         valueWithRemovedUnderscores = String.valueOf(res, strLen - length, length);
-        removedUnderscore.put(string, valueWithRemovedUnderscores.toLowerCase(Locale.ROOT));
+        REMOVED_UNDERSCORE.putIfAbsent(string, valueWithRemovedUnderscores.toLowerCase(Locale.ROOT));
         return valueWithRemovedUnderscores;
     }
 
@@ -1023,7 +1041,7 @@ public class FakeValuesService {
                             for (Constructor<?> c : constructors) {
                                 if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == String.class) {
                                     ctor = toType.getConstructor(String.class);
-                                    CLASS_2_CONSTRUCTOR_CACHE.put(toType, ctor);
+                                    CLASS_2_CONSTRUCTOR_CACHE.putIfAbsent(toType, ctor);
                                     break;
                                 }
                             }
