@@ -15,7 +15,7 @@ public class FakeValuesGrouping implements FakeValuesInterface {
 
     static {
         for (EnFile file : EnFile.getFiles()) {
-            ENGLISH_FAKE_VALUE_GROUPING.add(new FakeValues(Locale.ENGLISH, file.getFile(), file.getPath()));
+            ENGLISH_FAKE_VALUE_GROUPING.add(FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, file.getFile(), file.getPath())));
         }
     }
 

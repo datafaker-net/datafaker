@@ -82,7 +82,8 @@ public class FakeValuesService {
         if (DEFAULT_LOCALE == locale) {
             return FakeValuesGrouping.getEnglishFakeValueGrouping();
         }
-        return new FakeValues(locale.getLocale());
+
+        return FakeValues.of(FakeValuesContext.of(locale.getLocale()));
     }
 
     /**
@@ -116,7 +117,7 @@ public class FakeValuesService {
         if (url == null) {
             throw new IllegalArgumentException("url should be an existing readable file");
         }
-        FakeValues fakeValues = new FakeValues(locale, url);
+        FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(locale, url));
         SingletonLocale sLocale = SingletonLocale.get(locale);
         FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(sLocale);
         if (existingFakeValues == null) {

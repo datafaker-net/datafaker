@@ -22,7 +22,7 @@ class FakeValuesTest {
 
     @BeforeEach
     void before() {
-        fakeValues = new FakeValues(Locale.ENGLISH, "address.yml", PATH);
+        fakeValues = FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "address.yml", PATH));
     }
 
 /*
@@ -84,37 +84,37 @@ class FakeValuesTest {
 
     @Test
     void getAValueWithANonEnglishFile() {
-        FakeValues frenchFakeValues = new FakeValues(Locale.FRENCH);
+        FakeValues frenchFakeValues = FakeValues.of(FakeValuesContext.of(Locale.FRENCH));
         assertThat(frenchFakeValues.get(PATH)).isNotNull();
     }
 
     @Test
     void getAValueForHebrewLocale() {
-        FakeValues hebrew = new FakeValues(new Locale("iw"));
+        FakeValues hebrew = FakeValues.of(FakeValuesContext.of(new Locale("iw")));
         assertThat(hebrew.get(PATH)).isNotNull();
     }
 
     @Test
     void correctPathForHebrewLanguage() {
-        FakeValues hebrew = new FakeValues(new Locale("iw"));
+        FakeValues hebrew = FakeValues.of(FakeValuesContext.of(new Locale("iw")));
         assertThat(hebrew.getPath()).isEqualTo("he");
     }
 
     @Test
     void incorrectPathForHebrewLanguage() {
-        FakeValues hebrew = new FakeValues(new Locale("iw"));
+        FakeValues hebrew = FakeValues.of(FakeValuesContext.of(new Locale("iw")));
         assertThat(hebrew.getPath()).isNotEqualTo("iw");
     }
 
     @Test
     void correctLocale() {
-        FakeValues fv = new FakeValues(new Locale("uk"));
+        FakeValues fv = FakeValues.of(FakeValuesContext.of(new Locale("uk")));
         assertThat(fv.getLocale()).isEqualTo(new Locale("uk"));
     }
 
     @Test
     void getAValueFromALocaleThatCantBeLoaded() {
-        FakeValues fakeValues = new FakeValues(new Locale("nothing"));
+        FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(new Locale("nothing")));
         assertThat(fakeValues.get(PATH)).isNull();
     }
 
@@ -131,15 +131,15 @@ class FakeValuesTest {
     static Stream<Arguments> fakeValuesProvider() throws MalformedURLException {
         Path tmp = Paths.get("tmp");
         return Stream.of(
-            of(new FakeValues(Locale.CANADA), new FakeValues(Locale.CANADA), true),
-            of(null, new FakeValues(Locale.CANADA), false),
-            of(new FakeValues(Locale.CANADA), null, false),
-            of(new FakeValues(Locale.CANADA), null, false),
-            of(new FakeValues(Locale.ENGLISH), new FakeValues(Locale.ENGLISH, "filepath", "path"), false),
-            of(new FakeValues(Locale.ENGLISH, "filepath", null), new FakeValues(Locale.ENGLISH, "filepath", "path"), false),
-            of(new FakeValues(Locale.ENGLISH, "filepath", "path"), new FakeValues(Locale.ENGLISH, "filepath", "path"), true),
-            of(new FakeValues(Locale.ENGLISH, "filepath", "path", tmp.toUri().toURL()), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp.toUri().toURL()), true),
-            of(new FakeValues(Locale.ENGLISH, "filepath", "path", Paths.get("tmp2").toUri().toURL()), new FakeValues(Locale.ENGLISH, "filepath", "path", tmp.toUri().toURL()), false)
+            of(FakeValues.of(FakeValuesContext.of(Locale.CANADA)), FakeValues.of(FakeValuesContext.of(Locale.CANADA)), true),
+            of(null, FakeValues.of(FakeValuesContext.of(Locale.CANADA)), false),
+            of(FakeValues.of(FakeValuesContext.of(Locale.CANADA)), null, false),
+            of(FakeValues.of(FakeValuesContext.of(Locale.CANADA)), null, false),
+            of(FakeValues.of(FakeValuesContext.of(Locale.ENGLISH)), FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "filepath", "path")), false),
+            of(FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "filepath", null)), FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "filepath", "path")), false),
+            of(FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "filepath", "path")), FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "filepath", "path")), true),
+            of(FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "filepath", "path", tmp.toUri().toURL())), FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "filepath", "path", tmp.toUri().toURL())), true),
+            of(FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "filepath", "path", Paths.get("tmp2").toUri().toURL())), FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "filepath", "path", tmp.toUri().toURL())), false)
         );
     }
 }

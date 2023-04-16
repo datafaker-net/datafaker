@@ -1,6 +1,5 @@
 package net.datafaker.service;
 
-import net.datafaker.internal.helper.SingletonLocale;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -17,30 +16,14 @@ import java.util.logging.Logger;
 
 public class FakeValues implements FakeValuesInterface {
     private static final Logger LOG = Logger.getLogger("faker");
-    private final SingletonLocale sLocale;
-    private final String filename;
-    private final String path;
-    private final URL url;
+    private static final Map<FakeValuesContext, FakeValues> FAKE_VALUES_MAP = new HashMap<>();
+    private final FakeValuesContext fakeValuesContext;
     private volatile Map<String, Object> values;
     private final Lock lock = new ReentrantLock();
 
-    FakeValues(Locale locale) {
-        this(locale, getFilename(locale), getFilename(locale), null);
-    }
-
-    FakeValues(Locale locale, URL url) {
-        this(locale, getFilename(locale), null, url);
-    }
-
-    FakeValues(Locale locale, String filename, String path) {
-        this(locale, filename, path, null);
-    }
-
-    FakeValues(Locale locale, String filename, String path, URL url) {
-        this.sLocale = SingletonLocale.get(locale);
-        this.filename = filename;
-        this.url = url;
-        if (path == null) {
+    private FakeValues(FakeValuesContext fakeValuesContext) {
+        this.fakeValuesContext = fakeValuesContext;
+        if (fakeValuesContext.getPath() == null) {
             lock.lock();
             try {
                 if (values == null) {
@@ -49,29 +32,20 @@ public class FakeValues implements FakeValuesInterface {
             } finally {
                 lock.unlock();
             }
-            this.path = values == null || values.isEmpty() ? null : values.keySet().iterator().next();
-        } else {
-            this.path = path;
+            fakeValuesContext.setPath(values == null || values.isEmpty() ? null : values.keySet().iterator().next());
         }
     }
 
-    private static String getFilename(Locale locale) {
-        final String lang = language(locale);
-        if ("".equals(locale.getCountry())) {
-            return lang;
+    public static FakeValues of(FakeValuesContext fakeValuesContext) {
+        FakeValues fakeValues = FAKE_VALUES_MAP.get(fakeValuesContext);
+        if (fakeValues != null) return fakeValues;
+        synchronized (FakeValues.class) {
+            fakeValues = FAKE_VALUES_MAP.get(fakeValuesContext);
+            if (fakeValues != null) return fakeValues;
+            fakeValues = new FakeValues(fakeValuesContext);
+            FAKE_VALUES_MAP.put(fakeValuesContext, fakeValues);
+            return fakeValues;
         }
-        return lang + "-" + locale.getCountry();
-    }
-
-    /**
-     * If you new up a locale with "he", it gets converted to "iw" which is old.
-     * This addresses that unfortunate condition.
-     */
-    private static String language(Locale l) {
-        if (l.getLanguage().equals("iw")) {
-            return "he";
-        }
-        return l.getLanguage();
     }
 
     @Override
@@ -91,6 +65,7 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     private Map<String, Object> loadFromUrl() {
+        final URL url = fakeValuesContext.getUrl();
         if (url == null) {
             return null;
         }
@@ -107,12 +82,13 @@ public class FakeValues implements FakeValuesInterface {
         if (result != null) return result;
         result = loadFromUrl();
         if (result != null) return result;
-        final Locale locale = sLocale.getLocale();
-        final String[] paths = this.filename.isEmpty()
+        final Locale locale = fakeValuesContext.getLocale();
+        final String fileName = fakeValuesContext.getFilename();
+        final String[] paths = fileName.isEmpty()
             ? new String[] {"/" + locale.getLanguage() + ".yml"}
             : new String[] {
-                "/" + locale.getLanguage() + "/" + this.filename,
-                "/" + filename + ".yml",
+                "/" + locale.getLanguage() + "/" + fileName,
+                "/" + fileName + ".yml",
                 "/" + locale.getLanguage() + ".yml"};
 
         for (String path : paths) {
@@ -200,35 +176,41 @@ public class FakeValues implements FakeValuesInterface {
     private Map<String, Object> readFromStream(InputStream stream) {
         if (stream == null) return null;
         final Map<String, Object> valuesMap = new Yaml().loadAs(stream, Map.class);
-        Map<String, Object> localeBased = (Map<String, Object>) valuesMap.get(sLocale.getLocale().getLanguage());
+        Map<String, Object> localeBased = (Map<String, Object>) valuesMap.get(fakeValuesContext.getLocale().getLanguage());
         if (localeBased == null) {
-            localeBased = (Map<String, Object>) valuesMap.get(filename);
+            localeBased = (Map<String, Object>) valuesMap.get(fakeValuesContext.getFilename());
         }
         return (Map<String, Object>) localeBased.get("faker");
     }
 
     boolean supportsPath(String path) {
-        return this.path.equals(path);
+        return fakeValuesContext.getPath().equals(path);
     }
 
     String getPath() {
-        return path;
+        return fakeValuesContext.getPath();
     }
 
     Locale getLocale() {
-        return sLocale.getLocale();
+        return fakeValuesContext.getLocale();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FakeValues that = (FakeValues) o;
-        return sLocale == that.sLocale && Objects.equals(filename, that.filename) && Objects.equals(path, that.path) && Objects.equals(url, that.url);
+        if (!(o instanceof FakeValues that)) return false;
+        return Objects.equals(fakeValuesContext, that.fakeValuesContext);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sLocale, filename, path, url);
+        return Objects.hash(fakeValuesContext);
+    }
+
+    @Override
+    public String toString() {
+        return "FakeValues{" +
+            "fakeValuesContext=" + fakeValuesContext +
+            '}';
     }
 }
