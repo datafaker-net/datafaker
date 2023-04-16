@@ -37,7 +37,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
-import java.util.concurrent.locks.StampedLock;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -242,20 +241,6 @@ public class FakeValuesService {
                 new StampedLockMap<>(WeakHashMap::new), value -> value.putIfAbsent(key, result2Insert));
         }
         return result;
-    }
-
-    private <K, V> V read(Map<K, V> map, K key, StampedLock lock) {
-        long stamp = lock.tryOptimisticRead();
-        V value = map.get(key);
-        if (!lock.validate(stamp)) {
-            stamp = lock.readLock();
-            try {
-                value = map.get(key);
-            } finally {
-                lock.unlockRead(stamp);
-            }
-        }
-        return value;
     }
 
     private String[] split(String string) {
