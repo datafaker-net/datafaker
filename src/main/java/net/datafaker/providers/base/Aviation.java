@@ -64,6 +64,13 @@ public class Aviation extends AbstractProvider<BaseProviders> {
     }
 
     /**
+     * @return an airport name.
+     */
+    public String airportName() {
+        return resolve("aviation.airport_name");
+    }
+
+    /**
      * Provides a METAR weather report.
      * Have a look at <a href="https://en.wikipedia.org/wiki/METAR">https://en.wikipedia.org/wiki/METAR</a>
      */
