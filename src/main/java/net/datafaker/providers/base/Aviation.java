@@ -64,7 +64,7 @@ public class Aviation extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return an airport name.
+     * @return an airport name. Source: <a href="http://www.flugzeuginfo.net/table_airportcodes_country-location_en.php">http://www.flugzeuginfo.net/table_airportcodes_country-location_en.php</a>
      */
     public String airportName() {
         return resolve("aviation.airport_name");
