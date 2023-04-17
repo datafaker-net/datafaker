@@ -1,11 +1,13 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.annotations.FakeResolver;
 import net.datafaker.sequence.FakeCollection;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.sequence.FakeStream;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
+import net.datafaker.transformations.Schema;
 
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -331,6 +333,16 @@ public class BaseFaker implements BaseProviders {
      */
     public void addPath(Locale locale, Path path) {
         fakeValuesService().addPath(locale, path);
+    }
+
+    public static <T> T populate(Class<T> clazz) {
+        FakeResolver fakeFactory = new FakeResolver<>(clazz);
+        return (T) fakeFactory.generate(null);
+    }
+
+    public static <T> T populate(Class<T> clazz, Schema<Object, ?> schema) {
+        FakeResolver fakeFactory = new FakeResolver<>(clazz);
+        return (T) fakeFactory.generate(schema);
     }
 
     @SuppressWarnings("unchecked")
