@@ -355,7 +355,7 @@ class FakerTest extends AbstractFakerTest {
 
         // Warm up start
         String flight1 = faker.expression("#{Aviation.flight}");
-        assertThat(flight1).matches("[A-z]{2}\\d{1,4}");
+        assertThat(flight1).matches("[A-z0-9]{2}\\d{1,4}");
         // Warm up end
 
         String flight2 = faker.expression("#{Aviation.flight 'ICAO'}");
