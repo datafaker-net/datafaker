@@ -17,32 +17,57 @@ public class StampedLockMap<K, V> implements Map<K, V> {
         this.map = mapSupplier.get();
     }
 
-    public V get(Object key) {
+    private <T> T doROOperation(Supplier<T> supplier) {
         long stamp = lock.tryOptimisticRead();
-        V value = map.get(key);
-        if (!lock.validate(stamp)) {
-            stamp = lock.readLock();
-            try {
-                value = map.get(key);
-            } finally {
-                lock.unlockRead(stamp);
-            }
+        T value = supplier.get();
+        if (lock.validate(stamp)) {
+            return value;
         }
-        return value;
+        stamp = lock.readLock();
+        try {
+            return supplier.get();
+        } finally {
+            lock.unlockRead(stamp);
+        }
+    }
+
+    public V get(Object key) {
+        return doROOperation(() -> map.get(key));
     }
 
     public boolean containsKey(Object key) {
-        long stamp = lock.tryOptimisticRead();
-        boolean value = map.containsKey(key);
-        if (!lock.validate(stamp)) {
-            stamp = lock.readLock();
-            try {
-                return map.containsKey(key);
-            } finally {
-                lock.unlockRead(stamp);
-            }
-        }
-        return value;
+        return doROOperation(() -> map.containsKey(key));
+    }
+
+
+    @Override
+    public int size() {
+        return doROOperation(map::size);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return doROOperation(map::isEmpty);
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        return doROOperation(() -> map.containsValue(value));
+    }
+
+    @Override
+    public Set<K> keySet() {
+        return doROOperation(map::keySet);
+    }
+
+    @Override
+    public Collection<V> values() {
+        return doROOperation(map::values);
+    }
+
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        return doROOperation(map::entrySet);
     }
 
     public V putIfAbsent(K key, V value) {
@@ -109,21 +134,6 @@ public class StampedLockMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public int size() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean containsValue(Object o) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public V put(K k, V v) {
         throw new UnsupportedOperationException();
     }
@@ -143,18 +153,4 @@ public class StampedLockMap<K, V> implements Map<K, V> {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public Set<K> keySet() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Collection<V> values() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Set<Entry<K, V>> entrySet() {
-        throw new UnsupportedOperationException();
-    }
 }
