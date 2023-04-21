@@ -18,16 +18,16 @@ public class StampedLockMap<K, V> implements Map<K, V> {
     }
 
     private <T> T doROOperation(Supplier<T> supplier) {
-        long stamp = lock.tryOptimisticRead();
-        T value = supplier.get();
+        final long stamp = lock.tryOptimisticRead();
+        final T value = supplier.get();
         if (lock.validate(stamp)) {
             return value;
         }
-        stamp = lock.readLock();
+        final long stamp2 = lock.readLock();
         try {
             return supplier.get();
         } finally {
-            lock.unlockRead(stamp);
+            lock.unlockRead(stamp2);
         }
     }
 
@@ -38,7 +38,6 @@ public class StampedLockMap<K, V> implements Map<K, V> {
     public boolean containsKey(Object key) {
         return doROOperation(() -> map.containsKey(key));
     }
-
 
     @Override
     public int size() {
