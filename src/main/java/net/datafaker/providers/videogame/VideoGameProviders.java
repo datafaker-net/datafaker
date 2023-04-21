@@ -35,6 +35,10 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(Fallout.class, Fallout::new);
     }
 
+    default FinalFantasyXIV finalFantasyXIV() {
+        return getProvider(FinalFantasyXIV.class, FinalFantasyXIV::new);
+    }
+
     default HalfLife halfLife() {
         return getProvider(HalfLife.class, HalfLife::new);
     }
