@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class Twitter extends AbstractProvider<BaseProviders> {
 
-    private final String basicstr = "QabR0cYdZ1efSg2hi3jNOPkTUM4VLlmXK5nJo6WIpHGqF7rEs8tDuC9vwBxAyz";
+    private static final String BASIC_STRING = "QabR0cYdZ1efSg2hi3jNOPkTUM4VLlmXK5nJo6WIpHGqF7rEs8tDuC9vwBxAyz";
 
     /**
      * @param faker used as constructor
@@ -110,7 +110,7 @@ public class Twitter extends AbstractProvider<BaseProviders> {
         for (int i = 0; i < sentenceLength; i++) {
             int tmpWordLength = random.nextInt(3, wordMaxLength);
             for (int j = 0; j < tmpWordLength; j++) {
-                sb.append(basicstr.charAt(random.nextInt(basicstr.length())));
+                sb.append(BASIC_STRING.charAt(random.nextInt(BASIC_STRING.length())));
             }
             text.add(sb.toString());
             sb.setLength(0);
@@ -156,7 +156,7 @@ public class Twitter extends AbstractProvider<BaseProviders> {
         sb.append(username).append("/");
 
         for (int i = 0; i < extraLength; i++) {
-            sb.append(basicstr.charAt(random.nextInt(basicstr.length())));
+            sb.append(BASIC_STRING.charAt(random.nextInt(BASIC_STRING.length())));
         }
         return "https://twitter.com/" + sb;
     }

@@ -18,7 +18,7 @@ public class NricNumber implements IdNumbers {
 
         public String format(int[] digits) {
                 int value = initialValue;
-                StringBuilder id = new StringBuilder(firstLetter + "");
+                StringBuilder id = new StringBuilder(String.valueOf(firstLetter));
                 for (int i = 0; i < digits.length; i++) {
                     value += digits[i] * code[i];
                     id.append(digits[i]);

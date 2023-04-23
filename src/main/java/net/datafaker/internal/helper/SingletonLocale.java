@@ -51,4 +51,11 @@ public class SingletonLocale {
     public int hashCode() {
         return hashId;
     }
+
+    @Override
+    public String toString() {
+        return "SingletonLocale{" +
+            "locale=" + locale +
+            '}';
+    }
 }

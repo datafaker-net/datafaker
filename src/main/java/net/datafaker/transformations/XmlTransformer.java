@@ -151,7 +151,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             final char c = str.charAt(i);
-            sb.append(ESCAPING_MAP.getOrDefault(c, c + ""));
+            sb.append(ESCAPING_MAP.getOrDefault(c, String.valueOf(c)));
         }
         return sb.toString();
     }

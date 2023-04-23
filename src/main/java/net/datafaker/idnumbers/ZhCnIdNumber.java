@@ -72,7 +72,7 @@ public class ZhCnIdNumber implements IdNumbers {
         if (count == 10) {
             s += 'X';
         } else {
-            s += (count + "");
+            s += (String.valueOf(count));
         }
         return s;
     }

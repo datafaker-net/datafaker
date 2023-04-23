@@ -1,4 +1,4 @@
-package net.datafaker.service;
+package net.datafaker.internal.helper;
 
 import java.net.IDN;
 
@@ -7,9 +7,9 @@ import java.net.IDN;
  */
 public class FakerIDN {
     /**
-     * {@link IDN#toASCII(String)} is too picky for our needs.  It was throwing exceptions for fa.yml and
-     * he.yml as they're Bidi languages and something was causing them to die.  This is kind of a brute force
-     * fix but it appears to fix the issue.
+     * {@link IDN#toASCII(String)} is too picky for our needs. It was throwing exceptions for fa.yml and
+     * he.yml as they are Bidi languages and something was causing them to die. This is kind of a brute force
+     * fix, but it appears to fix the issue.
      */
     public static String toASCII(String in) {
         try {

@@ -219,40 +219,40 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         StringJoiner joiner = new StringJoiner(", ");
         if (componentType == byte.class) {
             byte[] array = (byte[]) value;
-            for (int j = 0; j < array.length; j++) {
-                joiner.add(String.valueOf(array[j]));
+            for (byte b : array) {
+                joiner.add(String.valueOf(b));
             }
         }
         if (componentType == short.class) {
             short[] array = (short[]) value;
-            for (int j = 0; j < array.length; j++) {
-                joiner.add(String.valueOf(array[j]));
+            for (short i : array) {
+                joiner.add(String.valueOf(i));
             }
         }
         if (componentType == boolean.class) {
             boolean[] array = (boolean[]) value;
-            for (int j = 0; j < array.length; j++) {
-                joiner.add(String.valueOf(array[j]));
+            for (boolean b : array) {
+                joiner.add(String.valueOf(b));
             }
         } else if (componentType == int.class) {
             int[] array = (int[]) value;
-            for (int j = 0; j < array.length; j++) {
-                joiner.add(String.valueOf(array[j]));
+            for (int i : array) {
+                joiner.add(String.valueOf(i));
             }
         } else if (componentType == long.class) {
             long[] array = (long[]) value;
-            for (int j = 0; j < array.length; j++) {
-                joiner.add(String.valueOf(array[j]));
+            for (long l : array) {
+                joiner.add(String.valueOf(l));
             }
         } else if (componentType == float.class) {
             float[] array = (float[]) value;
-            for (int j = 0; j < array.length; j++) {
-                joiner.add(String.valueOf(array[j]));
+            for (float v : array) {
+                joiner.add(String.valueOf(v));
             }
         } else if (componentType == double.class) {
             double[] array = (double[]) value;
-            for (int j = 0; j < array.length; j++) {
-                joiner.add(String.valueOf(array[j]));
+            for (double v : array) {
+                joiner.add(String.valueOf(v));
             }
         }
         return joiner.toString();
@@ -445,18 +445,19 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         public SqlTransformer<IN> build() {
             if (dialect == null) {
                 return new SqlTransformer<>(
-                    schemaName, tableName, quote, dialect, sqlQuoteIdentifier, casing, withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
+                    schemaName, tableName, quote, null, sqlQuoteIdentifier, casing, withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
+            } else {
+                return new SqlTransformer<>(
+                    schemaName, tableName, quote, dialect, dialect.getSqlQuoteIdentifier(), dialect.getUnquotedCasing(),
+                    withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
             }
-            return new SqlTransformer<>(
-                schemaName, tableName, quote, dialect, dialect.getSqlQuoteIdentifier(), dialect.getUnquotedCasing(),
-                withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
         }
     }
 
     public enum Case {
         CAPITAL,
         LOWERCASE,
-        UPPERCASE;
+        UPPERCASE
     }
 
     enum SQLKeyWords {
