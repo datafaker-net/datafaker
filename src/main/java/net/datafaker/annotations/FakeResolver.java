@@ -15,20 +15,27 @@ public class FakeResolver<T> {
         this.clazz = clazz;
     }
 
-    public T generate(Schema<Object, ?> schema) {
+    public T generateFromDefaultSchema() {
         checkFakeAnnotation(clazz);
 
         FakeForSchema fakeForSchemaAnnotation = clazz.getAnnotation(FakeForSchema.class);
-        Schema<Object, ?> useSchema = getSchema(schema, fakeForSchemaAnnotation.value());
+        Schema<Object, ?> useSchema = getSchema(fakeForSchemaAnnotation.value());
 
         JavaObjectTransformer jTransformer = new JavaObjectTransformer();
         return (T) jTransformer.apply(clazz, useSchema);
     }
 
-    private Schema<Object, ?> getSchema(Schema<Object, ?> schema, String[] pathToSchema) {
-        if (schema != null) {
-            return schema;
-        } else if (pathToSchema.length != 0) {
+    public T generateFromCustomSchema(Schema<Object, ?> schema) {
+        if (Objects.isNull(schema)) {
+            return generateFromDefaultSchema();
+        }
+
+        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
+        return (T) jTransformer.apply(clazz, schema);
+    }
+
+    private Schema<Object, ?> getSchema(String[] pathToSchema) {
+        if (pathToSchema.length != 0) {
             try {
                 final int sharpIndex = pathToSchema[0].indexOf('#');
                 final Class<?> classToCall;
