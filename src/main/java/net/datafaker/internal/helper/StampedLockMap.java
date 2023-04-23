@@ -18,6 +18,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(Object key) {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         final long stamp = lock.tryOptimisticRead();
         final V result = map.get(key);
         if (lock.validate(stamp)) {
@@ -33,6 +35,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         final long stamp = lock.tryOptimisticRead();
         final boolean result = map.containsKey(key);
         if (lock.validate(stamp)) {
@@ -48,6 +52,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public int size() {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         final long stamp = lock.tryOptimisticRead();
         final int result = map.size();
         if (lock.validate(stamp)) {
@@ -63,6 +69,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean isEmpty() {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         final long stamp = lock.tryOptimisticRead();
         final boolean result = map.isEmpty();
         if (lock.validate(stamp)) {
@@ -78,6 +86,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         final long stamp = lock.tryOptimisticRead();
         final boolean result = map.containsValue(value);
         if (lock.validate(stamp)) {
@@ -93,6 +103,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         final long stamp = lock.tryOptimisticRead();
         final Set<K> result = map.keySet();
         if (lock.validate(stamp)) {
@@ -108,6 +120,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         final long stamp = lock.tryOptimisticRead();
         final Collection<V> result = map.values();
         if (lock.validate(stamp)) {
@@ -123,6 +137,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<Entry<K, V>> entrySet() {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         final long stamp = lock.tryOptimisticRead();
         final Set<Entry<K, V>> result = map.entrySet();
         if (lock.validate(stamp)) {
@@ -138,6 +154,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public V putIfAbsent(K key, V value) {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         long stamp = lock.tryOptimisticRead();
         V curValue = map.get(key);
         if (!lock.validate(stamp)) {
@@ -164,6 +182,8 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+        // Yes, a bit code duplication
+        // the reasoning could be found at https://github.com/datafaker-net/datafaker/pull/770#discussion_r1174527507
         long stamp = lock.tryOptimisticRead();
         V value = map.get(key);
         if (!lock.validate(stamp)) {
