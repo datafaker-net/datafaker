@@ -13,6 +13,10 @@ public class University extends AbstractProvider<BaseProviders> {
         return resolve("university.name");
     }
 
+    public String degree() {
+        return resolve("university.degree");
+    }
+
     public String prefix() {
         return resolve("university.prefix");
     }

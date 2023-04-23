@@ -1,6 +1,7 @@
 en:
   faker:
     university:
+      degree: [Associate, Bachelor, Master, Doctoral, Post-doctoral]
       prefix: [The, Northern, North, Western, West, Southern, South, Eastern, East]
       suffix: [University, Institute, College, Academy]
       name:
