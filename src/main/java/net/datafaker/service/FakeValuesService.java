@@ -48,29 +48,31 @@ public class FakeValuesService {
     private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
+    public static final Supplier<Map<String, Object>> MAP_STRING_OBJECT_SUPPLIER = () -> new StampedLockMap<>(new WeakHashMap<>());
+    public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> new StampedLockMap<>(new WeakHashMap<>());
 
-    private final StampedLockMap<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new StampedLockMap<>(IdentityHashMap::new);
+    private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new StampedLockMap<>(new IdentityHashMap<>());
     public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.get(Locale.ENGLISH);
 
-    private static final StampedLockMap<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new StampedLockMap<>(IdentityHashMap::new);
-    private static final StampedLockMap<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new StampedLockMap<>(IdentityHashMap::new);
+    private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new StampedLockMap<>(new IdentityHashMap<>());
+    private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new StampedLockMap<>(new IdentityHashMap<>());
 
     private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
 
-    private final StampedLockMap<String, Generex> expression2generex = new StampedLockMap<>(WeakHashMap::new);
-    private final StampedLockMap<SingletonLocale, Map<String, String>> key2Expression = new StampedLockMap<>(IdentityHashMap::new);
-    private static final StampedLockMap<String, String[]> ARGS_2_SPLITTED_ARGS = new StampedLockMap<>(WeakHashMap::new);
+    private final Map<String, Generex> expression2generex = new StampedLockMap<>(new WeakHashMap<>());
+    private final StampedLockMap<SingletonLocale, Map<String, String>> key2Expression = new StampedLockMap<>(new IdentityHashMap<>());
+    private static final Map<String, String[]> ARGS_2_SPLITTED_ARGS = new StampedLockMap<>(new WeakHashMap<>());
 
-    private static final StampedLockMap<String, String[]> KEY_2_SPLITTED_KEY = new StampedLockMap<>(WeakHashMap::new);
+    private static final Map<String, String[]> KEY_2_SPLITTED_KEY = new StampedLockMap<>(new WeakHashMap<>());
 
-    private final StampedLockMap<SingletonLocale, Map<String, Object>> key2fetchedObject = new StampedLockMap<>(IdentityHashMap::new);
+    private final StampedLockMap<SingletonLocale, Map<String, Object>> key2fetchedObject = new StampedLockMap<>(new IdentityHashMap<>());
 
-    private static final StampedLockMap<String, String> NAME_2_YAML = new StampedLockMap<>(WeakHashMap::new);
+    private static final Map<String, String> NAME_2_YAML = new StampedLockMap<>(new WeakHashMap<>());
 
-    private static final StampedLockMap<String, String> REMOVED_UNDERSCORE = new StampedLockMap<>(WeakHashMap::new);
-    private static final StampedLockMap<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> MAP_OF_METHOD_AND_COERCED_ARGS = new StampedLockMap<>(IdentityHashMap::new);
+    private static final Map<String, String> REMOVED_UNDERSCORE = new StampedLockMap<>(new WeakHashMap<>());
+    private static final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> MAP_OF_METHOD_AND_COERCED_ARGS = new StampedLockMap<>(new IdentityHashMap<>());
 
-    private static final StampedLockMap<String, List<String>> EXPRESSION_2_SPLITTED = new StampedLockMap<>(WeakHashMap::new);
+    private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new StampedLockMap<>(new WeakHashMap<>());
 
     private static final Map<RegExpContext, Supplier<?>> map = new HashMap<>();
     public FakeValuesService() {
@@ -236,9 +238,7 @@ public class FakeValuesService {
             }
         }
         if (local2Add != null) {
-            final Object result2Insert = result;
-            key2fetchedObject.updateValue(local2Add,
-                new StampedLockMap<>(WeakHashMap::new), value -> value.putIfAbsent(key, result2Insert));
+            key2fetchedObject.updateNestedValue(local2Add, MAP_STRING_OBJECT_SUPPLIER, key, result);
         }
         return result;
     }
@@ -434,9 +434,8 @@ public class FakeValuesService {
         if (expression == null) {
             expression = safeFetch(key, context, null);
             if (root == null) {
-                String finalExpression = expression;
-                key2Expression.updateValue(context.getSingletonLocale(),
-                    new StampedLockMap<>(WeakHashMap::new), value -> value.putIfAbsent(key, finalExpression));
+                key2Expression.updateNestedValue(context.getSingletonLocale(),
+                    MAP_STRING_STRING_SUPPLIER, key, expression);
             }
         }
 
@@ -554,11 +553,11 @@ public class FakeValuesService {
         if (cnt == 0) {
             return expression;
         }
-        final List<String> expressions = splitExpressions(expression, cnt, expressionLength);
-        final StringBuilder result = new StringBuilder(expressions.size() * expressionLength);
-        for (int i = 0; i < expressions.size(); i++) {
+        final String[] expressions = splitExpressions(expression, cnt, expressionLength);
+        final StringBuilder result = new StringBuilder(expressions.length * expressionLength);
+        for (int i = 0; i < expressions.length; i++) {
             // odd are expressions, even are not expressions, just strings
-            final String expr = expressions.get(i);
+            final String expr = expressions[i];
             if (i % 2 == 0) {
                 if (!expr.isEmpty()) {
                     result.append(expr);
@@ -622,34 +621,35 @@ public class FakeValuesService {
         return resultArray;
     }
 
-    private List<String> splitExpressions(String expression, int cnt, int length) {
-        List<String> result = EXPRESSION_2_SPLITTED.get(expression);
+    private String[] splitExpressions(String expression, int cnt, int length) {
+        String[] result = EXPRESSION_2_SPLITTED.get(expression);
         if (result != null) {
             return result;
         }
-        result = new ArrayList<>(2 * cnt + 1);
+        List<String> list = new ArrayList<>(2 * cnt + 1);
         boolean isExpression = false;
         int start = 0;
         int quoteCnt = 0;
         for (int i = 0; i < length; i++) {
             if (isExpression) {
                 if (expression.charAt(i) == '}' && quoteCnt % 2 == 0) {
-                    result.add(expression.substring(start, i));
+                    list.add(expression.substring(start, i));
                     start = i + 1;
                     isExpression = false;
                 } else if (expression.charAt(i) == '\'') {
                     quoteCnt++;
                 }
             } else if (i < length - 2 && expression.charAt(i) == '#' && expression.charAt(i + 1) == '{') {
-                result.add(expression.substring(start, i));
+                list.add(expression.substring(start, i));
                 isExpression = true;
                 start = i + 2;
                 i++;
             }
         }
         if (start < length) {
-            result.add(expression.substring(start));
+            list.add(expression.substring(start));
         }
+        result = list.toArray(EMPTY_ARRAY);
         EXPRESSION_2_SPLITTED.putIfAbsent(expression, result);
         return result;
     }
@@ -907,8 +907,8 @@ public class FakeValuesService {
         }
         final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
         final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap =
-            MAP_OF_METHOD_AND_COERCED_ARGS.computeIfAbsent(clazz, t -> new StampedLockMap<>(WeakHashMap::new));
-        stringMapMap.putIfAbsent(methodName, new StampedLockMap<>(WeakHashMap::new));
+            MAP_OF_METHOD_AND_COERCED_ARGS.computeIfAbsent(clazz, t -> new StampedLockMap<>(new WeakHashMap()));
+        stringMapMap.putIfAbsent(methodName, new StampedLockMap<>(new WeakHashMap<>()));
         stringMapMap.get(methodName).putIfAbsent(args, accessor);
         if (accessor == null) {
             LOG.fine("Can't find method on "

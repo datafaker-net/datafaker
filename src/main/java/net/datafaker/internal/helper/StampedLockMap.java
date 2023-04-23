@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.StampedLock;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -13,62 +12,131 @@ public class StampedLockMap<K, V> implements Map<K, V> {
     private final StampedLock lock = new StampedLock();
     private final Map<K, V> map;
 
-    public StampedLockMap(Supplier<Map<K, V>> mapSupplier) {
-        this.map = mapSupplier.get();
+    public StampedLockMap(Map<K, V> map) {
+        this.map = map;
     }
 
-    private <T> T doROOperation(Supplier<T> supplier) {
+    @Override
+    public V get(Object key) {
         final long stamp = lock.tryOptimisticRead();
-        final T value = supplier.get();
+        final V result = map.get(key);
         if (lock.validate(stamp)) {
-            return value;
+            return result;
         }
         final long stamp2 = lock.readLock();
         try {
-            return supplier.get();
+            return map.get(key);
         } finally {
             lock.unlockRead(stamp2);
         }
     }
 
-    public V get(Object key) {
-        return doROOperation(() -> map.get(key));
-    }
-
+    @Override
     public boolean containsKey(Object key) {
-        return doROOperation(() -> map.containsKey(key));
+        final long stamp = lock.tryOptimisticRead();
+        final boolean result = map.containsKey(key);
+        if (lock.validate(stamp)) {
+            return result;
+        }
+        final long stamp2 = lock.readLock();
+        try {
+            return map.containsKey(key);
+        } finally {
+            lock.unlockRead(stamp2);
+        }
     }
 
     @Override
     public int size() {
-        return doROOperation(map::size);
+        final long stamp = lock.tryOptimisticRead();
+        final int result = map.size();
+        if (lock.validate(stamp)) {
+            return result;
+        }
+        final long stamp2 = lock.readLock();
+        try {
+            return map.size();
+        } finally {
+            lock.unlockRead(stamp2);
+        }
     }
 
     @Override
     public boolean isEmpty() {
-        return doROOperation(map::isEmpty);
+        final long stamp = lock.tryOptimisticRead();
+        final boolean result = map.isEmpty();
+        if (lock.validate(stamp)) {
+            return result;
+        }
+        final long stamp2 = lock.readLock();
+        try {
+            return map.isEmpty();
+        } finally {
+            lock.unlockRead(stamp2);
+        }
     }
 
     @Override
     public boolean containsValue(Object value) {
-        return doROOperation(() -> map.containsValue(value));
+        final long stamp = lock.tryOptimisticRead();
+        final boolean result = map.containsValue(value);
+        if (lock.validate(stamp)) {
+            return result;
+        }
+        final long stamp2 = lock.readLock();
+        try {
+            return map.containsValue(value);
+        } finally {
+            lock.unlockRead(stamp2);
+        }
     }
 
     @Override
     public Set<K> keySet() {
-        return doROOperation(map::keySet);
+        final long stamp = lock.tryOptimisticRead();
+        final Set<K> result = map.keySet();
+        if (lock.validate(stamp)) {
+            return result;
+        }
+        final long stamp2 = lock.readLock();
+        try {
+            return map.keySet();
+        } finally {
+            lock.unlockRead(stamp2);
+        }
     }
 
     @Override
     public Collection<V> values() {
-        return doROOperation(map::values);
+        final long stamp = lock.tryOptimisticRead();
+        final Collection<V> result = map.values();
+        if (lock.validate(stamp)) {
+            return result;
+        }
+        final long stamp2 = lock.readLock();
+        try {
+            return map.values();
+        } finally {
+            lock.unlockRead(stamp2);
+        }
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return doROOperation(map::entrySet);
+        final long stamp = lock.tryOptimisticRead();
+        final Set<Entry<K, V>> result = map.entrySet();
+        if (lock.validate(stamp)) {
+            return result;
+        }
+        final long stamp2 = lock.readLock();
+        try {
+            return map.entrySet();
+        } finally {
+            lock.unlockRead(stamp2);
+        }
     }
 
+    @Override
     public V putIfAbsent(K key, V value) {
         long stamp = lock.tryOptimisticRead();
         V curValue = map.get(key);
@@ -83,14 +151,18 @@ public class StampedLockMap<K, V> implements Map<K, V> {
         if (curValue != null) {
             return curValue;
         }
-        stamp = lock.writeLock();
         try {
+            stamp = lock.tryConvertToWriteLock(stamp);
+            if (stamp == 0) {
+                stamp = lock.writeLock();
+            }
             return map.putIfAbsent(key, value);
         } finally {
-            lock.unlockWrite(stamp);
+            lock.unlock(stamp);
         }
     }
 
+    @Override
     public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
         long stamp = lock.tryOptimisticRead();
         V value = map.get(key);
@@ -106,23 +178,38 @@ public class StampedLockMap<K, V> implements Map<K, V> {
         } else if (value != null) {
             return value;
         }
-        stamp = lock.writeLock();
         try {
+            stamp = lock.tryConvertToWriteLock(stamp);
+            if (stamp == 0) {
+                stamp = lock.writeLock();
+            }
             return map.computeIfAbsent(key, mappingFunction);
         } finally {
-            lock.unlockWrite(stamp);
+            lock.unlock(stamp);
         }
     }
 
-    public void updateValue(K key, V value, Consumer<V> action) {
+    public <K2, V2> void updateNestedValue(K key, Supplier<V> valueSupplier, K2 key2, V2 value) {
         long stamp = lock.writeLock();
         try {
-            action.accept(map.computeIfAbsent(key, v -> value));
+            map.putIfAbsent(key, valueSupplier.get());
+            // It is assumed that nested could be only StampedLockMap
+            // otherwise there is no guarantee for thread safe
+            ((StampedLockMap<K2, V2>)map.get(key)).putWithoutLock(key2, value);
         } finally {
             lock.unlockWrite(stamp);
         }
     }
 
+    /**
+     * This one is private and has no any synchronized inside.
+     * For that reason it is assumed that it is invoked only in already synchronized/locked sections
+     */
+    private V putWithoutLock(K k, V v) {
+        return map.put(k, v);
+    }
+
+    @Override
     public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
         long stamp = lock.writeLock();
         try {
@@ -134,7 +221,12 @@ public class StampedLockMap<K, V> implements Map<K, V> {
 
     @Override
     public V put(K k, V v) {
-        throw new UnsupportedOperationException();
+        final long stamp = lock.writeLock();
+        try {
+            return map.put(k, v);
+        } finally {
+            lock.unlockWrite(stamp);
+        }
     }
 
     @Override
