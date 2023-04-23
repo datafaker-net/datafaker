@@ -31,6 +31,14 @@ public class FakeAnnotationTest {
     }
 
     @Test
+    void shouldGenerateEntityWithCustomSchemaWhenClassTemplateWithoutAnnotation() {
+        SimplePerson person = Faker.populate(SimplePerson.class, customSchema());
+
+        assertThat(person).isNotNull();
+        assertThat(person.name).isEqualTo("Wildfire Woman");
+    }
+
+    @Test
     void shouldGenerateEntityWithDefaultSchemaAndInDefaultSchemaInCurrentClass() {
         DefaultPerson person = Faker.populate(DefaultPerson.class);
 
@@ -50,6 +58,11 @@ public class FakeAnnotationTest {
 
     @FakeForSchema("defaultSchema")
     public static class DefaultPerson {
+
+        private String name;
+    }
+
+    public static class SimplePerson {
 
         private String name;
     }
