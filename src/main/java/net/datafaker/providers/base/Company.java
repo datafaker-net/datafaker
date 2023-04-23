@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.service.FakerIDN;
+import net.datafaker.internal.helper.FakerIDN;
 
 import java.util.ArrayList;
 import java.util.List;

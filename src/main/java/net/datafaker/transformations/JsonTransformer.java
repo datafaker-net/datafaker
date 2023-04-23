@@ -126,7 +126,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
                 sb.append("\"");
             }
             for (char c : String.valueOf(value).toCharArray()) {
-                sb.append(ESCAPING_MAP.getOrDefault(c, c + ""));
+                sb.append(ESCAPING_MAP.getOrDefault(c, String.valueOf(c)));
             }
             if (toWrap) {
                 sb.append("\"");
