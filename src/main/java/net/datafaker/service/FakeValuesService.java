@@ -1,8 +1,8 @@
 package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
+import net.datafaker.internal.helper.COWMap;
 import net.datafaker.internal.helper.SingletonLocale;
-import net.datafaker.internal.helper.StampedLockMap;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
@@ -48,31 +48,31 @@ public class FakeValuesService {
     private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
-    public static final Supplier<Map<String, Object>> MAP_STRING_OBJECT_SUPPLIER = () -> new StampedLockMap<>(new WeakHashMap<>());
-    public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> new StampedLockMap<>(new WeakHashMap<>());
+    public static final Supplier<Map<String, Object>> MAP_STRING_OBJECT_SUPPLIER = () -> new COWMap<>(() -> new WeakHashMap<>());
+    public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> new COWMap<>(() -> new WeakHashMap<>());
 
-    private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new StampedLockMap<>(new IdentityHashMap<>());
+    private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new COWMap<>(IdentityHashMap::new);
     public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.get(Locale.ENGLISH);
 
-    private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new StampedLockMap<>(new IdentityHashMap<>());
-    private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new StampedLockMap<>(new IdentityHashMap<>());
+    private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new COWMap<>(IdentityHashMap::new);
+    private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new COWMap<>(IdentityHashMap::new);
 
     private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
 
-    private final Map<String, Generex> expression2generex = new StampedLockMap<>(new WeakHashMap<>());
-    private final StampedLockMap<SingletonLocale, Map<String, String>> key2Expression = new StampedLockMap<>(new IdentityHashMap<>());
-    private static final Map<String, String[]> ARGS_2_SPLITTED_ARGS = new StampedLockMap<>(new WeakHashMap<>());
+    private final Map<String, Generex> expression2generex = new COWMap<>(WeakHashMap::new);
+    private final COWMap<SingletonLocale, Map<String, String>> key2Expression = new COWMap<>(IdentityHashMap::new);
+    private static final Map<String, String[]> ARGS_2_SPLITTED_ARGS = new COWMap<>(WeakHashMap::new);
 
-    private static final Map<String, String[]> KEY_2_SPLITTED_KEY = new StampedLockMap<>(new WeakHashMap<>());
+    private static final Map<String, String[]> KEY_2_SPLITTED_KEY = new COWMap<>(WeakHashMap::new);
 
-    private final StampedLockMap<SingletonLocale, Map<String, Object>> key2fetchedObject = new StampedLockMap<>(new IdentityHashMap<>());
+    private final COWMap<SingletonLocale, Map<String, Object>> key2fetchedObject = new COWMap<>(IdentityHashMap::new);
 
-    private static final Map<String, String> NAME_2_YAML = new StampedLockMap<>(new WeakHashMap<>());
+    private static final Map<String, String> NAME_2_YAML = new COWMap<>(WeakHashMap::new);
 
-    private static final Map<String, String> REMOVED_UNDERSCORE = new StampedLockMap<>(new WeakHashMap<>());
-    private static final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> MAP_OF_METHOD_AND_COERCED_ARGS = new StampedLockMap<>(new IdentityHashMap<>());
+    private static final Map<String, String> REMOVED_UNDERSCORE = new COWMap<>(WeakHashMap::new);
+    private static final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> MAP_OF_METHOD_AND_COERCED_ARGS = new COWMap<>(IdentityHashMap::new);
 
-    private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new StampedLockMap<>(new WeakHashMap<>());
+    private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new COWMap<>(WeakHashMap::new);
 
     private static final Map<RegExpContext, Supplier<?>> map = new HashMap<>();
     public FakeValuesService() {
@@ -907,8 +907,8 @@ public class FakeValuesService {
         }
         final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
         final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap =
-            MAP_OF_METHOD_AND_COERCED_ARGS.computeIfAbsent(clazz, t -> new StampedLockMap<>(new WeakHashMap()));
-        stringMapMap.putIfAbsent(methodName, new StampedLockMap<>(new WeakHashMap<>()));
+            MAP_OF_METHOD_AND_COERCED_ARGS.computeIfAbsent(clazz, t -> new COWMap<>(WeakHashMap::new));
+        stringMapMap.putIfAbsent(methodName, new COWMap<>(WeakHashMap::new));
         stringMapMap.get(methodName).putIfAbsent(args, accessor);
         if (accessor == null) {
             LOG.fine("Can't find method on "
