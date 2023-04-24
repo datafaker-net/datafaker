@@ -9,6 +9,8 @@ import net.datafaker.transformations.Schema;
 
 public class FakeResolver<T> {
 
+    private static final JavaObjectTransformer jTransformer = new JavaObjectTransformer();
+
     private final Class<T> clazz;
 
     public FakeResolver(Class<T> clazz) {
@@ -21,7 +23,6 @@ public class FakeResolver<T> {
         FakeForSchema fakeForSchemaAnnotation = clazz.getAnnotation(FakeForSchema.class);
         Schema<Object, ?> useSchema = getSchema(fakeForSchemaAnnotation.value());
 
-        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
         return (T) jTransformer.apply(clazz, useSchema);
     }
 
@@ -30,11 +31,10 @@ public class FakeResolver<T> {
             return generateFromDefaultSchema();
         }
 
-        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
         return (T) jTransformer.apply(clazz, schema);
     }
 
-    private Schema<Object, ?> getSchema(String[] pathToSchema) {
+    private Schema<Object, T> getSchema(String[] pathToSchema) {
         if (pathToSchema.length != 0) {
             try {
                 final int sharpIndex = pathToSchema[0].indexOf('#');
@@ -49,12 +49,12 @@ public class FakeResolver<T> {
                 }
                 Method myStaticMethod = classToCall.getMethod(methodName);
                 myStaticMethod.setAccessible(true);
-                return (Schema<Object, ?>) myStaticMethod.invoke(null);
+                return (Schema<Object, T>) myStaticMethod.invoke(null);
             } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            return null;
+            throw new IllegalArgumentException("The path to the schema is empty.");
         }
     }
 
