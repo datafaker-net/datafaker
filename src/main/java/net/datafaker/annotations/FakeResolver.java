@@ -9,52 +9,52 @@ import net.datafaker.transformations.Schema;
 
 public class FakeResolver<T> {
 
+    private static final JavaObjectTransformer JAVA_OBJECT_TRANSFORMER = new JavaObjectTransformer();
+
     private final Class<T> clazz;
 
     public FakeResolver(Class<T> clazz) {
         this.clazz = clazz;
     }
 
-    public T generateFromDefaultSchema() {
+    public T generate(Schema<Object, ?> schema) {
+        if (Objects.isNull(schema)) {
+            return generateFromDefaultSchema();
+        }
+
+        return (T) JAVA_OBJECT_TRANSFORMER.apply(clazz, schema);
+    }
+
+    private T generateFromDefaultSchema() {
         checkFakeAnnotation(clazz);
 
         FakeForSchema fakeForSchemaAnnotation = clazz.getAnnotation(FakeForSchema.class);
         Schema<Object, ?> useSchema = getSchema(fakeForSchemaAnnotation.value());
 
-        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
-        return (T) jTransformer.apply(clazz, useSchema);
+        return (T) JAVA_OBJECT_TRANSFORMER.apply(clazz, useSchema);
     }
 
-    public T generateFromCustomSchema(Schema<Object, ?> schema) {
-        if (Objects.isNull(schema)) {
-            return generateFromDefaultSchema();
-        }
-
-        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
-        return (T) jTransformer.apply(clazz, schema);
-    }
-
-    private Schema<Object, ?> getSchema(String[] pathToSchema) {
-        if (pathToSchema.length != 0) {
+    private Schema<Object, T> getSchema(String pathToSchema) {
+        if (pathToSchema != null) {
             try {
-                final int sharpIndex = pathToSchema[0].indexOf('#');
+                final int sharpIndex = pathToSchema.indexOf('#');
                 final Class<?> classToCall;
                 final String methodName;
                 if (sharpIndex >= 0) {
-                    classToCall = Class.forName(pathToSchema[0].substring(0, sharpIndex));
-                    methodName = pathToSchema[0].substring(sharpIndex + 1);
+                    classToCall = Class.forName(pathToSchema.substring(0, sharpIndex));
+                    methodName = pathToSchema.substring(sharpIndex + 1);
                 } else {
                     classToCall = this.clazz.getEnclosingClass();
-                    methodName = pathToSchema[0];
+                    methodName = pathToSchema;
                 }
                 Method myStaticMethod = classToCall.getMethod(methodName);
                 myStaticMethod.setAccessible(true);
-                return (Schema<Object, ?>) myStaticMethod.invoke(null);
+                return (Schema<Object, T>) myStaticMethod.invoke(null);
             } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            return null;
+            throw new IllegalArgumentException("The path to the schema is empty.");
         }
     }
 
