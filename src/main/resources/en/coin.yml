@@ -1,5 +1,6 @@
 en:
   faker:
     coin:
-      flip: ["Heads", "Tails"]
-
+      flip:
+      - "Heads"
+      - "Tails"
