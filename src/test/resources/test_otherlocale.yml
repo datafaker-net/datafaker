@@ -2,6 +2,6 @@ test_otherlocale:
   faker:
     unique:
       first-same-locale-value:
-        - theSameValue
+      - "theSameValue"
       second-same-locale-value:
-        - theSameValue
+      - "theSameValue"

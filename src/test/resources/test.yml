@@ -1,42 +1,51 @@
 test:
   faker:
     code:
-      isbn_gs1: ["333","444"]
-      isbn_group: ["9971"]
-      isbn_registrant: ["#{numerify '#-####'}"]
+      isbn_gs1:
+      - "333"
+      - "444"
+      isbn_group:
+      - "9971"
+      isbn_registrant:
+      - "#{numerify '#-####'}"
     property:
-       dummy: [x, y, z]
-       simple: "hello"
-       simpleResolution: "#{hello}"
-       advancedResolution: "#{Superhero.name}"
-       regexify1: "#{regexify '[45]{2}'}"
-       regexify_cell: "#{regexify '4[57]9'}"
-       regexify_slash_format: /[45]{2}/
-       bothify_2: "#{bothify '??##','true'}"
-       sameResolution: "#{hello} #{hello}"
-       multipleResolution: "#{hello} #{Superhero.descriptor}"
-       resolutionWithList:
-           - "#{hello}"
-           - "#{hello2}"
+      dummy:
+      - "x"
+      - "y"
+      - "z"
+      simple: "hello"
+      simpleResolution: "#{hello}"
+      advancedResolution: "#{Superhero.name}"
+      regexify1: "#{regexify '[45]{2}'}"
+      regexify_cell: "#{regexify '4[57]9'}"
+      regexify_slash_format: "/[45]{2}/"
+      bothify_2: "#{bothify '??##','true'}"
+      sameResolution: "#{hello} #{hello}"
+      multipleResolution: "#{hello} #{Superhero.descriptor}"
+      resolutionWithList:
+      - "#{hello}"
+      - "#{hello2}"
     unique:
       values:
-        - firstValue
-        - secondValue
-        - thirdValue
-        - fourthValue
-        - fifthValue
+      - "firstValue"
+      - "secondValue"
+      - "thirdValue"
+      - "fourthValue"
+      - "fifthValue"
       single-value:
-        - theOnlyValue
+      - "theOnlyValue"
       first-same-locale-value:
-        - theSameValue
+      - "theSameValue"
       second-same-locale-value:
-        - theSameValue
+      - "theSameValue"
       list-of-lists:
-        - ["firstValue", "secondValue"]
-        - ["thirdValue", "fourthValue"]
+      - - "firstValue"
+        - "secondValue"
+      - - "thirdValue"
+        - "fourthValue"
       valid-integer:
-        - 123
+      - 123
       valid-decimal:
-        - 12.34
+      - 12.34
       valid-boolean:
-        - true
+      - true

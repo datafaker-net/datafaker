@@ -43,12 +43,12 @@
         <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
-        <mockito-core.version>5.3.0</mockito-core.version>
+        <mockito-core.version>5.2.0</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.25.2</javaparser.version>
         <snakeyaml.version>2.0</snakeyaml.version>
-        <spotless-maven-plugin.version>2.35.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>2.36.0</spotless-maven-plugin.version>
 
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
@@ -202,6 +202,21 @@
                     <java>
                         <removeUnusedImports />
                     </java>
+                    <yaml>
+                       <includes>
+                           <include>src/main/resources/en/**/*.yml</include>
+                           <include>src/test/resources/**/*.yml</include>
+                       </includes>
+                       <jackson>
+                           <features>
+                               <ORDER_MAP_ENTRIES_BY_KEYS>true</ORDER_MAP_ENTRIES_BY_KEYS>
+                           </features>
+                           <yamlFeatures>
+                               <WRITE_DOC_START_MARKER>false</WRITE_DOC_START_MARKER>
+                               <SPLIT_LINES>false</SPLIT_LINES>
+                           </yamlFeatures>
+                       </jackson>
+                    </yaml>
                 </configuration>
                 <executions>
                     <execution>

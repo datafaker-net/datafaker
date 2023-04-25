@@ -1,11 +1,29 @@
 en:
   faker:
     university:
-      degree: [Associate, Bachelor, Master, Doctoral, Post-doctoral]
-      prefix: [The, Northern, North, Western, West, Southern, South, Eastern, East]
-      suffix: [University, Institute, College, Academy]
+      degree:
+      - "Associate"
+      - "Bachelor"
+      - "Master"
+      - "Doctoral"
+      - "Post-doctoral"
+      prefix:
+      - "The"
+      - "Northern"
+      - "North"
+      - "Western"
+      - "West"
+      - "Southern"
+      - "South"
+      - "Eastern"
+      - "East"
+      suffix:
+      - "University"
+      - "Institute"
+      - "College"
+      - "Academy"
       name:
-        - "#{Name.last_name} #{University.suffix}"
-        - "#{University.prefix} #{Name.last_name} #{University.suffix}"
-        - "#{University.prefix} #{Name.last_name}"
-        - "#{University.prefix} #{Address.state} #{University.suffix}"
+      - "#{Name.last_name} #{University.suffix}"
+      - "#{University.prefix} #{Name.last_name} #{University.suffix}"
+      - "#{University.prefix} #{Name.last_name}"
+      - "#{University.prefix} #{Address.state} #{University.suffix}"
