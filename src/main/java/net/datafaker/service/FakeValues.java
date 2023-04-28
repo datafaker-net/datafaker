@@ -204,7 +204,7 @@ public class FakeValues implements FakeValuesInterface {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fakeValuesContext);
+        return Objects.hashCode(fakeValuesContext);
     }
 
     @Override
