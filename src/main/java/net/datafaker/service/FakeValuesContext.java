@@ -89,14 +89,22 @@ class FakeValuesContext {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FakeValuesContext)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         FakeValuesContext that = (FakeValuesContext) o;
-        return sLocale == that.sLocale && Objects.equals(filename, that.filename) && Objects.equals(path, that.path) && Objects.equals(url, that.url);
+        if (!Objects.equals(sLocale, that.sLocale)) return false;
+        if (!Objects.equals(filename, that.filename)) return false;
+        if (!Objects.equals(path, that.path)) return false;
+        return Objects.equals(url, that.url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sLocale, filename, path, url);
+        int result = sLocale != null ? sLocale.hashCode() : 0;
+        result = 31 * result + (filename != null ? filename.hashCode() : 0);
+        result = 31 * result + (path != null ? path.hashCode() : 0);
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        return result;
     }
 
     @Override

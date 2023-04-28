@@ -160,13 +160,18 @@ public class FakerContext {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         FakerContext that = (FakerContext) o;
-        return Objects.equals(sLocale, that.sLocale) && Objects.equals(randomService, that.randomService);
+
+        if (!Objects.equals(sLocale, that.sLocale)) return false;
+        return Objects.equals(randomService, that.randomService);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sLocale, randomService);
+        int result = sLocale != null ? sLocale.hashCode() : 0;
+        result = 31 * result + (randomService != null ? randomService.hashCode() : 0);
+        return result;
     }
 
     @Override
