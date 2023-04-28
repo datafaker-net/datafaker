@@ -664,7 +664,12 @@ public class FakeValuesService {
 
     private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
         Object res = resolveExpression(directive, args, current, root, context);
-        if (res instanceof CharSequence) return res;
+        if (res instanceof CharSequence) {
+            if (((CharSequence) res).isEmpty()) {
+                map.put(regExpContext, () -> "");
+            }
+            return res;
+        }
         if (res instanceof List) {
             Iterator it = ((List) res).iterator();
             while (it.hasNext()) {
@@ -691,7 +696,6 @@ public class FakeValuesService {
         final int dotIndex = getDotIndex(directive);
 
         List<Supplier<Object>> res = new ArrayList<>();
-        Object resolved;
         if (args.length == 0) {
             // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
             // #{ssn_valid} on IdNumber
