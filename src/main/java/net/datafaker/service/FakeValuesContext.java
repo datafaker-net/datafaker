@@ -2,6 +2,7 @@ package net.datafaker.service;
 
 import net.datafaker.internal.helper.SingletonLocale;
 
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
@@ -9,8 +10,10 @@ import java.util.Objects;
 class FakeValuesContext {
     private final SingletonLocale sLocale;
     private final String filename;
+    private final int filenameHashCode;
     private String path;
     private final URL url;
+    private final int urlHashCode;
 
     private FakeValuesContext(Locale locale) {
         this(locale, getFilename(locale), getFilename(locale), null);
@@ -29,6 +32,12 @@ class FakeValuesContext {
         this.filename = filename;
         this.path = path;
         this.url = url;
+        this.filenameHashCode = filename == null ? 0 : filename.hashCode();
+        try {
+            this.urlHashCode = url == null ? 0 : url.toURI().hashCode();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static FakeValuesContext of(Locale locale) {
@@ -101,10 +110,10 @@ class FakeValuesContext {
 
     @Override
     public int hashCode() {
-        int result = sLocale != null ? sLocale.hashCode() : 0;
-        result = 31 * result + (filename != null ? filename.hashCode() : 0);
-        result = 31 * result + (path != null ? path.hashCode() : 0);
-        result = 31 * result + (url != null ? url.hashCode() : 0);
+        int result = sLocale == null ? 0 : sLocale.hashCode();
+        result = 31 * result + filenameHashCode;
+        result = 31 * result + (path == null ? 0 : path.hashCode());
+        result = 31 * result + urlHashCode;
         return result;
     }
 
