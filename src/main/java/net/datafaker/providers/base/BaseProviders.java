@@ -365,6 +365,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Text.class, Text::new);
     }
 
+    default Transport transport() {
+        return getProvider(Transport.class, Transport::new);
+    }
+
     default PhoneNumber phoneNumber() {
         return getProvider(PhoneNumber.class, PhoneNumber::new);
     }
