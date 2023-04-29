@@ -665,7 +665,7 @@ public class FakeValuesService {
     private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
         Object res = resolveExpression(directive, args, current, root, context);
         if (res instanceof CharSequence) {
-            if (((CharSequence) res).isEmpty()) {
+            if (((CharSequence) res).length() == 0) {
                 map.put(regExpContext, () -> "");
             }
             return res;
