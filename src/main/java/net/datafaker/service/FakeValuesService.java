@@ -74,7 +74,8 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new COWMap<>(WeakHashMap::new);
 
-    private static final Map<RegExpContext, Supplier<?>> map = new HashMap<>();
+    private static final Map<RegExpContext, Supplier<?>> REGEXP2SUPPLIER_MAP = new COWMap<>(HashMap::new);
+
     public FakeValuesService() {
     }
 
@@ -565,7 +566,7 @@ public class FakeValuesService {
                 continue;
             }
             final RegExpContext regExpContext = RegExpContext.of(expr, current, root, context);
-            final Supplier<?> val = map.get(regExpContext);
+            final Supplier<?> val = REGEXP2SUPPLIER_MAP.get(regExpContext);
             final Object resolved;
             if (val != null) {
                 resolved = val.get();
@@ -654,23 +655,11 @@ public class FakeValuesService {
         return result;
     }
 
-    /**
-     * Search Order
-     * <ul>
-     *  <li>Search for methods on the current object</li>
-     *  <li>local keys in Yaml File</li>
-     *  <li>Search for methods on faker child objects</li>
-     *   <li>Search for keys in yaml file by transforming object reference to yaml reference</li>
-     * </ul>
-     *
-     * @return null if unable to resolve
-     */
-
     private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
         Object res = resolveExpression(directive, args, current, root, context);
         if (res instanceof CharSequence) {
             if (((CharSequence) res).isEmpty()) {
-                map.put(regExpContext, () -> "");
+                REGEXP2SUPPLIER_MAP.put(regExpContext, () -> "");
             }
             return res;
         }
@@ -684,7 +673,7 @@ public class FakeValuesService {
                     if (value == null) {
                         it.remove();
                     } else {
-                        map.put(regExpContext, (Supplier<?>) supplier);
+                        REGEXP2SUPPLIER_MAP.put(regExpContext, (Supplier<?>) supplier);
                         return value;
                     }
                 }
@@ -693,6 +682,18 @@ public class FakeValuesService {
         }
         return res;
     }
+
+    /**
+     * Search Order
+     * <ul>
+     *  <li>Search for methods on the current object</li>
+     *  <li>local keys in Yaml File</li>
+     *  <li>Search for methods on faker child objects</li>
+     *   <li>Search for keys in yaml file by transforming object reference to yaml reference</li>
+     * </ul>
+     *
+     * @return null if unable to resolve
+     */
     private Object resolveExpression(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context) {
         if (directive.isEmpty()) {
             return directive;
