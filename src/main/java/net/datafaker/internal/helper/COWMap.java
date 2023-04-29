@@ -86,7 +86,12 @@ public class COWMap<K, V> implements Map<K, V> {
     }
 
     public <K2, V2> void updateNestedValue(K key, Supplier<V> valueSupplier, K2 key2, V2 value) {
-        map.putIfAbsent(key, valueSupplier.get());
+        if (!map.containsKey(key)) {
+            Map<K, V> newMap = mapSupplier.get();
+            newMap.putAll(map);
+            newMap.put(key, valueSupplier.get());
+            map = newMap;
+        }
         // It is assumed that nested could be only Map
         ((Map<K2, V2>)map.get(key)).put(key2, value);
     }
