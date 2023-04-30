@@ -37,8 +37,6 @@ public class RegExpContext {
     @Override
     public int hashCode() {
         int result = exp != null ? exp.hashCode() : 0;
-        result = 31 * result + (current != null ? current.hashCode() : 0);
-        result = 31 * result + (root != null ? root.hashCode() : 0);
         result = 31 * result + (context != null ? context.hashCode() : 0);
         return result;
     }

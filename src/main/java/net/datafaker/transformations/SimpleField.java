@@ -1,6 +1,7 @@
 package net.datafaker.transformations;
 
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -48,5 +49,20 @@ public class SimpleField<MyObject, MyType> implements Field<MyObject, MyType> {
 
     public Supplier<MyType> getSupplier() {
         return supplier;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SimpleField<?, ?> that)) return false;
+
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(transform, that.transform)) return false;
+        return Objects.equals(supplier, that.supplier);
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 }

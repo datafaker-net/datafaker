@@ -5,40 +5,60 @@ import net.datafaker.sequence.FakeSequence;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JavaObjectTransformer implements Transformer<Object, Object> {
+    private static final Map<Class<?>, Object> CLASS2RESULT = new IdentityHashMap<>();
+    private static final Map<Schema<Object, ?>, Consumer<Schema<Object, ?>>> SCHEMA2CONSUMER = new IdentityHashMap<>();
+
     @Override
     public Object apply(Object input, Schema<Object, ?> schema) {
         Class clazz;
         Object result;
         if (input instanceof Class) {
             clazz = (Class) input;
-            try {
-                result = clazz.getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
-                     InvocationTargetException e) {
-                throw new RuntimeException(e);
+            result = CLASS2RESULT.get(clazz);
+            if (result == null) {
+                try {
+                    result = clazz.getDeclaredConstructor().newInstance();
+                    CLASS2RESULT.put(clazz, result);
+                } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                         InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } else {
             clazz = input.getClass();
             result = input;
         }
-        Field<Object, ?>[] fields = schema.getFields();
-        Map<String, java.lang.reflect.Field> name2ClassField = Stream.of(clazz.getDeclaredFields()).collect(
-            Collectors.toMap(java.lang.reflect.Field::getName, Function.identity()));
-        try {
-            for (Field<Object, ?> f: fields) {
-                final java.lang.reflect.Field field = name2ClassField.get(f.getName());
-                field.setAccessible(true);
-                field.set(result, f.transform(result));
+        final Object classObject = result;
+        Consumer<Schema<Object, ?>> consumer = SCHEMA2CONSUMER.get(schema);
+        if (consumer == null) {
+            final Field<Object, ?>[] fields = schema.getFields();
+            final Map<String, java.lang.reflect.Field> name2ClassField = Stream.of(clazz.getDeclaredFields()).collect(
+                Collectors.toMap(java.lang.reflect.Field::getName, Function.identity()));
+            final java.lang.reflect.Field[] rFields = new java.lang.reflect.Field[fields.length];
+            for (int i = 0; i < fields.length; i++) {
+                rFields[i] = name2ClassField.get(fields[i].getName());
+                rFields[i].setAccessible(true);
             }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            consumer = objectSchema -> {
+                try {
+                    for (int i = 0; i < fields.length; i++) {
+                        rFields[i].set(classObject, fields[i].transform(classObject));
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            };
+            SCHEMA2CONSUMER.put(schema, consumer);
         }
+        consumer.accept(schema);
         return result;
     }
 
