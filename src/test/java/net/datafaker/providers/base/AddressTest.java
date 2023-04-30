@@ -24,6 +24,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     private static final Faker US_FAKER = new Faker(new Locale("en", "US"));
     private static final Faker NL_FAKER = new Faker(new Locale("nl", "NL"));
     private static final Faker RU_FAKER = new Faker(new Locale("ru", "RU"));
+    private static final Faker AU_FAKER = new Faker(new Locale("en", "AU"));
 
     public static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
@@ -266,5 +267,10 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     void dutchAddress() {
         assertThat(NL_FAKER.address().stateAbbr()).matches("[A-Z]{2}");
         assertThat(NL_FAKER.address().fullAddress()).matches("[A-Z].+, [0-9]{4} [A-Z]{2}, [A-Z].+");
+    }
+
+    @RepeatedTest(100)
+    void australiaAddress() {
+        assertThat(AU_FAKER.address().fullAddress()).matches("(Unit|[0-9]).+, [A-Z].+, [A-Z]{2,3} [0-9]{4}");
     }
 }

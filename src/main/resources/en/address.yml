@@ -1524,8 +1524,8 @@ en:
       - "Well"
       - "Wells"
       secondary_address:
-      - "Apt. ###"
-      - "Suite ###"
+      - "Apt. Ø##"
+      - "Suite Ø##"
       postcode:
       - "#####"
       postcode_plus_four:
