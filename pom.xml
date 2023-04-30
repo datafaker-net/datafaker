@@ -241,6 +241,8 @@
                     <artifactSet>
                         <includes>
                             <include>org.yaml:snakeyaml:*:*</include>
+                            <include>com.github.mifmif:generex:*:*</include>
+                            <include>dk.brics.automaton:automaton:*:*</include>
                         </includes>
                     </artifactSet>
                     <filters>
@@ -255,6 +257,14 @@
                         <relocation>
                             <pattern>org.yaml.snakeyaml</pattern>
                             <shadedPattern>net.datafaker.shaded.snakeyaml</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.mifmif.common.regex</pattern>
+                            <shadedPattern>net.datafaker.shaded.generex</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>dk.brics.automaton</pattern>
+                            <shadedPattern>net.datafaker.shaded.automaton</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
