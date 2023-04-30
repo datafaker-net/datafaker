@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class VideoGameFaker extends BaseFaker implements VideoGameProviders {
     public VideoGameFaker() {
+        super();
     }
 
     public VideoGameFaker(Locale locale) {
