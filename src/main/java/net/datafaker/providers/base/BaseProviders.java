@@ -141,32 +141,32 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(CryptoCoin.class, CryptoCoin::new);
     }
 
-    default Currency currency() {
-        return getProvider(Currency.class, Currency::new);
-    }
-
     default CultureSeries cultureSeries() {
         return getProvider(CultureSeries.class, CultureSeries::new);
+    }
+
+    default Currency currency() {
+        return getProvider(Currency.class, Currency::new);
     }
 
     default DateAndTime date() {
         return getProvider(DateAndTime.class, DateAndTime::new);
     }
 
-    default Disease disease() {
-        return getProvider(Disease.class, Disease::new);
+    default DcComics dcComics() {
+        return getProvider(DcComics.class, DcComics::new);
     }
 
     default Demographic demographic() {
         return getProvider(Demographic.class, Demographic::new);
     }
 
-    default DcComics dcComics() {
-        return getProvider(DcComics.class, DcComics::new);
-    }
-
     default Device device() {
         return getProvider(Device.class, Device::new);
+    }
+
+    default Disease disease() {
+        return getProvider(Disease.class, Disease::new);
     }
 
     default Dog dog() {
@@ -177,12 +177,12 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Domain.class, Domain::new);
     }
 
-    default Drone drone() {
-        return getProvider(Drone.class, Drone::new);
-    }
-
     default DrivingLicense drivingLicense() {
         return getProvider(DrivingLicense.class, DrivingLicense::new);
+    }
+
+    default Drone drone() {
+        return getProvider(Drone.class, Drone::new);
     }
 
     default DungeonsAndDragons dungeonsAndDragons() {
@@ -361,14 +361,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Passport.class, Passport::new);
     }
 
-    default Text text() {
-        return getProvider(Text.class, Text::new);
-    }
-
-    default Transport transport() {
-        return getProvider(Transport.class, Transport::new);
-    }
-
     default PhoneNumber phoneNumber() {
         return getProvider(PhoneNumber.class, PhoneNumber::new);
     }
@@ -437,8 +429,16 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Team.class, Team::new);
     }
 
+    default Text text() {
+        return getProvider(Text.class, Text::new);
+    }
+
     default Time time() {
         return getProvider(Time.class, Time::new);
+    }
+
+    default Transport transport() {
+        return getProvider(Transport.class, Transport::new);
     }
 
     default Twitter twitter() {
