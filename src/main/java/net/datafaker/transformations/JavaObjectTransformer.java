@@ -2,6 +2,7 @@ package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -17,8 +18,9 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
         if (input instanceof Class) {
             clazz = (Class) input;
             try {
-                result = clazz.newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
+                result = clazz.getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                     InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
         } else {
@@ -30,8 +32,9 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
             Collectors.toMap(java.lang.reflect.Field::getName, Function.identity()));
         try {
             for (Field<Object, ?> f: fields) {
-                name2ClassField.get(f.getName()).setAccessible(true);
-                name2ClassField.get(f.getName()).set(result, f.transform(result));
+                final java.lang.reflect.Field field = name2ClassField.get(f.getName());
+                field.setAccessible(true);
+                field.set(result, f.transform(result));
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
