@@ -14,6 +14,8 @@ en-AU:
     internet:
       domain_suffix: [com.au, com, net.au, net, org.au, org]
     address:
+      secondary_address:
+        - "Unit Ø##"
       state_abbr: [NSW, QLD, NT, SA, WA, TAS, ACT, VIC]
       state: [New South Wales, Queensland, Northern Territory, South Australia, Western Australia, Tasmania, Australian Capital Territory, Victoria]
       postcode: ['0###', '2###', '3###', '4###', '5###', '6###', '7###']

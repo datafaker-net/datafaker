@@ -4,7 +4,7 @@
     <artifactId>datafaker</artifactId>
     <packaging>jar</packaging>
     <version>2.0.0-SNAPSHOT</version>
-    <name>Data Faker</name>
+    <name>Datafaker</name>
     <description>
         This library is an improved fork of JavaFaker (as well as Ruby's stympy/faker gem and Perl's Data::Faker library)
         that generates fake data. It's useful when you're developing a new project and need some pretty data for showcase.
@@ -32,8 +32,8 @@
         <google.javaformat.version>1.16.0</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
         <jbanking.version>4.1.0</jbanking.version>
-        <junit.version>5.9.2</junit.version>
-        <libphonenumber.version>8.13.8</libphonenumber.version>
+        <junit.version>5.9.3</junit.version>
+        <libphonenumber.version>8.13.11</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
@@ -43,13 +43,13 @@
         <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
-        <mockito-core.version>5.3.0</mockito-core.version>
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <mockito-core.version>5.3.1</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.25.2</javaparser.version>
         <snakeyaml.version>2.0</snakeyaml.version>
-        <spotless-maven-plugin.version>2.35.0</spotless-maven-plugin.version>
-
+        <spotless-maven-plugin.version>2.36.0</spotless-maven-plugin.version>
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
         <surefire.argline>@{argLine} -Duser.language=TR -Duser.country=tr</surefire.argline>
@@ -202,6 +202,21 @@
                     <java>
                         <removeUnusedImports />
                     </java>
+                    <yaml>
+                       <includes>
+                           <include>src/main/resources/en/**/*.yml</include>
+                           <include>src/test/resources/**/*.yml</include>
+                       </includes>
+                       <jackson>
+                           <features>
+                               <ORDER_MAP_ENTRIES_BY_KEYS>true</ORDER_MAP_ENTRIES_BY_KEYS>
+                           </features>
+                           <yamlFeatures>
+                               <WRITE_DOC_START_MARKER>false</WRITE_DOC_START_MARKER>
+                               <SPLIT_LINES>false</SPLIT_LINES>
+                           </yamlFeatures>
+                       </jackson>
+                    </yaml>
                 </configuration>
                 <executions>
                     <execution>
@@ -226,20 +241,27 @@
                     <artifactSet>
                         <includes>
                             <include>org.yaml:snakeyaml:*:*</include>
+                            <include>com.github.mifmif:generex:*:*</include>
+                            <include>dk.brics.automaton:automaton:*:*</include>
                         </includes>
                     </artifactSet>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.MF</exclude>
-                            </excludes>
                         </filter>
                     </filters>
                     <relocations>
                         <relocation>
                             <pattern>org.yaml.snakeyaml</pattern>
                             <shadedPattern>net.datafaker.shaded.snakeyaml</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.mifmif.common.regex</pattern>
+                            <shadedPattern>net.datafaker.shaded.generex</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>dk.brics.automaton</pattern>
+                            <shadedPattern>net.datafaker.shaded.automaton</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -251,6 +273,19 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>

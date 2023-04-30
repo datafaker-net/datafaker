@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class FoodFaker extends BaseFaker implements FoodProviders {
     public FoodFaker() {
+        super();
     }
 
     public FoodFaker(Locale locale) {

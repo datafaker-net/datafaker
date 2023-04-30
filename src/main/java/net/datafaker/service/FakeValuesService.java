@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -69,6 +70,7 @@ public class FakeValuesService {
 
     private static final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
 
+    private static final Map<RegExpContext, Supplier<?>> map = new HashMap<>();
     public FakeValuesService() {
     }
 
@@ -271,7 +273,8 @@ public class FakeValuesService {
     }
 
     /**
-     * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive.
+     * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive or
+     * random digits in the range from 1-9 when Ø (not zero) is used.
      * <p>
      * For example, the string "ABC##EFG" could be replaced with a string like "ABC99EFG".
      */
@@ -560,15 +563,21 @@ public class FakeValuesService {
                 }
                 continue;
             }
-            int j = 0;
-            final int length = expr.length();
-            while (j < length && !Character.isWhitespace(expr.charAt(j))) j++;
-            String directive = expr.substring(0, j);
-            while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
-            final String arguments = j == length ? "" : expr.substring(j);
-            final String[] args = splitArguments(arguments);
-
-            final Object resolved = resolveExpression(directive, args, current, root, context);
+            final RegExpContext regExpContext = RegExpContext.of(expr, current, root, context);
+            Supplier<?> val = map.get(regExpContext);
+            final Object resolved;
+            if (val != null) {
+                resolved = val.get();
+            } else {
+                int j = 0;
+                final int length = expr.length();
+                while (j < length && !Character.isWhitespace(expr.charAt(j))) j++;
+                String directive = expr.substring(0, j);
+                while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
+                final String arguments = j == length ? "" : expr.substring(j);
+                final String[] args = splitArguments(arguments);
+                resolved = resExp(directive, args, current, root, context, regExpContext);
+            }
             if (resolved == null) {
                 throw new RuntimeException("Unable to resolve #{" + expr + "} directive for FakerContext " + context + ".");
             }
@@ -653,15 +662,41 @@ public class FakeValuesService {
      *
      * @return null if unable to resolve
      */
+
+    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
+        Object res = resolveExpression(directive, args, current, root, context);
+        if (res instanceof CharSequence) {
+            if (((CharSequence) res).isEmpty()) {
+                map.put(regExpContext, () -> "");
+            }
+            return res;
+        }
+        if (res instanceof List) {
+            Iterator it = ((List) res).iterator();
+            while (it.hasNext()) {
+                Object supplier = it.next();
+                Object value;
+                if (supplier instanceof Supplier<?>) {
+                    value = ((Supplier<?>) supplier).get();
+                    if (value == null) {
+                        it.remove();
+                    } else {
+                        map.put(regExpContext, (Supplier<?>) supplier);
+                        return value;
+                    }
+                }
+            }
+            return null;
+        }
+        return res;
+    }
     private Object resolveExpression(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context) {
-        // name.name (resolve locally)
-        // Name.first_name (resolve to faker.name().firstName())
         if (directive.isEmpty()) {
             return directive;
         }
         final int dotIndex = getDotIndex(directive);
 
-        Object resolved;
+        List<Supplier<Object>> res = new ArrayList<>();
         if (args.length == 0) {
             // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
             // #{ssn_valid} on IdNumber
@@ -669,28 +704,30 @@ public class FakeValuesService {
                 if (current instanceof AbstractProvider) {
                     final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
                     if (method != null) {
-                        try {
-                            return method.invoke(current);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e + " " + Arrays.toString(args));
-                        }
+                        res.add(() -> {
+                            try {
+                                return method.invoke(current);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e + " " + Arrays.toString(args));
+                            }
+                        });
+                        return res;
                     }
                 }
-                Supplier<Object> supplier = resolveFromMethodOn(current, directive, args);
-                if (supplier != null && (resolved = supplier.get()) != null) {
-                    //expression2function.put(expression, supplier);
-                    return resolved;
-                }
+                res.add(resolveFromMethodOn(current, directive, args));
             }
             if (dotIndex > 0) {
                 final AbstractProvider<?> ap = BaseFaker.getProvider(directive.substring(0, dotIndex), context);
                 final Method method = BaseFaker.getMethod(ap, directive.substring(dotIndex + 1));
                 if (method != null) {
-                    try {
-                        return method.invoke(ap);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e + " " + Arrays.toString(args));
-                    }
+                    res.add(() -> {
+                        try {
+                            return method.invoke(ap);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e + " " + Arrays.toString(args));
+                        }
+                    });
+                    return res;
                 }
             }
         }
@@ -700,29 +737,16 @@ public class FakeValuesService {
         // simple fetch of a value from the yaml file. the directive may have been mutated
         // such that if the current yml object is car: and directive is #{wheel} then
         // car.wheel will be looked up in the YAML file.
-        Supplier<Object> supplier = () -> safeFetch(simpleDirective, context, null);
-        resolved = supplier.get();
-        if (resolved != null) {
-            // expression2function.put(expression, supplier);
-            return resolved;
-        }
+        res.add(() -> safeFetch(simpleDirective, context, null));
 
         // resolve method references on faker object like #{regexify '[a-z]'}
         if (dotIndex == -1 && root != null && (current == null || root.getClass() != current.getClass())) {
-            supplier = resolveFromMethodOn(root, directive, args);
-            if (supplier != null && (resolved = supplier.get()) != null) {
-                //       expression2function.put(expression, supplier);
-                return resolved;
-            }
+            res.add(resolveFromMethodOn(root, directive, args));
         }
 
         // Resolve Faker Object method references like #{ClassName.method_name}
         if (dotIndex >= 0) {
-            supplier = resolveFakerObjectAndMethod(root, directive, dotIndex, args);
-            if (supplier != null && (resolved = supplier.get()) != null) {
-                // expression2function.put(expression, supplier);
-                return resolved;
-            }
+            res.add(resolveFakerObjectAndMethod(root, directive, dotIndex, args));
         }
 
         // last ditch effort.  Due to Ruby's dynamic nature, something like 'Address.street_title' will resolve
@@ -731,11 +755,11 @@ public class FakeValuesService {
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
         if (dotIndex >= 0) {
-            supplier = () -> safeFetch(javaNameToYamlName(simpleDirective), context, null);
-            resolved = supplier.get();
+            final String key = javaNameToYamlName(simpleDirective);
+            res.add(() -> safeFetch(key, context, null));
         }
 
-        return resolved;
+        return res;
     }
 
 

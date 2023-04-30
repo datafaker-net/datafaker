@@ -1,4 +1,11 @@
 en:
   faker:
     garments_sizes:
-      sizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"]
+      sizes:
+      - "XS"
+      - "S"
+      - "M"
+      - "L"
+      - "XL"
+      - "XXL"
+      - "XXXL"

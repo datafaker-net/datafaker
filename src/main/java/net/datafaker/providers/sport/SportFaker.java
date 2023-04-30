@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class SportFaker extends BaseFaker implements SportProviders {
     public SportFaker() {
+        super();
     }
 
     public SportFaker(Locale locale) {
