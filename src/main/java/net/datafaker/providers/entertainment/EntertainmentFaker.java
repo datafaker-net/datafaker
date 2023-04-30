@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class EntertainmentFaker extends BaseFaker implements EntertainmentProviders {
     public EntertainmentFaker() {
+        super();
     }
 
     public EntertainmentFaker(Locale locale) {
