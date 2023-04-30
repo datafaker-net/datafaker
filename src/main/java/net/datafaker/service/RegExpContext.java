@@ -21,22 +21,6 @@ public class RegExpContext {
         return new RegExpContext(exp, current, root, context);
     }
 
-    public String getExp() {
-        return exp;
-    }
-
-    public Object getCurrent() {
-        return current;
-    }
-
-    public ProviderRegistration getRoot() {
-        return root;
-    }
-
-    public FakerContext getContext() {
-        return context;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
