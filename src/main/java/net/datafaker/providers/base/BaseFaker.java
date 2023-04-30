@@ -303,12 +303,12 @@ public class BaseFaker implements BaseProviders {
     }
 
     public static <T> T populate(Class<T> clazz) {
-        var fakeFactory = new FakeResolver<>(clazz);
+        var fakeFactory = FakeResolver.of(clazz);
         return fakeFactory.generate(null);
     }
 
     public static <T> T populate(Class<T> clazz, Schema<Object, ?> schema) {
-        var fakeFactory = new FakeResolver<>(clazz);
+        var fakeFactory = FakeResolver.of(clazz);
         return fakeFactory.generate(schema);
     }
 
