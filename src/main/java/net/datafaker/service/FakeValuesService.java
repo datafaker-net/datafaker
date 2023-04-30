@@ -273,7 +273,8 @@ public class FakeValuesService {
     }
 
     /**
-     * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive.
+     * Returns a string with the '#' characters in the parameter replaced with random digits between 0-9 inclusive or
+     * random digits in the range from 1-9 when Ø (not zero) is used.
      * <p>
      * For example, the string "ABC##EFG" could be replaced with a string like "ABC99EFG".
      */

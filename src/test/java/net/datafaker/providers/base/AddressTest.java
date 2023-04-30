@@ -261,4 +261,10 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         BaseFaker localFaker = new BaseFaker(new Locale(locale));
         assertThat(localFaker.address().streetName()).isNotEmpty();
     }
+
+    @RepeatedTest(100)
+    void dutchAddress() {
+        assertThat(NL_FAKER.address().stateAbbr()).matches("[A-Z]{2}");
+        assertThat(NL_FAKER.address().fullAddress()).matches("[A-Z].+, [0-9]{4} [A-Z]{2}, [A-Z].+");
+    }
 }
