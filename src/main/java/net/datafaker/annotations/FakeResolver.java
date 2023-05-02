@@ -2,6 +2,8 @@ package net.datafaker.annotations;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import net.datafaker.transformations.JavaObjectTransformer;
@@ -10,6 +12,8 @@ import net.datafaker.transformations.Schema;
 public class FakeResolver<T> {
 
     private static final JavaObjectTransformer JAVA_OBJECT_TRANSFORMER = new JavaObjectTransformer();
+
+    private static final Map<Class<?>, Schema<Object, ?>> DEFAULT_SCHEMA_CACHE = new IdentityHashMap<>();
 
     private final Class<T> clazz;
 
@@ -26,10 +30,14 @@ public class FakeResolver<T> {
     }
 
     private T generateFromDefaultSchema() {
-        checkFakeAnnotation(clazz);
+        Schema<Object, ?> useSchema = DEFAULT_SCHEMA_CACHE.get(clazz);
+        if (useSchema == null) {
+            checkFakeAnnotation(clazz);
 
-        FakeForSchema fakeForSchemaAnnotation = clazz.getAnnotation(FakeForSchema.class);
-        Schema<Object, ?> useSchema = getSchema(fakeForSchemaAnnotation.value());
+            FakeForSchema fakeForSchemaAnnotation = clazz.getAnnotation(FakeForSchema.class);
+            useSchema = getSchema(fakeForSchemaAnnotation.value());
+            DEFAULT_SCHEMA_CACHE.put(clazz, useSchema);
+        }
 
         return (T) JAVA_OBJECT_TRANSFORMER.apply(clazz, useSchema);
     }
