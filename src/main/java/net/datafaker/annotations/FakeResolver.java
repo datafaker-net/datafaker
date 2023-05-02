@@ -12,13 +12,23 @@ import net.datafaker.transformations.Schema;
 public class FakeResolver<T> {
 
     private static final JavaObjectTransformer JAVA_OBJECT_TRANSFORMER = new JavaObjectTransformer();
+    private static final Map<Class<?>, FakeResolver<?>> CLASS_2_FAKE_RESOLVER = new IdentityHashMap<>();
 
     private static final Map<Class<?>, Schema<Object, ?>> DEFAULT_SCHEMA_CACHE = new IdentityHashMap<>();
 
     private final Class<T> clazz;
 
-    public FakeResolver(Class<T> clazz) {
+    private FakeResolver(Class<T> clazz) {
         this.clazz = clazz;
+    }
+
+    public static <T> FakeResolver<T> of(Class<T> clazz) {
+        FakeResolver<?> fakeFactory = CLASS_2_FAKE_RESOLVER.get(clazz);
+        if (fakeFactory == null) {
+            fakeFactory = new FakeResolver<>(clazz);
+            CLASS_2_FAKE_RESOLVER.put(clazz, fakeFactory);
+        }
+        return (FakeResolver<T>) fakeFactory;
     }
 
     public T generate(Schema<Object, ?> schema) {

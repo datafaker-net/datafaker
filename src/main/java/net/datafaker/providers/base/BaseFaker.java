@@ -337,12 +337,12 @@ public class BaseFaker implements BaseProviders {
     }
 
     public static <T> T populate(Class<T> clazz) {
-        final FakeResolver<T> fakeFactory = new FakeResolver<>(clazz);
+        final FakeResolver<T> fakeFactory = FakeResolver.of(clazz);
         return fakeFactory.generate(null);
     }
 
     public static <T> T populate(Class<T> clazz, Schema<Object, ?> schema) {
-        final FakeResolver<T> fakeFactory = new FakeResolver<>(clazz);
+        final FakeResolver<T> fakeFactory = FakeResolver.of(clazz);
         return fakeFactory.generate(schema);
     }
 
