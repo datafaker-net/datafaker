@@ -1,6 +1,7 @@
 package net.datafaker.service;
 
 import com.mifmif.common.regex.Generex;
+import net.datafaker.internal.helper.COWMap;
 import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
@@ -12,7 +13,6 @@ import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
-
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -48,29 +48,34 @@ public class FakeValuesService {
     private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger("faker");
+    public static final Supplier<Map<String, Object>> MAP_STRING_OBJECT_SUPPLIER = () -> new COWMap<>(() -> new WeakHashMap<>());
+    public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> new COWMap<>(() -> new WeakHashMap<>());
 
-    private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new IdentityHashMap<>();
+    private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new COWMap<>(IdentityHashMap::new);
     public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.get(Locale.ENGLISH);
 
-    private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new IdentityHashMap<>();
-    private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new IdentityHashMap<>();
+    private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new COWMap<>(IdentityHashMap::new);
+    private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new COWMap<>(IdentityHashMap::new);
 
     private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
 
-    private final Map<String, Generex> expression2generex = new WeakHashMap<>();
-    private final Map<SingletonLocale, Map<String, String>> key2Expression = new IdentityHashMap<>();
-    private final Map<String, String[]> args2splittedArgs = new WeakHashMap<>();
-    private final Map<String, String[]> key2splittedKey = new WeakHashMap<>();
+    private final Map<String, Generex> expression2generex = new COWMap<>(WeakHashMap::new);
+    private final COWMap<SingletonLocale, Map<String, String>> key2Expression = new COWMap<>(IdentityHashMap::new);
+    private static final Map<String, String[]> ARGS_2_SPLITTED_ARGS = new COWMap<>(WeakHashMap::new);
 
-    private final Map<SingletonLocale, Map<String, Object>> key2fetchedObject = new IdentityHashMap<>();
-    private final Map<String, String> name2yaml = new WeakHashMap<>();
-    private final Map<String, String> removedUnderscore = new WeakHashMap<>();
+    private static final Map<String, String[]> KEY_2_SPLITTED_KEY = new COWMap<>(WeakHashMap::new);
 
-    private final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> mapOfMethodAndCoercedArgs = new IdentityHashMap<>();
+    private final COWMap<SingletonLocale, Map<String, Object>> key2fetchedObject = new COWMap<>(IdentityHashMap::new);
 
-    private static final Map<String, List<String>> EXPRESSION_2_SPLITTED = new WeakHashMap<>();
+    private static final Map<String, String> NAME_2_YAML = new COWMap<>(WeakHashMap::new);
 
-    private static final Map<RegExpContext, Supplier<?>> map = new HashMap<>();
+    private static final Map<String, String> REMOVED_UNDERSCORE = new COWMap<>(WeakHashMap::new);
+    private static final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> MAP_OF_METHOD_AND_COERCED_ARGS = new COWMap<>(IdentityHashMap::new);
+
+    private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new COWMap<>(WeakHashMap::new);
+
+    private static final Map<RegExpContext, Supplier<?>> REGEXP2SUPPLIER_MAP = new COWMap<>(HashMap::new);
+
     public FakeValuesService() {
     }
 
@@ -119,17 +124,15 @@ public class FakeValuesService {
         if (url == null) {
             throw new IllegalArgumentException("url should be an existing readable file");
         }
-        FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(locale, url));
-        SingletonLocale sLocale = SingletonLocale.get(locale);
-        FakeValuesInterface existingFakeValues = fakeValuesInterfaceMap.get(sLocale);
-        if (existingFakeValues == null) {
-            fakeValuesInterfaceMap.putIfAbsent(sLocale, fakeValues);
-        } else {
-            FakeValuesGrouping fakeValuesGrouping = new FakeValuesGrouping();
-            fakeValuesGrouping.add(existingFakeValues);
-            fakeValuesGrouping.add(fakeValues);
-            fakeValuesInterfaceMap.put(sLocale, fakeValuesGrouping);
-        }
+        final FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(locale, url));
+        final SingletonLocale sLocale = SingletonLocale.get(locale);
+        fakeValuesInterfaceMap.merge(sLocale, fakeValues,
+            (prevValue, newValue) -> {
+                FakeValuesGrouping fvg = new FakeValuesGrouping();
+                fvg.add(prevValue);
+                fvg.add(newValue);
+                return fvg;
+            });
     }
 
     /**
@@ -137,7 +140,7 @@ public class FakeValuesService {
      */
     public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
-        Object o = fetchObject(key, context);
+        final Object o = fetchObject(key, context);
         if (o instanceof List) {
             valuesArray = (List<?>) o;
             final int size = valuesArray.size();
@@ -211,7 +214,7 @@ public class FakeValuesService {
             if (sLocale == DEFAULT_LOCALE && localeChain.size() > 1) {
                 continue;
             }
-            final Map<String, Object> stringObjectMap = key2fetchedObject.get(sLocale);
+            Map<String, Object> stringObjectMap = key2fetchedObject.get(sLocale);
             if (stringObjectMap != null && (result = stringObjectMap.get(key)) != null) {
                 return result;
             }
@@ -232,18 +235,17 @@ public class FakeValuesService {
             result = currentValue;
             if (result != null) {
                 local2Add = sLocale;
-                key2fetchedObject.putIfAbsent(local2Add, new HashMap<>());
                 break;
             }
         }
         if (local2Add != null) {
-            key2fetchedObject.get(local2Add).put(key, result);
+            key2fetchedObject.updateNestedValue(local2Add, MAP_STRING_OBJECT_SUPPLIER, key, result);
         }
         return result;
     }
 
     private String[] split(String string) {
-        String[] result = key2splittedKey.get(string);
+        String[] result = KEY_2_SPLITTED_KEY.get(string);
         if (result != null) {
             return result;
         }
@@ -268,7 +270,7 @@ public class FakeValuesService {
             }
         }
         result[j] = String.valueOf(chars, start, chars.length - start);
-        key2splittedKey.put(string, result);
+        KEY_2_SPLITTED_KEY.putIfAbsent(string, result);
         return result;
     }
 
@@ -333,7 +335,7 @@ public class FakeValuesService {
         if (generex == null) {
             generex = new Generex(regex);
             generex.setSeed(context.getRandomService().nextLong());
-            expression2generex.put(regex, generex);
+            expression2generex.putIfAbsent(regex, generex);
         }
         return generex.random();
     }
@@ -432,8 +434,8 @@ public class FakeValuesService {
         if (expression == null) {
             expression = safeFetch(key, context, null);
             if (root == null) {
-                key2Expression.putIfAbsent(context.getSingletonLocale(), new HashMap<>());
-                key2Expression.get(context.getSingletonLocale()).put(key, expression);
+                key2Expression.updateNestedValue(context.getSingletonLocale(),
+                    MAP_STRING_STRING_SUPPLIER, key, expression);
             }
         }
 
@@ -551,11 +553,11 @@ public class FakeValuesService {
         if (cnt == 0) {
             return expression;
         }
-        final List<String> expressions = splitExpressions(expression, cnt, expressionLength);
-        final StringBuilder result = new StringBuilder(expressions.size() * expressionLength);
-        for (int i = 0; i < expressions.size(); i++) {
+        final String[] expressions = splitExpressions(expression, cnt, expressionLength);
+        final StringBuilder result = new StringBuilder(expressions.length * expressionLength);
+        for (int i = 0; i < expressions.length; i++) {
             // odd are expressions, even are not expressions, just strings
-            final String expr = expressions.get(i);
+            final String expr = expressions[i];
             if (i % 2 == 0) {
                 if (!expr.isEmpty()) {
                     result.append(expr);
@@ -563,7 +565,7 @@ public class FakeValuesService {
                 continue;
             }
             final RegExpContext regExpContext = RegExpContext.of(expr, current, root, context);
-            final Supplier<?> val = map.get(regExpContext);
+            final Supplier<?> val = REGEXP2SUPPLIER_MAP.get(regExpContext);
             final Object resolved;
             if (val != null) {
                 resolved = val.get();
@@ -590,7 +592,7 @@ public class FakeValuesService {
         if (arguments == null || (length = arguments.length()) == 0) {
             return EMPTY_ARRAY;
         }
-        String[] res = args2splittedArgs.get(arguments);
+        String[] res = ARGS_2_SPLITTED_ARGS.get(arguments);
         if (res != null) {
             return res;
         }
@@ -614,40 +616,70 @@ public class FakeValuesService {
             }
         }
         final String[] resultArray = result.toArray(EMPTY_ARRAY);
-        args2splittedArgs.put(arguments, resultArray);
+
+        ARGS_2_SPLITTED_ARGS.putIfAbsent(arguments, resultArray);
         return resultArray;
     }
 
-    private List<String> splitExpressions(String expression, int cnt, int length) {
-        List<String> result = EXPRESSION_2_SPLITTED.get(expression);
+    private String[] splitExpressions(String expression, int cnt, int length) {
+        String[] result = EXPRESSION_2_SPLITTED.get(expression);
         if (result != null) {
             return result;
         }
-        result = new ArrayList<>(2 * cnt + 1);
+        List<String> list = new ArrayList<>(2 * cnt + 1);
         boolean isExpression = false;
         int start = 0;
         int quoteCnt = 0;
         for (int i = 0; i < length; i++) {
             if (isExpression) {
                 if (expression.charAt(i) == '}' && quoteCnt % 2 == 0) {
-                    result.add(expression.substring(start, i));
+                    list.add(expression.substring(start, i));
                     start = i + 1;
                     isExpression = false;
                 } else if (expression.charAt(i) == '\'') {
                     quoteCnt++;
                 }
             } else if (i < length - 2 && expression.charAt(i) == '#' && expression.charAt(i + 1) == '{') {
-                result.add(expression.substring(start, i));
+                list.add(expression.substring(start, i));
                 isExpression = true;
                 start = i + 2;
                 i++;
             }
         }
         if (start < length) {
-            result.add(expression.substring(start));
+            list.add(expression.substring(start));
         }
-        EXPRESSION_2_SPLITTED.put(expression, result);
+        result = list.toArray(EMPTY_ARRAY);
+        EXPRESSION_2_SPLITTED.putIfAbsent(expression, result);
         return result;
+    }
+
+    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
+        Object res = resolveExpression(directive, args, current, root, context);
+        if (res instanceof CharSequence) {
+            if (((CharSequence) res).length() == 0) {
+                REGEXP2SUPPLIER_MAP.put(regExpContext, () -> "");
+            }
+            return res;
+        }
+        if (res instanceof List) {
+            Iterator<?> it = ((List<?>) res).iterator();
+            while (it.hasNext()) {
+                Object supplier = it.next();
+                Object value;
+                if (supplier instanceof Supplier<?>) {
+                    value = ((Supplier<?>) supplier).get();
+                    if (value == null) {
+                        it.remove();
+                    } else {
+                        REGEXP2SUPPLIER_MAP.put(regExpContext, (Supplier<?>) supplier);
+                        return value;
+                    }
+                }
+            }
+            return null;
+        }
+        return res;
     }
 
     /**
@@ -661,34 +693,6 @@ public class FakeValuesService {
      *
      * @return null if unable to resolve
      */
-
-    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
-        Object res = resolveExpression(directive, args, current, root, context);
-        if (res instanceof CharSequence) {
-            if (((CharSequence) res).length() == 0) {
-                map.put(regExpContext, () -> "");
-            }
-            return res;
-        }
-        if (res instanceof List) {
-            Iterator it = ((List) res).iterator();
-            while (it.hasNext()) {
-                Object supplier = it.next();
-                Object value;
-                if (supplier instanceof Supplier<?>) {
-                    value = ((Supplier<?>) supplier).get();
-                    if (value == null) {
-                        it.remove();
-                    } else {
-                        map.put(regExpContext, (Supplier<?>) supplier);
-                        return value;
-                    }
-                }
-            }
-            return null;
-        }
-        return res;
-    }
     private Object resolveExpression(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context) {
         if (directive.isEmpty()) {
             return directive;
@@ -795,7 +799,7 @@ public class FakeValuesService {
      * @return a yaml style name like 'phone_number' from a java style name like 'PhoneNumber'
      */
     private String javaNameToYamlName(String expression) {
-        String result = name2yaml.get(expression);
+        String result = NAME_2_YAML.get(expression);
         if (result != null) {
             return result;
         }
@@ -809,7 +813,7 @@ public class FakeValuesService {
             }
         }
         if (cnt == 0) {
-            name2yaml.put(expression, expression);
+            NAME_2_YAML.putIfAbsent(expression, expression);
             return expression;
         }
         final char[] res = new char[length + (firstLetterUpperCase ? cnt - 1 : cnt)];
@@ -831,7 +835,7 @@ public class FakeValuesService {
             }
         }
         result = new String(res);
-        name2yaml.put(expression, result);
+        NAME_2_YAML.putIfAbsent(expression, result);
         return result;
     }
 
@@ -894,7 +898,7 @@ public class FakeValuesService {
     private MethodAndCoercedArgs retrieveMethodAccessor(Object object, String methodName, String[] args) {
         Class<?> clazz = object.getClass();
         Map<String[], MethodAndCoercedArgs> accessorMap =
-            mapOfMethodAndCoercedArgs
+            MAP_OF_METHOD_AND_COERCED_ARGS
                 .getOrDefault(clazz, Collections.emptyMap())
                 .getOrDefault(methodName, Collections.emptyMap());
         // value could be null
@@ -902,10 +906,10 @@ public class FakeValuesService {
             return accessorMap.get(args);
         }
         final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
-        mapOfMethodAndCoercedArgs.putIfAbsent(clazz, new WeakHashMap<>());
-        final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap = mapOfMethodAndCoercedArgs.get(clazz);
-        stringMapMap.putIfAbsent(methodName, new WeakHashMap<>());
-        stringMapMap.get(methodName).put(args, accessor);
+        final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap =
+            MAP_OF_METHOD_AND_COERCED_ARGS.computeIfAbsent(clazz, t -> new COWMap<>(WeakHashMap::new));
+        stringMapMap.putIfAbsent(methodName, new COWMap<>(WeakHashMap::new));
+        stringMapMap.get(methodName).putIfAbsent(args, accessor);
         if (accessor == null) {
             LOG.fine("Can't find method on "
                 + object.getClass().getSimpleName()
@@ -961,12 +965,12 @@ public class FakeValuesService {
     }
 
     private String removeUnderscoreChars(String string) {
-        String valueWithRemovedUnderscores = removedUnderscore.get(string);
+        String valueWithRemovedUnderscores = REMOVED_UNDERSCORE.get(string);
         if (valueWithRemovedUnderscores != null) {
             return valueWithRemovedUnderscores;
         }
         if (string.indexOf('_') == -1) {
-            removedUnderscore.put(string, string.toLowerCase(Locale.ROOT));
+            REMOVED_UNDERSCORE.putIfAbsent(string, string.toLowerCase(Locale.ROOT));
             return string;
         }
         final char[] res = string.toCharArray();
@@ -983,7 +987,7 @@ public class FakeValuesService {
             }
         }
         valueWithRemovedUnderscores = String.valueOf(res, strLen - length, length);
-        removedUnderscore.put(string, valueWithRemovedUnderscores.toLowerCase(Locale.ROOT));
+        REMOVED_UNDERSCORE.putIfAbsent(string, valueWithRemovedUnderscores.toLowerCase(Locale.ROOT));
         return valueWithRemovedUnderscores;
     }
 
@@ -1022,7 +1026,7 @@ public class FakeValuesService {
                             for (Constructor<?> c : constructors) {
                                 if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == String.class) {
                                     ctor = toType.getConstructor(String.class);
-                                    CLASS_2_CONSTRUCTOR_CACHE.put(toType, ctor);
+                                    CLASS_2_CONSTRUCTOR_CACHE.putIfAbsent(toType, ctor);
                                     break;
                                 }
                             }
