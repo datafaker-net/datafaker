@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 public class JavaObjectTransformer implements Transformer<Object, Object> {
     private static final Map<Class<?>, Object> CLASS2RESULT = new IdentityHashMap<>();
-    private static final Map<Schema<Object, ?>, Consumer<Schema<Object, ?>>> SCHEMA2CONSUMER = new IdentityHashMap<>();
+    private static final Map<Schema<Object, ?>, Consumer<Object>> SCHEMA2CONSUMER = new IdentityHashMap<>();
 
     @Override
     public Object apply(Object input, Schema<Object, ?> schema) {
@@ -34,8 +34,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
             clazz = input.getClass();
             result = input;
         }
-        final Object classObject = result;
-        Consumer<Schema<Object, ?>> consumer = SCHEMA2CONSUMER.get(schema);
+        Consumer<Object> consumer = SCHEMA2CONSUMER.get(schema);
         if (consumer == null) {
             final Field<Object, ?>[] fields = schema.getFields();
             final Map<String, java.lang.reflect.Field> name2ClassField = Stream.of(clazz.getDeclaredFields()).collect(
@@ -45,7 +44,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
                 rFields[i] = name2ClassField.get(fields[i].getName());
                 rFields[i].setAccessible(true);
             }
-            consumer = objectSchema -> {
+            consumer = classObject -> {
                 try {
                     for (int i = 0; i < fields.length; i++) {
                         rFields[i].set(classObject, fields[i].transform(classObject));
@@ -56,7 +55,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
             };
             SCHEMA2CONSUMER.put(schema, consumer);
         }
-        consumer.accept(schema);
+        consumer.accept(result);
         return result;
     }
 
