@@ -82,8 +82,26 @@ See https://github.com/sparsick/test-tool-talk
     Testcontainers 1.17.6
     REST assured 5.2.1
     Awaitility 4.2.0
+    Mutation testing
  
 
+concepts such as:
 
-code quality
-- automation / sonar / qodana / 
+- requirements
+- code quality
+  - automation / sonar / qodana /
+- communication
+- validation
+- production (support/etc)
+
+Concept:
+
+The concept of the book could be a teacher explaining things to a student. Like maybe a small introduction, for example:
+
+Student: "what is the best way to test an Microservice?"
+Teacher: There's a couple of things to take into account when testing microservices, such as: x, y, z.
+
+then, after most of the concepts have been explained, supported by code examples, we would like to interview an 
+industry expert about the subject. 
+
+
