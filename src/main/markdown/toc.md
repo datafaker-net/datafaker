@@ -59,7 +59,7 @@ TODO:
     prism.js
     cucumber
     jgiven
-    rest assured
+    rest assured / API testing / RPC / failure scenarios / etc 
     beanmother
     spock
     spek
