@@ -1,7 +1,11 @@
 package net.datafaker.providers.base;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -90,6 +94,25 @@ public class Finance extends AbstractProvider<BaseProviders> {
         String basicBankAccountNumber = faker.regexify(countryCodeToBasicBankAccountNumberPattern.get(countryCode));
         String checkSum = calculateIbanChecksum(countryCode, basicBankAccountNumber);
         return countryCode + checkSum + basicBankAccountNumber;
+    }
+
+    public String usRoutingNumber() {
+        String base =
+            // 01 through 12 are the "normal" routing numbers, and correspond to the 12 Federal Reserve Banks.
+            String.format("%02d", faker.random().nextInt(12) + 1)
+            + faker.regexify("\\d{6}");
+        int check =
+           Character.getNumericValue(base.charAt(0)) * 3
+            + Character.getNumericValue(base.charAt(1)) * 7
+            + Character.getNumericValue(base.charAt(2))
+            + Character.getNumericValue(base.charAt(3)) * 3
+            + Character.getNumericValue(base.charAt(4)) * 7
+            + Character.getNumericValue(base.charAt(5))
+            + Character.getNumericValue(base.charAt(6)) * 3
+            + Character.getNumericValue(base.charAt(7)) * 7;
+        check = Math.abs(check % 10 - 10) % 10;
+
+        return base + check;
     }
 
     private CreditCardType randomCreditCardType() {
