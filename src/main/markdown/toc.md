@@ -94,6 +94,13 @@ concepts such as:
 - validation
 - production (support/etc)
 
+- simplify design (see Roch Hickey talks)
+- naming things, having semantic naming
+- ask questions, discuss
+- have design sessions
+- use the socratic method, detach from your own ideas.
+- 
+
 Concept:
 
 The concept of the book could be a teacher explaining things to a student. Like maybe a small introduction, for example:
