@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import net.datafaker.Faker;
+import net.datafaker.annotations.dto.ComplexPersonJavaRecord;
 import net.datafaker.annotations.dto.Person;
 import net.datafaker.annotations.dto.PersonJavaRecord;
 import net.datafaker.service.RandomService;
@@ -64,6 +65,16 @@ public class FakeAnnotationTest {
     }
 
     @Test
+    void shouldGenerateEntityFromJavaRecordWithComplexSchemaWhenClassTemplateWithoutAnnotation() {
+        var person = Faker.populate(ComplexPersonJavaRecord.class, complexSchema());
+
+        assertThat(person).isNotNull();
+        assertThat(person.name()).isEqualTo("Wildfire Woman");
+        assertThat(person.address()).isEqualTo("Am Buttermarkt 46b, Dannerheim, BE 32422");
+        assertThat(person.color()).isEqualTo("rot");
+    }
+
+    @Test
     void shouldGenerateEntityWithDefaultSchemaAndInDefaultSchemaInCurrentClass() {
         var person = Faker.populate(DefaultPerson.class);
 
@@ -87,6 +98,15 @@ public class FakeAnnotationTest {
     public static Schema<Object, ?> customSchema() {
         var faker = new Faker(Locale.forLanguageTag("de-en"), new RandomService(new Random(1)));
         return Schema.of(field("name", () -> faker.superhero().name()));
+    }
+
+    public static Schema<Object, ?> complexSchema() {
+        var faker = new Faker(Locale.forLanguageTag("de-en"), new RandomService(new Random(1)));
+        return Schema.of(
+            field("name", () -> faker.superhero().name()),
+            field("address", () -> faker.address().fullAddress()),
+            field("color", () -> faker.color().name())
+        );
     }
 
     @FakeForSchema("defaultSchema")
