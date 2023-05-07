@@ -77,4 +77,18 @@ class FinanceTest extends BaseFakerTest<BaseFaker> {
         String creditCard = faker.finance().creditCard(CreditCardType.DISCOVER).replace("-", "");
         assertThat(creditCard).startsWith("6").hasSize(16);
     }
+
+    @RepeatedTest(100)
+    void usRoutingNumber() {
+        String rtn = faker.finance().usRoutingNumber();
+        assertThat(rtn).matches("\\d{9}");
+        int check = 0;
+        for (int index = 0; index < 3; index++) {
+            int pos = index * 3;
+            check += Character.getNumericValue(rtn.charAt(pos)) * 3;
+            check += Character.getNumericValue(rtn.charAt(pos + 1)) * 7;
+            check += Character.getNumericValue(rtn.charAt(pos + 2));
+        }
+        assertThat(check % 10).isEqualTo(0);
+    }
 }
