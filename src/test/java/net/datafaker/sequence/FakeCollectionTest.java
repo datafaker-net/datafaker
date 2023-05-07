@@ -1,11 +1,13 @@
 package net.datafaker.sequence;
 
 import net.datafaker.AbstractFakerTest;
-import net.datafaker.formats.Format;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.Name;
 import net.datafaker.providers.base.Number;
+import net.datafaker.transformations.CompositeField;
 import net.datafaker.transformations.CsvTransformer;
+import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.RepeatedTest;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -222,36 +225,42 @@ class FakeCollectionTest extends AbstractFakerTest {
     @Test
     void toNestedJson() {
         final int limit = 2;
-        final String json =
-            Format.toJson(faker.collection()
-                    .suppliers(faker::name)
-                    .maxLen(limit)
-                    .minLen(limit)
-                    .build())
-                .set("primaryAddress", Format.toJson()
-                    .set("country", () -> faker.address().country())
-                    .set("city", () -> faker.address().city())
-                    .set("zipcode", () -> faker.address().zipCode())
-                    .set("streetAddress", () -> faker.address().streetAddress())
-                    .build())
-                .set("secondaryAddresses", Format.toJson(faker.<Address>collection()
-                        .suppliers(faker::address)
-                        .maxLen(1)
-                        .minLen(1)
-                        .build())
-                    .set("country", Address::country)
-                    .set("city", Address::city)
-                    .set("zipcode", Address::zipCode)
-                    .set("streetAddress", Address::streetAddress)
-                    .build())
-                .set("phones", name -> faker.collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
-                .build()
-                .generate();
+        JsonTransformer<Name> transformer = JsonTransformer.<Name>builder().formattedAs(JsonTransformer.JsonTransformerBuilder.FormattedAs.JSON_ARRAY).build();
+
+        FakeSequence<CompositeField<Address, String>> secondaryAddresses =
+            faker.<CompositeField<Address, String>>collection()
+            .suppliers(() ->
+                compositeField(null, new Field[]{
+                    field("country", () -> faker.address().country()),
+                    field("city", () -> faker.address().city()),
+                    field("zipcode", () -> faker.address().zipCode()),
+                    field("streetAddress", () -> faker.address().streetAddress())
+                })
+            )
+            .maxLen(1)
+            .minLen(1)
+            .build();
+
+        String json = transformer.generate(
+            faker.<Name>collection().minLen(limit).maxLen(limit)
+                .suppliers(faker::name)
+                .build(),
+            Schema.of(
+                compositeField("primaryAddress", new Field[]{
+                    field("country", () -> faker.address().country()),
+                    field("city", () -> faker.address().city()),
+                    field("zipcode", () -> faker.address().zipCode()),
+                    field("streetAddress", () -> faker.address().streetAddress())
+                }),
+                field("secondaryAddresses", secondaryAddresses::get),
+                field("phones", name -> faker.collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
+            ));
+
 
         System.out.println(json);
         int numberOfLines = 0;
         for (int i = 0; i < json.length(); i++) {
-            if (json.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
+            if (json.regionMatches(i, "}," + System.lineSeparator(), 0, ("}," + System.lineSeparator()).length())) {
                 numberOfLines++;
             }
         }
