@@ -84,11 +84,11 @@ class FinanceTest extends BaseFakerTest<BaseFaker> {
         assertThat(rtn).matches("\\d{9}");
         int check = 0;
         for (int index = 0; index < 3; index++) {
-            int pos = index * 3;
+            final int pos = index * 3;
             check += Character.getNumericValue(rtn.charAt(pos)) * 3;
             check += Character.getNumericValue(rtn.charAt(pos + 1)) * 7;
             check += Character.getNumericValue(rtn.charAt(pos + 2));
         }
-        assertThat(check % 10).isEqualTo(0);
+        assertThat(check % 10).isZero();
     }
 }

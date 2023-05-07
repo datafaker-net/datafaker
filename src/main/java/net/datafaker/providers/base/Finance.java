@@ -78,10 +78,11 @@ public class Finance extends AbstractProvider<BaseProviders> {
     }
 
     public String usRoutingNumber() {
-        String base =
+        final int random = faker.random().nextInt(12) + 1;
+        final String base =
             // 01 through 12 are the "normal" routing numbers, and correspond to the 12 Federal Reserve Banks.
-            String.format("%02d", faker.random().nextInt(12) + 1)
-            + faker.regexify("\\d{6}");
+            (random < 10 ? "0" : "") + random
+            + faker.numerify("######");
         int check =
             Character.getNumericValue(base.charAt(0)) * 3
             + Character.getNumericValue(base.charAt(1)) * 7
