@@ -3,7 +3,9 @@ package net.datafaker.transformations;
 import net.datafaker.sequence.FakeSequence;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.RecordComponent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -23,7 +25,32 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
         if (input instanceof Class) {
             clazz = (Class) input;
             result = CLASS2RESULT.get(clazz);
-            if (result == null) {
+        } else {
+            clazz = input.getClass();
+            result = input;
+        }
+
+        if (result == null) {
+            if (clazz.isRecord()) {
+                Class<?>[] componentTypes = Arrays.stream(clazz.getRecordComponents())
+                    .map(RecordComponent::getType)
+                    .toArray(Class<?>[]::new);
+
+                final Field<Object, ?>[] fields = schema.getFields();
+                final Object[] values = new Object[fields.length];
+                for (int i = 0; i < fields.length; i++) {
+                    values[i] = fields[i].transform(result);
+                }
+
+                try {
+                    result = clazz.getDeclaredConstructor(componentTypes).newInstance(values);
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                         InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+
+                return result;
+            } else {
                 try {
                     result = clazz.getDeclaredConstructor().newInstance();
                     CLASS2RESULT.put(clazz, result);
@@ -32,10 +59,8 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
                     throw new RuntimeException(e);
                 }
             }
-        } else {
-            clazz = input.getClass();
-            result = input;
         }
+
         Consumer<Object> consumer = SCHEMA2CONSUMER.get(schema);
         if (consumer == null) {
             final Field<Object, ?>[] fields = schema.getFields();

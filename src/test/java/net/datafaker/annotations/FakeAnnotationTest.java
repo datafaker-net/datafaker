@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.datafaker.Faker;
 import net.datafaker.annotations.dto.Person;
+import net.datafaker.annotations.dto.PersonJavaRecord;
 import net.datafaker.service.RandomService;
 import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.Test;
@@ -23,11 +24,27 @@ public class FakeAnnotationTest {
     }
 
     @Test
+    void shouldGenerateEntityFromJavaRecordWithDefaultSchema() {
+        var person = Faker.populate(PersonJavaRecord.class);
+
+        assertThat(person).isNotNull();
+        assertThat(person.name()).isEqualTo("Dr Alexis Noël");
+    }
+
+    @Test
     void shouldGenerateEntityWithCustomSchema() {
         var person = Faker.populate(Person.class, customSchema());
 
         assertThat(person).isNotNull();
         assertThat(person.getName()).isEqualTo("Wildfire Woman");
+    }
+
+    @Test
+    void shouldGenerateEntityFromJavaRecordWithCustomSchema() {
+        var person = Faker.populate(PersonJavaRecord.class, customSchema());
+
+        assertThat(person).isNotNull();
+        assertThat(person.name()).isEqualTo("Wildfire Woman");
     }
 
     @Test
@@ -39,8 +56,24 @@ public class FakeAnnotationTest {
     }
 
     @Test
+    void shouldGenerateEntityFromJavaRecordWithCustomSchemaWhenClassTemplateWithoutAnnotation() {
+        var person = Faker.populate(SimplePersonJavaRecord.class, customSchema());
+
+        assertThat(person).isNotNull();
+        assertThat(person.name).isEqualTo("Wildfire Woman");
+    }
+
+    @Test
     void shouldGenerateEntityWithDefaultSchemaAndInDefaultSchemaInCurrentClass() {
         var person = Faker.populate(DefaultPerson.class);
+
+        assertThat(person).isNotNull();
+        assertThat(person.name).isNotNull();
+    }
+
+    @Test
+    void shouldGenerateEntityFromJavaRecordWithDefaultSchemaAndInDefaultSchemaInCurrentClass() {
+        var person = Faker.populate(DefaultPersonJavaRecord.class);
 
         assertThat(person).isNotNull();
         assertThat(person.name).isNotNull();
@@ -66,4 +99,9 @@ public class FakeAnnotationTest {
 
         private String name;
     }
+
+    @FakeForSchema("defaultSchema")
+    public record DefaultPersonJavaRecord(String name) { }
+
+    public record SimplePersonJavaRecord(String name) { }
 }

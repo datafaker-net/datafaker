@@ -20,6 +20,8 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
 
     }
 
+    public record Client(String firstName, String lastName, String phoneNumber, int id) { }
+
     @Test
     void javaObjectTest() {
         JavaObjectTransformer jTransformer = new JavaObjectTransformer();
@@ -39,4 +41,25 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
         }
         assertThat(persons).hasSize(10);
     }
+
+    @Test
+    void javaRecordTest() {
+        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
+        Schema<Object, ?> schema = Schema.of(
+            field("firstName", () -> faker.name().firstName()),
+            field("lastName", () -> faker.name().lastName()),
+            field("phoneNumber", () -> faker.phoneNumber().phoneNumberInternational()),
+            field("id", () -> faker.number().positive()));
+
+        Collection<Client> clients = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Client client = (Client) jTransformer.apply(Client.class, schema);
+            assertThat(client.firstName()).isNotNull();
+            assertThat(client.lastName()).isNotNull();
+            assertThat(client.phoneNumber()).isNotNull();
+            clients.add(client);
+        }
+        assertThat(clients).hasSize(10);
+    }
+
 }
