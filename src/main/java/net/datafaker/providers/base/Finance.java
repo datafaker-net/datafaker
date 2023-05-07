@@ -77,6 +77,25 @@ public class Finance extends AbstractProvider<BaseProviders> {
         return countryCode + checkSum + basicBankAccountNumber;
     }
 
+    public String usRoutingNumber() {
+        String base =
+            // 01 through 12 are the "normal" routing numbers, and correspond to the 12 Federal Reserve Banks.
+            String.format("%02d", faker.random().nextInt(12) + 1)
+            + faker.regexify("\\d{6}");
+        int check =
+            Character.getNumericValue(base.charAt(0)) * 3
+            + Character.getNumericValue(base.charAt(1)) * 7
+            + Character.getNumericValue(base.charAt(2))
+            + Character.getNumericValue(base.charAt(3)) * 3
+            + Character.getNumericValue(base.charAt(4)) * 7
+            + Character.getNumericValue(base.charAt(5))
+            + Character.getNumericValue(base.charAt(6)) * 3
+            + Character.getNumericValue(base.charAt(7)) * 7;
+        check = Math.abs(check % 10 - 10) % 10;
+
+        return base + check;
+    }
+
     private CreditCardType randomCreditCardType() {
         return CreditCardType.values()[this.faker.random().nextInt(CreditCardType.values().length)];
     }
