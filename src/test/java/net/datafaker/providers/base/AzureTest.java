@@ -161,4 +161,9 @@ class AzureTest extends BaseFakerTest<BaseFaker> {
     void testLogAnalytics() {
         assertThat(faker.azure().logAnalytics()).matches("^log-[0-9a-f]{16}$");
     }
+    
+    @Test
+    void testSpringApps() {
+        assertThat(faker.azure().springApps()).matches("^sa-[0-9a-f]{16}$");
+    }
 }
