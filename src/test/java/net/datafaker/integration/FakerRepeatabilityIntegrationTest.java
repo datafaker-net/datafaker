@@ -5,6 +5,8 @@ import com.google.common.collect.Maps;
 import net.datafaker.Faker;
 import net.datafaker.providers.base.AbstractProvider;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,6 +20,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class FakerRepeatabilityIntegrationTest {
 
     @Test
