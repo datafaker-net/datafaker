@@ -314,7 +314,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
         Date now = new Date();
         Date nowMinus5Hours = new Date(now.getTime() - MILLIS_IN_AN_HOUR * 5);
 
-        Date date = dateFormat.parse(fakeValuesService.expression("#{date.past '5','TimeUnit.HOURS'}", faker, context));
+        Date date = dateFormat.parse(fakeValuesService.expression("#{date.past '4','TimeUnit.HOURS'}", faker, context));
 
         assertThat(date.getTime()).isStrictlyBetween(nowMinus5Hours.getTime(), now.getTime());
     }
