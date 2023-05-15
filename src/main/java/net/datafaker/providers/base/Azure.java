@@ -142,7 +142,7 @@ public class Azure extends AbstractProvider<BaseProviders> {
     }
     
     public String springApps() {
-        return "sa-" = randHex();
+        return "sa-" + randHex();
     }
 
     private String randHex() {
