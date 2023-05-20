@@ -48,18 +48,18 @@ public class Number extends AbstractProvider<BaseProviders> {
      * @return a random number on faker.number() between min and max
      * if min = max, return min
      */
-    public int numberBetween(int min, int max) {
+    public int numberBetween(final int min, final int max) {
         if (min == max) return min;
         final int realMin = Math.min(min, max);
         final int realMax = Math.max(min, max);
-        if (isValidRange(realMin, realMax)) {
-            return faker.random().nextInt(realMax - realMin) + realMin;
+        final int amplitude = realMax - realMin;
+        if (isValidRange(realMin, realMax, amplitude)) {
+            return faker.random().nextInt(amplitude) + realMin;
         }
-        return decimalBetween(realMin, realMax).intValue();
+        return (int) numberBetween(realMin, (long) realMax);
     }
 
-    private boolean isValidRange(int realMin, int realMax) {
-        final int amplitude = realMax - realMin;
+    private boolean isValidRange(final int realMin, final int realMax, final int amplitude) {
         return amplitude >= realMin && (realMin >= 0 || amplitude >= realMax);
     }
 
@@ -73,13 +73,14 @@ public class Number extends AbstractProvider<BaseProviders> {
         if (min == max) return min;
         final long realMin = Math.min(min, max);
         final long realMax = Math.max(min, max);
-        if (isValidRange(realMin, realMax)) {
+        final long amplitude = realMax - realMin;
+        if (isValidRange(realMin, realMax, amplitude)) {
             return faker.random().nextLong(realMax - realMin) + realMin;
         }
         return decimalBetween(realMin, realMax).longValue();
     }
-    private boolean isValidRange(long realMin, long realMax) {
-        final long amplitude = realMax - realMin;
+
+    private boolean isValidRange(long realMin, long realMax, final long amplitude) {
         return amplitude >= realMin && (realMin >= 0 || amplitude >= realMax);
     }
 
