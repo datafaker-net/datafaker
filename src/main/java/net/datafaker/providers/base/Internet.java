@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 public class Internet extends AbstractProvider<BaseProviders> {
     private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
     private static final Pattern COLON = Pattern.compile(":");
+    private static final List<String> HTTP_SCHEMES = List.of("http://", "https://");
 
     protected Internet(BaseProviders faker) {
         super(faker);
@@ -66,7 +67,49 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return resolve("internet.domain_suffix");
     }
 
+    /**
+     * Returns a string representing a web URL, randomly including: http/https scheme, port, path
+     * elements (2 or none), file element (1 or none), params (2 or none), anchor (1 or none).
+     * 
+     * @return a web URL
+     * @since 2.0.0
+     */
     public String url() {
+       final byte[] bts = faker.random().nextRandomBytes(6);
+        return url(bts[0] % 2 == 0, bts[1] % 2 == 0,
+                bts[2] % 2 == 0, bts[3] % 2 == 0,
+                bts[4] % 2 == 0, bts[5] % 2 == 0);
+    }
+
+    /**
+     * Returns a string representing a web URL, with various elements controlled by the caller.
+     * 
+     * @param schemeChoice if true will be random http or https, if false will be https
+     * @param portChoice if true a random port will be included, if false no port will be included
+     * @param pathChoice if true two random path elements will be included, if false no path elements will be included
+     * @param fileChoice if true the path will end with a random word element instead of a slash, if false it will end with a slash
+     * @param paramsChoice if true two random name value pairs will be included, if false no params will be included
+     * @param anchorChoice if true a random anchor will be included, if false no anchor will be included
+     * @return a web URL
+     * @since 2.0.0
+     */
+    public String url(boolean schemeChoice, boolean portChoice, boolean pathChoice, boolean fileChoice, boolean paramsChoice, boolean anchorChoice) {
+        String scheme = schemeChoice ? HTTP_SCHEMES.get(faker.random().nextInt(0, 1)) : "https://";
+        String port = portChoice ? (":" + port()) : "";
+        String path = pathChoice ? ("/" + slug(faker.lorem().words(2), "/")) : "/";
+        String file = fileChoice ? faker.lorem().words(1).get(0) : "";
+        String params = paramsChoice ? ("?" + slug(faker.lorem().words(2), "=") + "&" + slug(faker.lorem().words(2), "=")) : "";
+        String anchor = anchorChoice ? ("#" + faker.lorem().words(1).get(0)) : "";
+        return scheme + webdomain() + port + path + file + params + anchor;
+    }
+
+    /**
+     * Returns a web domain.
+     * 
+     * @return a web domain in the form "www.example.com"
+     * @since 2.0.0
+     */
+    public String webdomain() {
         return String.join("",
             "www",
             ".",
