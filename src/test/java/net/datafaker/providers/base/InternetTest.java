@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import static java.lang.Integer.parseInt;
 import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class InternetTest extends BaseFakerTest<BaseFaker> {
 
@@ -75,8 +77,16 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testUrl() {
-        assertThat(faker.internet().url()).matches("www\\.(\\w|-)+\\.\\w+");
+    void testWebdomain() {
+        assertThat(faker.internet().webdomain()).matches("www\\.[\\w-]+\\.\\w+");
+    }
+
+    @RepeatedTest(100)
+    void testUrl() throws MalformedURLException {
+        // This test assumes that java.net.URL has better validation than we can come up with in
+        // regex.
+        String url = faker.internet().url();
+        assertDoesNotThrow(() -> new URL(url));
     }
 
     @Test
@@ -359,7 +369,7 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         assertThat(f.internet().domainName()).isNotEmpty();
         assertThat(f.internet().emailAddress()).isNotEmpty();
         assertThat(f.internet().safeEmailAddress()).isNotEmpty();
-        assertThat(f.internet().url()).isNotEmpty();
+        assertThat(f.internet().webdomain()).isNotEmpty();
     }
 
     @Test
