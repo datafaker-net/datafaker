@@ -47,7 +47,7 @@ https://www.coffeeandtips.com/post/how-to-generate-random-data-using-datafaker-l
 
 **February 11, 2022**
 
-*Piotr Minkowski* was one of the first people to twitter about Datafaker:  
+*Piotr Minkowski* was one of the first people to tweet about Datafaker:  
 
 https://twitter.com/piotr_minkowski/status/1491780736847810560/photo/1
 
