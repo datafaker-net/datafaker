@@ -1,5 +1,11 @@
 # Articles and news
 
+**June 9, 2023**
+
+*Christophe Vaudry* started writing a French series about Datafaker, which you can find here: 
+
+https://medium.com/norsys-octogone/introduction-%C3%A0-datafaker-1-fournisseurs-de-donn%C3%A9es-factices-dad4cd901e97
+
 **October 20, 2022**
 
 *Eugene Kovko* wrote an excellent getting started guide for Baeldung, which you can find here:
