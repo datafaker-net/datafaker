@@ -8,7 +8,9 @@
 
 This library is a modern fork of [java-faker](https://github.com/DiUS/java-faker) with up to date libraries and several newly added Fake Generators. 
 
-Datafaker 1.x is built on Java 8, while Datafaker 2.x has Java 17 as the minimum requirement.
+Datafaker 2.x has Java 17 as the minimum requirement. 
+
+*If Java 17 is not an option for you, you can choose to use Datafaker 1.x. Datafaker 1.x is built on Java 8, but this version is no longer maintained. We recommend all users to upgrade to Datafaker 2.x.*
 
 This library generates fake data, similar to other fake data generators, such as:
 
@@ -28,7 +30,7 @@ In the pom.xml, add the following fragment to the `dependencies` section:
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>1.9.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -36,12 +38,12 @@ For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:1.9.0'
+    implementation 'net.datafaker:datafaker:2.0.0'
 }
 
 ```
 
-You can also use the snapshot version (`2.0.0-SNAPSHOT`), which automatically gets published
+You can also use the snapshot version (`2.1.0-SNAPSHOT`), which automatically gets published
 after every push to the main branch of this repository. Binary repository URL for snapshots download is
 https://s01.oss.sonatype.org/content/repositories/snapshots/.
 
