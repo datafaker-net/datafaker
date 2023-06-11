@@ -439,6 +439,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Verb
 * Volleyball
 * Weather
+* Webseries
 * Witcher
 * Yoda
 * Zelda
