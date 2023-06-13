@@ -5,7 +5,7 @@ package net.datafaker.providers.base;
  */
 public class Compass extends AbstractProvider<BaseProviders> {
 
-    enum CompassPoint {
+    public enum CompassPoint {
         CARDINAL("cardinal"),
         ORDINAL("ordinal"),
         HALF_WIND("half-wind"),

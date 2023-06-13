@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class Finance extends AbstractProvider<BaseProviders> {
 
-    enum CreditCardType {
+    public enum CreditCardType {
         VISA,
         MASTERCARD,
         DISCOVER,
