@@ -273,4 +273,8 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     void australiaAddress() {
         assertThat(AU_FAKER.address().fullAddress()).matches("(Unit|[0-9]).+, [A-Z].+, [A-Z]{2,3} [0-9]{4}");
     }
+    @RepeatedTest(100)
+    void testCityCnSuffix() {
+        assertThat(new Faker(Locale.CHINA).address().citySuffix()).matches("[\\u4e00-\\u9fa5]{1,7}(?:省|自治区)");
+    }
 }
