@@ -157,7 +157,7 @@ class CsvTest extends AbstractFakerTest {
             .suppliers(() -> faker.number().randomDigit())
             .len(3)
             .build();
-        ;
+
         String csv = transformer.generate(fakeSequence, schema);
 
         String expected =
