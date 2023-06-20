@@ -24,7 +24,7 @@ class CustomFakerTest {
     }
 
     public static class Insect extends AbstractProvider<BaseProviders> {
-        private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
+        private static final String[] INSECT_NAMES = {"Ant", "Beetle", "Butterfly", "Wasp"};
 
         public Insect(BaseProviders faker) {
             super(faker);

@@ -34,7 +34,7 @@ public abstract class FakeSequence<T> implements Iterable<T> {
         return null;
     }
 
-    public static abstract class Builder<T> {
+    public abstract static class Builder<T> {
         protected final List<Supplier<T>> suppliers;
         protected int minLength = -1;
         protected int maxLength = -1;

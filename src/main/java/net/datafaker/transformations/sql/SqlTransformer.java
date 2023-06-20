@@ -149,7 +149,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                 result.append(", ");
             }
         }
-        return result.length() > 0 ? "(" + result + ")" : result.toString();
+        return !result.isEmpty() ? "(" + result + ")" : result.toString();
     }
 
     private String handleObjectInArray(Object value) {
@@ -354,10 +354,10 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         for (int i = 0; i < limit; i++) {
             IN input = inputs != null ? inputs.get(i) : null;
             sb.append(apply(input, schema, i));
-            if (i == limit - 1 && sb.length() > 0 || batchSize > 0 && (i + 1) % batchSize == 0) {
+            if (i == limit - 1 && !sb.isEmpty() || batchSize > 0 && (i + 1) % batchSize == 0) {
                 sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));
                 sb.append(";");
-                if (i < limit - 1 && sb.length() > 0) {
+                if (i < limit - 1 && !sb.isEmpty()) {
                     sb.append(LINE_SEPARATOR);
                 }
             }

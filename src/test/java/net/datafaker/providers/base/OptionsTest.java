@@ -26,33 +26,33 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testOptionWithVarargs() {
-        Integer[] integerOptions = new Integer[]{1, 3, 4, 5};
+        Integer[] integerOptions = {1, 3, 4, 5};
         assertThat(opt.option(1, 3, 4, 5)).isIn((Object[]) integerOptions);
-        Long[] longOptions = new Long[]{1L, 3L, 4L, 5L};
+        Long[] longOptions = {1L, 3L, 4L, 5L};
         assertThat(opt.option(longOptions)).isIn((Object[]) longOptions);
-        Short[] shortOptions = new Short[]{1, 3, 4};
+        Short[] shortOptions = {1, 3, 4};
         assertThat(opt.option(shortOptions)).isIn((Object[]) shortOptions);
-        Byte[] byteOptions = new Byte[]{(byte) 11, (byte) 13, (byte) 14};
+        Byte[] byteOptions = {(byte) 11, (byte) 13, (byte) 14};
         assertThat(opt.option(byteOptions)).isIn((Object[]) byteOptions);
-        Double[] doubleOptions = new Double[]{1.1d, 13d, 14.2d};
+        Double[] doubleOptions = {1.1d, 13d, 14.2d};
         assertThat(opt.option(doubleOptions)).isIn((Object[]) doubleOptions);
-        Float[] floatOptions = new Float[]{1.2f, 13f, 14.2f};
+        Float[] floatOptions = {1.2f, 13f, 14.2f};
         assertThat(opt.option(floatOptions)).isIn((Object[]) floatOptions);
-        BigInteger[] bigIntegerOptions = new BigInteger[]{BigInteger.ONE, BigInteger.TEN, BigInteger.ZERO};
+        BigInteger[] bigIntegerOptions = {BigInteger.ONE, BigInteger.TEN, BigInteger.ZERO};
         assertThat(opt.option(bigIntegerOptions)).isIn((Object[]) bigIntegerOptions);
-        BigDecimal[] bigDecimalOptions = new BigDecimal[]{BigDecimal.ONE, BigDecimal.TEN, BigDecimal.ZERO};
+        BigDecimal[] bigDecimalOptions = {BigDecimal.ONE, BigDecimal.TEN, BigDecimal.ZERO};
         assertThat(opt.option(bigDecimalOptions)).isIn((Object[]) bigDecimalOptions);
-        Boolean[] booleanOptions = new Boolean[]{true, false};
+        Boolean[] booleanOptions = {true, false};
         assertThat(opt.option(booleanOptions)).isIn((Object[]) booleanOptions);
     }
 
     @Test
     void testSubset() {
-        Integer[] integerOptions = new Integer[]{1, 3, 4, 5};
+        Integer[] integerOptions = {1, 3, 4, 5};
         assertThat(opt.subset(1, integerOptions))
             .doesNotContainAnyElementsOf(List.of(2, 6))
             .containsAnyElementsOf(List.of(integerOptions));
-        Long[] longOptions = new Long[]{1L, 3L, 4L, 5L};
+        Long[] longOptions = {1L, 3L, 4L, 5L};
         assertThat(opt.subset(1, longOptions))
             .doesNotContainAnyElementsOf(List.of(2L, 6L))
             .containsAnyElementsOf(List.of(longOptions));
@@ -65,7 +65,7 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
             .doesNotContainAnyElementsOf(List.of(2L, 6L))
             .containsAnyElementsOf(List.of(longOptions)).hasSameSizeAs(longOptions);
 
-        String[] strOptions = new String[]{"1", "2", "3"};
+        String[] strOptions = {"1", "2", "3"};
         assertThat(opt.subset(strOptions.length + 1, strOptions))
             .doesNotContainAnyElementsOf(List.of("q", "w"))
             .containsAnyElementsOf(List.of(strOptions)).hasSameSizeAs(strOptions);
@@ -79,19 +79,19 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testSubsetWithDuplicate() {
-        Object[] array = new Object[]{1, 1, 2, 2};
+        Object[] array = {1, 1, 2, 2};
         assertThat(opt.subset(5, array)).hasSize(2);
-        String[] strArray = new String[]{"a", "s", "s", "a"};
+        String[] strArray = {"a", "s", "s", "a"};
         assertThat(opt.subset(Integer.MAX_VALUE, strArray)).hasSize(2);
     }
 
     @Test
     void testEmptySubset() {
-        Object[] array = new Object[]{1, 2, 3};
+        Object[] array = {1, 2, 3};
         assertThat(opt.subset(0, array)).isEmpty();
         assertThatThrownBy(() -> opt.subset(-1, array))
             .isInstanceOf(IllegalArgumentException.class);
-        String[] strArray = new String[]{"1", "2", "3"};
+        String[] strArray = {"1", "2", "3"};
         assertThat(opt.subset(0, strArray)).isEmpty();
         assertThatThrownBy(() -> opt.subset(-1, strArray)).isInstanceOf(IllegalArgumentException.class);
     }
@@ -103,7 +103,7 @@ class OptionsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testNextArrayElement() {
-        Integer[] array = new Integer[]{1, 2, 3, 5, 8, 13, 21};
+        Integer[] array = {1, 2, 3, 5, 8, 13, 21};
 
         for (int i = 1; i < 10; i++) {
             assertThat(opt.nextElement(array)).isIn((Object[]) array);

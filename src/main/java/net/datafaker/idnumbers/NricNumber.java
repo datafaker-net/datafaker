@@ -29,7 +29,7 @@ public class NricNumber implements IdNumbers {
             }
         }
 
-    private static final int[] CODE = new int[]{0, 2, 7, 6, 5, 4, 3, 2};
+    private static final int[] CODE = {0, 2, 7, 6, 5, 4, 3, 2};
     private static final String FIN_LETTERS = "XWUTRQPNMLK";
     private static final String UIN_LETTERS = "JZIHGFEDCBA";
     private static final Map<Type, NricType> INITIALIZER = new EnumMap<>(Type.class);

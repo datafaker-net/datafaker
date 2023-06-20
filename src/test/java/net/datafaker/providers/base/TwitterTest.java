@@ -69,7 +69,7 @@ class TwitterTest extends BaseFakerTest<BaseFaker> {
     void testTextKeyWords() {
         int sentenceMaxLength = 15;
         int wordMaxLength = 5;
-        String[] keywords = new String[]{"buy", "see"};
+        String[] keywords = {"buy", "see"};
         String text = faker.twitter().text(keywords, sentenceMaxLength, wordMaxLength);
         String[] textwords = text.split(" ");
         boolean flag = true;
