@@ -55,7 +55,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
         Set<String> locales = new HashSet<>();
         for (String s: paths) {
             try {
-                final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
+                final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
 
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -71,7 +71,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
                                 locales.add(filename.substring(0, filename.indexOf('.')));
                             }
                         } else if (filename.endsWith(".jar") && fileMasks.stream().anyMatch(filename::contains)) {
-                            final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
+                            final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
 
                                 @Override
                                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
