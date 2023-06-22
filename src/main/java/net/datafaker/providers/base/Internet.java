@@ -185,13 +185,13 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public String macAddress(String prefix) {
         final String tmp = (prefix == null) ? "" : prefix;
-        final int prefixLength = tmp.trim().length() == 0
+        final int prefixLength = tmp.trim().isEmpty()
             ? 0
             : COLON.split(tmp).length;
 
         final StringBuilder out = new StringBuilder(tmp);
         for (int i = 0; i < 6 - prefixLength; i++) {
-            if (out.length() > 0) {
+            if (!out.isEmpty()) {
                 out.append(':');
             }
             out.append(Integer.toHexString(faker.random().nextInt(16)));

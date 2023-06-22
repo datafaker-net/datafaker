@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class EsMXIdNumber implements IdNumbers {
 
-    private static final String[] CHA = new String[]{
+    private static final String[] CHA = {
         "HEFA560427MVZRRL04",
         "DKEM193827HDQWEF05",
         "KAKS142444HNSSFAW6",

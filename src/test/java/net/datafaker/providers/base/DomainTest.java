@@ -15,7 +15,7 @@ class DomainTest extends BaseFakerTest<BaseFaker> {
     void testFirstLevelDomain() {
         String[] components = faker.domain().firstLevelDomain("example").split("\\.");
         for (String str : components) {
-            assert (str.length() > 0);
+            assert (!str.isEmpty());
         }
     }
 
@@ -29,7 +29,7 @@ class DomainTest extends BaseFakerTest<BaseFaker> {
     void testSecondLevelDomain() {
         String[] components = faker.domain().secondLevelDomain("example").split("\\.");
         for (String str : components) {
-            assert (str.length() > 0);
+            assert (!str.isEmpty());
         }
     }
 
@@ -44,7 +44,7 @@ class DomainTest extends BaseFakerTest<BaseFaker> {
     void testFullDomain() {
         String[] components = faker.domain().fullDomain("example").split("\\.");
         for (String str : components) {
-            assert (str.length() > 0);
+            assert (!str.isEmpty());
         }
     }
 
@@ -58,7 +58,7 @@ class DomainTest extends BaseFakerTest<BaseFaker> {
     void testValidDomain() {
         String[] components = faker.domain().validDomain("example").split("\\.");
         for (String str : components) {
-            assert (str.length() > 0);
+            assert (!str.isEmpty());
         }
     }
 }
