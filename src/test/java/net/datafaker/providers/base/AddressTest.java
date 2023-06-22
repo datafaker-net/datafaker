@@ -43,7 +43,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         (decimalDelimiter, delimiter) ->
             Pattern.compile("-?\\d{1,3}" + decimalDelimiter + "\\d{5,10}+" + delimiter + "-?\\d{1,2}" + decimalDelimiter + "\\d{5,10}");
 
-    private static final Function<Locale, String> ESCAPED_DECIMAL_SEPARATOR = t -> "\\" + new DecimalFormatSymbols(t).getDecimalSeparator();
+    private final static Function<Locale, String> ESCAPED_DECIMAL_SEPARATOR = t -> "\\" + new DecimalFormatSymbols(t).getDecimalSeparator();
 
     @Test
     void testStreetName() {
