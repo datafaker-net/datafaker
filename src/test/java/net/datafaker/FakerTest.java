@@ -5,6 +5,7 @@ import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.reflections.Reflections;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -307,6 +309,18 @@ class FakerTest extends AbstractFakerTest {
         localFaker.doWith(stringCallable, Locale.SIMPLIFIED_CHINESE);
         for (int i = 0; i < 10; i++) {
             assertThat(localFaker.doWith(stringCallable, new Locale("ru_RU"))).matches("[а-яА-ЯЁё ]+");
+        }
+    }
+
+    @Test
+    @Timeout(value = 1, unit = TimeUnit.MINUTES)
+    void issue883Test() throws InterruptedException {
+        for (int i = 0; i < 10_000_000; i++) {
+            Faker f = new Faker();
+            String s = f.ancient().god();
+            if (i % 1_000_000 == 0) {
+                Thread.sleep(10);
+            }
         }
     }
 
