@@ -169,8 +169,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
         }
 
         // retrieve next locale in shuffledLocales and remove from list
-        String pickedLocale = shuffledLocales.get(0);
-        shuffledLocales.remove(0);
+        String pickedLocale = shuffledLocales.get(shuffledLocales.size() - 1);
+        shuffledLocales.remove(shuffledLocales.size() - 1);
 
         return pickedLocale;
     }

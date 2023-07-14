@@ -367,7 +367,7 @@ class FakerTest extends AbstractFakerTest {
         final int numberOfTestsPerMethod = 100;
         final Reflections reflections = new Reflections("net.datafaker.providers");
         final Set<Class<?>> classes = reflections.get(SubTypes.of(AbstractProvider.class).asClass());
-        for (var clazz: classes) {
+        for (var clazz : classes) {
             final Collection<Method> methods = Arrays.stream(clazz.getDeclaredMethods())
                 .filter(m -> Modifier.isPublic(m.getModifiers()) && m.getParameterCount() == 0).collect(Collectors.toSet());
             if (methods.isEmpty()) continue;
@@ -378,21 +378,21 @@ class FakerTest extends AbstractFakerTest {
                     Arrays.stream(clazz.getDeclaredConstructors())
                         .filter(c -> c.getParameterCount() == 1).map(c -> (Constructor<AbstractProvider<?>>) c)
                         .collect(Collectors.toSet());
-                for (var c: constructorsWith1Arg) {
-                     final Class<?>[] types = c.getParameterTypes();
-                     if (types[0].isAssignableFrom(Faker.class)) {
-                         constructor = c;
-                         break;
-                     }
-                 }
-                 assertThat(constructor).isNotNull();
-                 constructor.setAccessible(true);
-                 ap = constructor.newInstance(faker);
+                for (var c : constructorsWith1Arg) {
+                    final Class<?>[] types = c.getParameterTypes();
+                    if (types[0].isAssignableFrom(Faker.class)) {
+                        constructor = c;
+                        break;
+                    }
+                }
+                assertThat(constructor).isNotNull();
+                constructor.setAccessible(true);
+                ap = constructor.newInstance(faker);
             } catch (InvocationTargetException | InstantiationException |
                      IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
-            for (Method m: methods) {
+            for (Method m : methods) {
                 final var set = new HashSet<>();
                 try {
                     int currentSize = 0;
