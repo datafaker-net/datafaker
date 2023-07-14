@@ -1,5 +1,6 @@
 package net.datafaker.service;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class RandomService {
@@ -104,5 +105,19 @@ public class RandomService {
 
     public Random getRandomInternal() {
         return random;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RandomService that)) return false;
+
+        return Objects.equals(random, that.random);
+    }
+
+    @Override
+    public int hashCode() {
+        if (random == SHARED_RANDOM) return 1;
+        return random != null ? random.hashCode() : 0;
     }
 }
