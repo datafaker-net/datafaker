@@ -318,7 +318,7 @@ class FakerTest extends AbstractFakerTest {
         for (int i = 0; i < 10_000_000; i++) {
             Faker f = new Faker();
             String s = f.ancient().god();
-            if (i % 1000_000 == 0) {
+            if (i % 1_000_000 == 0) {
                 Thread.sleep(10);
             }
         }
