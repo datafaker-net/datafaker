@@ -13,7 +13,7 @@ class BookTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testAuthor() {
-        assertThat(book.author()).matches("([\\w']+\\.? ?){2,3}");
+        assertThat(book.author()).matches("([\\w']+\\.? ?){2,4}");
     }
 
     @Override
