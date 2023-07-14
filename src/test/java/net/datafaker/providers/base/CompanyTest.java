@@ -14,7 +14,7 @@ class CompanyTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testName() {
-        assertThat(company.name()).matches("[A-Za-z\\-&', ]+");
+        assertThat(company.name()).matches("[A-Za-z\\-&',. ]+");
     }
 
     @Override
