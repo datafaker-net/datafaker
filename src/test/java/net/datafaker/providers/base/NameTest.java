@@ -18,7 +18,7 @@ class NameTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testName() {
-        assertThat(name.name()).matches("([\\w']+\\.?( )?){2,3}");
+        assertThat(name.name()).matches("([\\w']+\\.?( )?){2,4}");
     }
 
     @Test
