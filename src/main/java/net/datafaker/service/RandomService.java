@@ -103,6 +103,11 @@ public class RandomService {
         return new String(hexChars);
     }
 
+    public <T extends Enum<T>> T enumValue(Class<T> enumClass) {
+        T[] constants = enumClass.getEnumConstants();
+        return constants[nextInt(0, constants.length - 1)];
+    }
+
     public Random getRandomInternal() {
         return random;
     }
