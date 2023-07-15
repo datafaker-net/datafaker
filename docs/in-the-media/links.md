@@ -1,5 +1,9 @@
 # Articles and news
 
+**June 15, 2023**
+
+We published an article on DZone about major release of Datafaker 2.0, which you can find here: https://dzone.com/articles/datafaker-20
+
 **June 9, 2023**
 
 *Christophe Vaudry* started writing a French series about Datafaker, which you can find here: 
