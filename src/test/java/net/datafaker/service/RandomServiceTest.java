@@ -46,8 +46,7 @@ class RandomServiceTest extends AbstractFakerTest {
     @MethodSource("randomServiceProvider")
     void testIntInRange(RandomService randomService) {
         final Condition<Integer> lessThanOrEqual = new Condition<>(t -> t <= 5, "should be less than or equal 5");
-        final Condition<Integer> greaterThanOrEqual = new Condition<>(t -> t >= -5,
-                                                                      "should be greater than or equal -5");
+        final Condition<Integer> greaterThanOrEqual = new Condition<>(t -> t >= -5, "should be greater than or equal -5");
         for (int i = 1; i < 100; i++) {
             assertThat(randomService.nextInt(-5, 5))
                 .is(allOf(lessThanOrEqual, greaterThanOrEqual));
@@ -87,8 +86,7 @@ class RandomServiceTest extends AbstractFakerTest {
     @MethodSource("randomServiceProvider")
     void testDoubleInRange(RandomService randomService) {
         final Condition<Double> lessThanOrEqual = new Condition<>(t -> t <= 5d, "should be less than or equal 5");
-        final Condition<Double> greaterThanOrEqual = new Condition<>(t -> t >= -5d,
-                                                                     "should be greater than or equal -5");
+        final Condition<Double> greaterThanOrEqual = new Condition<>(t -> t >= -5d, "should be greater than or equal -5");
         for (int i = 1; i < 100; i++) {
             assertThat(randomService.nextDouble(-5, 5)).is(allOf(lessThanOrEqual, greaterThanOrEqual));
         }
@@ -97,13 +95,10 @@ class RandomServiceTest extends AbstractFakerTest {
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     void testLongInRange(RandomService randomService) {
-        final Condition<Long> lessThanOrEqual = new Condition<>(t -> t <= 5_000_000_000L,
-                                                                "should be less than or equal 5_000_000_000L");
-        final Condition<Long> greaterThanOrEqual = new Condition<>(t -> t >= -5_000_000_000L,
-                                                                   "should be greater than or equal -5_000_000_000L");
+        final Condition<Long> lessThanOrEqual = new Condition<>(t -> t <= 5_000_000_000L, "should be less than or equal 5_000_000_000L");
+        final Condition<Long> greaterThanOrEqual = new Condition<>(t -> t >= -5_000_000_000L, "should be greater than or equal -5_000_000_000L");
         for (int i = 1; i < 1_000; i++) {
-            assertThat(randomService.nextLong(-5_000_000_000L, 5_000_000_000L)).is(
-                allOf(lessThanOrEqual, greaterThanOrEqual));
+            assertThat(randomService.nextLong(-5_000_000_000L, 5_000_000_000L)).is(allOf(lessThanOrEqual, greaterThanOrEqual));
         }
     }
 
