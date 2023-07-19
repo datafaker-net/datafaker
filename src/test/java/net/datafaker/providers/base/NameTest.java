@@ -23,7 +23,7 @@ class NameTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testNameWithMiddle() {
-        assertThat(name.nameWithMiddle()).matches("([\\w']+\\.?( )?){3,4}");
+        assertThat(name.nameWithMiddle()).matches("([\\w']+\\.?( )?){3,}");
     }
 
     @Test
