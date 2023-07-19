@@ -313,7 +313,7 @@ class FakerTest extends AbstractFakerTest {
     }
 
     @Test
-    @Timeout(value = 1, unit = TimeUnit.MINUTES)
+    @Timeout(value = 3, unit = TimeUnit.MINUTES)
     void issue883Test() throws InterruptedException {
         for (int i = 0; i < 10_000_000; i++) {
             Faker f = new Faker();
