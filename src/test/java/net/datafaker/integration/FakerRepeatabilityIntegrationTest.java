@@ -54,7 +54,7 @@ public class FakerRepeatabilityIntegrationTest {
         assertThat(difference.entriesDiffering()).hasSizeGreaterThan(difference.entriesInCommon().size());
     }
 
-    private static Map<String, String> buildReport(Faker faker) throws IllegalAccessException, InvocationTargetException {
+    public static Map<String, String> buildReport(Faker faker) throws IllegalAccessException, InvocationTargetException {
         Map<String, String> result = new HashMap<>();
 
         // Need to sort the methods since they are sometimes returned in a different order
