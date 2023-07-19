@@ -370,9 +370,29 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
+                    <excludes>
+                        <exclude>**/FakerRepeatabilityIntegrationTest.java</exclude>
+                    </excludes>
                     <useManifestOnlyJar>false</useManifestOnlyJar>
                     <argLine>${surefire.argline}</argLine>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <phase>integration-test</phase>
+                        <configuration>
+                            <excludes>
+                                <exclude>none</exclude>
+                            </excludes>
+                            <includes>
+                                <include>**/FakerRepeatabilityIntegrationTest.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
