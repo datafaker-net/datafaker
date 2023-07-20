@@ -30,8 +30,5 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: ./mvnw $mvn_options verify -PnoGpg --file pom.xml
-      - uses: codecov/codecov-action@v3
-        with:
-          directory: ./target/site/jacoco/
-          files: ./jacoco.xml
-          name: codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
