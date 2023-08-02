@@ -2,7 +2,7 @@ package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
 
-import java.util.StringJoiner;
+import java.util.Iterator;
 
 public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
     public static final String DEFAULT_SEPARATOR = ";";
@@ -46,12 +46,17 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
         StringBuilder sb = new StringBuilder();
         generateHeader(schema, sb);
 
-        StringJoiner data = new StringJoiner(LINE_SEPARATOR);
-        for (IN in : input) {
-            data.add(apply(in, schema));
+        Iterator<IN> iterator = input.iterator();
+        boolean hasNext = iterator.hasNext();
+        while (hasNext) {
+            IN in = iterator.next();
+            sb.append(apply(in, schema));
+            hasNext = iterator.hasNext();
+            if (hasNext) {
+                sb.append(LINE_SEPARATOR);
+            }
         }
 
-        sb.append(data);
         return sb.toString();
     }
 
