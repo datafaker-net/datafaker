@@ -65,13 +65,16 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private void addCharSequence(StringBuilder sb, CharSequence charSequence) {
         sb.append(quote);
-        for (int j = 0; j < charSequence.length(); j++) {
+        int i = 0;
+        final int length = charSequence.length();
+        for (int j = 0; j < length; j++) {
             final char c = charSequence.charAt(j);
             if (c == quote) {
-                sb.append(quote);
+                sb.append(charSequence, i, j + 1).append(quote);
+                i = j + 1;
             }
-            sb.append(c);
         }
+        sb.append(charSequence, i, length);
         sb.append(quote);
     }
 
