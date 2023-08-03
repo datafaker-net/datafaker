@@ -79,6 +79,15 @@ public class Aviation extends AbstractProvider<BaseProviders> {
     }
 
     /**
+     * Provides a name of an aviation-related manufacturer.
+     * Sources: <a href="https://www.icao.int/publications/DOC8643/Pages/Manufacturers.aspx">ICAO publications</a>
+     * and <a href="https://www.aviationfanatic.com/ent_list.php?ent=3&pg=1">aviationfanatic.com</a>
+     */
+    public String manufacturer() {
+        return resolve("aviation.manufacturer");
+    }
+
+    /**
      * Returns a flight number (IATA or ICAO format).
      *
      * @return A random flight number with IATA or ICAO format in a String.
