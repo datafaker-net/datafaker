@@ -43,6 +43,8 @@ class AviationTest extends BaseFakerTest<BaseFaker> {
             TestSpec.of(aviation::armyHelicopter, "aviation.aircraft.army_helicopter"),
             TestSpec.of(aviation::METAR, "aviation.metar"),
             TestSpec.of(aviation::manufacturer, "aviation.manufacturer"),
+            TestSpec.of(aviation::specialTypeDesignator, "aviation.aircraft_type_special_designator"),
+            TestSpec.of(aviation::engineType, "aviation.engine_type"),
             TestSpec.of(aviation::airline, "aviation.airline"));
     }
 }

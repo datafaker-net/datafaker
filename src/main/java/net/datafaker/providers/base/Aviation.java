@@ -88,6 +88,22 @@ public class Aviation extends AbstractProvider<BaseProviders> {
     }
 
     /**
+     * Provides an aircraft special type designator.
+     * Source: <a href="https://www.icao.int/publications/DOC8643/Pages/SpecialDesignators.aspx">ICAO publications</a>
+     */
+    public String specialTypeDesignator() {
+        return resolve("aviation.aircraft_type_special_designator");
+    }
+
+    /**
+     * Provides engine type name.
+     * Source: <a href="https://www.icao.int/publications/DOC8643/Pages/Search.aspx">ICAO publications</a>
+     */
+    public String engineType() {
+        return resolve("aviation.engine_type");
+    }
+
+    /**
      * Returns a flight number (IATA or ICAO format).
      *
      * @return A random flight number with IATA or ICAO format in a String.

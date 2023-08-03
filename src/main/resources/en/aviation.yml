@@ -1,6 +1,24 @@
 en:
   faker:
     aviation:
+      aircraft_type_special_designator:
+      - "ZZZZ"
+      - "SHIP"
+      - "BALL"
+      - "GLID"
+      - "ULAC"
+      - "GYRO"
+      - "UHEL"
+      - "PARA"
+      - "GLID"
+      - "FFLO"
+      - "VFHC"
+      engine_type:
+      - "Electric"
+      - "Jet"
+      - "Piston"
+      - "Rocket"
+      - "Turboprop/Turboshaft"
       manufacturer:
       - "AERO SYSTEMS WEST"
       - "AQUILINE DRONES"
