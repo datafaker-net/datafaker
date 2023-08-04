@@ -129,6 +129,33 @@ public class Aviation extends AbstractProvider<BaseProviders> {
     }
 
     /**
+     * Returns a flight status.
+     *
+     *  @return A randomly selected flight status in a String.
+     */
+    public String flightStatus() {
+        return resolve("aviation.flight_status");
+    }
+
+    /**
+     * Returns a gate id.
+     *
+     *  @return A random airport gate id.
+     */
+    public String gate() {
+        var shouldBePureNumeric = faker.random().nextBoolean();
+
+        String gate;
+        if (shouldBePureNumeric) {
+            gate = String.valueOf(faker.number().numberBetween(1, 256));
+        } else {
+            gate = faker.regexify("[A-Z]") + faker.number().numberBetween(1, 256);
+        }
+
+        return gate;
+    }
+
+    /**
      * Returns an airline name.
      *
      * @return A randomly selected airline name in a String.

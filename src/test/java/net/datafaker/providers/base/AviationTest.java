@@ -31,6 +31,11 @@ class AviationTest extends BaseFakerTest<BaseFaker> {
         assertThat(aviation.aircraft()).isNotEmpty();
     }
 
+    @Test
+    void gate() {
+        assertThat(aviation.gate()).isNotEmpty();
+    }
+
     @Override
     protected Collection<TestSpec> providerListTest() {
         return List.of(TestSpec.of(aviation::airport, "aviation.airport", "\\w{4}"),
@@ -45,6 +50,7 @@ class AviationTest extends BaseFakerTest<BaseFaker> {
             TestSpec.of(aviation::manufacturer, "aviation.manufacturer"),
             TestSpec.of(aviation::specialTypeDesignator, "aviation.aircraft_type_special_designator"),
             TestSpec.of(aviation::engineType, "aviation.engine_type"),
+            TestSpec.of(aviation::flightStatus, "aviation.flight_status"),
             TestSpec.of(aviation::airline, "aviation.airline"));
     }
 }
