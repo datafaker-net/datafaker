@@ -12,11 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -91,7 +87,7 @@ class XmlTest {
             field("root",
                 () -> List.of(
                     field("firstName", Name::firstName),
-                    field("username", Name::username))));
+                    field("lastName", Name::lastName))));
 
         XmlTransformer<Name> transformer = new XmlTransformer.XmlTransformerBuilder<Name>().pretty(true).build();
         String xml = transformer.generate(

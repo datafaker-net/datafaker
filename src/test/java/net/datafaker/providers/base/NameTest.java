@@ -1,19 +1,13 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
 
 class NameTest extends BaseFakerTest<BaseFaker> {
 
-    @Spy
-    private BaseFaker mockedFaker;
     private final Name name = faker.name();
 
     @Test
@@ -77,19 +71,6 @@ class NameTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testTitle() {
         assertThat(name.title()).matches("(\\w+\\.?( )?){3}");
-    }
-
-    @RepeatedTest(100)
-    void testUsername() {
-        assertThat(name.username()).matches("^(\\w+)\\.(\\w+)$");
-    }
-
-    @Test
-    void testUsernameWithSpaces() {
-        final Name name = Mockito.spy(new Name(mockedFaker));
-        doReturn("Compound Name").when(name).firstName();
-        doReturn(name).when(mockedFaker).name();
-        assertThat(mockedFaker.name().username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
 }
