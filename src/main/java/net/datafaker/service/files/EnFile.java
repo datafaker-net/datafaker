@@ -226,6 +226,7 @@ public class EnFile {
         "sword_art_online.yml",
         "tea.yml",
         "team.yml",
+        "tire.yml",
         "the_expanse.yml",
         "the_it_crowd.yml",
         "the_kingkiller_chronicle.yml",
