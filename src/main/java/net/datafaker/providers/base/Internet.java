@@ -25,8 +25,35 @@ public class Internet extends AbstractProvider<BaseProviders> {
         super(faker);
     }
 
+
+    /**
+     * A lowercase username composed of the first_name and last_name joined with a '.'. Some examples are:
+     * <ul>
+     *     <li>(template) {@link Name#firstName()}.{@link Name#lastName()}</li>
+     *     <li>jim.jones</li>
+     *     <li>jason.leigh</li>
+     *     <li>tracy.jordan</li>
+     * </ul>
+     *
+     * @return a random two part username.
+     * @see Name#firstName()
+     * @see Name#lastName()
+     */
+    public String username() {
+        StringBuilder result = new StringBuilder();
+        final String firstName = faker.name().firstName().toLowerCase(faker.getContext().getLocale()) + "." + faker.name().lastName().toLowerCase(faker.getContext().getLocale());
+        for (int i = 0; i < firstName.length(); i++) {
+            final char c = firstName.charAt(i);
+            if (c == '\'' || Character.isWhitespace(c)) {
+                continue;
+            }
+            result.append(c);
+        }
+        return result.toString();
+    }
+
     public String emailAddress() {
-        return emailAddress(faker.name().username());
+        return emailAddress(faker.internet().username());
     }
 
     public String emailAddress(String localPart) {
@@ -34,7 +61,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String safeEmailAddress() {
-        return safeEmailAddress(faker.name().username());
+        return safeEmailAddress(faker.internet().username());
     }
 
     public String safeEmailAddress(String localPart) {

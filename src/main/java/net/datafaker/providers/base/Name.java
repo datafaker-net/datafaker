@@ -116,21 +116,13 @@ public class Name extends AbstractProvider<BaseProviders> {
      *     <li>tracy.jordan</li>
      * </ul>
      *
-     * @return a random two part user name.
+     * @deprecated Use Internet.username() instead.
+     * @return a random two part username.
      * @see Name#firstName()
      * @see Name#lastName()
      */
+    @Deprecated
     public String username() {
-
-        StringBuilder result = new StringBuilder();
-        final String firstName = firstName().toLowerCase(faker.getContext().getLocale()) + "." + lastName().toLowerCase(faker.getContext().getLocale());
-        for (int i = 0; i < firstName.length(); i++) {
-            final char c = firstName.charAt(i);
-            if (c == '\'' || Character.isWhitespace(c)) {
-                continue;
-            }
-            result.append(c);
-        }
-        return result.toString();
+        return faker.internet().username();
     }
 }

@@ -4,23 +4,39 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
-import static org.assertj.core.api.Assertions.anyOf;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.doReturn;
 
 class InternetTest extends BaseFakerTest<BaseFaker> {
+
+    @Spy
+    private BaseFaker mockedFaker;
+
+    @RepeatedTest(100)
+    void testUsername() {
+        assertThat(faker.internet().username()).matches("^(\\w+)\\.(\\w+)$");
+    }
+
+    @Test
+    void testUsernameWithSpaces() {
+        final Name name = Mockito.spy(new Name(mockedFaker));
+        doReturn("Compound Name").when(name).firstName();
+        doReturn(name).when(mockedFaker).name();
+        assertThat(mockedFaker.internet().username()).matches("^(\\w+)\\.(\\w+)$");
+    }
 
     @Test
     void testEmailAddress() {
@@ -82,7 +98,7 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(100)
-    void testUrl() throws MalformedURLException {
+    void testUrl() {
         // This test assumes that java.net.URL has better validation than we can come up with in
         // regex.
         String url = faker.internet().url();
@@ -168,8 +184,8 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
             results.add(faker.internet().password(1, 10));
         }
 
-        final List<String> min = results.stream().filter(x -> x.length() == 1).collect(Collectors.toList());
-        final List<String> max = results.stream().filter(x -> x.length() == 10).collect(Collectors.toList());
+        final List<String> min = results.stream().filter(x -> x.length() == 1).toList();
+        final List<String> max = results.stream().filter(x -> x.length() == 10).toList();
 
         assertThat(min.size()).isPositive();
         assertThat(max.size()).isPositive();
