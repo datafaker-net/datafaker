@@ -114,6 +114,7 @@ en:
       - "Ahch-To"
       - "Bespin"
       - "Cantonica"
+      - "Christophsis"
       - "Coruscant"
       - "Cloud City"
       - "Crait"
@@ -405,6 +406,7 @@ en:
         - "That's no moon. It's a space station."
         - "I felt a great disturbance in the Force. As if millions of voices suddenly cried out in terror and were suddenly silenced."
         - "Use the Force, Luke."
+        - "Hello there."
         padme_amidala:
         - "So this is how liberty dies. With thunderous applause."
         - "Ani? My goodness, you've grown."
