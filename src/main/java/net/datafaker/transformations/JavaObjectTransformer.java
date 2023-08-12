@@ -46,18 +46,15 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
                 }
             }
 
-            final Field<Object, ?>[] fields = schema.getFields();
-            final Object[] values = new Object[fields.length];
-            for (int i = 0; i < fields.length; i++) {
-                values[i] = fields[i].transform(result);
+            result = getObject(schema, result, recordConstructor);
+        } else if (!hasParameterlessPublicConstructor(clazz)) {
+            Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.get(clazz);
+            if (primaryConstructor == null) {
+                primaryConstructor = clazz.getDeclaredConstructors()[0];
+                CLASS2CONSTRUCTOR.put(clazz, primaryConstructor);
             }
 
-            try {
-                result = recordConstructor.newInstance(values);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-
+            result = getObject(schema, result, primaryConstructor);
         } else {
             result = CLASS2RESULT.get(clazz);
             if (result == null) {
@@ -106,11 +103,11 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
             collection = new ArrayList<>(((FakeSequence<Object>) input).get());
         } else {
             collection = new ArrayList<>();
-            for (Object o: input) {
+            for (Object o : input) {
                 collection.add(o);
             }
         }
-        for (Object elem: collection) {
+        for (Object elem : collection) {
             apply(elem, schema);
         }
         return collection;
@@ -119,5 +116,28 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
     @Override
     public Object generate(Schema<Object, ?> schema, int limit) {
         throw new UnsupportedOperationException("Object as input is required");
+    }
+
+    private Object getObject(Schema<Object, ?> schema, Object result, Constructor<?> recordConstructor) {
+        final Field<Object, ?>[] fields = schema.getFields();
+        final Object[] values = new Object[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            values[i] = fields[i].transform(result);
+        }
+
+        try {
+            return recordConstructor.newInstance(values);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean hasParameterlessPublicConstructor(Class<?> clazz) {
+        for (Constructor<?> constructor : clazz.getConstructors()) {
+            if (constructor.getParameterCount() == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }
