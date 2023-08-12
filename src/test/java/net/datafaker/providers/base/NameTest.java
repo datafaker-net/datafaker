@@ -1,10 +1,11 @@
 package net.datafaker.providers.base;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static net.datafaker.assertj.DatafakerAssertions.assertThat;
 
 class NameTest extends BaseFakerTest<BaseFaker> {
 
@@ -12,12 +13,12 @@ class NameTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testName() {
-        assertThat(name.name()).matches("([\\w']+\\.?( )?){2,4}");
+        assertThat(name.name()).isName();
     }
 
-    @Test
+    @RepeatedTest(1000)
     void testNameWithMiddle() {
-        assertThat(name.nameWithMiddle()).matches("([\\w']+\\.?( )?){3,}");
+        assertThat(name.nameWithMiddle()).isNameWithMiddleName();
     }
 
     @Test
