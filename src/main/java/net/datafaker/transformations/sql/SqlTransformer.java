@@ -92,20 +92,16 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                 return SqlDialect.getFirstRow(
                         dialect, () -> appendTableInfo(fields), () -> addValues(input, fields), keywordCase);
             } else {
-                return "," + LINE_SEPARATOR
-                        + SqlDialect.getOtherRow(
-                        dialect, () -> appendTableInfo(fields), () -> addValues(input, fields), keywordCase);
+                return String.join(LINE_SEPARATOR, ",",
+                        SqlDialect.getOtherRow(
+                        dialect, () -> appendTableInfo(fields), () -> addValues(input, fields), keywordCase));
             }
         } else {
-            return INSERT_INTO.getValue(keywordCase)
-                    + " "
-                    + appendTableInfo(fields)
-                    + " "
-                    + VALUES.getValue(keywordCase)
-                    + " "
-                    + addValues(input, fields);
+            return String.join(" ", INSERT_INTO.getValue(keywordCase),
+                    appendTableInfo(fields),
+                    VALUES.getValue(keywordCase),
+                    addValues(input, fields));
         }
-
     }
 
     private String addValues(IN input, Field<?, ? extends CharSequence>[] fields) {
