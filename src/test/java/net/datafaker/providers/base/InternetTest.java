@@ -30,6 +30,11 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.internet().username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
+    @RepeatedTest(10)
+    void emailSubject() {
+        assertThat(faker.internet().emailSubject()).isNotBlank();
+    }
+
     @Test
     void testUsernameWithSpaces() {
         final Name name = Mockito.spy(new Name(mockedFaker));
