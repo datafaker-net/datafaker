@@ -7,6 +7,16 @@ en:
       - "hotmail.com"
       safe_email:
       - "example.com"
+      email_subject:
+      - "You're Invited!"
+      - "Are You Interested In #{Hobby.activity}?"
+      - "Studies show only 10% of people can do #{OlympicSport.summerOlympics}!"
+      - "Free Resources to Help You Win #{VideoGame.title}!"
+      - "Visit #{Country.name}"
+      - "Want to play a game?"
+      - "Since we can’t all win the lottery..."
+      - "#{FamousLastWords}"
+      - "Happy Holidays From #{Company.name}"
       domain_suffix:
       - "com"
       - "biz"

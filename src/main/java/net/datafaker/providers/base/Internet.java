@@ -72,6 +72,10 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return String.join("", stripAccents(localPart), "@", domain);
     }
 
+    public String emailSubject() {
+        return resolve("internet.email_subject");
+    }
+
     public static final Pattern DIACRITICS_AND_FRIENDS
         = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
