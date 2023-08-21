@@ -7,7 +7,7 @@ import net.datafaker.providers.base.AbstractProvider;
  */
 public class StarWars extends AbstractProvider<EntertainmentProviders> {
 
-    private final String[] CHARACTERS = {"admiral_ackbar", "ahsoka_tano", "anakin_skywalker", "asajj_ventress",
+    private static final String[] CHARACTERS = {"admiral_ackbar", "ahsoka_tano", "anakin_skywalker", "asajj_ventress",
         "bendu", "boba_fett", "c_3po", "count_dooku", "darth_caedus", "darth_vader", "emperor_palpatine", "finn",
         "general_hux", "grand_admiral_thrawn", "grand_moff_tarkin", "greedo", "han_solo", "jabba_the_hutt",
         "jar_jar_binks", "k_2so", "kylo_ren", "lando_calrissian", "leia_organa", "luke_skywalker", "mace_windu",
@@ -26,7 +26,7 @@ public class StarWars extends AbstractProvider<EntertainmentProviders> {
     }
 
     public String quotes() {
-        return resolve("star_wars.quotes." + CHARACTERS[faker.random().nextInt(CHARACTERS.length)]);
+        return resolve("star_wars.quotes." + getFaker().options().option(CHARACTERS));
     }
 
     public String vehicles() {
@@ -50,6 +50,6 @@ public class StarWars extends AbstractProvider<EntertainmentProviders> {
     }
 
     public String alternateCharacterSpelling() {
-        return resolve("star_wars.alternate_character_spellings." + CHARACTERS[faker.random().nextInt(CHARACTERS.length)]);
+        return resolve("star_wars.alternate_character_spellings." + getFaker().options().option(CHARACTERS));
     }
 }
