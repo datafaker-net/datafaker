@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -75,7 +76,7 @@ public class BaseFakerTest<T extends BaseFaker> {
             return;
         }
         // Given
-        List<String> actual = getBaseList(testSpec.key);
+        Set<String> actual = new HashSet<>(getBaseList(testSpec.key));
         // When
         String item = (String) testSpec.supplier.get();
         // Then

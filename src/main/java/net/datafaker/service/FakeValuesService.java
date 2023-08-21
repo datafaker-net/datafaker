@@ -301,7 +301,7 @@ public class FakeValuesService {
     }
 
     private String bothify(String input, FakerContext context, boolean isUpper, boolean numerify, boolean letterify) {
-        final int baseChar = isUpper ? 65 : 97;
+        final int baseChar = isUpper ? 'A' : 'a';
         final char[] res = input.toCharArray();
         for (int i = 0; i < res.length; i++) {
             switch (res[i]) {
