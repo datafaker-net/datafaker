@@ -64,11 +64,11 @@ class JsonTest {
         String json = transformer.generate(fakeSequence, schema);
 
         String expected = "{" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"wo9\"}" + LINE_SEPARATOR +
-            "{\"Number\": 6, \"Password\": \"691u00\"}" + LINE_SEPARATOR +
-            "{\"Number\": 7, \"Password\": \"2249sil\"}" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"nf3\"}" + LINE_SEPARATOR +
+            "{\"Number\": 6, \"Password\": \"4b0v69\"}" + LINE_SEPARATOR +
+            "{\"Number\": 7, \"Password\": \"00827v2\"}" + LINE_SEPARATOR +
             "{\"Number\": 1, \"Password\": \"5\"}" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"mq6\"}" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"p6x\"}" + LINE_SEPARATOR +
             "}";
 
         assertThat(json).isEqualTo(expected);
@@ -91,11 +91,11 @@ class JsonTest {
         String json = transformer.generate(fakeSequence, schema);
 
         String expected = "{" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"wo9\"}," + LINE_SEPARATOR +
-            "{\"Number\": 6, \"Password\": \"691u00\"}," + LINE_SEPARATOR +
-            "{\"Number\": 7, \"Password\": \"2249sil\"}," + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"nf3\"}," + LINE_SEPARATOR +
+            "{\"Number\": 6, \"Password\": \"4b0v69\"}," + LINE_SEPARATOR +
+            "{\"Number\": 7, \"Password\": \"00827v2\"}," + LINE_SEPARATOR +
             "{\"Number\": 1, \"Password\": \"5\"}," + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"mq6\"}" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"p6x\"}" + LINE_SEPARATOR +
             "}";
 
         assertThat(json).isEqualTo(expected);
@@ -119,8 +119,8 @@ class JsonTest {
         String json = transformer.generate(fakeSequence, schema);
 
         String expected = "[" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"429\"}" + LINE_SEPARATOR +
-            "{\"Number\": 1, \"Password\": \"4\"}" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"0p4\"}" + LINE_SEPARATOR +
+            "{\"Number\": 8, \"Password\": \"714487nf\"}" + LINE_SEPARATOR +
             "]";
 
         assertThat(json).isEqualTo(expected);

@@ -134,11 +134,11 @@ class CsvTest extends AbstractFakerTest {
 
         String expected =
             "\"Number\",\"Password\"" + LINE_SEPARATOR
-                + "3,\"wo9\"" + LINE_SEPARATOR
-                + "6,\"691u00\"" + LINE_SEPARATOR
-                + "7,\"2249sil\"" + LINE_SEPARATOR
+                + "3,\"nf3\"" + LINE_SEPARATOR
+                + "6,\"4b0v69\"" + LINE_SEPARATOR
+                + "7,\"00827v2\"" + LINE_SEPARATOR
                 + "1,\"5\"" + LINE_SEPARATOR
-                + "3,\"mq6\"";
+                + "3,\"p6x\"";
 
         assertThat(csv).isEqualTo(expected);
     }
@@ -162,9 +162,9 @@ class CsvTest extends AbstractFakerTest {
 
         String expected =
             "\"Number\",\"Password\"" + LINE_SEPARATOR
-                + "3,\"429\"" + LINE_SEPARATOR
-                + "1,\"4\"" + LINE_SEPARATOR
-                + "1,\"9\"";
+                + "3,\"0p4\"" + LINE_SEPARATOR
+                + "8,\"714487nf\"" + LINE_SEPARATOR
+                + "5,\"0v691\"";
 
         assertThat(csv).isEqualTo(expected);
     }
