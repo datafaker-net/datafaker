@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
  */
 public class Finance extends AbstractProvider<BaseProviders> {
 
+    public static final BigInteger A_CODE = BigInteger.valueOf(97L);
+
     public enum CreditCardType {
         VISA,
         MASTERCARD,
@@ -142,11 +144,11 @@ public class Finance extends AbstractProvider<BaseProviders> {
     }
 
     private static String calculateIbanChecksum(String countryCode, String basicBankAccountNumber) {
-        String basis = basicBankAccountNumber + countryCode + "00";
+        String basis = (basicBankAccountNumber + countryCode).toLowerCase(Locale.ROOT) + "00";
 
-        final char[] characters = basis.toLowerCase().toCharArray();
-        final StringBuilder sb = new StringBuilder(characters.length);
-        for (char c : characters) {
+        final StringBuilder sb = new StringBuilder(basis.length());
+        for (int i = 0; i < basis.length(); i++) {
+            final char c = basis.charAt(i);
             if (Character.isLetter(c)) {
                 sb.append((c - 'a') + 10);
             } else {
@@ -154,7 +156,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
             }
         }
 
-        int mod97 = new BigInteger(sb.toString()).mod(BigInteger.valueOf(97L)).intValue();
+        int mod97 = new BigInteger(sb.toString()).mod(A_CODE).intValue();
         return padLeftZeros(String.valueOf(98 - mod97), 2);
     }
 
