@@ -2,14 +2,8 @@ package net.datafaker.idnumbers.pt.br;
 
 public final class DocumentFormatterUtil {
 
-    public static final String D_REGEX = "\\D+";
-
     private DocumentFormatterUtil() {
     }
-
-    private static final String PATTERN_CPF = "([0-9]{3})([0-9]{3})([0-9]{3})([0-9]{2})";
-
-    private static final String PATTERN_CNPJ = "([0-9]{2})([0-9]{3})([0-9]{3})([0-9]{4})([0-9]{2})";
 
     public static String cnpj(String cnpj) {
         StringBuilder sb = new StringBuilder(20);
@@ -22,7 +16,12 @@ public final class DocumentFormatterUtil {
     }
 
     public static String cpf(String cpf) {
-        return cpf.replaceAll(PATTERN_CPF, "$1.$2.$3-$4");
+        StringBuilder sb = new StringBuilder(20);
+        sb.append(cpf, 0, 3)
+                .append('.').append(cpf, 3, 6)
+                .append('.').append(cpf, 6, 9)
+                .append('-').append(cpf, 9, cpf.length());
+        return sb.toString();
     }
 
     public static String unmask(String doc) {
