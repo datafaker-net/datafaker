@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.regex.Pattern;
 
 /**
  * @since 0.8.0
  */
 public class Company extends AbstractProvider<BaseProviders> {
 
-    private static final Pattern UNWANTED_CHARACTERS = Pattern.compile("[.,' ]");
     private volatile List<String> allBuzzwords = null;
     private final Lock lock = new ReentrantLock();
 
@@ -92,7 +90,17 @@ public class Company extends AbstractProvider<BaseProviders> {
     }
 
     private String domainName() {
-        return UNWANTED_CHARACTERS.matcher(name().toLowerCase(faker.getContext().getLocale())).replaceAll("");
+        String value = name().toLowerCase(faker.getContext().getLocale());
+        StringBuilder sb = new StringBuilder(value.length());
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            switch (c) {
+                case '.', ',', '\'', ' ', ']' -> {
+                }
+                default -> sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
     private String domainSuffix() {
