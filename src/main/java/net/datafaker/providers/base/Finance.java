@@ -50,26 +50,37 @@ public class Finance extends AbstractProvider<BaseProviders> {
         createCountryCodeToBasicBankAccountNumberPatternMap();
 
     public String creditCard(CreditCardType creditCardType) {
-        final String key = "finance.credit_card.%s".formatted(creditCardType.toString().toLowerCase(Locale.ROOT));
+        final String key = "finance.credit_card." + creditCardType.toString().toLowerCase(Locale.ROOT);
         String value = resolve(key);
         final String template = faker.numerify(value);
 
-        String[] split = EMPTY_STRING.split(NUMBERS.matcher(template).replaceAll(""));
-        List<Integer> reversedAsInt = new ArrayList<>();
-        for (int i = 0; i < split.length; i++) {
-            final String current = split[split.length - 1 - i];
-            if (!current.isEmpty()) {
-                reversedAsInt.add(Integer.valueOf(current));
-            }
-        }
+        int[] digits = template.chars().filter(Character::isDigit).boxed().mapToInt(t -> t - '0').toArray();
         int luhnSum = 0;
         int multiplier = 1;
-        for (Integer digit : reversedAsInt) {
+        for (int i = digits.length - 1; i >= 0; i--) {
             multiplier = (multiplier == 2 ? 1 : 2);
-            luhnSum += sum(EMPTY_STRING.split(String.valueOf(digit * multiplier)));
+            luhnSum += sumOfDigits(digits[i] * multiplier);
         }
         int luhnDigit = (10 - (luhnSum % 10)) % 10;
-        return template.replace('\\', ' ').replace('/', ' ').trim().replace('L', String.valueOf(luhnDigit).charAt(0));
+        StringBuilder res = new StringBuilder(template.length());
+        for (int i = 0; i < template.length(); i++) {
+            final char c = template.charAt(i);
+            switch (c) {
+                case '/', '\\' -> {if (!res.isEmpty() && i != template.length() - 1) {res.append(' ');}}
+                case 'L' -> res.append(luhnDigit);
+                default -> res.append(c);
+            }
+        }
+        return res.toString().trim();
+    }
+
+    private int sumOfDigits(int value) {
+        int res = 0;
+        while (value > 0) {
+            res += value % 10;
+            value /= 10;
+        }
+        return res;
     }
 
     public String creditCard() {
