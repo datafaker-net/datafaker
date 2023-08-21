@@ -3,7 +3,6 @@ package net.datafaker.idnumbers;
 import net.datafaker.providers.base.BaseProviders;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 
 /**
@@ -13,7 +12,6 @@ import java.time.temporal.ChronoField;
 
 public class EnZAIdNumber implements IdNumbers {
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
     private static final String[] VALID_PATTERN = {"##########08#", "##########18#"};
 
     /**
@@ -89,9 +87,9 @@ public class EnZAIdNumber implements IdNumbers {
      */
     private boolean parseDate(String ssn) {
         String dateString = ssn.substring(0, 6);
-        if (ChronoField.YEAR.range().isValidIntValue(Integer.parseInt(ssn.substring(0, 2)))) {
-            if (ChronoField.MONTH_OF_YEAR.range().isValidIntValue(Integer.parseInt(ssn.substring(2, 4)))) {
-                if (ChronoField.DAY_OF_MONTH.range().isValidIntValue(Integer.parseInt(ssn.substring(4)))) {
+        if (ChronoField.YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(0, 2)))) {
+            if (ChronoField.MONTH_OF_YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(2, 4)))) {
+                if (ChronoField.DAY_OF_MONTH.range().isValidIntValue(Integer.parseInt(dateString.substring(4)))) {
                     LocalDate date = LocalDate.parse(dateString, DATE_TIME_FORMATTER);
                     // want to check that the parsed date is equal to the supplied data, most of the attempts will fail
                     String reversed = date.format(DATE_TIME_FORMATTER);

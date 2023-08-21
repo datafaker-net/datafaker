@@ -2,9 +2,8 @@ package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 
 /**
  * Implementation based on the definition at
@@ -48,7 +47,7 @@ public class SvSEIdNumber implements IdNumbers {
             if (parseDate(ssn)) {
                 return false;
             }
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return false;
         }
 
@@ -57,14 +56,19 @@ public class SvSEIdNumber implements IdNumbers {
         return checksum == calculatedChecksum;
     }
 
-    private boolean parseDate(String ssn) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+    private boolean parseDate(String ssn) {
         String dateString = ssn.substring(0, 6);
-        Date date = sdf.parse(dateString);
-
-        // want to check that the parsed date is equal to the supplied data, most of the attempts will fail
-        String reversed = sdf.format(date);
-        return !reversed.equals(dateString);
+        if (ChronoField.YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(0, 2)))) {
+            if (ChronoField.MONTH_OF_YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(2, 4)))) {
+                if (ChronoField.DAY_OF_MONTH.range().isValidIntValue(Integer.parseInt(dateString.substring(4)))) {
+                    LocalDate date = LocalDate.parse(dateString, DATE_TIME_FORMATTER);
+                    // want to check that the parsed date is equal to the supplied data, most of the attempts will fail
+                    String reversed = date.format(DATE_TIME_FORMATTER);
+                    return !reversed.equals(dateString);
+                }
+            }
+        }
+        return false;
     }
 
     private int calculateChecksum(String number) {
