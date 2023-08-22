@@ -32,8 +32,8 @@ public final class IdNumberGeneratorPtBrUtil {
 
             cnpj = partial.toString();
 
-            int d1 = digit(calculateWeight(cnpj.substring(4, 12), 9) + calculateWeight(cnpj.substring(0, 4), 5));
-            int d2 = digit((d1 * 2) + calculateWeight(cnpj.substring(5, 12), 9) + calculateWeight(cnpj.substring(0, 5), 6));
+            int d1 = digit(calculateWeight(cnpj, 9, 4, 12) + calculateWeight(cnpj, 5, 0, 4));
+            int d2 = digit((d1 * 2) + calculateWeight(cnpj, 9, 5, 12) + calculateWeight(cnpj, 6, 0, 5));
 
             cnpj = (cnpj + d1) + d2;
         } else {
@@ -66,8 +66,8 @@ public final class IdNumberGeneratorPtBrUtil {
             }
             cpf = partial.toString();
 
-            int d1 = digit(calculateWeight(cpf, 10));
-            int d2 = digit((d1 * 2) + calculateWeight(cpf, 11));
+            int d1 = digit(calculateWeight(cpf, 10, 0, cpf.length()));
+            int d2 = digit((d1 * 2) + calculateWeight(cpf, 11, 0, cpf.length()));
 
             cpf = (cpf + d1) + d2;
         } else {
@@ -92,16 +92,19 @@ public final class IdNumberGeneratorPtBrUtil {
      * CNPJ generator could generate a valid or invalid because, somentimes, we need to test a
      * registration with invalid number
      */
-    public static Boolean isCNPJValid(final String cnpj) {
+    public static boolean isCNPJValid(final String cnpj) {
         String cnpjUnmask = DocumentFormatterUtil.unmask(cnpj);
         String cnpjPartial = cnpjUnmask.substring(0, 12);
+        if (!cnpjUnmask.startsWith(cnpjPartial)) {
+            return false;
+        }
 
-        int d1 = digit(calculateWeight(cnpjPartial.substring(4, 12), 9) + calculateWeight(cnpjPartial.substring(0, 4), 5));
-        int d2 = digit((d1 * 2) + calculateWeight(cnpjPartial.substring(5, 12), 9) + calculateWeight(cnpjPartial.substring(0, 5), 6));
+        int d1 = digit(calculateWeight(cnpjUnmask, 9, 4, 12) + calculateWeight(cnpjUnmask, 5, 0, 4));
+        int d2 = digit((d1 * 2) + calculateWeight(cnpjUnmask, 9, 5, 12) + calculateWeight(cnpjUnmask, 6, 0, 5));
 
-        String anObject = (cnpjPartial + d1) + d2;
 
-        return cnpjUnmask.equals(anObject);
+        final String other = d1 + "" + d2;
+        return cnpjUnmask.regionMatches(cnpjPartial.length(), other, 0, other.length());
     }
 
     /**
@@ -116,19 +119,19 @@ public final class IdNumberGeneratorPtBrUtil {
 
         String cpfPartial = cpfUnmask.substring(0, 9);
 
-        int d1 = digit(calculateWeight(cpfPartial, 10));
-        int d2 = digit((d1 * 2) + calculateWeight(cpfPartial, 11));
+        int d1 = digit(calculateWeight(cpfUnmask, 10, 0, 9));
+        int d2 = digit((d1 * 2) + calculateWeight(cpfUnmask, 11, 0, 9));
 
         return cpfUnmask.equals((cpfPartial + d1) + d2);
     }
 
 
-    public static int calculateWeight(final String num, final int weight) {
+    public static int calculateWeight(final String num, final int weight, int start, int end) {
         int sum = 0;
         int weightAux = weight;
 
-        for (int index = 0; index < num.length(); index++) {
-            sum += Integer.parseInt(num.substring(index, index + 1)) * weightAux--;
+        for (int index = start; index < end; index++) {
+            sum += (num.charAt(index) - '0') * weightAux--;
         }
         return sum;
     }

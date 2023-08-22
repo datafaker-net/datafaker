@@ -26,9 +26,10 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testPhone_esMx() {
         final BaseFaker f = new BaseFaker(new Locale("es", "MX"));
+        final PhoneNumber phoneNumber = f.phoneNumber();
         for (int i = 0; i < 10; i++) {
-            assertThat(f.phoneNumber().cellPhone()).matches("(044 )?\\(?\\d+\\)?([- .]\\d+){1,3}");
-            assertThat(f.phoneNumber().phoneNumber()).matches("\\(?\\d+\\)?([- .]\\d+){1,3}");
+            assertThat(phoneNumber.cellPhone()).matches("(044 )?\\(?\\d+\\)?([- .]\\d+){1,3}");
+            assertThat(phoneNumber.phoneNumber()).matches("\\(?\\d+\\)?([- .]\\d+){1,3}");
         }
     }
 
@@ -40,8 +41,9 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             final String canadianAreaCode = "403|587|780|825|236|250|604|672|778|204|431|506|"
                 + "709|782|902|226|249|289|343|365|416|437|519|548|613|647|705|807|905|367|"
                 + "418|438|450|514|579|581|819|873|306|639|867";
+            final PhoneNumber phoneNumber = f.phoneNumber();
             for (int i = 0; i < 100; i++) {
-                assertThat(f.phoneNumber().cellPhone()).matches(
+                assertThat(phoneNumber.cellPhone()).matches(
                     "((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}".formatted(
                         canadianAreaCode, canadianAreaCode));
             }
@@ -54,8 +56,9 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
         int errorCount = 0;
         final BaseFaker faker = new BaseFaker(locale);
+        final PhoneNumber phoneNumberProvider = faker.phoneNumber();
         for (int i = 0; i < 10; i++) {
-            String phoneNumber = faker.phoneNumber().phoneNumber();
+            String phoneNumber = phoneNumberProvider.phoneNumber();
             try {
                 Phonenumber.PhoneNumber proto = util.parse(phoneNumber, phoneNumberRegion);
                 if (!util.isValidNumberForRegion(proto, phoneNumberRegion)) {
@@ -74,8 +77,9 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
         int errorCount = 0;
         final BaseFaker faker = new BaseFaker(locale);
+        final PhoneNumber phoneNumberProvider = faker.phoneNumber();
         for (int i = 0; i < 10; i++) {
-            String phoneNumber = faker.phoneNumber().phoneNumberInternational();
+            String phoneNumber = phoneNumberProvider.phoneNumberInternational();
             Phonenumber.PhoneNumber proto = util.parse(phoneNumber, phoneNumberRegion);
             if (!util.isValidNumberForRegion(proto, phoneNumberRegion)) {
                 errorCount++;
