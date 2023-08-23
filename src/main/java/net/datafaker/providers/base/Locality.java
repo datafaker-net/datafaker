@@ -53,52 +53,49 @@ public class Locality extends AbstractProvider<BaseProviders> {
         Set<String> langs = Set.of(Locale.getISOLanguages());
         String[] paths = ManagementFactory.getRuntimeMXBean().getClassPath().split(File.pathSeparator);
         Set<String> locales = new HashSet<>();
-        for (String s: paths) {
-            try {
-                final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
+        final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
 
-                    @Override
-                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                        final String filename;
-                        if (Files.isDirectory(file) || Files.isHidden(file) || !Files.isReadable(file)) {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                final String filename;
+                if (((filename = file.getFileName().toString().toLowerCase(Locale.ROOT)).endsWith(".yml") || filename.endsWith(".yaml")) && Files.isRegularFile(file) && Files.isReadable(file)) {
+                    final String parentFileName = file.getParent().getFileName().toString();
+                    if (langs.contains(parentFileName)) {
+                        locales.add(parentFileName);
+                    } else {
+                        locales.add(filename.substring(0, filename.indexOf('.')));
+                    }
+                } else if (filename.endsWith(".jar") && fileMasks.stream().anyMatch(filename::contains) && Files.isRegularFile(file) && Files.isReadable(file)) {
+                    final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
+
+                        @Override
+                        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                            final String filename;
+                            if (file.getNameCount() > 2 || Files.isDirectory(file) || Files.isHidden(file) || !Files.isReadable(file)) {
+                                return super.visitFile(file, attrs);
+                            }
+                            if ((filename = file.getFileName().toString()).endsWith(".yml") || filename.endsWith(".yaml")) {
+                                final Path parentFileName = file.getParent().getFileName();
+                                if (parentFileName == null) {
+                                    locales.add(filename.substring(0, filename.indexOf('.')));
+                                } else {
+                                    locales.add(parentFileName.toString());
+                                }
+                            }
                             return super.visitFile(file, attrs);
                         }
-                        if ((filename = file.getFileName().toString().toLowerCase(Locale.ROOT)).endsWith(".yml") || filename.endsWith(".yaml")) {
-                            final String parentFileName = file.getParent().getFileName().toString();
-                            if (langs.contains(parentFileName)) {
-                                locales.add(parentFileName);
-                            } else {
-                                locales.add(filename.substring(0, filename.indexOf('.')));
-                            }
-                        } else if (filename.endsWith(".jar") && fileMasks.stream().anyMatch(filename::contains)) {
-                            final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
-
-                                @Override
-                                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                                    final String filename;
-                                    if (file.getNameCount() > 2 || Files.isDirectory(file) || Files.isHidden(file) || !Files.isReadable(file)) {
-                                        return super.visitFile(file, attrs);
-                                    }
-                                    if ((filename = file.getFileName().toString()).endsWith(".yml") || filename.endsWith(".yaml")) {
-                                        final Path parentFileName = file.getParent().getFileName();
-                                        if (parentFileName == null) {
-                                            locales.add(filename.substring(0, filename.indexOf('.')));
-                                        } else {
-                                            locales.add(parentFileName.toString());
-                                        }
-                                    }
-                                    return super.visitFile(file, attrs);
-                                }
-                            };
-                            try (FileSystem jarfs = FileSystems.newFileSystem(file, (ClassLoader) null)) {
-                                for (Path rootPath : jarfs.getRootDirectories()) {
-                                    Files.walkFileTree(rootPath, visitor);
-                                }
-                            }
+                    };
+                    try (FileSystem jarfs = FileSystems.newFileSystem(file, (ClassLoader) null)) {
+                        for (Path rootPath : jarfs.getRootDirectories()) {
+                            Files.walkFileTree(rootPath, visitor);
                         }
-                        return super.visitFile(file, attrs);
                     }
-                };
+                }
+                return super.visitFile(file, attrs);
+            }
+        };
+        for (String s: paths) {
+            try {
                 Files.walkFileTree(Paths.get(s).toAbsolutePath(), visitor);
             } catch (Exception e) {
                 throw new RuntimeException(e);
