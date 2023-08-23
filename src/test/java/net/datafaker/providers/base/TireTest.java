@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TireTest extends BaseFakerTest<BaseFaker> {
 
-    private final static String CODE_PATTERN = "\\d{3}/\\d{2}R\\d{2}\\.?\\d?";
+    private final static String CODE_PATTERN = "\\d{3}/\\d{2,3}R\\d{2}\\.?\\d?";
     private final Tire tire = faker.tire();
 
     @Test
