@@ -55,33 +55,35 @@ public class Locality extends AbstractProvider<BaseProviders> {
         Set<String> locales = new HashSet<>();
         final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
 
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                final String filename;
-                if (((filename = file.getFileName().toString().toLowerCase(Locale.ROOT)).endsWith(".yml") || filename.endsWith(".yaml")) && Files.isRegularFile(file) && Files.isReadable(file)) {
+            private boolean addLocaleIfPresent(Path file) {
+
+                final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
+                if ((filename.endsWith(".yml") || filename.endsWith(".yaml")) && Files.isRegularFile(file) && Files.isReadable(file)) {
                     final String parentFileName = file.getParent().getFileName().toString();
                     if (langs.contains(parentFileName)) {
                         locales.add(parentFileName);
                     } else {
                         locales.add(filename.substring(0, filename.indexOf('.')));
                     }
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
+                if (addLocaleIfPresent(file)) {
+                    // do nothing, everything is done at addLocaleIfPresent
                 } else if (filename.endsWith(".jar") && fileMasks.stream().anyMatch(filename::contains) && Files.isRegularFile(file) && Files.isReadable(file)) {
                     final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
 
                         @Override
                         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                            final String filename;
-                            if (file.getNameCount() > 2 || Files.isDirectory(file) || Files.isHidden(file) || !Files.isReadable(file)) {
+                            if (file.getNameCount() > 2) {
                                 return super.visitFile(file, attrs);
                             }
-                            if ((filename = file.getFileName().toString()).endsWith(".yml") || filename.endsWith(".yaml")) {
-                                final Path parentFileName = file.getParent().getFileName();
-                                if (parentFileName == null) {
-                                    locales.add(filename.substring(0, filename.indexOf('.')));
-                                } else {
-                                    locales.add(parentFileName.toString());
-                                }
-                            }
+                            addLocaleIfPresent(file);
                             return super.visitFile(file, attrs);
                         }
                     };
