@@ -168,11 +168,11 @@ public class Lorem extends AbstractProvider<BaseProviders> {
             return "";
         }
 
-        String sentence = this.sentence(fixedLength);
-        String endOfSentence = sentence.substring(fixedLength - 1, fixedLength);
-        while (" ".equals(endOfSentence)) {
-            sentence = this.sentence(fixedLength);
-            endOfSentence = sentence.substring(fixedLength - 1, fixedLength);
+        String sentence = sentence(fixedLength);
+        final String space = " ";
+        while (space.regionMatches(
+            space.length(), sentence, fixedLength - 1, fixedLength)) {
+            sentence = sentence(fixedLength);
         }
 
         return sentence.substring(0, fixedLength);
