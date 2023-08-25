@@ -102,7 +102,6 @@ public class Twitter extends AbstractProvider<BaseProviders> {
      */
     public String text(String[] keywords, int sentenceMaxLength, int wordMaxLength) {
         if (wordMaxLength <= 2) {
-            LOGGER.setLevel(Level.WARNING);
             LOGGER.warning("Word length less than 2 is dangerous. Exceptions can be raised.");
         }
         ArrayList<String> text = new ArrayList<>();
@@ -150,7 +149,6 @@ public class Twitter extends AbstractProvider<BaseProviders> {
      */
     public String getLink(String username, int extraLength) {
         if (extraLength <= 4) {
-            LOGGER.setLevel(Level.WARNING);
             LOGGER.warning("Extra length <=4 can cause collision.");
         }
         RandomService random = faker.random();
