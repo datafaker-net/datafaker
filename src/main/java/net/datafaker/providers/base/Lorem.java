@@ -169,9 +169,8 @@ public class Lorem extends AbstractProvider<BaseProviders> {
         }
 
         String sentence = sentence(fixedLength);
-        final String space = " ";
-        while (space.regionMatches(
-            space.length(), sentence, fixedLength - 1, fixedLength)) {
+        final char space = ' ';
+        while (space == sentence.charAt(fixedLength - 1)) {
             sentence = sentence(fixedLength);
         }
 
