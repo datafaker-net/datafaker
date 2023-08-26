@@ -19,8 +19,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -35,8 +39,11 @@ import static org.mockito.Mockito.when;
 
 class FakeValuesServiceTest extends AbstractFakerTest {
 
-    private static final Long MILLIS_IN_AN_HOUR = 1000 * 60 * 60L;
-    private static final Long MILLIS_IN_A_DAY = MILLIS_IN_AN_HOUR * 24;
+    private static final Long SECONDS_IN_AN_HOUR = 60 * 60L;
+    private static final Long SECONDS_IN_A_DAY = SECONDS_IN_AN_HOUR * 24;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+        new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm:ss")
+            .appendFraction(ChronoField.MILLI_OF_SECOND, 0, 3, true).toFormatter();
 
     @Spy
     private BaseFaker mockedFaker;
@@ -296,32 +303,27 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     }
 
     @RepeatedTest(100)
-    void futureDateExpression() throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
-
-        Date now = new Date();
-        Date nowPlus10Days = new Date(now.getTime() + MILLIS_IN_A_DAY * 10);
-
-        Date date = dateFormat.parse(fakeValuesService.expression("#{date.future '10','TimeUnit.DAYS'}", faker, context));
-
-        assertThat(date.getTime()).isStrictlyBetween(now.getTime(), nowPlus10Days.getTime());
+    void futureDateExpression() {
+        LocalDateTime now = LocalDateTime.now(OffsetDateTime.now(ZoneId.systemDefault()).getOffset());
+        LocalDateTime nowPlus10Days = now.plusSeconds(SECONDS_IN_A_DAY * 10);
+        String expression = fakeValuesService.expression("#{date.future '10','TimeUnit.DAYS'}", faker, context);
+        LocalDateTime date = LocalDateTime.parse(expression, DATE_TIME_FORMATTER);
+        assertThat(date).isStrictlyBetween(now, nowPlus10Days);
     }
 
     @RepeatedTest(100)
-    void pastDateExpression() throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
-
-        Date now = new Date();
-        Date nowMinus5Hours = new Date(now.getTime() - MILLIS_IN_AN_HOUR * 5);
-
-        Date date = dateFormat.parse(fakeValuesService.expression("#{date.past '4','TimeUnit.HOURS'}", faker, context));
-
-        assertThat(date.getTime()).isStrictlyBetween(nowMinus5Hours.getTime(), now.getTime());
+    void pastDateExpression() {
+        LocalDateTime now = LocalDateTime.now(OffsetDateTime.now(ZoneId.systemDefault()).getOffset());
+        LocalDateTime nowMinus5Hours = now.minusSeconds(SECONDS_IN_AN_HOUR * 5);
+        String expression = fakeValuesService.expression("#{date.past '4','TimeUnit.HOURS'}", faker, context);
+        LocalDateTime date = LocalDateTime.parse(expression, DATE_TIME_FORMATTER);
+        assertThat(date).isStrictlyBetween(nowMinus5Hours, now);
     }
 
     @Test
     void expressionWithFourArguments() {
-        assertThat(fakeValuesService.expression("#{Internet.password '5','8','true','true'}", faker, context)).matches("[\\w\\d!%#$@_^&*]{5,8}");
+        assertThat(fakeValuesService.expression("#{Internet.password '5','8','true','true'}", faker, context))
+            .matches("[\\w\\d!%#$@_^&*]{5,8}");
     }
 
     @ParameterizedTest
@@ -335,7 +337,8 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     void fileNoExpressionTest() {
         try {
             Path tmpPath = Files.createTempFile("tmp", "file");
-            assertThat(String.join("", Files.readAllLines(tmpPath))).isEqualTo(fakeValuesService.fileExpression(tmpPath, faker, faker.getContext()));
+            assertThat(String.join("", Files.readAllLines(tmpPath)))
+                .isEqualTo(fakeValuesService.fileExpression(tmpPath, faker, faker.getContext()));
         } catch (IOException e) {
             fail("Fail ", e);
         }
