@@ -106,3 +106,20 @@ which can be handy for generating results multiple times.
     ``` kotlin
     val faker = Faker(Random(0))
     ```
+
+## Random Java enum values
+
+To get a random value from a Java `enum` you can employ the `Options.option()` method.
+
+The following example assumes you want to retrieve a random value from the `Day` enum.
+
+=== "Java"
+
+    ```java
+    enum Day {
+        MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+    }
+
+    private final Options opt = faker.options();
+    opt.option(Day.class);
+    ```
