@@ -40,8 +40,8 @@ import static org.mockito.Mockito.when;
 
 class FakeValuesServiceTest extends AbstractFakerTest {
 
-    private static final Long SECONDS_IN_AN_5_HOURS = TimeUnit.HOURS.toSeconds(1) * 5;
-    private static final Long SECONDS_IN_A_10_DAYs = TimeUnit.DAYS.toSeconds(1) * 10;
+    private static final Long SECONDS_IN_5_HOURS = TimeUnit.HOURS.toSeconds(1) * 5;
+    private static final Long SECONDS_IN_10_DAYs = TimeUnit.DAYS.toSeconds(1) * 10;
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
         new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm:ss")
             .appendFraction(ChronoField.MILLI_OF_SECOND, 0, 3, true).toFormatter();
@@ -306,7 +306,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     @RepeatedTest(100)
     void futureDateExpression() {
         LocalDateTime now = LocalDateTime.now(OffsetDateTime.now(ZoneId.systemDefault()).getOffset());
-        LocalDateTime nowPlus10Days = now.plusSeconds(SECONDS_IN_A_10_DAYs);
+        LocalDateTime nowPlus10Days = now.plusSeconds(SECONDS_IN_10_DAYs);
         String expression = fakeValuesService.expression("#{date.future '10','TimeUnit.DAYS'}", faker, context);
         LocalDateTime date = LocalDateTime.parse(expression, DATE_TIME_FORMATTER);
         assertThat(date).isStrictlyBetween(now, nowPlus10Days);
@@ -315,7 +315,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     @RepeatedTest(100)
     void pastDateExpression() {
         LocalDateTime now = LocalDateTime.now(OffsetDateTime.now(ZoneId.systemDefault()).getOffset());
-        LocalDateTime nowMinus5Hours = now.minusSeconds(SECONDS_IN_AN_5_HOURS);
+        LocalDateTime nowMinus5Hours = now.minusSeconds(SECONDS_IN_5_HOURS);
         String expression = fakeValuesService.expression("#{date.past '4','TimeUnit.HOURS'}", faker, context);
         LocalDateTime date = LocalDateTime.parse(expression, DATE_TIME_FORMATTER);
         assertThat(date).isStrictlyBetween(nowMinus5Hours, now);
