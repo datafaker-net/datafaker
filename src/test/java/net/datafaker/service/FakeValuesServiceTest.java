@@ -40,8 +40,8 @@ import static org.mockito.Mockito.when;
 
 class FakeValuesServiceTest extends AbstractFakerTest {
 
-    private static final Long SECONDS_IN_5_HOURS = TimeUnit.HOURS.toSeconds(1) * 5;
-    private static final Long SECONDS_IN_10_DAYs = TimeUnit.DAYS.toSeconds(1) * 10;
+    private static final Long SECONDS_IN_5_HOURS = TimeUnit.HOURS.toSeconds(5);
+    private static final Long SECONDS_IN_10_DAYs = TimeUnit.DAYS.toSeconds(10);
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
         new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm:ss")
             .appendFraction(ChronoField.MILLI_OF_SECOND, 0, 3, true).toFormatter();
