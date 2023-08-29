@@ -106,7 +106,7 @@ public class EsMXIdNumber implements IdNumbers {
         List<Integer> bigMonths = Arrays.asList(1, 3, 5, 7, 8, 10, 12);
 
         if (month == 2) {
-            if (year % 4 == 0) {
+            if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
                 return f.random().nextInt(1, 29);
             } else return f.random().nextInt(1, 28);
         } else if (bigMonths.contains(month)) {
