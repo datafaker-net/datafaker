@@ -88,7 +88,7 @@ public class SvSEIdNumber implements IdNumbers {
         StringBuilder calculatedNumbers = new StringBuilder();
         for (int i = 0; i < 9; i++) {
             int res;
-            int n = Integer.parseInt(numbers.substring(i, i + 1));
+            int n = numbers.charAt(i) - '0';
             if (i % 2 == 0) {
                 res = n << 1;
             } else {
@@ -102,8 +102,9 @@ public class SvSEIdNumber implements IdNumbers {
 
     private int calculateDigitSum(String numbers) {
         int sum = 0;
-        for (int i = 0; i < numbers.length(); i++) {
-            int n = Integer.parseInt(numbers.substring(i, i + 1));
+        final int length = numbers.length();
+        for (int i = 0; i < length; i++) {
+            int n = numbers.charAt(i) - '0';
             sum += n;
         }
         return sum;
