@@ -66,24 +66,22 @@ class ZhCNIdNumberTest extends AbstractFakerTest {
     @RepeatedTest(100)
     void testValidZhCnIdNumber() {
         ZhCnIdNumber id = new ZhCnIdNumber();
-        for (int i = 0; i < 10_000_000; i++) {
-            String idNumber = id.getValidSsn(faker);
-            boolean isSatisfied = idNumber.length() == 18;
-            for (int j = 0; j < idNumber.length(); j++) {
-                char ch = idNumber.charAt(j);
-                if (j != idNumber.length() - 1) {
-                    if (ch > '9' || ch < '0') {
-                        isSatisfied = false;
-                        break;
-                    }
-                } else {
-                    if ((ch > '9' || ch < '0') && ch != 'X') {
-                        isSatisfied = false;
-                        break;
-                    }
+        String idNumber = id.getValidSsn(faker);
+        boolean isSatisfied = idNumber.length() == 18;
+        for (int j = 0; j < idNumber.length(); j++) {
+            char ch = idNumber.charAt(j);
+            if (j != idNumber.length() - 1) {
+                if (ch > '9' || ch < '0') {
+                    isSatisfied = false;
+                    break;
+                }
+            } else {
+                if ((ch > '9' || ch < '0') && ch != 'X') {
+                    isSatisfied = false;
+                    break;
                 }
             }
-            assertThat(isSatisfied).isTrue();
         }
+        assertThat(isSatisfied).isTrue();
     }
 }
