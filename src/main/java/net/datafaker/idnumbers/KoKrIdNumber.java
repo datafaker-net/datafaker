@@ -1,9 +1,9 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.service.RandomService;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 /**
  * Generate number of Resident Registration Number for Republic of Korea.
@@ -15,18 +15,21 @@ public class KoKrIdNumber implements IdNumbers {
 
     public String getValidRrn(BaseProviders f) {
         StringBuilder patternBuilder = new StringBuilder();
-        Timestamp birthTimeStamp = f.date().birthday();
+        LocalDate now = LocalDate.now();
         String iso = f.nation().isoCountry();
         String gender = f.gender().shortBinaryTypes();
 
         // 1st to 6th digits indicate date of birth
-        patternBuilder.append(new SimpleDateFormat("yyMMdd").format(f.date().birthday()));
+
+        patternBuilder.append(generateDay(f.random(), now.getYear() - 65,
+            now.getMonthValue(), now.getDayOfMonth(), now.getYear() - 18,
+            now.getMonthValue(), now.getDayOfMonth()));
 
         // Matches RRN Pattern ( ######-####### )
         patternBuilder.append('-');
 
         // 7th digit indicates birth century, gender, nationality
-        patternBuilder.append(get7thDigit(birthTimeStamp.toLocalDateTime().getYear(), gender, iso));
+        patternBuilder.append(get7thDigit(now.getYear(), gender, iso));
 
         // From Oct 2020, 8 to 13 digits are randomized
         // 8th to 13th digits are random digits
@@ -48,6 +51,26 @@ public class KoKrIdNumber implements IdNumbers {
             // Male: 3, 7 | Female: 4, 8
             return locality + (shortBinaryGender.equalsIgnoreCase("m") ? 2 : 3);
         }
+    }
+
+    private String generateDay(RandomService rand, int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd) {
+        final int year = rand.nextInt(yearStart, yearEnd) % 100;
+        final int month = rand.nextInt(monthStart, monthEnd);
+        int day = rand.nextInt(dayStart, dayEnd);
+        StringBuilder sb = new StringBuilder();
+        if (year < 10) {
+            sb.append("0");
+        }
+        sb.append(year);
+        if (month < 10) {
+            sb.append("0");
+        }
+        sb.append(month);
+        if (day < 10) {
+            sb.append("0");
+        }
+        sb.append(day);
+        return sb.toString();
     }
 
 }
