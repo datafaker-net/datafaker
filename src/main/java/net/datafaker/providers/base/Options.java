@@ -28,6 +28,38 @@ public class Options extends AbstractProvider<BaseProviders> {
         return options[faker.random().nextInt(options.length)];
     }
 
+    public final char option(char[] options) {
+        return options[faker.random().nextInt(options.length)];
+    }
+
+    public final int option(int[] options) {
+        return options[faker.random().nextInt(options.length)];
+    }
+
+    public final long option(long[] options) {
+        return options[faker.random().nextInt(options.length)];
+    }
+
+    public final float option(float[] options) {
+        return options[faker.random().nextInt(options.length)];
+    }
+
+    public final double option(double[] options) {
+        return options[faker.random().nextInt(options.length)];
+    }
+
+    public final short option(short[] options) {
+        return options[faker.random().nextInt(options.length)];
+    }
+
+    public final boolean option(boolean[] options) {
+        return options[faker.random().nextInt(options.length)];
+    }
+
+    public final byte option(byte[] options) {
+        return options[faker.random().nextInt(options.length)];
+    }
+
     /**
      * Returns a random unique subset of elements from an varargs.
      *

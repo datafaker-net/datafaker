@@ -1,9 +1,9 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.Options;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation based on the definition at
@@ -25,12 +25,12 @@ public class EsMXIdNumber implements IdNumbers {
         "QWDF414424HNSDVAW4",
         "AKDF144424MDEFVFA1"
     };
-    private static final String[] CONSONANT = {"B", "C", "C", "D", "F",
-        "G", "H", "J", "K", "L", "L", "M", "N", "N",
-        "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"
+    private static final char[] CONSONANT = {'B', 'C', 'C', 'D', 'F',
+        'G', 'H', 'J', 'K', 'L', 'L', 'M', 'N', 'N',
+        'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'
     };
 
-    private static final String[] VOWEL = {"A", "E", "I", "O", "U"};
+    private static final char[] VOWEL = {'A', 'E', 'I', 'O', 'U'};
 
     private static final String[] STATES = {"AG", "BC", "BS", "CM", "CS",
         "CH", "CO", "CL", "DF", "DG", "GT", "GR",
@@ -38,6 +38,8 @@ public class EsMXIdNumber implements IdNumbers {
         "OA", "PU", "QT", "QR", "SL", "SI", "SO",
         "TB", "TM", "TL", "VE", "YU", "ZA", "NE",
     };
+    private static final char[] SEX = {'H', 'M'};
+    private static final Set<Integer> BIG_MONTHS = Set.of(1, 3, 5, 7, 8, 10, 12);
 
     /**
      * Get A valid MEX CURP.
@@ -46,27 +48,23 @@ public class EsMXIdNumber implements IdNumbers {
      * @return A valid MEX CURP.
      */
     public String get(BaseProviders faker) {
+        final Options options = faker.options();
+        char[] birthDay = getBirthday(faker).toCharArray();
+        final char[] ssn = new char[18];
 
-        String sex = new String[]{"H", "M"}[faker.random().nextInt(2)];
-        String birthDay = getBirthday(faker);
-        String state = faker.options().option(STATES);
-
-        String c1 = faker.options().option(CONSONANT);
-        String c2 = faker.options().option(CONSONANT);
-        String c3 = faker.options().option(CONSONANT);
-
-        String v1 = faker.options().option(VOWEL);
-        String v2 = faker.options().option(VOWEL);
-        String v3 = faker.options().option(VOWEL);
-        String v4 = faker.options().option(VOWEL);
-
-        String ranNum = (Integer.parseInt(birthDay.substring(0, 4)) <= 1999) ?
-            "0" : faker.options().option(CONSONANT);
-
-        String ssn = c1 + v1 + c2 + c3 + birthDay.substring(2, 8) + sex + state + v2 + v3 + v4 + ranNum;
-        ssn = ssn + getChecksum(ssn);
-
-        return ssn;
+        ssn[0] = options.option(CONSONANT);
+        ssn[1] = options.option(VOWEL);
+        ssn[2] = options.option(CONSONANT);
+        ssn[3] = options.option(CONSONANT);
+        System.arraycopy(birthDay, 0, ssn, 4, 6);
+        ssn[10] = options.option(SEX);
+        System.arraycopy(options.option(STATES).toCharArray(), 0, ssn, 11, 2);
+        ssn[13] = options.option(VOWEL);
+        ssn[14] = options.option(VOWEL);
+        ssn[15] = options.option(VOWEL);
+        ssn[16] = (birthDay[0] == '1' ? '0' : options.option(CONSONANT));
+        ssn[17] = String.valueOf(getChecksum(ssn)).charAt(0);
+        return String.valueOf(ssn);
     }
 
     /**
@@ -102,17 +100,13 @@ public class EsMXIdNumber implements IdNumbers {
      * @return A valid day.
      */
     private int validDay(int year, int month, BaseProviders f) {
-
-        List<Integer> bigMonths = Arrays.asList(1, 3, 5, 7, 8, 10, 12);
-
         if (month == 2) {
             if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
                 return f.random().nextInt(1, 29);
             } else return f.random().nextInt(1, 28);
-        } else if (bigMonths.contains(month)) {
+        } else if (BIG_MONTHS.contains(month)) {
             return f.random().nextInt(1, 31);
         } else return f.random().nextInt(1, 30);
-
     }
 
     /**
@@ -121,14 +115,14 @@ public class EsMXIdNumber implements IdNumbers {
      * @param str input string
      * @return Checksum.
      */
-    private int getChecksum(String str) {
+    private int getChecksum(char[] str) {
         int sum = 0;
-        int v = str.length() + 1;
-        for (int i = 0; i < str.length(); i++) {
+        int v = str.length;
+        for (int i = 0; i < str.length - 1; i++) {
             int number;
-            if (str.charAt(i) < '9')
-                number = str.charAt(i) - '0';
-            else number = str.charAt(i) - 'A' + 10;
+            if (str[i] < '9')
+                number = str[i] - '0';
+            else number = str[i] - 'A' + 10;
             sum += number * v--;
         }
         sum = Math.abs((sum % 10) - 10);
