@@ -11,8 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class EsMXIdNumberTest {
 
-    private static final Pattern REGEX = Pattern.compile("[A-Z][A-Z][A-Z][A-Z]\\d{6}[HM]" +
-        "[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z,0-9]\\d");
+    private static final Pattern REGEX = Pattern.compile(
+        "[A-Z]{4}\\d{6}[HM][A-Z]{5}[A-Z,0-9]\\d");
     private static final BaseFaker ES_MX_FAKER = new BaseFaker(new Locale("es-MX"));
 
     @RepeatedTest(100)
