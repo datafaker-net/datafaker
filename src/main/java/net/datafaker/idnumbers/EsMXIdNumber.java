@@ -1,9 +1,9 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.Options;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation based on the definition at
@@ -38,6 +38,8 @@ public class EsMXIdNumber implements IdNumbers {
         "OA", "PU", "QT", "QR", "SL", "SI", "SO",
         "TB", "TM", "TL", "VE", "YU", "ZA", "NE",
     };
+    private static final String[] SEX = {"H", "M"};
+    private static final Set<Integer> BIG_MONTHS = Set.of(1, 3, 5, 7, 8, 10, 12);
 
     /**
      * Get A valid MEX CURP.
@@ -47,26 +49,24 @@ public class EsMXIdNumber implements IdNumbers {
      */
     public String get(BaseProviders faker) {
 
-        String sex = new String[]{"H", "M"}[faker.random().nextInt(2)];
+        final Options options = faker.options();
         String birthDay = getBirthday(faker);
-        String state = faker.options().option(STATES);
 
-        String c1 = faker.options().option(CONSONANT);
-        String c2 = faker.options().option(CONSONANT);
-        String c3 = faker.options().option(CONSONANT);
 
-        String v1 = faker.options().option(VOWEL);
-        String v2 = faker.options().option(VOWEL);
-        String v3 = faker.options().option(VOWEL);
-        String v4 = faker.options().option(VOWEL);
+        String ssn = options.option(CONSONANT) +
+            options.option(VOWEL) +
+            options.option(CONSONANT) +
+            options.option(CONSONANT) +
+            birthDay.substring(2, 8) +
+            options.option(SEX) +
+            options.option(STATES) +
+            options.option(VOWEL) +
+            options.option(VOWEL) +
+            options.option(VOWEL) +
+            (birthDay.charAt(0) == '1' ?
+                "0" : options.option(CONSONANT));
 
-        String ranNum = (Integer.parseInt(birthDay.substring(0, 4)) <= 1999) ?
-            "0" : faker.options().option(CONSONANT);
-
-        String ssn = c1 + v1 + c2 + c3 + birthDay.substring(2, 8) + sex + state + v2 + v3 + v4 + ranNum;
-        ssn = ssn + getChecksum(ssn);
-
-        return ssn;
+        return ssn + getChecksum(ssn);
     }
 
     /**
@@ -102,17 +102,13 @@ public class EsMXIdNumber implements IdNumbers {
      * @return A valid day.
      */
     private int validDay(int year, int month, BaseProviders f) {
-
-        List<Integer> bigMonths = Arrays.asList(1, 3, 5, 7, 8, 10, 12);
-
         if (month == 2) {
             if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
                 return f.random().nextInt(1, 29);
             } else return f.random().nextInt(1, 28);
-        } else if (bigMonths.contains(month)) {
+        } else if (BIG_MONTHS.contains(month)) {
             return f.random().nextInt(1, 31);
         } else return f.random().nextInt(1, 30);
-
     }
 
     /**
