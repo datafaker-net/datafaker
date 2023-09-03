@@ -27,9 +27,8 @@ public class Domain extends AbstractProvider<BaseProviders> {
      */
     public String firstLevelDomain(String name) {
         String top = resolve("domain.top");
-        return String.join("",
+        return String.join(".",
             name,
-            ".",
             top
         );
     }
@@ -43,11 +42,9 @@ public class Domain extends AbstractProvider<BaseProviders> {
     public String secondLevelDomain(String name) {
         String top = resolve("domain.top");
         String suffix = resolve("domain.country");
-        return String.join("",
+        return String.join(".",
             name,
-            ".",
             top,
-            ".",
             suffix
         );
     }
@@ -62,13 +59,10 @@ public class Domain extends AbstractProvider<BaseProviders> {
         String prefix = resolve("domain.prefix");
         String top = resolve("domain.top");
         String suffix = resolve("domain.country");
-        return String.join("",
+        return String.join(".",
             prefix,
-            ".",
             name,
-            ".",
             top,
-            ".",
             suffix
         );
     }
@@ -86,32 +80,20 @@ public class Domain extends AbstractProvider<BaseProviders> {
         boolean hasPrefix = random.nextInt(3) == 1;
         boolean hasSuffix = random.nextInt(2) == 1;
 
-        String top = resolve("domain.top");
-
-        String result = String.join("",
-            name,
-            ".",
-            top
-        );
-
+        String res = name + "." + resolve("domain.top");
+        String prefix = null;
+        String suffix = null;
         if (hasPrefix) {
-            String prefix = resolve("domain.prefix");
-            result = String.join("",
-                prefix,
-                ".",
-                result
-            );
+            prefix = resolve("domain.prefix");
         }
-
         if (hasSuffix) {
-            String suffix = resolve("domain.country");
-            result = String.join("",
-                result,
-                ".",
-                suffix
-            );
+            suffix = resolve("domain.country");
         }
-
-        return result;
+        return prefix == null
+            ? suffix == null
+                ? res : res + "." + suffix
+            : suffix == null
+                ? prefix + "." + res
+                    : prefix + "." + res + "." + suffix;
     }
 }
