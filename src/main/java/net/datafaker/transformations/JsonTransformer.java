@@ -125,9 +125,18 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             if (toWrap) {
                 sb.append("\"");
             }
-            for (char c : String.valueOf(value).toCharArray()) {
-                sb.append(ESCAPING_MAP.getOrDefault(c, String.valueOf(c)));
+            int start = 0;
+            final int length = val.length();
+            for (int i = 0; i < length; i++) {
+                final char c = val.charAt(i);
+                if (ESCAPING_MAP.get(c) == null) {
+                    // do nothing
+                } else {
+                    sb.append(val, start, i + 1);
+                    start = i + 1;
+                }
             }
+            sb.append(val, start, length);
             if (toWrap) {
                 sb.append("\"");
             }
