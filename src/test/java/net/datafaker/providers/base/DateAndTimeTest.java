@@ -8,11 +8,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.zone.ZoneRules;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -30,8 +33,9 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testFutureDate() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
+        DateAndTime date = faker.date();
         for (int i = 0; i < 1000; i++) {
-            Date future = faker.date().future(1, TimeUnit.SECONDS, now);
+            Date future = date.future(1, TimeUnit.SECONDS, now);
             assertThat(future.getTime()).isGreaterThan(now.getTime())
                 .isLessThan(now.getTime() + 1000);
         }
@@ -40,8 +44,9 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testFutureDateWithMinimum() {
         final Date now = new Date();
+        DateAndTime date = faker.date();
         for (int i = 0; i < 1000; i++) {
-            Date future = faker.date().future(5, 4, TimeUnit.SECONDS);
+            Date future = date.future(5, 4, TimeUnit.SECONDS);
             assertThat(future.getTime()).isGreaterThan(now.getTime())
                 .isLessThan(now.getTime() + 5500)
                 .isGreaterThan(now.getTime() + 3500);
@@ -50,9 +55,10 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testPastDateWithMinimum() {
+        DateAndTime date = faker.date();
         for (int i = 0; i < 1000; i++) {
             final long now = System.currentTimeMillis();
-            Date past = faker.date().past(5, 4, TimeUnit.SECONDS);
+            Date past = date.past(5, 4, TimeUnit.SECONDS);
             assertThat(past.getTime()).isLessThan(now)
                 .isGreaterThan(now - 5500)
                 .isLessThan(now - 3500);
@@ -62,9 +68,9 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testPastDateWithReferenceDate() {
         Date now = new Date();
-
+        DateAndTime date = faker.date();
         for (int i = 0; i < 1000; i++) {
-            Date past = faker.date().past(1, TimeUnit.SECONDS, now);
+            Date past = date.past(1, TimeUnit.SECONDS, now);
             assertThat(past.getTime()).isLessThan(now.getTime())
                 .isGreaterThan(now.getTime() - 1000);
         }
@@ -81,9 +87,9 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     void testBetween() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         Timestamp then = new Timestamp(System.currentTimeMillis() + 1000);
-
+        DateAndTime dateAndTime = faker.date();
         for (int i = 0; i < 1000; i++) {
-            Date date = faker.date().between(now, then);
+            Date date = dateAndTime.between(now, then);
             assertThat(date.getTime()).isLessThan(then.getTime())
                 .isGreaterThanOrEqualTo(now.getTime());
         }
@@ -119,9 +125,9 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
         int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         long from = new GregorianCalendar(currentYear - 65, currentMonth, currentDay).getTime().getTime();
         long to = new GregorianCalendar(currentYear - 18, currentMonth, currentDay).getTime().getTime();
-
+        DateAndTime date = faker.date();
         for (int i = 0; i < 5000; i++) {
-            Timestamp birthday = faker.date().birthday();
+            Timestamp birthday = date.birthday();
             assertThat(birthday.getTime()).isLessThan(to)
                 .isGreaterThanOrEqualTo(from);
         }
@@ -129,20 +135,22 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testBirthdayWithAges() {
-        LocalDateTime nw = LocalDateTime.now();
-
+        LocalDateTime nw = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
+        final Number number = faker.number();
+        final DateAndTime date = faker.date();
+        final ZoneRules rules = ZoneId.systemDefault().getRules();
         for (int i = 0; i < 5000; i++) {
-            int minAge = faker.number().numberBetween(1, 99);
-            int maxAge = faker.number().numberBetween(minAge, 100);
+            int minAge = number.numberBetween(1, 99);
+            int maxAge = number.numberBetween(minAge, 100);
 
-            LocalDateTime from = LocalDateTime.of(nw.getYear() - maxAge, nw.getMonth(), nw.getDayOfMonth(), 0, 0, 0);
-            LocalDateTime to = LocalDateTime.of(nw.getYear() - minAge, nw.getMonth(), nw.getDayOfMonth(), 0, 0, 0);
+            LocalDateTime from = nw.minusYears(maxAge);
+            LocalDateTime to = nw.minusYears(minAge);
 
-            Timestamp birthday = faker.date().birthday(minAge, maxAge);
+            Timestamp birthday = date.birthday(minAge, maxAge);
 
             assertThat(birthday)
-                .isBetween(Timestamp.from(from.toInstant(ZoneId.systemDefault().getRules().getOffset(from))),
-                    Timestamp.from(to.toInstant(ZoneId.systemDefault().getRules().getOffset(to))), true, true);
+                .isBetween(Timestamp.from(from.toInstant(rules.getOffset(from))),
+                    Timestamp.from(to.toInstant(rules.getOffset(to))), true, true);
         }
     }
 
@@ -155,17 +163,21 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     @Test
     void futureWithMask() {
         String pattern = "YYYY MM.dd mm:hh:ss";
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(1, TimeUnit.HOURS, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(20, 1, TimeUnit.HOURS, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().future(20, TimeUnit.HOURS, new Date(), pattern));
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+        DateAndTime date = faker.date();
+        dateTimeFormatter.parse(date.future(1, TimeUnit.HOURS, pattern));
+        dateTimeFormatter.parse(date.future(20, 1, TimeUnit.HOURS, pattern));
+        dateTimeFormatter.parse(date.future(20, TimeUnit.HOURS, new Date(), pattern));
     }
 
     @Test
     void pastWithMask() {
         String pattern = "YYYY MM.dd mm:hh:ss";
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(1, TimeUnit.DAYS, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(20, 1, TimeUnit.DAYS, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().past(1, TimeUnit.DAYS, new Date(), pattern));
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+        DateAndTime date = faker.date();
+        dateTimeFormatter.parse(date.past(1, TimeUnit.DAYS, pattern));
+        dateTimeFormatter.parse(date.past(20, 1, TimeUnit.DAYS, pattern));
+        dateTimeFormatter.parse(date.past(1, TimeUnit.DAYS, new Date(), pattern));
     }
 
     @Test

@@ -3,12 +3,10 @@ package net.datafaker.providers.base;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.OffsetDateTime;
+import java.time.LocalTime;
 import java.time.Period;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Locale;
@@ -23,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class DateAndTime extends AbstractProvider<BaseProviders> {
     private static final int DEFAULT_MIN_AGE = 18;
     private static final int DEFAULT_MAX_AGE = 65;
+    public static final long DAYS_NANOS = TimeUnit.DAYS.toNanos(1L);
 
     protected DateAndTime(BaseProviders faker) {
         super(faker);
@@ -252,20 +251,16 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
      */
     public Timestamp birthday(int minAge, int maxAge) {
-        final OffsetDateTime nw = OffsetDateTime.now();
-        final Month month = nw.getMonth();
-        final int dayOfMonth = nw.getDayOfMonth();
-        final LocalDateTime from = LocalDateTime.of(nw.getYear() - maxAge, month, dayOfMonth, 0, 0, 0);
-        final LocalDateTime to = LocalDateTime.of(nw.getYear() - minAge, month, dayOfMonth, 0, 0, 0);
-        final ZoneOffset offset = nw.getOffset();
-        final long start = from.toEpochSecond(offset);
-        final long stop = to.toEpochSecond(offset);
+        final LocalDate localDate = LocalDate.now();
+        final LocalDate from = localDate.minusYears(maxAge);
+        final long start = from.toEpochDay();
+        final long stop = localDate.minusYears(minAge).toEpochDay();
         if (start == stop) {
-            return Timestamp.from(from.toInstant(ZoneId.systemDefault().getRules().getOffset(from)));
+            return Timestamp.valueOf(LocalDateTime.of(from, LocalTime.MIDNIGHT));
         }
-        final long offsetMillis = faker.random().nextLong(stop - start);
-        final LocalDateTime res = LocalDateTime.ofEpochSecond(start + offsetMillis, 0, offset);
-        return Timestamp.from(res.toInstant(ZoneId.systemDefault().getRules().getOffset(res)));
+        final LocalDate date = LocalDate.ofEpochDay(faker.random().nextLong(start, stop));
+        return Timestamp.valueOf(
+            LocalDateTime.of(date, LocalTime.ofNanoOfDay(faker.number().numberBetween(0, DAYS_NANOS))));
     }
 
     /**
