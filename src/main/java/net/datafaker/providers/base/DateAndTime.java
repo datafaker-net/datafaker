@@ -253,11 +253,11 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
     public Timestamp birthday(int minAge, int maxAge) {
         final LocalDate localDate = LocalDate.now();
         final LocalDate from = localDate.minusYears(maxAge);
-        final long start = from.toEpochDay();
-        final long stop = localDate.minusYears(minAge).toEpochDay();
-        if (start == stop) {
+        if (minAge == maxAge) {
             return Timestamp.valueOf(LocalDateTime.of(from, LocalTime.MIDNIGHT));
         }
+        final long start = from.toEpochDay();
+        final long stop = localDate.minusYears(minAge).toEpochDay();
         final LocalDate date = LocalDate.ofEpochDay(faker.random().nextLong(start, stop));
         return Timestamp.valueOf(
             LocalDateTime.of(date, LocalTime.ofNanoOfDay(faker.number().numberBetween(0, DAYS_NANOS))));
