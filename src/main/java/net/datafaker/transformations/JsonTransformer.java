@@ -130,9 +130,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             for (int i = 0; i < length; i++) {
                 final char c = val.charAt(i);
                 final String escapedValue = ESCAPING_MAP.get(c);
-                if (escapedValue == null) {
-                    // do nothing
-                } else {
+                if (escapedValue != null) {
                     sb.append(val, start, i).append(escapedValue);
                     start = i + 1;
                 }
