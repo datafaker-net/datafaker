@@ -209,9 +209,10 @@ public class FakeValuesService {
     public Object fetchObject(String key, FakerContext context) {
         Object result = null;
         final List<SingletonLocale> localeChain = context.getLocaleChain();
+        final boolean hasMoreThanOneLocales = localeChain.size() > 1;
         for (SingletonLocale sLocale : localeChain) {
             // exclude default locale from cache checks
-            if (sLocale == DEFAULT_LOCALE && localeChain.size() > 1) {
+            if (sLocale == DEFAULT_LOCALE && hasMoreThanOneLocales) {
                 continue;
             }
             Map<String, Object> stringObjectMap = key2fetchedObject.get(sLocale);

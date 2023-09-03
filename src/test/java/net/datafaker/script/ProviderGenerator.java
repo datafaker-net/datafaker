@@ -1,7 +1,14 @@
 package net.datafaker.script;
 
+import net.datafaker.providers.base.AbstractProvider;
+import net.datafaker.providers.entertainment.EntertainmentFakerTest;
+import net.datafaker.providers.entertainment.EntertainmentProviders;
+import net.datafaker.providers.videogame.VideoGameFakerTest;
+import net.datafaker.providers.videogame.VideoGameProviders;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -77,14 +84,14 @@ class ProviderGenerator {
 
         System.out.println("package " + providerType.getPackageName() + ";");
         System.out.println();
-        System.out.println("import net.datafaker.providers.base.AbstractProvider;");
+        System.out.println("import " + AbstractProvider.class.getName() + ";");
         System.out.println();
         System.out.println("/**");
-        System.out.println(" * @since 1.8.0");
+        System.out.println(" * @since 2.0.2");
         System.out.println(" */");
-        System.out.println("public class " + className + " extends AbstractProvider<" + providerType.getProviderRegistryName() + "> {");
+        System.out.println("public class " + className + " extends " + AbstractProvider.class.getSimpleName() + "<" + providerType.getProviderRegistrySimpleName() + "> {");
         System.out.println();
-        System.out.println("    protected " + className + "(" + providerType.getProviderRegistryName() + " faker) {");
+        System.out.println("    protected " + className + "(" + providerType.getProviderRegistrySimpleName() + " faker) {");
         System.out.println("        super(faker);");
         System.out.println("    }");
         System.out.println();
@@ -108,17 +115,17 @@ class ProviderGenerator {
 
         System.out.println("package " + providerType.getPackageName() + ";");
         System.out.println();
-        System.out.println("import org.junit.jupiter.api.Test;");
-        System.out.println("import static org.assertj.core.api.AssertionsForClassTypes.assertThat;");
+        System.out.println("import " + Test.class.getName() + ";");
+        System.out.println("import static " + Assertions.class.getName() + ".assertThat;");
 
         System.out.println();
-        System.out.println("class " + className + "Test extends " + providerType.getTestSuperclassName() + " {");
+        System.out.println("class " + className + "Test extends " + providerType.getTestSuperclassSimpleName() + " {");
         System.out.println();
 
         for (String string : strings) {
             String testMethodName = StringUtils.uncapitalize(toJavaConvention(string));
 
-            System.out.println("    @Test");
+            System.out.println("    @" + Test.class.getSimpleName());
             System.out.println("    void " + testMethodName + "() {");
             System.out.println("        assertThat(faker." + methodName + "()." + testMethodName + "()).isNotEmpty();");
             System.out.println("    }");
@@ -140,29 +147,27 @@ class ProviderGenerator {
 }
 
 enum ProviderType {
-    SHOW("EntertainmentProviders", "net.datafaker.providers.entertainment", "EntertainmentFakerTest"),
-    VIDEO_GAME("VideoGameProviders", "net.datafaker.providers.videogame", "VideoGameFakerTest"),
+    SHOW(EntertainmentProviders.class, EntertainmentFakerTest.class),
+    VIDEO_GAME(VideoGameProviders.class, VideoGameFakerTest.class),
     ;
 
-    private final String providerRegistryName;
-    private final String packageName;
-    private final String testSuperclassName;
+    private final Class providerRegistryName;
+    private final Class testSuperclassName;
 
-    ProviderType(String providerRegistryName, String packageName, String testSuperclassName) {
+    ProviderType(Class providerRegistryName, Class testSuperclassName) {
         this.providerRegistryName = providerRegistryName;
-        this.packageName = packageName;
         this.testSuperclassName = testSuperclassName;
     }
 
-    public String getProviderRegistryName() {
-        return providerRegistryName;
+    public String getProviderRegistrySimpleName() {
+        return providerRegistryName.getSimpleName();
     }
 
     public String getPackageName() {
-        return packageName;
+        return providerRegistryName.getPackageName();
     }
 
-    public String getTestSuperclassName() {
-        return testSuperclassName;
+    public String getTestSuperclassSimpleName() {
+        return testSuperclassName.getSimpleName();
     }
 }
