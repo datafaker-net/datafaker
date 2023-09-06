@@ -87,31 +87,31 @@ public final class IdNumberGeneratorPtBrUtil {
 
     /**
      * Return true if the CNPJ is valid
-     * A valid CNPJ is unique and have a algorithm to validate it
+     * A valid CNPJ is unique and have an algorithm to validate it
      * <p>
-     * CNPJ generator could generate a valid or invalid because, somentimes, we need to test a
+     * CNPJ generator could generate a valid or invalid because, sometimes, we need to test a
      * registration with invalid number
      */
     public static boolean isCNPJValid(final String cnpj) {
         String cnpjUnmask = DocumentFormatterUtil.unmask(cnpj);
-        String cnpjPartial = cnpjUnmask.substring(0, 12);
-        if (!cnpjUnmask.startsWith(cnpjPartial)) {
+        final int cnpjPartialLength = 12;
+        if (!cnpjUnmask.regionMatches(0, cnpjUnmask, 0, cnpjPartialLength)) {
             return false;
         }
 
-        int d1 = digit(calculateWeight(cnpjUnmask, 9, 4, 12) + calculateWeight(cnpjUnmask, 5, 0, 4));
-        int d2 = digit((d1 * 2) + calculateWeight(cnpjUnmask, 9, 5, 12) + calculateWeight(cnpjUnmask, 6, 0, 5));
+        int d1 = digit(calculateWeight(cnpjUnmask, 9, 4, cnpjPartialLength) + calculateWeight(cnpjUnmask, 5, 0, 4));
+        int d2 = digit((d1 * 2) + calculateWeight(cnpjUnmask, 9, 5, cnpjPartialLength) + calculateWeight(cnpjUnmask, 6, 0, 5));
 
 
         final String other = d1 + "" + d2;
-        return cnpjUnmask.regionMatches(cnpjPartial.length(), other, 0, other.length());
+        return cnpjUnmask.regionMatches(cnpjPartialLength, other, 0, other.length());
     }
 
     /**
      * Return true if the CPF is valid
      * A valid CPF is unique and have a algorithm to validate it
      * <p>
-     * CPF generator could generate a valid or invalid because, somentimes, we need to test a
+     * CPF generator could generate a valid or invalid because, sometimes, we need to test a
      * registration with invalid number
      */
     public static Boolean isCPFValid(final String cpf) {
@@ -137,10 +137,11 @@ public final class IdNumberGeneratorPtBrUtil {
     }
 
     public static int digit(int verifyingDigit) {
-        if (verifyingDigit % 11 == 0 || verifyingDigit % 11 == 1)
+        int remainder = verifyingDigit % 11;
+        if (remainder == 0 || remainder == 1)
             return 0;
         else
-            return 11 - verifyingDigit % 11;
+            return 11 - remainder;
     }
 
 }

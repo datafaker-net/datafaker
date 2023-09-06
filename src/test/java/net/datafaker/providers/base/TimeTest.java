@@ -18,7 +18,7 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
             long future = faker.time().future(1, ChronoUnit.SECONDS);
             assertThat(LocalTime.ofNanoOfDay(future))
                 .isAfter(now)
-                .isBefore(now.plus(10, ChronoUnit.SECONDS));
+                .isBefore(now.plusSeconds(10));
         }
     }
 
@@ -29,8 +29,8 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
             long future = faker.time().future(5, 4, ChronoUnit.SECONDS);
             assertThat(LocalTime.ofNanoOfDay(future))
                 .isAfter(now)
-                .isBefore(now.plus(10, ChronoUnit.SECONDS))
-                .isAfter(now.plus(1, ChronoUnit.SECONDS));
+                .isBefore(now.plusSeconds(10))
+                .isAfter(now.plusSeconds(1));
         }
     }
 
@@ -41,8 +41,8 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
             long past = faker.time().past(5, 4, ChronoUnit.SECONDS);
             assertThat(LocalTime.ofNanoOfDay(past))
                 .isBefore(now)
-                .isAfter(now.minus(6, ChronoUnit.SECONDS))
-                .isBefore(now.minus(2, ChronoUnit.SECONDS));
+                .isAfter(now.minusSeconds(6))
+                .isBefore(now.minusSeconds(2));
         }
     }
 
@@ -56,7 +56,7 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testBetween() {
         LocalTime now = LocalTime.now();
-        LocalTime then = now.plus(1, ChronoUnit.SECONDS);
+        LocalTime then = now.plusSeconds(1);
 
         for (int i = 0; i < 1000; i++) {
             long time = faker.time().between(now, then);
@@ -77,7 +77,7 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testBetweenThenLargerThanNow() {
         LocalTime now = LocalTime.now();
-        LocalTime then = now.plus(1, ChronoUnit.SECONDS);
+        LocalTime then = now.plusSeconds(1);
         assertThatThrownBy(() -> faker.time().between(then, now))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Invalid time range, the upper bound time is before the lower bound.");
@@ -87,7 +87,7 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
     void testBetweenWithMask() {
         String pattern = "mm:hh:ss";
         LocalTime now = LocalTime.now();
-        LocalTime then = now.plus(1, ChronoUnit.MINUTES);
+        LocalTime then = now.plusMinutes(1);
 
         DateTimeFormatter.ofPattern(pattern).parse(faker.time().between(now, then, pattern));
     }
