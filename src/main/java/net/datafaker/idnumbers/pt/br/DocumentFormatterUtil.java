@@ -6,13 +6,19 @@ public final class DocumentFormatterUtil {
     }
 
     public static String cnpj(String cnpj) {
-        StringBuilder sb = new StringBuilder(20);
-        sb.append(cnpj, 0, 2)
-                .append('.').append(cnpj, 2, 5)
-                .append('.').append(cnpj, 5, 8)
-                .append('/').append(cnpj, 8, 12)
-                .append('-').append(cnpj, 12, cnpj.length());
-        return sb.toString();
+        final char[] input = cnpj.toCharArray();
+        final char[] res = new char[cnpj.length() + 4];
+        // Format should be ##.###.###/####-##
+        System.arraycopy(input, 0, res, 0, 2);
+        res[2] = '.';
+        System.arraycopy(input, 2, res, 3, 3);
+        res[6] = '.';
+        System.arraycopy(input, 5, res, 7, 3);
+        res[10] = '/';
+        System.arraycopy(input, 8, res, 11, 4);
+        res[15] = '-';
+        System.arraycopy(input, 12, res, 16, cnpj.length() - 12);
+        return String.valueOf(res);
     }
 
     public static String cpf(String cpf) {
@@ -25,14 +31,15 @@ public final class DocumentFormatterUtil {
     }
 
     public static String unmask(String doc) {
-        StringBuilder res = new StringBuilder(doc.length());
+        final char[] res = new char[doc.length()];
+        int index = 0;
         for (int i = 0; i < doc.length(); i++) {
             final char c = doc.charAt(i);
             if (Character.isDigit(c)) {
-                res.append(c);
+                res[index++] = c;
             }
         }
-        return res.toString();
+        return String.valueOf(res, 0, index);
     }
 
 }

@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;

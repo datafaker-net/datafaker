@@ -3,6 +3,8 @@ package net.datafaker.providers.base;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.regex.Pattern;
+
 import static java.lang.Integer.parseInt;
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCNPJValid;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,7 +75,7 @@ class CNPJTest extends BaseFakerTest<BaseFaker> {
      */
     @Test
     void formattedCNPJ() {
-        final String cnpjExpression = "(^\\d{2}\\x2E\\d{3}\\x2E\\d{3}\\x2F\\d{4}\\x2D\\d{2}$)";
+        final Pattern cnpjExpression = Pattern.compile("(^\\d{2}\\x2E\\d{3}\\x2E\\d{3}\\x2F\\d{4}\\x2D\\d{2}$)");
 
         final CNPJ cnpj = faker.cnpj();
         assertThat(cnpj.valid()).matches(cnpjExpression);
