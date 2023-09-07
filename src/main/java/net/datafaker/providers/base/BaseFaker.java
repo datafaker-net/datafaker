@@ -327,19 +327,31 @@ public class BaseFaker implements BaseProviders {
         final AP result = (AP) map.get(faker.getContext());
         if (result == null) {
             final AP newMapping = valueSupplier.apply(faker);
-            CLASSES.put(clazz.getSimpleName(), new ConcurrentHashMap<>());
+            final String simpleName = clazz.getSimpleName();
+            CLASSES.put(simpleName, new ConcurrentHashMap<>());
 
             METHODS.putIfAbsent(newMapping.getClass(), new ConcurrentHashMap<>());
             for (Method method: clazz.getMethods()) {
                 if (method.getParameterCount() > 0) continue;
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < method.getName().length(); i++) {
-                    char ch = method.getName().charAt(i);
+                StringBuilder sb = null;
+                final String methodName = method.getName();
+                final int length = methodName.length();
+                int start = 0;
+                for (int i = 0; i < length; i++) {
+                    char ch = methodName.charAt(i);
                     if (i > 0 && Character.isUpperCase(ch)) {
-                        sb.append('_').append(Character.toLowerCase(ch));
-                    } else {
-                        sb.append(ch);
+                        if (sb == null) {
+                            sb = new StringBuilder();
+                        }
+                        sb.append(methodName.toLowerCase(Locale.ROOT), start, i + 1).append('_');
+                        start = i + 1;
                     }
+                }
+                final String name;
+                if (start > 0) {
+                    name = sb.append(methodName, start, methodName.length()).toString();
+                } else {
+                    name = methodName;
                 }
                 Map<String, Method> methodMap = METHODS.get(newMapping.getClass());
                 if (methodMap == null) {
@@ -351,10 +363,10 @@ public class BaseFaker implements BaseProviders {
                         }
                     }
                 }
-                methodMap.put(sb.toString(), method);
+                methodMap.put(name, method);
             }
             map.putIfAbsent(faker.getContext(), newMapping);
-            CLASSES.get(clazz.getSimpleName()).put(faker.getContext(), newMapping);
+            CLASSES.get(simpleName).put(faker.getContext(), newMapping);
             return newMapping;
         }
         return result;
