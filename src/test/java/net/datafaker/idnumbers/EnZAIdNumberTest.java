@@ -1,6 +1,7 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.IdNumber;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -27,11 +28,11 @@ class EnZAIdNumberTest {
 
     @RepeatedTest(100)
     void testFakerSsn() {
-        EnZAIdNumber idNumber = new EnZAIdNumber();
+        EnZAIdNumber enZAIdNumber = new EnZAIdNumber();
         final BaseFaker f = new BaseFaker(new Locale("en", "ZA"));
-
-        assertThat(idNumber.validSsn(f.idNumber().valid())).isTrue();
-        assertThat(idNumber.validSsn(f.idNumber().invalid())).isFalse();
+        final IdNumber idNumber = f.idNumber();
+        assertThat(enZAIdNumber.validSsn(idNumber.valid())).isTrue();
+        assertThat(enZAIdNumber.validSsn(idNumber.invalid())).isFalse();
     }
 
     @RepeatedTest(100)

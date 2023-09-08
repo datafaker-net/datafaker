@@ -21,7 +21,6 @@ public class EnZAIdNumber implements IdNumbers {
      * @return a valid social security number on faker
      */
     public String getValidSsn(BaseProviders f) {
-
         String ssn = "";
         while (!validSsn(ssn)) {
             String pattern = getPattern(f);
@@ -75,9 +74,7 @@ public class EnZAIdNumber implements IdNumbers {
             return false;
         }
 
-        int calculatedChecksum = calculateChecksum(ssn.substring(0, 12));
-        int checksum = Integer.parseInt(ssn.substring(12, 13));
-        return (checksum == calculatedChecksum);
+        return ssn.charAt(12) - '0' == calculateChecksum(ssn, 12);
     }
 
     /**
@@ -86,10 +83,10 @@ public class EnZAIdNumber implements IdNumbers {
      * @param ssn social security number
      */
     private boolean parseDate(String ssn) {
-        String dateString = ssn.substring(0, 6);
-        if (ChronoField.YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(0, 2)))) {
-            if (ChronoField.MONTH_OF_YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(2, 4)))) {
-                if (ChronoField.DAY_OF_MONTH.range().isValidIntValue(Integer.parseInt(dateString.substring(4)))) {
+        if (ChronoField.YEAR.range().isValidIntValue(Integer.parseInt(ssn, 0, 2, 10))) {
+            if (ChronoField.MONTH_OF_YEAR.range().isValidIntValue(Integer.parseInt(ssn, 2, 4, 10))) {
+                if (ChronoField.DAY_OF_MONTH.range().isValidIntValue(Integer.parseInt(ssn, 4, 6, 10))) {
+                    String dateString = ssn.substring(0, 6);
                     LocalDate date = LocalDate.parse(dateString, DATE_TIME_FORMATTER);
                     // want to check that the parsed date is equal to the supplied data, most of the attempts will fail
                     String reversed = date.format(DATE_TIME_FORMATTER);
@@ -106,31 +103,24 @@ public class EnZAIdNumber implements IdNumbers {
      * @param number a social security number not including the last number
      * @return check number of this ssn
      */
-    private int calculateChecksum(String number) {
+    private int calculateChecksum(String number, int length2Check) {
 
         int totalNumber = 0;
 
-        for (int i = number.length() - 1; i >= 0; i -= 2) {
-            int tmpNumber = calculate(Integer.parseInt(String.valueOf(number.charAt(i))) * 2);
+        for (int i = length2Check - 1; i >= 0; i -= 2) {
+            int tmpNumber = calculate((number.charAt(i) - '0') * 2);
             if (i == 0) {
                 totalNumber += tmpNumber;
             } else {
-                totalNumber += tmpNumber + Integer.parseInt(String.valueOf(number.charAt(i - 1)));
+                totalNumber += tmpNumber + number.charAt(i - 1) - '0';
             }
-
         }
         if (totalNumber >= 0 && totalNumber < 9) {
-            return (10 - totalNumber);
+            return 10 - totalNumber;
         } else {
-            String str = String.valueOf(totalNumber);
-            String s = String.valueOf(str.charAt(str.length() - 1));
-            if (Integer.parseInt(s) == 0) {
-                return 0;
-            } else {
-                return (10 - Integer.parseInt(s));
-            }
+            int res = totalNumber % 10;
+            return res == 0 ? res : 10 - res;
         }
-
     }
 
     /**
@@ -139,12 +129,12 @@ public class EnZAIdNumber implements IdNumbers {
      * @return sum of each digit of the number
      */
     private static int calculate(int number) {
-        String str = String.valueOf(number);
-        int total = 0;
-        for (int i = 0; i < str.length(); i++) {
-            total += Integer.parseInt(String.valueOf(str.charAt(i)));
+        int res = 0;
+        while (number > 0) {
+            res += number % 10;
+            number /= 10;
         }
-        return total;
+        return res;
     }
 
 }
