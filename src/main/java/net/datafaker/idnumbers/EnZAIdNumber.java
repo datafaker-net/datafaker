@@ -74,8 +74,7 @@ public class EnZAIdNumber implements IdNumbers {
             return false;
         }
 
-        int calculatedChecksum = calculateChecksum(ssn, 12);
-        return ssn.charAt(12) - '0' == calculatedChecksum;
+        return ssn.charAt(12) - '0' == calculateChecksum(ssn, 12);
     }
 
     /**
