@@ -4,6 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -91,29 +92,36 @@ class TwitterTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void username() {
+        final Twitter twitter = faker.twitter();
+        final Pattern pattern = Pattern.compile("[a-zA-Z\\d_\\-\u4e00-\u9fa5]+");
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().userName()).matches("[a-zA-Z\\d_\\-\u4e00-\u9fa5]+");
+            assertThat(twitter.userName()).matches(pattern);
         }
     }
 
     @Test
     void userId() {
+        final Twitter twitter = faker.twitter();
+        Pattern pattern = Pattern.compile("\\d+");
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().userId()).matches("\\d+");
+            assertThat(twitter.userId()).matches(pattern);
         }
     }
 
     @Test
     void linkTestRules() {
+        final Twitter twitter = faker.twitter();
+        final Pattern pattern = Pattern.compile("[A-Za-z\\d.:/]+");
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().getLink("John", 6)).matches("[A-Za-z\\d.:/]+");
+            assertThat(twitter.getLink("John", 6)).matches(pattern);
         }
     }
 
     @Test
     void linkTestKeyWords() {
+        final Twitter twitter = faker.twitter();
         for (int i = 0; i < 10; i++) {
-            assertThat(faker.twitter().getLink("John", 6)).contains("John");
+            assertThat(twitter.getLink("John", 6)).contains("John");
         }
     }
 }

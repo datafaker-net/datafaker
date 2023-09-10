@@ -152,12 +152,11 @@ public class Twitter extends AbstractProvider<BaseProviders> {
             LOGGER.warning("Extra length <=4 can cause collision.");
         }
         RandomService random = faker.random();
-        StringBuilder sb = new StringBuilder();
-        sb.append(username).append("/");
-
-        for (int i = 0; i < extraLength; i++) {
-            sb.append(BASIC_STRING.charAt(random.nextInt(BASIC_STRING.length())));
+        final char[] res = new char[extraLength + 1];
+        res[0] = '/';
+        for (int i = 1; i < res.length; i++) {
+            res[i] = BASIC_STRING.charAt(random.nextInt(BASIC_STRING.length()));
         }
-        return "https://twitter.com/" + sb;
+        return "https://twitter.com/" + username + String.valueOf(res);
     }
 }
