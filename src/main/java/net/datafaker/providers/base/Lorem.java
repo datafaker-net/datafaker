@@ -116,7 +116,7 @@ public class Lorem extends AbstractProvider<BaseProviders> {
         for (int i = 1; i < totalWordCount; i++) {
             sb.append(" ").append(word());
         }
-        return sb + ".";
+        return sb.append(".").toString();
     }
 
     public List<String> sentences(int sentenceCount) {
