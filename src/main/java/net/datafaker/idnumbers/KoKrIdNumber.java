@@ -56,21 +56,15 @@ public class KoKrIdNumber implements IdNumbers {
     private String generateDay(RandomService rand, int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd) {
         final int year = rand.nextInt(yearStart, yearEnd) % 100;
         final int month = rand.nextInt(monthStart, monthEnd);
-        int day = rand.nextInt(dayStart, dayEnd);
-        StringBuilder sb = new StringBuilder();
-        if (year < 10) {
-            sb.append("0");
-        }
-        sb.append(year);
-        if (month < 10) {
-            sb.append("0");
-        }
-        sb.append(month);
-        if (day < 10) {
-            sb.append("0");
-        }
-        sb.append(day);
-        return sb.toString();
+        final int day = rand.nextInt(dayStart, dayEnd);
+        final char[] res = new char[6];
+        res[0] = (char) ('0' + (year / 10));
+        res[1] = (char) ('0' + (year % 10));
+        res[2] = (char) ('0' + (month / 10));
+        res[3] = (char) ('0' + (month % 10));
+        res[4] = (char) ('0' + (day / 10));
+        res[5] = (char) ('0' + (day % 10));
+        return String.valueOf(res);
     }
 
 }
