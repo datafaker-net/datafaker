@@ -49,47 +49,47 @@ public class Locality extends AbstractProvider<BaseProviders> {
         return allSupportedLocales(Set.of("datafaker"));
     }
 
+    private boolean addLocaleIfPresent(Path file, Set<String> langs, Set<String> locales) {
+        final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
+        if ((filename.endsWith(".yml") || filename.endsWith(".yaml")) && Files.isRegularFile(file) && Files.isReadable(file)) {
+            final String parentFileName = file.getParent().getFileName().toString();
+            if (langs.contains(parentFileName)) {
+                locales.add(parentFileName);
+            } else {
+                locales.add(filename.substring(0, filename.indexOf('.')));
+            }
+            return true;
+        }
+        return false;
+    }
+
     public List<String> allSupportedLocales(Set<String> fileMasks) {
         Set<String> langs = Set.of(Locale.getISOLanguages());
         String[] paths = ManagementFactory.getRuntimeMXBean().getClassPath().split(File.pathSeparator);
         Set<String> locales = new HashSet<>();
-        final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
-
-            private boolean addLocaleIfPresent(Path file) {
-
-                final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
-                if ((filename.endsWith(".yml") || filename.endsWith(".yaml")) && Files.isRegularFile(file) && Files.isReadable(file)) {
-                    final String parentFileName = file.getParent().getFileName().toString();
-                    if (langs.contains(parentFileName)) {
-                        locales.add(parentFileName);
-                    } else {
-                        locales.add(filename.substring(0, filename.indexOf('.')));
-                    }
-                    return true;
-                }
-                return false;
-            }
+        final SimpleFileVisitor<Path> simpleFileVisitor = new SimpleFileVisitor<>() {
 
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                if (file.getNameCount() > 2) {
+                    return super.visitFile(file, attrs);
+                }
+                addLocaleIfPresent(file, langs, locales);
+                return super.visitFile(file, attrs);
+            }
+        };
+
+        final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
-                if (addLocaleIfPresent(file)) {
+                if (addLocaleIfPresent(file, langs, locales)) {
                     // do nothing, everything is done at addLocaleIfPresent
                 } else if (filename.endsWith(".jar") && fileMasks.stream().anyMatch(filename::contains) && Files.isRegularFile(file) && Files.isReadable(file)) {
-                    final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
 
-                        @Override
-                        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                            if (file.getNameCount() > 2) {
-                                return super.visitFile(file, attrs);
-                            }
-                            addLocaleIfPresent(file);
-                            return super.visitFile(file, attrs);
-                        }
-                    };
                     try (FileSystem jarfs = FileSystems.newFileSystem(file, (ClassLoader) null)) {
                         for (Path rootPath : jarfs.getRootDirectories()) {
-                            Files.walkFileTree(rootPath, visitor);
+                            Files.walkFileTree(rootPath, simpleFileVisitor);
                         }
                     }
                 }
