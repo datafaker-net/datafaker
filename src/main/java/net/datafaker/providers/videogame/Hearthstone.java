@@ -31,7 +31,7 @@ public class Hearthstone extends AbstractProvider<VideoGameProviders> {
 
     public String standardRank() {
         String rank = resolve("games.hearthstone.rank");
-        if (rank.equals("Legend")) {
+        if ("Legend".equals(rank)) {
             rank = rank + " " + faker.random().nextInt(1, 65000);
         } else {
             rank = rank + " " + faker.random().nextInt(1, 10);

@@ -56,7 +56,7 @@ class ProviderGenerator {
         Map<String, Object> subject = (Map<String, Object>) faker.get(key);
 
         // Special case for games
-        if (key.equals("games")) {
+        if ("games".equals(key)) {
             String key2 = subject.keySet().iterator().next();
             subject = (Map<String, Object>) subject.get(key2);
             key = key + "." + key2;

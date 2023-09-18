@@ -69,7 +69,7 @@ class FakeValuesContext {
      * This addresses that unfortunate condition.
      */
     private static String language(Locale l) {
-        if (l.getLanguage().equals("iw")) {
+        if ("iw".equals(l.getLanguage())) {
             return "he";
         }
         return l.getLanguage();
