@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 class AviationTest extends BaseFakerTest<BaseFaker> {
 
@@ -13,12 +14,20 @@ class AviationTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void flight_ICAO() {
-        assertThat(aviation.flight("ICAO")).matches("[A-Z]{3}[0-9]+");
+        Pattern regex = Pattern.compile("[A-Z]{3}[0-9]+");
+        assertThat(aviation.flight("ICAO")).matches(regex);
+        assertThat(aviation.flight("icao")).matches(regex);
+        assertThat(aviation.flight("Icao")).matches(regex);
+        assertThat(aviation.flight("IcaO")).matches(regex);
     }
 
     @Test
     void flight_IATA() {
-        assertThat(aviation.flight("IATA")).matches("[A-Z0-9]{2}\\d{1,4}");
+        Pattern regex = Pattern.compile("[A-Z0-9]{2}\\d{1,4}");
+        assertThat(aviation.flight("IATA")).matches(regex);
+        assertThat(aviation.flight("iata")).matches(regex);
+        assertThat(aviation.flight("test")).matches(regex);
+        assertThat(aviation.flight(null)).matches(regex);
     }
 
     @Test

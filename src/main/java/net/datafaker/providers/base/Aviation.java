@@ -110,7 +110,7 @@ public class Aviation extends AbstractProvider<BaseProviders> {
      */
     public String flight(String type) {
         String airline;
-        if (type.equals("ICAO")) {
+        if ("ICAO".equalsIgnoreCase(type)) {
             airline = resolve("aviation.ICAO_airline");
         } else {
             airline = resolve("aviation.IATA_airline");
