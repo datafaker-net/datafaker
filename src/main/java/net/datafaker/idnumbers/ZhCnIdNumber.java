@@ -21,40 +21,46 @@ public class ZhCnIdNumber implements IdNumbers {
      * @return a Zh_CN Id numbers string. or null if exception.
      */
     public String getValidSsn(BaseProviders faker) {
-        StringBuilder s = new StringBuilder();
         RandomService rand = faker.random();
-        s.append(faker.options().option(LOCATIONS));
+        String loc = faker.options().option(LOCATIONS);
+        final int dayLength = 8;
+        final int locLength = loc.length();
+        final char[] res = new char[locLength + dayLength + 3];
+        for (int i = 0; i < locLength; i++) {
+            res[i] = loc.charAt(i);
+        }
 
-        s.append(generateDay(rand, 1930, 1, 1, 2030, 1, 12));
-        s.append(rand.nextInt(10)).append(rand.nextInt(10)).append(rand.nextInt(10));
+        generateDay(rand, 1930, 1, 1, 2030, 1, 12, res, locLength);
+        res[locLength + dayLength] = (char)('0' + rand.nextInt(10));
+        res[locLength + dayLength + 1] = (char)('0' + rand.nextInt(10));
+        res[locLength + dayLength + 2] = (char)('0' + rand.nextInt(10));
         int count = 0;
-        count += (s.charAt(0) - '0') * 7;
-        count += (s.charAt(1) - '0') * 9;
-        count += (s.charAt(2) - '0') * 10;
-        count += (s.charAt(3) - '0') * 5;
-        count += (s.charAt(4) - '0') * 8;
-        count += (s.charAt(5) - '0') * 4;
-        count += (s.charAt(6) - '0') * 2;
-        count += (s.charAt(7) - '0') * 1;
-        count += (s.charAt(8) - '0') * 6;
-        count += (s.charAt(9) - '0') * 3;
-        count += (s.charAt(10) - '0') * 7;
-        count += (s.charAt(11) - '0') * 9;
-        count += (s.charAt(12) - '0') * 10;
-        count += (s.charAt(13) - '0') * 5;
-        count += (s.charAt(14) - '0') * 8;
-        count += (s.charAt(15) - '0') * 4;
-        count += (s.charAt(16) - '0') * 2;
+        count += (res[0] - '0') * 7;
+        count += (res[1] - '0') * 9;
+        count += (res[2] - '0') * 10;
+        count += (res[3] - '0') * 5;
+        count += (res[4] - '0') * 8;
+        count += (res[5] - '0') * 4;
+        count += (res[6] - '0') * 2;
+        count += (res[7] - '0') * 1;
+        count += (res[8] - '0') * 6;
+        count += (res[9] - '0') * 3;
+        count += (res[10] - '0') * 7;
+        count += (res[11] - '0') * 9;
+        count += (res[12] - '0') * 10;
+        count += (res[13] - '0') * 5;
+        count += (res[14] - '0') * 8;
+        count += (res[15] - '0') * 4;
+        count += (res[16] - '0') * 2;
         count %= 11;
         if (count == 10) {
-            s.append('X');
+            return String.valueOf(res) + "X";
         } else {
-            s.append(count);
+            return String.valueOf(res) + count;
         }
-        return s.toString();
     }
 
-    private String generateDay(RandomService rand, int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd) {
+    private void generateDay(RandomService rand, int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd, char[] res, int offset) {
         final int year = rand.nextInt(yearStart, yearEnd);
         final int month = rand.nextInt(monthStart, monthEnd);
         final int lastDay;
@@ -68,16 +74,13 @@ public class ZhCnIdNumber implements IdNumbers {
             lastDay = 30;
         }
         int day = rand.nextInt(dayStart, Math.min(lastDay, dayEnd));
-        StringBuilder sb = new StringBuilder();
-        sb.append(year);
-        if (month < 10) {
-            sb.append("0");
-        }
-        sb.append(month);
-        if (day < 10) {
-            sb.append("0");
-        }
-        sb.append(day);
-        return sb.toString();
+        res[offset] = (char)('0' + year / 1000);
+        res[offset + 1] = (char)('0' + (year % 1000) / 100);
+        res[offset + 2] = (char)('0' + (year % 100) / 10);
+        res[offset + 3] = (char)('0' + year % 10);
+        res[offset + 4] = (char)('0' + month / 10);
+        res[offset + 5] = (char)('0' + month % 10);
+        res[offset + 6] = (char)('0' + day / 10);
+        res[offset + 7] = (char)('0' + day % 10);
     }
 }
