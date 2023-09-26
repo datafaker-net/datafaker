@@ -30,7 +30,7 @@ public class ZhCnIdNumber implements IdNumbers {
             res[i] = loc.charAt(i);
         }
 
-        generateDay(rand, 1930, 1, 1, 2030, 1, 12, res);
+        generateDay(rand, 1930, 1, 1, 2030, 1, 12, res, locLength);
         res[locLength + dayLength] = (char)('0' + rand.nextInt(10));
         res[locLength + dayLength + 1] = (char)('0' + rand.nextInt(10));
         res[locLength + dayLength + 2] = (char)('0' + rand.nextInt(10));
@@ -60,7 +60,7 @@ public class ZhCnIdNumber implements IdNumbers {
         }
     }
 
-    private void generateDay(RandomService rand, int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd, char[] res) {
+    private void generateDay(RandomService rand, int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd, char[] res, int offset) {
         final int year = rand.nextInt(yearStart, yearEnd);
         final int month = rand.nextInt(monthStart, monthEnd);
         final int lastDay;
@@ -74,13 +74,13 @@ public class ZhCnIdNumber implements IdNumbers {
             lastDay = 30;
         }
         int day = rand.nextInt(dayStart, Math.min(lastDay, dayEnd));
-        res[0] = (char)('0' + year / 1000);
-        res[1] = (char)('0' + (year % 1000) / 100);
-        res[2] = (char)('0' + (year % 100) / 10);
-        res[3] = (char)('0' + year % 10);
-        res[4] = (char)('0' + month / 10);
-        res[5] = (char)('0' + month % 10);
-        res[6] = (char)('0' + day / 10);
-        res[7] = (char)('0' + day % 10);
+        res[offset] = (char)('0' + year / 1000);
+        res[offset + 1] = (char)('0' + (year % 1000) / 100);
+        res[offset + 2] = (char)('0' + (year % 100) / 10);
+        res[offset + 3] = (char)('0' + year % 10);
+        res[offset + 4] = (char)('0' + month / 10);
+        res[offset + 5] = (char)('0' + month % 10);
+        res[offset + 6] = (char)('0' + day / 10);
+        res[offset + 7] = (char)('0' + day % 10);
     }
 }
