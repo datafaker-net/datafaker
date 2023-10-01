@@ -60,11 +60,11 @@ public final class IdNumberGeneratorPtBrUtil {
     public static String cpf(BaseProviders faker, boolean formatted, boolean valid) {
         String cpf;
         if (valid) {
-            StringBuilder partial = new StringBuilder();
+            char[] partial = new char[9];
             for (int i = 0; i < 9; i++) {
-                partial.append(faker.random().nextInt(9));
+                partial[i] = (char)('0' + faker.random().nextInt(9));
             }
-            cpf = partial.toString();
+            cpf = String.valueOf(partial);
 
             int d1 = digit(calculateWeight(cpf, 10, 0, cpf.length()));
             int d2 = digit((d1 * 2) + calculateWeight(cpf, 11, 0, cpf.length()));
