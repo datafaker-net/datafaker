@@ -22,12 +22,16 @@ public final class DocumentFormatterUtil {
     }
 
     public static String cpf(String cpf) {
-        StringBuilder sb = new StringBuilder(20);
-        sb.append(cpf, 0, 3)
-                .append('.').append(cpf, 3, 6)
-                .append('.').append(cpf, 6, 9)
-                .append('-').append(cpf, 9, cpf.length());
-        return sb.toString();
+        char[] input = cpf.toCharArray();
+        char[] res = new char[input.length + 3];
+        System.arraycopy(input, 0, res, 0, 3);
+        res[3] = '.';
+        System.arraycopy(input, 3, res, 4, 3);
+        res[7] = '.';
+        System.arraycopy(input, 6, res, 8, 3);
+        res[11] = '-';
+        System.arraycopy(input, 9, res, 12, input.length - 9);
+        return String.valueOf(res);
     }
 
     public static String unmask(String doc) {
