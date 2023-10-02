@@ -1,12 +1,16 @@
 package net.datafaker.annotations;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 import net.datafaker.Faker;
 import net.datafaker.annotations.dto.ComplexPersonJavaRecord;
 import net.datafaker.annotations.dto.Person;
 import net.datafaker.annotations.dto.PersonJavaRecord;
+import net.datafaker.sequence.FakeCollection;
 import net.datafaker.service.RandomService;
 import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.Test;
@@ -83,6 +87,18 @@ public class FakeAnnotationTest {
     }
 
     @Test
+    void shouldGenerateEntityWithDefaultSchemaAndInDefaultSchemaInCurrentClass2() {
+        final int expectedSize = 5;
+        final Schema schema = customSchema();
+        List<DefaultPerson> list = new FakeCollection.Builder<DefaultPerson>()
+            .suppliers(() -> Faker.populate(DefaultPerson.class, schema))
+            .len(expectedSize)
+            .generate();
+
+        assertThat(new HashSet<>(list)).hasSize(expectedSize);
+    }
+
+    @Test
     void shouldGenerateEntityFromJavaRecordWithDefaultSchemaAndInDefaultSchemaInCurrentClass() {
         var person = Faker.populate(DefaultPersonJavaRecord.class);
 
@@ -113,6 +129,19 @@ public class FakeAnnotationTest {
     public static class DefaultPerson {
 
         private String name;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof DefaultPerson that)) return false;
+
+            return Objects.equals(name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return name != null ? name.hashCode() : 0;
+        }
     }
 
     public static class SimplePerson {
