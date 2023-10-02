@@ -82,25 +82,22 @@ public class Company extends AbstractProvider<BaseProviders> {
     }
 
     public String url() {
-        return String.join(".",
-            "www",
-            FakerIDN.toASCII(domainName()),
-            domainSuffix()
-        );
+        return "www."
+            + FakerIDN.toASCII(domainName()) + "."
+            + domainSuffix();
     }
 
     private String domainName() {
-        String value = name().toLowerCase(faker.getContext().getLocale());
-        StringBuilder sb = new StringBuilder(value.length());
-        for (int i = 0; i < value.length(); i++) {
-            char c = value.charAt(i);
+        final char[] res = name().toLowerCase(faker.getContext().getLocale()).toCharArray();
+        int offset = 0;
+        for (int i = 0; i < res.length; i++) {
+            final char c = res[i];
             switch (c) {
-                case '.', ',', '\'', ' ', ']' -> {
-                }
-                default -> sb.append(c);
+                case '.', ',', '\'', ' ', ']' -> offset++;
+                default -> res[i - offset] = res[i];
             }
         }
-        return sb.toString();
+        return String.valueOf(res, 0, res.length - offset);
     }
 
     private String domainSuffix() {
