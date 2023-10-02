@@ -7,9 +7,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 class CompanyTest extends BaseFakerTest<BaseFaker> {
 
+    public static final Pattern URL_PATTERN = Pattern.compile("(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)*([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])");
+    public static final Pattern PHRASE_PATTERN = Pattern.compile("(\\w+[ /-]?){1,9}");
     private final Company company = faker.company();
 
     @Test
@@ -31,12 +34,12 @@ class CompanyTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testCatchPhrase() {
-        assertThat(company.catchPhrase()).matches("(\\w+[ /-]?){1,9}");
+        assertThat(company.catchPhrase()).matches(PHRASE_PATTERN);
     }
 
     @Test
     void testBs() {
-        assertThat(company.bs()).matches("(\\w+[ /-]?){1,9}");
+        assertThat(company.bs()).matches(PHRASE_PATTERN);
     }
 
     @Test
@@ -46,7 +49,6 @@ class CompanyTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void testUrl() {
-        String regexp = "(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])";
-        assertThat(company.url()).matches(regexp);
+        assertThat(company.url()).matches(URL_PATTERN);
     }
 }
