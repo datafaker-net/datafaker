@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JavaObjectTransformer implements Transformer<Object, Object> {
-    private static final Map<Class<?>, Object> CLASS2RESULT = new IdentityHashMap<>();
     private static final Map<Schema<Object, ?>, Consumer<Object>> SCHEMA2CONSUMER = new IdentityHashMap<>();
     private static final Map<Class<?>, Constructor<?>> CLASS2CONSTRUCTOR = new IdentityHashMap<>();
 
@@ -56,12 +55,15 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
             result = getObject(schema, result, primaryConstructor);
         } else {
-            result = CLASS2RESULT.get(clazz);
             if (result == null) {
                 try {
-                    result = clazz.getDeclaredConstructor().newInstance();
-                    CLASS2RESULT.put(clazz, result);
-                } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                    Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.get(clazz);
+                    if (primaryConstructor == null) {
+                        primaryConstructor = clazz.getDeclaredConstructors()[0];
+                        CLASS2CONSTRUCTOR.put(clazz, primaryConstructor);
+                    }
+                    result = primaryConstructor.newInstance();
+                } catch (InstantiationException | IllegalAccessException |
                          InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
