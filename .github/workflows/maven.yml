@@ -10,7 +10,7 @@ on:
     branches: [ main, 1.x ]
 
 env:
-  mvn_options: --batch-mode -Dstyle.color=always -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss.SSS
+  mvn_options: --batch-mode -Dnet.bytebuddy.experimental=true -Dstyle.color=always -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss.SSS
 
 jobs:
   build:
@@ -29,6 +29,6 @@ jobs:
           distribution: 'corretto'
           cache: maven
       - name: Build with Maven
-        run: ./mvnw $mvn_options verify -PnoGpg --file pom.xml -Dnet.bytebuddy.experimental=true
+        run: ./mvnw $mvn_options verify -PnoGpg --file pom.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3.1.4
