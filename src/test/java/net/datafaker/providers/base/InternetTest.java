@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.doReturn;
 
 class InternetTest extends BaseFakerTest<BaseFaker> {
 
+    public static final Pattern IPV6_HOST_ADDRESS = Pattern.compile("[0-9a-fA-F]{1,4}(:([0-9a-fA-F]{1,4})){1,7}");
     @Spy
     private BaseFaker mockedFaker;
 
@@ -323,8 +325,7 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
 
         for (int i = 0; i < 1000; i++) {
             try {
-                assertThat(faker.internet().getIpV6Address().getHostAddress())
-                    .matches("[0-9a-fA-F]{1,4}(:([0-9a-fA-F]{1,4})){1,7}");
+                assertThat(faker.internet().getIpV6Address().getHostAddress()).matches(IPV6_HOST_ADDRESS);
             } catch (UnknownHostException e) {
                 fail("Failed with", e);
             }

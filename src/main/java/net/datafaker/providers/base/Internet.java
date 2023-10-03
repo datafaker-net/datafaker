@@ -354,17 +354,17 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @return a IPV6 address.
      */
     public InetAddress getIpV6Address() throws UnknownHostException {
-        final StringBuilder tmp = new StringBuilder(2 * 8 + 7);
+        final RandomService random = faker.random();
+        final char[] res = new char[4 * 8 + 7];
         for (int i = 0; i < 8; i++) {
+            int offset = 4 * i;
             if (i > 0) {
-                tmp.append(":");
+                res[i - 1 + offset] = ':';
             }
-            tmp.append(Integer.toHexString(faker.random().nextInt(16)));
-            tmp.append(Integer.toHexString(faker.random().nextInt(16)));
-            tmp.append(Integer.toHexString(faker.random().nextInt(16)));
-            tmp.append(Integer.toHexString(faker.random().nextInt(16)));
+            char[] hex = random.hex(4, false).toCharArray();
+            System.arraycopy(hex, 0, res, i + offset, hex.length);
         }
-        return Inet6Address.getByName(tmp.toString());
+        return Inet6Address.getByName(String.valueOf(res));
     }
 
     /**
