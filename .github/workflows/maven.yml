@@ -29,6 +29,6 @@ jobs:
           distribution: 'corretto'
           cache: maven
       - name: Build with Maven
-        run: ./mvnw $mvn_options verify -PnoGpg --file pom.xml
+        run: ./mvnw $mvn_options verify -PnoGpg --file pom.xml -Dnet.bytebuddy.experimental=true
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3.1.4
