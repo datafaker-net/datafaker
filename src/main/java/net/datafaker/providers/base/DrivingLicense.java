@@ -12,6 +12,6 @@ public class DrivingLicense extends AbstractProvider<BaseProviders> {
     }
 
     public String drivingLicense(String stateAbbreviation) {
-        return faker.regexify(faker.bothify(faker.resolve("driving_license.usa." + stateAbbreviation))).toUpperCase(Locale.ROOT);
+        return faker.bothify(faker.resolve("driving_license.usa." + stateAbbreviation)).toUpperCase(Locale.ROOT);
     }
 }
