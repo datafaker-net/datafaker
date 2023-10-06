@@ -1,13 +1,18 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.idnumbers.IdNumbers;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class IdNumberTest extends BaseFakerTest<BaseFaker> {
+
+    public static final IdNumber SV_SE_ID_NUMBER = new BaseFaker(new Locale("sv_SE")).idNumber();
+    public static final Pattern SV_SE_ID_NUMBER_PATTERN = Pattern.compile("\\d{6}[-+]\\d{4}");
 
     @Test
     void testValid() {
@@ -26,14 +31,14 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void testValidSwedishSsn() {
-        final BaseFaker f = new BaseFaker(new Locale("sv_SE"));
-        assertThat(f.idNumber().validSvSeSsn()).matches("\\d{6}[-+]\\d{4}");
+        final String actual = SV_SE_ID_NUMBER.validSvSeSsn();
+        assertThat(actual).matches(SV_SE_ID_NUMBER_PATTERN);
+        IdNumbers.DATE_TIME_FORMATTER.parse(actual.substring(0, 6));
     }
 
     @RepeatedTest(100)
     void testInvalidSwedishSsn() {
-        final BaseFaker f = new BaseFaker(new Locale("sv_SE"));
-        assertThat(f.idNumber().invalidSvSeSsn()).matches("\\d{6}[-+]\\d{4}");
+        assertThat(SV_SE_ID_NUMBER.invalidSvSeSsn()).matches(SV_SE_ID_NUMBER_PATTERN);
     }
 
     @RepeatedTest(100)
