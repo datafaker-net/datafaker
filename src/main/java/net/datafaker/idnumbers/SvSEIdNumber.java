@@ -68,7 +68,7 @@ public class SvSEIdNumber implements IdNumbers {
                 }
             }
         }
-        return false;
+        return true;
     }
 
     private int calculateChecksum(String number) {
