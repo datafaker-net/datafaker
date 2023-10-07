@@ -258,7 +258,6 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param minAge the minimal age
      * @param maxAge the maximal age
      * @return a random birthday between {@code minAge} and {@code maxAge} years ago from now.
-     * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
      */
     public Timestamp birthday(int minAge, int maxAge) {
         final LocalDate localDate = LocalDate.now();
@@ -279,7 +278,6 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param minAge the minimal age
      * @param maxAge the maximal age
      * @return a random birthday between {@code minAge} and {@code maxAge} years ago from now.
-     * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
      */
     public LocalDate birthdayLocalDate(int minAge, int maxAge) {
         final LocalDate localDate = LocalDate.now();
