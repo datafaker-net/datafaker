@@ -13,20 +13,19 @@ import java.time.temporal.ChronoField;
  */
 public class SvSEIdNumber implements IdNumbers {
     private static final String[] VALID_PATTERNS = {"######-####", "######+####"};
+    private static final String[] PLUS_MINUS = {"+", "-"};
 
     public String getValidSsn(BaseProviders f) {
-        String candidate = "";
-        while (!validSwedishSsn(candidate)) {
-            String pattern = getPattern(f);
-            candidate = f.numerify(pattern);
-        }
-
-        return candidate;
+        String end = f.numerify("###");
+        String candidate = DATE_TIME_FORMATTER.format(f.date().birthdayLocalDate(0, 100))
+            + f.options().option(PLUS_MINUS)
+            + end;
+        return candidate + calculateChecksum(candidate);
     }
 
     public String getInvalidSsn(BaseProviders f) {
         String candidate = "121212-1212"; // Seed with a valid number
-        while (validSwedishSsn(candidate)) {
+        while (isValidSwedishSsn(candidate)) {
             String pattern = getPattern(f);
             candidate = f.numerify(pattern);
         }
@@ -38,7 +37,7 @@ public class SvSEIdNumber implements IdNumbers {
         return faker.options().option(VALID_PATTERNS);
     }
 
-    boolean validSwedishSsn(String ssn) {
+    public static boolean isValidSwedishSsn(String ssn) {
         if (ssn.length() != 11) {
             return false;
         }
@@ -56,7 +55,7 @@ public class SvSEIdNumber implements IdNumbers {
         return checksum == calculatedChecksum;
     }
 
-    private boolean parseDate(String ssn) {
+    private static boolean parseDate(String ssn) {
         String dateString = ssn.substring(0, 6);
         if (ChronoField.YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(0, 2)))) {
             if (ChronoField.MONTH_OF_YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(2, 4)))) {
@@ -71,7 +70,7 @@ public class SvSEIdNumber implements IdNumbers {
         return true;
     }
 
-    private int calculateChecksum(String number) {
+    private static int calculateChecksum(String number) {
         String dateString = number.substring(0, 6);
         String birthNumber = number.substring(7, 10);
 
@@ -84,7 +83,7 @@ public class SvSEIdNumber implements IdNumbers {
         return (difference % 10);
     }
 
-    private String calculateDigits(String numbers) {
+    private static String calculateDigits(String numbers) {
         StringBuilder calculatedNumbers = new StringBuilder();
         for (int i = 0; i < 9; i++) {
             int res;
@@ -100,7 +99,7 @@ public class SvSEIdNumber implements IdNumbers {
         return calculatedNumbers.toString();
     }
 
-    private int calculateDigitSum(String numbers) {
+    private static int calculateDigitSum(String numbers) {
         int sum = 0;
         final int length = numbers.length();
         for (int i = 0; i < length; i++) {
