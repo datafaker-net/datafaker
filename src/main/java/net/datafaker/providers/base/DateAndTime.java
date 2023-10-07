@@ -234,6 +234,15 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
     }
 
     /**
+     * Generates a random birthday between 65 and 18 years ago from now as LocalDate.
+     *
+     * @return a random birthday between 65 and 18 years ago from now.
+     */
+    public LocalDate birthdayLocalDate() {
+        return birthdayLocalDate(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE);
+    }
+
+    /**
      * Generates a string representation of a random birthday between 65 and 18 years ago from now.
      *
      * @param pattern date time pattern to convert to string.
@@ -249,7 +258,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param minAge the minimal age
      * @param maxAge the maximal age
      * @return a random birthday between {@code minAge} and {@code maxAge} years ago from now.
-     * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
+     * Negative {@code minAge} and {@code maxAge} are supported.
      */
     public Timestamp birthday(int minAge, int maxAge) {
         final LocalDate localDate = LocalDate.now();
@@ -262,6 +271,25 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
         final LocalDate date = LocalDate.ofEpochDay(faker.random().nextLong(start, stop));
         return Timestamp.valueOf(
             LocalDateTime.of(date, LocalTime.ofNanoOfDay(faker.number().numberBetween(0, DAYS_NANOS))));
+    }
+
+    /**
+     * Generates a random birthday between two ages from now as LocalDate.
+     *
+     * @param minAge the minimal age
+     * @param maxAge the maximal age
+     * @return a random birthday between {@code minAge} and {@code maxAge} years ago from now.
+     * Negative {@code minAge} and {@code maxAge} are supported.
+     */
+    public LocalDate birthdayLocalDate(int minAge, int maxAge) {
+        final LocalDate localDate = LocalDate.now();
+        final LocalDate from = localDate.minusYears(maxAge);
+        if (minAge == maxAge) {
+            return from;
+        }
+        final long start = from.toEpochDay();
+        final long stop = localDate.minusYears(minAge).toEpochDay();
+        return LocalDate.ofEpochDay(faker.random().nextLong(start, stop));
     }
 
     /**

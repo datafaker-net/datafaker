@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.idnumbers.IdNumbers;
+import net.datafaker.idnumbers.SvSEIdNumber;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +33,7 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     void testValidSwedishSsn() {
         final String actual = SV_SE_ID_NUMBER.validSvSeSsn();
         assertThat(actual).matches(SV_SE_ID_NUMBER_PATTERN);
-        IdNumbers.DATE_TIME_FORMATTER.parse(actual.substring(0, 6));
+        assertThat(SvSEIdNumber.isValidSwedishSsn(actual)).isTrue();
     }
 
     @RepeatedTest(100)
