@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.idnumbers.IdNumbers;
 import net.datafaker.idnumbers.SvSEIdNumber;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
