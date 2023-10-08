@@ -13,6 +13,7 @@ import java.time.temporal.ChronoField;
 public class EnZAIdNumber implements IdNumbers {
 
     private static final String[] VALID_PATTERN = {"##########08#", "##########18#"};
+    private static final String[] CODE_PATTERN = {"18", "08"};
 
     /**
      * Generate a valid social security number on faker
@@ -21,13 +22,10 @@ public class EnZAIdNumber implements IdNumbers {
      * @return a valid social security number on faker
      */
     public String getValidSsn(BaseProviders f) {
-        String ssn = "";
-        while (!validSsn(ssn)) {
-            String pattern = getPattern(f);
-            ssn = f.numerify(pattern);
-        }
-        return ssn;
-
+        String candidate = DATE_TIME_FORMATTER.format(f.date().birthdayLocalDate(0, 100))
+            + f.numerify("####")
+            + f.options().option(CODE_PATTERN);
+        return candidate + calculateChecksum(candidate, 12);
     }
 
     /**
@@ -39,7 +37,7 @@ public class EnZAIdNumber implements IdNumbers {
     public String getInValidSsn(BaseProviders f) {
 
         String ssn = f.numerify(f.options().option(VALID_PATTERN));
-        while (validSsn(ssn)) {
+        while (isValidEnZASsn(ssn)) {
             String pattern = getPattern(f);
             ssn = f.numerify(pattern);
         }
@@ -61,7 +59,7 @@ public class EnZAIdNumber implements IdNumbers {
      *
      * @param ssn social security number
      */
-    boolean validSsn(String ssn) {
+    public static boolean isValidEnZASsn(String ssn) {
         if (ssn.length() != 13) {
             return false;
         }
@@ -82,7 +80,7 @@ public class EnZAIdNumber implements IdNumbers {
      *
      * @param ssn social security number
      */
-    private boolean parseDate(String ssn) {
+    private static boolean parseDate(String ssn) {
         if (ChronoField.YEAR.range().isValidIntValue(Integer.parseInt(ssn, 0, 2, 10))) {
             if (ChronoField.MONTH_OF_YEAR.range().isValidIntValue(Integer.parseInt(ssn, 2, 4, 10))) {
                 if (ChronoField.DAY_OF_MONTH.range().isValidIntValue(Integer.parseInt(ssn, 4, 6, 10))) {
@@ -103,7 +101,7 @@ public class EnZAIdNumber implements IdNumbers {
      * @param number a social security number not including the last number
      * @return check number of this ssn
      */
-    private int calculateChecksum(String number, int length2Check) {
+    private static int calculateChecksum(String number, int length2Check) {
 
         int totalNumber = 0;
 
