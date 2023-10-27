@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Collection;
+import java.util.Set;
 
 class FinanceTest extends BaseFakerTest<BaseFaker> {
 
@@ -53,6 +54,20 @@ class FinanceTest extends BaseFakerTest<BaseFaker> {
     @Test
     void ibanWithCountryCode() {
         assertThat(finance.iban("DE")).matches("DE\\d{20}");
+    }
+
+    @Test
+    void ibanCountryCodes() {
+        assertThat(Finance.ibanSupportedCountries()).isNotEmpty().hasSizeGreaterThan(70);
+    }
+
+    @Test
+    public void ibanWithAllCountryCodes() {
+        Set<String> ibanCountryCodes = Finance.ibanSupportedCountries();
+        for (String givenCountryCode : ibanCountryCodes) {
+            final String iban = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
+            assertThat(iban).isNotBlank();
+        }
     }
 
     @Test

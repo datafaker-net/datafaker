@@ -1,11 +1,9 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.annotations.Deterministic;
+
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -50,6 +48,12 @@ public class Finance extends AbstractProvider<BaseProviders> {
 
     private static final Map<String, String> countryCodeToBasicBankAccountNumberPattern =
         createCountryCodeToBasicBankAccountNumberPatternMap();
+
+    /** Get the set of country codes supported for IBAN generation */
+    @Deterministic
+    public static Set<String> ibanSupportedCountries() {
+        return countryCodeToBasicBankAccountNumberPattern.keySet();
+    }
 
     public String creditCard(CreditCardType creditCardType) {
         final String key = "finance.credit_card." + creditCardType.toString().toLowerCase(Locale.ROOT);
