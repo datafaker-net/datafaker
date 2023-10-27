@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
@@ -51,6 +52,16 @@ class NameTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testFirstName() {
         assertThat(name.firstName()).matches("\\w+");
+    }
+
+    @RepeatedTest(10)
+    void testFemaleFirstName() {
+        assertThat(name.femaleFirstName()).matches("\\w+");
+    }
+
+    @RepeatedTest(10)
+    void testMaleFirstName() {
+        assertThat(name.malefirstName()).matches("\\w+");
     }
 
     @Test

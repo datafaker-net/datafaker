@@ -62,6 +62,24 @@ public class Name extends AbstractProvider<BaseProviders> {
     }
 
     /**
+     * Returns a random female 'given' name.
+     *
+     * @return a female 'given' name
+     */
+    public String femaleFirstName() {
+        return resolve("name.female_first_name");
+    }
+
+    /**
+     * Returns a random male 'given' name.
+     *
+     * @return a male 'given' name
+     */
+    public String malefirstName() {
+        return resolve("name.male_first_name");
+    }
+
+    /**
      * Returns a random last name such as Smith, Jones or Baldwin
      *
      * @return a random last name such as Smith, Jones or Baldwin
