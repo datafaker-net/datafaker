@@ -291,6 +291,14 @@
                             <pattern>org.yaml.snakeyaml</pattern>
                             <shadedPattern>net.datafaker.shaded.snakeyaml</shadedPattern>
                         </relocation>
+                        <!-- Manually relocate shaded snakeyaml multi-release classes to the correct package. This is
+                             needed due to a bug in the Maven Shade plugin, which only relocates the content but not
+                             the package structure itself, see https://issues.apache.org/jira/browse/MSHADE-406. -->
+                        <relocation>
+                            <pattern>META-INF/versions/(\d+)/org/yaml/snakeyaml</pattern>
+                            <shadedPattern>META-INF/versions/$1/net/datafaker/shaded/snakeyaml</shadedPattern>
+                            <rawString>true</rawString>
+                        </relocation>
                         <relocation>
                             <pattern>com.mifmif.common.regex</pattern>
                             <shadedPattern>net.datafaker.shaded.generex</shadedPattern>
