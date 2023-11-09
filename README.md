@@ -364,6 +364,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Job
 * K-pop (Korean popular music)
 * Kaamelott
+* Language Code
 * League Of Legends
 * Lebowski
 * Locality

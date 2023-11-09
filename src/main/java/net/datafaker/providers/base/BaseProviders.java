@@ -281,6 +281,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Kpop.class, Kpop::new);
     }
 
+    default LanguageCode languageCode() {
+        return getProvider(LanguageCode.class, LanguageCode::new);
+    }
+
     default Locality locality() {
         return getProvider(Locality.class, Locality::new);
     }
