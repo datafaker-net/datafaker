@@ -566,7 +566,7 @@ public class FakeValuesService {
                 }
                 continue;
             }
-            final RegExpContext regExpContext = RegExpContext.of(expr, current, root, context);
+            final RegExpContext regExpContext = RegExpContext.of(expr, root, context);
             final Supplier<?> val = REGEXP2SUPPLIER_MAP.get(regExpContext);
             final Object resolved;
             if (val != null) {
