@@ -362,6 +362,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Industry Segments
 * Internet
 * Job
+* Joke
 * K-pop (Korean popular music)
 * Kaamelott
 * Language Code
