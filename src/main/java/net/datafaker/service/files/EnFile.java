@@ -147,6 +147,7 @@ public class EnFile {
         "industry_segments.yml",
         "internet.yml",
         "job.yml",
+        "joke.yml",
         "kpop.yml",
         "lebowski.yml",
         "lord_of_the_rings.yml",
