@@ -1,17 +1,14 @@
-open module net.datafaker{
-	
+module net.datafaker {
 	requires generex;
 	requires org.yaml.snakeyaml;
 	requires java.sql;
 	requires java.management;
 
-	
 	exports net.datafaker;
 	exports net.datafaker.annotations;
 	exports net.datafaker.formats;
 	exports net.datafaker.idnumbers;
 	exports net.datafaker.idnumbers.pt.br;
-	exports net.datafaker.internal.helper;
 	exports net.datafaker.providers.base;
 	exports net.datafaker.providers.entertainment;
 	exports net.datafaker.providers.food;
