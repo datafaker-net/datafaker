@@ -27,7 +27,7 @@
         <assertj-core.version>3.24.2</assertj-core.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <commons-text.version>1.11.0</commons-text.version>
-        <commons-validator.version>1.7</commons-validator.version>
+        <commons-validator.version>1.8.0</commons-validator.version>
         <generex.version>1.0.2</generex.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
