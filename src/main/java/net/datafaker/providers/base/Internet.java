@@ -41,7 +41,8 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public String username() {
         StringBuilder result = new StringBuilder();
         final Name name = faker.name();
-        final String firstName = name.firstName().toLowerCase(faker.getContext().getLocale()) + "." + name.lastName().toLowerCase(faker.getContext().getLocale());
+        final String firstName = name.firstName().toLowerCase(faker.getContext().getLocale())
+            + "." + name.lastName().toLowerCase(faker.getContext().getLocale());
         for (int i = 0; i < firstName.length(); i++) {
             final char c = firstName.charAt(i);
             if (c == '\'' || Character.isWhitespace(c)) {
@@ -91,7 +92,8 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String domainWord() {
-        return FakerIDN.toASCII(faker.name().lastName().toLowerCase().replace("'", ""));
+        return FakerIDN.toASCII(
+            faker.name().lastName().toLowerCase(faker.getContext().getLocale()).replace("'", ""));
     }
 
     public String domainSuffix() {
@@ -142,11 +144,10 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public String webdomain() {
         return String.join("",
-            "www",
-            ".",
+            "www", ".",
             FakerIDN.toASCII(
-                faker.name().firstName().toLowerCase().replace("'", "") +
-                    "-" +
+                faker.name().firstName().toLowerCase(
+                      faker.getContext().getLocale()).replace("'", "") + "-" +
                     domainWord()
             ),
             ".",
