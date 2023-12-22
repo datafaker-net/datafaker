@@ -138,11 +138,11 @@ class ProviderGenerator {
     private String toJavaConvention(String baseName) {
 
         // replace underscores with spaces
-        String withoutUnderscore = baseName.replaceAll("_", " ");
+        String withoutUnderscore = baseName.replace("_", " ");
         // for every word in the name, capitalize the first letter
         String capitalizedWords = WordUtils.capitalize(withoutUnderscore);
         // remove all spaces
-        return capitalizedWords.replaceAll(" ", "");
+        return capitalizedWords.replace(" ", "");
     }
 }
 
