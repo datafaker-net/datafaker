@@ -609,7 +609,7 @@ public class FakeValuesService {
                     i++;
                 }
                 if (cnt % 2 == 1) {
-                    result.add(arguments.substring(start, i - 1).replaceAll("''", "'"));
+                    result.add(arguments.substring(start, i - 1).replace("''", "'"));
                     argsStarted = false;
                 }
             } else if (arguments.charAt(i) == '\'') {

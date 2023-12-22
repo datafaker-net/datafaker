@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * @since 0.8.0
  */
 public class Internet extends AbstractProvider<BaseProviders> {
-    private static final Pattern SINGLE_QUOTE = Pattern.compile("'");
     private static final Pattern COLON = Pattern.compile(":");
     private static final List<String> HTTP_SCHEMES = List.of("http://", "https://");
 
@@ -41,7 +40,9 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public String username() {
         StringBuilder result = new StringBuilder();
-        final String firstName = faker.name().firstName().toLowerCase(faker.getContext().getLocale()) + "." + faker.name().lastName().toLowerCase(faker.getContext().getLocale());
+        final Name name = faker.name();
+        final String firstName = name.firstName().toLowerCase(faker.getContext().getLocale())
+            + "." + name.lastName().toLowerCase(faker.getContext().getLocale());
         for (int i = 0; i < firstName.length(); i++) {
             final char c = firstName.charAt(i);
             if (c == '\'' || Character.isWhitespace(c)) {
@@ -91,7 +92,8 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String domainWord() {
-        return FakerIDN.toASCII(SINGLE_QUOTE.matcher(faker.name().lastName().toLowerCase()).replaceAll(""));
+        return FakerIDN.toASCII(
+            faker.name().lastName().toLowerCase(faker.getContext().getLocale()).replace("'", ""));
     }
 
     public String domainSuffix() {
@@ -142,11 +144,10 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public String webdomain() {
         return String.join("",
-            "www",
-            ".",
+            "www", ".",
             FakerIDN.toASCII(
-                SINGLE_QUOTE.matcher(faker.name().firstName().toLowerCase()).replaceAll("") +
-                    "-" +
+                faker.name().firstName().toLowerCase(
+                      faker.getContext().getLocale()).replace("'", "") + "-" +
                     domainWord()
             ),
             ".",

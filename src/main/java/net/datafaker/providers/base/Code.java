@@ -1,7 +1,6 @@
 package net.datafaker.providers.base;
 
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -17,8 +16,6 @@ public class Code extends AbstractProvider<BaseProviders> {
     private static final int[] GTIN_13_CHECK_DIGITS = {1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3};
     private static final String[] REPORTING_BODY_IDENTIFIERS
         = {"01", "10", "30", "33", "35", "44", "45", "49", "50", "51", "52", "53", "54", "86", "91", "98", "99"};
-
-    private static final Pattern HYPHEN = Pattern.compile("-");
 
     protected Code(BaseProviders faker) {
         super(faker);
@@ -147,7 +144,7 @@ public class Code extends AbstractProvider<BaseProviders> {
     }
 
     private String stripIsbnSeparator(CharSequence t) {
-        return HYPHEN.matcher(t.toString()).replaceAll("");
+        return t.toString().replace("-", "");
     }
 
     public String asin() {

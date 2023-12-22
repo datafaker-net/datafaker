@@ -22,7 +22,7 @@ class FinanceTest extends BaseFakerTest<BaseFaker> {
     }
 
     private void assertCardLuhnDigit(String creditCard) {
-        final String creditCardStripped = creditCard.replaceAll("-", "");
+        final String creditCardStripped = creditCard.replace("-", "");
         assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(creditCardStripped)).isTrue();
     }
 
