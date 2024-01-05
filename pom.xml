@@ -362,6 +362,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
+                    <sourcepath>src/main/java</sourcepath>
                     <detectJavaApiLink>false</detectJavaApiLink>
                     <additionalOptions>-Xdoclint:all -Xdoclint:-missing</additionalOptions>
                 </configuration>
