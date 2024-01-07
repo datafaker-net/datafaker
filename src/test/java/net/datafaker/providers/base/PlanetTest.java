@@ -1,24 +1,23 @@
-package net.datafaker.providers.science;
+package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;
 
-import static net.datafaker.providers.science.Planet.PlanetName.EARTH;
-import static net.datafaker.providers.science.Planet.PlanetName.JUPITER;
-import static net.datafaker.providers.science.Planet.PlanetName.MARS;
-import static net.datafaker.providers.science.Planet.PlanetName.MERCURY;
-import static net.datafaker.providers.science.Planet.PlanetName.NEPTUNE;
-import static net.datafaker.providers.science.Planet.PlanetName.PLUTO;
-import static net.datafaker.providers.science.Planet.PlanetName.SATURN;
-import static net.datafaker.providers.science.Planet.PlanetName.URANUS;
-import static net.datafaker.providers.science.Planet.PlanetName.VENUS;
+import static net.datafaker.providers.base.Planet.PlanetName.EARTH;
+import static net.datafaker.providers.base.Planet.PlanetName.JUPITER;
+import static net.datafaker.providers.base.Planet.PlanetName.MARS;
+import static net.datafaker.providers.base.Planet.PlanetName.MERCURY;
+import static net.datafaker.providers.base.Planet.PlanetName.NEPTUNE;
+import static net.datafaker.providers.base.Planet.PlanetName.SATURN;
+import static net.datafaker.providers.base.Planet.PlanetName.URANUS;
+import static net.datafaker.providers.base.Planet.PlanetName.VENUS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlanetTest extends ScienceFakerTest {
+public class PlanetTest extends BaseFakerTest<BaseFaker> {
 
-    private final Planet planet = getFaker().planet();
+    private final Planet planet = faker.planet();
 
     @Override
     protected Collection<TestSpec> providerListTest() {
@@ -70,13 +69,7 @@ public class PlanetTest extends ScienceFakerTest {
             TestSpec.of(() -> planet.distanceFromSun(SATURN), "planet.distance_from_sun.saturn"),
             TestSpec.of(() -> planet.gravity(SATURN), "planet.gravity.saturn"),
             TestSpec.of(() -> planet.mass(SATURN), "planet.mass.saturn"),
-            TestSpec.of(() -> planet.radius(SATURN), "planet.radius.saturn"),
-
-            TestSpec.of(() -> planet.lengthOfDay(PLUTO), "planet.length_of_day.pluto"),
-            TestSpec.of(() -> planet.distanceFromSun(PLUTO), "planet.distance_from_sun.pluto"),
-            TestSpec.of(() -> planet.gravity(PLUTO), "planet.gravity.pluto"),
-            TestSpec.of(() -> planet.mass(PLUTO), "planet.mass.pluto"),
-            TestSpec.of(() -> planet.radius(PLUTO), "planet.radius.pluto")
+            TestSpec.of(() -> planet.radius(SATURN), "planet.radius.saturn")
         );
     }
 
@@ -222,23 +215,5 @@ public class PlanetTest extends ScienceFakerTest {
 
         String radius = planet.radius(SATURN);
         assertEquals("58,232 km", radius);
-    }
-
-    @Test
-    void shouldReturnCorrectPlutoMetadata() {
-        String lengthOfDay = planet.lengthOfDay(PLUTO);
-        assertEquals("153 h", lengthOfDay);
-
-        String distanceFromSun = planet.distanceFromSun(PLUTO);
-        assertEquals("3.7 billion miles", distanceFromSun);
-
-        String gravity = planet.gravity(PLUTO);
-        assertEquals("0.62 m/s²", gravity);
-
-        String mass = planet.mass(PLUTO);
-        assertEquals("1.30900 × 1022 kg", mass);
-
-        String radius = planet.radius(PLUTO);
-        assertEquals("1,188.3 km", radius);
     }
 }

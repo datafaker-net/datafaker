@@ -10,7 +10,6 @@ en:
       - "Neptune"
       - "Earth"
       - "Saturn"
-      - "Pluto"
       length_of_day:
         jupiter:
         - "0d 9h 56m"
@@ -28,8 +27,6 @@ en:
         - "24h"
         saturn:
         - "0d 10h 34m"
-        pluto:
-        - "153 h"
       mass:
         jupiter:
         - "1.898 × 10^27 kg (317.8 M⊕)"
@@ -47,8 +44,6 @@ en:
         - "5.972168×1024 kg"
         saturn:
         - "5.683 × 10^26 kg"
-        pluto:
-        - "1.30900 × 1022 kg"
       gravity:
         jupiter:
         - "24.79 m/s²"
@@ -66,8 +61,6 @@ en:
         - "9.80665 m/s2"
         saturn:
         - "10.44 m/s²"
-        pluto:
-        - "0.62 m/s²"
       radius:
         jupiter:
         - "69,911 km"
@@ -85,8 +78,6 @@ en:
         - "6371.0 km"
         saturn:
         - "58,232 km"
-        pluto:
-        - "1,188.3 km"
       distance_from_sun:
         jupiter:
         - "778.5 million km"
@@ -104,5 +95,3 @@ en:
         - "147.1 million km"
         saturn:
         - "1.434 billion km"
-        pluto:
-        - "3.7 billion miles"

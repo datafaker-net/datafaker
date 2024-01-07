@@ -4,7 +4,6 @@ import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.entertainment.EntertainmentProviders;
 import net.datafaker.providers.food.FoodProviders;
-import net.datafaker.providers.science.ScienceProviders;
 import net.datafaker.providers.sport.SportProviders;
 import net.datafaker.providers.videogame.VideoGameProviders;
 import net.datafaker.service.FakeValuesService;
@@ -14,7 +13,7 @@ import net.datafaker.service.RandomService;
 import java.util.Locale;
 import java.util.Random;
 
-public class Faker extends BaseFaker implements BaseProviders, SportProviders, FoodProviders, ScienceProviders, EntertainmentProviders, VideoGameProviders {
+public class Faker extends BaseFaker implements BaseProviders, SportProviders, FoodProviders, EntertainmentProviders, VideoGameProviders {
     public Faker() {
     }
 

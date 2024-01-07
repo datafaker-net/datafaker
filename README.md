@@ -401,6 +401,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Password
 * Phone Number
 * Photography
+* Planet
 * Pokemon
 * Princess Bride
 * Programming Language
@@ -445,7 +446,6 @@ The list below is not complete and shows only a part of available providers. To 
 * Witcher
 * Yoda
 * Zelda
-* Planet
 
 Usage with Locales
 -----

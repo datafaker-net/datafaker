@@ -373,6 +373,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Photography.class, Photography::new);
     }
 
+    default Planet planet() {
+        return getProvider(Planet.class, Planet::new);
+    }
+
     default ProgrammingLanguage programmingLanguage() {
         return getProvider(ProgrammingLanguage.class, ProgrammingLanguage::new);
     }

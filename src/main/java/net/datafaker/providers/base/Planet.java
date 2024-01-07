@@ -1,6 +1,4 @@
-package net.datafaker.providers.science;
-
-import net.datafaker.providers.base.AbstractProvider;
+package net.datafaker.providers.base;
 
 import java.util.Locale;
 
@@ -9,9 +7,9 @@ import java.util.Locale;
  *
  * @since 2.1.1
  */
-public class Planet extends AbstractProvider<ScienceProviders> {
+public class Planet extends AbstractProvider<BaseProviders> {
 
-    protected Planet(ScienceProviders faker) {
+    protected Planet(BaseProviders faker) {
         super(faker);
     }
 
@@ -71,8 +69,7 @@ public class Planet extends AbstractProvider<ScienceProviders> {
         MERCURY,
         NEPTUNE,
         EARTH,
-        SATURN,
-        PLUTO
+        SATURN
     }
 
 }
