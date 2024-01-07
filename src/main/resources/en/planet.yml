@@ -1,0 +1,108 @@
+en:
+  faker:
+    planet:
+      name:
+      - "Jupiter"
+      - "Mars"
+      - "Venus"
+      - "Uranus"
+      - "Mercury"
+      - "Neptune"
+      - "Earth"
+      - "Saturn"
+      - "Pluto"
+      length_of_day:
+        jupiter:
+        - "0d 9h 56m"
+        mars:
+        - "1d 0h 37m"
+        venus:
+        - "243d 0h 0m"
+        uranus:
+        - "0d 17h 14m"
+        mercury:
+        - "59d 0h 0m"
+        neptune:
+        - "0d 16h 6m"
+        earth:
+        - "24h"
+        saturn:
+        - "0d 10h 34m"
+        pluto:
+        - "153 h"
+      mass:
+        jupiter:
+        - "1.898 × 10^27 kg (317.8 M⊕)"
+        mars:
+        - "6.39 × 10^23 kg"
+        venus:
+        - "4.867 × 10^24 kg (0.815 M⊕)"
+        uranus:
+        - "8.681 × 10^25 kg"
+        mercury:
+        - "3.285 × 10^23 kg (0.055 M⊕)"
+        neptune:
+        - "1.024 × 10^26 kg"
+        earth:
+        - "5.972168×1024 kg"
+        saturn:
+        - "5.683 × 10^26 kg"
+        pluto:
+        - "1.30900 × 1022 kg"
+      gravity:
+        jupiter:
+        - "24.79 m/s²"
+        mars:
+        - "3.71 m/s²"
+        venus:
+        - "8.87 m/s²"
+        uranus:
+        - "8.87 m/s²"
+        mercury:
+        - "3.7 m/s²"
+        neptune:
+        - "11.15 m/s²"
+        earth:
+        - "9.80665 m/s2"
+        saturn:
+        - "10.44 m/s²"
+        pluto:
+        - "0.62 m/s²"
+      radius:
+        jupiter:
+        - "69,911 km"
+        mars:
+        - "3,389.5 km"
+        venus:
+        - "6,051.8 km"
+        uranus:
+        - "25,362 km"
+        mercury:
+        - "2,439.7 km"
+        neptune:
+        - "24,622 km"
+        earth:
+        - "6371.0 km"
+        saturn:
+        - "58,232 km"
+        pluto:
+        - "1,188.3 km"
+      distance_from_sun:
+        jupiter:
+        - "778.5 million km"
+        mars:
+        - "227.9 million km"
+        venus:
+        - "108.2 million km"
+        uranus:
+        - "2.871 billion km"
+        mercury:
+        - "58 million km"
+        neptune:
+        - "4.495 billion km"
+        earth:
+        - "147.1 million km"
+        saturn:
+        - "1.434 billion km"
+        pluto:
+        - "3.7 billion miles"

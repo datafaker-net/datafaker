@@ -9,9 +9,10 @@ module net.datafaker {
 	exports net.datafaker.formats;
 	exports net.datafaker.idnumbers;
 	exports net.datafaker.idnumbers.pt.br;
-	exports net.datafaker.providers.base;
+	opens net.datafaker.providers.base;
 	exports net.datafaker.providers.entertainment;
 	exports net.datafaker.providers.food;
+	exports net.datafaker.providers.science;
 	exports net.datafaker.providers.sport;
 	exports net.datafaker.providers.videogame;
 	exports net.datafaker.sequence;
