@@ -1,7 +1,5 @@
 package net.datafaker.providers.base;
 
-import java.util.Locale;
-
 /**
  * Provides planet specific metadata like length of the day, radius, mass etc.
  *
@@ -22,7 +20,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String lengthOfDay(PlanetName planetName) {
-        return resolve("planet.length_of_day." + lowerCaseName(planetName));
+        return resolve("planet.length_of_day." + planetName.getName());
     }
 
     public String mass() {
@@ -30,7 +28,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String mass(PlanetName planetName) {
-        return resolve("planet.mass." + lowerCaseName(planetName));
+        return resolve("planet.mass." + planetName.getName());
     }
 
     public String gravity() {
@@ -38,7 +36,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String gravity(PlanetName planetName) {
-        return resolve("planet.gravity." + lowerCaseName(planetName));
+        return resolve("planet.gravity." + planetName.getName());
     }
 
     public String radius() {
@@ -46,7 +44,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String radius(PlanetName planetName) {
-        return resolve("planet.radius." + lowerCaseName(planetName));
+        return resolve("planet.radius." + planetName.getName());
     }
 
     public String distanceFromSun() {
@@ -54,22 +52,28 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String distanceFromSun(PlanetName planetName) {
-        return resolve("planet.distance_from_sun." + lowerCaseName(planetName));
-    }
-
-    private String lowerCaseName(PlanetName planetName) {
-        return planetName.toString().toLowerCase(Locale.ROOT);
+        return resolve("planet.distance_from_sun." + planetName.getName());
     }
 
     public enum PlanetName {
-        JUPITER,
-        MARS,
-        VENUS,
-        URANUS,
-        MERCURY,
-        NEPTUNE,
-        EARTH,
-        SATURN
+        JUPITER("jupiter"),
+        MARS("mars"),
+        VENUS("venus"),
+        URANUS("uranus"),
+        MERCURY("mercury"),
+        NEPTUNE("neptune"),
+        EARTH("earth"),
+        SATURN("saturn");
+
+        private final String name;
+
+        PlanetName(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
 }
