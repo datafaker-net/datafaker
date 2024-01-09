@@ -10,88 +10,405 @@ en:
       - "Neptune"
       - "Earth"
       - "Saturn"
-      length_of_day:
-        jupiter:
-        - "0d 9h 56m"
-        mars:
-        - "1d 0h 37m"
+      symbol:
+        mercury:
+        - "☿"
         venus:
-        - "243d 0h 0m"
+        - "♀"
+        earth:
+        - "🜨"
+        mars:
+        - "♂"
+        jupiter:
+        - "♃"
+        saturn:
+        - "♄"
         uranus:
-        - "0d 17h 14m"
+        - "⛢"
+        neptune:
+        - "♆"
+      discovery_year:
+        mercury:
+        - "Prehistoric"
+        venus:
+        - "Prehistoric"
+        earth:
+        - "Prehistoric"
+        mars:
+        - "Prehistoric"
+        jupiter:
+        - "Prehistoric"
+        saturn:
+        - "Prehistoric"
+        uranus:
+        - "1781"
+        neptune:
+        - "1846"
+      mean_distance_from_the_sun:
+        mercury:
+        - "57,909,175 km"
+        venus:
+        - "108,208,930 km"
+        earth:
+        - "149,597,890 km"
+        mars:
+        - "227,936,640 km"
+        jupiter:
+        - "778,412,010 km"
+        saturn:
+        - "1,426,725,400 km"
+        uranus:
+        - "2,870,972,200 km"
+        neptune:
+        - "4,498,252,900 km"
+      length_of_day:
         mercury:
         - "59d 0h 0m"
-        neptune:
-        - "0d 16h 6m"
+        venus:
+        - "243d 0h 0m"
         earth:
         - "24h"
+        mars:
+        - "1d 0h 37m"
+        jupiter:
+        - "0d 9h 56m"
         saturn:
         - "0d 10h 34m"
-      mass:
-        jupiter:
-        - "1.898 × 10^27 kg (317.8 M⊕)"
-        mars:
-        - "6.39 × 10^23 kg"
-        venus:
-        - "4.867 × 10^24 kg (0.815 M⊕)"
         uranus:
-        - "8.681 × 10^25 kg"
-        mercury:
-        - "3.285 × 10^23 kg (0.055 M⊕)"
+        - "0d 17h 14m"
         neptune:
-        - "1.024 × 10^26 kg"
-        earth:
-        - "5.972168×1024 kg"
-        saturn:
-        - "5.683 × 10^26 kg"
-      gravity:
-        jupiter:
-        - "24.79 m/s²"
-        mars:
-        - "3.71 m/s²"
-        venus:
-        - "8.87 m/s²"
-        uranus:
-        - "8.87 m/s²"
+        - "0d 16h 6m"
+      equatorial_radius:
         mercury:
-        - "3.7 m/s²"
-        neptune:
-        - "11.15 m/s²"
-        earth:
-        - "9.80665 m/s2"
-        saturn:
-        - "10.44 m/s²"
-      radius:
-        jupiter:
-        - "69,911 km"
-        mars:
-        - "3,389.5 km"
+        - "2,440.53 km"
         venus:
         - "6,051.8 km"
-        uranus:
-        - "25,362 km"
-        mercury:
-        - "2,439.7 km"
-        neptune:
-        - "24,622 km"
         earth:
-        - "6371.0 km"
-        saturn:
-        - "58,232 km"
-      distance_from_sun:
-        jupiter:
-        - "778.5 million km"
+        - "6,378.1366 km"
         mars:
-        - "227.9 million km"
-        venus:
-        - "108.2 million km"
-        uranus:
-        - "2.871 billion km"
-        mercury:
-        - "58 million km"
-        neptune:
-        - "4.495 billion km"
-        earth:
-        - "147.1 million km"
+        - "3,396.19 km"
+        jupiter:
+        - "71,492 km"
         saturn:
-        - "1.434 billion km"
+        - "60,268 km"
+        uranus:
+        - "25,559 km"
+        neptune:
+        - "24,764 km"
+      surface_area:
+        mercury:
+        - "75,000,000 km^2"
+        venus:
+        - "460,000,000 km^2"
+        earth:
+        - "510,000,000 km^2"
+        mars:
+        - "140,000,000 km^2"
+        jupiter:
+        - "64,000,000,000 km^2"
+        saturn:
+        - "44,000,000,000 km^2"
+        uranus:
+        - "8,100,000,000 km^2"
+        neptune:
+        - "7,700,000,000 km^2"
+      volume:
+        mercury:
+        - "6.083×10^10 km^3"
+        venus:
+        - "9.28×10^11 km^3"
+        earth:
+        - "1.083×10^12 km^3"
+        mars:
+        - "1.6318×10^11 km^3"
+        jupiter:
+        - "1.431×10^15 km^3"
+        saturn:
+        - "8.27×10^14 km^3"
+        uranus:
+        - "6.834×10^13 km^3"
+        neptune:
+        - "6.254×10^13 km^3"
+      mass:
+        mercury:
+        - "3.302×10^23 kg"
+        venus:
+        - "4.8690×10^24 kg"
+        earth:
+        - "5.972×10^24 kg"
+        mars:
+        - "6.4191×10^23 kg"
+        jupiter:
+        - "1.8987×10^27 kg"
+        saturn:
+        - "5.6851×10^26 kg"
+        uranus:
+        - "8.6849×10^25 kg"
+        neptune:
+        - "1.0244×10^26 kg"
+      gravitational_parameters:
+        mercury:
+        - "2.203×10^13 m^3/s^2"
+        venus:
+        - "3.249×10^14 m^3/s^2"
+        earth:
+        - "3.986×10^14 m^3/s^2"
+        mars:
+        - "4.283×10^13 m^3/s^2"
+        jupiter:
+        - "1.267×10^17 m^3/s^2"
+        saturn:
+        - "3.793×10^16 m^3/s^2"
+        uranus:
+        - "5.794×10^15 m^3/s^2"
+        neptune:
+        - "6.837×10^15 m^3/s^2"
+      density:
+        mercury:
+        - "5.43 g/cm^3"
+        venus:
+        - "5.24 g/cm^3"
+        earth:
+        - "5.52 g/cm^3"
+        mars:
+        - "3.940 g/cm^3"
+        jupiter:
+        - "1.33 g/cm^3"
+        saturn:
+        - "0.70 g/cm^3"
+        uranus:
+        - "1.30 g/cm^3"
+        neptune:
+        - "1.76 g/cm^3"
+      equatorial_gravity:
+        mercury:
+        - "3.70 m/s^2"
+        venus:
+        - "8.87 m/s^2"
+        earth:
+        - "9.8 m/s^2"
+        mars:
+        - "3.71 m/s^2"
+        jupiter:
+        - "24.79 m/s^2"
+        saturn:
+        - "10.44 m/s^2"
+        uranus:
+        - "8.87 m/s^2"
+        neptune:
+        - "11.15 m/s^2"
+      escape_velocity:
+        mercury:
+        - "4.25 km/s"
+        venus:
+        - "10.36 km/s"
+        earth:
+        - "11.18 km/s"
+        mars:
+        - "5.02 km/s"
+        jupiter:
+        - "59.54 km/s"
+        saturn:
+        - "35.49 km/s"
+        uranus:
+        - "21.29 km/s"
+        neptune:
+        - "23.71 km/s"
+      rotation_period:
+        mercury:
+        - "58.646225 days"
+        venus:
+        - "243.0187 days"
+        earth:
+        - "0.99726968 days"
+        mars:
+        - "1.02595675 days"
+        jupiter:
+        - "0.41354 days"
+        saturn:
+        - "0.44401 days"
+        uranus:
+        - "0.71833 days"
+        neptune:
+        - "0.67125 days"
+      orbital_period:
+        mercury:
+        - "87.969 days"
+        venus:
+        - "224.701 days"
+        earth:
+        - "365.256363 days"
+        mars:
+        - "686.971 days"
+        jupiter:
+        - "4,332.59 days"
+        saturn:
+        - "10,759.22 days"
+        uranus:
+        - "30,688.5 days"
+        neptune:
+        - "60,182 days"
+      mean_orbital_speed:
+        mercury:
+        - "87.969 km/s"
+        venus:
+        - "224.701 km/s"
+        earth:
+        - "365.256363 km/s"
+        mars:
+        - "686.971 km/s"
+        jupiter:
+        - "4,332.59 km/s"
+        saturn:
+        - "10,759.22 km/s"
+        uranus:
+        - "30,688.5 km/s"
+        neptune:
+        - "60,182 km/s"
+      eccentricity:
+        mercury:
+        - "0.20563069"
+        venus:
+        - "0.00677323"
+        earth:
+        - "0.01671022"
+        mars:
+        - "0.09341233"
+        jupiter:
+        - "0.04839266"
+        saturn:
+        - "0.05415060"
+        uranus:
+        - "0.04716771"
+        neptune:
+        - "0.00858587"
+      inclination:
+        mercury:
+        - "7.00 deg"
+        venus:
+        - "3.39 deg"
+        earth:
+        - "0 deg"
+        mars:
+        - "1.85 deg"
+        jupiter:
+        - "1.31 deg"
+        saturn:
+        - "2.48 deg"
+        uranus:
+        - "0.76 deg"
+        neptune:
+        - "1.77 deg"
+      axial_tilt:
+        mercury:
+        - "0.0 deg"
+        venus:
+        - "177.3 deg"
+        earth:
+        - "23.44 deg"
+        mars:
+        - "25.19 deg"
+        jupiter:
+        - "3.12 deg"
+        saturn:
+        - "26.73 deg"
+        uranus:
+        - "97.86 deg"
+        neptune:
+        - "28.32 deg"
+      mean_surface_temperature:
+        mercury:
+        - "440–100 K"
+        venus:
+        - "730 K"
+        earth:
+        - "287 K"
+        mars:
+        - "227 K"
+        jupiter:
+        - "152 K"
+        saturn:
+        - "134 K"
+        uranus:
+        - "76 K"
+        neptune:
+        - "73 K"
+      mean_air_temperature:
+        earth:
+        - "288 K"
+        jupiter:
+        - "165 K"
+        saturn:
+        - "135 K"
+        uranus:
+        - "76 K"
+        neptune:
+        - "73 K"
+      atmospheric_composition:
+        mercury:
+        - "He, Na+ K+"
+        venus:
+        - "CO2, N2, SO2"
+        earth:
+        - "N2, O2, Ar, CO2"
+        mars:
+        - "CO2, N2 Ar"
+        jupiter:
+        - "H2, He"
+        saturn:
+        - "H2, He"
+        uranus:
+        - "H2, He CH4"
+        neptune:
+        - "H2, He CH4"
+      number_of_known_moons:
+        mercury:
+        - "0"
+        venus:
+        - "0"
+        earth:
+        - "1"
+        mars:
+        - "2"
+        jupiter:
+        - "95"
+        saturn:
+        - "146"
+        uranus:
+        - "27"
+        neptune:
+        - "14"
+      rings:
+        mercury:
+        - "No"
+        venus:
+        - "No"
+        earth:
+        - "No"
+        mars:
+        - "No"
+        jupiter:
+        - "Yes"
+        saturn:
+        - "Yes"
+        uranus:
+        - "Yes"
+        neptune:
+        - "Yes"
+      planetary_discriminant:
+        mercury:
+        - "9.1×10^4"
+        venus:
+        - "1.35×10^6"
+        earth:
+        - "1.7×10^6"
+        mars:
+        - "1.8×10^5"
+        jupiter:
+        - "6.25×10^5"
+        saturn:
+        - "1.9×10^5"
+        uranus:
+        - "2.9×10^4"
+        neptune:
+        - "2.4×10^4"
