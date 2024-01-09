@@ -23,6 +23,14 @@ public class Planet extends AbstractProvider<BaseProviders> {
         return resolve("planet.symbol." + planetName.getName());
     }
 
+    public String classification() {
+        return classification(faker.options().option(PlanetName.class));
+    }
+
+    public String classification(PlanetName planetName) {
+        return resolve("planet.classification." + planetName.getName());
+    }
+
     public String discoveryYear() {
         return discoveryYear(faker.options().option(PlanetName.class));
     }

@@ -27,6 +27,23 @@ en:
         - "⛢"
         neptune:
         - "♆"
+      classification:
+        mercury:
+          - "rocky"
+        venus:
+          - "rocky"
+        earth:
+          - "solid rock, metal, water and a mixture of gasses"
+        mars:
+          - "rocky"
+        jupiter:
+          - "gas giant"
+        saturn:
+          - "gas giant"
+        uranus:
+          - "ice giant"
+        neptune:
+          - "ice giant"
       discovery_year:
         mercury:
         - "Prehistoric"
