@@ -34,7 +34,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("778,412,010 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(JUPITER);
-        assertEquals("24.79 m/s²", equatorialGravity);
+        assertEquals("24.79 m/s^2", equatorialGravity);
 
         String mass = planet.mass(JUPITER);
         assertEquals("1.898 × 10^27 kg (317.8 M⊕)", mass);
@@ -52,7 +52,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("227,936,640 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(MARS);
-        assertEquals("3.71 m/s²", equatorialGravity);
+        assertEquals("3.71 m/s^2", equatorialGravity);
 
         String mass = planet.mass(MARS);
         assertEquals("6.39 × 10^23 kg", mass);
@@ -70,7 +70,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("108,208,930 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(VENUS);
-        assertEquals("8.87 m/s²", equatorialGravity);
+        assertEquals("8.87 m/s^2", equatorialGravity);
 
         String mass = planet.mass(VENUS);
         assertEquals("4.867 × 10^24 kg (0.815 M⊕)", mass);
@@ -88,7 +88,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("2,870,972,200 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(URANUS);
-        assertEquals("8.87 m/s²", equatorialGravity);
+        assertEquals("8.87 m/s^2", equatorialGravity);
 
         String mass = planet.mass(URANUS);
         assertEquals("8.681 × 10^25 kg", mass);
@@ -106,7 +106,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("57,909,175 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(MERCURY);
-        assertEquals("3.7 m/s²", equatorialGravity);
+        assertEquals("3.7 m/s^2", equatorialGravity);
 
         String mass = planet.mass(MERCURY);
         assertEquals("3.285 × 10^23 kg (0.055 M⊕)", mass);
@@ -124,7 +124,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("4,498,252,900 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(NEPTUNE);
-        assertEquals("11.15 m/s²", equatorialGravity);
+        assertEquals("11.15 m/s^2", equatorialGravity);
 
         String mass = planet.mass(NEPTUNE);
         assertEquals("1.024 × 10^26 kg", mass);
@@ -142,7 +142,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("149,597,890 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(EARTH);
-        assertEquals("9.80665 m/s2", equatorialGravity);
+        assertEquals("9.8 m/s^2", equatorialGravity);
 
         String mass = planet.mass(EARTH);
         assertEquals("5.972168×1024 kg", mass);
@@ -157,7 +157,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("0d 10h 34m", lengthOfDay);
 
         String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(SATURN);
-        assertEquals(",426,725,400 km", meanDistanceFromTheSun);
+        assertEquals("1,426,725,400 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(SATURN);
         assertEquals("10.44 m/s²", equatorialGravity);
