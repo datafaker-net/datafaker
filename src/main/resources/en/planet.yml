@@ -351,8 +351,14 @@ en:
         neptune:
         - "73 K"
       mean_air_temperature:
+        mercury:
+        - "437 K"
+        venus:
+        - "232 K"
         earth:
         - "288 K"
+        mars:
+        - "200 k"
         jupiter:
         - "165 K"
         saturn:
