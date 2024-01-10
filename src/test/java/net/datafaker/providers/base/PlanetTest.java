@@ -37,10 +37,10 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("24.79 m/s^2", equatorialGravity);
 
         String mass = planet.mass(JUPITER);
-        assertEquals("1.898 × 10^27 kg (317.8 M⊕)", mass);
+        assertEquals("1.8987×10^27 kg", mass);
 
         String equatorialRadius = planet.equatorialRadius(JUPITER);
-        assertEquals("69,911 km", equatorialRadius);
+        assertEquals("71,492 km", equatorialRadius);
     }
 
     @Test
@@ -55,10 +55,10 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("3.71 m/s^2", equatorialGravity);
 
         String mass = planet.mass(MARS);
-        assertEquals("6.39 × 10^23 kg", mass);
+        assertEquals("6.4191×10^23 kg", mass);
 
         String equatorialRadius = planet.equatorialRadius(MARS);
-        assertEquals("3,389.5 km", equatorialRadius);
+        assertEquals("3,396.19 km", equatorialRadius);
     }
 
     @Test
@@ -73,7 +73,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("8.87 m/s^2", equatorialGravity);
 
         String mass = planet.mass(VENUS);
-        assertEquals("4.867 × 10^24 kg (0.815 M⊕)", mass);
+        assertEquals("4.8690×10^24 kg", mass);
 
         String equatorialRadius = planet.equatorialRadius(VENUS);
         assertEquals("6,051.8 km", equatorialRadius);
@@ -91,10 +91,10 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("8.87 m/s^2", equatorialGravity);
 
         String mass = planet.mass(URANUS);
-        assertEquals("8.681 × 10^25 kg", mass);
+        assertEquals("8.6849×10^25 kg", mass);
 
         String equatorialRadius = planet.equatorialRadius(URANUS);
-        assertEquals("25,362 km", equatorialRadius);
+        assertEquals("25,559 km", equatorialRadius);
     }
 
     @Test
@@ -106,13 +106,13 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("57,909,175 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(MERCURY);
-        assertEquals("3.7 m/s^2", equatorialGravity);
+        assertEquals("3.70 m/s^2", equatorialGravity);
 
         String mass = planet.mass(MERCURY);
-        assertEquals("3.285 × 10^23 kg (0.055 M⊕)", mass);
+        assertEquals("3.302×10^23 kg", mass);
 
         String equatorialRadius = planet.equatorialRadius(MERCURY);
-        assertEquals("2,439.7 km", equatorialRadius);
+        assertEquals("2,440.53 km", equatorialRadius);
     }
 
     @Test
@@ -127,10 +127,10 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("11.15 m/s^2", equatorialGravity);
 
         String mass = planet.mass(NEPTUNE);
-        assertEquals("1.024 × 10^26 kg", mass);
+        assertEquals("1.0244×10^26 kg", mass);
 
         String equatorialRadius = planet.equatorialRadius(NEPTUNE);
-        assertEquals("24,622 km", equatorialRadius);
+        assertEquals("24,764 km", equatorialRadius);
     }
 
     @Test
@@ -145,10 +145,10 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("9.8 m/s^2", equatorialGravity);
 
         String mass = planet.mass(EARTH);
-        assertEquals("5.972168×1024 kg", mass);
+        assertEquals("5.972×10^24 kg", mass);
 
         String equatorialRadius = planet.equatorialRadius(EARTH);
-        assertEquals("6371.0 km", equatorialRadius);
+        assertEquals("6,378.1366 km", equatorialRadius);
     }
 
     @Test
@@ -160,12 +160,12 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         assertEquals("1,426,725,400 km", meanDistanceFromTheSun);
 
         String equatorialGravity = planet.equatorialGravity(SATURN);
-        assertEquals("10.44 m/s²", equatorialGravity);
+        assertEquals("10.44 m/s^2", equatorialGravity);
 
         String mass = planet.mass(SATURN);
-        assertEquals("5.683 × 10^26 kg", mass);
+        assertEquals("5.6851×10^26 kg", mass);
 
         String equatorialRadius = planet.equatorialRadius(SATURN);
-        assertEquals("58,232 km", equatorialRadius);
+        assertEquals("60,268 km", equatorialRadius);
     }
 }
