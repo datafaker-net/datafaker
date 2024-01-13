@@ -186,13 +186,11 @@ public class FakeValuesService {
         if (o instanceof List) {
             final List<String> values = (List<String>) o;
             final int size = values.size();
-            if (size == 0) {
-                return defaultIfNull;
-            }
-            if (size == 1) {
-                return values.get(0);
-            }
-            return values.get(context.getRandomService().nextInt(size));
+            return switch (size) {
+                case 0 -> defaultIfNull;
+                case 1 -> values.get(0);
+                default -> values.get(context.getRandomService().nextInt(size));
+            };
         } else if (isSlashDelimitedRegex(str = o.toString())) {
             return "#{regexify '%s'}".formatted(trimRegexSlashes(str));
         } else {
@@ -398,12 +396,13 @@ public class FakeValuesService {
     public String templatify(String letterString, Map<Character, String[]> optionsMap, FakerContext context) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < letterString.length(); i++) {
-            if (optionsMap.containsKey(letterString.charAt(i))) {
-                final String[] options = optionsMap.get(letterString.charAt(i));
+            final char key = letterString.charAt(i);
+            if (optionsMap.containsKey(key)) {
+                final String[] options = optionsMap.get(key);
                 Objects.requireNonNull(options, "Array with available options should be non null");
                 sb.append(options[context.getRandomService().nextInt(options.length)]);
             } else {
-                sb.append(letterString.charAt(i));
+                sb.append(key);
             }
         }
         return sb.toString();

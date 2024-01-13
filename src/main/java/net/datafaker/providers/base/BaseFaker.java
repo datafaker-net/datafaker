@@ -12,7 +12,6 @@ import net.datafaker.transformations.Schema;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -330,8 +329,10 @@ public class BaseFaker implements BaseProviders {
             final String simpleName = clazz.getSimpleName();
             CLASSES.put(simpleName, new ConcurrentHashMap<>());
 
-            METHODS.putIfAbsent(newMapping.getClass(), new ConcurrentHashMap<>());
-            for (Method method: clazz.getMethods()) {
+            Method[] methods = clazz.getMethods();
+            Class newMappingClass = newMapping.getClass();
+            METHODS.putIfAbsent(newMappingClass, new ConcurrentHashMap<>(methods.length));
+            for (Method method: methods) {
                 if (method.getParameterCount() > 0) continue;
                 StringBuilder sb = null;
                 final String methodName = method.getName();
@@ -353,13 +354,13 @@ public class BaseFaker implements BaseProviders {
                 } else {
                     name = methodName;
                 }
-                Map<String, Method> methodMap = METHODS.get(newMapping.getClass());
+                Map<String, Method> methodMap = METHODS.get(newMappingClass);
                 if (methodMap == null) {
                     synchronized (BaseFaker.class) {
-                        methodMap = METHODS.get(newMapping.getClass());
+                        methodMap = METHODS.get(newMappingClass);
                         if (methodMap == null) {
-                            METHODS.put(newMapping.getClass(), new HashMap<>());
-                            methodMap = METHODS.get(newMapping.getClass());
+                            METHODS.put(newMappingClass, new ConcurrentHashMap<>(newMappingClass.getMethods().length));
+                            methodMap = METHODS.get(newMappingClass);
                         }
                     }
                 }

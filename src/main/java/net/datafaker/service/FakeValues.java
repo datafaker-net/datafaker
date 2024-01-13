@@ -122,11 +122,12 @@ public class FakeValues implements FakeValuesInterface {
                 final String key = entry.getKey();
                 Object value = entry.getValue();
                 if (entry.getValue() instanceof Map) {
-                    Map<String, Object> nestedMap = new HashMap<>();
-                    for (Map.Entry<String, Object> e: ((Map<String, Object>) entry.getValue()).entrySet()) {
+                    Map<String, Object> entryMap = (Map<String, Object>) entry.getValue();
+                    Map<String, Object> nestedMap = new HashMap<>(entryMap.size());
+                    for (Map.Entry<String, Object> e: entryMap.entrySet()) {
                         nestedMap.put(toJavaNames(e.getKey(), true), e.getValue());
                     }
-                    ((Map<String, Object>) entry.getValue()).putAll(nestedMap);
+                    entryMap.putAll(nestedMap);
                 }
                 if (key.indexOf('_') != -1) {
                     if (map == null) {
