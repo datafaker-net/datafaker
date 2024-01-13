@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
+import net.datafaker.integration.FakerRepeatabilityIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
