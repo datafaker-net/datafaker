@@ -2,7 +2,6 @@ package net.datafaker.formats;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 @Deprecated
@@ -107,12 +106,10 @@ public class Xml {
     }
 
     private static Map<Character, String> createEscapeMap() {
-        final Map<Character, String> map = new HashMap<>();
-        map.put('<', "&lt;");
-        map.put('>', "&gt;");
-        map.put('&', "&amp;");
-        map.put('\'', "&apos;");
-        map.put('"', "&quot;");
-        return Collections.unmodifiableMap(map);
+        return Map.of('<', "&lt;",
+        '>', "&gt;",
+        '&', "&amp;",
+        '\'', "&apos;",
+        '"', "&quot;");
     }
 }

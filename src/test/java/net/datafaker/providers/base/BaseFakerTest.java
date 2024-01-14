@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.Faker;
+import net.datafaker.integration.FakerRepeatabilityIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
@@ -19,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import net.datafaker.integration.FakerRepeatabilityIntegrationTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

@@ -2,8 +2,6 @@ package net.datafaker.transformations;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -57,7 +55,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     public static class XmlTransformerBuilder<IN> {
 
-        private boolean pretty= false;
+        private boolean pretty = false;
 
         public XmlTransformer.XmlTransformerBuilder<IN> pretty(boolean pretty) {
             this.pretty = pretty;
@@ -126,7 +124,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
     private void applyAttributes(IN input, StringBuilder sb, Field<IN, ?>[] attrs) {
         for (Field<IN, ?> attr : attrs) {
             String name = attr.getName();
-            if(isAttribute(name)) {
+            if (isAttribute(name)) {
                 String value = (String) attr.transform(input);
                 sb.append(" ").append(name).append("=\"").append(escape(value)).append("\"");
             }
@@ -157,12 +155,6 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private static Map<Character, String> createEscapeMap() {
-        final Map<Character, String> map = new HashMap<>();
-        map.put('<', "&lt;");
-        map.put('>', "&gt;");
-        map.put('&', "&amp;");
-        map.put('\'', "&apos;");
-        map.put('"', "&quot;");
-        return Collections.unmodifiableMap(map);
+        return Map.of('<', "&lt;", '>', "&gt;", '&', "&amp;", '\'', "&apos;", '"', "&quot;");
     }
 }
