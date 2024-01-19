@@ -479,13 +479,13 @@ public class FakeValuesService {
      * Generates csv based on input.
      */
     public String csv(String delimiter, char quote, boolean withHeader, int limit, String... columnExpressions) {
-        if (columnExpressions.length % 2 != 0) {
+        if ((columnExpressions.length & 1) == 1) {
             throw new IllegalArgumentException("Total number of column names and column values should be even");
         }
-        Field<String, String>[] fields = new Field[columnExpressions.length / 2];
+        Field<String, String>[] fields = new Field[columnExpressions.length >> 1];
         for (int i = 0; i < columnExpressions.length; i += 2) {
             final int index = i;
-            fields[i / 2] = Field.field(columnExpressions[index], () -> columnExpressions[index + 1]);
+            fields[i >> 1] = Field.field(columnExpressions[index], () -> columnExpressions[index + 1]);
         }
         Schema<String, String> schema = Schema.of(fields);
         return CsvTransformer.<String>builder().separator(delimiter).quote(quote).header(withHeader)
@@ -496,7 +496,7 @@ public class FakeValuesService {
      * Generates json based on input.
      */
     public String json(String... fieldExpressions) {
-        if (fieldExpressions.length % 2 != 0) {
+        if ((fieldExpressions.length & 1) == 1) {
             throw new IllegalArgumentException("Total number of field names and field values should be even");
         }
 
@@ -559,7 +559,7 @@ public class FakeValuesService {
         for (int i = 0; i < expressions.length; i++) {
             // odd are expressions, even are not expressions, just strings
             final String expr = expressions[i];
-            if (i % 2 == 0) {
+            if ((i & 1) == 0) {
                 if (!expr.isEmpty()) {
                     result.append(expr);
                 }
@@ -607,7 +607,7 @@ public class FakeValuesService {
                     cnt++;
                     i++;
                 }
-                if (cnt % 2 == 1) {
+                if ((cnt & 1) == 1) {
                     result.add(arguments.substring(start, i - 1).replace("''", "'"));
                     argsStarted = false;
                 }
@@ -627,20 +627,21 @@ public class FakeValuesService {
         if (result != null) {
             return result;
         }
-        List<String> list = new ArrayList<>(2 * cnt + 1);
+        List<String> list = new ArrayList<>((cnt << 1) + 1);
         boolean isExpression = false;
         int start = 0;
         int quoteCnt = 0;
         for (int i = 0; i < length; i++) {
+            final char c = expression.charAt(i);
             if (isExpression) {
-                if (expression.charAt(i) == '}' && quoteCnt % 2 == 0) {
+                if (c == '}' && (quoteCnt & 1) == 0) {
                     list.add(expression.substring(start, i));
                     start = i + 1;
                     isExpression = false;
-                } else if (expression.charAt(i) == '\'') {
+                } else if (c == '\'') {
                     quoteCnt++;
                 }
-            } else if (i < length - 2 && expression.charAt(i) == '#' && expression.charAt(i + 1) == '{') {
+            } else if (i < length - 2 && c == '#' && expression.charAt(i + 1) == '{') {
                 list.add(expression.substring(start, i));
                 isExpression = true;
                 start = i + 2;

@@ -81,20 +81,23 @@ public class Number extends AbstractProvider<BaseProviders> {
      * @param strict         whether or not the generated value should have exactly <code>numberOfDigits</code>
      */
     public long randomNumber(int numberOfDigits, boolean strict) {
-        long max = pow(10, numberOfDigits);
+        if (numberOfDigits <= 0) {
+            return faker.random().nextInt(1);
+        }
+        long min = pow(10, numberOfDigits - 1);
         if (strict) {
-            long min = max / 10;
+            long max = min * 10;
             return faker.random().nextLong(max - min) + min;
         }
 
-        return faker.random().nextLong(max);
+        return faker.random().nextLong(min * 10);
     }
 
     private long pow(long value, int d) {
         if (d == 0) return 1;
         if (d == 1) return value;
-        if (d % 2 == 0) {
-            long pow = pow(value, d / 2);
+        if ((d & 1) == 0) {
+            long pow = pow(value, d >> 1);
             return pow * pow;
         } else {
             return value * pow(value, d - 1);
