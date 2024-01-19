@@ -81,7 +81,7 @@ public class Number extends AbstractProvider<BaseProviders> {
      * @param strict         whether or not the generated value should have exactly <code>numberOfDigits</code>
      */
     public long randomNumber(int numberOfDigits, boolean strict) {
-        if (numberOfDigits == 0) {
+        if (numberOfDigits <= 0) {
             return faker.random().nextInt(1);
         }
         long min = pow(10, numberOfDigits - 1);
