@@ -223,7 +223,8 @@ public class Planet extends AbstractProvider<BaseProviders> {
         MERCURY("mercury"),
         NEPTUNE("neptune"),
         EARTH("earth"),
-        SATURN("saturn");
+        SATURN("saturn"),
+        PLUTO("pluto");
 
         private final String name;
 

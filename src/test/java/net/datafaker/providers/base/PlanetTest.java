@@ -13,7 +13,8 @@ import static net.datafaker.providers.base.Planet.PlanetName.NEPTUNE;
 import static net.datafaker.providers.base.Planet.PlanetName.SATURN;
 import static net.datafaker.providers.base.Planet.PlanetName.URANUS;
 import static net.datafaker.providers.base.Planet.PlanetName.VENUS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static net.datafaker.providers.base.Planet.PlanetName.PLUTO;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PlanetTest extends BaseFakerTest<BaseFaker> {
 
@@ -26,146 +27,172 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
+    void shouldHaveNinePlanets() {
+        // PlanetName enum has 9 entries
+        assertThat(Planet.PlanetName.values()).hasSize(9);
+        // planet.yml has 9 names
+        assertThat(getBaseList("planet.name")).hasSize(9);
+    }
+
+    @Test
     void shouldReturnCorrectJupiterMetadata() {
         String lengthOfDay = planet.lengthOfDay(JUPITER);
-        assertEquals("0d 9h 56m", lengthOfDay);
+        assertThat(lengthOfDay).isEqualTo("0d 9h 56m");
 
         String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(JUPITER);
-        assertEquals("778,412,010 km", meanDistanceFromTheSun);
+        assertThat(meanDistanceFromTheSun).isEqualTo("778,412,010 km");
 
         String equatorialGravity = planet.equatorialGravity(JUPITER);
-        assertEquals("24.79 m/s^2", equatorialGravity);
+        assertThat(equatorialGravity).isEqualTo("24.79 m/s^2");
 
         String mass = planet.mass(JUPITER);
-        assertEquals("1.8987×10^27 kg", mass);
+        assertThat(mass).isEqualTo("1.8987×10^27 kg");
 
         String equatorialRadius = planet.equatorialRadius(JUPITER);
-        assertEquals("71,492 km", equatorialRadius);
+        assertThat(equatorialRadius).isEqualTo("71,492 km");
     }
 
     @Test
     void shouldReturnCorrectMarsMetadata() {
         String lengthOfDay = planet.lengthOfDay(MARS);
-        assertEquals("1d 0h 37m", lengthOfDay);
+        assertThat(lengthOfDay).isEqualTo("1d 0h 37m");
 
         String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(MARS);
-        assertEquals("227,936,640 km", meanDistanceFromTheSun);
+        assertThat(meanDistanceFromTheSun).isEqualTo("227,936,640 km");
 
         String equatorialGravity = planet.equatorialGravity(MARS);
-        assertEquals("3.71 m/s^2", equatorialGravity);
+        assertThat(equatorialGravity).isEqualTo("3.71 m/s^2");
 
         String mass = planet.mass(MARS);
-        assertEquals("6.4191×10^23 kg", mass);
+        assertThat(mass).isEqualTo("6.4191×10^23 kg");
 
         String equatorialRadius = planet.equatorialRadius(MARS);
-        assertEquals("3,396.19 km", equatorialRadius);
+        assertThat(equatorialRadius).isEqualTo("3,396.19 km");
     }
 
     @Test
     void shouldReturnCorrectVenusMetadata() {
         String lengthOfDay = planet.lengthOfDay(VENUS);
-        assertEquals("243d 0h 0m", lengthOfDay);
+        assertThat(lengthOfDay).isEqualTo("243d 0h 0m");
 
         String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(VENUS);
-        assertEquals("108,208,930 km", meanDistanceFromTheSun);
+        assertThat(meanDistanceFromTheSun).isEqualTo("108,208,930 km");
 
         String equatorialGravity = planet.equatorialGravity(VENUS);
-        assertEquals("8.87 m/s^2", equatorialGravity);
+        assertThat(equatorialGravity).isEqualTo("8.87 m/s^2");
 
         String mass = planet.mass(VENUS);
-        assertEquals("4.8690×10^24 kg", mass);
+        assertThat(mass).isEqualTo("4.8690×10^24 kg");
 
         String equatorialRadius = planet.equatorialRadius(VENUS);
-        assertEquals("6,051.8 km", equatorialRadius);
+        assertThat(equatorialRadius).isEqualTo("6,051.8 km");
     }
 
     @Test
     void shouldReturnCorrectUranusMetadata() {
         String lengthOfDay = planet.lengthOfDay(URANUS);
-        assertEquals("0d 17h 14m", lengthOfDay);
+        assertThat(lengthOfDay).isEqualTo("0d 17h 14m");
 
         String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(URANUS);
-        assertEquals("2,870,972,200 km", meanDistanceFromTheSun);
+        assertThat(meanDistanceFromTheSun).isEqualTo("2,870,972,200 km");
 
         String equatorialGravity = planet.equatorialGravity(URANUS);
-        assertEquals("8.87 m/s^2", equatorialGravity);
+        assertThat(equatorialGravity).isEqualTo("8.87 m/s^2");
 
         String mass = planet.mass(URANUS);
-        assertEquals("8.6849×10^25 kg", mass);
+        assertThat(mass).isEqualTo("8.6849×10^25 kg");
 
         String equatorialRadius = planet.equatorialRadius(URANUS);
-        assertEquals("25,559 km", equatorialRadius);
+        assertThat(equatorialRadius).isEqualTo("25,559 km");
     }
 
     @Test
     void shouldReturnCorrectMercuryMetadata() {
         String lengthOfDay = planet.lengthOfDay(MERCURY);
-        assertEquals("59d 0h 0m", lengthOfDay);
+        assertThat(lengthOfDay).isEqualTo("59d 0h 0m");
 
         String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(MERCURY);
-        assertEquals("57,909,175 km", meanDistanceFromTheSun);
+        assertThat(meanDistanceFromTheSun).isEqualTo("57,909,175 km");
 
         String equatorialGravity = planet.equatorialGravity(MERCURY);
-        assertEquals("3.70 m/s^2", equatorialGravity);
+        assertThat(equatorialGravity).isEqualTo("3.70 m/s^2");
 
         String mass = planet.mass(MERCURY);
-        assertEquals("3.302×10^23 kg", mass);
+        assertThat(mass).isEqualTo("3.302×10^23 kg");
 
         String equatorialRadius = planet.equatorialRadius(MERCURY);
-        assertEquals("2,440.53 km", equatorialRadius);
+        assertThat(equatorialRadius).isEqualTo("2,440.53 km");
     }
 
     @Test
     void shouldReturnCorrectNeptuneMetadata() {
         String lengthOfDay = planet.lengthOfDay(NEPTUNE);
-        assertEquals("0d 16h 6m", lengthOfDay);
+        assertThat(lengthOfDay).isEqualTo("0d 16h 6m");
 
         String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(NEPTUNE);
-        assertEquals("4,498,252,900 km", meanDistanceFromTheSun);
+        assertThat(meanDistanceFromTheSun).isEqualTo("4,498,252,900 km");
 
         String equatorialGravity = planet.equatorialGravity(NEPTUNE);
-        assertEquals("11.15 m/s^2", equatorialGravity);
+        assertThat(equatorialGravity).isEqualTo("11.15 m/s^2");
 
         String mass = planet.mass(NEPTUNE);
-        assertEquals("1.0244×10^26 kg", mass);
+        assertThat(mass).isEqualTo("1.0244×10^26 kg");
 
         String equatorialRadius = planet.equatorialRadius(NEPTUNE);
-        assertEquals("24,764 km", equatorialRadius);
+        assertThat(equatorialRadius).isEqualTo("24,764 km");
     }
 
     @Test
     void shouldReturnCorrectEarthMetadata() {
         String lengthOfDay = planet.lengthOfDay(EARTH);
-        assertEquals("24h", lengthOfDay);
+        assertThat(lengthOfDay).isEqualTo("24h");
 
         String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(EARTH);
-        assertEquals("149,597,890 km", meanDistanceFromTheSun);
+        assertThat(meanDistanceFromTheSun).isEqualTo("149,597,890 km");
 
         String equatorialGravity = planet.equatorialGravity(EARTH);
-        assertEquals("9.8 m/s^2", equatorialGravity);
+        assertThat(equatorialGravity).isEqualTo("9.8 m/s^2");
 
         String mass = planet.mass(EARTH);
-        assertEquals("5.972×10^24 kg", mass);
+        assertThat(mass).isEqualTo("5.972×10^24 kg");
 
         String equatorialRadius = planet.equatorialRadius(EARTH);
-        assertEquals("6,378.1366 km", equatorialRadius);
+        assertThat(equatorialRadius).isEqualTo("6,378.1366 km");
     }
 
     @Test
     void shouldReturnCorrectSaturnMetadata() {
         String lengthOfDay = planet.lengthOfDay(SATURN);
-        assertEquals("0d 10h 34m", lengthOfDay);
+        assertThat(lengthOfDay).isEqualTo("0d 10h 34m");
 
         String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(SATURN);
-        assertEquals("1,426,725,400 km", meanDistanceFromTheSun);
+        assertThat(meanDistanceFromTheSun).isEqualTo("1,426,725,400 km");
 
         String equatorialGravity = planet.equatorialGravity(SATURN);
-        assertEquals("10.44 m/s^2", equatorialGravity);
+        assertThat(equatorialGravity).isEqualTo("10.44 m/s^2");
 
         String mass = planet.mass(SATURN);
-        assertEquals("5.6851×10^26 kg", mass);
+        assertThat(mass).isEqualTo("5.6851×10^26 kg");
 
         String equatorialRadius = planet.equatorialRadius(SATURN);
-        assertEquals("60,268 km", equatorialRadius);
+        assertThat(equatorialRadius).isEqualTo("60,268 km");
+    }
+
+    @Test
+    void shouldReturnCorrectPlutoMetadata() {
+        String lengthOfDay = planet.lengthOfDay(PLUTO);
+        assertThat(lengthOfDay).isEqualTo("6d 9h 0m");
+
+        String meanDistanceFromTheSun = planet.meanDistanceFromTheSun(PLUTO);
+        assertThat(meanDistanceFromTheSun).isEqualTo("5,906,380,000 km");
+
+        String equatorialGravity = planet.equatorialGravity(PLUTO);
+        assertThat(equatorialGravity).isEqualTo("0.620 m/s^2");
+
+        String mass = planet.mass(PLUTO);
+        assertThat(mass).isEqualTo("1.303x10^22 kg");
+
+        String equatorialRadius = planet.equatorialRadius(PLUTO);
+        assertThat(equatorialRadius).isEqualTo("1,188.3 km");
     }
 }

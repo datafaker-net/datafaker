@@ -10,6 +10,7 @@ en:
       - "Neptune"
       - "Earth"
       - "Saturn"
+      - "Pluto"
       symbol:
         mercury:
         - "☿"
@@ -27,6 +28,8 @@ en:
         - "⛢"
         neptune:
         - "♆"
+        pluto:
+        - "♇"
       classification:
         mercury:
         - "rocky"
@@ -44,6 +47,8 @@ en:
         - "ice giant"
         neptune:
         - "ice giant"
+        pluto:
+        - "rocky"
       discovery_year:
         mercury:
         - "Prehistoric"
@@ -61,6 +66,8 @@ en:
         - "1781"
         neptune:
         - "1846"
+        pluto:
+        - "1930"
       mean_distance_from_the_sun:
         mercury:
         - "57,909,175 km"
@@ -78,6 +85,8 @@ en:
         - "2,870,972,200 km"
         neptune:
         - "4,498,252,900 km"
+        pluto:
+        - "5,906,380,000 km"
       length_of_day:
         mercury:
         - "59d 0h 0m"
@@ -95,6 +104,8 @@ en:
         - "0d 17h 14m"
         neptune:
         - "0d 16h 6m"
+        pluto:
+        - "6d 9h 0m"
       equatorial_radius:
         mercury:
         - "2,440.53 km"
@@ -112,6 +123,8 @@ en:
         - "25,559 km"
         neptune:
         - "24,764 km"
+        pluto:
+        - "1,188.3 km"
       surface_area:
         mercury:
         - "75,000,000 km^2"
@@ -129,6 +142,8 @@ en:
         - "8,100,000,000 km^2"
         neptune:
         - "7,700,000,000 km^2"
+        pluto:
+        - "17,744,430 km^2"
       volume:
         mercury:
         - "6.083×10^10 km^3"
@@ -146,6 +161,8 @@ en:
         - "6.834×10^13 km^3"
         neptune:
         - "6.254×10^13 km^3"
+        pluto:
+        - "7.057x10^9 km^3"
       mass:
         mercury:
         - "3.302×10^23 kg"
@@ -163,6 +180,8 @@ en:
         - "8.6849×10^25 kg"
         neptune:
         - "1.0244×10^26 kg"
+        pluto:
+        - "1.303x10^22 kg"
       gravitational_parameters:
         mercury:
         - "2.203×10^13 m^3/s^2"
@@ -180,6 +199,8 @@ en:
         - "5.794×10^15 m^3/s^2"
         neptune:
         - "6.837×10^15 m^3/s^2"
+        pluto:
+        - "8.710×10^11 m^3/s^2"
       density:
         mercury:
         - "5.43 g/cm^3"
@@ -197,6 +218,8 @@ en:
         - "1.30 g/cm^3"
         neptune:
         - "1.76 g/cm^3"
+        pluto:
+        - "1.854 g/cm^3"
       equatorial_gravity:
         mercury:
         - "3.70 m/s^2"
@@ -214,6 +237,8 @@ en:
         - "8.87 m/s^2"
         neptune:
         - "11.15 m/s^2"
+        pluto:
+        - "0.620 m/s^2"
       escape_velocity:
         mercury:
         - "4.25 km/s"
@@ -231,6 +256,8 @@ en:
         - "21.29 km/s"
         neptune:
         - "23.71 km/s"
+        pluto:
+        - "1.21  km/s"
       rotation_period:
         mercury:
         - "58.646225 days"
@@ -248,6 +275,8 @@ en:
         - "0.71833 days"
         neptune:
         - "0.67125 days"
+        pluto:
+        - "6.3872 days"
       orbital_period:
         mercury:
         - "87.969 days"
@@ -265,23 +294,27 @@ en:
         - "30,688.5 days"
         neptune:
         - "60,182 days"
+        pluto:
+        - "90,560 days"
       mean_orbital_speed:
         mercury:
-        - "87.969 km/s"
+        - "47.8725 km/s"
         venus:
-        - "224.701 km/s"
+        - "35.0214 km/s"
         earth:
-        - "365.256363 km/s"
+        - "29.7859 km/s"
         mars:
-        - "686.971 km/s"
+        - "24.1309 km/s"
         jupiter:
-        - "4,332.59 km/s"
+        - "13.0697 km/s"
         saturn:
-        - "10,759.22 km/s"
+        - "9.6724 km/s"
         uranus:
-        - "30,688.5 km/s"
+        - "6.8352 km/s"
         neptune:
-        - "60,182 km/s"
+        - "5.4778  km/s"
+        pluto:
+        - "4.75 km/s"
       eccentricity:
         mercury:
         - "0.20563069"
@@ -299,6 +332,8 @@ en:
         - "0.04716771"
         neptune:
         - "0.00858587"
+        pluto:
+        - "0.249 "
       inclination:
         mercury:
         - "7.00 deg"
@@ -316,6 +351,8 @@ en:
         - "0.76 deg"
         neptune:
         - "1.77 deg"
+        pluto:
+        - "17.14 deg"
       axial_tilt:
         mercury:
         - "0.0 deg"
@@ -333,6 +370,8 @@ en:
         - "97.86 deg"
         neptune:
         - "28.32 deg"
+        pluto:
+        - "119.6 deg"
       mean_surface_temperature:
         mercury:
         - "440–100 K"
@@ -350,6 +389,8 @@ en:
         - "76 K"
         neptune:
         - "73 K"
+        pluto:
+        - "40 k"
       mean_air_temperature:
         mercury:
         - "437 K"
@@ -367,6 +408,8 @@ en:
         - "76 K"
         neptune:
         - "73 K"
+        pluto:
+        - "Unknown"
       atmospheric_composition:
         mercury:
         - "He, Na+ K+"
@@ -384,6 +427,8 @@ en:
         - "H2, He CH4"
         neptune:
         - "H2, He CH4"
+        pluto:
+        - "N2, CH4, CO"
       number_of_known_moons:
         mercury:
         - "0"
@@ -401,6 +446,8 @@ en:
         - "27"
         neptune:
         - "14"
+        pluto:
+        - "5"
       rings:
         mercury:
         - "No"
@@ -418,6 +465,8 @@ en:
         - "Yes"
         neptune:
         - "Yes"
+        pluto:
+        - "No"
       planetary_discriminant:
         mercury:
         - "9.1×10^4"
@@ -435,3 +484,5 @@ en:
         - "2.9×10^4"
         neptune:
         - "2.4×10^4"
+        pluto:
+        - "0.077"
