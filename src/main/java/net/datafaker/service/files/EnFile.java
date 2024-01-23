@@ -188,6 +188,7 @@ public class EnFile {
         "passport.yml",
         "phone_number.yml",
         "photography.yml",
+        "planet.yml",
         "pokemon.yml",
         "princess_bride.yml",
         "programming_language.yml",
