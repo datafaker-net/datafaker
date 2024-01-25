@@ -90,6 +90,20 @@ public class BaseFakerTest<T extends BaseFaker> {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("providerListTest")
+    void testNoDuplications(TestSpec testSpec) {
+        if (testSpec.isDummy) {
+            return;
+        }
+
+        var terms = getBaseList(testSpec.key);
+
+        assertThat(new HashSet<>(terms).size())
+                .as("Check no duplications in " + testSpec.key)
+                .isEqualTo(terms.size());
+    }
+
     protected Collection<TestSpec> providerListTest() {
         // dummy test since parameterized test requires non-empty collection
         return Set.of(new TestSpec(null, null, null));
