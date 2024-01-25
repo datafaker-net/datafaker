@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +20,10 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return List.of(TestSpec.of(lorem::word, "lorem.words"));
+        return List.of(
+                TestSpec.of(lorem::word, "lorem.words"),
+                TestSpec.of(lorem::supplemental, "lorem.supplemental")
+        );
     }
 
     @Test

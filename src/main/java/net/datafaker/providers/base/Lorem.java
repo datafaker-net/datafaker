@@ -81,6 +81,10 @@ public class Lorem extends AbstractProvider<BaseProviders> {
         return resolve("lorem.words");
     }
 
+    public String supplemental() {
+        return resolve("lorem.supplemental");
+    }
+
     /**
      * Create a sentence with a random number of words within the range 4..10.
      *
