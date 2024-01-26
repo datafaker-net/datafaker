@@ -99,9 +99,9 @@ public class BaseFakerTest<T extends BaseFaker> {
 
         var terms = getBaseList(testSpec.key);
 
-        assertThat(new HashSet<>(terms).size())
+        assertThat(new HashSet<>(terms))
                 .as("Check no duplications in " + testSpec.key)
-                .isEqualTo(terms.size());
+                .hasSameSizeAs(terms);
     }
 
     protected Collection<TestSpec> providerListTest() {
