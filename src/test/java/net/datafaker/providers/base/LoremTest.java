@@ -18,7 +18,10 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return List.of(TestSpec.of(lorem::word, "lorem.words"));
+        return List.of(
+                TestSpec.of(lorem::word, "lorem.words"),
+                TestSpec.of(lorem::supplemental, "lorem.supplemental")
+        );
     }
 
     @Test

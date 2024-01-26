@@ -500,7 +500,6 @@ en:
       - "Goblin Priest"
       - "Christmas Treant"
       - "Easter Bunny"
-      - "Goblin Priest"
       - "Lord of Infinite Dark"
       enemies:
       - "Goblin Guard(Pistol)"
@@ -642,7 +641,6 @@ en:
       - "Alien(Laser Sword)"
       - "Alien(Laser Gun)"
       - "Alien(Machine Gun)"
-      - "Battery"
       - "UFO"
       - "Goblin Fly"
       - "Goblin"
