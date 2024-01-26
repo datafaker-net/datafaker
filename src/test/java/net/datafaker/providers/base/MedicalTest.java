@@ -17,7 +17,8 @@ class MedicalTest extends BaseFakerTest<BaseFaker> {
         return List.of(TestSpec.of(medical::medicineName, "medical.medicine_name"),
                 TestSpec.of(medical::diseaseName, "medical.disease_name"),
                 TestSpec.of(medical::hospitalName, "medical.hospital_name"),
-                TestSpec.of(medical::symptoms, "medical.symptoms"));
+                TestSpec.of(medical::symptoms, "medical.symptoms"),
+                TestSpec.of(medical::medicalProfession, "medical.medical_professions"));
     }
 
     @Test
