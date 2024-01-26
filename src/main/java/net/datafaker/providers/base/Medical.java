@@ -34,4 +34,9 @@ public class Medical extends AbstractProvider<BaseProviders> {
         String regex = resolve("medical.procedure_code.icd10");
         return faker.regexify(regex);
     }
+
+    public String medicalProfession() {
+        return resolve("medical.medical_professions");
+    }
+
 }
