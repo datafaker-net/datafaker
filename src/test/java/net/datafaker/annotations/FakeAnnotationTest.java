@@ -41,7 +41,7 @@ public class FakeAnnotationTest {
         var person = Faker.populate(Person.class, customSchema());
 
         assertThat(person).isNotNull();
-        assertThat(person.getName()).isEqualTo("Wildfire Woman");
+        assertThat(person.getName()).isEqualTo("Aztar Ivy");
     }
 
     @Test
@@ -49,7 +49,7 @@ public class FakeAnnotationTest {
         var person = Faker.populate(PersonJavaRecord.class, customSchema());
 
         assertThat(person).isNotNull();
-        assertThat(person.name()).isEqualTo("Wildfire Woman");
+        assertThat(person.name()).isEqualTo("Aztar Ivy");
     }
 
     @Test
@@ -57,7 +57,7 @@ public class FakeAnnotationTest {
         var person = Faker.populate(SimplePerson.class, customSchema());
 
         assertThat(person).isNotNull();
-        assertThat(person.name).isEqualTo("Wildfire Woman");
+        assertThat(person.name).isEqualTo("Aztar Ivy");
     }
 
     @Test
@@ -65,7 +65,7 @@ public class FakeAnnotationTest {
         var person = Faker.populate(SimplePersonJavaRecord.class, customSchema());
 
         assertThat(person).isNotNull();
-        assertThat(person.name).isEqualTo("Wildfire Woman");
+        assertThat(person.name).isEqualTo("Aztar Ivy");
     }
 
     @Test
@@ -73,7 +73,7 @@ public class FakeAnnotationTest {
         var person = Faker.populate(ComplexPersonJavaRecord.class, complexSchema());
 
         assertThat(person).isNotNull();
-        assertThat(person.name()).isEqualTo("Wildfire Woman");
+        assertThat(person.name()).isEqualTo("Aztar Ivy");
         assertThat(person.address()).isEqualTo("Am Buttermarkt 46b, Dannerheim, BE 32422");
         assertThat(person.color()).isEqualTo("rot");
     }
