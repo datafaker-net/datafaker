@@ -44,7 +44,7 @@ dependencies {
 
 You can also use the snapshot version (`2.1.1-SNAPSHOT`), which automatically gets published
 after every push to the main branch of this repository. Binary repository URL for snapshots download is
-https://s01.oss.sonatype.org/content/repositories/snapshots/.
+`https://s01.oss.sonatype.org/content/repositories/snapshots/`.
 
 ### Get started
 
