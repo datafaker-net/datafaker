@@ -59,22 +59,26 @@ public class Aws extends AbstractProvider<BaseProviders> {
     }
 
     public String securityGroupId() {
-        return "sg-" + randHex();
+        return "sg-" + randHex(17);
     }
 
     public String subnetId() {
-        return "subnet-" + randHex();
+        return "subnet-" + randHex(17);
     }
 
     public String vpcId() {
-        return "vpc-" + randHex();
+        return "vpc-" + randHex(17);
     }
 
     private String appName() {
         return faker.app().name().toLowerCase().replaceAll("\\W+", "");
     }
 
+    private String randHex(int length) {
+        return faker.random().hex(length, false);
+    }
+
     private String randHex() {
-        return faker.random().hex(16, false);
+        return randHex(16);
     }
 }

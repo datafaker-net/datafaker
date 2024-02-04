@@ -33,17 +33,17 @@ class AwsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testSecurityGroupId() {
-        assertThat(faker.aws().securityGroupId()).matches("^sg-[0-9a-f]{16}$");
+        assertThat(faker.aws().securityGroupId()).matches("^sg-[0-9a-f]{17}$");
     }
 
     @Test
     void testSubnetId() {
-        assertThat(faker.aws().subnetId()).matches("^subnet-[0-9a-f]{16}$");
+        assertThat(faker.aws().subnetId()).matches("^subnet-[0-9a-f]{17}$");
     }
 
     @Test
     void testVpcId() {
-        assertThat(faker.aws().vpcId()).matches("^vpc-[0-9a-f]{16}$");
+        assertThat(faker.aws().vpcId()).matches("^vpc-[0-9a-f]{17}$");
     }
 
     @Test
