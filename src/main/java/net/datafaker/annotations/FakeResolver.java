@@ -56,7 +56,8 @@ public class FakeResolver<T> {
     private Schema<Object, T> getSchema(String pathToSchema) {
         if (pathToSchema != null) {
             try {
-                final int sharpIndex = pathToSchema.indexOf('#');
+                // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
+                final int sharpIndex = pathToSchema.indexOf("#");
                 final Class<?> classToCall;
                 final String methodName;
                 if (sharpIndex >= 0) {

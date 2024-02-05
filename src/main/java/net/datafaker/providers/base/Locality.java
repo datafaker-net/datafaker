@@ -56,7 +56,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
             if (langs.contains(parentFileName)) {
                 locales.add(parentFileName);
             } else {
-                locales.add(filename.substring(0, filename.indexOf('.')));
+                // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
+                locales.add(filename.substring(0, filename.indexOf(".")));
             }
             return true;
         }
