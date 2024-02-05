@@ -544,17 +544,12 @@ public class FakeValuesService {
      * {@link BaseFaker#address()}'s {@link Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, ProviderRegistration root, FakerContext context) {
-        int cnt = 0;
-        final int expressionLength = expression.length();
-        for (int i = 0; i < expressionLength; i++) {
-            if (expression.charAt(i) == '}') {
-                cnt++;
-            }
-        }
-        if (cnt == 0) {
+        // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
+        if (!expression.contains("}")) {
             return expression;
         }
-        final String[] expressions = splitExpressions(expression, cnt, expressionLength);
+        final int expressionLength = expression.length();
+        final String[] expressions = splitExpressions(expression, expressionLength);
         final StringBuilder result = new StringBuilder(expressions.length * expressionLength);
         for (int i = 0; i < expressions.length; i++) {
             // odd are expressions, even are not expressions, just strings
@@ -622,10 +617,16 @@ public class FakeValuesService {
         return resultArray;
     }
 
-    private String[] splitExpressions(String expression, int cnt, int length) {
+    private String[] splitExpressions(String expression, int length) {
         String[] result = EXPRESSION_2_SPLITTED.get(expression);
         if (result != null) {
             return result;
+        }
+        int cnt = 0;
+        for (int i = 0; i < length; i++) {
+            if (expression.charAt(i) == '}') {
+                cnt++;
+            }
         }
         List<String> list = new ArrayList<>((cnt << 1) + 1);
         boolean isExpression = false;
@@ -787,7 +788,8 @@ public class FakeValuesService {
     }
 
     private int getDotIndex(String directive) {
-        return directive.indexOf('.');
+        // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
+        return directive.indexOf(".");
     }
 
     /**
@@ -971,7 +973,8 @@ public class FakeValuesService {
         if (valueWithRemovedUnderscores != null) {
             return valueWithRemovedUnderscores;
         }
-        if (string.indexOf('_') == -1) {
+        // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
+        if (!string.contains("_")) {
             REMOVED_UNDERSCORE.putIfAbsent(string, string.toLowerCase(Locale.ROOT));
             return string;
         }

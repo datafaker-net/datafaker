@@ -129,7 +129,8 @@ public class FakeValues implements FakeValuesInterface {
                     }
                     entryMap.putAll(nestedMap);
                 }
-                if (key.indexOf('_') != -1) {
+                // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
+                if (key.contains("_")) {
                     if (map == null) {
                         map = new HashMap<>();
                     }
