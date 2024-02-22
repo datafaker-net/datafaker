@@ -160,6 +160,16 @@ class FakerTest extends AbstractFakerTest {
         assertThat(faker.regexify("[a-z]{2,3}")).matches("[a-z]{2,3}");
     }
 
+    /*
+    Test case for issue https://github.com/datafaker-net/datafaker/issues/1091
+     */
+    @Test
+    void issue1091() {
+        Faker faker = new Faker();
+        String regex = "^arn:.+:.+:.*:([0-9]{12}):(.+)$";
+        assertThat(faker.regexify(regex)).matches(regex);
+    }
+
     @Test
     void regexifyShouldGenerateBracketsQuantifiersOnAlternations() {
         assertThat(faker.regexify("(a|b){2,3}")).matches("([ab]){2,3}");

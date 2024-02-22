@@ -1,8 +1,8 @@
 module net.datafaker {
-	requires generex;
 	requires org.yaml.snakeyaml;
 	requires java.sql;
 	requires java.management;
+    requires rgxgen;
 
 	exports net.datafaker;
 	exports net.datafaker.annotations;
