@@ -105,79 +105,28 @@ class FakerTest extends AbstractFakerTest {
             Map.of('1', new String[]{""}))).hasSize(5);
     }
 
-    @Test
-    void regexifyShouldGenerateNumbers() {
-        assertThat(faker.regexify("\\d")).matches("\\d");
-    }
-
-    @Test
-    void regexifyShouldGenerateLetters() {
-        assertThat(faker.regexify("\\w")).matches("\\w");
-    }
-
-    @Test
-    void regexifyShouldGenerateAlternations() {
-        assertThat(faker.regexify("(a|b)")).matches("([ab])");
-    }
-
-    @Test
-    void regexifyShouldGenerateBasicCharacterClasses() {
-        assertThat(faker.regexify("(aeiou)")).matches("(aeiou)");
-    }
-
-    @Test
-    void regexifyShouldGenerateCharacterClassRanges() {
-        assertThat(faker.regexify("[a-z]")).matches("[a-z]");
-    }
-
-    @Test
-    void regexifyShouldGenerateMultipleCharacterClassRanges() {
-        assertThat(faker.regexify("[a-z1-9]")).matches("[a-z1-9]");
-    }
-
-    @Test
-    void regexifyShouldGenerateSingleCharacterQuantifiers() {
-        assertThat(faker.regexify("a*b+c?")).matches("a*b+c?");
-    }
-
-    @Test
-    void regexifyShouldGenerateBracketsQuantifiers() {
-        assertThat(faker.regexify("a{2}")).matches("a{2}");
-    }
-
-    @Test
-    void regexifyShouldGenerateMinMaxQuantifiers() {
-        assertThat(faker.regexify("a{2,3}")).matches("a{2,3}");
-    }
-
-    @Test
-    void regexifyShouldGenerateBracketsQuantifiersOnBasicCharacterClasses() {
-        assertThat(faker.regexify("[aeiou]{2,3}")).matches("[aeiou]{2,3}");
-    }
-
-    @Test
-    void regexifyShouldGenerateBracketsQuantifiersOnCharacterClassRanges() {
-        assertThat(faker.regexify("[a-z]{2,3}")).matches("[a-z]{2,3}");
-    }
-
     /*
     Test case for issue https://github.com/datafaker-net/datafaker/issues/1091
      */
-    @Test
-    void issue1091() {
-        Faker faker = new Faker();
-        String regex = "^arn:.+:.+:.*:([0-9]{12}):(.+)$";
-        assertThat(faker.regexify(regex)).matches(regex);
-    }
-
-    @Test
-    void regexifyShouldGenerateBracketsQuantifiersOnAlternations() {
-        assertThat(faker.regexify("(a|b){2,3}")).matches("([ab]){2,3}");
-    }
-
-    @Test
-    void regexifyShouldGenerateEscapedCharacters() {
-        assertThat(faker.regexify("\\.\\*\\?\\+")).matches("\\.\\*\\?\\+");
+    @ParameterizedTest
+    @ValueSource(strings = {"\\d",
+        "\\w",
+        "[aeiou]{2,3}",
+        "[a-z]{2,3}",
+        "a{2,3}",
+        "a{2}",
+        "a*b+c?",
+        "[a-z1-9]",
+        "[a-z]{2,3}[0-9]{2,3}",
+        "(a|b){2,3}",
+        "[a-z]",
+        "(aeiou)",
+        "(a|b)",
+        "\\.\\*\\?\\+",
+        "^arn:.+:.+:.*:([0-9]{12}):(.+)$"})
+    void testRegexify(String input) {
+        var faker = new Faker();
+        assertThat(faker.regexify(input)).matches(input);
     }
 
     @Test
