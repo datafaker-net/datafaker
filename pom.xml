@@ -28,7 +28,7 @@
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <commons-text.version>1.11.0</commons-text.version>
         <commons-validator.version>1.8.0</commons-validator.version>
-        <generex.version>1.0.2</generex.version>
+        <rgxgen.version>2.0</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <jbanking.version>4.2.0</jbanking.version>
@@ -80,10 +80,11 @@
             <version>${snakeyaml.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.mifmif</groupId>
-            <artifactId>generex</artifactId>
-            <version>${generex.version}</version>
+            <groupId>com.github.curious-odd-man</groupId>
+            <artifactId>rgxgen</artifactId>
+            <version>${rgxgen.version}</version>
         </dependency>
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -277,7 +278,7 @@
                     <artifactSet>
                         <includes>
                             <include>org.yaml:snakeyaml:*:*</include>
-                            <include>com.github.mifmif:generex:*:*</include>
+                            <include>com.github.curious-odd-man:rgxgen:*:*</include>
                             <include>dk.brics.automaton:automaton:*:*</include>
                         </includes>
                     </artifactSet>
@@ -300,8 +301,8 @@
                             <rawString>true</rawString>
                         </relocation>
                         <relocation>
-                            <pattern>com.mifmif.common.regex</pattern>
-                            <shadedPattern>net.datafaker.shaded.generex</shadedPattern>
+                            <pattern>com.github.curious-odd-man</pattern>
+                            <shadedPattern>net.datafaker.shaded.com.github.curious-odd-man</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>dk.brics.automaton</pattern>
