@@ -119,8 +119,8 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testBirthday() {
         final LocalDateTime localDate = LocalDateTime.now();
-        final long to = localDate.minusYears(18).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        final long from = localDate.minusYears(65).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        final long to = localDate.minusYears(18).truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        final long from = localDate.minusYears(65).truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         final DateAndTime date = faker.date();
         for (int i = 0; i < 5000; i++) {
             Timestamp birthday = date.birthday();
