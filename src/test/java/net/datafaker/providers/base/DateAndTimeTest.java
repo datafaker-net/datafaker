@@ -16,9 +16,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.zone.ZoneRules;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -120,12 +118,10 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testBirthday() {
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
-        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        long from = new GregorianCalendar(currentYear - 65, currentMonth, currentDay).getTime().getTime();
-        long to = new GregorianCalendar(currentYear - 18, currentMonth, currentDay).getTime().getTime();
-        DateAndTime date = faker.date();
+        final LocalDateTime localDate = LocalDateTime.now();
+        final long to = localDate.minusYears(18).truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        final long from = localDate.minusYears(65).truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        final DateAndTime date = faker.date();
         for (int i = 0; i < 5000; i++) {
             Timestamp birthday = date.birthday();
             assertThat(birthday.getTime()).isLessThan(to)
