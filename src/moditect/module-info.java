@@ -1,8 +1,6 @@
-module net.datafaker {
-	requires org.yaml.snakeyaml;
+open module net.datafaker {
 	requires java.sql;
 	requires java.management;
-    requires rgxgen;
 
 	exports net.datafaker;
 	exports net.datafaker.annotations;
@@ -19,4 +17,5 @@ module net.datafaker {
 	exports net.datafaker.service.files;
 	exports net.datafaker.transformations;
 	exports net.datafaker.transformations.sql;
+    exports net.datafaker.shaded.snakeyaml;
 }
