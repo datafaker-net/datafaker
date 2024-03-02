@@ -278,7 +278,7 @@
                     <artifactSet>
                         <includes>
                             <include>org.yaml:snakeyaml:*:*</include>
-                            <include>com.github.curious-odd-man:rgxgen:*:*</include>
+                            <include>com.github.curiousoddman:rgxgen:*:*</include>
                             <include>dk.brics.automaton:automaton:*:*</include>
                         </includes>
                     </artifactSet>
@@ -301,8 +301,8 @@
                             <rawString>true</rawString>
                         </relocation>
                         <relocation>
-                            <pattern>com.github.curious-odd-man</pattern>
-                            <shadedPattern>net.datafaker.shaded.com.github.curious-odd-man</shadedPattern>
+                            <pattern>com.github.curiousoddman.rgxgen</pattern>
+                            <shadedPattern>net.datafaker.shaded.curiousoddman.rgxgen</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>dk.brics.automaton</pattern>
