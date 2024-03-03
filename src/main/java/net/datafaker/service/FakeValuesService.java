@@ -1,6 +1,5 @@
 package net.datafaker.service;
 
-import com.mifmif.common.regex.Generex;
 import net.datafaker.internal.helper.COWMap;
 import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
@@ -41,6 +40,7 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import com.github.curiousoddman.rgxgen.RgxGen;
 
 import static net.datafaker.transformations.Field.field;
 
@@ -59,7 +59,7 @@ public class FakeValuesService {
 
     private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
 
-    private final Map<String, Generex> expression2generex = new COWMap<>(WeakHashMap::new);
+    private final Map<String, RgxGen> expression2generex = new COWMap<>(WeakHashMap::new);
     private final COWMap<SingletonLocale, Map<String, String>> key2Expression = new COWMap<>(IdentityHashMap::new);
     private static final Map<String, String[]> ARGS_2_SPLITTED_ARGS = new COWMap<>(WeakHashMap::new);
 
@@ -331,13 +331,12 @@ public class FakeValuesService {
      * Generates a String that matches the given regular expression.
      */
     public String regexify(String regex, FakerContext context) {
-        Generex generex = expression2generex.get(regex);
-        if (generex == null) {
-            generex = new Generex(regex);
-            generex.setSeed(context.getRandomService().nextLong());
-            expression2generex.putIfAbsent(regex, generex);
+        RgxGen rgxGen = expression2generex.get(regex);
+        if (rgxGen == null) {
+            rgxGen = RgxGen.parse(regex);
+            expression2generex.putIfAbsent(regex, rgxGen);
         }
-        return generex.random();
+        return rgxGen.generate(context.getRandomService().getRandomInternal());
     }
 
     /**

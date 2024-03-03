@@ -52,7 +52,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
     private boolean addLocaleIfPresent(Path file, Set<String> langs, Set<String> locales) {
         final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
         if ((filename.endsWith(".yml") || filename.endsWith(".yaml")) && Files.isRegularFile(file) && Files.isReadable(file)) {
-            final String parentFileName = file.getParent().getFileName().toString();
+            final Path parent = file.getParent();
+            final String parentFileName = parent == null ? null : parent.getFileName().toString();
             if (langs.contains(parentFileName)) {
                 locales.add(parentFileName);
             } else {

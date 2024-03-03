@@ -498,6 +498,7 @@ Supported Locales
 * in-ID
 * it
 * ja
+* ka
 * ko
 * nb-NO
 * nl

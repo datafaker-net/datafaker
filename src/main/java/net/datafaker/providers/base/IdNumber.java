@@ -163,4 +163,13 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
         KoKrIdNumber koKrIdNumber = (KoKrIdNumber) map.computeIfAbsent(KoKrIdNumber.class, aClass -> new KoKrIdNumber());
         return koKrIdNumber.getValidRrn(faker);
     }
+    
+    /**
+     * Generates valid ID number for Georgian citizens and Residents
+     * 
+     * @return A valid ID Number
+     */
+    public String validGeIDNumber() {
+    	return faker.numerify("###########");
+    }
 }

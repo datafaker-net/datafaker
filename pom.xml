@@ -28,12 +28,12 @@
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <commons-text.version>1.11.0</commons-text.version>
         <commons-validator.version>1.8.0</commons-validator.version>
-        <generex.version>1.0.2</generex.version>
+        <rgxgen.version>2.0</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <jbanking.version>4.2.0</jbanking.version>
         <junit.version>5.10.2</junit.version>
-        <libphonenumber.version>8.13.30</libphonenumber.version>
+        <libphonenumber.version>8.13.31</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
@@ -41,11 +41,11 @@
         <maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
         <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
         <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
-        <maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
+        <maven-shade-plugin.version>3.5.2</maven-shade-plugin.version>
         <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-        <mockito-core.version>5.10.0</mockito-core.version>
+        <mockito-core.version>5.11.0</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.25.8</javaparser.version>
@@ -80,10 +80,11 @@
             <version>${snakeyaml.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.mifmif</groupId>
-            <artifactId>generex</artifactId>
-            <version>${generex.version}</version>
+            <groupId>com.github.curious-odd-man</groupId>
+            <artifactId>rgxgen</artifactId>
+            <version>${rgxgen.version}</version>
         </dependency>
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -277,7 +278,7 @@
                     <artifactSet>
                         <includes>
                             <include>org.yaml:snakeyaml:*:*</include>
-                            <include>com.github.mifmif:generex:*:*</include>
+                            <include>com.github.curiousoddman:rgxgen:*:*</include>
                             <include>dk.brics.automaton:automaton:*:*</include>
                         </includes>
                     </artifactSet>
@@ -300,8 +301,8 @@
                             <rawString>true</rawString>
                         </relocation>
                         <relocation>
-                            <pattern>com.mifmif.common.regex</pattern>
-                            <shadedPattern>net.datafaker.shaded.generex</shadedPattern>
+                            <pattern>com.github.curiousoddman.rgxgen</pattern>
+                            <shadedPattern>net.datafaker.shaded.curiousoddman.rgxgen</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>dk.brics.automaton</pattern>
