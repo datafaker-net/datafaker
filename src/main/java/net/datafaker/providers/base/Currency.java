@@ -13,7 +13,21 @@ public class Currency extends AbstractProvider<BaseProviders> {
         return resolve("currency.name");
     }
 
+    /**
+     * @return an alphabetic currency code (ex. USD)
+     */
     public String code() {
         return resolve("currency.code");
     }
+
+    /**
+     * <p>Returns an active ISO 4217 three-digit numeric currency code as of 1 April 2022</p>
+     *
+     * @return an ISO 4217 currency numeric code
+     * @since 2.1.1
+     */
+    public String numericCode() {
+        return resolve("currency.numeric_code");
+    }
+
 }
