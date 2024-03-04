@@ -24,7 +24,7 @@ public class Currency extends AbstractProvider<BaseProviders> {
      * <p>Returns an active ISO 4217 three-digit numeric currency code as of 1 April 2022</p>
      *
      * @return an ISO 4217 currency numeric code
-     * @since 2.1.1
+     * @since 2.2.0
      */
     public String numericCode() {
         return resolve("currency.numeric_code");

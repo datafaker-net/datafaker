@@ -251,7 +251,7 @@ public class ProvidersDocsGenerator {
         }
 
         public static String getName(String clazzName, String groupName) {
-            return "[" + addSpaceBetweenNameOfProvider(clazzName) + "](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/" + groupName + "/" + clazzName + ".html)";
+            return "[" + addSpaceBetweenNameOfProvider(clazzName) + "](https://javadoc.io/doc/net.datafaker/datafaker/latest/net.datafaker/net/datafaker/providers/" + groupName + "/" + clazzName + ".html)";
         }
 
         private static String addSpaceBetweenNameOfProvider(String providerName) {
