@@ -15,6 +15,7 @@ public class Currency extends AbstractProvider<BaseProviders> {
     /**
      * @deprecated since 2.2.0. For removal in 3.0.0 version. Use {@link Money#currency} instead.
      */
+    @Deprecated(since = "2.2.0", forRemoval = true)
     public String name() {
         return resolve("currency.name");
     }
@@ -23,6 +24,7 @@ public class Currency extends AbstractProvider<BaseProviders> {
      * @deprecated since 2.2.0. For removal in 3.0.0 version. Use {@link Money#currencyCode()} instead.
      * @return an alphabetic currency code (ex. USD)
      */
+    @Deprecated(since = "2.2.0", forRemoval = true)
     public String code() {
         return resolve("currency.code");
     }

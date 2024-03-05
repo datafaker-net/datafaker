@@ -30,7 +30,7 @@ public class Money extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * <p>Returns a random ISO 4217 currency code (ex. EUR, USD)</p>
+     * Returns a random ISO 4217 currency code (ex. EUR, USD)
      *
      * @see Currency#getCurrencyCode()
      * @return an ISO 4217 currency code
@@ -41,7 +41,7 @@ public class Money extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * <p>Returns the 3 digit ISO 4217 numeric code of a random currency. Read more: </p>
+     * Returns the 3-digit ISO 4217 numeric code of a random currency.
      *
      * @see Currency#getNumericCodeAsString()
      * @return an ISO 4217 currency numeric code
