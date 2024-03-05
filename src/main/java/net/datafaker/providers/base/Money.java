@@ -45,7 +45,7 @@ public class Money extends AbstractProvider<BaseProviders> {
      *
      * @see Currency#getNumericCodeAsString()
      * @return an ISO 4217 currency numeric code
-     * @since 2.3.0
+     * @since 2.2.0
      */
     public String currencyNumericCode() {
         int randomIndex = faker.random().nextInt(availableCurrencies.size());
@@ -55,7 +55,7 @@ public class Money extends AbstractProvider<BaseProviders> {
     /**
      * @see Currency#getSymbol()
      * @return an ISO 4217 currency symbol
-     * @since 2.3.0
+     * @since 2.2.0
      */
     public String currencySymbol() {
         int randomIndex = faker.random().nextInt(availableCurrencies.size());
