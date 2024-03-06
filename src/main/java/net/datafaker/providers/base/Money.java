@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class Money extends AbstractProvider<BaseProviders> {
 
     public Money(BaseProviders faker) {
         super(faker);
-        this.availableCurrencies = new ArrayList<>(Currency.getAvailableCurrencies());
+        this.availableCurrencies = List.copyOf(Currency.getAvailableCurrencies());
     }
 
     /**
@@ -25,8 +24,7 @@ public class Money extends AbstractProvider<BaseProviders> {
      * @return detailed currency value.
      */
     public String currency() {
-        int randomIndex = faker.random().nextInt(availableCurrencies.size());
-        return availableCurrencies.get(randomIndex).getDisplayName();
+        return getRandomCurrency().getDisplayName();
     }
 
     /**
@@ -36,8 +34,7 @@ public class Money extends AbstractProvider<BaseProviders> {
      * @return an ISO 4217 currency code
      */
     public String currencyCode() {
-        int randomIndex = faker.random().nextInt(availableCurrencies.size());
-        return availableCurrencies.get(randomIndex).getCurrencyCode();
+        return getRandomCurrency().getCurrencyCode();
     }
 
     /**
@@ -48,8 +45,7 @@ public class Money extends AbstractProvider<BaseProviders> {
      * @since 2.2.0
      */
     public String currencyNumericCode() {
-        int randomIndex = faker.random().nextInt(availableCurrencies.size());
-        return availableCurrencies.get(randomIndex).getNumericCodeAsString();
+        return getRandomCurrency().getNumericCodeAsString();
     }
 
     /**
@@ -58,8 +54,12 @@ public class Money extends AbstractProvider<BaseProviders> {
      * @since 2.2.0
      */
     public String currencySymbol() {
+        return getRandomCurrency().getSymbol();
+    }
+
+    private Currency getRandomCurrency() {
         int randomIndex = faker.random().nextInt(availableCurrencies.size());
-        return availableCurrencies.get(randomIndex).getSymbol();
+        return availableCurrencies.get(randomIndex);
     }
 
 }

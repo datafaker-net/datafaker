@@ -1,21 +1,14 @@
 package net.datafaker.providers.base;
 
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
-
 /**
  * @since 0.8.0
  */
 public class Country extends AbstractProvider<BaseProviders> {
     private final String flagUrl;
 
-    private final List<Currency> availableCurrencies;
-
     protected Country(BaseProviders faker) {
         super(faker);
         this.flagUrl = "https://flags.fmcdn.net/data/flags/w580/";
-        this.availableCurrencies = new ArrayList<>(Currency.getAvailableCurrencies());
     }
 
     public String flag() {
@@ -35,21 +28,19 @@ public class Country extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @see Currency#getDisplayName()
+     * @see Money#currency()
      * @return a random detailed ISO 4217 currency display name
      */
     public String currency() {
-        int randomIndex = faker.random().nextInt(availableCurrencies.size());
-        return availableCurrencies.get(randomIndex).getDisplayName();
+        return faker.money().currency();
     }
 
     /**
-     * @see Currency#getCurrencyCode()
+     * @see Money#currencyCode()
      * @return an ISO 4217 currency code
      */
     public String currencyCode() {
-        int randomIndex = faker.random().nextInt(availableCurrencies.size());
-        return availableCurrencies.get(randomIndex).getCurrencyCode();
+        return faker.money().currencyCode();
     }
 
     public String name() {
