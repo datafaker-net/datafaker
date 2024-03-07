@@ -27,12 +27,20 @@ public class Country extends AbstractProvider<BaseProviders> {
         return resolve("country.capital");
     }
 
+    /**
+     * @see Money#currency()
+     * @return a random detailed ISO 4217 currency display name
+     */
     public String currency() {
-        return resolve("country.currency");
+        return faker.money().currency();
     }
 
+    /**
+     * @see Money#currencyCode()
+     * @return an ISO 4217 currency code
+     */
     public String currencyCode() {
-        return resolve("country.currency_code");
+        return faker.money().currencyCode();
     }
 
     public String name() {

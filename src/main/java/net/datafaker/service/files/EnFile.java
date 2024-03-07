@@ -163,7 +163,6 @@ public class EnFile {
         "michael_scott.yml",
         "military.yml",
         "minecraft.yml",
-        "money.yml",
         "money_heist.yml",
         "most_interesting_man_in_the_world.yml",
         "mood.yml",
