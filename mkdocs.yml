@@ -10,7 +10,7 @@ repo_url: https://github.com/datafaker-net/datafaker
 edit_uri: "edit/main/docs"
 
 # Copyright
-copyright: Copyright &copy; 2016 - 2023 Erik Pragt
+copyright: Copyright &copy; 2016 - 2024 Erik Pragt
 
 theme: 
   name: material
