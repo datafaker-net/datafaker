@@ -485,4 +485,8 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Zodiac.class, Zodiac::new);
     }
 
+    default Pronouns pronouns() {
+        return getProvider(Pronouns.class, Pronouns::new);
+    }
+
 }
