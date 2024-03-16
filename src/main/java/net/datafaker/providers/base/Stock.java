@@ -17,10 +17,16 @@ public class Stock extends AbstractProvider<BaseProviders> {
         return resolve("stock.symbol_nyse");
     }
 
-    public String nseSymbol() { return resolve("stock.symbol_nse"); }
+    public String nseSymbol() {
+        return resolve("stock.symbol_nse");
+    }
 
-    public String lseSymbol() { return resolve("stock.symbol_lse"); }
+    public String lseSymbol() {
+        return resolve("stock.symbol_lse");
+    }
 
-    public String exchanges() { return resolve("stock.exchanges"); }
+    public String exchanges() {
+        return resolve("stock.exchanges");
+    }
 
 }
