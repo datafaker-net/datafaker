@@ -39,14 +39,26 @@ public class Finance extends AbstractProvider<BaseProviders> {
         super(faker);
     }
 
+    /**
+     * @deprecated since 2.2.0. For removal in 3.0.0 version. Use {@link Stock#nsdqSymbol} instead.
+     */
+    @Deprecated(since = "2.2.0", forRemoval = true)
     public String nasdaqTicker() {
         return resolve("finance.ticker.nasdaq");
     }
 
+    /**
+     * @deprecated since 2.2.0. For removal in 3.0.0 version. Use {@link Stock#nyseSymbol} instead.
+     */
+    @Deprecated(since = "2.2.0", forRemoval = true)
     public String nyseTicker() {
         return resolve("finance.ticker.nyse");
     }
 
+    /**
+     * @deprecated since 2.2.0. For removal in 3.0.0 version. Use {@link Stock#exchanges} instead.
+     */
+    @Deprecated(since = "2.2.0", forRemoval = true)
     public String stockMarket() {
         return resolve("finance.stock_market");
     }

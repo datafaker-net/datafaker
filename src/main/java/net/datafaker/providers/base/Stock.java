@@ -21,4 +21,6 @@ public class Stock extends AbstractProvider<BaseProviders> {
 
     public String lseSymbol() { return resolve("stock.symbol_lse"); }
 
+    public String exchanges() { return resolve("stock.exchanges"); }
+
 }
