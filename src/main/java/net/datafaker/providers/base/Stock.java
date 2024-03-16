@@ -19,4 +19,6 @@ public class Stock extends AbstractProvider<BaseProviders> {
 
     public String nseSymbol() { return resolve("stock.symbol_nse"); }
 
+    public String lseSymbol() { return resolve("stock.symbol_lse"); }
+
 }
