@@ -1,6 +1,8 @@
 package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -8,18 +10,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.StringJoiner;
 
 public class JsonTransformer<IN> implements Transformer<IN, Object> {
 
     private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
-
-    private final char[] wrappers;
+    private static final char[] WRAPPERS = "[]".toCharArray();
     private final boolean commaBetweenObjects;
+    private final boolean prettPrint;
 
-    private JsonTransformer(char[] wrappers, boolean commaBetweenObjects) {
-        this.wrappers = wrappers;
+
+    private JsonTransformer(boolean commaBetweenObjects, boolean prettyPrint) {
         this.commaBetweenObjects = commaBetweenObjects;
+        this.prettPrint = prettyPrint;
     }
 
     public static <IN> JsonTransformer.JsonTransformerBuilder<IN> builder() {
@@ -39,9 +41,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             } else {
                 applyValue(input, sb, ((SimpleField) fields[i]).transform(input));
             }
-            if (i < fields.length - 1) {
-                sb.append(", ");
-            }
+            if (i < fields.length - 1) sb.append(", ");
         }
         sb.append("}");
         return sb.toString();
@@ -53,31 +53,43 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             throw new IllegalArgumentException("The sequence should be finite of size");
         }
 
-        StringJoiner data = new StringJoiner(LINE_SEPARATOR);
+        StringBuilder sb = new StringBuilder();
         Iterator<IN> iterator = input.iterator();
-        while (iterator.hasNext()){
-            data.add(apply(iterator.next(), schema) + (commaBetweenObjects && iterator.hasNext() ? "," : ""));
+        int size = 0;
+        while (iterator.hasNext()) {
+            size++;
+            sb.append(apply(iterator.next(), schema)).append(commaBetweenObjects && iterator.hasNext() ? "," : "");
         }
 
-        return data.length() > 1 ? wrappers[0] + LINE_SEPARATOR + data + LINE_SEPARATOR + wrappers[1]
-            : data.toString();
+        String result = size > 1 ? "" + WRAPPERS[0] + sb + WRAPPERS[1] : sb.toString();
+
+        return prettPrint ? result.startsWith("{")
+            ? new JSONObject(result).toString(2) : new JSONArray(result).toString(2) : result;
     }
 
     @Override
     public String generate(Schema<IN, ?> schema, int limit) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < limit; i++) {
-            sb.append(apply(null, schema, i));
-            if (commaBetweenObjects && i < limit - 1) {
-                sb.append(",").append(LINE_SEPARATOR);
+
+        if (limit == 1) {
+            sb.append(apply(null, schema, 0));
+            return sb.toString();
+        } else {
+            for (int i = 0; i < limit; i++) {
+                sb.append(apply(null, schema, i));
+                if (commaBetweenObjects && i < limit - 1) sb.append(",");
             }
         }
-        return limit > 1 ? wrappers[0] + LINE_SEPARATOR + sb + LINE_SEPARATOR + wrappers[1] : sb.toString();
+
+        String result = "" + WRAPPERS[0] + sb + WRAPPERS[1];
+
+        return prettPrint ? result.startsWith("{")
+            ? new JSONObject(result).toString(2) : new JSONArray(result).toString(2) : result;
     }
 
     private void applyValue(IN input, StringBuilder sb, Object value) {
         if (value instanceof Collection<?>) {
-            sb.append(generate(input,(Collection) value));
+            sb.append(generate(input, (Collection) value));
         } else if (value != null && value.getClass().isArray()) {
             sb.append(generate(input, Arrays.asList((Object[]) value)));
         } else {
@@ -94,8 +106,8 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
                 sb.append(", ");
             }
             i++;
-            if (value instanceof CompositeField<?,?>) {
-                sb.append(apply(input,((CompositeField) value)));
+            if (value instanceof CompositeField<?, ?>) {
+                sb.append(apply(input, ((CompositeField) value)));
             } else {
                 applyValue(input, sb, value);
             }
@@ -113,9 +125,9 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             || value instanceof BigInteger
             || value instanceof Boolean
             || (value instanceof Double
-                && BigDecimal.valueOf((Double) value).remainder(BigDecimal.ONE).doubleValue() == 0)
+            && BigDecimal.valueOf((Double) value).remainder(BigDecimal.ONE).doubleValue() == 0)
             || (value instanceof BigDecimal
-                && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
+            && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
             sb.append(value);
         } else {
             String val = String.valueOf(value);
@@ -157,17 +169,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             Map.entry('\u0005', "\\u0005"),
             Map.entry('\u0006', "\\u0006"),
             Map.entry('\u0007', "\\u0007"),
-            // map.put('\u0008', "\\u0008");
-            // covered by map.put('\b', "\\b");
-            // map.put('\u0009', "\\u0009");
-            // covered by map.put('\t', "\\t");
-            // map.put((char) 10, "\\u000A");
-            // covered by map.put('\n', "\\n");
             Map.entry('\u000B', "\\u000B"),
-            // map.put('\u000C', "\\u000C");
-            // covered by map.put('\f', "\\f");
-            // map.put((char) 13, "\\u000D");
-            // covered by map.put('\r', "\\r");
             Map.entry('\u000E', "\\u000E"),
             Map.entry('\u000F', "\\u000F"),
             Map.entry('\u0010', "\\u0010"),
@@ -189,33 +191,29 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
     }
 
     public static class JsonTransformerBuilder<IN> {
-
-        public enum FormattedAs {
-            JSON_ARRAY("[]"),
-            JSON_OBJECT("{}");
-            private final char[] wrappers;
-            FormattedAs(String input) {
-                wrappers = input.toCharArray();
-            }
+        private JsonTransformerBuilder() {
         }
 
-        private JsonTransformerBuilder() {}
-
-        private FormattedAs formattedAs = FormattedAs.JSON_OBJECT;
         private boolean commaBetweenObjects = true;
 
-        public JsonTransformerBuilder<IN> formattedAs(FormattedAs formattedAs) {
-            this.formattedAs = formattedAs;
-            return this;
-        }
+        private boolean prettyPrint = true;
 
         public JsonTransformerBuilder<IN> withCommaBetweenObjects(boolean commaBetweenObjects) {
             this.commaBetweenObjects = commaBetweenObjects;
+
+            // cannot pretty print if there's no comma between the objects
+            if (!commaBetweenObjects) this.prettyPrint = false;
+
+            return this;
+        }
+
+        public JsonTransformerBuilder<IN> prettyPrint(boolean prettyPrint) {
+            this.prettyPrint = prettyPrint;
             return this;
         }
 
         public JsonTransformer<IN> build() {
-            return new JsonTransformer<>(formattedAs.wrappers, commaBetweenObjects);
+            return new JsonTransformer<>(commaBetweenObjects, prettyPrint);
         }
     }
 }
