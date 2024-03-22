@@ -11,7 +11,7 @@ on:
 
 env:
   # Quotes are here since Windows has issues with parsing of maven args with dots
-  mvn_options: --batch-mode "-Dstyle.color=always" "-Dorg.slf4j.simpleLogger.showDateTime=true" "-Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss.SSS"
+  mvn_options: --batch-mode -q "-Dstyle.color=always" "-Dorg.slf4j.simpleLogger.showDateTime=true" "-Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss.SSS"
 
 jobs:
   build:
