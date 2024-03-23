@@ -16,12 +16,12 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
     private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
     private static final char[] WRAPPERS = "[]".toCharArray();
     private final boolean commaBetweenObjects;
-    private final boolean prettPrint;
+    private final boolean prettyPrint;
 
 
     private JsonTransformer(boolean commaBetweenObjects, boolean prettyPrint) {
         this.commaBetweenObjects = commaBetweenObjects;
-        this.prettPrint = prettyPrint;
+        this.prettyPrint = prettyPrint;
     }
 
     public static <IN> JsonTransformer.JsonTransformerBuilder<IN> builder() {
@@ -41,7 +41,9 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             } else {
                 applyValue(input, sb, ((SimpleField) fields[i]).transform(input));
             }
-            if (i < fields.length - 1) sb.append(", ");
+            if (i < fields.length - 1) {
+                sb.append(", ");
+            }
         }
         sb.append("}");
         return sb.toString();
@@ -63,7 +65,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
 
         String result = size > 1 ? "" + WRAPPERS[0] + sb + WRAPPERS[1] : sb.toString();
 
-        return prettPrint ? result.startsWith("{")
+        return prettyPrint ? result.startsWith("{")
             ? new JSONObject(result).toString(2) : new JSONArray(result).toString(2) : result;
     }
 
@@ -83,7 +85,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
 
         String result = "" + WRAPPERS[0] + sb + WRAPPERS[1];
 
-        return prettPrint ? result.startsWith("{")
+        return prettyPrint ? result.startsWith("{")
             ? new JSONObject(result).toString(2) : new JSONArray(result).toString(2) : result;
     }
 
@@ -152,6 +154,15 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         }
     }
 
+    /*
+     * The following entries are not added to the map because they are covered by another existing one
+     *
+     * map.put('\u0008', "\\u0008"); -> covered by map.put('\b', "\\b");
+     * map.put('\u0009', "\\u0009"); -> covered by map.put('\t', "\\t");
+     * map.put((char) 10, "\\u000A"); -> covered by map.put('\n', "\\n");
+     * map.put('\u000C', "\\u000C"); -> covered by map.put('\f', "\\f");
+     * map.put((char) 13, "\\u000D"); -> covered by map.put('\r', "\\r");
+     */
     private static Map<Character, String> createEscapeMap() {
         return Map.ofEntries(Map.entry('\\', "\\\\"),
             Map.entry('\"', "\\\""),
@@ -169,7 +180,17 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
             Map.entry('\u0005', "\\u0005"),
             Map.entry('\u0006', "\\u0006"),
             Map.entry('\u0007', "\\u0007"),
+            // map.put('\u0008', "\\u0008");
+            // covered by map.put('\b', "\\b");
+            // map.put('\u0009', "\\u0009");
+            // covered by map.put('\t', "\\t");
+            // map.put((char) 10, "\\u000A");
+            // covered by map.put('\n', "\\n");
             Map.entry('\u000B', "\\u000B"),
+            // map.put('\u000C', "\\u000C");
+            // covered by map.put('\f', "\\f");
+            // map.put((char) 13, "\\u000D");
+            // covered by map.put('\r', "\\r");
             Map.entry('\u000E', "\\u000E"),
             Map.entry('\u000F', "\\u000F"),
             Map.entry('\u0010', "\\u0010"),
