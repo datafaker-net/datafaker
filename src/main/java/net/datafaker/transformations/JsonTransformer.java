@@ -154,15 +154,6 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         }
     }
 
-    /*
-     * The following entries are not added to the map because they are covered by another existing one
-     *
-     * map.put('\u0008', "\\u0008"); -> covered by map.put('\b', "\\b");
-     * map.put('\u0009', "\\u0009"); -> covered by map.put('\t', "\\t");
-     * map.put((char) 10, "\\u000A"); -> covered by map.put('\n', "\\n");
-     * map.put('\u000C', "\\u000C"); -> covered by map.put('\f', "\\f");
-     * map.put((char) 13, "\\u000D"); -> covered by map.put('\r', "\\r");
-     */
     private static Map<Character, String> createEscapeMap() {
         return Map.ofEntries(Map.entry('\\', "\\\\"),
             Map.entry('\"', "\\\""),
