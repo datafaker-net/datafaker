@@ -53,13 +53,11 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
 
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
         Iterator<IN> iterator = input.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             data.add(apply(iterator.next(), schema) + (commaBetweenObjects && iterator.hasNext() ? "," : ""));
         }
 
-        return data.length() > 1 ? WRAPPERS[0] + LINE_SEPARATOR + data + LINE_SEPARATOR + WRAPPERS[1]
-            : data.toString();
-
+        return data.length() > 1 ? WRAPPERS[0] + LINE_SEPARATOR + data + LINE_SEPARATOR + WRAPPERS[1] : data.toString();
     }
 
     @Override
@@ -77,7 +75,7 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
 
     private void applyValue(IN input, StringBuilder sb, Object value) {
         if (value instanceof Collection<?>) {
-            sb.append(generate(input,(Collection) value));
+            sb.append(generate(input, (Collection) value));
         } else if (value != null && value.getClass().isArray()) {
             sb.append(generate(input, Arrays.asList((Object[]) value)));
         } else {
@@ -94,8 +92,8 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
                 sb.append(", ");
             }
             i++;
-            if (value instanceof CompositeField<?,?>) {
-                sb.append(apply(input,((CompositeField) value)));
+            if (value instanceof CompositeField<?, ?>) {
+                sb.append(apply(input, ((CompositeField) value)));
             } else {
                 applyValue(input, sb, value);
             }
@@ -190,7 +188,8 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
 
     public static class JsonTransformerBuilder<IN> {
 
-        private JsonTransformerBuilder() {}
+        private JsonTransformerBuilder() {
+        }
 
         private boolean commaBetweenObjects = true;
 
