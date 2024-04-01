@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
+import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.params.provider.Arguments.of;
@@ -37,11 +38,10 @@ class JsonTest {
 
         JsonTransformer<Object> transformer = JsonTransformer.builder().build();
         String json = transformer.generate(schema, 2);
-        String expected = """
-            [
-            {"Text": "Willis", "Bool": false},
-            {"Text": "Carlena", "Bool": true}
-            ]""";
+        String expected = "[" + LINE_SEPARATOR +
+            "{\"Text\": \"Willis\", \"Bool\": false}," + LINE_SEPARATOR +
+            "{\"Text\": \"Carlena\", \"Bool\": true}" + LINE_SEPARATOR +
+            "]";
 
         assertThat(json).isEqualTo(expected);
     }
@@ -62,14 +62,13 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = """
-            [
-            {"Number": 3, "Password": "nf3"}
-            {"Number": 6, "Password": "4b0v69"}
-            {"Number": 7, "Password": "00827v2"}
-            {"Number": 1, "Password": "5"}
-            {"Number": 3, "Password": "p6x"}
-            ]""";
+        String expected = "[" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"nf3\"}" + LINE_SEPARATOR +
+            "{\"Number\": 6, \"Password\": \"4b0v69\"}" + LINE_SEPARATOR +
+            "{\"Number\": 7, \"Password\": \"00827v2\"}" + LINE_SEPARATOR +
+            "{\"Number\": 1, \"Password\": \"5\"}" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"p6x\"}" + LINE_SEPARATOR +
+            "]";
 
         assertThat(json).isEqualTo(expected);
     }
@@ -90,14 +89,13 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = """
-            [
-            {"Number": 3, "Password": "nf3"},
-            {"Number": 6, "Password": "4b0v69"},
-            {"Number": 7, "Password": "00827v2"},
-            {"Number": 1, "Password": "5"},
-            {"Number": 3, "Password": "p6x"}
-            ]""";
+        String expected = "[" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"nf3\"}," + LINE_SEPARATOR +
+            "{\"Number\": 6, \"Password\": \"4b0v69\"}," + LINE_SEPARATOR +
+            "{\"Number\": 7, \"Password\": \"00827v2\"}," + LINE_SEPARATOR +
+            "{\"Number\": 1, \"Password\": \"5\"}," + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"p6x\"}" + LINE_SEPARATOR +
+            "]";
 
         assertThat(json).isEqualTo(expected);
     }
@@ -118,11 +116,10 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = """
-            [
-            {"Number": 3, "Password": "0p4"}
-            {"Number": 8, "Password": "714487nf"}
-            ]""";
+        String expected = "[" + LINE_SEPARATOR +
+            "{\"Number\": 3, \"Password\": \"0p4\"}" + LINE_SEPARATOR +
+            "{\"Number\": 8, \"Password\": \"714487nf\"}" + LINE_SEPARATOR +
+            "]";
 
         assertThat(json).isEqualTo(expected);
     }
