@@ -256,7 +256,7 @@ class FakeStreamTest extends AbstractFakerTest {
     @Test
     void toNestedJson() {
         final int limit = 3;
-        JsonTransformer<Name> transformer = JsonTransformer.<Name>builder().formattedAs(JsonTransformer.JsonTransformerBuilder.FormattedAs.JSON_ARRAY).build();
+        JsonTransformer<Name> transformer = JsonTransformer.<Name>builder().build();
 
         FakeSequence<CompositeField<Address, String>> secondaryAddresses =
             faker.<CompositeField<Address, String>>collection()
