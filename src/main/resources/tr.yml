@@ -36,6 +36,186 @@ tr:
       country: [Afganistan, Almanya, Amerika Birleşik Devletleri, Andora, Angola, Antigua ve Barbuda, Arnavutluk, Arjantin, Avustralya, Avusturya, Azerbaycan, Bahamalar, Bahreyn, Bangladeş, Barbados, Belarus, Belçika, Belize, Benin, Birleşik Arap Emirlikleri, Birleşik Krallık, Bolivya, Bosna-Hersek, Botsvana, Brezilya, Brunei, Bulgaristan, Burkina Faso, Burundi, Cabo Verde, Çad, Çek Cumhuriyeti, Çin, Danimarka, Doğu Timor, Dominika, Dominik Cumhuriyeti, Ekvador, Ekvator Ginesi, El Salvador, Endonezya, Eritre, Ermenistan, Estonya, Esvatini, Ethiopia, Fas, Fiji, Filipinler, Fildişi Sahili, Finlandiya, Fransa, Gabon, Gambiya, Gana, Granada, Güney Afrika, Güney Kore, Gürcistan, Guatemala, Guyana, Haiti, Hindistan, Hırvatistan, Hollanda, Honduras, Irak, İran, İrlanda, İspanya, İsrail, İsveç, İsviçre, İtalya, İzlanda, Jamaika, Japonya, Kamboçya, Kanada, Katar, Kazakistan, Kenya, Kırgızistan, Kiribati, Kolombiya, Komorlar, Kosova, Kosta Rika, Kuveyt, Kuzey Kore, Küba, Laos, Lesotho, Letonya, Liberya, Libya, Liechtenstein, Litvanya, Lüksemburg, Makedonya, Madagaskar, Malavi, Malezya, Maldivler, Mali, Malta, Marshall Adaları, Mauritius, Meksika, Mikronezya, Moğolistan, Moldova, Monako, Moritanya, Mozambik, Namibya, Nauru, Nepal, Nijer, Nijerya, Norveç, Umman, Özbekistan, Pakistan, Palau, Panama, Papua Yeni Gine, Paraguay, Peru, Portekiz, Romanya, Ruanda, Rusya, Saint Kitts ve Nevis, Saint Lucia, Saint Vincent ve Grenadinler, Samoa, San Marino, Sao Tome ve Principe, Senegal, Seyşeller, Sırbistan, Sierra Leone, Singapur, Slovakya, Slovenya, Solomon Adaları, Somali, Sri Lanka, Sudan, Surinam, Suriye, Suudi Arabistan, Swaziland, Tacikistan, Tanzanya, Tayland, Tayvan, Togo, Tonga, Trinidad ve Tobago, Tunus, Tuvalu, Türkmenistan, Ürdün, Uganda, Ukrayna, Umman, Uruguay, Ürdün, Vanuatu, Vatikan Şehri, Venezuela, Vietnam, Yemen, Yeni Zelanda, Yeşil Burun, Zambiya, Zimbabve]
       default_country: [Türkiye]
 
+    compass:
+      cardinal:
+        word: ['kuzey', 'doğu', 'güney', 'batı']
+        abbreviation: ['K', 'D', 'G', 'B']
+        azimuth: ['0', '90', '180', '270']
+      ordinal:
+        word: ['kuzeydoğu', 'güneydoğu', 'güneybatı', 'kuzeybatı']
+        abbreviation: ['KD', 'GD', 'GB', 'KB']
+        azimuth: ['45', '135', '225', '315']
+      half-wind:
+        word: ['kuzey-kuzeydoğu', 'doğu-kuzeydoğu', 'doğu-güneydoğu', 'güney-güneydoğu', 'güney-güneybatı', 'batı-güneybatı', 'batı-kuzeybatı', 'kuzey-kuzeybatı']
+        abbreviation: ['KKD', 'DKD', 'DGD', 'GGD', 'GGB', 'BGB', 'BKB', 'KKB']
+        azimuth: ['22.5', '67.5', '112.5', '157.5', '202.5', '247.5', '292.5', '337.5']
+      quarter-wind:
+        word: ['kuzeyden doğuya', 'kuzeydoğudan kuzeye', 'kuzeydoğudan doğuya', 'doğudan kuzeye', 'doğudan güneye', 'doğudan güneydoğuya', 'güneydoğudan güneye', 'güneyden doğuya', 'güneyden batıya', 'güneybatıdan güneye', 'güneybatıdan batıya', 'güneyden batıya', 'batıdan kuzeye', 'kuzeybatıdan batıya', 'kuzeybatıdan kuzeye', 'kuzeyden batıya']
+        abbreviation: ['K>D', 'K>K', 'KD>D', 'D>K', 'D>G', 'GD>D', 'GD>G', 'G>D', 'G>B', 'GB>G', 'GB>B', 'B>G', 'B>K', 'KB>B', 'KB>K', 'K>B']
+        azimuth: ['11.25', '33.75', '56.25', '78.75', '101.25', '123.75', '146.25', '168.75', '191.25', '213.75', '236.25', '258.75', '281.25', '303.75', '326.25', '348.75']
+      direction:
+      - "#{Compass.cardinal.word}"
+      - "#{Compass.ordinal.word}"
+      - "#{Compass.half-wind.word}"
+      - "#{Compass.quarter-wind.word}"
+      abbreviation:
+      - "#{Compass.cardinal.abbreviation}"
+      - "#{Compass.ordinal.abbreviation}"
+      - "#{Compass.half-wind.abbreviation}"
+      - "#{Compass.quarter-wind.abbreviation}"
+      azimuth:
+      - "#{Compass.cardinal.azimuth}"
+      - "#{Compass.ordinal.azimuth}"
+      - "#{Compass.half-wind.azimuth}"
+      - "#{Compass.quarter-wind.azimuth}"
+
+    gender:
+      types:
+      - "Kadın"
+      - "Erkek"
+      - "Diğer"
+      - "Belirtilmedi"
+      binary_types:
+      - "Kadın"
+      - "Erkek"
+      short_binary_types:
+      - "k"
+      - "e"
+
+    relationship:
+      familial:
+        direct:
+        - "Baba"
+        - "Anne"
+        - "Abla"
+        - "Abi"
+        - "Kardeş"
+        extended:
+        - "Anneanne"
+        - "Babaanne"
+        - "Dede"
+        - "Amca"
+        - "Dayı"
+        - "Enişte"
+        - "Hala"
+        - "Teyze"
+        - "Yenge"
+        - "Kuzen"
+        - "Yeğen"
+        - "Torun"
+      in_law:
+      - "Kayınpeder"
+      - "Kayınvalide"
+      - "Baldız"
+      - "Kayınbirader"
+      spouse:
+      - "Koca"
+      - "Karı"
+      parent:
+      - "Baba"
+      - "Anne"
+      sibling:
+      - "Abla"
+      - "Abi"
+      - "Kız kardeş"
+      - "Erkek kardeş"
+
+    creature:
+      animal:
+        name:
+        - "ahtapot"
+        - "akbaba"
+        - "akrep"
+        - "anakonda"
+        - "antilop"
+        - "arı"
+        - "armadillo"
+        - "aslan"
+        - "at"
+        - "atmaca"
+        - "ayı"
+        - "babun"
+        - "balık"
+        - "balıkçıl"
+        - "bıldırcın"
+        - "bülbül"
+        - "ceylan"
+        - "çakal"
+        - "çekirge"
+        - "çinçilla"
+        - "çita"
+        - "deniz anası"
+        - "deve"
+        - "domuz"
+        - "engerek"
+        - "eşek"
+        - "fare"
+        - "fil"
+        - "flamingo"
+        - "fok"
+        - "geyik"
+        - "goril"
+        - "güve"
+        - "güvercin"
+        - "hamster"
+        - "horoz"
+        - "ıstakoz"
+        - "iguana"
+        - "inek"
+        - "ispinoz"
+        - "istavrit"
+        - "istiridye"
+        - "jaguar"
+        - "kalamar"
+        - "kanguru"
+        - "kaplan"
+        - "karga"
+        - "karınca"
+        - "karides"
+        - "kartal"
+        - "katır"
+        - "kaz"
+        - "keçi"
+        - "kedi"
+        - "keklik"
+        - "kelebek"
+        - "kene"
+        - "kırkayak"
+        - "kirpi"
+        - "kirpi balığı"
+        - "kobra"
+        - "koç"
+        - "komodo ejderi"
+        - "koyun"
+        - "köpek"
+        - "köpek balığı"
+        - "köstebek"
+        - "kuğu"
+        - "kumru"
+        - "kunduz"
+        - "kurt"
+        - "kuzu"
+        - "leopar"
+        - "martı"
+        - "maymun"
+        - "midilli"
+        - "ördek"
+        - "örümcek"
+        - "papağan"
+        - "pelikan"
+        - "penguen"
+        - "rakun"
+        - "serçe"
+        - "şahin"
+        - "tavşan"
+        - "tavuk"
+        - "tilki"
+        - "timsah"
+        - "yarasa"
+        - "yunus"
+        - "zebra"
+        - "zürafa"
+
     book:
       title: ['Taht Oyunları', 'Maymunlar Gezegeni', 'Benim Adım Kırmızı', 'Uykuların Doğusu', 'Yılanların Öcü']
       author: "#{Name.name}"
