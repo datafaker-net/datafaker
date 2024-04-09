@@ -24,11 +24,7 @@ public class FakeResolver<T> {
     }
 
     public static <T> FakeResolver<T> of(Class<T> clazz) {
-        var fakeFactory = CLASS_2_FAKE_RESOLVER.get(clazz);
-        if (fakeFactory == null) {
-            fakeFactory = new FakeResolver<>(clazz);
-            CLASS_2_FAKE_RESOLVER.put(clazz, fakeFactory);
-        }
+        var fakeFactory = CLASS_2_FAKE_RESOLVER.computeIfAbsent(clazz, k -> new FakeResolver<>(clazz));
         return (FakeResolver<T>) fakeFactory;
     }
 
