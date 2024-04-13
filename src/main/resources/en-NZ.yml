@@ -19,13 +19,75 @@ en-NZ:
     internet:
       domain_suffix: [co.nz, com, net.nz, net, org.nz, org, govt.nz, iwi.nz]
     address:
+      full_address:
+        - "#{urban_address}"
+        - "#{delivery_address}"
+        - "#{rural_address}"
+      country_code: ['NZ']
+      state_abbr: "#{region_abbr}"
+      state: "#{region}"
       region_abbr: [NTL, AUK, WKO, BOP, GIS, HKB, TKI, MWT, WGN, TAS, NSN, MBH, WTC, CAN, OTA, STL]
       region: [Northland, Auckland, Waikato, Bay of Plenty, Gisborne, Hawkes Bay, Taranaki, Manawatu, Wellington, Tasman, Nelson, Marlborough, West Coast, Canterbury, Otago, Southland]
+      city: [Christchurch, Auckland, Upper Hutt, Hastings, Lower Hutt, Nelson, Invercargill, Wellington, Porirua, Whangārei, Palmerston North, Hamilton, Dunedin, Tauranga, New Plymouth, Rotorua, Napier]
+      suburb:
+        - Pipitea
+        - Te Aro
+        - Waterfront
+        - Wellington Central
+        - Thorndon
+        - Aro Valley
+        - Kelburn
+        - Mount Victoria
+        - Oriental Bay
+        - Mount Cook
+        - Newtown
+        - Berhampore
+        - Tawa
+        - Churton Park
+        - Johnsonville
+        - Newlands
+        - Khandallah
+        - Ngaio
+        - Crofton Downs
+        - Karori
+        - Brooklyn
+        - Island Bay
+        - Hataitai
+        - Kilbirnie
+        - Lyall Bay
+        - Miramar
+        - Aotea
+        - Colonial Knob
+        - Pāekakariki Hill
+        - Mana Island
+        - Ascot Park
+        - Papakōwhai
+        - Whitby
+        - Pukerua Bay
+        - Hongoeka
+        - Plimmerton
+        - Cannons Creek
+        - Waitangirua
+        - Elsdon
+        - Titahi Bay
+        - Takapūwāhia
+        - Rānui
+        - Kenepuru
+        - Camborne
+        - Paremata
+        - Judgeford
+        - Pāuatahanui
       postcode: ['0###', '2###', '3###', '4###', '5###', '6###', '7###', '8###', '9###']
       building_number: ['####', '###', '##']
+      rural_delivery_number:
+        - "RD #{numerify '##'}"
       street_suffix: [Avenue, Boulevard, Circle, Circuit, Court, Crescent, Crest, Drive, Estate Dr, Grove, Hill, Island, Junction, Knoll, Lane, Loop, Mall, Manor, Meadow, Mews, Parade, Parkway, Pass, Place, Plaza, Ridge, Road, Run, Square, Station St, Street, Summit, Terrace, Track, Trail, View Rd, Way]
       default_country: [New Zealand]
-
+      urban_address: "#{building_number} #{street_name}, #{suburb}, #{city} #{postcode}"
+      rural_address: "#{building_number} #{street_name} #{rural_delivery_number} #{city} #{postcode}"
+      delivery_address: "#{mail_box} #{city} #{postcode}"
+      mail_box:
+        - 'PO Box ##'
     phone_number:
       area_code: ['3', '4', '6', '7', '9']
       formats:
