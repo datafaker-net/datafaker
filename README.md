@@ -471,6 +471,7 @@ Supported Locales
 * de
 * de-AT
 * de-CH
+* el-GR
 * en
 * en-AU
 * en-au-ocker
