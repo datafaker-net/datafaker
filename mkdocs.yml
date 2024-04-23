@@ -113,7 +113,7 @@ nav:
 #      - Changes: changelog/index.md
 #      - How to upgrade: upgrade.md
   - Releases:
-    - 2.2.1-SNAPSHOT: releases/2.2.0-SNAPSHOT.md
+    - 2.2.1-SNAPSHOT: releases/2.2.1-SNAPSHOT.md
     - 2.2.0: releases/2.2.0.md
     - 2.1.0: releases/2.1.0.md
     - 2.0.2: releases/2.0.2.md
