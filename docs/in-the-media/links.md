@@ -1,5 +1,10 @@
 # Articles and news
 
+**Feb 22, 2024**
+
+*Roman Rybak* published an article about Flexible Data Generation With Datafaker Gen, which you can find here:
+https://dzone.com/articles/flexible-data-generation-with-datafake-gen
+
 **June 15, 2023**
 
 We published an article on DZone about major release of Datafaker 2.0, which you can find here: https://dzone.com/articles/datafaker-20
