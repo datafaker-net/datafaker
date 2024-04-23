@@ -692,8 +692,6 @@ public class FakeValuesService {
      *  <li>Search for methods on faker child objects</li>
      *   <li>Search for keys in yaml file by transforming object reference to yaml reference</li>
      * </ul>
-     *
-     * @return null if unable to resolve
      */
     private Object resolveExpression(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context) {
         if (directive.isEmpty()) {
@@ -756,7 +754,7 @@ public class FakeValuesService {
 
         // last ditch effort.  Due to Ruby's dynamic nature, something like 'Address.street_title' will resolve
         // because 'street_title' is a dynamic method on the Address object.  We can't do this in Java so we go
-        // thru the normal resolution above, but if we will can't resolve it, we once again do a 'safeFetch' as we
+        // through the normal resolution above, but if we will can't resolve it, we once again do a 'safeFetch' as we
         // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
         if (dotIndex >= 0) {

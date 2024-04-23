@@ -1,0 +1,39 @@
+en:
+  faker:
+    pronouns:
+      subjective:
+      - "She"
+      - "He"
+      - "They"
+      - "Ze"
+      - "Xe"
+      - "Ver"
+      - "Te"
+      - "Ey"
+      objective:
+      - "Her"
+      - "Him"
+      - "Them"
+      - "Hir"
+      - "Xem"
+      - "Vir"
+      - "Tem"
+      - "Em"
+      possessive:
+      - "Hers"
+      - "His"
+      - "Theirs"
+      - "Hirs"
+      - "Xirs"
+      - "Vis"
+      - "Ter"
+      - "Eir"
+      reflexive:
+      - "Herself"
+      - "Himself"
+      - "Themself"
+      - "Hirself"
+      - "Xemself"
+      - "Verself"
+      - "Temself"
+      - "Emself"

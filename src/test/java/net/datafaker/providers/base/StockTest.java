@@ -9,7 +9,10 @@ class StockTest extends BaseFakerTest<BaseFaker> {
     protected Collection<TestSpec> providerListTest() {
         Stock stock = faker.stock();
         return List.of(TestSpec.of(stock::nsdqSymbol, "stock.symbol_nsdq"),
-                TestSpec.of(stock::nyseSymbol, "stock.symbol_nyse"));
+                TestSpec.of(stock::nyseSymbol, "stock.symbol_nyse"),
+                TestSpec.of(stock::nseSymbol, "stock.symbol_nse"),
+                TestSpec.of(stock::lseSymbol, "stock.symbol_lse"),
+                TestSpec.of(stock::exchanges, "stock.exchanges"));
     }
 
 }

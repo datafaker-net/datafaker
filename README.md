@@ -471,6 +471,7 @@ Supported Locales
 * de
 * de-AT
 * de-CH
+* el-GR
 * en
 * en-AU
 * en-au-ocker
@@ -517,4 +518,4 @@ Supported Locales
 
 LICENSE
 -------
-Copyright (c) 2023 Datafaker.net See the LICENSE file for license rights and limitations.
+Copyright (c) 2024 Datafaker.net See the LICENSE file for license rights and limitations.

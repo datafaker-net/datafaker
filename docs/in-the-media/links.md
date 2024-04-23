@@ -5,6 +5,12 @@
 *Roman Rybak* published an article about Flexible Data Generation With Datafaker Gen, which you can find here:
 https://dzone.com/articles/flexible-data-generation-with-datafake-gen
 
+**December 4, 2023**
+
+*Datafaker: Simplifying Test Data Generation for Java and Kotlin* article by *Nexus Blog*, which you can find here: 
+
+https://blog.teamnexus.in/blog/2023/12/04/datafaker-simplifying-test-data-generation-for-java-and-kotlin/ 
+
 **June 15, 2023**
 
 We published an article on DZone about major release of Datafaker 2.0, which you can find here: https://dzone.com/articles/datafaker-20

@@ -9,7 +9,6 @@ class CurrencyTest extends BaseFakerTest<BaseFaker> {
     protected Collection<TestSpec> providerListTest() {
         Currency currency = faker.currency();
         return List.of(TestSpec.of(currency::name, "currency.name", "[\\w'.\\-() ]+"),
-            TestSpec.of(currency::code, "currency.code", "[A-Z]{3}"),
-            TestSpec.of(currency::numericCode, "currency.numeric_code", "\\d{3}"));
+            TestSpec.of(currency::code, "currency.code", "[A-Z]{3}"));
     }
 }

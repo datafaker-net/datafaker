@@ -5,7 +5,6 @@ import net.datafaker.providers.base.Name;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
-import net.datafaker.transformations.JsonTransformer.JsonTransformerBuilder.FormattedAs;
 import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,10 +38,10 @@ class JsonTest {
 
         JsonTransformer<Object> transformer = JsonTransformer.builder().build();
         String json = transformer.generate(schema, 2);
-        String expected = "{" + LINE_SEPARATOR +
+        String expected = "[" + LINE_SEPARATOR +
             "{\"Text\": \"Willis\", \"Bool\": false}," + LINE_SEPARATOR +
             "{\"Text\": \"Carlena\", \"Bool\": true}" + LINE_SEPARATOR +
-            "}";
+            "]";
 
         assertThat(json).isEqualTo(expected);
     }
@@ -63,13 +62,13 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = "{" + LINE_SEPARATOR +
+        String expected = "[" + LINE_SEPARATOR +
             "{\"Number\": 3, \"Password\": \"nf3\"}" + LINE_SEPARATOR +
             "{\"Number\": 6, \"Password\": \"4b0v69\"}" + LINE_SEPARATOR +
             "{\"Number\": 7, \"Password\": \"00827v2\"}" + LINE_SEPARATOR +
             "{\"Number\": 1, \"Password\": \"5\"}" + LINE_SEPARATOR +
             "{\"Number\": 3, \"Password\": \"p6x\"}" + LINE_SEPARATOR +
-            "}";
+            "]";
 
         assertThat(json).isEqualTo(expected);
     }
@@ -90,18 +89,18 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = "{" + LINE_SEPARATOR +
+        String expected = "[" + LINE_SEPARATOR +
             "{\"Number\": 3, \"Password\": \"nf3\"}," + LINE_SEPARATOR +
             "{\"Number\": 6, \"Password\": \"4b0v69\"}," + LINE_SEPARATOR +
             "{\"Number\": 7, \"Password\": \"00827v2\"}," + LINE_SEPARATOR +
             "{\"Number\": 1, \"Password\": \"5\"}," + LINE_SEPARATOR +
             "{\"Number\": 3, \"Password\": \"p6x\"}" + LINE_SEPARATOR +
-            "}";
+            "]";
 
         assertThat(json).isEqualTo(expected);
     }
 
-	@Test
+    @Test
     void testGenerateFromFakeSequenceStream() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
@@ -109,8 +108,7 @@ class JsonTest {
             field("Password", integer -> faker.internet().password(integer, integer))
         );
 
-        JsonTransformer<Integer> transformer = JsonTransformer.<Integer>builder()
-            .formattedAs(FormattedAs.JSON_ARRAY).withCommaBetweenObjects(false).build();
+        JsonTransformer<Integer> transformer = JsonTransformer.<Integer>builder().withCommaBetweenObjects(false).build();
         FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
             .suppliers(() -> faker.number().randomDigit())
             .len(2)
@@ -126,7 +124,7 @@ class JsonTest {
         assertThat(json).isEqualTo(expected);
     }
 
-	@Test
+    @Test
     void testGenerateFromInfiniteFakeSequence() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
@@ -134,8 +132,7 @@ class JsonTest {
             field("Password", integer -> faker.internet().password(integer, integer))
         );
 
-        JsonTransformer<Integer> transformer = JsonTransformer.<Integer>builder()
-            .formattedAs(FormattedAs.JSON_ARRAY).build();
+        JsonTransformer<Integer> transformer = JsonTransformer.<Integer>builder().build();
         FakeSequence<Integer> fakeSequence = faker.<Integer>stream()
             .suppliers(() -> faker.number().randomDigit())
             .build();
@@ -156,7 +153,7 @@ class JsonTest {
     @MethodSource("generateTestSchema")
     void outputArrayJsonTestForJsonTransformer(
         Schema<String, String> schema, String expected) {
-        JsonTransformer<String> transformer = JsonTransformer.<String>builder().formattedAs(FormattedAs.JSON_ARRAY).build();
+        JsonTransformer<String> transformer = JsonTransformer.<String>builder().build();
 
         assertThat(transformer.generate(schema, 2).replaceAll(System.lineSeparator(), ""))
             .isEqualTo("[" + expected + "," + expected + "]");
@@ -169,7 +166,7 @@ class JsonTest {
         JsonTransformer<String> transformer = JsonTransformer.<String>builder().withCommaBetweenObjects(false).build();
 
         assertThat(transformer.generate(schema, 2).replaceAll(System.lineSeparator(), ""))
-            .isEqualTo("{" + expected +  expected + "}");
+            .isEqualTo("[" + expected + expected + "]");
     }
 
     private static Stream<Arguments> generateTestSchema() {
@@ -242,16 +239,16 @@ class JsonTest {
             Schema.of(
                 field("text", () -> "Mrs. Brian Braun"),
                 field("objectCollection", () -> List.of(
-                    compositeField(null, new Field[]{
-                            field("country", () -> "Denmark"),
-                            field("city", () -> "Port Angel")
-                        }
-                    ),
-                    compositeField(null, new Field[]{
-                            field("two", () -> "Denmark"),
-                            field("one", () -> "Port Angel")
-                        }
-                    )
+                        compositeField(null, new Field[]{
+                                field("country", () -> "Denmark"),
+                                field("city", () -> "Port Angel")
+                            }
+                        ),
+                        compositeField(null, new Field[]{
+                                field("two", () -> "Denmark"),
+                                field("one", () -> "Port Angel")
+                            }
+                        )
                     )
                 )
             ), 1);

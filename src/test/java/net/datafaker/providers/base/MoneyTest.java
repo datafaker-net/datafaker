@@ -1,14 +1,29 @@
 package net.datafaker.providers.base;
 
-import java.util.List;
-import java.util.Collection;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MoneyTest extends BaseFakerTest<BaseFaker> {
 
-    @Override
-    protected Collection<TestSpec> providerListTest() {
-        Money money = faker.money();
-        return List.of(TestSpec.of(money::currency, "money.currency"),
-            TestSpec.of(money::currencyCode, "money.code"));
+    @Test
+    void testCurrency() {
+        assertThat(faker.money().currency()).isNotEmpty();
     }
+
+    @Test
+    void testCurrencyCode() {
+        assertThat(faker.money().currencyCode()).isNotEmpty();
+    }
+
+    @Test
+    void testNumericCode() {
+        assertThat(faker.money().currencyNumericCode()).isNotEmpty();
+    }
+
+    @Test
+    void testCurrencySymbol() {
+        assertThat(faker.money().currencySymbol()).isNotEmpty();
+    }
+
 }

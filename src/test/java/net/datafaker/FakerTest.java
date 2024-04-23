@@ -109,7 +109,8 @@ class FakerTest extends AbstractFakerTest {
     Test case for issue https://github.com/datafaker-net/datafaker/issues/1091
      */
     @ParameterizedTest
-    @ValueSource(strings = {"\\d",
+    @ValueSource(strings = {
+        "\\d",
         "\\w",
         "[aeiou]{2,3}",
         "[a-z]{2,3}",
@@ -123,7 +124,9 @@ class FakerTest extends AbstractFakerTest {
         "(aeiou)",
         "(a|b)",
         "\\.\\*\\?\\+",
-        "^arn:.+:.+:.*:([0-9]{12}):(.+)$"})
+        "^arn:.+:.+:.*:([0-9]{12}):(.+)$",
+        "\\s[\\s]\\d[\\d]\\w[\\w]",
+    })
     void testRegexify(String input) {
         var faker = new Faker();
         assertThat(faker.regexify(input)).matches(input);

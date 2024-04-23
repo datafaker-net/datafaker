@@ -123,7 +123,7 @@ class SipTest extends BaseFakerTest<BaseFaker> {
     void bodyBytes_isNotNull() {
         byte[] sut = sip.bodyBytes();
 
-        assertThat(sut.length).isNotNull();
+        assertThat(sut).isNotNull();
     }
 
     @Test
