@@ -25,10 +25,10 @@ Number of providers per Datafaker version
 | 2.0.0 | 3 | 233 |
 | 2.0.2 | 1 | 234 |
 | 2.0.3 | 1 | 235 |
-| 2.1.0 | 1 | 236 |
-| 2.2.0 | 1 | 237 |
+| 2.1.0 | 2 | 237 |
+| 2.2.0 | 1 | 238 |
 
-Datafaker comes with a total of 237 data providers:
+Datafaker comes with a total of 238 data providers:
 
 | Name                                                                                        | Description                                                                                                                        | Group                                            | Since |
 |---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|-------|
@@ -202,6 +202,7 @@ Datafaker comes with a total of 237 data providers:
 |[Pokemon](https://javadoc.io/doc/net.datafaker/datafaker/latest/net.datafaker/net/datafaker/providers/entertainment/Pokemon.html)|                                                                                                                                    | Entertainment                                    | 0.8.0 |
 |[Princess Bride](https://javadoc.io/doc/net.datafaker/datafaker/latest/net.datafaker/net/datafaker/providers/entertainment/PrincessBride.html)|                                                                                                                                    | Entertainment                                    | 0.8.0 |
 |[Programming Language](https://javadoc.io/doc/net.datafaker/datafaker/latest/net.datafaker/net/datafaker/providers/base/ProgrammingLanguage.html)|                                                                                                                                    | Base                                             | 0.8.0 |
+|[Pronouns](https://javadoc.io/doc/net.datafaker/datafaker/latest/net.datafaker/net/datafaker/providers/base/Pronouns.html)| This class generates gender neutral pronouns                                                                                       | Base                                             | 2.1.0 |
 |[Red Dead Redemption2](https://javadoc.io/doc/net.datafaker/datafaker/latest/net.datafaker/net/datafaker/providers/videogame/RedDeadRedemption2.html)| Red Dead Redemption 2 is an action-adventure game developed and published by Rockstar Games.                                       | Videogame                                        | 2.0.0 |
 |[Relationship](https://javadoc.io/doc/net.datafaker/datafaker/latest/net.datafaker/net/datafaker/providers/base/Relationship.html)|                                                                                                                                    | Base                                             | 0.8.0 |
 |[Resident Evil](https://javadoc.io/doc/net.datafaker/datafaker/latest/net.datafaker/net/datafaker/providers/entertainment/ResidentEvil.html)| A class for generating random value of ResidentEvil series.                                                                        | Entertainment                                    | 0.9.0 |
