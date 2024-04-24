@@ -278,7 +278,7 @@
                     <artifactSet>
                         <includes>
                             <include>org.yaml:snakeyaml:*:*</include>
-                            <include>com.github.curiousoddman:rgxgen:*:*</include>
+                            <include>com.github.curious-odd-man:rgxgen:*:*</include>
                             <include>dk.brics.automaton:automaton:*:*</include>
                         </includes>
                     </artifactSet>
