@@ -83,8 +83,8 @@ plugins:
 # Customization
 extra:
   datafaker:
-    version: 2.2.1
-    snapshot: 2.2.2-SNAPSHOT
+    version: 2.2.2
+    snapshot: 2.2.3-SNAPSHOT
 
 # Page tree
 nav:
@@ -105,7 +105,7 @@ nav:
     - Performance:
       - Datafaker 1.4.0: documentation/performance140.md
       - Datafaker 1.7.0: documentation/performance170.md
-    - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/2.2.1/datafaker-2.2.1-javadoc.jar/!/index.html'
+    - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/2.2.2/datafaker-2.2.2-javadoc.jar/!/index.html'
     - Contributing: documentation/contributing.md
     - First time contributor: documentation/first-time-contributor.md
     - License: documentation/license.md
@@ -113,7 +113,8 @@ nav:
 #      - Changes: changelog/index.md
 #      - How to upgrade: upgrade.md
   - Releases:
-    - 2.2.2-SNAPSHOT: releases/2.2.2-SNAPSHOT.md
+    - 2.2.3-SNAPSHOT: releases/2.2.3-SNAPSHOT.md
+    - 2.2.2: releases/2.2.2.md
     - 2.2.1: releases/2.2.1.md
     - 2.2.0: releases/2.2.0.md
     - 2.1.0: releases/2.1.0.md
