@@ -53,8 +53,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
         final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
         if ((filename.endsWith(".yml") || filename.endsWith(".yaml")) && Files.isRegularFile(file) && Files.isReadable(file)) {
             final Path parent = file.getParent();
-            final String parentFileName = parent == null ? null : parent.getFileName().toString();
-            if (langs.contains(parentFileName)) {
+            final String parentFileName = parent == null || parent.getFileName() == null ? null : parent.getFileName().toString();
+            if (parentFileName != null && langs.contains(parentFileName)) {
                 locales.add(parentFileName);
             } else {
                 // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
