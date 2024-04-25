@@ -12,6 +12,8 @@ on:
 env:
   # Quotes are here since Windows has issues with parsing of maven args with dots
   mvn_options: --batch-mode -q "-Dstyle.color=always" "-Dorg.slf4j.simpleLogger.showDateTime=true" "-Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss.SSS"
+  jdk_for_downstream: 21
+  os_for_downstream: ubuntu-latest
 
 jobs:
   build:
@@ -30,6 +32,20 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: ./mvnw $mvn_options verify -PnoGpg --file pom.xml
+        run: ./mvnw $mvn_options install -PnoGpg --file pom.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4.3.0
+      - id: version-extract
+        if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
+        run: |
+          echo "release_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+      - name: 'Download downstream project'
+        if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
+        uses: actions/checkout@v4
+        with:
+          repository: datafaker-net/datafaker-gen
+          fetch-depth: 1
+          path: datafaker_gen
+      - name: 'Test with downstream project'
+        if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
+        run: cd datafaker_gen && ./mvnw clean install -Ddatafaker.version=${{ steps.version-extract.outputs.release_version }}
