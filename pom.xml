@@ -445,6 +445,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/FakerRepeatabilityIntegrationTest.java</exclude>
+                        <exclude>**/FakerIntegrationTest.java</exclude>
                     </excludes>
                     <useManifestOnlyJar>false</useManifestOnlyJar>
                     <argLine>${surefire.argline}</argLine>
@@ -462,6 +463,7 @@
                             </excludes>
                             <includes>
                                 <include>**/FakerRepeatabilityIntegrationTest.java</include>
+                                <include>**/FakerIntegrationTest.java</include>
                             </includes>
                         </configuration>
                     </execution>
