@@ -40,17 +40,17 @@ class JsonTest {
         JsonTransformer<Object> transformer = JsonTransformer.builder().build();
         Stream<CharSequence> json = transformer.generateStream(schema, 10);
         String output = json.collect(Collectors.joining(LINE_SEPARATOR));
-        assertThat(output).isEqualTo("[\n" +
-            "{\"Text\": \"Willis\", \"Bool\": false},\n" +
-            "{\"Text\": \"Carlena\", \"Bool\": true},\n" +
-            "{\"Text\": \"Stephnie\", \"Bool\": true},\n" +
-            "{\"Text\": \"Rutha\", \"Bool\": true},\n" +
-            "{\"Text\": \"Armand\", \"Bool\": true},\n" +
-            "{\"Text\": \"Margot\", \"Bool\": false},\n" +
-            "{\"Text\": \"Patrick\", \"Bool\": false},\n" +
-            "{\"Text\": \"Alphonse\", \"Bool\": false},\n" +
-            "{\"Text\": \"Louisa\", \"Bool\": true},\n" +
-            "{\"Text\": \"Caryn\", \"Bool\": false}\n" +
+        assertThat(output).isEqualTo("[" + LINE_SEPARATOR +
+            "{\"Text\": \"Willis\", \"Bool\": false}," + LINE_SEPARATOR +
+            "{\"Text\": \"Carlena\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Stephnie\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Rutha\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Armand\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Margot\", \"Bool\": false}," + LINE_SEPARATOR +
+            "{\"Text\": \"Patrick\", \"Bool\": false}," + LINE_SEPARATOR +
+            "{\"Text\": \"Alphonse\", \"Bool\": false}," + LINE_SEPARATOR +
+            "{\"Text\": \"Louisa\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Caryn\", \"Bool\": false}" + LINE_SEPARATOR +
             "]");
     }
 
