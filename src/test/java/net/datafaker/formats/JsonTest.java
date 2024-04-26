@@ -38,7 +38,7 @@ class JsonTest {
         );
 
         JsonTransformer<Object> transformer = JsonTransformer.builder().build();
-        Stream<CharSequence> json = transformer.generateStream(schema, 10);
+        Stream<String> json = transformer.generateStream(schema, 10);
         String output = json.collect(Collectors.joining(LINE_SEPARATOR));
         assertThat(output).isEqualTo("[\n" +
             "{\"Text\": \"Willis\", \"Bool\": false},\n" +
