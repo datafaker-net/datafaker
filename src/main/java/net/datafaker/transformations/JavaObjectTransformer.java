@@ -120,6 +120,16 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
         throw new UnsupportedOperationException("Object as input is required");
     }
 
+    @Override
+    public String getStartStream(Schema<Object, ?> schema) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getEndStream() {
+        throw new UnsupportedOperationException();
+    }
+
     private Object getObject(Schema<Object, ?> schema, Object result, Constructor<?> recordConstructor) {
         final Field<Object, ?>[] fields = schema.getFields();
         final Object[] values = new Object[fields.length];

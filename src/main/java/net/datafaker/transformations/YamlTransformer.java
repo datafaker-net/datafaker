@@ -49,6 +49,16 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
+    @Override
+    public String getStartStream(Schema<IN, ?> schema) {
+        return "";
+    }
+
+    @Override
+    public String getEndStream() {
+        return "";
+    }
+
     private String apply(final StringBuilder sb, final IN input, final Field<IN, ?>[] fields, final String offset) {
         Set<String> keys = new HashSet<>();
         for (Field<IN, ?> field : fields) {

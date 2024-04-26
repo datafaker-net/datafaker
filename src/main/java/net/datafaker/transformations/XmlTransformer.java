@@ -53,6 +53,16 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
+    @Override
+    public String getStartStream(Schema<IN, ?> schema) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getEndStream() {
+        throw new UnsupportedOperationException();
+    }
+
     public static class XmlTransformerBuilder<IN> {
 
         private boolean pretty = false;
