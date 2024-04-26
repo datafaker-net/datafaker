@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringJoiner;
 
-public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
+public class JsonTransformer<IN> implements Transformer<IN, String> {
 
     private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
     private static final char[] WRAPPERS = "[]".toCharArray();
