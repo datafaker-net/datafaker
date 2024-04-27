@@ -108,6 +108,18 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
+    @Override
+    public String getStartStream(Schema<IN, ?> schema) {
+        StringBuilder sb = new StringBuilder();
+        generateHeader(null, sb);
+        return sb.toString();
+    }
+
+    @Override
+    public String getEndStream() {
+        return null;
+    }
+
     public static class CsvTransformerBuilder<IN> {
         private String separator = DEFAULT_SEPARATOR;
         private char quote = DEFAULT_QUOTE;

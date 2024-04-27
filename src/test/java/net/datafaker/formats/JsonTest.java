@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
@@ -28,6 +29,31 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 class JsonTest {
+    @Test
+    void testJsonStream() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Object, ?> schema = Schema.of(
+            field("Text", () -> faker.name().firstName()),
+            field("Bool", () -> faker.bool().bool())
+        );
+
+        JsonTransformer<Object> transformer = JsonTransformer.builder().build();
+        Stream<CharSequence> json = transformer.generateStream(schema, 10);
+        String output = json.collect(Collectors.joining(LINE_SEPARATOR));
+        assertThat(output).isEqualTo("[" + LINE_SEPARATOR +
+            "{\"Text\": \"Willis\", \"Bool\": false}," + LINE_SEPARATOR +
+            "{\"Text\": \"Carlena\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Stephnie\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Rutha\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Armand\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Margot\", \"Bool\": false}," + LINE_SEPARATOR +
+            "{\"Text\": \"Patrick\", \"Bool\": false}," + LINE_SEPARATOR +
+            "{\"Text\": \"Alphonse\", \"Bool\": false}," + LINE_SEPARATOR +
+            "{\"Text\": \"Louisa\", \"Bool\": true}," + LINE_SEPARATOR +
+            "{\"Text\": \"Caryn\", \"Bool\": false}" + LINE_SEPARATOR +
+            "]");
+    }
+
     @Test
     void testGenerateFromSchemaWithLimit() {
         BaseFaker faker = new BaseFaker(new Random(10L));

@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringJoiner;
 
-public class JsonTransformer<IN> implements Transformer<IN, Object> {
+public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
     private static final char[] WRAPPERS = "[]".toCharArray();
@@ -71,6 +71,20 @@ public class JsonTransformer<IN> implements Transformer<IN, Object> {
         }
 
         return limit > 1 ? WRAPPERS[0] + LINE_SEPARATOR + sb + LINE_SEPARATOR + WRAPPERS[1] : sb.toString();
+    }
+
+    @Override
+    public String getStartStream(Schema<IN, ?> schema) {
+        return "[";
+    }
+
+    @Override
+    public String getEndStream() {
+        return "]";
+    }
+
+    public String getElementSeparator() {
+        return ",";
     }
 
     private void applyValue(IN input, StringBuilder sb, Object value) {
