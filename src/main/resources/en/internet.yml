@@ -15,7 +15,7 @@ en:
       - "Visit #{Country.name}"
       - "Want to play a game?"
       - "Since we can’t all win the lottery..."
-      - "#{FamousLastWords}"
+      - "#{FamousLastWords.lastWords}"
       - "Happy Holidays From #{Company.name}"
       domain_suffix:
       - "com"
