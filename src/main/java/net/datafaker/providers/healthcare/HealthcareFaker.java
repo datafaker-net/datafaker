@@ -10,6 +10,8 @@ import java.util.Random;
 
 /**
  * Faker for healthcare concepts
+ *
+ * @since 2.3.0
  */
 public class HealthcareFaker extends BaseFaker implements HealthcareProviders {
     public HealthcareFaker() {

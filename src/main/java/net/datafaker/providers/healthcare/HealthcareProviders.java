@@ -2,6 +2,9 @@ package net.datafaker.providers.healthcare;
 
 import net.datafaker.providers.base.ProviderRegistration;
 
+/**
+ * @since 2.3.0
+ */
 public interface HealthcareProviders extends ProviderRegistration {
 
     default CareProvider careProvider() {

@@ -4,6 +4,8 @@ import net.datafaker.providers.base.AbstractProvider;
 
 /**
  * Generate random types of health care providers
+ *
+ * @since 2.3.0
  */
 public class CareProvider extends AbstractProvider<HealthcareProviders> {
     protected CareProvider(HealthcareProviders faker) {
