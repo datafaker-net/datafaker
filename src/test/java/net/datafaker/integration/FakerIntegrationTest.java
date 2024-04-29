@@ -112,7 +112,12 @@ class FakerIntegrationTest {
             if (isExcepted(object, method, locale)) {
                 continue;
             }
-            final Object returnValue = method.invoke(object);
+            final Object returnValue;
+            try {
+                 returnValue = method.invoke(object);
+            } catch (Exception e) {
+                throw new RuntimeException("Test for method " + method + " and object " + object + " was failed ", e);
+            }
             assertThat(returnValue).as("For method " + object.getClass() + "#" + method.getName() + "value is '" + returnValue + "'").isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;
             assertThat(returnValueAsString).as("For method " + object.getClass() + "#" + method.getName()).isNotEmpty();
