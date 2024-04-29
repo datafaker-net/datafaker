@@ -3,8 +3,6 @@ package net.datafaker.providers.healthcare;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
- * Generate random medication/drug concepts
- *
  * @since 2.3.0
  */
 public class Medication extends AbstractProvider<HealthcareProviders> {
