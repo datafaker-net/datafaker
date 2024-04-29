@@ -10,7 +10,7 @@ open module net.datafaker {
     exports net.datafaker.providers.base;
     exports net.datafaker.providers.entertainment;
     exports net.datafaker.providers.food;
-    exports net.datafaker.providers.healthcare
+    exports net.datafaker.providers.healthcare;
     exports net.datafaker.providers.sport;
     exports net.datafaker.providers.videogame;
     exports net.datafaker.sequence;
