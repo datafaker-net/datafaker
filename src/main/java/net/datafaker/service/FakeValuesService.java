@@ -222,6 +222,7 @@ public class FakeValuesService {
 
         String[] path = split(key);
         SingletonLocale local2Add = null;
+        path[0] = path[0].toLowerCase(Locale.ROOT);
         for (SingletonLocale sLocale : localeChain) {
             Object currentValue = fakeValuesInterfaceMap.get(sLocale);
             for (int p = 0; currentValue != null && p < path.length; p++) {

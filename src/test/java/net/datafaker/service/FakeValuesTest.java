@@ -97,13 +97,13 @@ class FakeValuesTest {
     @Test
     void correctPathForHebrewLanguage() {
         FakeValues hebrew = FakeValues.of(FakeValuesContext.of(new Locale("iw")));
-        assertThat(hebrew.getPath()).isEqualTo("he");
+        assertThat(hebrew.getPathes()).containsExactly("he");
     }
 
     @Test
     void incorrectPathForHebrewLanguage() {
         FakeValues hebrew = FakeValues.of(FakeValuesContext.of(new Locale("iw")));
-        assertThat(hebrew.getPath()).isNotEqualTo("iw");
+        assertThat(hebrew.getPathes()).doesNotContain("iw");
     }
 
     @Test

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -32,7 +33,7 @@ public class FakeValues implements FakeValuesInterface {
             } finally {
                 lock.unlock();
             }
-            fakeValuesContext.setPath(values == null || values.isEmpty() ? null : values.keySet().iterator().next());
+            fakeValuesContext.setPath(values == null || values.isEmpty() ? null : values.keySet());
         }
     }
 
@@ -186,10 +187,10 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     boolean supportsPath(String path) {
-        return fakeValuesContext.getPath().equals(path);
+        return fakeValuesContext.getPath().contains(path);
     }
 
-    String getPath() {
+    Set<String> getPathes() {
         return fakeValuesContext.getPath();
     }
 
