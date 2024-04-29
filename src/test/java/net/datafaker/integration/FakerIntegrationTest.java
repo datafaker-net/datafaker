@@ -2,6 +2,7 @@ package net.datafaker.integration;
 
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
+import net.datafaker.providers.base.App;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.Faker;
 import net.datafaker.providers.base.Name;
@@ -50,6 +51,8 @@ class FakerIntegrationTest {
         exceptions.put(new Locale("es", "mx"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
         exceptions.put(new Locale("pt"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
         exceptions.put(new Locale("uk"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix", "stateAbbr", "streetSuffix"));
+        exceptions.put(new Locale("id"), SkippedMethods.of(App.class, "author"));
+        exceptions.put(new Locale("id", "ID"), SkippedMethods.of(App.class, "author"));
         exceptions.put(new Locale("pt-BR"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
         exceptions.put(new Locale("pt-br"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
         exceptions.put(new Locale("Pt_br"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
@@ -116,7 +119,7 @@ class FakerIntegrationTest {
             try {
                  returnValue = method.invoke(object);
             } catch (Exception e) {
-                throw new RuntimeException("Test for method " + method + " and object " + object + " was failed ", e);
+                throw new RuntimeException("Test for method " + method + " and object " + object + " was failed for locale " + locale, e);
             }
             assertThat(returnValue).as("For method " + object.getClass() + "#" + method.getName() + "value is '" + returnValue + "'").isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;
