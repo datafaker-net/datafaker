@@ -165,10 +165,6 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Device.class, Device::new);
     }
 
-    default Disease disease() {
-        return getProvider(Disease.class, Disease::new);
-    }
-
     default Dog dog() {
         return getProvider(Dog.class, Dog::new);
     }

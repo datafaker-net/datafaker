@@ -88,7 +88,6 @@ public class EnFile {
         "departed.yml",
         "dessert.yml",
         "device.yml",
-        "disease.yml",
         "domain.yml",
         "dnd.yml",
 //            "dota.yml",
@@ -284,6 +283,7 @@ public class EnFile {
         new EnFile("phone_number.yml", "cell_phone"), // load phone number again with a different path
 
         new EnFile("care_provider.yml", "healthcare"),
+        new EnFile("disease.yml", "healthcare"),
         new EnFile("medical_procedure.yml", "healthcare"),
         new EnFile("medication.yml", "healthcare"),
         new EnFile("observation.yml", "healthcare")

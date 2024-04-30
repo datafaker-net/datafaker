@@ -11,6 +11,10 @@ public interface HealthcareProviders extends ProviderRegistration {
         return getProvider(CareProvider.class, CareProvider::new);
     }
 
+    default Disease disease() {
+        return getProvider(Disease.class, Disease::new);
+    }
+
     default Medication medication() {
         return getProvider(Medication.class, Medication::new);
     }
