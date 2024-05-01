@@ -281,7 +281,12 @@ public class EnFile {
         new EnFile("world_of_warcraft.yml", "games"),
         new EnFile("zelda.yml", "games"),
 
-        new EnFile("phone_number.yml", "cell_phone") // load phone number again with a different path
+        new EnFile("phone_number.yml", "cell_phone"), // load phone number again with a different path
+
+        new EnFile("care_provider.yml", "healthcare"),
+        new EnFile("medical_procedure.yml", "healthcare"),
+        new EnFile("medication.yml", "healthcare"),
+        new EnFile("observation.yml", "healthcare")
     );
 
     private static final List<EnFile> ALL_FILES;
