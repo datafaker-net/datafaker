@@ -46,7 +46,13 @@ public class Issue1178Test {
     }
 
     @Test
-    void testExpressionNLWithMiddleWorks1() {
+    void testExpressionNLWithCity() {
+        Faker faker = new Faker();
+        assertThat(faker.expression("#{address.city}")).isNotBlank();
+    }
+
+    @Test
+    void testExpressionNLWithFullAddress() {
         Faker faker = new Faker(new Locale("nl", "nl"));
         assertThat(faker.expression("#{address.full_address}")).isNotBlank();
     }
