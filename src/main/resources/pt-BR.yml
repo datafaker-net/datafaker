@@ -708,3 +708,28 @@ pt-BR:
       coaches: ["Cuca", "Dorival Jr", "Turco Mohamed", "Abel Ferreira", "Abel Braga", "Fernando Diniz", "Tite", "Renato Gaúcho", "Mano Menezes", "Carille", "Zé Ricardo", "Sylvinho", "Enderson Moreira", "Barbieri", "Vojvoda"]
       competitions: ["Copa do Brasil", "Campeonato Brasileiro Série A", "Copa Libertadores da América", "Copa Sul-Americana", "Campeonato Paulista", "Campeonato Carioca", "Supercopa do Brasil", "Recopa Sul-Americana"]
       positions: ["Goleiro", "Lateral Direito", "Lateral Esquerdo", "Zagueiro", "Primeiro Volante", "Segundo Volante", "Meia Esquerda", "Meia Direita", "Meia Armador", "Ponta Esquerda", "Ponta Direita", "Centroavante", "Segundo Atacante"]
+
+    nation:
+      nationality: ["Afegãos", "Albaneses", "Argelinos", "Americanos", "Andorranos", "Angolanos", "Argentinos", "Armênios", "Aromanianos",
+                    "Arubanos", "Australianos", "Austríacos", "Bahamenses", "Bahrainianos", "Bangladeshis", "Barbadianos", "Bielorrussos",
+                    "Belgas", "Belizeanos", "Bermudenses", "Boers", "Bósnios", "Brasileiros", "Bretões", "Britânicos", "Ilhéus Britânicos",
+                    "Búlgaros", "Macedônios Búlgaros", "Burkinabès", "Burundianos", "Cambojanos", "Camaroneses", "Canadenses", "Catalães",
+                    "Cabo-Verdianos", "Chadianos", "Chilenos", "Chineses", "Colombianos", "Comorianos", "Congolenses", "Croatas", "Cubanos",
+                    "Cipriotas Turcos", "Tchecos", "Dinamarqueses", "Dominicanos (República)", "Dominicanos (Comunidade)", "Holandeses",
+                    "Timorenses", "Equatorianos", "Egípcios", "Emiratenses", "Ingleses", "Eritreus", "Estonianos", "Etíopes", "Feroeses",
+                    "Finlandeses", "Finlândio-Suecos", "Fijianos", "Filipinos", "Cidadãos Franceses", "Georgianos", "Alemães", "Alemães Bálticos",
+                    "Ganenses", "Gibraltarianos", "Gregos", "Macedônios Gregos", "Granadinos", "Guatemaltecos", "Guianenses (Franceses)",
+                    "Guineanos", "Guineenses-Bissauenses", "Guianeses", "Haitianos", "Hondurenhos", "Hong Kong", "Húngaros", "Islandeses",
+                    "Indianos", "Indonésios", "Iranianos (Persas)", "Iraquianos", "Irlandeses", "Israelenses", "Italianos", "Ivoirianos",
+                    "Jamaicanos", "Japoneses", "Jordanianos", "Cazaques", "Quenianos", "Coreanos", "Kosovares Albaneses", "Curdos",
+                    "Kuwaitianos", "Laosianos", "Letões", "Libaneses", "Liberianos", "Líbios", "Liechtensteinenses", "Lituânios",
+                    "Luxemburgueses", "Macedônios", "Malgaxes", "Malaios", "Malauianos", "Maldivianos", "Malineses", "Malteses", "Manx",
+                    "Mauricianos", "Mexicanos", "Moldávios", "Marroquinos", "Mongóis", "Montenegrinos", "Namibianos", "Nepaleses", "Neozelandeses",
+                    "Nicaraguenses", "Nigerinos", "Nigerianos", "Noruegueses", "Paquistaneses", "Palauenses", "Palestinos", "Panamenhos",
+                    "Papuas Novo-Guineenses", "Paraguaios", "Peruanos", "Poloneses", "Portugueses", "Porto-Riquenhos", "Quebecenses",
+                    "Reunionenses", "Romenos", "Russos", "Russos Bálticos", "Ruandeses", "Salvadorenhos", "Santomenses e Príncipe", "Sauditas",
+                    "Escoceses", "Senegaleses", "Sérvios", "Serra-leoneses", "Cingapurianos", "Sindhianos", "Eslovacos", "Eslovenos", "Somali",
+                    "Sul-africanos", "Espanhóis", "Sri-lankenses", "Santa Lucianos", "Sudaneses", "Surinameses", "Suecos", "Suíços", "Sírios",
+                    "Taiwaneses", "Tanzanianos", "Tailandeses", "Tibetanos", "Trinitinos", "Tobagonianos", "Tunisianos", "Turcos", "Tuvaluenses",
+                    "Ugandenses", "Ucranianos", "Uruguaios", "Uzbeques", "Vanuatuenses", "Venezuelanos", "Vietnamitas", "Galeses", "Iemenitas",
+                    "Zambianos", "Zimbabuanos"]
