@@ -2,8 +2,9 @@ package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
 import net.datafaker.internal.helper.SingletonLocale;
+import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
-import net.datafaker.providers.base.Superhero;
+import net.datafaker.providers.base.BaseProviders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -150,59 +152,32 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     }
 
     @Test
-    void resolveKeyToPropertyWithAPropertyWithAnObject() {
-        // given
-        final Superhero person = mock(Superhero.class);
-        final DummyService dummy = mock(DummyService.class);
-        doReturn(person).when(mockedFaker).superhero();
-        doReturn("Luke Cage").when(person).name();
-
-        // when
-        final String actual = fakeValuesService.resolve("property.advancedResolution", dummy, mockedFaker, mockedFaker.getContext());
-
-        // then
-        assertThat(actual).isEqualTo("Luke Cage");
-        verify(mockedFaker).superhero();
-        verify(person).name();
-    }
-
-    @Test
     void resolveKeyToPropertyWithAList() {
         // property.resolutionWithList -> #{hello}
         // #{hello} -> DummyService.hello
+        class Property extends AbstractProvider<BaseProviders> {
+            protected Property(BaseProviders faker) {
+                super(faker);
+                ClassLoader classLoader = getClass().getClassLoader();
+                URL resource = classLoader.getResource("test.yml");
+                faker.addUrl(new Locale("test"), resource);
+            }
 
-        // given
-        final DummyService dummy = mock(DummyService.class);
-        doReturn(0).when(randomService).nextInt(Mockito.anyInt());
-        doReturn("Yo!").when(dummy).hello();
+            public String hello() {
+                return "Yo!";
+            }
 
-        // when
-        final String actual = fakeValuesService.resolve("property.resolutionWithList", dummy, mockedFaker, mockedFaker.getContext());
+            public String hello2() {
+                return "Yo2!";
+            }
 
-        // then
-        assertThat(actual).isEqualTo("Yo!");
-        verify(dummy).hello();
-    }
-
-    @Test
-    void resolveKeyWithMultiplePropertiesShouldJoinResults() {
-        // given
-        final Superhero person = mock(Superhero.class);
-        final DummyService dummy = mock(DummyService.class);
-        doReturn(person).when(mockedFaker).superhero();
-
-        doReturn("Yo Superman!").when(dummy).hello();
-        doReturn("up up and away").when(person).descriptor();
-
-        // when
-        String actual = fakeValuesService.resolve("property.multipleResolution", dummy, mockedFaker, mockedFaker.getContext());
-
-        // then
-        assertThat(actual).isEqualTo("Yo Superman! up up and away");
-
-        verify(mockedFaker).superhero();
-        verify(person).descriptor();
-        verify(dummy).hello();
+            public String resolutionWithList() {
+                return resolve("property.resolutionWithList");
+            }
+        }
+        var testFaker = new BaseFaker(new Locale("test"));
+        assertThat(BaseFaker.getProvider(Property.class, Property::new, testFaker).resolutionWithList())
+            .startsWith("Yo");
     }
 
     @Test

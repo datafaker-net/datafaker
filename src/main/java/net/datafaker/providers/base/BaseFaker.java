@@ -334,26 +334,8 @@ public class BaseFaker implements BaseProviders {
             METHODS.putIfAbsent(newMappingClass, new ConcurrentHashMap<>(methods.length));
             for (Method method: methods) {
                 if (method.getParameterCount() > 0) continue;
-                StringBuilder sb = null;
                 final String methodName = method.getName();
-                final int length = methodName.length();
-                int start = 0;
-                for (int i = 0; i < length; i++) {
-                    char ch = methodName.charAt(i);
-                    if (i > 0 && Character.isUpperCase(ch)) {
-                        if (sb == null) {
-                            sb = new StringBuilder();
-                        }
-                        sb.append(methodName.toLowerCase(Locale.ROOT), start, i + 1).append('_');
-                        start = i + 1;
-                    }
-                }
-                final String name;
-                if (start > 0) {
-                    name = sb.append(methodName, start, methodName.length()).toString();
-                } else {
-                    name = methodName;
-                }
+
                 Map<String, Method> methodMap = METHODS.get(newMappingClass);
                 if (methodMap == null) {
                     synchronized (BaseFaker.class) {
@@ -364,7 +346,7 @@ public class BaseFaker implements BaseProviders {
                         }
                     }
                 }
-                methodMap.put(name, method);
+                methodMap.put(methodName, method);
             }
             map.putIfAbsent(faker.getContext(), newMapping);
             CLASSES.get(simpleName).put(faker.getContext(), newMapping);

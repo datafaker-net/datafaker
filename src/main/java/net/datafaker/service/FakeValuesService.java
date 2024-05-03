@@ -2,6 +2,7 @@ package net.datafaker.service;
 
 import net.datafaker.internal.helper.COWMap;
 import net.datafaker.internal.helper.SingletonLocale;
+import net.datafaker.internal.helper.WordUtils;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
@@ -221,6 +222,7 @@ public class FakeValuesService {
 
         String[] path = split(key);
         SingletonLocale local2Add = null;
+        path[0] = path[0].toLowerCase(Locale.ROOT);
         for (SingletonLocale sLocale : localeChain) {
             Object currentValue = fakeValuesInterfaceMap.get(sLocale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
@@ -240,7 +242,81 @@ public class FakeValuesService {
         if (local2Add != null) {
             key2fetchedObject.updateNestedValue(local2Add, MAP_STRING_OBJECT_SUPPLIER, key, result);
         }
+        if (path.length > 0 && result instanceof List) {
+            List list = (List) result;
+            for (int i = 0; i < list.size(); i++) {
+                Object item = list.get(i);
+                if (!(item instanceof String)) {
+                    break;
+                }
+                String itemStr = (String) item;
+                final int itemStrLength = itemStr.length();
+                if (itemStrLength < 2) {
+                    break;
+                }
+                int j = 0;
+                StringBuilder sb = null;
+                int start = 0;
+                while (j < itemStrLength) {
+                    char c;
+                    while (j < itemStrLength - 2 && ((c = itemStr.charAt(j)) != '#' || itemStr.charAt(j + 1) != '{')) j++;
+                    int startWord = j + 2;
+                    boolean letterOrDigitOnly = true;
+                    j = startWord;
+                    while (j < itemStrLength && (c = itemStr.charAt(j)) != '}') {
+                        letterOrDigitOnly &= Character.isLetter(c) || Character.isDigit(c) || c == '_';
+                        j++;
+                    }
+                    if (start < itemStrLength&&  startWord < itemStrLength && letterOrDigitOnly) {
+                        if (sb == null) {
+                            sb = new StringBuilder();
+                        }
+                        sb.append(itemStr, start, startWord);
+                        sb.append(WordUtils.capitalize(path[0]) + "." + toJavaNames(itemStr.substring(startWord, j), true) + "}");
+                        start = j + 1;
+                    }
+                }
+                if (sb != null) {
+                    if (start < itemStrLength) {
+                        sb.append(itemStr, start, itemStrLength);
+                    }
+                    list.set(i, sb.toString());
+                }
+            }
+        }
         return result;
+    }
+
+
+    private static String toJavaNames(String string, boolean isMethod) {
+        final int length;
+        if (string == null || (length = string.length()) == 0) {
+            return string;
+        }
+        int cnt = 0;
+        for (int i = 0; i < length; i++) {
+            if (string.charAt(i) == '_') {
+                cnt++;
+            }
+        }
+        if (cnt == 0 && (Character.isUpperCase(string.charAt(0)) && !isMethod || isMethod && Character.isLowerCase(string.charAt(0)))) return string;
+        final char[] res = new char[length - cnt];
+        int pos = 0;
+        for (int i = 0; i < length; i++) {
+            char c = string.charAt(i);
+            if (i == 0 && Character.isLetter(c)) {
+                res[pos++] = isMethod ? Character.toLowerCase(c) : Character.toUpperCase(c);
+            } else if (c == '_') {
+                final char next = string.charAt(i + 1);
+                if (i < length - 1 && Character.isLetter(next)) {
+                    res[pos++] = Character.toUpperCase(next);
+                    i++;
+                }
+            } else {
+                res[pos++] = c;
+            }
+        }
+        return new String(res);
     }
 
     private String[] split(String string) {

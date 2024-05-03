@@ -6,12 +6,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 class FakeValuesContext {
     private final SingletonLocale sLocale;
     private final String filename;
     private final int filenameHashCode;
-    private String path;
+    private Set<String> pathes;
     private final URL url;
     private final int urlHashCode;
 
@@ -30,7 +31,7 @@ class FakeValuesContext {
     private FakeValuesContext(Locale locale, String filename, String path, URL url) {
         this.sLocale = SingletonLocale.get(locale);
         this.filename = filename;
-        this.path = path;
+        this.pathes = path == null ? null : Set.of(path);
         this.url = url;
         this.filenameHashCode = filename == null ? 0 : filename.hashCode();
         try {
@@ -69,8 +70,10 @@ class FakeValuesContext {
      * This addresses that unfortunate condition.
      */
     private static String language(Locale l) {
-        if ("iw".equals(l.getLanguage())) {
-            return "he";
+        switch (l.getLanguage()) {
+            case "iw": return "he";
+            case "in": return "id";
+            case "ji": return "yi";
         }
         return l.getLanguage();
     }
@@ -83,12 +86,12 @@ class FakeValuesContext {
         return filename;
     }
 
-    public String getPath() {
-        return path;
+    public Set<String> getPath() {
+        return pathes;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setPath(Set<String> pathes) {
+        this.pathes = pathes;
     }
 
     public URL getUrl() {
@@ -104,7 +107,7 @@ class FakeValuesContext {
 
         if (!Objects.equals(sLocale, that.sLocale)) return false;
         if (!Objects.equals(filename, that.filename)) return false;
-        if (!Objects.equals(path, that.path)) return false;
+        if (!Objects.equals(pathes, that.pathes)) return false;
         return Objects.equals(url, that.url);
     }
 
@@ -112,7 +115,7 @@ class FakeValuesContext {
     public int hashCode() {
         int result = sLocale == null ? 0 : sLocale.hashCode();
         result = 31 * result + filenameHashCode;
-        result = 31 * result + (path == null ? 0 : path.hashCode());
+        result = 31 * result + (pathes == null ? 0 : pathes.hashCode());
         result = 31 * result + urlHashCode;
         return result;
     }
@@ -122,7 +125,7 @@ class FakeValuesContext {
         return "FakeValuesContext{" +
             "sLocale=" + sLocale +
             ", filename='" + filename + '\'' +
-            ", path='" + path + '\'' +
+            ", path='" + pathes + '\'' +
             ", url=" + url +
             '}';
     }

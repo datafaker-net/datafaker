@@ -84,4 +84,9 @@ class NameTest extends BaseFakerTest<BaseFaker> {
         assertThat(name.title()).matches("(\\w+\\.?( )?){3}");
     }
 
+    @Test
+    void test() {
+        var faker = new BaseFaker(new Locale("id"));
+        System.out.println(faker.name().name());
+    }
 }
