@@ -242,14 +242,12 @@ public class FakeValuesService {
         if (local2Add != null) {
             key2fetchedObject.updateNestedValue(local2Add, MAP_STRING_OBJECT_SUPPLIER, key, result);
         }
-        if (path.length > 0 && result instanceof List) {
-            List list = (List) result;
+        if (result instanceof List list) {
             for (int i = 0; i < list.size(); i++) {
                 Object item = list.get(i);
-                if (!(item instanceof String)) {
+                if (!(item instanceof String itemStr)) {
                     break;
                 }
-                String itemStr = (String) item;
                 final int itemStrLength = itemStr.length();
                 if (itemStrLength < 2) {
                     break;
@@ -259,7 +257,7 @@ public class FakeValuesService {
                 int start = 0;
                 while (j < itemStrLength) {
                     char c;
-                    while (j < itemStrLength - 2 && ((c = itemStr.charAt(j)) != '#' || itemStr.charAt(j + 1) != '{')) j++;
+                    while (j < itemStrLength - 2 && ((itemStr.charAt(j)) != '#' || itemStr.charAt(j + 1) != '{')) j++;
                     int startWord = j + 2;
                     boolean letterOrDigitOnly = true;
                     j = startWord;

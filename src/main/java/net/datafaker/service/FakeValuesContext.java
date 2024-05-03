@@ -9,10 +9,10 @@ import java.util.Objects;
 import java.util.Set;
 
 class FakeValuesContext {
-    private final SingletonLocale sLocale;
+    private final SingletonLocale singletonLocale;
     private final String filename;
     private final int filenameHashCode;
-    private Set<String> pathes;
+    private Set<String> paths;
     private final URL url;
     private final int urlHashCode;
 
@@ -29,9 +29,9 @@ class FakeValuesContext {
     }
 
     private FakeValuesContext(Locale locale, String filename, String path, URL url) {
-        this.sLocale = SingletonLocale.get(locale);
+        this.singletonLocale = SingletonLocale.get(locale);
         this.filename = filename;
-        this.pathes = path == null ? null : Set.of(path);
+        this.paths = path == null ? null : Set.of(path);
         this.url = url;
         this.filenameHashCode = filename == null ? 0 : filename.hashCode();
         try {
@@ -58,40 +58,41 @@ class FakeValuesContext {
     }
 
     private static String getFilename(Locale locale) {
-        final String lang = language(locale);
+        String lang = language(locale);
         if ("".equals(locale.getCountry())) {
             return lang;
+        } else {
+            return lang + "-" + locale.getCountry();
         }
-        return lang + "-" + locale.getCountry();
     }
 
     /**
-     * If you new up a locale with "he", it gets converted to "iw" which is old.
+     * If you create a locale with "he", it gets converted to "iw" which is old.
      * This addresses that unfortunate condition.
      */
-    private static String language(Locale l) {
-        switch (l.getLanguage()) {
-            case "iw": return "he";
-            case "in": return "id";
-            case "ji": return "yi";
-        }
-        return l.getLanguage();
+    private static String language(Locale locale) {
+        return switch (locale.getLanguage()) {
+            case "iw" -> "he";
+            case "in" -> "id";
+            case "ji" -> "yi";
+            default -> locale.getLanguage();
+        };
     }
 
     public Locale getLocale() {
-        return sLocale.getLocale();
+        return singletonLocale.getLocale();
     }
 
     public String getFilename() {
         return filename;
     }
 
-    public Set<String> getPath() {
-        return pathes;
+    public Set<String> getPaths() {
+        return paths;
     }
 
-    public void setPath(Set<String> pathes) {
-        this.pathes = pathes;
+    public void setPaths(Set<String> paths) {
+        this.paths = paths;
     }
 
     public URL getUrl() {
@@ -105,17 +106,17 @@ class FakeValuesContext {
 
         FakeValuesContext that = (FakeValuesContext) o;
 
-        if (!Objects.equals(sLocale, that.sLocale)) return false;
+        if (!Objects.equals(singletonLocale, that.singletonLocale)) return false;
         if (!Objects.equals(filename, that.filename)) return false;
-        if (!Objects.equals(pathes, that.pathes)) return false;
+        if (!Objects.equals(paths, that.paths)) return false;
         return Objects.equals(url, that.url);
     }
 
     @Override
     public int hashCode() {
-        int result = sLocale == null ? 0 : sLocale.hashCode();
+        int result = singletonLocale == null ? 0 : singletonLocale.hashCode();
         result = 31 * result + filenameHashCode;
-        result = 31 * result + (pathes == null ? 0 : pathes.hashCode());
+        result = 31 * result + (paths == null ? 0 : paths.hashCode());
         result = 31 * result + urlHashCode;
         return result;
     }
@@ -123,9 +124,9 @@ class FakeValuesContext {
     @Override
     public String toString() {
         return "FakeValuesContext{" +
-            "sLocale=" + sLocale +
+            "sLocale=" + singletonLocale +
             ", filename='" + filename + '\'' +
-            ", path='" + pathes + '\'' +
+            ", path='" + paths + '\'' +
             ", url=" + url +
             '}';
     }
