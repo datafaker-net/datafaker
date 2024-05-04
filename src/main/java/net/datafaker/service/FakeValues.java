@@ -24,7 +24,7 @@ public class FakeValues implements FakeValuesInterface {
 
     private FakeValues(FakeValuesContext fakeValuesContext) {
         this.fakeValuesContext = fakeValuesContext;
-        if (fakeValuesContext.getPath() == null) {
+        if (fakeValuesContext.getPaths() == null) {
             lock.lock();
             try {
                 if (values == null) {
@@ -33,7 +33,7 @@ public class FakeValues implements FakeValuesInterface {
             } finally {
                 lock.unlock();
             }
-            fakeValuesContext.setPath(values == null || values.isEmpty() ? null : values.keySet());
+            fakeValuesContext.setPaths(values == null || values.isEmpty() ? null : values.keySet());
         }
     }
 
@@ -187,11 +187,11 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     boolean supportsPath(String path) {
-        return fakeValuesContext.getPath().contains(path);
+        return fakeValuesContext.getPaths().contains(path);
     }
 
     Set<String> getPathes() {
-        return fakeValuesContext.getPath();
+        return fakeValuesContext.getPaths();
     }
 
     Locale getLocale() {
