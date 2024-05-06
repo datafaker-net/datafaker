@@ -19,7 +19,17 @@ public class Disease extends AbstractProvider<HealthcareProviders> {
     static final String GYNECOLOGY_AND_OBSTETRICS_DISEASE_KEY = "healthcare.disease.gynecology_and_obstetrics";
     static final String OPHTHALMOLOGY_AND_OTORHINOLARYNGOLOGY_DISEASE_KEY = "healthcare.disease.ophthalmology_and_otorhinolaryngology";
     static final String DERMATOLOGY_DISEASE_KEY = "healthcare.disease.dermatology";
-    
+
+    private final List<Supplier<String>> allDiseaseProviders = List.of(
+        this::internalDisease,
+        this::neurology,
+        this::surgery,
+        this::paediatrics,
+        this::gynecologyAndObstetrics,
+        this::ophthalmologyAndOtorhinolaryngology,
+        this::dermatology
+    );
+
     /**
      * Create a constructor for Disease
      *
@@ -34,16 +44,7 @@ public class Disease extends AbstractProvider<HealthcareProviders> {
     }
 
     public String anyDisease() {
-        List<Supplier<String>> providers = List.of(
-            this::internalDisease,
-            this::neurology,
-            this::surgery,
-            this::paediatrics,
-            this::gynecologyAndObstetrics,
-            this::ophthalmologyAndOtorhinolaryngology,
-            this::dermatology
-        );
-        Supplier<String> selectedProvider = providers.get(faker.random().nextInt(providers.size()));
+        Supplier<String> selectedProvider = allDiseaseProviders.get(faker.random().nextInt(allDiseaseProviders.size()));
         return selectedProvider.get();
     }
 

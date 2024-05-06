@@ -21,6 +21,11 @@ class DiseaseTest extends HealthcareFakerTest {
 
     private final Disease disease = faker.disease();
 
+    private final Set<String> allDiseases = Stream.of(INTERNAL_DISEASE_KEY, NEUROLOGICAL_DISEASE_KEY, SURGICAL_DISEASE_KEY, PAEDIATRIC_DISEASE_KEY, GYNECOLOGY_AND_OBSTETRICS_DISEASE_KEY, OPHTHALMOLOGY_AND_OTORHINOLARYNGOLOGY_DISEASE_KEY, DERMATOLOGY_DISEASE_KEY)
+        .map(this::getBaseList)
+        .flatMap(Collection::stream)
+        .collect(Collectors.toSet());
+
     @Override
     protected Collection<TestSpec> providerListTest() {
         return List.of(TestSpec.of(disease::internalDisease, INTERNAL_DISEASE_KEY),
@@ -34,12 +39,6 @@ class DiseaseTest extends HealthcareFakerTest {
 
     @RepeatedTest(100)
     void testAnyDisease() {
-        // given
-        Set<String> allDiseases = Stream.of(INTERNAL_DISEASE_KEY, NEUROLOGICAL_DISEASE_KEY, SURGICAL_DISEASE_KEY, PAEDIATRIC_DISEASE_KEY, GYNECOLOGY_AND_OBSTETRICS_DISEASE_KEY, OPHTHALMOLOGY_AND_OTORHINOLARYNGOLOGY_DISEASE_KEY, DERMATOLOGY_DISEASE_KEY)
-            .map(this::getBaseList)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toSet());
-
         // when
         String anyDisease = disease.anyDisease();
 
