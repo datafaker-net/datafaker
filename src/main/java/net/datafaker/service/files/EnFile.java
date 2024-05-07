@@ -150,6 +150,7 @@ public class EnFile {
         "joke.yml",
         "kpop.yml",
         "lebowski.yml",
+        "location.yml",
         "lord_of_the_rings.yml",
         "lorem.yml",
 //            "lovecraft.yml",

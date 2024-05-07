@@ -289,6 +289,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Locality.class, Locality::new);
     }
 
+    default Location location() {
+        return getProvider(Location.class, Location::new);
+    }
+
     default Lorem lorem() {
         return getProvider(Lorem.class, Lorem::new);
     }
