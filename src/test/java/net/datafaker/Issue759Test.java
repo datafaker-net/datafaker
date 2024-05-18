@@ -82,7 +82,7 @@ class Issue759Test {
                 if (allElementsEqual(iters, iterationsPerThread)) {
                     break;
                 } else {
-                    throw new AssertionError("Not all of s%s are not equal to %s".formatted(Arrays.toString(iters), iterationsPerThread));
+                    throw new AssertionError("Not all of %s are equal to %s".formatted(Arrays.toString(iters), iterationsPerThread));
                 }
             }
             lastIters = iters;
