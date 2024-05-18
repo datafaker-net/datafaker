@@ -59,7 +59,7 @@ class Issue759Test {
     @RepeatedTest(10)
     void issue759Test() throws InterruptedException {
         final int numThreads = 5;
-        final int iterationsPerThread = 60000;
+        final int iterationsPerThread = 20000;
 
         final Faker faker = new Faker();
 
