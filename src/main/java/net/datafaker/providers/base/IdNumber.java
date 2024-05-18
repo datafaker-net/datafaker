@@ -3,6 +3,7 @@ package net.datafaker.providers.base;
 import net.datafaker.idnumbers.EnIdNumber;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.EsMXIdNumber;
+import net.datafaker.idnumbers.EstonianIdNumber;
 import net.datafaker.idnumbers.IdNumbers;
 import net.datafaker.idnumbers.KoKrIdNumber;
 import net.datafaker.idnumbers.NricNumber;
@@ -163,13 +164,34 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
         KoKrIdNumber koKrIdNumber = (KoKrIdNumber) map.computeIfAbsent(KoKrIdNumber.class, aClass -> new KoKrIdNumber());
         return koKrIdNumber.getValidRrn(faker);
     }
-    
+
     /**
      * Generates valid ID number for Georgian citizens and Residents
-     * 
+     *
      * @return A valid ID Number
      */
     public String validGeIDNumber() {
     	return faker.numerify("###########");
+    }
+
+    /**
+     * Generates a valid ID number for Estonian citizens and residents
+     * Specified as #{IDNumber.valid_et_pin} in et.yml
+     * @return A valid ID Number
+     */
+    public String validEstonianPersonalCode() {
+        EstonianIdNumber idNumber = (EstonianIdNumber) map.computeIfAbsent(EstonianIdNumber.class, aClass -> new EstonianIdNumber());
+        return idNumber.getValid(faker);
+    }
+
+    /**
+     * Generates an invalid ID number for Estonian citizens and residents
+     * Specified as #{IDNumber.invalid_et_pin} in et.yml
+     *
+     * @return An invalid ID Number
+     */
+    public String invalidEstonianPersonalCode() {
+        EstonianIdNumber idNumber = (EstonianIdNumber) map.computeIfAbsent(EstonianIdNumber.class, aClass -> new EstonianIdNumber());
+        return idNumber.getInvalid(faker);
     }
 }

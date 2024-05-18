@@ -491,6 +491,7 @@ Supported Locales
 * en-PH
 * es
 * es-MX
+* et
 * fa
 * fi-FI
 * fr

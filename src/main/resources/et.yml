@@ -1,0 +1,50 @@
+et:
+  faker:
+    separator: ' ja '
+    address:
+      city_name: [Tallinn,Tartu,Narva,Pärnu,Kohtla-Järve,Viljandi,Rakvere,Maardu,Kuressaare,Sillamäe,Võru,Jõhvi,Haapsalu,Põlva,Jõgeva,Kiviõli,Türi,Kärdla,Narva-Jõesuu,Loksa,Räpina,Otepää,Kilingi-Nõmme,Mustvee,Lihula,Püssi,Abja-Paluoja,Mõisaküla]
+      country: [ "Afganistanis", "Albaania", "Eesti", "Läti", "Leedu", "Ukraina", "Valgevene", "Venemaa", "Saksamaa", "Rumeenia", "Armeenia"]
+      country_code: ['EE']
+      building_number: ["###", "##", "#"]
+      street_suffix: ["Tänav", "Maantee", "Puiestee", "Väljak"]
+      secondary_address: ['kt. ###', 'Maja ###', 'Ehitis ###']
+      postcode: ["#####"]
+      state: ["Harju maakond", "Hiiu maakond", "Ida-Viru maakond", "Jõgeva maakond", "Järva maakond", "Lääne maakond", "Lääne-Viru maakond", "Põlva maakond", "Pärnu maakond", "Rapla maakond", "Saare maakond", "Tartu maakond", "Valga maakond", "Viljandi maakond", "Võru maakond"]
+      state_abbr: ["Harjumaa", "Hiiumaa", "Ida-Virumaa", "Jõgevamaa", "Järvamaa", "Läänemaa", "Lääne-Virumaa", "Põlvamaa", "Pärnumaa", "Raplamaa", "Saaremaa", "Tartumaa", "Valgamaa", "Viljandimaa", "Võrumaa"]
+      default_country: [Eesti]
+
+    company:
+      suffix: ["OÜ", "AS", "FIE", "MTÜ"]
+      name:
+        - "#{Name.last_name} #{suffix}"
+        - "#{Name.last_name} #{Name.last_name}"
+
+    internet:
+      free_email: [gmail.com, mail.ee, online.ee]
+      domain_suffix: [ee, eu, com]
+
+    lorem:
+      words: [tere, tiiger, mõis, vanduda, võeti, revolutsioon, relv, kinnitab, kunst, lipsunõelad, lugege, mu, huultelt, maksud, ei, tõuse, punkt]
+
+    name:
+      male_first_name: ["Kaja", "Katrin", "Tiina", "Sandra", "Kätlin", "Piret", "Mari", "Marit", "Maris", "Urve", "Helen"]
+      female_first_name: ["Aleksandr", "Andrei", "Martin", "Andres", "Toomas", "Margus", "Jüri", "Kristjan", "Tiit", "Erik", "Rein", "Urmas", "Priit", "Peeter", "Marek", "Varmo", "Jarmo", "Tarmo", "Erkki", "Lembit"]
+      last_name: ["Sepp", "Tamm", "Mägi", "Kask", "Kallas", "Kukk", "Ilves", "Pärn", "Luik", "Oja", "Dormidontov", "Raudsepp", "Savisaar", "O'Connež-Šuslik"]
+      prefix: ["Härra", "Proua", "Noormees", "Seltsimees"]
+      suffix: ["jr"]
+      name_with_middle:
+        - "#{prefix} #{first_name} #{last_name}"
+        - "#{first_name} #{last_name}"
+
+    phone_number:
+      mobile_operator_prefix: ['51', '53', '55', '56', '57']
+      formats:
+        - "#{PhoneNumber.mobile_operator_prefix} ## ## ##"
+      formats_international:
+        - '+372 #{PhoneNumber.mobile_operator_prefix} ## ## ##'
+    cell_phone:
+      formats: ["51 ## ## ##", "53 ## ## ##", "55 ## ## ##", "56 ## ## ##", "57 ## ## ##"]
+
+    id_number:
+      valid: "#{IDNumber.valid_estonian_personal_code}"
+      invalid: "#{IDNumber.invalid_estonian_personal_code}"

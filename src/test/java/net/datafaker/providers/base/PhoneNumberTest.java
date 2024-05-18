@@ -3,6 +3,7 @@ package net.datafaker.providers.base;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -174,4 +175,19 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
     void testSubscriberNumberWithLength() {
         assertThat(faker.phoneNumber().subscriberNumber(10)).matches("\\d{10}");
     }
+
+    @RepeatedTest(10)
+    void cellPhone_estonia() {
+        BaseFaker f = new BaseFaker(new Locale("et", "EE"));
+        String cellPhone = f.phoneNumber().cellPhone();
+        assertThat(cellPhone).matches("5\\d \\d{2} \\d{2} \\d{2}");
+    }
+
+    @RepeatedTest(10)
+    void phoneNumberInternational_estonia() {
+        BaseFaker f = new BaseFaker(new Locale("et", "EE"));
+        String cellPhone = f.phoneNumber().phoneNumberInternational();
+        assertThat(cellPhone).matches("\\+372 5\\d \\d{2} \\d{2} \\d{2}");
+    }
+
 }
