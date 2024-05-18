@@ -4,7 +4,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Arrays;
 
-class Issue759 {
+class Issue759Test {
     static class WorkerThread extends Thread {
         final Faker _faker;
         final int _workerNum;
@@ -56,13 +56,6 @@ class Issue759 {
         return true;
     }
 
-    static void printIterations(int[] arr) {
-        for (int n : arr) {
-            System.err.print(" " + n);
-        }
-        System.err.println();
-    }
-
     @RepeatedTest(10)
     void issue759Test() throws InterruptedException {
         final int numThreads = 5;
@@ -89,8 +82,7 @@ class Issue759 {
                 if (allElementsEqual(iters, iterationsPerThread)) {
                     break;
                 } else {
-                    printIterations(iters);
-                    throw new RuntimeException();
+                    throw new AssertionError("Not all of s%s are not equal to %s".formatted(Arrays.toString(iters), iterationsPerThread));
                 }
             }
             lastIters = iters;
