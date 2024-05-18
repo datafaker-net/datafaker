@@ -148,6 +148,12 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
+    void fullAddress_estonia() {
+        BaseFaker f = new BaseFaker(new Locale("et", "EE"));
+        assertThat(f.address().fullAddress()).isNotEmpty();
+    }
+
+    @Test
     void testZipCodeByState() {
         final BaseFaker localFaker = new BaseFaker(new Locale("en", "US"));
         assertThat(localFaker.address().zipCodeByState(localFaker.address().stateAbbr())).matches("[0-9]{5}");

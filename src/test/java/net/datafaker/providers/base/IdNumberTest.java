@@ -80,4 +80,14 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     void testPeselNumber() {
         assertThat(faker.idNumber().peselNumber()).matches("[0-9]{11}");
     }
+
+    @RepeatedTest(100)
+    void estonianPersonalCode_valid() {
+        assertThat(faker.idNumber().validEstonianPersonalCode()).matches("[1-6][0-9]{10}");
+    }
+
+    @RepeatedTest(100)
+    void estonianPersonalCode_invalid() {
+        assertThat(faker.idNumber().invalidEstonianPersonalCode()).matches("[1-6][0-9]{10}");
+    }
 }
