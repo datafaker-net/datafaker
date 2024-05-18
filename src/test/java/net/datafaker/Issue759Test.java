@@ -2,29 +2,28 @@ package net.datafaker;
 
 import org.junit.jupiter.api.RepeatedTest;
 
-import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class Issue759Test {
-    static class WorkerThread extends Thread {
-        final Faker _faker;
-        final int _workerNum;
-        final int _maxIterations;
-        int _iterations;
+    private static class WorkerThread extends Thread {
+        private final Faker _faker;
+        private final int _maxIterations;
+        private final CountDownLatch _countDownLatch;
 
-        WorkerThread(Faker faker, int workerNum, int maxIterations) {
+        private WorkerThread(Faker faker, int maxIterations, CountDownLatch countDownLatch) {
             _faker = faker;
-            _workerNum = workerNum;
             _maxIterations = maxIterations;
-        }
-
-        public int getIterations() {
-            return _iterations;
+            _countDownLatch = countDownLatch;
         }
 
         @Override
         public void run() {
-            for (_iterations = 0; _iterations < _maxIterations; _iterations++) {
+            for (int i = 0; i < _maxIterations; i++) {
                 fakeSomeData(_faker);
+                _countDownLatch.countDown();
             }
         }
     }
@@ -34,65 +33,30 @@ class Issue759Test {
         String zipCode = faker.address().zipCodeByState(state);
         try {
             String county = faker.address().countyByZipCode(zipCode);
-        } catch (Exception e)
-    {
-    }
-    }
-
-    static int[] getIterations(WorkerThread[] threads) {
-        int[] iters = new int[threads.length];
-        for (int i = 0; i < threads.length; i++) {
-            iters[i] = threads[i].getIterations();
+            assertThat(county).isNotEqualTo(zipCode);
+        } catch (Exception ignore) {
         }
-        return iters;
-    }
-
-    static boolean allElementsEqual(int[] arr, int val) {
-        for (int n : arr) {
-            if (n != val) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @RepeatedTest(10)
     void issue759Test() throws InterruptedException {
-        final int numThreads = 5;
-        final int iterationsPerThread = 20000;
+        int numThreads = 5;
+        int iterationsPerThread = 20000;
+        CountDownLatch countDownLatch = new CountDownLatch(numThreads * iterationsPerThread);
 
-        final Faker faker = new Faker();
+        Faker faker = new Faker();
 
         WorkerThread[] threads = new WorkerThread[numThreads];
         for (int i = 0; i < numThreads; i++) {
-            threads[i] = new WorkerThread(faker, i, iterationsPerThread);
+            threads[i] = new WorkerThread(faker, iterationsPerThread, countDownLatch);
         }
 
         for (int i = 0; i < numThreads; i++) {
             threads[i].start();
         }
 
-        int[] lastIters = getIterations(threads);
-        final int delayMs = 100;
-        final int maxIntervalWithoutChangesMs = 1000;
-        int intervalWithoutChanges = 0;
-        while (true) {
-            Thread.sleep(delayMs);
-            int[] iters = getIterations(threads);
-            if (Arrays.equals(lastIters, iters)) {
-                // Either all threads are done, or something is probably stuck
-                if (allElementsEqual(iters, iterationsPerThread)) {
-                    break;
-                } else if (Arrays.equals(lastIters, iters)) {
-                    intervalWithoutChanges += delayMs;
-                    if (intervalWithoutChanges > maxIntervalWithoutChangesMs) {
-                        throw new AssertionError("Not all of %s are equal to %s".formatted(Arrays.toString(iters), iterationsPerThread));
-                    }
-                } else {
-                    intervalWithoutChanges = 0;
-                }
-            }
-            lastIters = iters;
-        }
+        assertThat(countDownLatch.await(10, SECONDS))
+            .overridingErrorMessage("Test did not complete within 10 second")
+            .isTrue();
     }
 }
