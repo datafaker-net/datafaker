@@ -100,4 +100,14 @@ class CustomFakerTest {
         BaseFaker faker = new BaseFaker();
         assertThat(BaseFaker.getProvider(Insect.class, Insect::new, faker).nextInsectName()).matches("[A-Za-z ]+");
     }
+
+    @Test
+    void testMultipleFakerContextsPerOneClassName() {
+        BaseFaker faker1 = new BaseFaker(Locale.ENGLISH);
+        BaseFaker faker2 = new BaseFaker(Locale.GERMAN);
+        faker1.getProvider(Insect.class, Insect::new);
+        faker2.getProvider(Insect.class, Insect::new);
+        assertThat(BaseFaker.getProvider("Insect",  faker1.getContext())).isNotNull();
+        assertThat(BaseFaker.getProvider("Insect",  faker2.getContext())).isNotNull();
+    }
 }
