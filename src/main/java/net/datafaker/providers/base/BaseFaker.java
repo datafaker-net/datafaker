@@ -327,7 +327,7 @@ public class BaseFaker implements BaseProviders {
         if (result == null) {
             final AP newMapping = valueSupplier.apply(faker);
             final String simpleName = clazz.getSimpleName();
-            CLASSES.put(simpleName, new ConcurrentHashMap<>());
+            CLASSES.putIfAbsent(simpleName, new ConcurrentHashMap<>());
 
             Method[] methods = clazz.getMethods();
             Class newMappingClass = newMapping.getClass();
