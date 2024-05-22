@@ -5,13 +5,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import static java.util.Collections.synchronizedMap;
+
 public class COWMap<K, V> implements Map<K, V> {
-    private volatile Map<K, V> map;
-    private final Supplier<Map<K, V>> mapSupplier;
+    private final Map<K, V> map;
 
     public COWMap(Supplier<Map<K, V>> mapSupplier) {
-        this.mapSupplier = mapSupplier;
-        this.map = mapSupplier.get();
+        this.map = synchronizedMap(mapSupplier.get());
     }
 
     @Override
@@ -41,33 +41,22 @@ public class COWMap<K, V> implements Map<K, V> {
 
     @Override
     public V put(K key, V value) {
-        Map<K, V> newMap = mapSupplier.get();
-        newMap.putAll(map);
-        final V result = newMap.put(key, value);
-        map = newMap;
-        return result;
+        return map.put(key, value);
     }
 
     @Override
     public V remove(Object key) {
-        Map<K, V> newMap = mapSupplier.get();
-        newMap.putAll(map);
-        final V result = newMap.remove(key);
-        map = newMap;
-        return result;
+        return map.remove(key);
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        Map<K, V> newMap = mapSupplier.get();
-        newMap.putAll(map);
-        newMap.putAll(m);
-        map = newMap;
+        map.putAll(m);
     }
 
     @Override
     public void clear() {
-        map = mapSupplier.get();
+        map.clear();
     }
 
     @Override
@@ -86,13 +75,11 @@ public class COWMap<K, V> implements Map<K, V> {
     }
 
     public <K2, V2> void updateNestedValue(K key, Supplier<V> valueSupplier, K2 key2, V2 value) {
-        if (!map.containsKey(key)) {
-            Map<K, V> newMap = mapSupplier.get();
-            newMap.putAll(map);
-            newMap.put(key, valueSupplier.get());
-            map = newMap;
-        }
         // It is assumed that nested could be only Map
-        ((Map<K2, V2>)map.get(key)).put(key2, value);
+        Map<K2, V2> nestedMap = (Map<K2, V2>) map.computeIfAbsent(key, k -> {
+            Map<K2, V2> v = synchronizedMap((Map<K2, V2>) valueSupplier.get());
+            return (V) v;
+        });
+        nestedMap.put(key2, value);
     }
 }
