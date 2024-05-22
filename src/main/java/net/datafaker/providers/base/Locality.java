@@ -30,6 +30,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
 
     private final List<String> locales;
     private final List<String> shuffledLocales = new ArrayList<>();
+    private int shuffledLocaleIndex = 0;
 
     /**
      * Constructor for Locality class
@@ -163,14 +164,16 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * @return String of a randomly selected locale (eg. "es", "es-MX")
      */
     public synchronized String localeStringWithoutReplacement(Random random) {
-        if (shuffledLocales.isEmpty()) {
+        if (shuffledLocales.isEmpty() || shuffledLocaleIndex >= shuffledLocales.size() - 1) {
             // copy list of locales supported into shuffledLocales
+            shuffledLocales.clear();
             shuffledLocales.addAll(this.locales);
+            shuffledLocaleIndex = 0;
             Collections.shuffle(shuffledLocales, random);
         }
 
-        // retrieve next locale in shuffledLocales and remove from list
-        return shuffledLocales.remove(shuffledLocales.size() - 1);
+        // retrieve next locale in shuffledLocales and increase the index
+        return shuffledLocales.get(shuffledLocaleIndex++);
     }
 
 }
