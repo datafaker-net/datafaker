@@ -29,7 +29,8 @@ import java.util.Set;
 public class Locality extends AbstractProvider<BaseProviders> {
 
     private final List<String> locales;
-    private List<String> shuffledLocales = new ArrayList<>();
+    private final List<String> shuffledLocales = new ArrayList<>();
+    private int shuffledLocaleIndex = 0;
 
     /**
      * Constructor for Locality class
@@ -162,18 +163,17 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * @param random random number generator (can utilize seed for deterministic random selection)
      * @return String of a randomly selected locale (eg. "es", "es-MX")
      */
-    public String localeStringWithoutReplacement(Random random) {
-        if (this.shuffledLocales.isEmpty()) {
+    public synchronized String localeStringWithoutReplacement(Random random) {
+        if (shuffledLocales.isEmpty() || shuffledLocaleIndex >= shuffledLocales.size() - 1) {
             // copy list of locales supported into shuffledLocales
-            shuffledLocales = new ArrayList<>(this.locales);
+            shuffledLocales.clear();
+            shuffledLocales.addAll(this.locales);
+            shuffledLocaleIndex = 0;
             Collections.shuffle(shuffledLocales, random);
         }
 
-        // retrieve next locale in shuffledLocales and remove from list
-        String pickedLocale = shuffledLocales.get(shuffledLocales.size() - 1);
-        shuffledLocales.remove(shuffledLocales.size() - 1);
-
-        return pickedLocale;
+        // retrieve next locale in shuffledLocales and increase the index
+        return shuffledLocales.get(shuffledLocaleIndex++);
     }
 
 }

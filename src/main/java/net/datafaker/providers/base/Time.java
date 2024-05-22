@@ -134,7 +134,7 @@ public class Time extends AbstractProvider<BaseProviders> {
      */
     public long between(LocalTime from, LocalTime to) throws IllegalArgumentException {
         if (to.isBefore(from)) {
-            throw new IllegalArgumentException("Invalid time range, the upper bound time is before the lower bound.");
+            throw new IllegalArgumentException("Invalid time range: the upper bound time (%s) is before the lower bound (%s)".formatted(to, from));
         }
 
         if (from.equals(to)) {
