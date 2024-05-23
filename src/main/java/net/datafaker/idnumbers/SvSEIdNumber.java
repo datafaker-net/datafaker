@@ -3,6 +3,7 @@ package net.datafaker.idnumbers;
 import net.datafaker.providers.base.BaseProviders;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 
 /**
@@ -46,7 +47,7 @@ public class SvSEIdNumber implements IdNumbers {
             if (parseDate(ssn)) {
                 return false;
             }
-        } catch (Exception e) {
+        } catch (DateTimeParseException | NumberFormatException ignore) {
             return false;
         }
 

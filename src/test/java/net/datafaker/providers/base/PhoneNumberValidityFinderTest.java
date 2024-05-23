@@ -78,7 +78,8 @@ class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
                     if (!util.isValidNumber(proto)) {
                         errorCount++;
                     }
-                } catch (Exception e) {
+                } catch (NumberParseException ignore) {
+                    // Error type: INVALID_COUNTRY_CODE. Missing or invalid default region.
                     break;
                 }
             }
