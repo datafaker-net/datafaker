@@ -9,9 +9,9 @@ import java.util.function.Supplier;
  * This is a Copy On Write map. The main idea behind is that
  * there is lots of static info per provider to make this provider working.
  * At the same time there is no need to load all this info at start since
- * we don't know which roviders will be used and loading for all takes time.
+ * we don't know which providers will be used and loading for all takes time.
  * For that reason it is loaded on request and stores in these Copy On Write maps.
- * Since it is loaded only once per provider and then is only read then
+ * Since it is loaded only once per provider and after that is only read then
  * it should be ok and moreover it will allow to have non blocking reads.
  *
  * In case for whatever reason there is a need to change this class,
