@@ -509,6 +509,7 @@ Supported Locales
 * pt-BR
 * ru
 * sk
+* sq (Albania)
 * sv
 * sv-SE
 * tr
