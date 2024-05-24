@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.SvSEIdNumber;
 import org.junit.jupiter.api.RepeatedTest;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import static java.lang.Integer.parseInt;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class IdNumberTest extends BaseFakerTest<BaseFaker> {
@@ -83,11 +85,33 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void estonianPersonalCode_valid() {
-        assertThat(faker.idNumber().validEstonianPersonalCode()).matches("[1-6][0-9]{10}");
+        Faker faker = new Faker(new Locale("et", "EE"));
+        assertThat(faker.idNumber().valid()).matches("[1-6][0-9]{10}");
     }
 
     @RepeatedTest(100)
     void estonianPersonalCode_invalid() {
-        assertThat(faker.idNumber().invalidEstonianPersonalCode()).matches("[1-6][0-9]{10}");
+        Faker faker = new Faker(new Locale("et", "EE"));
+        assertThat(faker.idNumber().invalid()).matches("[1-6][0-9]{10}");
+    }
+
+    @RepeatedTest(100)
+    void albanianPersonalCode_valid() {
+        Faker faker = new Faker(new Locale("sq", "AL"));
+        String pin = faker.idNumber().valid();
+        assertThat(pin.length()).isEqualTo(10);
+        assertThat(parseInt(pin.substring(2, 4)) % 50)
+            .as(() -> "Valid PIN %s should have month number between 1..12 (for males) or 51..62 (for females)".formatted(pin))
+            .isBetween(1, 12);
+    }
+
+    @RepeatedTest(100)
+    void albanianPersonalCode_invalid() {
+        Faker faker = new Faker(new Locale("sq", "AL"));
+        String pin = faker.idNumber().invalid();
+        assertThat(pin.length()).isEqualTo(10);
+        assertThat(parseInt(pin.substring(2, 4)))
+            .as(() -> "Invalid PIN %s should have month greater than (any month + 50)".formatted(pin))
+            .isGreaterThan(62);
     }
 }
