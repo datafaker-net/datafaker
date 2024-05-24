@@ -176,7 +176,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a valid ID number for Estonian citizens and residents
-     * Specified as #{IDNumber.valid_et_pin} in et.yml
+     * Specified as #{IDNumber.valid_estonian_personal_code} in et.yml
      * @return A valid ID Number
      */
     public String validEstonianPersonalCode() {
@@ -186,7 +186,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates an invalid ID number for Estonian citizens and residents
-     * Specified as #{IDNumber.invalid_et_pin} in et.yml
+     * Specified as #{IDNumber.invalid_estonian_personal_code} in et.yml
      *
      * @return An invalid ID Number
      */

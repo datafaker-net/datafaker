@@ -180,7 +180,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
     void cellPhone_estonia() {
         BaseFaker f = new BaseFaker(new Locale("et", "EE"));
         String cellPhone = f.phoneNumber().cellPhone();
-        assertThat(cellPhone).matches("5\\d \\d{2} \\d{2} \\d{2}");
+        assertThat(cellPhone).matches("[58]\\d{2,3} \\d{4}");
     }
 
     @RepeatedTest(10)
