@@ -5,11 +5,24 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class COWMap<K, V> implements Map<K, V> {
+/**
+ * This is a Copy On Write map. The main idea behind is that
+ * there is lots of static info per provider to make this provider working.
+ * At the same time there is no need to load all this info at start since
+ * we don't know which providers will be used and loading for all takes time.
+ * For that reason it is loaded on request and stores in these Copy On Write maps.
+ * Since it is loaded only once per provider and after that is only read then
+ * it should be ok and moreover it will allow to have non blocking reads.
+ *
+ * In case for whatever reason there is a need to change this class,
+ * please double check jmh report before and after e.g.
+ * {@code mvn clean package exec:exec -Dbenchmarks="DatafakerSimpleMethods" -Ddatafaker.version=2.2.3-SNAPSHOT}
+ */
+public class CopyOnWriteMap<K, V> implements Map<K, V> {
     private volatile Map<K, V> map;
     private final Supplier<Map<K, V>> mapSupplier;
 
-    public COWMap(Supplier<Map<K, V>> mapSupplier) {
+    public CopyOnWriteMap(Supplier<Map<K, V>> mapSupplier) {
         this.mapSupplier = mapSupplier;
         this.map = mapSupplier.get();
     }
