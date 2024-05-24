@@ -19,7 +19,7 @@ public class AlbanianIdNumber implements IdNumbers {
 
     public String getValid(BaseProviders faker) {
         LocalDate birthDate = faker.date().birthdayLocalDate(0, 200);
-        boolean female = Math.random() >= 0.5;
+        boolean female = faker.bool().bool();
         String basePart = yy(birthDate.getYear()) + mm(birthDate.getMonthValue(), female) + dd(birthDate.getDayOfMonth()) + sss(faker);
         return basePart + checksum(basePart);
     }
