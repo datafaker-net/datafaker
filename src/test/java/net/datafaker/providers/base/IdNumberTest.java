@@ -23,6 +23,7 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     private static final Faker ALBANIAN = new Faker(new Locale("sq", "AL"));
     private static final Faker MOLDOVAN = new Faker(new Locale("ro", "MD"));
     private static final Faker BULGARIAN = new Faker(new Locale("bg", "BG"));
+    private static final Faker MACEDONIAN = new Faker(new Locale("mk", "MK"));
 
     @Test
     void testValid() {
@@ -138,6 +139,18 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     void bulgarianPersonalCode_invalid() {
         String pin = BULGARIAN.idNumber().invalid();
         assertThatPin(pin).matches("\\d{10}");
+    }
+
+    @RepeatedTest(100)
+    void macedonianPersonalCode_valid() {
+        String pin = MACEDONIAN.idNumber().valid();
+        assertThatPin(pin).matches("\\d{13}");
+    }
+
+    @RepeatedTest(100)
+    void macedonianPersonalCode_invalid() {
+        String pin = MACEDONIAN.idNumber().invalid();
+        assertThatPin(pin).matches("\\d{13}");
     }
 
     private static AbstractStringAssert<?> assertThatPin(String pin) {

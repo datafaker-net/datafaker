@@ -502,6 +502,7 @@ Supported Locales
 * ja
 * ka
 * ko
+* mk (North Macedonia)
 * nb-NO
 * nl
 * pl
