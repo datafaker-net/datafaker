@@ -507,6 +507,7 @@ Supported Locales
 * pl
 * pt
 * pt-BR
+* ro_MD (country: Moldova, language: Moldavian a.k.a. Romanian)
 * ru
 * sk
 * sq (Albania)

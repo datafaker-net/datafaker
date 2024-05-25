@@ -7,6 +7,7 @@ import net.datafaker.idnumbers.EsMXIdNumber;
 import net.datafaker.idnumbers.EstonianIdNumber;
 import net.datafaker.idnumbers.IdNumbers;
 import net.datafaker.idnumbers.KoKrIdNumber;
+import net.datafaker.idnumbers.MoldovaIdNumber;
 import net.datafaker.idnumbers.NricNumber;
 import net.datafaker.idnumbers.NricNumber.Type;
 import net.datafaker.idnumbers.PeselNumber;
@@ -213,6 +214,26 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      */
     public String invalidAlbanianPersonalCode() {
         AlbanianIdNumber idNumber = (AlbanianIdNumber) map.computeIfAbsent(AlbanianIdNumber.class, aClass -> new AlbanianIdNumber());
+        return idNumber.getInvalid(faker);
+    }
+
+    /**
+     * Generates a valid ID number for Albania citizens and residents
+     * Specified as #{IDNumber.valid_moldova_personal_code} in et.yml
+     * @return A valid ID Number
+     */
+    public String validMoldovaPersonalCode() {
+        MoldovaIdNumber idNumber = (MoldovaIdNumber) map.computeIfAbsent(MoldovaIdNumber.class, aClass -> new MoldovaIdNumber());
+        return idNumber.getValid(faker);
+    }
+
+    /**
+     * Generates a valid ID number for Albania citizens and residents
+     * Specified as #{IDNumber.invalid_moldova_personal_code} in et.yml
+     * @return An invalid ID Number
+     */
+    public String invalidMoldovaPersonalCode() {
+        MoldovaIdNumber idNumber = (MoldovaIdNumber) map.computeIfAbsent(MoldovaIdNumber.class, aClass -> new MoldovaIdNumber());
         return idNumber.getInvalid(faker);
     }
 

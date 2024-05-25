@@ -114,4 +114,22 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
             .as(() -> "Invalid PIN %s should have month greater than (any month + 50)".formatted(pin))
             .isGreaterThan(62);
     }
+
+    @RepeatedTest(100)
+    void moldovaPersonalCode_valid() {
+        Faker faker = new Faker(new Locale("ro", "MD"));
+        String pin = faker.idNumber().valid();
+        assertThat(pin.length())
+            .as(() -> "Presumably valid PIN: '%s'".formatted(pin))
+            .isEqualTo(13);
+    }
+
+    @RepeatedTest(100)
+    void moldovaPersonalCode_invalid() {
+        Faker faker = new Faker(new Locale("ro", "MD"));
+        String pin = faker.idNumber().invalid();
+        assertThat(pin.length())
+            .as(() -> "Presumably invalid PIN: '%s'".formatted(pin))
+            .isEqualTo(13);
+    }
 }
