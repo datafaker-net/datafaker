@@ -93,11 +93,8 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @return a future date relative to {@code referenceDate}.
      */
     public Instant future(int atMost, TimeUnit unit, Instant referenceDate) {
-        long upperBound = unit.toMillis(atMost);
-
-        long futureMillis = referenceDate.toEpochMilli();
-        futureMillis += 1 + faker.random().nextLong(upperBound - 1);
-
+        long upperBoundMillis = unit.toMillis(atMost);
+        long futureMillis = referenceDate.toEpochMilli() + 1 + faker.random().nextLong(upperBoundMillis - 1);
         return Instant.ofEpochMilli(futureMillis);
     }
 
@@ -181,14 +178,10 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @return a past date relative to {@code referenceDate}.
      */
     public Instant past(int atMost, TimeUnit unit, Instant referenceDate) {
-        long upperBound = unit.toMillis(atMost);
-
-        long futureMillis = referenceDate.toEpochMilli();
-        futureMillis -= 1 + faker.random().nextLong(upperBound - 1);
-
-        return Instant.ofEpochMilli(futureMillis);
+        long upperBoundMillis = unit.toMillis(atMost);
+        long pastMillis = referenceDate.toEpochMilli() - 1 - faker.random().nextLong(upperBoundMillis - 1);
+        return Instant.ofEpochMilli(pastMillis);
     }
-
     /**
      * Generates a string representation of a past date relative to the {@code referenceDate}.
      *
@@ -264,15 +257,16 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * Negative {@code minAge} and {@code maxAge} are supported.
      */
     public LocalDate birthday(int minAge, int maxAge) {
-        final LocalDate localDate = LocalDate.now();
-        final LocalDate from = localDate.minusYears(maxAge);
+        LocalDate localDate = LocalDate.now();
+        LocalDate from = localDate.minusYears(maxAge);
         if (minAge == maxAge) {
             return from;
-        }
-        final long start = from.toEpochDay();
-        final long stop = localDate.minusYears(minAge).toEpochDay();
+        } else {
+            long start = from.toEpochDay();
+            long stop = localDate.minusYears(minAge).toEpochDay();
 
-        return LocalDate.ofEpochDay(faker.random().nextLong(start, stop));
+            return LocalDate.ofEpochDay(faker.random().nextLong(start, stop));
+        }
     }
 
     /**
@@ -310,7 +304,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @throws IllegalArgumentException if the {@code unit} is invalid.
      */
     public Duration duration(long min, long max, ChronoUnit unit) {
-        return generateDuration(faker.random().nextLong(min, max), unit);
+        return Duration.of(faker.random().nextLong(min, max), unit);
     }
 
     /**
@@ -329,10 +323,6 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
             faker.random().nextInt(min.getYears(), max.getYears()),
             faker.random().nextInt(min.getMonths(), max.getMonths()),
             faker.random().nextInt(min.getDays(), max.getDays()));
-    }
-
-    private Duration generateDuration(long value, ChronoUnit unit) {
-        return Duration.of(value, unit);
     }
 
     private String formatInstant(TemporalAccessor instant, String pattern) {
