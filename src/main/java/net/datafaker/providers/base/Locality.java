@@ -102,8 +102,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
         for (String s: paths) {
             try {
                 Files.walkFileTree(Paths.get(s).toAbsolutePath(), visitor);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to read path \"%s\"".formatted(s), e);
             }
         }
 

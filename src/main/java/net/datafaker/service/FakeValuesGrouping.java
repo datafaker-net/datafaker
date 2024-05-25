@@ -27,7 +27,7 @@ public class FakeValuesGrouping implements FakeValuesInterface {
         } else if (fakeValue instanceof FakeValuesGrouping) {
             fakeValues.putAll(((FakeValuesGrouping) fakeValue).fakeValues);
         } else {
-            throw new RuntimeException(fakeValues.getClass() + " not supported (please raise an issue)");
+            throw new RuntimeException(fakeValues.getClass().getName() + " not supported (please raise an issue)");
         }
     }
 

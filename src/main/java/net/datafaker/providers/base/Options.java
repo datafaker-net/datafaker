@@ -73,7 +73,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      */
     public final <E> Set<E> subset(int size, E... options) {
         if (size < 0) {
-            throw new IllegalArgumentException("size should be not negative");
+            throw new IllegalArgumentException("size should be not negative: " + size);
         }
         if (size == 0) {
             return Collections.emptySet();
@@ -116,7 +116,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      */
     public final Set<String> subset(int size, String... options) {
         if (size < 0) {
-            throw new IllegalArgumentException("size should be not negative");
+            throw new IllegalArgumentException("size should be not negative: " + size);
         }
         if (size == 0) {
             return Collections.emptySet();

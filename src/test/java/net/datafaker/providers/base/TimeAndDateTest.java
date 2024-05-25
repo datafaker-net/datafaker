@@ -101,7 +101,7 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
 
         assertThatThrownBy(() -> timeAndDate.between(then, now))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Invalid date range, the upper bound date is before the lower bound.");
+            .hasMessage("Invalid date range: the upper bound date (%s) is before the lower bound (%s)".formatted(now, then));
     }
 
     @RepeatedTest(1000)

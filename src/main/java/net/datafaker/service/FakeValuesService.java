@@ -104,12 +104,12 @@ public class FakeValuesService {
     public void addPath(Locale locale, Path path) {
         Objects.requireNonNull(locale);
         if (path == null || Files.notExists(path) || Files.isDirectory(path) || !Files.isReadable(path)) {
-            throw new IllegalArgumentException("Path should be an existing readable file");
+            throw new IllegalArgumentException("Path should be an existing readable file: \"%s\"".formatted(path));
         }
         try {
             addUrl(locale, path.toUri().toURL());
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("Failed to read \"%s\"".formatted(path), e);
         }
     }
 
@@ -536,7 +536,7 @@ public class FakeValuesService {
                 .stream().map(t -> expression(t, faker, context))
                 .collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to read \"%s\"".formatted(path), e);
         }
     }
 
@@ -553,7 +553,8 @@ public class FakeValuesService {
      */
     public String csv(String delimiter, char quote, boolean withHeader, int limit, String... columnExpressions) {
         if ((columnExpressions.length & 1) == 1) {
-            throw new IllegalArgumentException("Total number of column names and column values should be even");
+            throw new IllegalArgumentException("Total number of column names and column values should be even (received %s columns: %s)".formatted(
+                columnExpressions.length, Arrays.toString(columnExpressions)));
         }
         Field<String, String>[] fields = new Field[columnExpressions.length >> 1];
         for (int i = 0; i < columnExpressions.length; i += 2) {
@@ -570,7 +571,8 @@ public class FakeValuesService {
      */
     public String json(String... fieldExpressions) {
         if ((fieldExpressions.length & 1) == 1) {
-            throw new IllegalArgumentException("Total number of field names and field values should be even");
+            throw new IllegalArgumentException("Total number of field names and field values should be even (received %s fields: %s)".formatted(
+                fieldExpressions.length, Arrays.toString(fieldExpressions)));
         }
 
         List<SimpleField<Object, ?>> fields = new ArrayList<>();
@@ -587,7 +589,8 @@ public class FakeValuesService {
      */
     public String jsona(String... fieldExpressions) {
         if (fieldExpressions.length % 3 != 0) {
-            throw new IllegalArgumentException("Total number of field names and field values should be dividable by 3");
+            throw new IllegalArgumentException(("Total number of field names and field values should be dividable by 3 " +
+                "(received %s field expressions: %s)").formatted(fieldExpressions.length, Arrays.toString(fieldExpressions)));
         }
 
         List<SimpleField<Object, ?>> fields = new ArrayList<>();
@@ -785,7 +788,7 @@ public class FakeValuesService {
                             try {
                                 return method.invoke(current);
                             } catch (Exception e) {
-                                throw new RuntimeException(e + " " + Arrays.toString(args));
+                                throw new RuntimeException(e + " " + Arrays.toString(args), e);
                             }
                         });
                         return res;

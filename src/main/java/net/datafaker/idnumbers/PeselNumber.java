@@ -77,7 +77,7 @@ public class PeselNumber implements IdNumbers {
     private int getMonthEncoded(int year, int month) {
         final int monthModifier;
         if (year < 1800) {
-            throw new IllegalArgumentException("Year is before 1800");
+            throw new IllegalArgumentException("Year is before 1800: " + year);
         } else if (year < 1900) {
             monthModifier = 80;
         } else if (year < 2000) {
@@ -89,7 +89,7 @@ public class PeselNumber implements IdNumbers {
         } else if (year < 2300) {
             monthModifier = 60;
         } else {
-            throw new IllegalArgumentException("Year is after 2300");
+            throw new IllegalArgumentException("Year is after 2300: " + year);
         }
         return month + monthModifier;
     }

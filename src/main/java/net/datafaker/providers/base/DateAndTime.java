@@ -201,7 +201,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      */
     public <T extends Date> T between(T from, T to) throws IllegalArgumentException {
         if (to.before(from)) {
-            throw new IllegalArgumentException("Invalid date range, the upper bound date is before the lower bound.");
+            throw new IllegalArgumentException("Invalid date range: the upper bound date (%s) is before the lower bound (%s)"
+                .formatted(to, from));
         }
 
         if (from.equals(to)) {

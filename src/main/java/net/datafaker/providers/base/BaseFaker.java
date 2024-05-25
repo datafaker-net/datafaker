@@ -73,8 +73,10 @@ public class BaseFaker implements BaseProviders {
             fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
             result = callable.call();
             return result;
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         } finally {
             context.setCurrentLocale(current);
             fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
@@ -88,8 +90,10 @@ public class BaseFaker implements BaseProviders {
             context.setRandomService(new RandomService(new Random(seed)));
             result = callable.call();
             return result;
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         } finally {
             context.setRandomService(current);
         }
@@ -104,8 +108,10 @@ public class BaseFaker implements BaseProviders {
             context.setCurrentLocale(locale);
             result = callable.call();
             return result;
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         } finally {
             context.setRandomService(currentRandomService);
             context.setCurrentLocale(currentLocale);

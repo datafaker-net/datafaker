@@ -80,7 +80,7 @@ class FakeStreamTest extends AbstractFakerTest {
                 .maxLen(5)
                 .generate())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Null rate should be between 0 and 1");
+            .hasMessage("Null rate should be between 0 and 1 (received: " + nullRate + ")");
     }
 
     @Test
@@ -128,7 +128,7 @@ class FakeStreamTest extends AbstractFakerTest {
                 .maxLen(5)
                 .generate())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Max length must be not less than min length and not negative");
+            .hasMessage("Max length (5) must be not less than min length (10) and not negative");
     }
 
     @RepeatedTest(10)
@@ -204,7 +204,7 @@ class FakeStreamTest extends AbstractFakerTest {
                         field("range", Data::range),
                         field("unit", Data::unit)))
         ).isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("The sequence should be finite of size");
+            .hasMessage("The sequence should be finite of size: FakeStream{minLength=-1, maxLength=-1, nullRate=0.0}");
     }
 
     @Test
@@ -250,7 +250,7 @@ class FakeStreamTest extends AbstractFakerTest {
                         field("range", Data::range),
                         field("unit", Data::unit)))
         ).isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("The sequence should be finite of size");
+            .hasMessage("The sequence should be finite of size: FakeStream{minLength=-1, maxLength=-1, nullRate=0.0}");
     }
 
     @Test
