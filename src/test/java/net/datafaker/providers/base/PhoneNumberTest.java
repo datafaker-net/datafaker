@@ -3,6 +3,8 @@ package net.datafaker.providers.base;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import net.datafaker.Faker;
+import org.assertj.core.api.AbstractStringAssert;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
+    private static final Faker ESTONIAN = new Faker(new Locale("et", "EE"));
+    private static final Faker MOLDOVAN = new Faker(new Locale("ro", "MD"));
 
     @Test
     void testCellPhone_enUS() {
@@ -100,6 +104,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(new Locale("en", "MS"), "MS"),
             Arguments.of(new Locale("en", "NG"), "NG"),
             Arguments.of(new Locale("en", "NZ"), "NZ"),
+            Arguments.of(new Locale("et", "EE"), "EE"),
             Arguments.of(new Locale("bg", "BG"), "BG"),
             Arguments.of(new Locale("by", "BY"), "BY"),
             Arguments.of(new Locale("ca", "CA"), "CA"),
@@ -119,6 +124,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(new Locale("nl", "NL"), "NL"),
             Arguments.of(new Locale("pl", "PL"), "PL"),
             Arguments.of(new Locale("pt", "PT"), "PT"),
+            Arguments.of(new Locale("ro", "MD"), "MD"),
             Arguments.of(new Locale("zh", "CN"), "CN"),
             Arguments.of(new Locale("zh", "TW"), "TW"),
             Arguments.of(new Locale("uk", "UA"), "UA"),
@@ -178,16 +184,36 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(10)
     void cellPhone_estonia() {
-        BaseFaker f = new BaseFaker(new Locale("et", "EE"));
-        String cellPhone = f.phoneNumber().cellPhone();
-        assertThat(cellPhone).matches("[58]\\d{2,3} \\d{4}");
+        String cellPhone = ESTONIAN.phoneNumber().cellPhone();
+        assertThatPhone(cellPhone).matches("[58]\\d{2,3} \\d{4}");
     }
 
     @RepeatedTest(10)
     void phoneNumberInternational_estonia() {
-        BaseFaker f = new BaseFaker(new Locale("et", "EE"));
-        String cellPhone = f.phoneNumber().phoneNumberInternational();
-        assertThat(cellPhone).matches("\\+372 5\\d \\d{2} \\d{2} \\d{2}");
+        String cellPhone = ESTONIAN.phoneNumber().phoneNumberInternational();
+        assertThatPhone(cellPhone).matches("\\+372 5\\d \\d{2} \\d{2} \\d{2}");
     }
 
+    @RepeatedTest(10)
+    void cellPhone_moldova() {
+        String phone = MOLDOVAN.phoneNumber().cellPhone().replaceAll("\\s", "");
+        assertThatPhone(phone).matches("0[567]\\d{7}");
+    }
+
+    @RepeatedTest(10)
+    void phoneNumber_moldova() {
+        String phone = MOLDOVAN.phoneNumber().phoneNumber().replaceAll("\\s+", "");
+        assertThatPhone(phone).matches("0\\d{8}");
+    }
+
+    @RepeatedTest(10)
+    void phoneNumberInternational_moldova() {
+        String phone = MOLDOVAN.phoneNumber().phoneNumberInternational().replaceAll("\\s+", "");
+        assertThatPhone(phone).matches("\\+373\\d{8}");
+    }
+
+    private static AbstractStringAssert<?> assertThatPhone(String phoneNumber) {
+        return assertThat(phoneNumber)
+            .as(() -> "Phone: %s".formatted(phoneNumber));
+    }
 }

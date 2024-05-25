@@ -15,10 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
-    public static final IdNumber SV_SE_ID_NUMBER = new BaseFaker(new Locale("sv_SE")).idNumber();
-    public static final Pattern SV_SE_ID_NUMBER_PATTERN = Pattern.compile("\\d{6}[-+]\\d{4}");
-    public static final IdNumber EN_ZA_OD_NUMBER= new BaseFaker(new Locale("en_ZA")).idNumber();
-    public static final Pattern EN_ZA_ID_NUMBER_PATTERN = Pattern.compile("[0-9]{10}([01])8[0-9]");
+    private static final IdNumber SV_SE_ID_NUMBER = new BaseFaker(new Locale("sv_SE")).idNumber();
+    private static final Pattern SV_SE_ID_NUMBER_PATTERN = Pattern.compile("\\d{6}[-+]\\d{4}");
+    private static final IdNumber EN_ZA_OD_NUMBER= new BaseFaker(new Locale("en_ZA")).idNumber();
+    private static final Pattern EN_ZA_ID_NUMBER_PATTERN = Pattern.compile("[0-9]{10}([01])8[0-9]");
+    private static final Faker ESTONIAN = new Faker(new Locale("et", "EE"));
+    private static final Faker ALBANIAN = new Faker(new Locale("sq", "AL"));
+    private static final Faker MOLDOVAN = new Faker(new Locale("ro", "MD"));
+    private static final Faker BULGARIAN = new Faker(new Locale("bg", "BG"));
 
     @Test
     void testValid() {
@@ -86,21 +90,18 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void estonianPersonalCode_valid() {
-        Faker faker = new Faker(new Locale("et", "EE"));
-        assertThat(faker.idNumber().valid()).matches("[1-6][0-9]{10}");
+        assertThatPin(ESTONIAN.idNumber().valid()).matches("[1-6][0-9]{10}");
     }
 
     @RepeatedTest(100)
     void estonianPersonalCode_invalid() {
-        Faker faker = new Faker(new Locale("et", "EE"));
-        assertThat(faker.idNumber().invalid()).matches("[1-6][0-9]{10}");
+        assertThatPin(ESTONIAN.idNumber().invalid()).matches("[1-6][0-9]{10}");
     }
 
     @RepeatedTest(100)
     void albanianPersonalCode_valid() {
-        Faker faker = new Faker(new Locale("sq", "AL"));
-        String pin = faker.idNumber().valid();
-        assertThat(pin.length()).isEqualTo(10);
+        String pin = ALBANIAN.idNumber().valid();
+        assertThatPin(pin).matches("\\w\\d{8}\\w");
         assertThat(parseInt(pin.substring(2, 4)) % 50)
             .as(() -> "Valid PIN %s should have month number between 1..12 (for males) or 51..62 (for females)".formatted(pin))
             .isBetween(1, 12);
@@ -108,9 +109,8 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void albanianPersonalCode_invalid() {
-        Faker faker = new Faker(new Locale("sq", "AL"));
-        String pin = faker.idNumber().invalid();
-        assertThat(pin.length()).isEqualTo(10);
+        String pin = ALBANIAN.idNumber().invalid();
+        assertThatPin(pin).matches("\\w\\d{8}\\w");
         assertThat(parseInt(pin.substring(2, 4)))
             .as(() -> "Invalid PIN %s should have month greater than (any month + 50)".formatted(pin))
             .isGreaterThan(62);
@@ -118,33 +118,25 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void moldovaPersonalCode_valid() {
-        Faker faker = new Faker(new Locale("ro", "MD"));
-        String pin = faker.idNumber().valid();
-        assertThat(pin.length())
-            .as(() -> "Presumably valid PIN: '%s'".formatted(pin))
-            .isEqualTo(13);
+        String pin = MOLDOVAN.idNumber().valid();
+        assertThatPin(pin).matches("\\d{13}");
     }
 
     @RepeatedTest(100)
     void moldovaPersonalCode_invalid() {
-        Faker faker = new Faker(new Locale("ro", "MD"));
-        String pin = faker.idNumber().invalid();
-        assertThat(pin.length())
-            .as(() -> "Presumably invalid PIN: '%s'".formatted(pin))
-            .isEqualTo(13);
+        String pin = MOLDOVAN.idNumber().invalid();
+        assertThatPin(pin).matches("\\d{13}");
     }
 
     @RepeatedTest(100)
     void bulgarianPersonalCode_valid() {
-        Faker faker = new Faker(new Locale("bg", "BG"));
-        String pin = faker.idNumber().valid();
+        String pin = BULGARIAN.idNumber().valid();
         assertThatPin(pin).matches("\\d{10}");
     }
 
     @RepeatedTest(100)
     void bulgarianPersonalCode_invalid() {
-        Faker faker = new Faker(new Locale("bg", "BG"));
-        String pin = faker.idNumber().invalid();
+        String pin = BULGARIAN.idNumber().invalid();
         assertThatPin(pin).matches("\\d{10}");
     }
 
