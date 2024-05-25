@@ -29,7 +29,7 @@ public class EstonianIdNumber implements IdNumbers {
     }
 
     private String basePart(BaseProviders faker) {
-        LocalDate birthday = faker.date().birthdayLocalDate(0, 100);
+        LocalDate birthday = faker.timeAndDate().birthday(0, 100);
         return firstDigit(faker) +
             BIRTHDAY_FORMAT.format(birthday) +
             faker.number().digits(3);

@@ -23,7 +23,7 @@ public class BulgarianIdNumber implements IdNumbers {
     }
 
     private String basePart(BaseProviders faker) {
-        LocalDate birthDate = faker.date().birthdayLocalDate(0, 200);
+        LocalDate birthDate = faker.timeAndDate().birthday(0, 200);
         boolean female = faker.bool().bool();
         return yy(birthDate) + mm(birthDate) + dd(birthDate) + order(faker, female);
     }
