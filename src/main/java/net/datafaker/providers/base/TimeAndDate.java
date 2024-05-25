@@ -32,7 +32,8 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * Generates a future date from now.
      */
     public Instant future() {
-        return future(faker.number().positive(), faker.options().option(TimeUnit.class));
+        long FIFTY_YEARS = TimeUnit.DAYS.toMillis(18262);
+        return future(faker.number().numberBetween(1, FIFTY_YEARS), MILLISECONDS);
     }
 
     /**
@@ -42,7 +43,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit   the time unit.
      * @return a future date from now.
      */
-    public Instant future(int atMost, TimeUnit unit) {
+    public Instant future(long atMost, TimeUnit unit) {
         Instant aBitLaterThanNow = Instant.now().plusMillis(1);
         return future(atMost, unit, aBitLaterThanNow);
     }
@@ -55,7 +56,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param pattern date time pattern to convert to string.
      * @return a string representation of a future date from now.
      */
-    public String future(int atMost, TimeUnit unit, String pattern) {
+    public String future(long atMost, TimeUnit unit, String pattern) {
         return formatInstant(future(atMost, unit), pattern);
     }
 
@@ -67,7 +68,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit    the time unit.
      * @return a future date from now, with a minimum time.
      */
-    public Instant future(int atMost, int minimum, TimeUnit unit) {
+    public Instant future(long atMost, int minimum, TimeUnit unit) {
         Instant minimumDate = Instant.now().plus(minimum, unit.toChronoUnit());
         return future(atMost - minimum, unit, minimumDate);
     }
@@ -82,7 +83,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param pattern date time pattern to convert to string.
      * @return a string representation of a future date from now, with a minimum time.
      */
-    public String future(int atMost, int minimum, TimeUnit unit, String pattern) {
+    public String future(long atMost, int minimum, TimeUnit unit, String pattern) {
         return formatInstant(future(atMost, minimum, unit), pattern);
     }
 
@@ -94,7 +95,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param referenceDate the future date relative to this date.
      * @return a future date relative to {@code referenceDate}.
      */
-    public Instant future(int atMost, TimeUnit unit, Instant referenceDate) {
+    public Instant future(long atMost, TimeUnit unit, Instant referenceDate) {
         long upperBoundMillis = unit.toMillis(atMost);
         long futureMillis = referenceDate.toEpochMilli() + 1 + faker.random().nextLong(upperBoundMillis - 1);
         return Instant.ofEpochMilli(futureMillis);
@@ -110,7 +111,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param pattern       date time pattern to convert to string.
      * @return a string representation of a future date relative to {@code referenceDate}.
      */
-    public String future(int atMost, TimeUnit unit, Instant referenceDate, String pattern) {
+    public String future(long atMost, TimeUnit unit, Instant referenceDate, String pattern) {
         return formatInstant(future(atMost, unit, referenceDate), pattern);
     }
 
