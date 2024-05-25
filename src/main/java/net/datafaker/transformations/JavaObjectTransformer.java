@@ -41,7 +41,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
                     recordConstructor = clazz.getDeclaredConstructor(componentTypes);
                     CLASS2CONSTRUCTOR.put(clazz, recordConstructor);
                 } catch (NoSuchMethodException e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException("Failed to initialize class " + clazz.getName(), e);
                 }
             }
 
@@ -80,12 +80,12 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
                     rFields[i].setAccessible(true);
                 }
                 consumer = classObject -> {
-                    try {
-                        for (int i = 0; i < fields.length; i++) {
+                    for (int i = 0; i < fields.length; i++) {
+                        try {
                             rFields[i].set(classObject, fields[i].transform(classObject));
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException("Failed to transform field " + fields[i], e);
                         }
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
                     }
                 };
                 SCHEMA2CONSUMER.put(schema, consumer);
@@ -98,11 +98,11 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
     @Override
     public Collection<Object> generate(Iterable<Object> input, Schema<Object, ?> schema) {
         Collection<Object> collection;
-        if (input instanceof FakeSequence) {
-            if (((FakeSequence) input).isInfinite()) {
-                throw new IllegalArgumentException("Should be finite size");
+        if (input instanceof FakeSequence<Object> fakeSequence) {
+            if (fakeSequence.isInfinite()) {
+                throw new IllegalArgumentException("Should be finite size: " + fakeSequence);
             }
-            collection = new ArrayList<>(((FakeSequence<Object>) input).get());
+            collection = new ArrayList<>(fakeSequence.get());
         } else {
             collection = new ArrayList<>();
             for (Object o : input) {
@@ -140,7 +140,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
         try {
             return recordConstructor.newInstance(values);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to instantiate " + recordConstructor.getDeclaringClass().getName(), e);
         }
     }
 

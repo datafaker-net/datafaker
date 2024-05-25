@@ -37,7 +37,7 @@ class FakeValuesContext {
         try {
             this.urlHashCode = url == null ? 0 : url.toURI().hashCode();
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Invalid url: \"%s\"".formatted(url), e);
         }
     }
 

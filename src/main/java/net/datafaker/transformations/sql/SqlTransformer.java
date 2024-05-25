@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.ARRAY;
@@ -296,18 +295,18 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         if (schema.getFields().length == 0) {
             return EMPTY_RESULT;
         }
-        if (input instanceof FakeSequence && ((FakeSequence) input).isInfinite()) {
-            throw new IllegalArgumentException("The sequence should be finite of size");
+        if (input instanceof FakeSequence<?> fakeSequence && fakeSequence.isInfinite()) {
+            throw new IllegalArgumentException("The sequence should be finite of size: " + input);
         }
 
-        List<IN> inputs;
-        if (input instanceof FakeStream) {
-            Stream<IN> stream = ((FakeStream) input).get();
-            inputs = stream.collect(Collectors.toList());
-        } else if (input instanceof FakeSequence) {
-            inputs = ((FakeSequence<Object>) input).get();
-        } else if (input instanceof List) {
-            inputs = (List<IN>) input;
+        final List<IN> inputs;
+        if (input instanceof FakeStream<IN> fakeStream) {
+            Stream<IN> stream = fakeStream.get();
+            inputs = stream.toList();
+        } else if (input instanceof FakeSequence<?> fakeSequence) {
+            inputs = fakeSequence.get();
+        } else if (input instanceof List<IN> list) {
+            inputs = list;
         } else {
             inputs = new ArrayList<>();
             for (IN o : input) {

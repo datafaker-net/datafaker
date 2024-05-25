@@ -130,7 +130,7 @@ class PeselNumberTest {
         } else if (givenYear < 2300) {
             assertThat(givenBirthDate.getMonthValue() + 60).isEqualTo(gotMonth);
         } else {
-            throw new IllegalArgumentException("Year is after 2300. Test case is broken.");
+            throw new IllegalArgumentException("Year %s is after 2300. Test case is broken.".formatted(givenYear));
         }
 
         final int gotDay = toNumber(gotPesel.charAt(4), gotPesel.charAt(5));

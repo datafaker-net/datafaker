@@ -120,7 +120,7 @@ class FakeCollectionTest extends AbstractFakerTest {
                 .minLen(3)
                 .maxLen(5).build().get())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Null rate should be between 0 and 1");
+            .hasMessage("Null rate should be between 0 and 1 (received: " + nullRate + ")");
     }
 
     @Test
@@ -166,7 +166,7 @@ class FakeCollectionTest extends AbstractFakerTest {
                 .minLen(10)
                 .maxLen(5).build().get())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Max length must be not less than min length and not negative");
+            .hasMessage("Max length (5) must be not less than min length (10) and not negative");
     }
 
     @Test

@@ -25,7 +25,7 @@ public class FakerIDN {
             }
         }
         if (asciiResult.isEmpty()) {
-            throw new RuntimeException("Unable to convert " + in + " to ASCII");
+            throw new RuntimeException("Unable to convert \"%s\" to ASCII".formatted(in));
         }
         return asciiResult.toString();
     }
