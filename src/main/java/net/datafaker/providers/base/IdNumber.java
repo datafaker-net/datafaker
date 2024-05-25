@@ -17,6 +17,7 @@ import net.datafaker.idnumbers.PtNifIdNumber;
 import net.datafaker.idnumbers.SvSEIdNumber;
 import net.datafaker.idnumbers.ZhCnIdNumber;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Map;
@@ -27,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class IdNumber extends AbstractProvider<BaseProviders> {
 
-    private final Map<Class<? extends IdNumbers>, IdNumbers> map = new ConcurrentHashMap<>();
+    private final Map<Class<? extends IdNumbers>, IdNumbers> providers = new ConcurrentHashMap<>();
 
     protected IdNumber(BaseProviders faker) {
         super(faker);
@@ -42,40 +43,35 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     }
 
     public String ssnValid() {
-        EnIdNumber enIdNumber = (EnIdNumber) map.computeIfAbsent(EnIdNumber.class, aClass -> new EnIdNumber());
-        return enIdNumber.getValidSsn(faker);
+        return provider(EnIdNumber.class).getValidSsn(faker);
     }
 
     /**
      * Specified as #{IDNumber.valid_sv_se_ssn} in sv-SE.yml
      */
     public String validSvSeSsn() {
-        SvSEIdNumber svSEIdNumber = (SvSEIdNumber) map.computeIfAbsent(SvSEIdNumber.class, aClass -> new SvSEIdNumber());
-        return svSEIdNumber.getValidSsn(faker);
+        return provider(SvSEIdNumber.class).getValidSsn(faker);
     }
 
     /**
      * Specified as #{IDNumber.valid_en_za_ssn} in en-ZA.yml
      */
     public String validEnZaSsn() {
-        EnZAIdNumber enZAIdNumber = (EnZAIdNumber) map.computeIfAbsent(EnZAIdNumber.class, aClass -> new EnZAIdNumber());
-        return enZAIdNumber.getValidSsn(faker);
+        return provider(EnZAIdNumber.class).getValidSsn(faker);
     }
 
     /**
      * Specified as #{IDNumber.invalid_en_za_ssn} in en-ZA.yml
      */
     public String inValidEnZaSsn() {
-        EnZAIdNumber enZAIdNumber = (EnZAIdNumber) map.computeIfAbsent(EnZAIdNumber.class, aClass -> new EnZAIdNumber());
-        return enZAIdNumber.getInValidSsn(faker);
+        return provider(EnZAIdNumber.class).getInValidSsn(faker);
     }
 
     /**
      * Specified as #{IDNumber.invalid_sv_se_ssn} in sv-SE.yml
      */
     public String invalidSvSeSsn() {
-        SvSEIdNumber svSEIdNumber = (SvSEIdNumber) map.computeIfAbsent(SvSEIdNumber.class, aClass -> new SvSEIdNumber());
-        return svSEIdNumber.getInvalidSsn(faker);
+        return provider(SvSEIdNumber.class).getInvalidSsn(faker);
     }
 
     public String singaporeanFin() {
@@ -100,18 +96,15 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A Zh-CN id number
      */
     public String validZhCNSsn() {
-        ZhCnIdNumber zhCnIdNumber = (ZhCnIdNumber) map.computeIfAbsent(ZhCnIdNumber.class, aClass -> new ZhCnIdNumber());
-        return zhCnIdNumber.getValidSsn(faker);
+        return provider(ZhCnIdNumber.class).getValidSsn(faker);
     }
 
     public String validPtNif() {
-        PtNifIdNumber idNumber = (PtNifIdNumber) map.computeIfAbsent(PtNifIdNumber.class, aClass -> new PtNifIdNumber());
-        return idNumber.getValid(faker);
+        return provider(PtNifIdNumber.class).getValid(faker);
     }
 
     public String invalidPtNif() {
-        PtNifIdNumber idNumber = (PtNifIdNumber) map.computeIfAbsent(PtNifIdNumber.class, aClass -> new PtNifIdNumber());
-        return idNumber.getInvalid(faker);
+        return provider(PtNifIdNumber.class).getInvalid(faker);
     }
 
 
@@ -121,8 +114,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid MEX CURP.
      */
     public String validEsMXSsn() {
-        EsMXIdNumber esMXIdNumber = (EsMXIdNumber) map.computeIfAbsent(EsMXIdNumber.class, aClass -> new EsMXIdNumber());
-        return esMXIdNumber.get(faker);
+        return provider(EsMXIdNumber.class).get(faker);
     }
 
     /**
@@ -131,8 +123,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid MEX CURP.
      */
     public String invalidEsMXSsn() {
-        EsMXIdNumber esMXIdNumber = (EsMXIdNumber) map.computeIfAbsent(EsMXIdNumber.class, aClass -> new EsMXIdNumber());
-        return esMXIdNumber.getWrong(faker);
+        return provider(EsMXIdNumber.class).getWrong(faker);
     }
 
     /**
@@ -164,8 +155,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @since 1.8.0
      */
     public String validKoKrRrn() {
-        KoKrIdNumber koKrIdNumber = (KoKrIdNumber) map.computeIfAbsent(KoKrIdNumber.class, aClass -> new KoKrIdNumber());
-        return koKrIdNumber.getValidRrn(faker);
+        return provider(KoKrIdNumber.class).getValidRrn(faker);
     }
 
     /**
@@ -183,8 +173,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid ID Number
      */
     public String validEstonianPersonalCode() {
-        EstonianIdNumber idNumber = (EstonianIdNumber) map.computeIfAbsent(EstonianIdNumber.class, aClass -> new EstonianIdNumber());
-        return idNumber.getValid(faker);
+        return provider(EstonianIdNumber.class).getValid(faker);
     }
 
     /**
@@ -194,8 +183,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return An invalid ID Number
      */
     public String invalidEstonianPersonalCode() {
-        EstonianIdNumber idNumber = (EstonianIdNumber) map.computeIfAbsent(EstonianIdNumber.class, aClass -> new EstonianIdNumber());
-        return idNumber.getInvalid(faker);
+        return provider(EstonianIdNumber.class).getInvalid(faker);
     }
 
     /**
@@ -204,8 +192,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid ID Number
      */
     public String validAlbanianPersonalCode() {
-        AlbanianIdNumber idNumber = (AlbanianIdNumber) map.computeIfAbsent(AlbanianIdNumber.class, aClass -> new AlbanianIdNumber());
-        return idNumber.getValid(faker);
+        return provider(AlbanianIdNumber.class).getValid(faker);
     }
 
     /**
@@ -214,8 +201,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return An invalid ID Number
      */
     public String invalidAlbanianPersonalCode() {
-        AlbanianIdNumber idNumber = (AlbanianIdNumber) map.computeIfAbsent(AlbanianIdNumber.class, aClass -> new AlbanianIdNumber());
-        return idNumber.getInvalid(faker);
+        return provider(AlbanianIdNumber.class).getInvalid(faker);
     }
 
     /**
@@ -224,8 +210,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid ID Number
      */
     public String validMoldovaPersonalCode() {
-        MoldovaIdNumber idNumber = (MoldovaIdNumber) map.computeIfAbsent(MoldovaIdNumber.class, aClass -> new MoldovaIdNumber());
-        return idNumber.getValid(faker);
+        return provider(MoldovaIdNumber.class).getValid(faker);
     }
 
     /**
@@ -234,8 +219,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return An invalid ID Number
      */
     public String invalidMoldovaPersonalCode() {
-        MoldovaIdNumber idNumber = (MoldovaIdNumber) map.computeIfAbsent(MoldovaIdNumber.class, aClass -> new MoldovaIdNumber());
-        return idNumber.getInvalid(faker);
+        return provider(MoldovaIdNumber.class).getInvalid(faker);
     }
 
     /**
@@ -244,8 +228,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid ID Number
      */
     public String validBulgarianPersonalCode() {
-        BulgarianIdNumber idNumber = (BulgarianIdNumber) map.computeIfAbsent(BulgarianIdNumber.class, aClass -> new BulgarianIdNumber());
-        return idNumber.getValid(faker);
+        return provider(BulgarianIdNumber.class).getValid(faker);
     }
 
     /**
@@ -254,8 +237,19 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return An invalid ID Number
      */
     public String invalidBulgarianPersonalCode() {
-        BulgarianIdNumber idNumber = (BulgarianIdNumber) map.computeIfAbsent(BulgarianIdNumber.class, aClass -> new BulgarianIdNumber());
-        return idNumber.getInvalid(faker);
+        return provider(BulgarianIdNumber.class).getInvalid(faker);
     }
 
+    @SuppressWarnings("unchecked")
+    private <T extends IdNumbers> T provider(Class<T> clazz) {
+        return (T) providers.computeIfAbsent(clazz, aClass -> create(clazz));
+    }
+
+    private <T extends IdNumbers> T create(Class<T> clazz) {
+        try {
+            return clazz.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to instantiate class " + clazz.getName(), e);
+        }
+    }
 }
