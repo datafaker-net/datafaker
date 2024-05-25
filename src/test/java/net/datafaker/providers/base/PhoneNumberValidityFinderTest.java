@@ -59,7 +59,8 @@ class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
         Map<Locale, Integer> errorCounts = new HashMap<>();
 
         for (String supportedLocale : allSupportedLocales) {
-            String country = supportedLocale.replace("_", "");
+            supportedLocale = supportedLocale.replace("_", "");
+            String country = supportedLocale;
             if (supportedLocale.contains("-")) {
                 country = supportedLocale.split("-")[1];
                 supportedLocale = supportedLocale.split("-")[0];
