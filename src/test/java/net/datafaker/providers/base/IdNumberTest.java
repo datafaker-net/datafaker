@@ -6,6 +6,8 @@ import net.datafaker.idnumbers.SvSEIdNumber;
 import org.assertj.core.api.AbstractStringAssert;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -21,7 +23,6 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     private static final Pattern EN_ZA_ID_NUMBER_PATTERN = Pattern.compile("[0-9]{10}([01])8[0-9]");
     private static final Faker ESTONIAN = new Faker(new Locale("et", "EE"));
     private static final Faker ALBANIAN = new Faker(new Locale("sq", "AL"));
-    private static final Faker MOLDOVAN = new Faker(new Locale("ro", "MD"));
     private static final Faker BULGARIAN = new Faker(new Locale("bg", "BG"));
 
     @Test
@@ -116,16 +117,24 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
             .isGreaterThan(62);
     }
 
-    @RepeatedTest(100)
-    void moldovaPersonalCode_valid() {
-        String pin = MOLDOVAN.idNumber().valid();
-        assertThatPin(pin).matches("\\d{13}");
+    @ParameterizedTest
+    @ValueSource(strings = {"en", "ro", "ru"})
+    void moldovaPersonalCode_valid(String language) {
+        final var faker = new Faker(new Locale(language, "MD"));
+        for (int i = 0; i < 100; i++) {
+            String pin = faker.idNumber().valid();
+            assertThatPin(pin).matches("\\d{13}");
+        }
     }
 
-    @RepeatedTest(100)
-    void moldovaPersonalCode_invalid() {
-        String pin = MOLDOVAN.idNumber().invalid();
-        assertThatPin(pin).matches("\\d{13}");
+    @ParameterizedTest
+    @ValueSource(strings = {"en", "ro", "ru"})
+    void moldovaPersonalCode_invalid(String language) {
+        final var faker = new Faker(new Locale(language, "MD"));
+        for (int i = 0; i < 100; i++) {
+            String pin = faker.idNumber().invalid();
+            assertThatPin(pin).matches("\\d{13}");
+        }
     }
 
     @RepeatedTest(100)

@@ -61,6 +61,8 @@ class FakeValuesContext {
         String lang = language(locale);
         if ("".equals(locale.getCountry())) {
             return lang;
+        } else if ("".equals(locale.getLanguage())) {
+            return "_" + locale.getCountry();
         } else {
             return lang + "-" + locale.getCountry();
         }

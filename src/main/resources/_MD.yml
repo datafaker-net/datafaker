@@ -1,5 +1,5 @@
 # encoding: utf-8
-ro:
+_MD:
   faker:
     address:
       city_name: [ "Anenii Noi", "Basarabeasca", "Bălți", "Căinari", "Călărași", "Căușeni", "Ceadîr-Lunga", "Chișinău", "Cimișlia", "Costești", "Dubăsari", "Fălești", "Frunză", "Grigoriopol", "Hîncești", "Rîbnița", "Rîșcani", "Strășeni", "Șoldănești", "Ștefan Vodă", "Tiraspol", "Tiraspolul Nou", "Ungheni", "Vadul lui Vodă", "Vulcănești"]
@@ -10,3 +10,33 @@ ro:
       male_first_name: [Alex, Andrei, Dmitry, Ion, Vasile, Petru, Adrian, Gözlük, Dananau, Ruslan, Marius, Max, Dima, Sergiu, Alexandru]
       female_first_name: [Cristina, Olga, Veronyka, Diana, Ana, Ann, Mary, Kate, Laura, Yasmin, Sophie, Alexandra, Sabrina, Anastacia, Julia, Amina, Tatiana]
       last_name: [Moldován, Rusu, Ciobanu, Balan, Cojocaru, Ursu, Munteanu, Sirbu, Cebotari, Popa, Guțu, Hadârcă, Plămădeală, Rață, Reniță, Tcaci, Văluță]
+
+    phone_number:
+      country_code: ['373']
+      formats:
+        - '022 ### ###'
+        - '025# ## ###'
+        - '026# ## ###'
+        - '027# ## ###'
+        - '03# ### ###'
+      formats_international:
+        - '+#{country_code}22 ### ###'
+        - '+#{country_code}25# ## ###'
+        - '+#{country_code}26# ## ###'
+        - '+#{country_code}27# ## ###'
+        - '+#{country_code}3# ### ###'
+
+    cell_phone:
+      country_code: ['373']
+      formats:
+        - '0562#####'
+        - '06#######'
+        - '071######'
+        - '076######'
+        - '077######'
+        - '078######'
+        - '079######'
+
+    id_number:
+      valid: "#{IDNumber.valid_moldova_personal_code}"
+      invalid: "#{IDNumber.invalid_moldova_personal_code}"
