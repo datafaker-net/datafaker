@@ -3,6 +3,7 @@ package net.datafaker.transformations;
 import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,11 +17,11 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
         private String firstName;
         private String lastName;
         private Date birthDate;
+        private Instant registrationDate;
         private int id;
-
     }
 
-    public record Client(String firstName, String lastName, String phoneNumber, int id) { }
+    public record Client(String firstName, String lastName, String phoneNumber, Instant registrationDate, int id) { }
 
     @Test
     void javaObjectTest() {
@@ -29,6 +30,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
             field("firstName", () -> faker.name().firstName()),
             field("lastName", () -> faker.name().lastName()),
             field("birthDate", () -> faker.date().birthday()),
+            field("registrationDate", () -> faker.timeAndDate().past()),
             field("id", () -> faker.number().positive()));
 
         Collection<Person> persons = new ArrayList<>();
@@ -37,6 +39,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
             assertThat(person.birthDate).isNotNull();
             assertThat(person.lastName).isNotNull();
             assertThat(person.firstName).isNotNull();
+            assertThat(person.registrationDate).isNotNull();
             persons.add(person);
         }
         assertThat(persons).hasSize(10);
@@ -49,6 +52,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
             field("firstName", () -> faker.name().firstName()),
             field("lastName", () -> faker.name().lastName()),
             field("phoneNumber", () -> faker.phoneNumber().phoneNumberInternational()),
+            field("registrationDate", () -> faker.timeAndDate().past()),
             field("id", () -> faker.number().positive()));
 
         Collection<Client> clients = new ArrayList<>();
@@ -57,9 +61,9 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
             assertThat(client.firstName()).isNotNull();
             assertThat(client.lastName()).isNotNull();
             assertThat(client.phoneNumber()).isNotNull();
+            assertThat(client.registrationDate()).isNotNull();
             clients.add(client);
         }
         assertThat(clients).hasSize(10);
     }
-
 }
