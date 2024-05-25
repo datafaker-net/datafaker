@@ -449,6 +449,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Time.class, Time::new);
     }
 
+    default TimeAndDate timeAndDate() {
+        return getProvider(TimeAndDate.class, TimeAndDate::new);
+    }
+
     default Tire tire() {
         return getProvider(Tire.class, Tire::new);
     }

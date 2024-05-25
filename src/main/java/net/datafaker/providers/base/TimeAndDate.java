@@ -1,32 +1,36 @@
 package net.datafaker.providers.base;
 
-
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Period;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Locale;
+import java.time.temporal.TemporalAccessor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A generator of random dates.
+ * A generator of random times and dates.
+ * <p>
+ * This class is similar to {@link DateAndTime}, but migrated to the newer Java 8+ Time API.
  *
- * @author pmiklos
- * @since 0.8.0
+ * @since 2.3.0
  */
-@Deprecated(since = "2.3.0", forRemoval = true)
-public class DateAndTime extends AbstractProvider<BaseProviders> {
+public class TimeAndDate extends AbstractProvider<BaseProviders> {
+
     private static final int DEFAULT_MIN_AGE = 18;
     private static final int DEFAULT_MAX_AGE = 65;
-    public static final long DAYS_NANOS = TimeUnit.DAYS.toNanos(1L);
 
-    protected DateAndTime(BaseProviders faker) {
+    protected TimeAndDate(BaseProviders faker) {
         super(faker);
+    }
+
+    /**
+     * Generates a future date from now.
+     */
+    public Instant future() {
+        return future(faker.number().positive(), faker.options().option(TimeUnit.class));
     }
 
     /**
@@ -36,8 +40,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param unit   the time unit.
      * @return a future date from now.
      */
-    public Timestamp future(int atMost, TimeUnit unit) {
-        Timestamp aBitLaterThanNow = new Timestamp(System.currentTimeMillis() + 1);
+    public Instant future(int atMost, TimeUnit unit) {
+        Instant aBitLaterThanNow = Instant.now().plusMillis(1);
         return future(atMost, unit, aBitLaterThanNow);
     }
 
@@ -50,7 +54,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a string representation of a future date from now.
      */
     public String future(int atMost, TimeUnit unit, String pattern) {
-        return toString(future(atMost, unit), pattern);
+        return formatInstant(future(atMost, unit), pattern);
     }
 
     /**
@@ -61,8 +65,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param unit    the time unit.
      * @return a future date from now, with a minimum time.
      */
-    public Timestamp future(int atMost, int minimum, TimeUnit unit) {
-        Timestamp minimumDate = new Timestamp(System.currentTimeMillis() + unit.toMillis(minimum));
+    public Instant future(int atMost, int minimum, TimeUnit unit) {
+        Instant minimumDate = Instant.now().plus(minimum, unit.toChronoUnit());
         return future(atMost - minimum, unit, minimumDate);
     }
 
@@ -77,7 +81,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a string representation of a future date from now, with a minimum time.
      */
     public String future(int atMost, int minimum, TimeUnit unit, String pattern) {
-        return toString(future(atMost, minimum, unit), pattern);
+        return formatInstant(future(atMost, minimum, unit), pattern);
     }
 
     /**
@@ -88,13 +92,13 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param referenceDate the future date relative to this date.
      * @return a future date relative to {@code referenceDate}.
      */
-    public <T extends Date> T future(int atMost, TimeUnit unit, T referenceDate) {
+    public Instant future(int atMost, TimeUnit unit, Instant referenceDate) {
         long upperBound = unit.toMillis(atMost);
 
-        long futureMillis = referenceDate.getTime();
+        long futureMillis = referenceDate.toEpochMilli();
         futureMillis += 1 + faker.random().nextLong(upperBound - 1);
 
-        return (T) new Timestamp(futureMillis);
+        return Instant.ofEpochMilli(futureMillis);
     }
 
     /**
@@ -107,8 +111,15 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param pattern       date time pattern to convert to string.
      * @return a string representation of a future date relative to {@code referenceDate}.
      */
-    public <T extends Date> String future(int atMost, TimeUnit unit, T referenceDate, String pattern) {
-        return toString(future(atMost, unit, referenceDate), pattern);
+    public String future(int atMost, TimeUnit unit, Instant referenceDate, String pattern) {
+        return formatInstant(future(atMost, unit, referenceDate), pattern);
+    }
+
+    /**
+     * Generates a past date from now.
+     */
+     public Instant past() {
+        return past(faker.number().positive(), faker.options().option(TimeUnit.class));
     }
 
     /**
@@ -118,8 +129,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param unit   the time unit.
      * @return a past date from now.
      */
-    public Timestamp past(int atMost, TimeUnit unit) {
-        Timestamp aBitEarlierThanNow = new Timestamp(System.currentTimeMillis() - 1);
+    public Instant past(int atMost, TimeUnit unit) {
+        Instant aBitEarlierThanNow = Instant.now().minusMillis(1);
         return past(atMost, unit, aBitEarlierThanNow);
     }
 
@@ -132,7 +143,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a string representation of a past date from now.
      */
     public String past(int atMost, TimeUnit unit, String pattern) {
-        return toString(past(atMost, unit), pattern);
+        return formatInstant(past(atMost, unit), pattern);
     }
 
     /**
@@ -143,8 +154,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param unit    the time unit.
      * @return a past date from now.
      */
-    public Timestamp past(int atMost, int minimum, TimeUnit unit) {
-        Timestamp minimumDate = new Timestamp(System.currentTimeMillis() - unit.toMillis(minimum));
+    public Instant past(int atMost, int minimum, TimeUnit unit) {
+        Instant minimumDate = Instant.now().minusMillis(unit.toMillis(minimum));
         return past(atMost - minimum, unit, minimumDate);
     }
 
@@ -158,7 +169,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a string representation of a past date from now, with a minimum time.
      */
     public String past(int atMost, int minimum, TimeUnit unit, String pattern) {
-        return toString(past(atMost, minimum, unit), pattern);
+        return formatInstant(past(atMost, minimum, unit), pattern);
     }
 
     /**
@@ -169,13 +180,13 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param referenceDate the past date relative to this date.
      * @return a past date relative to {@code referenceDate}.
      */
-    public <T extends Date> T past(int atMost, TimeUnit unit, T referenceDate) {
+    public Instant past(int atMost, TimeUnit unit, Instant referenceDate) {
         long upperBound = unit.toMillis(atMost);
 
-        long futureMillis = referenceDate.getTime();
+        long futureMillis = referenceDate.toEpochMilli();
         futureMillis -= 1 + faker.random().nextLong(upperBound - 1);
 
-        return (T) new Timestamp(futureMillis);
+        return Instant.ofEpochMilli(futureMillis);
     }
 
     /**
@@ -187,8 +198,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @param pattern       date time pattern to convert to string.
      * @return a string representation of a past date relative to {@code referenceDate}.
      */
-    public String past(int atMost, TimeUnit unit, Date referenceDate, String pattern) {
-        return toString(past(atMost, unit, referenceDate), pattern);
+    public String past(int atMost, TimeUnit unit, Instant referenceDate, String pattern) {
+        return formatInstant(past(atMost, unit, referenceDate), pattern);
     }
 
     /**
@@ -199,8 +210,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a random date between {@code from} and {@code to}.
      * @throws IllegalArgumentException if the {@code to} date represents an earlier date than {@code from} date.
      */
-    public <T extends Date> T between(T from, T to) throws IllegalArgumentException {
-        if (to.before(from)) {
+    public Instant between(Instant from, Instant to) throws IllegalArgumentException {
+        if (to.isBefore(from)) {
             throw new IllegalArgumentException("Invalid date range, the upper bound date is before the lower bound.");
         }
 
@@ -208,8 +219,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
             return from;
         }
 
-        long offsetMillis = faker.random().nextLong(to.getTime() - from.getTime());
-        return (T) new Timestamp(from.getTime() + offsetMillis);
+        long offsetMillis = faker.random().nextLong(to.toEpochMilli() - from.toEpochMilli());
+        return from.plusMillis(offsetMillis);
     }
 
     /**
@@ -221,8 +232,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a string representation of a random date between {@code from} and {@code to}.
      * @throws IllegalArgumentException if the {@code to} date represents an earlier date than {@code from} date.
      */
-    public <T extends Date> String between(T from, T to, String pattern) throws IllegalArgumentException {
-        return toString(between(from, to), pattern);
+    public String between(Instant from, Instant to, String pattern) throws IllegalArgumentException {
+        return formatInstant(between(from, to), pattern);
     }
 
     /**
@@ -230,17 +241,8 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      *
      * @return a random birthday between 65 and 18 years ago from now.
      */
-    public Timestamp birthday() {
+    public LocalDate birthday() {
         return birthday(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE);
-    }
-
-    /**
-     * Generates a random birthday between 65 and 18 years ago from now as LocalDate.
-     *
-     * @return a random birthday between 65 and 18 years ago from now.
-     */
-    public LocalDate birthdayLocalDate() {
-        return birthdayLocalDate(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE);
     }
 
     /**
@@ -250,7 +252,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a string representation of a random birthday between 65 and 18 years ago from now.
      */
     public String birthday(String pattern) {
-        return toString(birthday(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE), pattern);
+        return formatInstant(birthday(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE), pattern);
     }
 
     /**
@@ -261,28 +263,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return a random birthday between {@code minAge} and {@code maxAge} years ago from now.
      * Negative {@code minAge} and {@code maxAge} are supported.
      */
-    public Timestamp birthday(int minAge, int maxAge) {
-        final LocalDate localDate = LocalDate.now();
-        final LocalDate from = localDate.minusYears(maxAge);
-        if (minAge == maxAge) {
-            return Timestamp.valueOf(LocalDateTime.of(from, LocalTime.MIDNIGHT));
-        }
-        final long start = from.toEpochDay();
-        final long stop = localDate.minusYears(minAge).toEpochDay();
-        final LocalDate date = LocalDate.ofEpochDay(faker.random().nextLong(start, stop));
-        return Timestamp.valueOf(
-            LocalDateTime.of(date, LocalTime.ofNanoOfDay(faker.number().numberBetween(0, DAYS_NANOS))));
-    }
-
-    /**
-     * Generates a random birthday between two ages from now as LocalDate.
-     *
-     * @param minAge the minimal age
-     * @param maxAge the maximal age
-     * @return a random birthday between {@code minAge} and {@code maxAge} years ago from now.
-     * Negative {@code minAge} and {@code maxAge} are supported.
-     */
-    public LocalDate birthdayLocalDate(int minAge, int maxAge) {
+    public LocalDate birthday(int minAge, int maxAge) {
         final LocalDate localDate = LocalDate.now();
         final LocalDate from = localDate.minusYears(maxAge);
         if (minAge == maxAge) {
@@ -290,6 +271,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
         }
         final long start = from.toEpochDay();
         final long stop = localDate.minusYears(minAge).toEpochDay();
+
         return LocalDate.ofEpochDay(faker.random().nextLong(start, stop));
     }
 
@@ -303,7 +285,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @throws IllegalArgumentException if the {@code maxAge} is lower than {@code minAge}.
      */
     public String birthday(int minAge, int maxAge, String pattern) {
-        return toString(birthday(minAge, maxAge), pattern);
+        return formatInstant(birthday(minAge, maxAge), pattern);
     }
 
     /**
@@ -332,31 +314,6 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Generates a random Duration lower than max.
-     *
-     * @param max  the maximum value
-     * @param unit the temporal unit (day or shorter than a day)
-     * @return a random Duration lower than {@code max}.
-     * @throws IllegalArgumentException if the {@code unit} is invalid.
-     */
-    public Duration duration(long max, String unit) {
-        return duration(0, max, str2durationUnit(unit));
-    }
-
-    /**
-     * Generates a random Duration between min and max.
-     *
-     * @param min  the minimal value
-     * @param max  the maximum value
-     * @param unit the temporal unit (day or shorter than a day)
-     * @return a random Duration between {@code min} inclusive and {@code max} exclusive if {@code max} greater {@code min}.
-     * @throws IllegalArgumentException if the {@code unit} is invalid.
-     */
-    public Duration duration(long min, long max, String unit) {
-        return generateDuration(faker.random().nextLong(min, max), str2durationUnit(unit));
-    }
-
-    /**
      * Generates a random Period between min and max.
      *
      * @param min the minimal value
@@ -374,34 +331,14 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
             faker.random().nextInt(min.getDays(), max.getDays()));
     }
 
-    /**
-     * Utility method to convert string to ChronoUnit.
-     *
-     * @param unit the temporal unit (day or shorter than a day)
-     * @return converts unit to ChronoUnit.
-     * @throws IllegalArgumentException if the {@code unit} is invalid.
-     */
-    static ChronoUnit str2durationUnit(String unit) {
-        if (unit == null || unit.trim().isEmpty()) {
-            throw new IllegalArgumentException("Illegal duration unit '" + unit + "'");
-        }
-        return switch (unit.toUpperCase(Locale.ROOT)) {
-            case "NANO", "NANOS" -> ChronoUnit.NANOS;
-            case "MICRO", "MICROS" -> ChronoUnit.MICROS;
-            case "MILLI", "MILLIS" -> ChronoUnit.MILLIS;
-            case "SECOND", "SECONDS" -> ChronoUnit.SECONDS;
-            case "MINUTE", "MINUTES" -> ChronoUnit.MINUTES;
-            case "HOUR", "HOURS" -> ChronoUnit.HOURS;
-            case "DAY", "DAYS" -> ChronoUnit.DAYS;
-            default -> throw new IllegalArgumentException("Illegal duration unit '" + unit + "'");
-        };
-    }
-
     private Duration generateDuration(long value, ChronoUnit unit) {
         return Duration.of(value, unit);
     }
 
-    private String toString(Date date, String pattern) {
-        return new SimpleDateFormat(pattern).format(date);
+    private String formatInstant(TemporalAccessor instant, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern)
+            .withZone(ZoneId.systemDefault());
+
+        return formatter.format(instant);
     }
 }

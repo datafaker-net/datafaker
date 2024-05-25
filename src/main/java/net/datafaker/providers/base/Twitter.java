@@ -2,12 +2,17 @@ package net.datafaker.providers.base;
 
 import net.datafaker.service.RandomService;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,18 +37,20 @@ public class Twitter extends AbstractProvider<BaseProviders> {
     /**
      * Used to fake a new Twitter Date.
      *
-     * @param forward    to determined if the returned date is later (or before) the given date.
-     * @param base       the base date given as a start point.
-     * @param constrains used to constrain the returned date range.
-     * @return a new date later (or before) the base date with respect to the constraint (no later/earlier than the constrain).
+     * @param forward     to determined if the returned date is later (or before) the given date.
+     * @param base        the base date given as a start point.
+     * @param constraints used to constrain the returned date range.
+     * @return a new date later (or before) the base date with respect to the constraint (no later/earlier than the constraint).
+     * @Deprecated better to use TimeAndDate for more flexibility
      */
-    public Date createdTime(boolean forward, Date base, Date constrains) {
+    @Deprecated(since = "2.3.0", forRemoval = true)
+    public Date createdTime(boolean forward, Date base, Date constraints) {
         final RandomService random = faker.random();
         final long time = base.getTime();
         if (forward) {
-            return new Date(time + (long) (random.nextDouble() * (constrains.getTime() - time)));
+            return new Date(time + (long) (random.nextDouble() * (constraints.getTime() - time)));
         } else {
-            return new Date(time - (long) (random.nextDouble() * (time - constrains.getTime())));
+            return new Date(time - (long) (random.nextDouble() * (time - constraints.getTime())));
         }
     }
 

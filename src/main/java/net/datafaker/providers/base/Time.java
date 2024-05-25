@@ -14,7 +14,7 @@ public class Time extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Generates a future time from now. Note that there is a 1 second slack to avoid generating a past time.
+     * Generates a future time from now.
      *
      * @param atMost at most this amount of time ahead from now exclusive.
      * @param unit   the time unit.
@@ -29,7 +29,6 @@ public class Time extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates and converts to string representation a future time from now.
-     * Note that there is a 1 second slack to avoid generating a past time.
      *
      * @param atMost  at most this amount of time ahead from now exclusive.
      * @param unit    the time unit.
@@ -70,7 +69,7 @@ public class Time extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Generates a past time from now. Note that there is a 1 second slack added.
+     * Generates a past time from now.
      *
      * @param atLeast at most this amount of time earlier from now exclusive.
      * @param unit    the time unit.
@@ -85,7 +84,6 @@ public class Time extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a string representation of a past time from now.
-     * Note that there is a 1 second slack added.
      *
      * @param atMost  at most this amount of time earlier from now exclusive.
      * @param unit    the time unit.
