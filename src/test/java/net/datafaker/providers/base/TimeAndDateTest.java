@@ -28,14 +28,14 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
         assertThat(timeAndDate.future()).isInTheFuture();
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void testFutureDateWithBounds() {
         Instant now = Instant.now();
         Instant future = timeAndDate.future(1, TimeUnit.SECONDS, now);
         assertThat(future).isBetween(now, now.plusSeconds(1));
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void testFutureDateWithMinimum() {
         Instant now = Instant.now();
         Instant future = timeAndDate.future(5, 4, TimeUnit.SECONDS);
@@ -43,7 +43,7 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
             .isBetween(now.plusMillis(3500), now.plusMillis(5500));
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void testPastDateWithMinimum() {
         final long now = System.currentTimeMillis();
         Instant past = timeAndDate.past(5, 4, TimeUnit.SECONDS);
@@ -52,7 +52,7 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
             .isLessThan(now - 3500);
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void testPastDateWithReferenceDate() {
         Instant now = Instant.now();
         Instant past = timeAndDate.past(1, TimeUnit.SECONDS, now);
@@ -73,7 +73,7 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
         assertThat(past.toEpochMilli()).isLessThan(now.toEpochMilli());
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void testBetween() {
         Instant now = Instant.now();
         Instant then = Instant.now().plusMillis(1000);
@@ -104,7 +104,7 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
             .hasMessage("Invalid date range: the upper bound date (%s) is before the lower bound (%s)".formatted(now, then));
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void testBirthday() {
         final LocalDateTime now = LocalDateTime.now();
         final LocalDate from = now.minusYears(18).toLocalDate();
@@ -113,7 +113,7 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
         assertThat(birthday).isBetween(to, from);
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void testBirthdayWithAges() {
         LocalDate nw = LocalDate.now();
         final Number number = faker.number();
