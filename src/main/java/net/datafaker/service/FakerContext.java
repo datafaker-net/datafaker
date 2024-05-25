@@ -142,11 +142,13 @@ public class FakerContext {
     }
 
     private List<SingletonLocale> calculateLocaleChain(SingletonLocale locale) {
-        final List<SingletonLocale> chain = new ArrayList<>(3);
+        final List<SingletonLocale> chain = new ArrayList<>(4);
         chain.add(locale);
-        if (!"".equals(locale.getLocale().getCountry())
-            && !DEFAULT_LOCALE.getLocale().getLanguage().equals(locale.getLocale().getLanguage())) {
-            chain.add(SingletonLocale.get(new Locale(locale.getLocale().getLanguage())));
+        if (!"".equals(locale.getLocale().getCountry())) {
+            if (!DEFAULT_LOCALE.getLocale().getLanguage().equals(locale.getLocale().getLanguage())) {
+                chain.add(SingletonLocale.get(new Locale(locale.getLocale().getLanguage())));
+            }
+            chain.add(SingletonLocale.get(new Locale("", locale.getLocale().getCountry())));
         }
         chain.add(DEFAULT_LOCALE); // default
         return chain;
