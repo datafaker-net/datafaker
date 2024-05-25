@@ -36,7 +36,7 @@ public class Twitter extends AbstractProvider<BaseProviders> {
      * @param base        the base date given as a start point.
      * @param constraints used to constrain the returned date range.
      * @return a new date later (or before) the base date with respect to the constraint (no later/earlier than the constraint).
-     * @Deprecated better to use TimeAndDate for more flexibility
+     * @deprecated better to use TimeAndDate for more flexibility
      */
     @Deprecated(since = "2.3.0", forRemoval = true)
     public Date createdTime(boolean forward, Date base, Date constraints) {
