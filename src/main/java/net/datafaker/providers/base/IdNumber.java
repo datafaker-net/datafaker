@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.idnumbers.AlbanianIdNumber;
+import net.datafaker.idnumbers.BulgarianIdNumber;
 import net.datafaker.idnumbers.EnIdNumber;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.EsMXIdNumber;
@@ -234,6 +235,26 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      */
     public String invalidMoldovaPersonalCode() {
         MoldovaIdNumber idNumber = (MoldovaIdNumber) map.computeIfAbsent(MoldovaIdNumber.class, aClass -> new MoldovaIdNumber());
+        return idNumber.getInvalid(faker);
+    }
+
+    /**
+     * Generates a valid ID number for Bulgaria citizens and residents
+     * Specified as #{IDNumber.valid_bulgarian_personal_code} in et.yml
+     * @return A valid ID Number
+     */
+    public String validBulgarianPersonalCode() {
+        BulgarianIdNumber idNumber = (BulgarianIdNumber) map.computeIfAbsent(BulgarianIdNumber.class, aClass -> new BulgarianIdNumber());
+        return idNumber.getValid(faker);
+    }
+
+    /**
+     * Generates a valid ID number for Bulgaria citizens and residents
+     * Specified as #{IDNumber.invalid_bulgarian_personal_code} in et.yml
+     * @return An invalid ID Number
+     */
+    public String invalidBulgarianPersonalCode() {
+        BulgarianIdNumber idNumber = (BulgarianIdNumber) map.computeIfAbsent(BulgarianIdNumber.class, aClass -> new BulgarianIdNumber());
         return idNumber.getInvalid(faker);
     }
 

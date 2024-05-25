@@ -3,6 +3,7 @@ package net.datafaker.providers.base;
 import net.datafaker.Faker;
 import net.datafaker.idnumbers.EnZAIdNumber;
 import net.datafaker.idnumbers.SvSEIdNumber;
+import org.assertj.core.api.AbstractStringAssert;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -131,5 +132,24 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
         assertThat(pin.length())
             .as(() -> "Presumably invalid PIN: '%s'".formatted(pin))
             .isEqualTo(13);
+    }
+
+    @RepeatedTest(100)
+    void bulgarianPersonalCode_valid() {
+        Faker faker = new Faker(new Locale("bg", "BG"));
+        String pin = faker.idNumber().valid();
+        assertThatPin(pin).matches("\\d{10}");
+    }
+
+    @RepeatedTest(100)
+    void bulgarianPersonalCode_invalid() {
+        Faker faker = new Faker(new Locale("bg", "BG"));
+        String pin = faker.idNumber().invalid();
+        assertThatPin(pin).matches("\\d{10}");
+    }
+
+    private static AbstractStringAssert<?> assertThatPin(String pin) {
+        return assertThat(pin)
+            .as(() -> "PIN: %s".formatted(pin));
     }
 }
