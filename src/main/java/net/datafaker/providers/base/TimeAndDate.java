@@ -10,6 +10,8 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 /**
  * A generator of random times and dates.
  * <p>
@@ -116,7 +118,8 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * Generates a past date from now.
      */
      public Instant past() {
-        return past(faker.number().positive(), faker.options().option(TimeUnit.class));
+         long FIFTY_YEARS = TimeUnit.DAYS.toMillis(18262);
+         return past(faker.number().numberBetween(1, FIFTY_YEARS), MILLISECONDS);
     }
 
     /**
@@ -126,7 +129,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit   the time unit.
      * @return a past date from now.
      */
-    public Instant past(int atMost, TimeUnit unit) {
+    public Instant past(long atMost, TimeUnit unit) {
         Instant aBitEarlierThanNow = Instant.now().minusMillis(1);
         return past(atMost, unit, aBitEarlierThanNow);
     }
@@ -139,7 +142,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param pattern date time pattern to convert to string.
      * @return a string representation of a past date from now.
      */
-    public String past(int atMost, TimeUnit unit, String pattern) {
+    public String past(long atMost, TimeUnit unit, String pattern) {
         return formatInstant(past(atMost, unit), pattern);
     }
 
@@ -151,7 +154,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit    the time unit.
      * @return a past date from now.
      */
-    public Instant past(int atMost, int minimum, TimeUnit unit) {
+    public Instant past(long atMost, long minimum, TimeUnit unit) {
         Instant minimumDate = Instant.now().minusMillis(unit.toMillis(minimum));
         return past(atMost - minimum, unit, minimumDate);
     }
@@ -165,7 +168,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param pattern date time pattern to convert to string.
      * @return a string representation of a past date from now, with a minimum time.
      */
-    public String past(int atMost, int minimum, TimeUnit unit, String pattern) {
+    public String past(long atMost, long minimum, TimeUnit unit, String pattern) {
         return formatInstant(past(atMost, minimum, unit), pattern);
     }
 
@@ -177,7 +180,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param referenceDate the past date relative to this date.
      * @return a past date relative to {@code referenceDate}.
      */
-    public Instant past(int atMost, TimeUnit unit, Instant referenceDate) {
+    public Instant past(long atMost, TimeUnit unit, Instant referenceDate) {
         long upperBoundMillis = unit.toMillis(atMost);
         long pastMillis = referenceDate.toEpochMilli() - 1 - faker.random().nextLong(upperBoundMillis - 1);
         return Instant.ofEpochMilli(pastMillis);
@@ -191,7 +194,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param pattern       date time pattern to convert to string.
      * @return a string representation of a past date relative to {@code referenceDate}.
      */
-    public String past(int atMost, TimeUnit unit, Instant referenceDate, String pattern) {
+    public String past(long atMost, TimeUnit unit, Instant referenceDate, String pattern) {
         return formatInstant(past(atMost, unit, referenceDate), pattern);
     }
 
