@@ -27,7 +27,7 @@ public class MoldovaIdNumber implements IdNumbers {
     }
 
     private String basePart(BaseProviders faker) {
-        var birthday = faker.date().birthdayLocalDate(0, 120);
+        var birthday = faker.timeAndDate().birthday(0, 120);
         // IDNP: 2ГГГXXXYYYYYK
         return firstDigit() + ГГГ(birthday) + XXX(faker) + YYYYY(faker);
     }
