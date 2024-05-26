@@ -8,6 +8,7 @@ import net.datafaker.idnumbers.EsMXIdNumber;
 import net.datafaker.idnumbers.EstonianIdNumber;
 import net.datafaker.idnumbers.IdNumbers;
 import net.datafaker.idnumbers.KoKrIdNumber;
+import net.datafaker.idnumbers.MacedonianIdNumber;
 import net.datafaker.idnumbers.MoldovaIdNumber;
 import net.datafaker.idnumbers.NricNumber;
 import net.datafaker.idnumbers.NricNumber.Type;
@@ -188,7 +189,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a valid ID number for Albania citizens and residents
-     * Specified as #{IDNumber.valid_albanian_personal_code} in et.yml
+     * Specified as #{IDNumber.valid_albanian_personal_code} in sq.yml
      * @return A valid ID Number
      */
     public String validAlbanianPersonalCode() {
@@ -197,7 +198,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a valid ID number for Albania citizens and residents
-     * Specified as #{IDNumber.invalid_albanian_personal_code} in et.yml
+     * Specified as #{IDNumber.invalid_albanian_personal_code} in sq.yml
      * @return An invalid ID Number
      */
     public String invalidAlbanianPersonalCode() {
@@ -206,7 +207,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a valid ID number for Albania citizens and residents
-     * Specified as #{IDNumber.valid_moldova_personal_code} in et.yml
+     * Specified as #{IDNumber.valid_moldova_personal_code} in ro-MD.yml
      * @return A valid ID Number
      */
     public String validMoldovaPersonalCode() {
@@ -215,7 +216,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a valid ID number for Albania citizens and residents
-     * Specified as #{IDNumber.invalid_moldova_personal_code} in et.yml
+     * Specified as #{IDNumber.invalid_moldova_personal_code} in ro-MD.yml
      * @return An invalid ID Number
      */
     public String invalidMoldovaPersonalCode() {
@@ -224,7 +225,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a valid ID number for Bulgaria citizens and residents
-     * Specified as #{IDNumber.valid_bulgarian_personal_code} in et.yml
+     * Specified as #{IDNumber.valid_bulgarian_personal_code} in bg.yml
      * @return A valid ID Number
      */
     public String validBulgarianPersonalCode() {
@@ -233,11 +234,29 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a valid ID number for Bulgaria citizens and residents
-     * Specified as #{IDNumber.invalid_bulgarian_personal_code} in et.yml
+     * Specified as #{IDNumber.invalid_bulgarian_personal_code} in bg.yml
      * @return An invalid ID Number
      */
     public String invalidBulgarianPersonalCode() {
         return provider(BulgarianIdNumber.class).getInvalid(faker);
+    }
+
+    /**
+     * Generates a valid ID number for North Macedonia citizens and residents
+     * Specified as #{IDNumber.valid_macedonian_personal_code} in mk.yml
+     * @return A valid ID Number
+     */
+    public String validMacedonianPersonalCode() {
+        return provider(MacedonianIdNumber.class).getValid(faker);
+    }
+
+    /**
+     * Generates a valid ID number for North Macedonia citizens and residents
+     * Specified as #{IDNumber.invalid_macedonian_personal_code} in mk.yml
+     * @return An invalid ID Number
+     */
+    public String invalidMacedonianPersonalCode() {
+        return provider(MacedonianIdNumber.class).getInvalid(faker);
     }
 
     @SuppressWarnings("unchecked")
