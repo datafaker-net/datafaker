@@ -107,8 +107,8 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
     @RepeatedTest(100)
     void testBirthday() {
         final LocalDateTime now = LocalDateTime.now();
-        final LocalDate from = now.minusYears(18).toLocalDate();
-        final LocalDate to = now.minusYears(65).toLocalDate();
+        final LocalDate from = now.minusYears(TimeAndDate.DEFAULT_MIN_AGE).toLocalDate();
+        final LocalDate to = now.minusYears(TimeAndDate.DEFAULT_MAX_AGE).toLocalDate();
         LocalDate birthday = timeAndDate.birthday();
         assertThat(birthday).isBetween(to, from);
     }

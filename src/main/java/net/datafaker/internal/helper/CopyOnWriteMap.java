@@ -6,13 +6,13 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 /**
- * This is a Copy On Write map. The main idea behind is that
- * there is lots of static info per provider to make this provider working.
- * At the same time there is no need to load all this info at start since
+ * This is a Copy On Write map. The main idea behind this is that
+ * there is lots of static info per provider to make the providers operate.
+ * At the same time there is no need to load all the info at the start since
  * we don't know which providers will be used and loading for all takes time.
- * For that reason it is loaded on request and stores in these Copy On Write maps.
+ * For that reason it is loaded on request and stored in these Copy On Write maps.
  * Since it is loaded only once per provider and after that is only read then
- * it should be ok and moreover it will allow to have non blocking reads.
+ * it should be ok and moreover it will allow to have non-blocking reads.
  *
  * In case for whatever reason there is a need to change this class,
  * please double check jmh report before and after e.g.
