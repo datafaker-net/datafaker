@@ -21,8 +21,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 public class TimeAndDate extends AbstractProvider<BaseProviders> {
 
-    private static final int DEFAULT_MIN_AGE = 18;
-    private static final int DEFAULT_MAX_AGE = 65;
+    public static final int DEFAULT_MIN_AGE = 18;
+    public static final int DEFAULT_MAX_AGE = 65;
 
     protected TimeAndDate(BaseProviders faker) {
         super(faker);
@@ -329,7 +329,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
             faker.random().nextInt(min.getDays(), max.getDays()));
     }
 
-    private String formatInstant(TemporalAccessor instant, String pattern) {
+    private static String formatInstant(TemporalAccessor instant, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern)
             .withZone(ZoneId.systemDefault());
 
