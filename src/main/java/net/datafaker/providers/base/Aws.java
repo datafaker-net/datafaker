@@ -8,6 +8,7 @@ import static net.datafaker.providers.base.Text.EN_UPPERCASE;
 public class Aws extends AbstractProvider<BaseProviders> {
 
     private final Text.TextRuleConfig configForRoute53ZoneId;
+    private final static String AWS_SERVICE_PREFIX = "AWS";
 
     protected Aws(BaseProviders faker) {
         super(faker);
@@ -17,6 +18,10 @@ public class Aws extends AbstractProvider<BaseProviders> {
 
     public String region() {
         return resolve("aws.regions");
+    }
+
+    public String service() {
+        return AWS_SERVICE_PREFIX + ' ' + resolve("aws.services");
     }
 
     public String accountId() {

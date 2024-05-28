@@ -51,4 +51,11 @@ class AwsTest extends BaseFakerTest<BaseFaker> {
         String region = faker.aws().region();
         assertThat(region).matches("^[a-z]{2}-(south|east|north|west|northeast|central|southeast)-\\d$");
     }
+
+    @Test
+    void testService() {
+        String service = faker.aws().service();
+        assertThat(service).matches("^AWS \\S.*$");
+    }
+
 }
