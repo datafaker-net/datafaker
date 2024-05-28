@@ -9,3 +9,13 @@ _CH:
         - "#{Name.last_name} #{suffix}"
         - "#{Name.last_name}-#{Name.last_name}"
         - "#{Name.last_name}, #{Name.last_name} et #{Name.last_name}"
+
+    phone_number:
+      area_code: ['21', '22', '24', '26', '27', '31', '32', '33', '34', '41', '43', '44', '52', '55', '56', '58', '61', '62', '71', '81', '91']
+      formats:
+        - '0#{PhoneNumber.area_code} ### ## ##'
+      formats_international:
+        - '+41 #{PhoneNumber.area_code} ### ## ##'
+
+    cell_phone:
+      formats: ['+49-15##-#######', '+49-16#-#######', '+49-17#-#######']

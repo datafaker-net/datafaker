@@ -41,14 +41,15 @@ bg:
         - "#{female_last_name} #{female_first_name} #{female_middle_name}"
 
     phone_number:
-      area_codes: ['2', '3', '4', '5', '6', '7', '8', '9']
-      formats: # National format
-        - "(0#{PhoneNumber.area_codes}#) ###-###"
+      country_code: ['359']
+      area_codes: ['2', '3', '6', '7']
+      formats:
+        - "(0#{PhoneNumber.area_codes}#) ## ####"
       formats_international:
-        - "+359 #{PhoneNumber.area_codes}#-###-###"
+        - "+#{country_code} #{PhoneNumber.area_codes}#-###-###"
 
     cell_phone:
-      formats: ['088#######', '087#######', '089#######']
+      formats: ['c088#######', 'c087#######', 'c089#######']
 
     passport:
       valid: "[0-9]{9}"
