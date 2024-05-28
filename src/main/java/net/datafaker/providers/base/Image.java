@@ -1,10 +1,9 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.providers.entertainment.EntertainmentProviders;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,13 +16,13 @@ import static java.awt.Color.WHITE;
  *
  * @since 2.3.0
  */
-public class Image extends AbstractProvider<EntertainmentProviders> {
+public class Image extends AbstractProvider<BaseProviders> {
 
     private static final int WIDTH = 256;
     private static final int HEIGHT = 256;
     private static final int BOX_SIZE = WIDTH / 8;
 
-    protected Image(EntertainmentProviders faker) {
+    protected Image(BaseProviders faker) {
         super(faker);
     }
 
@@ -54,11 +53,7 @@ public class Image extends AbstractProvider<EntertainmentProviders> {
         // Draw random colored boxes
         for (int y = 0; y < HEIGHT; y += BOX_SIZE) {
             for (int x = 0; x < WIDTH; x += BOX_SIZE) {
-                int r = faker.random().nextInt(256);
-                int g = faker.random().nextInt(256);
-                int b = faker.random().nextInt(256);
-                java.awt.Color color = new Color(r, g, b);
-                graphics.setColor(color);
+                graphics.setColor(randomColor());
                 graphics.fillRect(x, y, BOX_SIZE, BOX_SIZE);
             }
         }
@@ -74,16 +69,23 @@ public class Image extends AbstractProvider<EntertainmentProviders> {
         }
     }
 
+    private Color randomColor() {
+        // Convert the bytes to unsigned integers (0-255) for RGB
+        byte[] randomBytes = faker.random().nextRandomBytes(3);
+        int red = randomBytes[0] & 0xFF;
+        int green = randomBytes[1] & 0xFF;
+        int blue = randomBytes[2] & 0xFF;
+        return new Color(red, green, blue);
+    }
+
     private String generateBase64SVGImage() {
         StringBuilder svg = new StringBuilder();
         svg.append("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"").append(WIDTH).append("\" height=\"").append(HEIGHT).append("\">");
 
         for (int y = 0; y < HEIGHT; y += BOX_SIZE) {
             for (int x = 0; x < WIDTH; x += BOX_SIZE) {
-                int r = faker.random().nextInt(256);
-                int g = faker.random().nextInt(256);
-                int b = faker.random().nextInt(256);
-                String color = String.format("#%02x%02x%02x", r, g, b);
+                Color randomColor = randomColor();
+                String color = String.format("#%02x%02x%02x", randomColor.getRed(), randomColor.getGreen(), randomColor.getBlue());
                 svg.append("<rect x=\"").append(x).append("\" y=\"").append(y).append("\" width=\"").append(BOX_SIZE).append("\" height=\"").append(BOX_SIZE).append("\" fill=\"").append(color).append("\"/>");
             }
         }
