@@ -23,7 +23,17 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
     private static final Logger log = Logger.getLogger(PhoneNumberTest.class.getName());
     private static final Faker ESTONIAN = new Faker(new Locale("et", "EE"));
     private static final Faker MOLDOVAN = new Faker(new Locale("ro", "MD"));
+    /**
+     * Number of phone numbers to generate during a test
+     */
     private static final int COUNT = 100;
+    /**
+     * For most countries, number of invalid generated phone numbers is < 77% - it needs to be improved.
+     */
+    private static final int PARTIALLY_CORRECT = (int) (COUNT * 0.77);
+    /**
+     * For few countries, most of generated phone numbers are invalid - it definitely needs to be improved.
+     */
     private static final int FIXME = COUNT;
     private final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
 
@@ -125,7 +135,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
     }
 
     private static Arguments args(Locale locale, String phoneNumberRegion) {
-        return args(locale, phoneNumberRegion, (int) (COUNT * 0.77));
+        return args(locale, phoneNumberRegion, PARTIALLY_CORRECT);
     }
 
     private static Arguments args(Locale locale, String phoneNumberRegion, int allowedErrorsCount) {
