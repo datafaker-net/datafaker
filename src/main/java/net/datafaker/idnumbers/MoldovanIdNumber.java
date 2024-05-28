@@ -12,16 +12,21 @@ import java.time.LocalDate;
  * <a href="https://taxid.pro/docs/countries/moldova">Overview</a>
  * <a href="https://taxid.pro/?example=moldova-tin-for-individuals">Online generator</a>
  */
-public class MoldovaIdNumber implements IdNumbers {
+public class MoldovanIdNumber implements IdNumbers {
 
     private static final int[] CHECKSUM_MASK = new int[]{7, 3, 1, 7, 3, 1, 7, 3, 1, 7, 3, 1};
 
-    public String getValid(BaseProviders faker) {
+    @Override
+    public String country() {
+        return "MD";
+    }
+
+    public String generateValid(BaseProviders faker) {
         String basePart = basePart(faker);
         return basePart + checksum(basePart);
     }
 
-    public String getInvalid(BaseProviders faker) {
+    public String generateInvalid(BaseProviders faker) {
         String basePart = basePart(faker);
         return basePart + (checksum(basePart) + 1) % 10;
     }

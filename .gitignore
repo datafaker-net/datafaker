@@ -8,7 +8,6 @@ target
 !.idea/icon.png
 *.iml
 /dependency-reduced-pom.xml
-META-INF/
 bin/
 site
 .mvn/wrapper/maven-wrapper.jar

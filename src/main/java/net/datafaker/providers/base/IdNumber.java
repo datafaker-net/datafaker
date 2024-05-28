@@ -1,27 +1,23 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.idnumbers.AlbanianIdNumber;
-import net.datafaker.idnumbers.BulgarianIdNumber;
-import net.datafaker.idnumbers.EnIdNumber;
-import net.datafaker.idnumbers.EnZAIdNumber;
-import net.datafaker.idnumbers.EsMXIdNumber;
-import net.datafaker.idnumbers.EstonianIdNumber;
+import net.datafaker.idnumbers.AmericanIdNumber;
+import net.datafaker.idnumbers.MexicanIdNumber;
 import net.datafaker.idnumbers.IdNumbers;
-import net.datafaker.idnumbers.KoKrIdNumber;
-import net.datafaker.idnumbers.MacedonianIdNumber;
-import net.datafaker.idnumbers.MoldovaIdNumber;
-import net.datafaker.idnumbers.NricNumber;
-import net.datafaker.idnumbers.NricNumber.Type;
-import net.datafaker.idnumbers.PeselNumber;
-import net.datafaker.idnumbers.PeselNumber.Gender;
-import net.datafaker.idnumbers.PtNifIdNumber;
-import net.datafaker.idnumbers.SvSEIdNumber;
-import net.datafaker.idnumbers.ZhCnIdNumber;
+import net.datafaker.idnumbers.SouthKoreanIdNumber;
+import net.datafaker.idnumbers.SingaporeIdNumber;
+import net.datafaker.idnumbers.SingaporeIdNumber.Type;
+import net.datafaker.idnumbers.PolishIdNumber;
+import net.datafaker.idnumbers.PolishIdNumber.Gender;
+import net.datafaker.idnumbers.PortugueseIdNumber;
+import net.datafaker.idnumbers.SouthAfricanIdNumber;
+import net.datafaker.idnumbers.SwedenIdNumber;
+import net.datafaker.idnumbers.ChineseIdNumber;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -30,101 +26,158 @@ import java.util.concurrent.ConcurrentHashMap;
 public class IdNumber extends AbstractProvider<BaseProviders> {
 
     private final Map<Class<? extends IdNumbers>, IdNumbers> providers = new ConcurrentHashMap<>();
+    private final Map<String, IdNumbers> countryProviders = new ConcurrentHashMap<>();
 
     protected IdNumber(BaseProviders faker) {
         super(faker);
+        List<IdNumbers> idNumbers = loadGenerators(IdNumbers.class);
+        for (IdNumbers idNumber : idNumbers) {
+            countryProviders.put(idNumber.country(), idNumber);
+        }
     }
 
     public String valid() {
-        return resolve("id_number.valid");
+        return countryProvider()
+            .map(p -> p.generateValid(faker))
+            .orElseGet(() -> faker.numerify(faker.resolve("id_number.valid")));
     }
 
     public String invalid() {
-        return faker.numerify(faker.resolve("id_number.invalid"));
+        return countryProvider()
+            .map(p -> p.generateInvalid(faker))
+            .orElseGet(() -> faker.numerify(faker.resolve("id_number.invalid")));
+    }
+
+    private Optional<IdNumbers> countryProvider() {
+        String country = faker.getContext().getLocale().getCountry();
+        return Optional.ofNullable(countryProviders.get(country));
     }
 
     public String ssnValid() {
-        return provider(EnIdNumber.class).getValidSsn(faker);
+        return provider(AmericanIdNumber.class).generateValid(faker);
     }
 
     /**
-     * Specified as #{IDNumber.valid_sv_se_ssn} in sv-SE.yml
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("sv", "SE"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validSvSeSsn() {
-        return provider(SvSEIdNumber.class).getValidSsn(faker);
+        return provider(SwedenIdNumber.class).generateValid(faker);
     }
 
-    /**
-     * Specified as #{IDNumber.valid_en_za_ssn} in en-ZA.yml
-     */
-    public String validEnZaSsn() {
-        return provider(EnZAIdNumber.class).getValidSsn(faker);
-    }
-
-    /**
-     * Specified as #{IDNumber.invalid_en_za_ssn} in en-ZA.yml
-     */
-    public String inValidEnZaSsn() {
-        return provider(EnZAIdNumber.class).getInValidSsn(faker);
-    }
-
-    /**
-     * Specified as #{IDNumber.invalid_sv_se_ssn} in sv-SE.yml
-     */
+    @Deprecated
     public String invalidSvSeSsn() {
-        return provider(SvSEIdNumber.class).getInvalidSsn(faker);
+        return provider(SwedenIdNumber.class).generateInvalid(faker);
+    }
+
+    /**
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("en", "ZA"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
+     */
+    @Deprecated
+    public String validEnZaSsn() {
+        return provider(SouthAfricanIdNumber.class).getValidSsn(faker);
+    }
+
+    @Deprecated
+    public String inValidEnZaSsn() {
+        return provider(SouthAfricanIdNumber.class).getInValidSsn(faker);
     }
 
     public String singaporeanFin() {
-        return NricNumber.getValidFIN(faker, Type.FOREIGNER_TWENTY_FIRST_CENTURY);
+        return SingaporeIdNumber.getValidFIN(faker, Type.FOREIGNER_TWENTY_FIRST_CENTURY);
     }
 
     public String singaporeanFinBefore2000() {
-        return NricNumber.getValidFIN(faker, Type.FOREIGNER_TWENTIETH_CENTURY);
+        return SingaporeIdNumber.getValidFIN(faker, Type.FOREIGNER_TWENTIETH_CENTURY);
     }
 
     public String singaporeanUin() {
-        return NricNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTY_FIRST_CENTURY);
+        return SingaporeIdNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTY_FIRST_CENTURY);
     }
 
     public String singaporeanUinBefore2000() {
-        return NricNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTIETH_CENTURY);
+        return SingaporeIdNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTIETH_CENTURY);
     }
 
     /**
-     * Generate a valid Zh-CN id number.
+     * Generate a valid Chinese id number
      *
-     * @return A Zh-CN id number
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("zh", "CN"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validZhCNSsn() {
-        return provider(ZhCnIdNumber.class).getValidSsn(faker);
+        return provider(ChineseIdNumber.class).generateValid(faker);
     }
 
+    /**
+     * Generate a valid Chinese id number
+     *
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("pt", "PT"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
+     */
+    @Deprecated
     public String validPtNif() {
-        return provider(PtNifIdNumber.class).getValid(faker);
+        return provider(PortugueseIdNumber.class).generateValid(faker);
     }
 
+    @Deprecated
     public String invalidPtNif() {
-        return provider(PtNifIdNumber.class).getInvalid(faker);
+        return provider(PortugueseIdNumber.class).generateInvalid(faker);
     }
 
-
     /**
-     * Specified as #{IDNumber.valid_es_mx_ssn} in es-MX.yml
+     * @return A valid Mexican CURP
      *
-     * @return A valid MEX CURP.
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("es", "MX"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validEsMXSsn() {
-        return provider(EsMXIdNumber.class).get(faker);
+        return provider(MexicanIdNumber.class).get(faker);
     }
 
     /**
-     * Specified as #{IDNumber.invalid_es_mx_ssn} in es-MX.yml
+     * @return An invalid Mexican CURP
      *
-     * @return A valid MEX CURP.
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("es", "MX"));
+     *   String idNumber = faker.idNumber().invalid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String invalidEsMXSsn() {
-        return provider(EsMXIdNumber.class).getWrong(faker);
+        return provider(MexicanIdNumber.class).generateInvalid(faker);
     }
 
     /**
@@ -134,19 +187,18 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid PESEL number
      */
     public String peselNumber() {
-        return peselNumber(faker.date().birthday(0, 100).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-            Gender.ANY);
+        return peselNumber(faker.timeAndDate().birthday(0, 100), Gender.ANY);
     }
 
     /**
-     * Generates a valid PESEL number for a person with given gender and birth date.
+     * Generates a valid PESEL number for a person with given gender and birthdate.
      *
-     * @param birthDate Given birth date
-     * @param gender    Person's gender. Null value means {@link net.datafaker.idnumbers.PeselNumber.Gender#ANY}
+     * @param birthDate Given birthdate
+     * @param gender    Person's gender. Null value means {@link PolishIdNumber.Gender#ANY}
      * @return A valid PESEL number
      */
     public String peselNumber(LocalDate birthDate, Gender gender) {
-        return new PeselNumber(faker).get(birthDate, gender);
+        return new PolishIdNumber().get(faker, birthDate, gender);
     }
 
     /**
@@ -154,109 +206,33 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      *
      * @return A valid RRN
      * @since 1.8.0
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker f = new Faker(new Locale("en", "KR"));
+     *   String rrn = f.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validKoKrRrn() {
-        return provider(KoKrIdNumber.class).getValidRrn(faker);
+        return provider(SouthKoreanIdNumber.class).getValidRrn(faker);
     }
 
     /**
      * Generates valid ID number for Georgian citizens and Residents
      *
-     * @return A valid ID Number
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker f = new Faker(new Locale("en", "GE"));
+     *   String idNumber = f.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validGeIDNumber() {
     	return faker.numerify("###########");
-    }
-
-    /**
-     * Generates a valid ID number for Estonian citizens and residents
-     * Specified as #{IDNumber.valid_estonian_personal_code} in et.yml
-     * @return A valid ID Number
-     */
-    public String validEstonianPersonalCode() {
-        return provider(EstonianIdNumber.class).getValid(faker);
-    }
-
-    /**
-     * Generates an invalid ID number for Estonian citizens and residents
-     * Specified as #{IDNumber.invalid_estonian_personal_code} in et.yml
-     *
-     * @return An invalid ID Number
-     */
-    public String invalidEstonianPersonalCode() {
-        return provider(EstonianIdNumber.class).getInvalid(faker);
-    }
-
-    /**
-     * Generates a valid ID number for Albania citizens and residents
-     * Specified as #{IDNumber.valid_albanian_personal_code} in sq.yml
-     * @return A valid ID Number
-     */
-    public String validAlbanianPersonalCode() {
-        return provider(AlbanianIdNumber.class).getValid(faker);
-    }
-
-    /**
-     * Generates a valid ID number for Albania citizens and residents
-     * Specified as #{IDNumber.invalid_albanian_personal_code} in sq.yml
-     * @return An invalid ID Number
-     */
-    public String invalidAlbanianPersonalCode() {
-        return provider(AlbanianIdNumber.class).getInvalid(faker);
-    }
-
-    /**
-     * Generates a valid ID number for Albania citizens and residents
-     * Specified as #{IDNumber.valid_moldova_personal_code} in ro-MD.yml
-     * @return A valid ID Number
-     */
-    public String validMoldovaPersonalCode() {
-        return provider(MoldovaIdNumber.class).getValid(faker);
-    }
-
-    /**
-     * Generates a valid ID number for Albania citizens and residents
-     * Specified as #{IDNumber.invalid_moldova_personal_code} in ro-MD.yml
-     * @return An invalid ID Number
-     */
-    public String invalidMoldovaPersonalCode() {
-        return provider(MoldovaIdNumber.class).getInvalid(faker);
-    }
-
-    /**
-     * Generates a valid ID number for Bulgaria citizens and residents
-     * Specified as #{IDNumber.valid_bulgarian_personal_code} in bg.yml
-     * @return A valid ID Number
-     */
-    public String validBulgarianPersonalCode() {
-        return provider(BulgarianIdNumber.class).getValid(faker);
-    }
-
-    /**
-     * Generates a valid ID number for Bulgaria citizens and residents
-     * Specified as #{IDNumber.invalid_bulgarian_personal_code} in bg.yml
-     * @return An invalid ID Number
-     */
-    public String invalidBulgarianPersonalCode() {
-        return provider(BulgarianIdNumber.class).getInvalid(faker);
-    }
-
-    /**
-     * Generates a valid ID number for North Macedonia citizens and residents
-     * Specified as #{IDNumber.valid_macedonian_personal_code} in mk.yml
-     * @return A valid ID Number
-     */
-    public String validMacedonianPersonalCode() {
-        return provider(MacedonianIdNumber.class).getValid(faker);
-    }
-
-    /**
-     * Generates a valid ID number for North Macedonia citizens and residents
-     * Specified as #{IDNumber.invalid_macedonian_personal_code} in mk.yml
-     * @return An invalid ID Number
-     */
-    public String invalidMacedonianPersonalCode() {
-        return provider(MacedonianIdNumber.class).getInvalid(faker);
     }
 
     @SuppressWarnings("unchecked")

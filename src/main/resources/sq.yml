@@ -23,7 +23,3 @@ sq:
       area_code: ['22', '23', '24', '25', '26', '27', '28', '29', '32', '33', '34', '35', '36', '37', '38', '39']
       formats:
         - '+#{country_code} 4 #{area_code}## ###'
-
-    id_number:
-      valid: "#{IDNumber.valid_albanian_personal_code}"
-      invalid: "#{IDNumber.invalid_albanian_personal_code}"

@@ -10,44 +10,59 @@ import java.util.Optional;
  * <a href="https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000510">https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000510</a> and the
  * description at <a href="https://en.wikipedia.org/wiki/PESEL">https://en.wikipedia.org/wiki/PESEL</a>
  */
-public class PeselNumber implements IdNumbers {
+public class PolishIdNumber implements IdNumbers {
 
     public static final int PESEL_LENGTH = 11;
 
-    private final BaseProviders faker;
+    @Override
+    public String country() {
+        return "PL";
+    }
 
     public enum Gender {
         MALE, FEMALE, ANY
     }
 
-    public PeselNumber(BaseProviders faker) {
-        this.faker = faker;
+    @Override
+    public String generateValid(BaseProviders faker) {
+        return get(faker, faker.timeAndDate().birthday(0, 100), Gender.ANY);
     }
 
-    public String get(LocalDate birthDate, Gender gender) {
-        return getInternal(birthDate, Optional.ofNullable(gender).orElse(Gender.ANY));
+    public String get(BaseProviders faker, LocalDate birthDate, Gender gender) {
+        int[] digits = generateDigits(faker, birthDate, Optional.ofNullable(gender).orElse(Gender.ANY));
+        int controlDigit = getControlDigit(digits);
+        return toString(digits, controlDigit);
     }
 
-    private String getInternal(LocalDate birthDate, Gender gender) {
-        final int[] digits = new int[PESEL_LENGTH - 1];
-        digits[0] = birthDate.getYear() / 10 % 10;
-        digits[1] = birthDate.getYear() % 10;
+    @Override
+    public String generateInvalid(BaseProviders faker) {
+        int[] digits = generateDigits(faker, faker.timeAndDate().birthday(0, 100), Gender.ANY);
+        int controlDigit = getControlDigit(digits);
+        int invalidControlDigit = (controlDigit + 1) % 10;
+        return toString(digits, invalidControlDigit);
+    }
 
+    private int[] generateDigits(BaseProviders faker, LocalDate birthDate, Gender gender) {
         int monthEncoded = getMonthEncoded(birthDate.getYear(), birthDate.getMonthValue());
-        digits[2] = monthEncoded / 10;
-        digits[3] = monthEncoded % 10;
+        return new int[]{
+            birthDate.getYear() / 10 % 10,
+            birthDate.getYear() % 10,
 
-        digits[4] = birthDate.getDayOfMonth() / 10;
-        digits[5] = birthDate.getDayOfMonth() % 10;
+            monthEncoded / 10,
+            monthEncoded % 10,
 
-        digits[6] = randomDigit();
-        digits[7] = randomDigit();
-        digits[8] = randomDigit();
+            birthDate.getDayOfMonth() / 10,
+            birthDate.getDayOfMonth() % 10,
 
-        digits[9] = getGenderDigit(gender);
+            randomDigit(faker),
+            randomDigit(faker),
+            randomDigit(faker),
 
-        final int controlDigit = getControlDigit(digits);
+            getGenderDigit(faker, gender)
+        };
+    }
 
+    private static String toString(int[] digits, int controlDigit) {
         final StringBuilder peselSb = new StringBuilder(PESEL_LENGTH);
         for (int digit : digits) {
             peselSb.append(digit);
@@ -56,7 +71,7 @@ public class PeselNumber implements IdNumbers {
         return peselSb.toString();
     }
 
-    private int randomDigit() {
+    private int randomDigit(BaseProviders faker) {
         return faker.random().nextInt(10);
     }
 
@@ -66,11 +81,11 @@ public class PeselNumber implements IdNumbers {
         return (10 - sum % 10) % 10;
     }
 
-    private int getGenderDigit(Gender gender) {
+    private int getGenderDigit(BaseProviders faker, Gender gender) {
         return switch (gender) {
             case FEMALE -> faker.random().nextInt(5) * 2;
             case MALE -> faker.random().nextInt(5) * 2 + 1;
-            default -> randomDigit();
+            default -> randomDigit(faker);
         };
     }
 

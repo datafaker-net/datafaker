@@ -1,30 +1,26 @@
 package net.datafaker.idnumbers;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-
+import net.datafaker.Faker;
+import net.datafaker.idnumbers.PolishIdNumber.Gender;
 import net.datafaker.providers.base.BaseFaker;
-import net.datafaker.idnumbers.PeselNumber.Gender;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.LocalDate;
+import java.util.Locale;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.fail;
 
-class PeselNumberTest {
+class PolishIdNumberTest {
 
     public static final int PESEL_EXPECTED_LENGTH = 11;
 
-    private static PeselNumber peselNumber;
-
-    @BeforeAll
-    static void setUpBeforeClass() {
-        peselNumber = new PeselNumber(new BaseFaker());
-    }
+    private static final Faker faker = new Faker(new Locale("pl", "PL"));
+    private static final PolishIdNumber peselNumber = new PolishIdNumber();
 
     @ParameterizedTest
     @EnumSource(value = Gender.class, names = {"MALE", "FEMALE"})
@@ -32,12 +28,11 @@ class PeselNumberTest {
         /*
          * Given
          */
-        final LocalDate givenBirthDate = new BaseFaker().date().birthday(0, 100).toInstant()
-            .atZone(ZoneId.systemDefault()).toLocalDate();
+        final LocalDate givenBirthDate = new BaseFaker().timeAndDate().birthday(0, 100);
         /*
          * When
          */
-        final String gotPesel = peselNumber.get(givenBirthDate, givenGender);
+        final String gotPesel = peselNumber.get(faker, givenBirthDate, givenGender);
 
         /*
          * Then
@@ -59,7 +54,7 @@ class PeselNumberTest {
         /*
          * When
          */
-        final String gotPesel = peselNumber.get(givenBirthDate, Gender.ANY);
+        final String gotPesel = peselNumber.get(faker, givenBirthDate, Gender.ANY);
 
         /*
          * Then
@@ -80,7 +75,7 @@ class PeselNumberTest {
         /*
          * When
          */
-        assertThatThrownBy(() -> peselNumber.get(givenBirthDate, Gender.ANY))
+        assertThatThrownBy(() -> peselNumber.get(faker, givenBirthDate, Gender.ANY))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -94,7 +89,7 @@ class PeselNumberTest {
         /*
          * When
          */
-        final String gotPesel = peselNumber.get(givenBirthDate, null);
+        final String gotPesel = peselNumber.get(faker, givenBirthDate, null);
 
         /*
          * Then

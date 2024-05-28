@@ -39,7 +39,3 @@ mk:
 #        - '079 2#####'
         - '079 4#####'
 #        - '079 8#####'
-
-    id_number:
-      valid: "#{IDNumber.valid_macedonian_personal_code}"
-      invalid: "#{IDNumber.invalid_macedonian_personal_code}"

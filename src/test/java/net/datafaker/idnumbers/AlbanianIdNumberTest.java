@@ -13,13 +13,13 @@ class AlbanianIdNumberTest {
 
     @RepeatedTest(100)
     void valid() {
-        String pin = generator.getValid(faker);
+        String pin = generator.generateValid(faker);
         assertThat(pin.length()).isEqualTo(10);
     }
 
     @RepeatedTest(100)
     void invalid() {
-        String pin = generator.getInvalid(faker);
+        String pin = generator.generateInvalid(faker);
         assertThat(pin.length()).isEqualTo(10);
         assertThat(parseInt(pin.substring(2, 4)))
             .as(() -> "Presumably invalid PIN: '%s'".formatted(pin))

@@ -105,6 +105,16 @@ public class Options extends AbstractProvider<BaseProviders> {
     }
 
     /**
+     * Returns a random String element from an varargs.
+     *
+     * @param options The varargs to take a random element from.
+     * @return A randomly selected element from the varargs.
+     */
+    public <T> T option(List<T> options) {
+        return options.get(faker.random().nextInt(options.size()));
+    }
+
+    /**
      * Returns a random unique subset of elements from an varargs.
      *
      * @param size    The size of subset to return.

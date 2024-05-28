@@ -36,7 +36,3 @@ _MD:
         - '077######'
         - '078######'
         - '079######'
-
-    id_number:
-      valid: "#{IDNumber.valid_moldova_personal_code}"
-      invalid: "#{IDNumber.invalid_moldova_personal_code}"

@@ -12,19 +12,36 @@ import java.time.temporal.ChronoField;
  * and the description at
  * <a href="https://en.wikipedia.org/wiki/Personal_identity_number_">https://en.wikipedia.org/wiki/Personal_identity_number_</a>(Sweden)
  */
-public class SvSEIdNumber implements IdNumbers {
+public class SwedenIdNumber implements IdNumbers {
+    @Override
+    public String country() {
+        return "SE";
+    }
+
     private static final String[] VALID_PATTERNS = {"######-####", "######+####"};
     private static final String[] PLUS_MINUS = {"+", "-"};
 
+    @Deprecated
     public String getValidSsn(BaseProviders f) {
+        return generateValid(f);
+    }
+
+    @Override
+    public String generateValid(BaseProviders f) {
         String end = f.numerify("###");
-        String candidate = DATE_TIME_FORMATTER.format(f.date().birthdayLocalDate(0, 100))
+        String candidate = DATE_TIME_FORMATTER.format(f.timeAndDate().birthday(0, 100))
             + f.options().option(PLUS_MINUS)
             + end;
         return candidate + calculateChecksum(candidate);
     }
 
+    @Deprecated
     public String getInvalidSsn(BaseProviders f) {
+        return generateInvalid(f);
+    }
+
+    @Override
+    public String generateInvalid(BaseProviders f) {
         String candidate = "121212-1212"; // Seed with a valid number
         while (isValidSwedishSsn(candidate)) {
             String pattern = getPattern(f);
@@ -109,5 +126,4 @@ public class SvSEIdNumber implements IdNumbers {
         }
         return sum;
     }
-
 }

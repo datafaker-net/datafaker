@@ -10,11 +10,20 @@ import java.time.temporal.ChronoField;
  * Implementation based on the definition at
  * <a href="https://en.wikipedia.org/wiki/South_African_identity_card">https://en.wikipedia.org/wiki/South_African_identity_card</a>
  */
+public class SouthAfricanIdNumber implements IdNumbers {
 
-public class EnZAIdNumber implements IdNumbers {
+    @Override
+    public String country() {
+        return "ZA";
+    }
 
     private static final String[] VALID_PATTERN = {"##########08#", "##########18#"};
     private static final String[] CODE_PATTERN = {"18", "08"};
+
+    @Deprecated
+    public String getValidSsn(BaseProviders faker) {
+        return generateValid(faker);
+    }
 
     /**
      * Generate a valid social security number on faker
@@ -22,21 +31,27 @@ public class EnZAIdNumber implements IdNumbers {
      * @param f the java-faker
      * @return a valid social security number on faker
      */
-    public String getValidSsn(BaseProviders f) {
-        String candidate = DATE_TIME_FORMATTER.format(f.date().birthdayLocalDate(0, 100))
+    @Override
+    public String generateValid(BaseProviders f) {
+        String candidate = DATE_TIME_FORMATTER.format(f.timeAndDate().birthday(0, 100))
             + f.numerify("####")
             + f.options().option(CODE_PATTERN);
         return candidate + calculateChecksum(candidate, 12);
     }
 
+    @Deprecated
+    public String getInValidSsn(BaseProviders f) {
+        return generateInvalid(f);
+    }
+
     /**
-     * Generate a invalid social security number on faker
+     * Generate an invalid social security number on faker
      *
      * @param f the java-faker
-     * @return a invalid social security number on faker
+     * @return an invalid social security number on faker
      */
-    public String getInValidSsn(BaseProviders f) {
-
+    @Override
+    public String generateInvalid(BaseProviders f) {
         String ssn = f.numerify(f.options().option(VALID_PATTERN));
         while (isValidEnZASsn(ssn)) {
             String pattern = getPattern(f);

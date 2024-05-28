@@ -18,12 +18,17 @@ public class EstonianIdNumber implements IdNumbers {
     private static final int[] CHECKSUM_COEFFICIENTS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
     private static final int[] CHECKSUM_COEFFICIENTS2 = {3, 4, 5, 6, 7, 8, 9, 1, 2, 3};
 
-    public String getInvalid(final BaseProviders faker) {
+    @Override
+    public String country() {
+        return "EE";
+    }
+
+    public String generateInvalid(final BaseProviders faker) {
         String digits = basePart(faker);
         return digits + (checksum(digits) + 1) % 10;
     }
 
-    public String getValid(final BaseProviders faker) {
+    public String generateValid(final BaseProviders faker) {
         String digits = basePart(faker);
         return digits + checksum(digits);
     }

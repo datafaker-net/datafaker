@@ -1,8 +1,8 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.Faker;
-import net.datafaker.idnumbers.EnZAIdNumber;
-import net.datafaker.idnumbers.SvSEIdNumber;
+import net.datafaker.idnumbers.SouthAfricanIdNumber;
+import net.datafaker.idnumbers.SwedenIdNumber;
 import org.assertj.core.api.AbstractStringAssert;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -17,14 +17,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
-    private static final IdNumber SV_SE_ID_NUMBER = new BaseFaker(new Locale("sv_SE")).idNumber();
-    private static final Pattern SV_SE_ID_NUMBER_PATTERN = Pattern.compile("\\d{6}[-+]\\d{4}");
-    private static final IdNumber EN_ZA_OD_NUMBER= new BaseFaker(new Locale("en_ZA")).idNumber();
-    private static final Pattern EN_ZA_ID_NUMBER_PATTERN = Pattern.compile("[0-9]{10}([01])8[0-9]");
+    private static final Faker SWEDISH = new Faker(new Locale("sv", "SE"));
+    private static final Faker SOUTH_AFRICA = new Faker(new Locale("en", "ZA"));
+    private static final Faker US = new Faker(new Locale("en", "US"));
     private static final Faker ESTONIAN = new Faker(new Locale("et", "EE"));
     private static final Faker ALBANIAN = new Faker(new Locale("sq", "AL"));
     private static final Faker BULGARIAN = new Faker(new Locale("bg", "BG"));
     private static final Faker MACEDONIAN = new Faker(new Locale("mk", "MK"));
+
+    private static final Pattern SWEDISH_ID_NUMBER_PATTERN = Pattern.compile("\\d{6}[-+]\\d{4}");
+    private static final Pattern SOUTH_AFRICA_ID_NUMBER_PATTERN = Pattern.compile("[0-9]{10}([01])8[0-9]");
 
     @Test
     void testValid() {
@@ -39,30 +41,41 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     @RepeatedTest(100)
     void testSsnValid() {
         assertThat(faker.idNumber().ssnValid()).matches("[0-8]\\d{2}-\\d{2}-\\d{4}");
+        assertThat(US.idNumber().valid()).matches("[0-8]\\d{2}-\\d{2}-\\d{4}");
+    }
+
+    @RepeatedTest(100)
+    void testSsnInvalid() {
+        String invalidSsn = US.idNumber().invalid();
+        if (!invalidSsn.startsWith("9")) {
+            assertThat(invalidSsn).matches("[0-8]\\d{2}-\\d{2}-\\d{4}");
+        }
     }
 
     @RepeatedTest(100)
     void testValidSwedishSsn() {
-        final String actual = SV_SE_ID_NUMBER.validSvSeSsn();
-        assertThat(actual).matches(SV_SE_ID_NUMBER_PATTERN);
-        assertThat(SvSEIdNumber.isValidSwedishSsn(actual)).isTrue();
+        String actual = SWEDISH.idNumber().valid();
+        assertThat(actual).matches(SWEDISH_ID_NUMBER_PATTERN);
+        assertThat(SwedenIdNumber.isValidSwedishSsn(actual)).isTrue();
     }
 
     @RepeatedTest(100)
     void testInvalidSwedishSsn() {
-        assertThat(SV_SE_ID_NUMBER.invalidSvSeSsn()).matches(SV_SE_ID_NUMBER_PATTERN);
+        String actual = SWEDISH.idNumber().invalid();
+        assertThat(actual).matches(SWEDISH_ID_NUMBER_PATTERN);
+        assertThat(SwedenIdNumber.isValidSwedishSsn(actual)).isFalse();
     }
 
     @RepeatedTest(100)
-    void testValidEnZaSsn() {
-        String actual = EN_ZA_OD_NUMBER.validEnZaSsn();
-        assertThat(actual).matches(EN_ZA_ID_NUMBER_PATTERN);
-        assertThat(EnZAIdNumber.isValidEnZASsn(actual)).isTrue();
+    void southAfrica_valid() {
+        String actual = SOUTH_AFRICA.idNumber().valid();
+        assertThat(actual).matches(SOUTH_AFRICA_ID_NUMBER_PATTERN);
+        assertThat(SouthAfricanIdNumber.isValidEnZASsn(actual)).isTrue();
     }
 
     @RepeatedTest(100)
-    void testInvalidEnZaSsn() {
-        assertThat(EN_ZA_OD_NUMBER.inValidEnZaSsn()).matches(EN_ZA_ID_NUMBER_PATTERN);
+    void southAfrica_invalid() {
+        assertThat(SOUTH_AFRICA.idNumber().invalid()).matches(SOUTH_AFRICA_ID_NUMBER_PATTERN);
     }
 
     @RepeatedTest(100)

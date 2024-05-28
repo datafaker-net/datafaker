@@ -3,13 +3,18 @@ package net.datafaker.idnumbers;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.Options;
 
-import java.util.Set;
+import java.time.LocalDate;
 
 /**
  * Implementation based on the definition at
  * <a href="https://en.wikipedia.org/wiki/Unique_Population_Registry_Code">https://en.wikipedia.org/wiki/Unique_Population_Registry_Code</a>
  */
-public class EsMXIdNumber implements IdNumbers {
+public class MexicanIdNumber implements IdNumbers {
+
+    @Override
+    public String country() {
+        return "MX";
+    }
 
     private static final String[] CHA = {
         "HEFA560427MVZRRL04",
@@ -39,7 +44,11 @@ public class EsMXIdNumber implements IdNumbers {
         "TB", "TM", "TL", "VE", "YU", "ZA", "NE",
     };
     private static final char[] SEX = {'H', 'M'};
-    private static final Set<Integer> BIG_MONTHS = Set.of(1, 3, 5, 7, 8, 10, 12);
+
+    @Deprecated
+    public String get(BaseProviders faker) {
+        return generateValid(faker);
+    }
 
     /**
      * Get A valid MEX CURP.
@@ -47,7 +56,7 @@ public class EsMXIdNumber implements IdNumbers {
      * @param faker faker
      * @return A valid MEX CURP.
      */
-    public String get(BaseProviders faker) {
+    public String generateValid(BaseProviders faker) {
         final Options options = faker.options();
         char[] birthDay = getBirthday(faker).toCharArray();
         final char[] ssn = new char[18];
@@ -67,13 +76,18 @@ public class EsMXIdNumber implements IdNumbers {
         return String.valueOf(ssn);
     }
 
+    @Deprecated
+    public String getWrong(BaseProviders faker) {
+        return generateInvalid(faker);
+    }
+
     /**
      * Get A invalid MEX CURP.
      *
      * @param faker faker
      * @return A invalid MEX CURP.
      */
-    public String getWrong(BaseProviders faker) {
+    public String generateInvalid(BaseProviders faker) {
         return faker.options().option(CHA);
     }
 
@@ -84,29 +98,8 @@ public class EsMXIdNumber implements IdNumbers {
      * @return A valid date.
      */
     private String getBirthday(BaseProviders f) {
-        int year = f.random().nextInt(1900, 2021);
-        int month = f.random().nextInt(1, 12);
-        int day = validDay(year, month, f);
-        return String.valueOf(year * 10000 + month * 100 + day);
-    }
-
-
-    /**
-     * Gets a valid day according to year and month.
-     *
-     * @param year  A specific year.
-     * @param month A specific month.
-     * @param f     A specific instance of Faker.
-     * @return A valid day.
-     */
-    private int validDay(int year, int month, BaseProviders f) {
-        if (month == 2) {
-            if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
-                return f.random().nextInt(1, 29);
-            } else return f.random().nextInt(1, 28);
-        } else if (BIG_MONTHS.contains(month)) {
-            return f.random().nextInt(1, 31);
-        } else return f.random().nextInt(1, 30);
+        LocalDate birthday = f.timeAndDate().birthday(0, 120);
+        return String.valueOf(birthday.getYear() * 10000 + birthday.getMonthValue() * 100 + birthday.getDayOfMonth());
     }
 
     /**

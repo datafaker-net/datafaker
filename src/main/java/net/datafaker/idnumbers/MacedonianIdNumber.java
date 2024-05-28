@@ -14,12 +14,17 @@ import java.util.List;
 public class MacedonianIdNumber implements IdNumbers {
     private static final List<String> REGIONS = List.of("41", "42", "43", "44", "45", "46", "47", "48", "49");
 
-    public String getValid(BaseProviders faker) {
+    @Override
+    public String country() {
+        return "MK";
+    }
+
+    public String generateValid(BaseProviders faker) {
         String basePart = basePart(faker);
         return basePart + checksum(basePart);
     }
 
-    public String getInvalid(BaseProviders faker) {
+    public String generateInvalid(BaseProviders faker) {
         String basePart = basePart(faker);
         return basePart + (checksum(basePart) + 1) % 10;
     }
