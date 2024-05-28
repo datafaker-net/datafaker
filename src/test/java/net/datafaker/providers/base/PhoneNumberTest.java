@@ -84,13 +84,13 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
                     if (log.isLoggable(FINE)) {
                         log.fine("Invalid phone: %s".formatted(phoneNumber));
                     }
-                    errorCount++;
+                    if (++errorCount > allowedErrorsCount) break;
                 }
             } catch (NumberParseException e) {
                 if (log.isLoggable(FINE)) {
                     log.fine("Invalid phone: %s (caused by: %s)".formatted(phoneNumber, e));
                 }
-                errorCount++;
+                if (++errorCount > allowedErrorsCount) break;
             }
         }
         assertThat(errorCount).isLessThanOrEqualTo(allowedErrorsCount);
@@ -109,7 +109,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
                 if (log.isLoggable(FINE)) {
                     log.fine("Invalid phone: %s".formatted(phoneNumber));
                 }
-                errorCount++;
+                if (++errorCount > allowedErrorsCount) break;
             }
         }
         assertThat(errorCount).isLessThanOrEqualTo(allowedErrorsCount);
@@ -128,7 +128,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
                 if (log.isLoggable(FINE)) {
                     log.fine("Invalid phone: %s".formatted(phoneNumber));
                 }
-                errorCount++;
+                if (++errorCount > allowedErrorsCount) break;
             }
         }
         assertThat(errorCount).isLessThanOrEqualTo(allowedErrorsCount);
