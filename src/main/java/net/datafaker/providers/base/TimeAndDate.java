@@ -21,8 +21,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 public class TimeAndDate extends AbstractProvider<BaseProviders> {
 
-    public static final int DEFAULT_MIN_AGE = 18;
-    public static final int DEFAULT_MAX_AGE = 65;
+    static final int DEFAULT_MIN_AGE = 18;
+    static final int DEFAULT_MAX_AGE = 65;
 
     protected TimeAndDate(BaseProviders faker) {
         super(faker);
