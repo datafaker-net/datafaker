@@ -8,11 +8,11 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ZhCNIdNumberTest extends AbstractFakerTest {
+class ChineseIdNumberTest extends AbstractFakerTest {
+    private final BaseFaker faker = new BaseFaker(new Locale("zh", "CN"));
 
     @RepeatedTest(10)
     void testValidChineseIdNumber() {
-        BaseFaker faker = new BaseFaker(new Locale("zh_CN"));
         String idNumber = faker.idNumber().valid();
         final int length = idNumber.length();
         assertThatSsnNumberValid(length, idNumber);
@@ -20,7 +20,6 @@ class ZhCNIdNumberTest extends AbstractFakerTest {
 
     @RepeatedTest(10)
     void testChecksumOfChineseIdNumber() {
-        BaseFaker faker = new BaseFaker(new Locale("zh_CN"));
         String s = faker.idNumber().valid();
         boolean isSatisfied = true;
         int count = 0;
@@ -50,8 +49,8 @@ class ZhCNIdNumberTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void testValidZhCnIdNumber() {
-        ZhCnIdNumber id = new ZhCnIdNumber();
-        String idNumber = id.getValidSsn(faker);
+        ChineseIdNumber id = new ChineseIdNumber();
+        String idNumber = id.generateValid(faker);
         assertThatSsnNumberValid(idNumber.length(), idNumber);
     }
 

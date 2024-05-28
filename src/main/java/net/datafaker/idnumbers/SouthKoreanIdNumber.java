@@ -11,9 +11,19 @@ import java.time.LocalDate;
  * Implementation based on the description at
  * <a href="https://en.wikipedia.org/wiki/Resident_registration_number">Wikipedia - Resident registration number</a>
  */
-public class KoKrIdNumber implements IdNumbers {
+public class SouthKoreanIdNumber implements IdNumbers {
+    @Override
+    public String country() {
+        return "KR";
+    }
 
+    @Deprecated
     public String getValidRrn(BaseProviders f) {
+        return generateValid(f);
+    }
+
+    @Override
+    public String generateValid(BaseProviders f) {
         StringBuilder patternBuilder = new StringBuilder();
         LocalDate now = LocalDate.now();
         String iso = f.nation().isoCountry();
@@ -67,4 +77,8 @@ public class KoKrIdNumber implements IdNumbers {
         return String.valueOf(res);
     }
 
+    @Override
+    public String generateInvalid(BaseProviders faker) {
+        return generateValid(faker) + "42";
+    }
 }

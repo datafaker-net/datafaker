@@ -10,13 +10,16 @@ import java.util.Map;
  * Generate number of UIN/FIN for Singapore.
  * Algorithm is given from <a href="http://www.ngiam.net/NRIC/">http://www.ngiam.net/NRIC/</a>
  */
-public class NricNumber implements IdNumbers {
+public class SingaporeIdNumber implements IdNumbers {
+    @Override
+    public String country() {
+        return "SG";
+    }
 
-    public enum Type {SINGAPOREAN_TWENTIETH_CENTURY, FOREIGNER_TWENTIETH_CENTURY, SINGAPOREAN_TWENTY_FIRST_CENTURY, FOREIGNER_TWENTY_FIRST_CENTURY}
+    public enum Type {SINGAPOREAN_TWENTIETH_CENTURY, FOREIGNER_TWENTIETH_CENTURY, SINGAPOREAN_TWENTY_FIRST_CENTURY, FOREIGNER_TWENTY_FIRST_CENTURY;}
 
     private record NricType(char firstLetter, String matchLetters, int[] code, int initialValue) {
-
-        public String format(int[] digits) {
+        private String format(int[] digits) {
                 int value = initialValue;
                 StringBuilder id = new StringBuilder(String.valueOf(firstLetter));
                 for (int i = 0; i < digits.length; i++) {
@@ -41,6 +44,21 @@ public class NricNumber implements IdNumbers {
         INITIALIZER.put(Type.FOREIGNER_TWENTY_FIRST_CENTURY, new NricType('G', FIN_LETTERS, CODE, 4));
     }
 
+    @Override
+    public String generateValid(BaseProviders faker) {
+        return getValidFIN(faker, faker.options().option(
+            Type.SINGAPOREAN_TWENTIETH_CENTURY,
+            Type.FOREIGNER_TWENTIETH_CENTURY,
+            Type.SINGAPOREAN_TWENTY_FIRST_CENTURY,
+            Type.FOREIGNER_TWENTY_FIRST_CENTURY
+        ));
+    }
+
+    @Override
+    public String generateInvalid(BaseProviders faker) {
+        return generateValid(faker) + "42";
+    }
+
     public static String getValidFIN(BaseProviders f, Type type) {
         final RandomService random = f.random();
         final int[] number = new int[7];
@@ -49,5 +67,4 @@ public class NricNumber implements IdNumbers {
         }
         return INITIALIZER.get(type).format(number);
     }
-
 }

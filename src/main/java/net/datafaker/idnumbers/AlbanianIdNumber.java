@@ -11,13 +11,18 @@ public class AlbanianIdNumber implements IdNumbers {
     private static final String FIRST_CHAR = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String CHECKSUM_CHAR = "WABCDEFGHIJKLMNOPQRSTUV";
 
-    public String getInvalid(BaseProviders faker) {
-        String pin = getValid(faker);
+    @Override
+    public String country() {
+        return "AL";
+    }
+
+    public String generateInvalid(BaseProviders faker) {
+        String pin = generateValid(faker);
         int invalidMonth = faker.number().numberBetween(93, 99);
         return pin.substring(0, 2) + invalidMonth + pin.substring(4);
     }
 
-    public String getValid(BaseProviders faker) {
+    public String generateValid(BaseProviders faker) {
         LocalDate birthDate = faker.timeAndDate().birthday(0, 200);
         boolean female = faker.bool().bool();
         String basePart = yy(birthDate.getYear()) + mm(birthDate.getMonthValue(), female) + dd(birthDate.getDayOfMonth()) + sss(faker);

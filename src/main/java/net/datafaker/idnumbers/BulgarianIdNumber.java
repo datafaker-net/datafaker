@@ -12,12 +12,17 @@ public class BulgarianIdNumber implements IdNumbers {
     private static final int[] EVEN_DIGITS = {0, 2, 4, 6, 8};
     private static final int[] ODD_DIGITS = {1, 3, 5, 7, 9};
 
-    public String getValid(BaseProviders faker) {
+    @Override
+    public String country() {
+        return "BG";
+    }
+
+    public String generateValid(BaseProviders faker) {
         String basePart = basePart(faker);
         return basePart + checksum(basePart);
     }
 
-    public String getInvalid(BaseProviders faker) {
+    public String generateInvalid(BaseProviders faker) {
         String basePart = basePart(faker);
         return basePart + (checksum(basePart) + 1) % 10;
     }

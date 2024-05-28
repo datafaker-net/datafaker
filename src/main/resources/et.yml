@@ -52,10 +52,6 @@ et:
     cell_phone:
       formats: ["5### ####", "83## ####", "84## ####"]
 
-    id_number:
-      valid: "#{IDNumber.valid_estonian_personal_code}"
-      invalid: "#{IDNumber.invalid_estonian_personal_code}"
-
     invoice:
       reference:
         # '#' means the place where check digit is placed

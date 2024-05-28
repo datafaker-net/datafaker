@@ -11,13 +11,17 @@ import net.datafaker.providers.base.BaseProviders;
  * See <a href="https://pt.wikipedia.org/wiki/N%C3%BAmero_de_identifica%C3%A7%C3%A3o_fiscal">Número de identificação fiscal</a>
  * and <a href="https://en.wikipedia.org/wiki/VAT_identification_number">VAT identification number</a>
  */
-public class PtNifIdNumber implements IdNumbers {
+public class PortugueseIdNumber implements IdNumbers {
+    @Override
+    public String country() {
+        return "PT";
+    }
 
     private static final Character[] VALID_FIRST_DIGITS = {'1', '2', '3', '5', '6', '8'};
     private static final String[] VALID_FIRST_DOUBLE_DIGITS =
         {"45", "70", "71", "72", "74", "75", "77", "79", "90", "91", "98", "99"};
 
-    public String getInvalid(final BaseProviders faker) {
+    public String generateInvalid(final BaseProviders faker) {
         String digits = faker.number().digits(8);
         int digitSum = calculateDigitSum(digits);
         // by adding 5 to a valid checksum, we should invalidate
@@ -25,7 +29,7 @@ public class PtNifIdNumber implements IdNumbers {
         return digits + (digitSum + 5);
     }
 
-    public String getValid(final BaseProviders faker) {
+    public String generateValid(final BaseProviders faker) {
         String digits;
         if (faker.random().nextBoolean()) {
             final char firstDigit = faker.options().option(VALID_FIRST_DIGITS);

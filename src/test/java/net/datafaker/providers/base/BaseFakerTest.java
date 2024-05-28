@@ -38,7 +38,6 @@ public class BaseFakerTest<T extends BaseFaker> {
     protected final T faker = getFaker();
 
     @BeforeEach
-    @SuppressWarnings("unchecked")
     protected void before() {
         try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
 
@@ -56,10 +55,6 @@ public class BaseFakerTest<T extends BaseFaker> {
     @SuppressWarnings("unchecked")
     protected T getFaker() {
         return (T) new BaseFaker();
-    }
-
-    protected <U extends ProviderRegistration> AbstractProvider<U> getProvider() {
-        return null;
     }
 
     @SuppressWarnings("unchecked")

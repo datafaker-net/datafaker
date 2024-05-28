@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MoldovaIdNumberTest {
-    private final MoldovaIdNumber generator = new MoldovaIdNumber();
+class MoldovanIdNumberTest {
+    private final MoldovanIdNumber generator = new MoldovanIdNumber();
     private final Faker faker = new Faker();
 
     @RepeatedTest(100)
     void valid() {
-        String pin = generator.getValid(faker);
+        String pin = generator.generateValid(faker);
         assertThat(pin.length())
             .as(() -> "Presumably valid PIN: '%s'".formatted(pin))
             .isEqualTo(13);
