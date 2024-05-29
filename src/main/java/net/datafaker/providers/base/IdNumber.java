@@ -2,7 +2,7 @@ package net.datafaker.providers.base;
 
 import net.datafaker.idnumbers.AmericanIdNumber;
 import net.datafaker.idnumbers.MexicanIdNumber;
-import net.datafaker.idnumbers.IdNumbers;
+import net.datafaker.idnumbers.IdNumberGenerator;
 import net.datafaker.idnumbers.SouthKoreanIdNumber;
 import net.datafaker.idnumbers.SingaporeIdNumber;
 import net.datafaker.idnumbers.SingaporeIdNumber.Type;
@@ -25,13 +25,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class IdNumber extends AbstractProvider<BaseProviders> {
 
-    private final Map<Class<? extends IdNumbers>, IdNumbers> providers = new ConcurrentHashMap<>();
-    private final Map<String, IdNumbers> countryProviders = new ConcurrentHashMap<>();
+    private final Map<Class<? extends IdNumberGenerator>, IdNumberGenerator> providers = new ConcurrentHashMap<>();
+    private final Map<String, IdNumberGenerator> countryProviders = new ConcurrentHashMap<>();
 
     protected IdNumber(BaseProviders faker) {
         super(faker);
-        List<IdNumbers> idNumbers = loadGenerators(IdNumbers.class);
-        for (IdNumbers idNumber : idNumbers) {
+        List<IdNumberGenerator> idNumbers = loadGenerators(IdNumberGenerator.class);
+        for (IdNumberGenerator idNumber : idNumbers) {
             countryProviders.put(idNumber.countryCode(), idNumber);
         }
     }
@@ -48,7 +48,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
             .orElseGet(() -> faker.numerify(faker.resolve("id_number.invalid")));
     }
 
-    private Optional<IdNumbers> countryProvider() {
+    private Optional<IdNumberGenerator> countryProvider() {
         String country = faker.getContext().getLocale().getCountry();
         return Optional.ofNullable(countryProviders.get(country));
     }
@@ -236,11 +236,11 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends IdNumbers> T provider(Class<T> clazz) {
+    private <T extends IdNumberGenerator> T provider(Class<T> clazz) {
         return (T) providers.computeIfAbsent(clazz, aClass -> create(clazz));
     }
 
-    private <T extends IdNumbers> T create(Class<T> clazz) {
+    private <T extends IdNumberGenerator> T create(Class<T> clazz) {
         try {
             return clazz.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {

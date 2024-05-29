@@ -12,7 +12,7 @@ import java.time.LocalDate;
  * <a href="https://taxid.pro/docs/countries/moldova">Overview</a>
  * <a href="https://taxid.pro/?example=moldova-tin-for-individuals">Online generator</a>
  */
-public class MoldovanIdNumber implements IdNumbers {
+public class MoldovanIdNumber implements IdNumberGenerator {
 
     private static final int[] CHECKSUM_MASK = new int[]{7, 3, 1, 7, 3, 1, 7, 3, 1, 7, 3, 1};
 

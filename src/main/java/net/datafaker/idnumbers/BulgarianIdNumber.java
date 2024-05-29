@@ -7,7 +7,7 @@ import java.time.LocalDate;
 /**
  * <a href="https://en.wikipedia.org/wiki/Unique_citizenship_number">Specification</a>
  */
-public class BulgarianIdNumber implements IdNumbers {
+public class BulgarianIdNumber implements IdNumberGenerator {
     private static final int[] CHECKSUM_WEIGHTS = {2, 4, 8, 5, 10, 9, 7, 3, 6};
     private static final int[] EVEN_DIGITS = {0, 2, 4, 6, 8};
     private static final int[] ODD_DIGITS = {1, 3, 5, 7, 9};

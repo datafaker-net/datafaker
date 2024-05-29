@@ -11,7 +11,7 @@ import java.util.List;
  * <a href="https://en.wikipedia.org/wiki/National_identification_number#North_Macedonia">Intro</a>
  * <a href="https://en.wikipedia.org/wiki/Unique_Master_Citizen_Number">Specification</a>
  */
-public class MacedonianIdNumber implements IdNumbers {
+public class MacedonianIdNumber implements IdNumberGenerator {
     private static final List<String> REGIONS = List.of("41", "42", "43", "44", "45", "46", "47", "48", "49");
 
     @Override

@@ -11,7 +11,7 @@ import net.datafaker.providers.base.BaseProviders;
  * See <a href="https://pt.wikipedia.org/wiki/N%C3%BAmero_de_identifica%C3%A7%C3%A3o_fiscal">Número de identificação fiscal</a>
  * and <a href="https://en.wikipedia.org/wiki/VAT_identification_number">VAT identification number</a>
  */
-public class PortugueseIdNumber implements IdNumbers {
+public class PortugueseIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {
         return "PT";

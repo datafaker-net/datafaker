@@ -5,7 +5,7 @@ import net.datafaker.providers.base.BaseProviders;
 /**
  * Generates ID numbers for Georgian citizens and Residents
  */
-public class GeorgianIdNumber implements IdNumbers {
+public class GeorgianIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {
         return "GE";

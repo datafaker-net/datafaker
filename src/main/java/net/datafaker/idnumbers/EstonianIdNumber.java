@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
  * <p>
  * and <a href="https://en.wikipedia.org/wiki/National_identification_number#Estonia">Estonian identification number</a>
  */
-public class EstonianIdNumber implements IdNumbers {
+public class EstonianIdNumber implements IdNumberGenerator {
     private static final DateTimeFormatter BIRTHDAY_FORMAT = DateTimeFormatter.ofPattern("yyMMdd");
     private static final int[] CHECKSUM_COEFFICIENTS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
     private static final int[] CHECKSUM_COEFFICIENTS2 = {3, 4, 5, 6, 7, 8, 9, 1, 2, 3};

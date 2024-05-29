@@ -12,7 +12,7 @@ import java.time.temporal.ChronoField;
  * and the description at
  * <a href="https://en.wikipedia.org/wiki/Personal_identity_number_">https://en.wikipedia.org/wiki/Personal_identity_number_</a>(Sweden)
  */
-public class SwedenIdNumber implements IdNumbers {
+public class SwedenIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {
         return "SE";

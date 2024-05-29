@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * Implementation based on the description at
  * <a href="https://en.wikipedia.org/wiki/Resident_registration_number">Wikipedia - Resident registration number</a>
  */
-public class SouthKoreanIdNumber implements IdNumbers {
+public class SouthKoreanIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {
         return "KR";
