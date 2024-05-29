@@ -38,6 +38,6 @@ public class AmericanIdNumber implements IdNumbers {
 
     @Override
     public String generateInvalid(BaseProviders faker) {
-        return faker.regexify(faker.options().option(INVALID_SSNS));
+        return faker.regexify(faker.options().nextElement(INVALID_SSNS));
     }
 }
