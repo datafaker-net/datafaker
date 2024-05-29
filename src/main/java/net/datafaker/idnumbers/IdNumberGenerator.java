@@ -4,7 +4,7 @@ import net.datafaker.providers.base.BaseProviders;
 
 import java.time.format.DateTimeFormatter;
 
-public interface IdNumbers {
+public interface IdNumberGenerator {
     DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
 
     /**

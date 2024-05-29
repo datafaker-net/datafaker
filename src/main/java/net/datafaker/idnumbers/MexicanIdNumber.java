@@ -9,7 +9,7 @@ import java.time.LocalDate;
  * Implementation based on the definition at
  * <a href="https://en.wikipedia.org/wiki/Unique_Population_Registry_Code">https://en.wikipedia.org/wiki/Unique_Population_Registry_Code</a>
  */
-public class MexicanIdNumber implements IdNumbers {
+public class MexicanIdNumber implements IdNumberGenerator {
 
     @Override
     public String countryCode() {

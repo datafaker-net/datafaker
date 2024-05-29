@@ -9,7 +9,7 @@ import net.datafaker.service.RandomService;
  *
  * @author irakatz
  */
-public class ChineseIdNumber implements IdNumbers {
+public class ChineseIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {
         return "CN";

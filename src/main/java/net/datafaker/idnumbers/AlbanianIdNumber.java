@@ -7,7 +7,7 @@ import java.time.LocalDate;
 /**
  * The Albanian Identity Number is a unique personal identification number of 10 characters in the format YYMMDDSSSC
  */
-public class AlbanianIdNumber implements IdNumbers {
+public class AlbanianIdNumber implements IdNumberGenerator {
     private static final String FIRST_CHAR = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String CHECKSUM_CHAR = "WABCDEFGHIJKLMNOPQRSTUV";
 

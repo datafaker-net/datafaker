@@ -5,7 +5,7 @@ import net.datafaker.providers.base.BaseProviders;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class AmericanIdNumber implements IdNumbers {
+public class AmericanIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {
         return "US";
