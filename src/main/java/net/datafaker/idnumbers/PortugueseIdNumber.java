@@ -13,7 +13,7 @@ import net.datafaker.providers.base.BaseProviders;
  */
 public class PortugueseIdNumber implements IdNumbers {
     @Override
-    public String country() {
+    public String countryCode() {
         return "PT";
     }
 

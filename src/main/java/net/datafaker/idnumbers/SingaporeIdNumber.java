@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class SingaporeIdNumber implements IdNumbers {
     @Override
-    public String country() {
+    public String countryCode() {
         return "SG";
     }
 

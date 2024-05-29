@@ -32,7 +32,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
         super(faker);
         List<IdNumbers> idNumbers = loadGenerators(IdNumbers.class);
         for (IdNumbers idNumber : idNumbers) {
-            countryProviders.put(idNumber.country(), idNumber);
+            countryProviders.put(idNumber.countryCode(), idNumber);
         }
     }
 
