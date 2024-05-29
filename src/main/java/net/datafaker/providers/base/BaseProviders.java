@@ -265,6 +265,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(IdNumber.class, IdNumber::new);
     }
 
+    default Image image() {
+        return getProvider(Image.class, Image::new);
+    }
+
     default IndustrySegments industrySegments() {
         return getProvider(IndustrySegments.class, IndustrySegments::new);
     }
