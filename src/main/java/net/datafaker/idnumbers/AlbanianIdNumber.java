@@ -16,12 +16,14 @@ public class AlbanianIdNumber implements IdNumbers {
         return "AL";
     }
 
+    @Override
     public String generateInvalid(BaseProviders faker) {
         String pin = generateValid(faker);
         int invalidMonth = faker.number().numberBetween(93, 99);
         return pin.substring(0, 2) + invalidMonth + pin.substring(4);
     }
 
+    @Override
     public String generateValid(BaseProviders faker) {
         LocalDate birthDate = faker.timeAndDate().birthday(0, 200);
         boolean female = faker.bool().bool();

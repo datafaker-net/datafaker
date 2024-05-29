@@ -21,11 +21,13 @@ public class MoldovanIdNumber implements IdNumbers {
         return "MD";
     }
 
+    @Override
     public String generateValid(BaseProviders faker) {
         String basePart = basePart(faker);
         return basePart + checksum(basePart);
     }
 
+    @Override
     public String generateInvalid(BaseProviders faker) {
         String basePart = basePart(faker);
         return basePart + (checksum(basePart) + 1) % 10;
