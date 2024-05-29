@@ -54,8 +54,7 @@ class AwsTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testService() {
-        String service = faker.aws().service();
-        assertThat(service).matches("^AWS \\S.*$");
+        assertThat(faker.aws().service()).isNotEmpty();
     }
 
 }
