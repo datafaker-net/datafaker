@@ -21,6 +21,7 @@ public class PortugueseIdNumber implements IdNumbers {
     private static final String[] VALID_FIRST_DOUBLE_DIGITS =
         {"45", "70", "71", "72", "74", "75", "77", "79", "90", "91", "98", "99"};
 
+    @Override
     public String generateInvalid(final BaseProviders faker) {
         String digits = faker.number().digits(8);
         int digitSum = calculateDigitSum(digits);
@@ -29,6 +30,7 @@ public class PortugueseIdNumber implements IdNumbers {
         return digits + (digitSum + 5);
     }
 
+    @Override
     public String generateValid(final BaseProviders faker) {
         String digits;
         if (faker.random().nextBoolean()) {

@@ -56,6 +56,7 @@ public class MexicanIdNumber implements IdNumbers {
      * @param faker faker
      * @return A valid MEX CURP.
      */
+    @Override
     public String generateValid(BaseProviders faker) {
         final Options options = faker.options();
         char[] birthDay = getBirthday(faker).toCharArray();
@@ -87,6 +88,7 @@ public class MexicanIdNumber implements IdNumbers {
      * @param faker faker
      * @return A invalid MEX CURP.
      */
+    @Override
     public String generateInvalid(BaseProviders faker) {
         return faker.options().option(CHA);
     }

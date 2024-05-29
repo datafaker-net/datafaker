@@ -23,11 +23,13 @@ public class EstonianIdNumber implements IdNumbers {
         return "EE";
     }
 
+    @Override
     public String generateInvalid(final BaseProviders faker) {
         String digits = basePart(faker);
         return digits + (checksum(digits) + 1) % 10;
     }
 
+    @Override
     public String generateValid(final BaseProviders faker) {
         String digits = basePart(faker);
         return digits + checksum(digits);
