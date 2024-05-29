@@ -13,7 +13,7 @@ public class BulgarianIdNumber implements IdNumbers {
     private static final int[] ODD_DIGITS = {1, 3, 5, 7, 9};
 
     @Override
-    public String country() {
+    public String countryCode() {
         return "BG";
     }
 

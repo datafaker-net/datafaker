@@ -12,7 +12,7 @@ public class AlbanianIdNumber implements IdNumbers {
     private static final String CHECKSUM_CHAR = "WABCDEFGHIJKLMNOPQRSTUV";
 
     @Override
-    public String country() {
+    public String countryCode() {
         return "AL";
     }
 

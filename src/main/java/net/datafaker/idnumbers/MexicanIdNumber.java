@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class MexicanIdNumber implements IdNumbers {
 
     @Override
-    public String country() {
+    public String countryCode() {
         return "MX";
     }
 

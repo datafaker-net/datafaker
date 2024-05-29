@@ -19,7 +19,7 @@ public class EstonianIdNumber implements IdNumbers {
     private static final int[] CHECKSUM_COEFFICIENTS2 = {3, 4, 5, 6, 7, 8, 9, 1, 2, 3};
 
     @Override
-    public String country() {
+    public String countryCode() {
         return "EE";
     }
 

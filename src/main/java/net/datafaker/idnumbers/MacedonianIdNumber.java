@@ -15,7 +15,7 @@ public class MacedonianIdNumber implements IdNumbers {
     private static final List<String> REGIONS = List.of("41", "42", "43", "44", "45", "46", "47", "48", "49");
 
     @Override
-    public String country() {
+    public String countryCode() {
         return "MK";
     }
 

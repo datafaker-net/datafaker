@@ -17,7 +17,7 @@ public class MoldovanIdNumber implements IdNumbers {
     private static final int[] CHECKSUM_MASK = new int[]{7, 3, 1, 7, 3, 1, 7, 3, 1, 7, 3, 1};
 
     @Override
-    public String country() {
+    public String countryCode() {
         return "MD";
     }
 

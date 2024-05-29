@@ -11,7 +11,7 @@ import net.datafaker.service.RandomService;
  */
 public class ChineseIdNumber implements IdNumbers {
     @Override
-    public String country() {
+    public String countryCode() {
         return "CN";
     }
 

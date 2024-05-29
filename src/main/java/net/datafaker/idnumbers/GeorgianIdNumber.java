@@ -7,7 +7,7 @@ import net.datafaker.providers.base.BaseProviders;
  */
 public class GeorgianIdNumber implements IdNumbers {
     @Override
-    public String country() {
+    public String countryCode() {
         return "GE";
     }
 

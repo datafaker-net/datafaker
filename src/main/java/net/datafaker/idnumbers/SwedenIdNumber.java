@@ -14,7 +14,7 @@ import java.time.temporal.ChronoField;
  */
 public class SwedenIdNumber implements IdNumbers {
     @Override
-    public String country() {
+    public String countryCode() {
         return "SE";
     }
 

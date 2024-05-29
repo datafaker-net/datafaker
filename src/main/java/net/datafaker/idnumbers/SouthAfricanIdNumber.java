@@ -13,7 +13,7 @@ import java.time.temporal.ChronoField;
 public class SouthAfricanIdNumber implements IdNumbers {
 
     @Override
-    public String country() {
+    public String countryCode() {
         return "ZA";
     }
 

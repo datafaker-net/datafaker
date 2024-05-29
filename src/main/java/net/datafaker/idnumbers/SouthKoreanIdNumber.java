@@ -13,7 +13,7 @@ import java.time.LocalDate;
  */
 public class SouthKoreanIdNumber implements IdNumbers {
     @Override
-    public String country() {
+    public String countryCode() {
         return "KR";
     }
 

@@ -15,7 +15,7 @@ public class PolishIdNumber implements IdNumbers {
     public static final int PESEL_LENGTH = 11;
 
     @Override
-    public String country() {
+    public String countryCode() {
         return "PL";
     }
 

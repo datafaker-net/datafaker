@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class AmericanIdNumber implements IdNumbers {
     @Override
-    public String country() {
+    public String countryCode() {
         return "US";
     }
 
