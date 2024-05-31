@@ -54,7 +54,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testPhone_CA() {
-        final Locale[] locales = {Locale.CANADA, new Locale("ca")};
+        final Locale[] locales = {Locale.CANADA, new Locale("ca", "CA")};
         for (Locale locale : locales) {
             final BaseFaker f = new BaseFaker(locale);
             final String canadianAreaCode = "403|587|780|825|236|250|604|672|778|204|431|506|"
@@ -187,7 +187,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             args(new Locale("sv"), "SE"),
             args(new Locale("th"), "TH"),
             args(new Locale("sk"), "SK", FIXME),
-            args(new Locale("ru"), "RU", 0),
+            args(new Locale("ru", "RU"), "RU", 0),
             args(new Locale("pt", "BR"), "BR"),
             args(new Locale("es", "AR"), "AR", FIXME),
             args(new Locale("es", "MX"), "MX"),

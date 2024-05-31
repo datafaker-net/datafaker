@@ -1,0 +1,16 @@
+# encoding: utf-8
+_BG:
+  faker:
+    phone_number:
+      country_code: ['359']
+      area_codes: ['2', '3', '6', '7']
+      formats:
+        - "(0#{PhoneNumber.area_codes}#) ## ####"
+      formats_international:
+        - "+#{country_code} #{PhoneNumber.area_codes}#-###-###"
+
+    cell_phone:
+      formats: ['c088#######', 'c087#######', 'c089#######']
+
+    passport:
+      valid: "[0-9]{9}"
