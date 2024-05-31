@@ -2,6 +2,9 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AwsTest extends BaseFakerTest<BaseFaker> {
@@ -52,9 +55,10 @@ class AwsTest extends BaseFakerTest<BaseFaker> {
         assertThat(region).matches("^[a-z]{2}-(south|east|north|west|northeast|central|southeast)-\\d$");
     }
 
-    @Test
-    void testService() {
-        assertThat(faker.aws().service()).isNotEmpty();
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        Aws aws = faker.aws();
+        return List.of(TestSpec.of(aws::service, "aws.services"));
     }
 
 }
