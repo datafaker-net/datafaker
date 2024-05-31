@@ -43,18 +43,3 @@ et:
       name_with_middle:
         - "#{prefix} #{first_name} #{last_name}"
         - "#{first_name} #{last_name}"
-
-    phone_number:
-      mobile_operator_prefix: ['51', '53', '55', '56', '57']
-      formats: ["32# ####", "33# ####", "35# ####", "38# ####", "39# ####", "43# ####", "44# ####", "45# ####", "46# ####", "47# ####", "48# ####", "61# ####", "62# ####", "63# ####", "64# ####", "65# ####", "66# ####", "67# ####", "68# ####", "69# ####", "71# ####", "72# ####", "73# ####", "74# ####", "75# ####", "76# ####", "77# ####", "78# ####", "79# ####",  "88# ####"]
-      formats_international:
-        - '+372 #{PhoneNumber.mobile_operator_prefix} ## ## ##'
-    cell_phone:
-      formats: ["5### ####", "83## ####", "84## ####"]
-
-    invoice:
-      reference:
-        # '#' means the place where check digit is placed
-        # Source: http://www.pangaliit.ee/en/settlements-and-standards/reference-number-of-the-invoice
-        check_digit_method: method_731
-        pattern: '\d{1,19}#'
