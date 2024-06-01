@@ -10,7 +10,7 @@ Imagine there is a need to generate a password with length 8 and containing mini
          var faker = new Faker();
          String password = faker.text().text(Text.TextSymbolsBuilder.builder()
                              .len(8)
-                             .with(EN_UPPERCASE, 3)
+                             .with(EN_UPPERCASE, 2)
                              .with(DIGITS, 3);
     ```
 It also allows to use custom symbol sets. For example this will generate a string with length between 8 and 10. 
