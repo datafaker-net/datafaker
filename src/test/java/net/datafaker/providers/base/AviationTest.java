@@ -47,7 +47,7 @@ class AviationTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return List.of(TestSpec.of(aviation::airport, "aviation.airport", "\\w{4}"),
+        return List.of(TestSpec.of(aviation::airport, "aviation.airport", "\\w{3,4}"),
             TestSpec.of(aviation::airportName, "aviation.airport_name"),
             TestSpec.of(aviation::airplane, "aviation.aircraft.airplane"),
             TestSpec.of(aviation::warplane, "aviation.aircraft.warplane"),
