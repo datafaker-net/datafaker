@@ -73,7 +73,7 @@ public class Text extends AbstractProvider<BaseProviders> {
         if (config == null) {
             TextSymbolsBuilder builder =
                 TextSymbolsBuilder.builder()
-                                  .with(Text.EN_LOWERCASE);
+                    .with(Text.EN_LOWERCASE);
             if (includeUppercase) builder = builder.with(Text.EN_UPPERCASE, 1);
             if (includeSpecial) builder = builder.with(Text.DEFAULT_SPECIAL, 1);
             if (includeDigit) builder = builder.with(Text.DIGITS, 1);
@@ -168,6 +168,33 @@ public class Text extends AbstractProvider<BaseProviders> {
         }
     }
 
+    /**
+     * Allows to configure custom expected rules. Example
+     * <pre>
+     *     faker.text().text(Text.TextSymbolsBuilder.builder()
+     *                 .len(5)
+     *                 .with(EN_LOWERCASE, 1)
+     *                 .with(EN_UPPERCASE, 1)
+     *                 .with(DIGITS, 1);
+     * </pre>
+     * This will generate a text with length 5, minimum 1 lower case and 1 upper case symbol
+     * from en locale and minimum 1 digit.
+     * Custom symbol sets are also possible
+     * <pre>
+     *     final String ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+     *     final String customSpecialSymbols = "!@#$%^&*;'][{}";
+     *     final int ruCnt = 3;
+     *     final int specSmbCnt = 5;
+     *     final Text.TextRuleConfig config = Text.TextSymbolsBuilder.builder()
+     *         .len(faker.number().numberBetween(ruCnt + specSmbCnt, Math.max(ruCnt + specSmbCnt, 10)))
+     *         .with(ruLowerCase, ruCnt)
+     *         .with(customSpecialSymbols, specSmbCnt).build();
+     *     final String text = faker.text().text(config);
+     * </pre>
+     * This will generate a string with length between 8 and 10. The string will contain min 3 lower case symbols
+     * from RU locale and minimum 5 symbols from the defined string var
+     * {@code final String customSpecialSymbols = "!@#$%^&*;'][{}";}.
+     */
     public String text(TextRuleConfig textRuleConfig) {
         final int fixedNumberOfCharacters = textRuleConfig.getFixedNumberOfCharacters();
         final int numberOfRequiredSymbols = textRuleConfig.getNumberOfRequiredSymbols();

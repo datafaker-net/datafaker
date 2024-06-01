@@ -177,9 +177,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Consider usage of {@link net.datafaker.providers.base.Text#text} instead,
-     * look at net.datafaker.providers.base.TextTest#textShouldContain3RULowerCaseAnd5CustomSpecialSymbols()
-     * as an example.
+     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
      */
     @Deprecated(since = "2.3.0")
     public String password() {
@@ -187,9 +185,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Consider usage of {@link net.datafaker.providers.base.Text#text} instead,
-     * look at net.datafaker.providers.base.TextTest#textShouldContain3RULowerCaseAnd5CustomSpecialSymbols()
-     * as an example.
+     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
      */
     @Deprecated(since = "2.3.0")
     public String password(boolean includeDigit) {
@@ -197,9 +193,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Consider usage of {@link net.datafaker.providers.base.Text#text} instead,
-     * look at net.datafaker.providers.base.TextTest#textShouldContain3RULowerCaseAnd5CustomSpecialSymbols()
-     * as an example.
+     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
      */
     @Deprecated(since = "2.3.0")
     public String password(int minimumLength, int maximumLength) {
@@ -207,9 +201,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Consider usage of {@link net.datafaker.providers.base.Text#text} instead,
-     * look at net.datafaker.providers.base.TextTest#textShouldContain3RULowerCaseAnd5CustomSpecialSymbols()
-     * as an example.
+     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
      */
     @Deprecated(since = "2.3.0")
     public String password(int minimumLength, int maximumLength, boolean includeUppercase) {
@@ -217,9 +209,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Consider usage of {@link net.datafaker.providers.base.Text#text} instead,
-     * look at net.datafaker.providers.base.TextTest#textShouldContain3RULowerCaseAnd5CustomSpecialSymbols()
-     * as an example.
+     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
      */
     @Deprecated(since = "2.3.0")
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial) {
@@ -227,9 +217,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Consider usage of {@link net.datafaker.providers.base.Text#text} instead,
-     * look at net.datafaker.providers.base.TextTest#textShouldContain3RULowerCaseAnd5CustomSpecialSymbols()
-     * as an example.
+     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
      */
     @Deprecated(since = "2.3.0")
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
