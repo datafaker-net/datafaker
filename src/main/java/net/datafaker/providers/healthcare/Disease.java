@@ -2,8 +2,13 @@ package net.datafaker.providers.healthcare;
 
 import net.datafaker.providers.base.AbstractProvider;
 
-import java.util.List;
-import java.util.function.Supplier;
+import static net.datafaker.providers.healthcare.Disease.DiseaseType.DERMATOLOGY_DISEASE_KEY;
+import static net.datafaker.providers.healthcare.Disease.DiseaseType.GYNECOLOGY_AND_OBSTETRICS_DISEASE_KEY;
+import static net.datafaker.providers.healthcare.Disease.DiseaseType.INTERNAL_DISEASE_KEY;
+import static net.datafaker.providers.healthcare.Disease.DiseaseType.NEUROLOGICAL_DISEASE_KEY;
+import static net.datafaker.providers.healthcare.Disease.DiseaseType.OPHTHALMOLOGY_AND_OTORHINOLARYNGOLOGY_DISEASE_KEY;
+import static net.datafaker.providers.healthcare.Disease.DiseaseType.PAEDIATRIC_DISEASE_KEY;
+import static net.datafaker.providers.healthcare.Disease.DiseaseType.SURGICAL_DISEASE_KEY;
 
 /**
  * Generate random, different kinds of disease.
@@ -12,23 +17,21 @@ import java.util.function.Supplier;
  */
 public class Disease extends AbstractProvider<HealthcareProviders> {
 
-    static final String INTERNAL_DISEASE_KEY = "healthcare.disease.internal_disease";
-    static final String NEUROLOGICAL_DISEASE_KEY = "healthcare.disease.neurology";
-    static final String SURGICAL_DISEASE_KEY = "healthcare.disease.surgery";
-    static final String PAEDIATRIC_DISEASE_KEY = "healthcare.disease.paediatrics";
-    static final String GYNECOLOGY_AND_OBSTETRICS_DISEASE_KEY = "healthcare.disease.gynecology_and_obstetrics";
-    static final String OPHTHALMOLOGY_AND_OTORHINOLARYNGOLOGY_DISEASE_KEY = "healthcare.disease.ophthalmology_and_otorhinolaryngology";
-    static final String DERMATOLOGY_DISEASE_KEY = "healthcare.disease.dermatology";
+    public enum DiseaseType {
+        INTERNAL_DISEASE_KEY("healthcare.disease.internal_disease"),
+        NEUROLOGICAL_DISEASE_KEY( "healthcare.disease.neurology"),
+        SURGICAL_DISEASE_KEY ("healthcare.disease.surgery"),
+        PAEDIATRIC_DISEASE_KEY("healthcare.disease.paediatrics"),
+        GYNECOLOGY_AND_OBSTETRICS_DISEASE_KEY("healthcare.disease.gynecology_and_obstetrics"),
+        OPHTHALMOLOGY_AND_OTORHINOLARYNGOLOGY_DISEASE_KEY("healthcare.disease.ophthalmology_and_otorhinolaryngology"),
+        DERMATOLOGY_DISEASE_KEY("healthcare.disease.dermatology");
 
-    private final List<Supplier<String>> allDiseaseProviders = List.of(
-        this::internalDisease,
-        this::neurology,
-        this::surgery,
-        this::paediatrics,
-        this::gynecologyAndObstetrics,
-        this::ophthalmologyAndOtorhinolaryngology,
-        this::dermatology
-    );
+        final String yamlKey;
+
+        DiseaseType(String yamlKey) {
+            this.yamlKey = yamlKey;
+        }
+    }
 
     /**
      * Create a constructor for Disease
@@ -44,8 +47,7 @@ public class Disease extends AbstractProvider<HealthcareProviders> {
     }
 
     public String anyDisease() {
-        Supplier<String> selectedProvider = allDiseaseProviders.get(faker.random().nextInt(allDiseaseProviders.size()));
-        return selectedProvider.get();
+        return resolve(faker.options().option(DiseaseType.class));
     }
 
     /**
@@ -76,7 +78,7 @@ public class Disease extends AbstractProvider<HealthcareProviders> {
     }
 
     /**
-     * Generate random paediattics disease
+     * Generate random paediatrics disease
      *
      * @return A paediatrics disease
      */
@@ -110,5 +112,9 @@ public class Disease extends AbstractProvider<HealthcareProviders> {
      */
     public String dermatology() {
         return resolve(DERMATOLOGY_DISEASE_KEY);
+    }
+
+    private String resolve(DiseaseType diseaseType) {
+        return resolve(diseaseType.yamlKey);
     }
 }
