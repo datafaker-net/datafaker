@@ -171,16 +171,19 @@ public class Text extends AbstractProvider<BaseProviders> {
     /**
      * Allows to configure custom expected rules. Example
      * <pre>
+     * {@code
      *     faker.text().text(Text.TextSymbolsBuilder.builder()
      *                 .len(5)
      *                 .with(EN_LOWERCASE, 1)
      *                 .with(EN_UPPERCASE, 1)
      *                 .with(DIGITS, 1);
+     * }
      * </pre>
-     * This will generate a text with length 5, minimum 1 lower case and 1 upper case symbol
+     * This will generate a text with length 5 containing minimum 1 lower case and 1 upper case symbol
      * from en locale and minimum 1 digit.
      * Custom symbol sets are also possible
      * <pre>
+     * {@code
      *     final String ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
      *     final String customSpecialSymbols = "!@#$%^&*;'][{}";
      *     final int ruCnt = 3;
@@ -190,9 +193,11 @@ public class Text extends AbstractProvider<BaseProviders> {
      *         .with(ruLowerCase, ruCnt)
      *         .with(customSpecialSymbols, specSmbCnt).build();
      *     final String text = faker.text().text(config);
+     * }
      * </pre>
-     * This will generate a string with length between 8 and 10. The string will contain min 3 lower case symbols
-     * from RU locale and minimum 5 symbols from the defined string var
+     * This will generate a string with length between 8 and 10.
+     * The string will contain min 3 lower case symbols
+     * from ru locale and minimum 5 symbols from the defined string var
      * {@code final String customSpecialSymbols = "!@#$%^&*;'][{}";}.
      */
     public String text(TextRuleConfig textRuleConfig) {
