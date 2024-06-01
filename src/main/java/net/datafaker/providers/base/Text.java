@@ -185,7 +185,7 @@ public class Text extends AbstractProvider<BaseProviders> {
      * <pre>
      * {@code
      *     final String ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-     *     final String customSpecialSymbols = "!@#$%^&*;'][{}";
+     *     final String customSpecialSymbols = "!@#$%^*;'][{}";
      *     final int ruCnt = 3;
      *     final int specSmbCnt = 5;
      *     final Text.TextRuleConfig config = Text.TextSymbolsBuilder.builder()
@@ -198,7 +198,7 @@ public class Text extends AbstractProvider<BaseProviders> {
      * This will generate a string with length between 8 and 10.
      * The string will contain min 3 lower case symbols
      * from ru locale and minimum 5 symbols from the defined string var
-     * {@code final String customSpecialSymbols = "!@#$%^&*;'][{}";}.
+     * {@code final String customSpecialSymbols = "!@#$%^*;'][{}";}.
      */
     public String text(TextRuleConfig textRuleConfig) {
         final int fixedNumberOfCharacters = textRuleConfig.getFixedNumberOfCharacters();
