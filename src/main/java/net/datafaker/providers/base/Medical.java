@@ -20,6 +20,10 @@ public class Medical extends AbstractProvider<BaseProviders> {
         return resolve("medical.medicine_name");
     }
 
+    /**
+     * @deprecated since 2.3.0. Use {@link net.datafaker.providers.healthcare.Disease#anyDisease()} instead.
+     */
+    @Deprecated(since = "2.3.0", forRemoval = true)
     public String diseaseName() {
         return resolve("medical.disease_name");
     }
@@ -40,6 +44,10 @@ public class Medical extends AbstractProvider<BaseProviders> {
         return resolve("medical.symptoms");
     }
 
+    /**
+     * @deprecated since 2.3.0. Use {@link net.datafaker.providers.healthcare.Disease#icd10()} instead.
+     */
+    @Deprecated(since = "2.3.0", forRemoval = true)
     public String diagnosisCode() {
         String regex = resolve("medical.diagnosis_code.icd10");
         return faker.regexify(regex);
