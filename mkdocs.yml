@@ -98,6 +98,7 @@ nav:
     - Advanced usage:
       - Sequences: documentation/sequences.md
       - Date format: documentation/date-format.md
+      - Advanced password generation: documentation/password.md
       - Expressions: documentation/expressions.md
       - Formats: documentation/formats.md
       - Transformation schemas: documentation/schemas.md
