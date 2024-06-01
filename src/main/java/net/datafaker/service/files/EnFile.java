@@ -149,6 +149,7 @@ public class EnFile {
         "job.yml",
         "joke.yml",
         "kpop.yml",
+        "largelanguagemodel.yml",
         "lebowski.yml",
         "location.yml",
         "lord_of_the_rings.yml",

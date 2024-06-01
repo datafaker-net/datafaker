@@ -289,6 +289,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(LanguageCode.class, LanguageCode::new);
     }
 
+    default LargeLanguageModel largeLanguageModel() {
+        return getProvider(LargeLanguageModel.class, LargeLanguageModel::new);
+    }
+
     default Locality locality() {
         return getProvider(Locality.class, Locality::new);
     }
