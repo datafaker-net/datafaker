@@ -1,5 +1,12 @@
 # Articles and news
 
+**May 15, 2024**
+
+*Elias Nogueira** had a talk at Devoxx UK called "Datafaker: the most powerful fake data generator".
+You can find the talk here: 
+
+https://www.youtube.com/watch?v=S6Z7vB5zc0g
+
 **Feb 22, 2024**
 
 *Roman Rybak* published an article about Flexible Data Generation With Datafaker Gen, which you can find here:
