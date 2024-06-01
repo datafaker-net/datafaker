@@ -291,7 +291,7 @@ class FakerTest extends AbstractFakerTest {
         BaseFaker localFaker = new BaseFaker();
         assertThatThrownBy(
             () -> localFaker.doWith(() -> {
-                throw new Exception();
+                throw new Exception("おっと");
             }, Locale.JAPAN))
             .isInstanceOf(RuntimeException.class);
     }
@@ -309,7 +309,7 @@ class FakerTest extends AbstractFakerTest {
 
         assertThatThrownBy(
             () -> localFaker.doWith(() -> {
-                throw new Exception();
+                throw new Exception("Oops1");
             }, 123))
             .isInstanceOf(RuntimeException.class);
         assertThat(localFaker.doWith(stringCallable, Locale.CANADA, 123))
@@ -319,7 +319,7 @@ class FakerTest extends AbstractFakerTest {
             .isEqualTo(localFaker.doWith(stringCallable, Locale.CANADA, 987));
         assertThatThrownBy(
             () -> localFaker.doWith(() -> {
-                throw new Exception();
+                throw new Exception("Oops2");
             }, Locale.ENGLISH, 123))
             .isInstanceOf(RuntimeException.class);
     }

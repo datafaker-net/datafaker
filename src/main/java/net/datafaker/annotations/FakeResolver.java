@@ -6,16 +6,16 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import net.datafaker.internal.helper.COWMap;
+import net.datafaker.internal.helper.CopyOnWriteMap;
 import net.datafaker.transformations.JavaObjectTransformer;
 import net.datafaker.transformations.Schema;
 
 public class FakeResolver<T> {
 
     private static final JavaObjectTransformer JAVA_OBJECT_TRANSFORMER = new JavaObjectTransformer();
-    private static final Map<Class<?>, FakeResolver<?>> CLASS_2_FAKE_RESOLVER = new COWMap<>(IdentityHashMap::new);
+    private static final Map<Class<?>, FakeResolver<?>> CLASS_2_FAKE_RESOLVER = new CopyOnWriteMap<>(IdentityHashMap::new);
 
-    private static final Map<Class<?>, Schema<Object, ?>> DEFAULT_SCHEMA_CACHE = new COWMap<>(IdentityHashMap::new);
+    private static final Map<Class<?>, Schema<Object, ?>> DEFAULT_SCHEMA_CACHE = new CopyOnWriteMap<>(IdentityHashMap::new);
 
     private final Class<T> clazz;
 

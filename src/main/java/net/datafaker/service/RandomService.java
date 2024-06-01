@@ -48,7 +48,7 @@ public class RandomService {
     // lifted from http://stackoverflow.com/questions/2546078/java-random-long-number-in-0-x-n-range
     public long nextLong(long n) {
         if (n <= 0) {
-            throw new IllegalArgumentException("bound must be positive");
+            throw new IllegalArgumentException("bound must be positive: " + n);
         }
 
         long bits, val;

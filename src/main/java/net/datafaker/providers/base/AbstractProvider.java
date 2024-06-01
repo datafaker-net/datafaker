@@ -1,6 +1,8 @@
 package net.datafaker.providers.base;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.ServiceLoader;
 import java.util.function.Supplier;
 
 public class AbstractProvider<T extends ProviderRegistration> {
@@ -33,5 +35,11 @@ public class AbstractProvider<T extends ProviderRegistration> {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    protected <G> List<G> loadGenerators(Class<G> generatorClass) {
+        return ServiceLoader.load(generatorClass).stream()
+            .map(ServiceLoader.Provider::get)
+            .toList();
     }
 }

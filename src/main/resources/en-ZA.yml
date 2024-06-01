@@ -135,10 +135,6 @@ en-ZA:
       name_with_middle:
         - "#{first_name} #{last_name} #{last_name}"
 
-    id_number:
-      valid: "#{IDNumber.valid_en_za_ssn}"
-      invalid: "#{IDNumber.invalid_en_za_ssn}"
-
     team:
       provinces: [Limpopo, Gauteng, Free State,
        North West, Northern Cape, Western Cape,

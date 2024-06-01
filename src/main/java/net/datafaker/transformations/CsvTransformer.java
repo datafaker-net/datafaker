@@ -39,8 +39,8 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String generate(Iterable<IN> input, Schema<IN, ?> schema) {
-        if (input instanceof FakeSequence && ((FakeSequence) input).isInfinite()) {
-            throw new IllegalArgumentException("The sequence should be finite of size");
+        if (input instanceof FakeSequence<?> fakeSequence && fakeSequence.isInfinite()) {
+            throw new IllegalArgumentException("The sequence should be finite of size: " + fakeSequence);
         }
 
         StringBuilder sb = new StringBuilder();

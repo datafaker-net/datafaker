@@ -56,21 +56,21 @@ class RelationshipTest extends BaseFakerTest<BaseFaker> {
     @Test
     void anyWithIllegalAccessExceptionThrown() {
         when(mockFaker.random()).then(invocationOnMock -> {
-            throw new IllegalAccessException();
+            throw new IllegalAccessException("Oops");
         });
         assertThatThrownBy(() -> new Relationship(mockFaker).any())
             .isInstanceOf(RuntimeException.class)
-            .hasMessageStartingWith("IllegalAccessException: ");
+            .hasMessageStartingWith("java.lang.IllegalAccessException: Oops");
     }
 
     @Test
     void anyWithInvocationTargetExceptionThrown() {
         when(mockFaker.random()).then(invocationOnMock -> {
-            throw new InvocationTargetException(new Exception());
+            throw new InvocationTargetException(new Exception("Oops"));
         });
         assertThatThrownBy(() -> new Relationship(mockFaker).any())
             .isInstanceOf(RuntimeException.class)
-            .hasMessageStartingWith("InvocationTargetException: ");
+            .hasMessage("java.lang.reflect.InvocationTargetException");
     }
 
 }

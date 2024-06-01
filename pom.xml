@@ -24,29 +24,29 @@
         <additionalparam>-Xdoclint:none</additionalparam>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
-        <assertj-core.version>3.25.3</assertj-core.version>
+        <assertj-core.version>3.26.0</assertj-core.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <commons-text.version>1.12.0</commons-text.version>
-        <commons-validator.version>1.8.0</commons-validator.version>
+        <commons-validator.version>1.9.0</commons-validator.version>
         <rgxgen.version>2.0</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <jbanking.version>4.2.0</jbanking.version>
         <junit.version>5.10.2</junit.version>
-        <libphonenumber.version>8.13.36</libphonenumber.version>
+        <libphonenumber.version>8.13.38</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-        <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
+        <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
         <maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
         <maven-gpg-plugin.version>3.2.4</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
-        <maven-shade-plugin.version>3.5.3</maven-shade-plugin.version>
+        <maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
+        <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
-        <mockito-core.version>5.11.0</mockito-core.version>
-        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+        <mockito-core.version>5.12.0</mockito-core.version>
+        <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.25.10</javaparser.version>
         <snakeyaml.version>2.2</snakeyaml.version>
@@ -54,7 +54,7 @@
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
         <surefire.argline>@{argLine} -Duser.language=TR -Duser.country=tr</surefire.argline>
-        <kotlin.version>1.9.23</kotlin.version>
+        <kotlin.version>2.0.0</kotlin.version>
     </properties>
     <licenses>
         <license>

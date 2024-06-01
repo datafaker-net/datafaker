@@ -1,15 +1,22 @@
 package net.datafaker.providers.base;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class TimeTest extends BaseFakerTest<BaseFaker> {
+
+    private static final Pattern RE_TIME_BETWEEN = Pattern.compile("[0-2][0-9]:[0-5][0-9]:[0-5][0-9]");
+    private static final long NANOSECONDS_IN_DAY = 24L * 60 * 60 * 1000 * 1000_000L;
+    private static final long NANOSECONDS_IN_MINUTE = 60 * 1000 * 1000_000L;
 
     @Test
     void testFutureTime() {
@@ -80,16 +87,20 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
         LocalTime then = now.plusSeconds(1);
         assertThatThrownBy(() -> faker.time().between(then, now))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Invalid time range, the upper bound time is before the lower bound.");
+            .hasMessage("Invalid time range: the upper bound time (%s) is before the lower bound (%s)".formatted(now, then));
     }
 
-    @Test
+    @RepeatedTest(10)
     void testBetweenWithMask() {
-        String pattern = "mm:hh:ss";
-        LocalTime now = LocalTime.now();
+        String pattern = "HH:mm:ss";
+        LocalTime now = LocalTime.ofNanoOfDay((long) (Math.random() * (NANOSECONDS_IN_DAY - NANOSECONDS_IN_MINUTE - 1)));
         LocalTime then = now.plusMinutes(1);
 
-        DateTimeFormatter.ofPattern(pattern).parse(faker.time().between(now, then, pattern));
+        String result = faker.time().between(now, then, pattern);
+        assertThat(result).matches(RE_TIME_BETWEEN);
+        TemporalAccessor timeBetween = DateTimeFormatter.ofPattern(pattern).parse(result);
+        assertThat(timeBetween.query(LocalTime::from)).isAfter(now.minusSeconds(1));
+        assertThat(timeBetween.query(LocalTime::from)).isBefore(then.plusSeconds(1));
     }
 
     @Test

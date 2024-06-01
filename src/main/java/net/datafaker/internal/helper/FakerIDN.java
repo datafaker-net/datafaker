@@ -14,7 +14,7 @@ public class FakerIDN {
     public static String toASCII(String in) {
         try {
             return IDN.toASCII(in);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             // let's continue with the character by character encoding hack.
         }
         final StringBuilder asciiResult = new StringBuilder();
@@ -25,7 +25,7 @@ public class FakerIDN {
             }
         }
         if (asciiResult.isEmpty()) {
-            throw new RuntimeException("Unable to convert " + in + " to ASCII");
+            throw new RuntimeException("Unable to convert \"%s\" to ASCII".formatted(in));
         }
         return asciiResult.toString();
     }

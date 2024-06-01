@@ -1,21 +1,23 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.idnumbers.EnIdNumber;
-import net.datafaker.idnumbers.EnZAIdNumber;
-import net.datafaker.idnumbers.EsMXIdNumber;
-import net.datafaker.idnumbers.IdNumbers;
-import net.datafaker.idnumbers.KoKrIdNumber;
-import net.datafaker.idnumbers.NricNumber;
-import net.datafaker.idnumbers.NricNumber.Type;
-import net.datafaker.idnumbers.PeselNumber;
-import net.datafaker.idnumbers.PeselNumber.Gender;
-import net.datafaker.idnumbers.PtNifIdNumber;
-import net.datafaker.idnumbers.SvSEIdNumber;
-import net.datafaker.idnumbers.ZhCnIdNumber;
+import net.datafaker.idnumbers.AmericanIdNumber;
+import net.datafaker.idnumbers.MexicanIdNumber;
+import net.datafaker.idnumbers.IdNumberGenerator;
+import net.datafaker.idnumbers.SouthKoreanIdNumber;
+import net.datafaker.idnumbers.SingaporeIdNumber;
+import net.datafaker.idnumbers.SingaporeIdNumber.Type;
+import net.datafaker.idnumbers.PolishIdNumber;
+import net.datafaker.idnumbers.PolishIdNumber.Gender;
+import net.datafaker.idnumbers.PortugueseIdNumber;
+import net.datafaker.idnumbers.SouthAfricanIdNumber;
+import net.datafaker.idnumbers.SwedenIdNumber;
+import net.datafaker.idnumbers.ChineseIdNumber;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -23,112 +25,159 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class IdNumber extends AbstractProvider<BaseProviders> {
 
-    private final Map<Class<? extends IdNumbers>, IdNumbers> map = new ConcurrentHashMap<>();
+    private final Map<Class<? extends IdNumberGenerator>, IdNumberGenerator> providers = new ConcurrentHashMap<>();
+    private final Map<String, IdNumberGenerator> countryProviders = new ConcurrentHashMap<>();
 
     protected IdNumber(BaseProviders faker) {
         super(faker);
+        List<IdNumberGenerator> idNumbers = loadGenerators(IdNumberGenerator.class);
+        for (IdNumberGenerator idNumber : idNumbers) {
+            countryProviders.put(idNumber.countryCode(), idNumber);
+        }
     }
 
     public String valid() {
-        return resolve("id_number.valid");
+        return countryProvider()
+            .map(p -> p.generateValid(faker))
+            .orElseGet(() -> faker.numerify(faker.resolve("id_number.valid")));
     }
 
     public String invalid() {
-        return faker.numerify(faker.resolve("id_number.invalid"));
+        return countryProvider()
+            .map(p -> p.generateInvalid(faker))
+            .orElseGet(() -> faker.numerify(faker.resolve("id_number.invalid")));
+    }
+
+    private Optional<IdNumberGenerator> countryProvider() {
+        String country = faker.getContext().getLocale().getCountry();
+        return Optional.ofNullable(countryProviders.get(country));
     }
 
     public String ssnValid() {
-        EnIdNumber enIdNumber = (EnIdNumber) map.computeIfAbsent(EnIdNumber.class, aClass -> new EnIdNumber());
-        return enIdNumber.getValidSsn(faker);
+        return provider(AmericanIdNumber.class).generateValid(faker);
     }
 
     /**
-     * Specified as #{IDNumber.valid_sv_se_ssn} in sv-SE.yml
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("sv", "SE"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validSvSeSsn() {
-        SvSEIdNumber svSEIdNumber = (SvSEIdNumber) map.computeIfAbsent(SvSEIdNumber.class, aClass -> new SvSEIdNumber());
-        return svSEIdNumber.getValidSsn(faker);
+        return provider(SwedenIdNumber.class).generateValid(faker);
     }
 
-    /**
-     * Specified as #{IDNumber.valid_en_za_ssn} in en-ZA.yml
-     */
-    public String validEnZaSsn() {
-        EnZAIdNumber enZAIdNumber = (EnZAIdNumber) map.computeIfAbsent(EnZAIdNumber.class, aClass -> new EnZAIdNumber());
-        return enZAIdNumber.getValidSsn(faker);
-    }
-
-    /**
-     * Specified as #{IDNumber.invalid_en_za_ssn} in en-ZA.yml
-     */
-    public String inValidEnZaSsn() {
-        EnZAIdNumber enZAIdNumber = (EnZAIdNumber) map.computeIfAbsent(EnZAIdNumber.class, aClass -> new EnZAIdNumber());
-        return enZAIdNumber.getInValidSsn(faker);
-    }
-
-    /**
-     * Specified as #{IDNumber.invalid_sv_se_ssn} in sv-SE.yml
-     */
+    @Deprecated
     public String invalidSvSeSsn() {
-        SvSEIdNumber svSEIdNumber = (SvSEIdNumber) map.computeIfAbsent(SvSEIdNumber.class, aClass -> new SvSEIdNumber());
-        return svSEIdNumber.getInvalidSsn(faker);
+        return provider(SwedenIdNumber.class).generateInvalid(faker);
+    }
+
+    /**
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("en", "ZA"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
+     */
+    @Deprecated
+    public String validEnZaSsn() {
+        return provider(SouthAfricanIdNumber.class).getValidSsn(faker);
+    }
+
+    @Deprecated
+    public String inValidEnZaSsn() {
+        return provider(SouthAfricanIdNumber.class).getInValidSsn(faker);
     }
 
     public String singaporeanFin() {
-        return NricNumber.getValidFIN(faker, Type.FOREIGNER_TWENTY_FIRST_CENTURY);
+        return SingaporeIdNumber.getValidFIN(faker, Type.FOREIGNER_TWENTY_FIRST_CENTURY);
     }
 
     public String singaporeanFinBefore2000() {
-        return NricNumber.getValidFIN(faker, Type.FOREIGNER_TWENTIETH_CENTURY);
+        return SingaporeIdNumber.getValidFIN(faker, Type.FOREIGNER_TWENTIETH_CENTURY);
     }
 
     public String singaporeanUin() {
-        return NricNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTY_FIRST_CENTURY);
+        return SingaporeIdNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTY_FIRST_CENTURY);
     }
 
     public String singaporeanUinBefore2000() {
-        return NricNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTIETH_CENTURY);
+        return SingaporeIdNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTIETH_CENTURY);
     }
 
     /**
-     * Generate a valid Zh-CN id number.
+     * Generate a valid Chinese id number
      *
-     * @return A Zh-CN id number
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("zh", "CN"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validZhCNSsn() {
-        ZhCnIdNumber zhCnIdNumber = (ZhCnIdNumber) map.computeIfAbsent(ZhCnIdNumber.class, aClass -> new ZhCnIdNumber());
-        return zhCnIdNumber.getValidSsn(faker);
+        return provider(ChineseIdNumber.class).generateValid(faker);
     }
 
+    /**
+     * Generate a valid Chinese id number
+     *
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("pt", "PT"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
+     */
+    @Deprecated
     public String validPtNif() {
-        PtNifIdNumber idNumber = (PtNifIdNumber) map.computeIfAbsent(PtNifIdNumber.class, aClass -> new PtNifIdNumber());
-        return idNumber.getValid(faker);
+        return provider(PortugueseIdNumber.class).generateValid(faker);
     }
 
+    @Deprecated
     public String invalidPtNif() {
-        PtNifIdNumber idNumber = (PtNifIdNumber) map.computeIfAbsent(PtNifIdNumber.class, aClass -> new PtNifIdNumber());
-        return idNumber.getInvalid(faker);
+        return provider(PortugueseIdNumber.class).generateInvalid(faker);
     }
 
-
     /**
-     * Specified as #{IDNumber.valid_es_mx_ssn} in es-MX.yml
+     * @return A valid Mexican CURP
      *
-     * @return A valid MEX CURP.
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("es", "MX"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validEsMXSsn() {
-        EsMXIdNumber esMXIdNumber = (EsMXIdNumber) map.computeIfAbsent(EsMXIdNumber.class, aClass -> new EsMXIdNumber());
-        return esMXIdNumber.get(faker);
+        return provider(MexicanIdNumber.class).get(faker);
     }
 
     /**
-     * Specified as #{IDNumber.invalid_es_mx_ssn} in es-MX.yml
+     * @return An invalid Mexican CURP
      *
-     * @return A valid MEX CURP.
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("es", "MX"));
+     *   String idNumber = faker.idNumber().invalid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String invalidEsMXSsn() {
-        EsMXIdNumber esMXIdNumber = (EsMXIdNumber) map.computeIfAbsent(EsMXIdNumber.class, aClass -> new EsMXIdNumber());
-        return esMXIdNumber.getWrong(faker);
+        return provider(MexicanIdNumber.class).generateInvalid(faker);
     }
 
     /**
@@ -138,19 +187,18 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @return A valid PESEL number
      */
     public String peselNumber() {
-        return peselNumber(faker.date().birthday(0, 100).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-            Gender.ANY);
+        return peselNumber(faker.timeAndDate().birthday(0, 100), Gender.ANY);
     }
 
     /**
-     * Generates a valid PESEL number for a person with given gender and birth date.
+     * Generates a valid PESEL number for a person with given gender and birthdate.
      *
-     * @param birthDate Given birth date
-     * @param gender    Person's gender. Null value means {@link net.datafaker.idnumbers.PeselNumber.Gender#ANY}
+     * @param birthDate Given birthdate
+     * @param gender    Person's gender. Null value means {@link PolishIdNumber.Gender#ANY}
      * @return A valid PESEL number
      */
     public String peselNumber(LocalDate birthDate, Gender gender) {
-        return new PeselNumber(faker).get(birthDate, gender);
+        return new PolishIdNumber().get(faker, birthDate, gender);
     }
 
     /**
@@ -158,18 +206,45 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      *
      * @return A valid RRN
      * @since 1.8.0
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker f = new Faker(new Locale("en", "KR"));
+     *   String rrn = f.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validKoKrRrn() {
-        KoKrIdNumber koKrIdNumber = (KoKrIdNumber) map.computeIfAbsent(KoKrIdNumber.class, aClass -> new KoKrIdNumber());
-        return koKrIdNumber.getValidRrn(faker);
+        return provider(SouthKoreanIdNumber.class).getValidRrn(faker);
     }
-    
+
     /**
      * Generates valid ID number for Georgian citizens and Residents
-     * 
-     * @return A valid ID Number
+     *
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker f = new Faker(new Locale("en", "GE"));
+     *   String idNumber = f.idNumber().valid();
+     * }
+     * </pre>
      */
+    @Deprecated
     public String validGeIDNumber() {
     	return faker.numerify("###########");
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends IdNumberGenerator> T provider(Class<T> clazz) {
+        return (T) providers.computeIfAbsent(clazz, aClass -> create(clazz));
+    }
+
+    private <T extends IdNumberGenerator> T create(Class<T> clazz) {
+        try {
+            return clazz.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to instantiate class " + clazz.getName(), e);
+        }
     }
 }

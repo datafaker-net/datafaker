@@ -81,7 +81,7 @@ public abstract class FakeSequence<T> implements Iterable<T> {
 
         public FakeSequence.Builder<T> nullRate(double nullRate) {
             if (nullRate < 0 || nullRate > 1) {
-                throw new IllegalArgumentException("Null rate should be between 0 and 1");
+                throw new IllegalArgumentException("Null rate should be between 0 and 1 (received: %s)".formatted(nullRate));
             }
             this.nullRate = nullRate;
             return this;

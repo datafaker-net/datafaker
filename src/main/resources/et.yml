@@ -1,0 +1,45 @@
+et:
+  faker:
+    separator: ' ja '
+    address:
+      city_name: [Tallinn, Tartu, Narva, Pärnu, Kohtla-Järve, Viljandi, Rakvere, Maardu, Sillamäe, Kuressaare, Valga, Võru, Haapsalu, Jõhvi, Keila, Põlva, Rapla, Türi, Paide, Tapa, Saue, Elva, Kehra, Kiviõli, Suure-Jaani, Jõgeva, Räpina, Kärdla, Põltsamaa, Otepää, Kilingi-Nõmme, Sindi, Paldiski, Tamsalu, Antsla, Karksi-Nuia, Kunda, Püssi, Narva-Jõesuu, Tõrva, Loksa, Lihula, Abja-Paluoja, Võhma, Mustvee, Kallaste, Mõisaküla]
+      country: [ "Afganistanis", "Albaania", "Eesti", "Läti", "Leedu", "Ukraina", "Valgevene", "Venemaa", "Saksamaa", "Rumeenia", "Armeenia"]
+      country_code: ['EE']
+      building_number: ["###", "##", "#"]
+      street_suffix: ["tee", "maantee", "tänav", "põik"]
+      secondary_address: ['kt. ###', 'Maja ###', 'Ehitis ###']
+      postcode: ["#####"]
+      state: [Harjumaa, Tartumaa, Ida-Virumaa, Pärnumaa, Lääne-Virumaa, Viljandimaa, Raplamaa, Võrumaa, Saaremaa, Jõgevamaa, Järvamaa, Valgamaa, Põlvamaa, Läänemaa, Hiiumaa]
+      state_abbr: [Harjumaa, Tartumaa, Ida-Virumaa, Pärnumaa, Lääne-Virumaa, Viljandimaa, Raplamaa, Võrumaa, Saaremaa, Jõgevamaa, Järvamaa, Valgamaa, Põlvamaa, Läänemaa, Hiiumaa]
+      default_country: [Eesti]
+      city:
+        - "#{city_name}"
+      street_name:
+        - "#{Name.last_name} #{street_suffix}"
+      street_address:
+        - "#{Name.last_name} #{street_suffix} #{building_number}"
+
+    company:
+      suffix: ["OÜ", "AS", "FIE", "MTÜ"]
+      name:
+        - "#{Name.last_name} #{suffix}"
+        - "#{suffix} #{Name.last_name}"
+
+    internet:
+      free_email: [gmail.com, mail.ee, online.ee]
+      domain_suffix: [ee, eu, com, com.ee, eesti.ee]
+
+    lorem:
+      words: [tere, tiiger, mõis, vanduda, võeti, revolutsioon, relv, kinnitab, kunst, lipsunõelad, lugege, mu, huultelt, maksud, ei, tõuse, punkt]
+
+    name:
+      female_first_name: ["Kaja", "Katrin", "Tiina", "Sandra", "Kätlin", "Piret", "Mari", "Mari-Liis", "Marit", "Maris", "Urve", "Helen", "Hilda"]
+      male_first_name: ["Aleksandr", "Andrei", "Alvar", "Martin", "Andres", "Toomas", "Margus", "Jüri", "Kristjan", "Tiit", "Erik", "Rein", "Urmas", "Priit", "Peeter", "Marek", "Varmo", "Jarmo", "Tarmo", "Erkki", "Lembit"]
+      last_name: [Kallas, Oja, Dormidontov, Raudsepp, O'Connež-Šuslik, Aare, Aasmäe, Aavik, Allik, Alver, Antson, Eenpalu, Eskola, Härma, Hõbe, Ilves, Ivask, Jänes, Järvekülg, Jääger, Jõgi, Kaasik, Kaljurand, Kangur, Kasak, Kask, Kesküla, Kivi, Koppel, Korjus, Kross, Kukk, Kuuse, Kuusik, Kuusk, Käbin, Kärner, Kõiv, Kütt, Laar, Laur, Leok, Lepik, Levandi, Linna, Luik, Lõhmus, Lõoke, Made, Mark, Masing, Meri, Mädamürk, Mägi, Männik, Naissoo, Nurme, Nurmsalu, Nõmmik, Olesk, Orav, Poska, Puhvel, Pärn, Pääsuke, Raag, Raud, Rebane, Reinsalu, Rootare, Rüütli, Saar, Salumäe, Savisaar, Sepp, Sisask, Soosaar, Taaramae, Tamm, Tammik, Toome, Tätte, Vaher, Vaino, Valdma, Valk, Vesik, Viiding, Vitsut, Välbe, Väljas, Västrik, Võsu, Wahl, Õunapuu, Öpik]
+      prefix: ["Härra", "Proua", "Noormees", "Seltsimees"]
+      suffix: ["juunior"]
+      name:
+        - "#{first_name} #{last_name}"
+      name_with_middle:
+        - "#{prefix} #{first_name} #{last_name}"
+        - "#{first_name} #{last_name}"

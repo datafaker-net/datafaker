@@ -49,7 +49,7 @@ public class FakeCollection<T> extends FakeSequence<T> {
             }
 
             if (minLength > maxLength) {
-                throw new IllegalArgumentException("Max length must be not less than min length and not negative");
+                throw new IllegalArgumentException("Max length (%s) must be not less than min length (%s) and not negative".formatted(maxLength, minLength));
             }
             minLength = minLength < 0 ? maxLength : minLength;
 

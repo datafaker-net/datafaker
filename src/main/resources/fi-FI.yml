@@ -40,7 +40,10 @@ fi-FI:
         - '+358 #{PhoneNumber.non_geographic_numbers} #######'
 
     cell_phone:
-      formats: ['0##-#######']
+      formats:
+        - '04#-#######'
+        - '0457-######'
+        - '050-#######'
 
     passport:
       valid: "[0-9]{9}"

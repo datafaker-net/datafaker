@@ -59,6 +59,7 @@ class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
         Map<Locale, Integer> errorCounts = new HashMap<>();
 
         for (String supportedLocale : allSupportedLocales) {
+            supportedLocale = supportedLocale.replace("_", "");
             String country = supportedLocale;
             if (supportedLocale.contains("-")) {
                 country = supportedLocale.split("-")[1];
@@ -78,7 +79,8 @@ class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
                     if (!util.isValidNumber(proto)) {
                         errorCount++;
                     }
-                } catch (Exception e) {
+                } catch (NumberParseException ignore) {
+                    // Error type: INVALID_COUNTRY_CODE. Missing or invalid default region.
                     break;
                 }
             }

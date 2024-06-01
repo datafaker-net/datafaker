@@ -51,14 +51,8 @@ public class Relationship extends AbstractProvider<BaseProviders> {
             Method runMethod = methods[indx];
             Relationship relationship = new Relationship(faker);
             return (String) runMethod.invoke(relationship);
-        } catch (SecurityException e) {
-            throw new SecurityException("SecurityException: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("IllegalArgumentException: " + e.getMessage());
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("IllegalAccessException: " + e.getMessage());
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("InvocationTargetException: " + e.getMessage());
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
         }
     }
 

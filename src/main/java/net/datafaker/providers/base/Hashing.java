@@ -45,7 +45,8 @@ public class Hashing extends AbstractProvider<BaseProviders> {
             messageDigest.update(characters.getBytes(StandardCharsets.UTF_8), 0, characters.length());
             return format.formatted(new BigInteger(1, messageDigest.digest()));
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-            throw new RuntimeException(noSuchAlgorithmException);
+            throw new RuntimeException("Failed to generate string using algorithm \"%s\" and format \"%s\""
+                .formatted(algorithm, format), noSuchAlgorithmException);
         }
     }
 }

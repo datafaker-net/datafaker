@@ -1,5 +1,5 @@
 
-# Data Faker
+# Datafaker
 
 [![Maven Status](https://maven-badges.herokuapp.com/maven-central/net.datafaker/datafaker/badge.svg?style=flat)](http://mvnrepository.com/artifact/net.datafaker/datafaker)
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -451,26 +451,35 @@ Usage with Locales
 -----
 
 ```java
-Faker faker = new Faker(new Locale("YOUR_LOCALE"));
+Faker faker = new Faker(new Locale("lang", "COUNTRY"));
 ```
 
 For example:
 
 ```java
-new Faker(new Locale("en", "US")).address().zipCodeByState("CA"));
+String californiaZipCode = new Faker(new Locale("en", "US")).address().zipCodeByState("CA");
+String albanianIdNumber = new Faker(new Locale("sq", "AL")).idNumber().valid();
+String moldovanPhone = new Faker(new Locale("ru", "MD")).phoneNumber().cellPhone();
 ```
+
+Note that most of the data depends on language,
+but some data depends purely on country (personal ID and phone numbers).
+In the example above,
+* "en", "sq", "ru" are language codes (English, Albanian and Russian), and 
+* "US", "AL", "MD" are country codes (USA, Albanian and Moldova)
 
 Supported Locales
 -----
-* ar
-* bg
-* ca
+* ar (Armenian)
+* be_BY (Belarusian)
+* bg_BG (Bulgarian)
+* ca_CA
 * ca-CAT
-* cs
+* cs_CZ (Czech republic)
 * da-DK
 * de
 * de-AT
-* de-CH
+* de_CH (country: Switzerland, language: German)
 * el-GR
 * en
 * en-AU
@@ -489,11 +498,14 @@ Supported Locales
 * en-US
 * en-ZA
 * en-PH
-* es
-* es-MX
+* es (Hispanian)
+* es-MX (Mexican)
+* et_EE (Estonian)
 * fa
 * fi-FI
-* fr
+* fr (French)
+* fr_CH (country: Switzerland, language: French)
+* ge_GE (Georgia)
 * he
 * hu
 * in-ID
@@ -501,19 +513,22 @@ Supported Locales
 * ja
 * ka
 * ko
+* mk_MK (North Macedonia)
 * nb-NO
 * nl
 * pl
 * pt
 * pt-BR
-* ru
+* ro_MD (country: Moldova, language: Moldavian a.k.a. Romanian)
+* ru_RU (Russian)
 * sk
+* sq_AL (Albanian)
 * sv
 * sv-SE
 * tr
 * uk
 * vi
-* zh-CN
+* zh_CN (Chinese)
 * zh-TW
 
 LICENSE

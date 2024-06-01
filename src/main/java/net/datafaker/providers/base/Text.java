@@ -139,7 +139,7 @@ public class Text extends AbstractProvider<BaseProviders> {
 
         public TextSymbolsBuilder with(String listOfSymbols, int times) {
             if (times < 0) {
-                throw new IllegalArgumentException("times should be non-negative");
+                throw new IllegalArgumentException("times should be non-negative: " + times);
             }
             map.put(listOfSymbols, times);
             return this;
@@ -162,7 +162,7 @@ public class Text extends AbstractProvider<BaseProviders> {
         public TextRuleConfig build() {
             int minSize = map.values().stream().filter(t -> t > 0).reduce(0, Integer::sum);
             if (minSize > length && throwIfLengthSmall) {
-                throw new IllegalArgumentException("Min length should be not smaller than number of required characters");
+                throw new IllegalArgumentException("Min length (%s) should be not smaller than number of required characters (%s)".formatted(length, minSize));
             }
             return new TextRuleConfig(length, map, minSize);
         }

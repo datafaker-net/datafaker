@@ -111,7 +111,7 @@ class SqlTest {
 
         assertThatThrownBy(() -> transformer.generate(fakeSequence, schema))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("The sequence should be finite of size");
+            .hasMessage("The sequence should be finite of size: FakeStream{minLength=-1, maxLength=-1, nullRate=0.0}");
     }
 
     @Test

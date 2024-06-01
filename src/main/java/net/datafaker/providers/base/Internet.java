@@ -103,24 +103,24 @@ public class Internet extends AbstractProvider<BaseProviders> {
     /**
      * Returns a string representing a web URL, randomly including: http/https scheme, port, path
      * elements (2 or none), file element (1 or none), params (2 or none), anchor (1 or none).
-     * 
+     *
      * @return a web URL
      * @since 2.0.0
      */
     public String url() {
-       final byte[] bts = faker.random().nextRandomBytes(6);
+        final byte[] bts = faker.random().nextRandomBytes(6);
         return url(bts[0] % 2 == 0, bts[1] % 2 == 0,
-                bts[2] % 2 == 0, bts[3] % 2 == 0,
-                bts[4] % 2 == 0, bts[5] % 2 == 0);
+            bts[2] % 2 == 0, bts[3] % 2 == 0,
+            bts[4] % 2 == 0, bts[5] % 2 == 0);
     }
 
     /**
      * Returns a string representing a web URL, with various elements controlled by the caller.
-     * 
+     *
      * @param schemeChoice if true will be random http or https, if false will be https
-     * @param portChoice if true a random port will be included, if false no port will be included
-     * @param pathChoice if true two random path elements will be included, if false no path elements will be included
-     * @param fileChoice if true the path will end with a random word element instead of a slash, if false it will end with a slash
+     * @param portChoice   if true a random port will be included, if false no port will be included
+     * @param pathChoice   if true two random path elements will be included, if false no path elements will be included
+     * @param fileChoice   if true the path will end with a random word element instead of a slash, if false it will end with a slash
      * @param paramsChoice if true two random name value pairs will be included, if false no params will be included
      * @param anchorChoice if true a random anchor will be included, if false no anchor will be included
      * @return a web URL
@@ -138,7 +138,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
     /**
      * Returns a web domain.
-     * 
+     *
      * @return a web domain in the form "www.example.com"
      * @since 2.0.0
      */
@@ -147,7 +147,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
             "www", ".",
             FakerIDN.toASCII(
                 faker.name().firstName().toLowerCase(
-                      faker.getContext().getLocale()).replace("'", "") + "-" +
+                    faker.getContext().getLocale()).replace("'", "") + "-" +
                     domainWord()
             ),
             ".",

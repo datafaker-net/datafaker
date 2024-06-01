@@ -1,0 +1,12 @@
+# encoding: utf-8
+ro:
+  faker:
+    address:
+      city_name: [ "Anenii Noi", "Basarabeasca", "Bălți", "Căinari", "Călărași", "Căușeni", "Ceadîr-Lunga", "Chișinău", "Cimișlia", "Costești", "Dubăsari", "Fălești", "Frunză", "Grigoriopol", "Hîncești", "Rîbnița", "Rîșcani", "Strășeni", "Șoldănești", "Ștefan Vodă", "Tiraspol", "Tiraspolul Nou", "Ungheni", "Vadul lui Vodă", "Vulcănești"]
+      country_code: ['MD']
+      country: [Moldova]
+
+    name:
+      male_first_name: [Alex, Andrei, Dmitry, Ion, Vasile, Petru, Adrian, Gözlük, Dananau, Ruslan, Marius, Max, Dima, Sergiu, Alexandru]
+      female_first_name: [Cristina, Olga, Veronyka, Diana, Ana, Ann, Mary, Kate, Laura, Yasmin, Sophie, Alexandra, Sabrina, Anastacia, Julia, Amina, Tatiana]
+      last_name: [Moldován, Rusu, Ciobanu, Balan, Cojocaru, Ursu, Munteanu, Sirbu, Cebotari, Popa, Guțu, Hadârcă, Plămădeală, Rață, Reniță, Tcaci, Văluță]

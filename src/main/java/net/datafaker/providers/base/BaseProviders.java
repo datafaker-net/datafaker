@@ -261,6 +261,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(IdNumber.class, IdNumber::new);
     }
 
+    default Image image() {
+        return getProvider(Image.class, Image::new);
+    }
+
     default IndustrySegments industrySegments() {
         return getProvider(IndustrySegments.class, IndustrySegments::new);
     }
@@ -283,6 +287,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Locality locality() {
         return getProvider(Locality.class, Locality::new);
+    }
+
+    default Location location() {
+        return getProvider(Location.class, Location::new);
     }
 
     default Lorem lorem() {
@@ -439,6 +447,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Time time() {
         return getProvider(Time.class, Time::new);
+    }
+
+    default TimeAndDate timeAndDate() {
+        return getProvider(TimeAndDate.class, TimeAndDate::new);
     }
 
     default Tire tire() {

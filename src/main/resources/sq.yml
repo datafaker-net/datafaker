@@ -1,0 +1,12 @@
+# encoding: utf-8
+sq:
+  faker:
+    address:
+      city_name: [ Bajram Curri, Bajzë, Ballsh, Berat, Bilisht, Bulqizë, Cërrik, Çorovodë, Durrës, Kamëz, Tirana, Ulëz, "Ura Vajgurore", "Vau i Dejës", Vlorë, Vorë]
+      country_code: ['AL']
+      default_country: [Shqipëria]
+
+    name:
+      male_first_name: [Agim, Anton, Arbër, Argjend, Bardhyl, Dhimitër, Gazmend, Gëzim, Gjergj, Kolë, Mërgim, Ndriçim, Nikollë, Përparim, Pjetër, Shkëlzen, Shpëtim, Shtjefën, Tanush, Vasillaq, Xhafer, Ylli, Zef]
+      female_first_name: [Albulena, Arta, Blerta, Denisa, Diana, Drita, Elina, Esma, Fatima, Ferial, Feride, Fjolla, Gonxha, Hana, Irina, Klaudia, Lindita, Liza, Luiza, Luljeta, Margarita, Monika, Nadia, Olga, Rita, Ronela, Shpresa, Teuta, Venera, Violeta, Yllka]
+      last_name: [ Agalliu, Ahmetaj, Arbëri, Asllani, Bojaxhiu, Çipi, Çitaku, Dragusha, Fejzullahu, Gjergji, Hajdari, Jaçellari, Koçi, Konçi, Kryeziu, Muçolli, Peçi, Qarri, Ruçi, Seferi, Shaqiri, Thaçi, Ulqinaku, Xhaçka, Zmijani]

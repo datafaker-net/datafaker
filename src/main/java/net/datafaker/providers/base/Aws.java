@@ -19,6 +19,10 @@ public class Aws extends AbstractProvider<BaseProviders> {
         return resolve("aws.regions");
     }
 
+    public String service() {
+        return resolve("aws.services");
+    }
+
     public String accountId() {
         return faker.numerify("0#########");
     }

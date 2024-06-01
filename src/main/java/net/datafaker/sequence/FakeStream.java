@@ -48,7 +48,7 @@ public class FakeStream<T> extends FakeSequence<T> {
         @Override
         public FakeStream<T> build() {
             if (maxLength >= 0 && minLength > maxLength) {
-                throw new IllegalArgumentException("Max length must be not less than min length and not negative");
+                throw new IllegalArgumentException("Max length (%s) must be not less than min length (%s) and not negative".formatted(maxLength, minLength));
             }
             minLength = minLength < 0 ? maxLength : minLength;
 
@@ -61,5 +61,14 @@ public class FakeStream<T> extends FakeSequence<T> {
 
             return new FakeStream<>(suppliers, minLength, maxLength, randomService, nullRate);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "FakeStream{" +
+            "minLength=" + minLength +
+            ", maxLength=" + maxLength +
+            ", nullRate=" + nullRate +
+            '}';
     }
 }
