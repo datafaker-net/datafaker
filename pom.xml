@@ -84,6 +84,11 @@
             <artifactId>rgxgen</artifactId>
             <version>${rgxgen.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>${libphonenumber.version}</version>
+        </dependency>
 
         <!-- Test dependencies -->
         <dependency>
@@ -156,12 +161,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>${commons-text.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.libphonenumber</groupId>
-            <artifactId>libphonenumber</artifactId>
-            <version>${libphonenumber.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

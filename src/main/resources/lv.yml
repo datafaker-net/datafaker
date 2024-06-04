@@ -48,12 +48,3 @@ lv:
         - "#{first_name} #{last_name}"
       name_with_middle:
         - "#{first_name} #{last_name} #{last_name}"
-
-    phone_number:
-      area_code: ['30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '6#', '7#', '82', '83', '84', '86', '9#']
-      formats:
-        - "6#{PhoneNumber.area_code} ## ###"
-      formats_international:
-        - '+371 6#{PhoneNumber.area_code} ## ###'
-    cell_phone:
-      formats: ["2# ### ###"]

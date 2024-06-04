@@ -1,12 +1,11 @@
 package net.datafaker.integration;
 
+import net.datafaker.Faker;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.App;
 import net.datafaker.providers.base.BaseFaker;
-import net.datafaker.Faker;
 import net.datafaker.providers.base.Name;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,6 +23,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static org.apache.commons.lang3.StringUtils.substringBefore;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.reflections.ReflectionUtils.getAllMethods;
 import static org.reflections.ReflectionUtils.withModifier;
@@ -40,30 +40,28 @@ class FakerIntegrationTest {
     /**
      * a collection of Locales -> Exceptions.
      * In the case of 'pt', city_prefix is '' by design. This test fails because it's testing that all string returning
-     * methods return a non blank string. But pt city_prefix is blank ,but the test shouldn't fail. So we add put
+     * methods return a non-blank string. But pt city_prefix is blank ,but the test shouldn't fail. So we add put
      * exceptions like this into this collection.
      */
     private static final Map<Locale, SkippedMethods> exceptions = new HashMap<>();
 
     static {
-        // 'it' has an empty suffix list so it never returns a value
+        // 'it' has an empty suffix list, so it never returns a value
         exceptions.put(new Locale("it"), SkippedMethods.of(Name.class, "suffix"));
         exceptions.put(new Locale("es", "mx"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
         exceptions.put(new Locale("pt"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
         exceptions.put(new Locale("uk"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix", "stateAbbr", "streetSuffix"));
+        exceptions.put(new Locale("uk", "UA"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix", "stateAbbr", "streetSuffix"));
         exceptions.put(new Locale("id"), SkippedMethods.of(App.class, "author"));
         exceptions.put(new Locale("id", "ID"), SkippedMethods.of(App.class, "author"));
-        exceptions.put(new Locale("pt-BR"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
-        exceptions.put(new Locale("pt-br"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
-        exceptions.put(new Locale("Pt_br"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
-        exceptions.put(new Locale("pT_Br"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
+        exceptions.put(new Locale("pt", "BR"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
         exceptions.put(new Locale("pt", "Br", "x2"), SkippedMethods.of(Address.class, "cityPrefix", "citySuffix"));
     }
 
     private static class SkippedMethods {
-        private final Map<Class, Set<String>> class2methodNames = new HashMap<>();
+        private final Map<Class<?>, Set<String>> class2methodNames = new HashMap<>();
 
-        public static SkippedMethods of(Class clazz, String... methodNames) {
+        public static SkippedMethods of(Class<?> clazz, String... methodNames) {
             SkippedMethods sm = new SkippedMethods();
             sm.class2methodNames.putIfAbsent(clazz, new HashSet<>());
             sm.class2methodNames.get(clazz).addAll(List.of(methodNames));
@@ -91,39 +89,34 @@ class FakerIntegrationTest {
         Method[] methods = faker.getClass().getMethods();
         for (Method provider : methods) {
             if (AbstractProvider.class.isAssignableFrom(provider.getReturnType()) && provider.getParameterCount() == 0) {
-                AbstractProvider providerImpl = (AbstractProvider) provider.invoke(faker);
+                AbstractProvider<?> providerImpl = (AbstractProvider<?>) provider.invoke(faker);
 
                 testAllMethodsThatReturnStringsActuallyReturnStrings(providerImpl);
             }
         }
     }
 
-    private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {
-        final Locale locale;
-        if (object instanceof BaseFaker) {
-            locale = ((BaseFaker) object).getContext().getLocale();
-        } else {
-            locale = ((AbstractProvider) object).getFaker().getContext().getLocale();
-        }
+    private void testAllMethodsThatReturnStringsActuallyReturnStrings(AbstractProvider<?> provider) {
+        final Locale locale = provider.getFaker().getContext().getLocale();
         @SuppressWarnings("unchecked")
-        Set<Method> methodsThatReturnStrings = getAllMethods(object.getClass(),
+        Set<Method> methodsThatReturnStrings = getAllMethods(provider.getClass(),
             withModifier(Modifier.PUBLIC),
             withReturnType(String.class),
             withParametersCount(0));
 
         for (Method method : methodsThatReturnStrings) {
-            if (isExcepted(object, method, locale)) {
+            if (isExcepted(provider, method, locale)) {
                 continue;
             }
             final Object returnValue;
             try {
-                 returnValue = method.invoke(object);
+                 returnValue = method.invoke(provider);
             } catch (Exception e) {
-                throw new RuntimeException("Test for method " + method + " and object " + object + " was failed for locale " + locale, e);
+                throw new RuntimeException("Test for method " + method + " and object " + provider + " was failed for locale " + locale, e);
             }
-            assertThat(returnValue).as("For method " + object.getClass() + "#" + method.getName() + "value is '" + returnValue + "'").isInstanceOf(String.class);
+            assertThat(returnValue).as("For method " + provider.getClass() + "#" + method.getName() + "value is '" + returnValue + "'").isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;
-            assertThat(returnValueAsString).as("For method " + object.getClass() + "#" + method.getName()).isNotEmpty();
+            assertThat(returnValueAsString).as("For method " + provider.getClass() + "#" + method.getName()).isNotEmpty();
         }
     }
 
@@ -157,6 +150,8 @@ class FakerIntegrationTest {
     private static Stream<Arguments> dataParameters() {
         List<Arguments> arguments = new ArrayList<>();
         arguments.add(Arguments.of(Locale.ENGLISH, new Random()));
+        arguments.add(Arguments.of(new Locale("en-US"), new Random()));
+        arguments.add(Arguments.of(new Locale("en-GB"), new Random()));
         arguments.add(Arguments.of(new Locale("pt-BR"), null));
         arguments.add(Arguments.of(new Locale("pt-br"), null));
         arguments.add(Arguments.of(new Locale("Pt_br"), null));
@@ -166,7 +161,10 @@ class FakerIntegrationTest {
 
         String[] ymlFiles = new File("./src/main/resources").list();
         for (String ymlFileName : ymlFiles) {
-            arguments.add(Arguments.of(new Locale(StringUtils.substringBefore(ymlFileName, ".")), null));
+            if (ymlFileName.endsWith(".yml")) {
+                String locale = substringBefore(ymlFileName, ".").replace("-", "_");
+                arguments.add(Arguments.of(new Locale(locale), null));
+            }
         }
 
         return arguments.stream();

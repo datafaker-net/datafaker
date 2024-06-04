@@ -72,24 +72,6 @@ es-PY:
         - "#{first_name} #{last_name} #{last_name} #{suffix}"
         - "#{first_name} #{first_name} #{last_name} #{last_name}"
 
-    phone_number:
-      linea_baja: ["21", "61", "71", "644"]
-      celular: ["71","73", "74", "75", "76", "81", "82", "83", "84", "85", "91", "92", "93", "94", "95"]
-      formats:
-        - "(0#{PhoneNumber.linea_baja}) ### ###"
-        - "(0#{PhoneNumber.linea_baja}) ### ####"
-      formats_international:
-        - "+595 #{PhoneNumber.linea_baja} ### ###"
-        - "+595 #{PhoneNumber.linea_baja} ### ####"
-    cell_phone:
-      formats:
-        - "09#{PhoneNumber.celular} ### ###"
-        - "(09#{PhoneNumber.celular}) ### ###"
-        - "09#{PhoneNumber.celular}-###-###"
-        - "(09#{PhoneNumber.celular}) ###-###"
-        - "+5959#{PhoneNumber.celular}######"
-        - "(+595) 9#{PhoneNumber.celular})######"
-        - "+595-9#{PhoneNumber.celular}-###-###"
     subscription:
       plans: ["Prueba gratuita", "Basico", "Starter", "Essential", "Estudiante", Bronze", "Standard", "Silver", "Gold", "Platinum", "Profesional", "Business", "Diamond", "Premium"]
       statuses: ["Activo", "Parado", "Bloqueado", "Pendiente"]

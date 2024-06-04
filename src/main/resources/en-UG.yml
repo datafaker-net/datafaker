@@ -68,44 +68,6 @@ en-UG:
         - "#{district_names}"
       region:
         - "#{regions}"
-    phone_number:
-      area_code: ['39', '41']
-      formats:
-        - "0#{PhoneNumber.area_code} #######"
-      formats_international:
-        - '+256 #{PhoneNumber.area_code} #######'
-    cell_phone:
-      formats:
-        # africell
-        - "+256 79# ### ###"
-        - "256 79# ### ###"
-        - "0 79# ### ###"
-        # airtel
-        - "+256 70# ### ###"
-        - "256 70# ### ###"
-        - "0 70# ### ###"
-        - "+256 75# ### ###"
-        - "256 75# ### ###"
-        - "0 75# ### ###"
-        # mtn
-        - "+256 77# ### ###"
-        - "256 77# ### ###"
-        - "0 77# ### ###"
-        - "+256 78# ### ###"
-        - "256 78# ### ###"
-        - "0 78# ### ###"
-        # smart
-        - "+256 74# ### ###"
-        - "256 74# ### ###"
-        - "0 74# ### ###"
-        # utl
-        - "+256 71# ### ###"
-        - "256 71# ### ###"
-        - "0 71# ### ###"
-        # vodafone
-        - "+256 72# ### ###"
-        - "256 72# ### ###"
-        - "0 72# ### ###"
     name:
       last_name: [
         Abayisenga, Agaba, Ahebwe, Aisu, Akankunda, Akankwasa, Akashaba, Akashabe, Ampumuza, Ankunda, Asasira, Asiimwe, Atuhe, Atuhire, Atukunda, Atukwase, Atwine, Aurishaba,

@@ -3,13 +3,3 @@ _AL:
   faker:
     phone_number:
       country_code: ['355']
-      area_code: ['22', '23', '24', '25', '26', '27', '28', '29', '32', '33', '34', '35', '36', '37', '38', '39']
-      formats:
-        - '04 #{area_code}## ###'
-      formats_international:
-        - '+#{country_code} 4 #{area_code}## ###'
-    cell_phone:
-      country_code: ['355']
-      area_code: ['22', '23', '24', '25', '26', '27', '28', '29', '32', '33', '34', '35', '36', '37', '38', '39']
-      formats:
-        - '+#{country_code} 4 #{area_code}## ###'

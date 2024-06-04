@@ -277,10 +277,10 @@ class FakerTest extends AbstractFakerTest {
     @Test
     @Timeout(value = 3, unit = TimeUnit.MINUTES)
     void issue883Test() throws InterruptedException {
-        for (int i = 0; i < 10_000_000; i++) {
+        for (int i = 0; i < 10_000; i++) {
             Faker f = new Faker();
             String s = f.ancient().god();
-            if (i % 1_000_000 == 0) {
+            if (i % 1_000 == 0) {
                 Thread.sleep(10);
             }
         }

@@ -1,4 +1,4 @@
-test_otherlocale:
+test_EE:
   faker:
     unique:
       first-same-locale-value:

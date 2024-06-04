@@ -3,12 +3,3 @@ _RU:
   faker:
     phone_number:
       country_code: ['7']
-      formats:
-        - '8 (9##) ###-##-##'
-      formats_international:
-        - '+#{country_code} 9## ###-##-##'
-    cell_phone:
-      country_code: ['7']
-      formats:
-        - '+7 812 ### ## ##'
-        - '+7 9## ### ## ##'

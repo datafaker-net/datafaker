@@ -105,15 +105,6 @@ fr:
         - "#{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"
-    phone_number:
-      area_code: ['1', '2', '3', '4', '5', '9']
-      formats:
-        - '0#{PhoneNumber.area_code} ## ## ## ##'
-      formats_international:
-        - '+33 #{PhoneNumber.area_code} ## ## ## ##'
-
-    cell_phone:
-      formats: ['06########', '07########', '+33 6########', '+33 7########', '06 ## ## ## ##', '07 ## ## ## ##', '+33 6 ## ## ## ##', '+33 7 ## ## ## ##']
 
     book:
       title: ['La Discipline des orphelins', 'Le Couloir de tous les mépris', "L'Odeur du sanglier", 'La Promise du voyeur', "L'Odyssée invisible", 'La Soumission comme passion', 'Le Siècle de la rue voisine', 'Le Désir des femmes fortes', 'Pourquoi je mens ?', 'La Peau des savants', 'La progéniture du mal']

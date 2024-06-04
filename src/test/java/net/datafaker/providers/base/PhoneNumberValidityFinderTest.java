@@ -3,44 +3,34 @@ package net.datafaker.providers.base;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.stream.Stream;
 
+import static java.util.Locale.ROOT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * These tests use System.out.printlns because the error rate is quite high.
- */
 class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
+    private static final int COUNT = 100;
+    private final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
 
-    @Test
+    @RepeatedTest(COUNT)
     void testAllCellPhoneForLocale() throws NumberParseException {
         String language = "en";
         String region = "GB";
         BaseFaker localFaker = new BaseFaker(new Locale(language, region));
-        PhoneNumberUtil util = PhoneNumberUtil.getInstance();
 
-        int errorCount = 0;
-        for (int i = 0; i < 100; i++) {
-            String phoneNumber = localFaker.phoneNumber().phoneNumber();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, region);
+        String generatedNumber = localFaker.phoneNumber().phoneNumber();
+        Phonenumber.PhoneNumber parsedNumber = util.parse(generatedNumber, region);
 
-            if (!util.isValidNumber(proto)) {
-                errorCount++;
-            }
-        }
-
-        System.out.println("Error count: " + errorCount);
-    }
-
-    @Test
-    void generateExample() {
-        Phonenumber.PhoneNumber exampleNumber = PhoneNumberUtil.getInstance().getExampleNumber("AR");
-        System.out.println(exampleNumber);
+        assertThat(util.isValidNumber(parsedNumber))
+            .as(() -> "Generated phone number %s for region %s".formatted(generatedNumber, region))
+            .isTrue();
     }
 
     @Test
@@ -48,49 +38,38 @@ class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
         String phoneNumber = "0140 123456";
         String region = "SE";
 
-        PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-        Phonenumber.PhoneNumber proto = util.parse(phoneNumber, region);
-        assertThat(util.isValidNumber(proto)).isTrue();
+        Phonenumber.PhoneNumber parsedNumber = util.parse(phoneNumber, region);
+        assertThat(util.isValidNumber(parsedNumber)).isTrue();
     }
 
-    @Test
-    void testAllPhoneNumbers() {
-        List<String> allSupportedLocales = faker.locality().allSupportedLocales();
-        Map<Locale, Integer> errorCounts = new HashMap<>();
+    @ParameterizedTest
+    @MethodSource("allSupportedLocales")
+    void testAllPhoneNumbers(Locale supportedLocale) throws NumberParseException {
+        BaseFaker f = new BaseFaker(supportedLocale);
+        PhoneNumber phoneNumberGenerator = f.phoneNumber();
+        for (int i = 0; i < COUNT; i++) {
+            String generatedNumber = phoneNumberGenerator.phoneNumber();
+            Phonenumber.PhoneNumber parsedNumber = util.parse(generatedNumber, phoneNumberGenerator.countryCodeIso2());
 
-        for (String supportedLocale : allSupportedLocales) {
-            supportedLocale = supportedLocale.replace("_", "");
-            String country = supportedLocale;
-            if (supportedLocale.contains("-")) {
-                country = supportedLocale.split("-")[1];
-                supportedLocale = supportedLocale.split("-")[0];
-            }
-
-            PhoneNumberUtil util = PhoneNumberUtil.getInstance();
-            Locale locale = new Locale(supportedLocale, country);
-            final BaseFaker f = new BaseFaker(locale);
-            int errorCount = 0;
-            for (int i = 0; i < 100; i++) {
-                String phoneNumber = f.phoneNumber().phoneNumber();
-
-                try {
-                    Phonenumber.PhoneNumber proto = util.parse(phoneNumber, country.toUpperCase());
-
-                    if (!util.isValidNumber(proto)) {
-                        errorCount++;
-                    }
-                } catch (NumberParseException ignore) {
-                    // Error type: INVALID_COUNTRY_CODE. Missing or invalid default region.
-                    break;
-                }
-            }
-            errorCounts.put(locale, errorCount);
+            assertThat(util.isValidNumber(parsedNumber))
+                .as(() -> "Generated phone number %s for locale %s (country: %s)".formatted(generatedNumber, supportedLocale, phoneNumberGenerator.countryCodeIso2()))
+                .isTrue();
         }
+    }
 
-        // sort by error count
-        errorCounts.entrySet().stream()
-            .filter(e -> e.getValue() > 35)
-            .sorted(Map.Entry.comparingByValue())
-            .forEach(System.out::println);
+    public Stream<Arguments> allSupportedLocales() {
+        return faker.locality().allSupportedLocales().stream()
+            .map(rawLocale -> Arguments.of(createLocale(rawLocale)));
+    }
+
+    private static Locale createLocale(String locale) {
+        if (locale.startsWith("_")) {
+            return new Locale("en", locale.substring(1).toUpperCase(ROOT));
+        }
+        if (locale.contains("-")) {
+            String[] parts = locale.split("-");
+            return new Locale(parts[0], parts[1]);
+        }
+        return new Locale(locale, "");
     }
 }

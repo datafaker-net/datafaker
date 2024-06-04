@@ -69,7 +69,7 @@ class UniqueTest {
 
         assertThat(faker.unique().fetchFromYaml(firstKey)).isEqualTo(expectedValue);
         assertThat(faker.unique().fetchFromYaml(secondKey)).isEqualTo(expectedValue);
-        faker.getContext().setCurrentLocale(new Locale("test_otherlocale"));
+        faker.getContext().setCurrentLocale(new Locale("test_EE"));
         assertThat(faker.unique().fetchFromYaml(firstKey)).isEqualTo(expectedValue);
         assertThat(faker.unique().fetchFromYaml(secondKey)).isEqualTo(expectedValue);
     }

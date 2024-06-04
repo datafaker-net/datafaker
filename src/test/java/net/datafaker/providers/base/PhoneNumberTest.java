@@ -12,29 +12,20 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Locale;
-import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static java.util.logging.Level.FINE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
-    private static final Logger log = Logger.getLogger(PhoneNumberTest.class.getName());
     private static final Faker ESTONIAN = new Faker(new Locale("et", "EE"));
     private static final Faker MOLDOVAN = new Faker(new Locale("ro", "MD"));
     /**
      * Number of phone numbers to generate during a test
      */
     private static final int COUNT = 100;
-    /**
-     * For most countries, number of invalid generated phone numbers is < 77% - it needs to be improved.
-     */
-    private static final int PARTIALLY_CORRECT = (int) (COUNT * 0.77);
-    /**
-     * For few countries, most of generated phone numbers are invalid - it definitely needs to be improved.
-     */
-    private static final int FIXME = COUNT;
+
     private final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
 
     @Test
@@ -52,160 +43,151 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         assertThat(phoneNumber.phoneNumber()).matches("\\(?\\d+\\)?([- .]\\d+){1,3}");
     }
 
-    @Test
-    void testPhone_CA() {
-        final Locale[] locales = {Locale.CANADA, new Locale("ca", "CA")};
-        for (Locale locale : locales) {
-            final BaseFaker f = new BaseFaker(locale);
-            final String canadianAreaCode = "403|587|780|825|236|250|604|672|778|204|431|506|"
-                + "709|782|902|226|249|289|343|365|416|437|519|548|613|647|705|807|905|367|"
-                + "418|438|450|514|579|581|819|873|306|639|867";
-            final PhoneNumber phoneNumber = f.phoneNumber();
-            for (int i = 0; i < COUNT; i++) {
-                String phone = phoneNumber.cellPhone();
-                assertThat(phone).matches(
-                    "((1-)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}".formatted(
-                        canadianAreaCode, canadianAreaCode));
-            }
+    @ParameterizedTest
+    @MethodSource("canadianLocales")
+    void testPhone_CA(Locale locale) {
+        String areaCode = "263|354|382|403|587|780|825|236|250|368|428|604|672|778|204|431|506|"
+            + "709|782|902|226|249|289|343|365|416|437|519|548|613|647|705|807|905|367|"
+            + "418|438|450|468|474|514|579|581|584|683|742|753|819|873|306|639|867|879";
+        Pattern canadianPhone = Pattern.compile("((\\+1)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}".formatted(areaCode, areaCode));
+        PhoneNumber phoneNumber = new BaseFaker(locale).phoneNumber();
+        for (int i = 0; i < COUNT; i++) {
+            String phone = phoneNumber.cellPhone();
+            assertThat(phone).matches(canadianPhone);
         }
     }
 
+    private Stream<Arguments> canadianLocales() {
+        return Stream.of(
+            Arguments.of(Locale.CANADA),
+            Arguments.of(new Locale("ca", "CA"))
+        );
+    }
+
     @ParameterizedTest
-    @MethodSource("generateLanguageAndRegionOfLocales")
-    void testAllPhoneNumberNational(Locale locale, String phoneNumberRegion, int allowedErrorsCount) {
-        int errorCount = 0;
+    @MethodSource("locales")
+    void testAllPhoneNumberNational(Locale locale) throws NumberParseException {
         final BaseFaker faker = new BaseFaker(locale);
         final PhoneNumber phoneNumberProvider = faker.phoneNumber();
         for (int i = 0; i < COUNT; i++) {
             String phoneNumber = phoneNumberProvider.phoneNumber();
-            try {
-                Phonenumber.PhoneNumber proto = util.parse(phoneNumber, phoneNumberRegion);
-                if (!util.isValidNumberForRegion(proto, phoneNumberRegion)) {
-                    if (log.isLoggable(FINE)) {
-                        log.fine("Invalid phone: %s".formatted(phoneNumber));
-                    }
-                    if (++errorCount > allowedErrorsCount) break;
-                }
-            } catch (NumberParseException e) {
-                if (log.isLoggable(FINE)) {
-                    log.fine("Invalid phone: %s (caused by: %s)".formatted(phoneNumber, e));
-                }
-                if (++errorCount > allowedErrorsCount) break;
-            }
+            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, locale.getCountry());
+            assertThat(util.isValidNumberForRegion(proto, locale.getCountry()))
+                .as(() -> "Invalid phone %s for locale %s".formatted(phoneNumber, locale))
+                .isTrue();
         }
-        assertThat(errorCount).isLessThanOrEqualTo(allowedErrorsCount);
     }
 
     @ParameterizedTest
-    @MethodSource("generateLanguageAndRegionOfLocales")
-    void testAllPhoneNumberInternational(Locale locale, String phoneNumberRegion, int allowedErrorsCount) throws NumberParseException {
-        int errorCount = 0;
+    @MethodSource("locales")
+    void testAllPhoneNumberInternational(Locale locale) throws NumberParseException {
         final BaseFaker faker = new BaseFaker(locale);
         final PhoneNumber phoneNumberProvider = faker.phoneNumber();
         for (int i = 0; i < COUNT; i++) {
             String phoneNumber = phoneNumberProvider.phoneNumberInternational();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, phoneNumberRegion);
-            if (!util.isValidNumberForRegion(proto, phoneNumberRegion)) {
-                if (log.isLoggable(FINE)) {
-                    log.fine("Invalid phone: %s".formatted(phoneNumber));
-                }
-                if (++errorCount > allowedErrorsCount) break;
-            }
+            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, locale.getCountry());
+            assertThat(util.isValidNumberForRegion(proto, locale.getCountry()))
+                .as(() -> "Invalid phone %s for locale %s".formatted(phoneNumber, locale))
+                .isTrue();
         }
-        assertThat(errorCount).isLessThanOrEqualTo(allowedErrorsCount);
     }
 
     @ParameterizedTest
-    @MethodSource("generateLanguageAndRegionOfLocales")
-    void testAllPhoneNumberMobile(Locale locale, String phoneNumberRegion, int allowedErrorsCount) throws NumberParseException {
-        int errorCount = 0;
+    @MethodSource("locales")
+    void testAllPhoneNumberMobile(Locale locale) throws NumberParseException {
         final BaseFaker faker = new BaseFaker(locale);
         final PhoneNumber phoneNumberProvider = faker.phoneNumber();
         for (int i = 0; i < COUNT; i++) {
             String phoneNumber = phoneNumberProvider.cellPhone();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, phoneNumberRegion);
-            if (!util.isValidNumberForRegion(proto, phoneNumberRegion)) {
-                if (log.isLoggable(FINE)) {
-                    log.fine("Invalid phone: %s".formatted(phoneNumber));
-                }
-                if (++errorCount > allowedErrorsCount) break;
-            }
+            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, locale.getCountry());
+            assertThat(util.isValidNumberForRegion(proto, locale.getCountry()))
+                .as(() -> "Invalid phone %s for locale %s".formatted(phoneNumber, locale))
+                .isTrue();
         }
-        assertThat(errorCount).isLessThanOrEqualTo(allowedErrorsCount);
     }
 
-    private static Arguments args(Locale locale, String phoneNumberRegion) {
-        return args(locale, phoneNumberRegion, PARTIALLY_CORRECT);
-    }
-
-    private static Arguments args(Locale locale, String phoneNumberRegion, int allowedErrorsCount) {
-        return Arguments.of(locale, phoneNumberRegion, allowedErrorsCount);
+    @ParameterizedTest
+    @MethodSource("locales")
+    void testAllPhoneNumberMobileInternational(Locale locale) throws NumberParseException {
+        final BaseFaker faker = new BaseFaker(locale);
+        final PhoneNumber phoneNumberProvider = faker.phoneNumber();
+        for (int i = 0; i < COUNT; i++) {
+            String phoneNumber = phoneNumberProvider.cellPhoneInternational();
+            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, locale.getCountry());
+            assertThat(util.isValidNumberForRegion(proto, locale.getCountry()))
+                .as(() -> "Invalid phone %s for locale %s".formatted(phoneNumber, locale))
+                .isTrue();
+        }
     }
 
     // `new Locale("en", "IND")` in `new Locale("en", "IND"), "IN")` is a Java's Locale
+
     // `"IN"` in `new Locale("en", "IND"), "IN")` is a PhoneNumberUtil's region
-    private static Stream<Arguments> generateLanguageAndRegionOfLocales() {
+    private static Stream<Arguments> locales() {
         return Stream.of(
-            args(new Locale("en", "US"), "US"),
-            args(new Locale("en", "GB"), "GB"),
-            args(new Locale("en", "AU"), "AU"),
-            args(new Locale("en", "CA"), "CA"),
-            args(new Locale("en", "MS"), "MS", FIXME),
-            args(new Locale("en", "NG"), "NG", FIXME),
-            args(new Locale("en", "NZ"), "NZ"),
-            args(new Locale("et", "EE"), "EE", 0),
-            args(new Locale("bg", "BG"), "BG", 0),
-            args(new Locale("by", "BY"), "BY", FIXME),
-            args(new Locale("ca", "CA"), "CA"),
-            args(new Locale("cs", "CZ"), "CZ"),
-            args(new Locale("de"), "DE"),
-            args(new Locale("de", "AT"), "AT"),
-            args(new Locale("de", "CH"), "CH", FIXME),
-            args(new Locale("en", "IND"), "IN"),
-            args(new Locale("en", "NEP"), "NP", FIXME),
-            args(new Locale("en", "PAK"), "PK", FIXME),
-            args(new Locale("hu", "HU"), "HU"),
-            args(new Locale("fi", "FI"), "FI"),
-            args(new Locale("ko", "KR"), "KR", FIXME),
-            args(new Locale("ja", "JP"), "JP"),
-            args(new Locale("lv", "LV"), "LV"),
-            args(new Locale("mk", "MK"), "MK", 0),
-            args(new Locale("ca", "IT"), "IT", FIXME),
-            args(new Locale("nl", "NL"), "NL"),
-            args(new Locale("pl", "PL"), "PL"),
-            args(new Locale("pt", "PT"), "PT", FIXME),
-            args(new Locale("ro", "MD"), "MD", 0),
-            args(new Locale("sq", "AL"), "AL", 0),
-            args(new Locale("zh", "CN"), "CN"),
-            args(new Locale("zh", "TW"), "TW", FIXME),
-            args(new Locale("uk", "UA"), "UA"),
-            args(new Locale("tr", "TR"), "TR"),
-            args(new Locale("en", "SG"), "SG", FIXME),
-            args(new Locale("en", "PH"), "PH"),
-            args(new Locale("en", "UG"), "UG"),
-            args(new Locale("en", "ZA"), "ZA"),
-            args(new Locale("sv"), "SE"),
-            args(new Locale("th"), "TH"),
-            args(new Locale("sk"), "SK", FIXME),
-            args(new Locale("ru", "RU"), "RU", 0),
-            args(new Locale("pt", "BR"), "BR"),
-            args(new Locale("es", "AR"), "AR", FIXME),
-            args(new Locale("es", "MX"), "MX"),
-            args(new Locale("es", "PY"), "PY"),
-            args(new Locale("es"), "ES"),
-            args(new Locale("fr", "CA"), "CA", FIXME),
-            args(new Locale("fr"), "FR"),
-            args(new Locale("he"), "IL"),
-            args(new Locale("hr"), "HR"),
-            args(new Locale("hy"), "AM"),
-            args(new Locale("id"), "ID"),
-            args(Locale.ENGLISH, "US"),
-            args(new Locale("nb", "NO"), "NO"),
-            args(new Locale("no", "NO"), "NO", FIXME),
-            args(new Locale("da", "DK"), "DK"),
-            args(new Locale("vi", "VI"), "VI", FIXME),
-            args(new Locale("fr", "CH"), "CH", FIXME)
+            locale("en", "US"),
+            locale("en", "GB"),
+            locale("en", "AU"),
+            locale("en", "CA"),
+            locale("en", "MS"),
+            locale("en", "NG"),
+            locale("en", "NZ"),
+            locale("et", "EE"),
+            locale("bg", "BG"),
+            locale("by", "BY"),
+            locale("ca", "CA"),
+            locale("cs", "CZ"),
+            locale("de", "DE"),
+            locale("de", "AT"),
+            locale("de", "CH"),
+            locale("en", "IN"),
+            locale("en", "NP"),
+            locale("en", "PK"),
+            locale("hu", "HU"),
+            locale("fi", "FI"),
+            locale("ko", "KR"),
+            locale("ja", "JP"),
+            locale("lv", "LV"),
+            locale("mk", "MK"),
+            locale("ca", "IT"),
+            locale("nl", "NL"),
+            locale("pl", "PL"),
+            locale("pt", "PT"),
+            locale("ro", "MD"),
+            locale("sq", "AL"),
+            locale("zh", "CN"),
+            locale("zh", "TW"),
+            locale("uk", "UA"),
+            locale("tr", "TR"),
+            locale("en", "SG"),
+            locale("en", "PH"),
+            locale("en", "UG"),
+            locale("en", "ZA"),
+            locale("sv", "SE"),
+            locale("th", "TH"),
+            locale("sk", "SK"),
+            locale("ru", "RU"),
+            locale("pt", "BR"),
+            locale("es", "AR"),
+            locale("es", "MX"),
+            locale("es", "PY"),
+            locale("es", "ES"),
+            locale("fr", "CA"),
+            locale("fr", "FR"),
+            locale("he", "IL"),
+            locale("hr", "HR"),
+            locale("hy", "AM"),
+            locale("id", "ID"),
+            locale("nb", "NO"),
+            locale("no", "NO"),
+            locale("da", "DK"),
+            locale("vi", "VI"),
+            locale("fr", "CH")
         );
+    }
+
+    private static Arguments locale(String language, String country) {
+        return Arguments.of(new Locale(language, country));
     }
 
     @Test
@@ -233,38 +215,48 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.phoneNumber().subscriberNumber(10)).matches("\\d{10}");
     }
 
-    @RepeatedTest(10)
+    @RepeatedTest(COUNT)
     void cellPhone_estonia() {
-        String cellPhone = ESTONIAN.phoneNumber().cellPhone();
-        assertThatPhone(cellPhone).matches("[58]\\d{2,3} \\d{4}");
+        String cellPhone = noSpaces(ESTONIAN.phoneNumber().cellPhone());
+        assertThatPhone(cellPhone).matches("[358]\\d{6,7}");
     }
 
-    @RepeatedTest(10)
+    @RepeatedTest(COUNT)
+    void phoneNumberNational_estonia() {
+        String cellPhone = noSpaces(ESTONIAN.phoneNumber().phoneNumberNational());
+        assertThatPhone(cellPhone).matches("[34678]\\d{6,7}");
+    }
+
+    @RepeatedTest(COUNT)
     void phoneNumberInternational_estonia() {
-        String cellPhone = ESTONIAN.phoneNumber().phoneNumberInternational();
-        assertThatPhone(cellPhone).matches("\\+372 5\\d \\d{2} \\d{2} \\d{2}");
+        String cellPhone = noSpaces(ESTONIAN.phoneNumber().phoneNumberInternational());
+        assertThatPhone(cellPhone).matches("\\+372[34678]\\d{6,7}");
     }
 
     @RepeatedTest(10)
     void cellPhone_moldova() {
-        String phone = MOLDOVAN.phoneNumber().cellPhone().replaceAll("\\s", "");
+        String phone = noSpaces(MOLDOVAN.phoneNumber().cellPhone());
         assertThatPhone(phone).matches("0[567]\\d{7}");
     }
 
     @RepeatedTest(10)
     void phoneNumber_moldova() {
-        String phone = MOLDOVAN.phoneNumber().phoneNumber().replaceAll("\\s+", "");
+        String phone = noSpaces(MOLDOVAN.phoneNumber().phoneNumber());
         assertThatPhone(phone).matches("0\\d{8}");
     }
 
     @RepeatedTest(10)
     void phoneNumberInternational_moldova() {
-        String phone = MOLDOVAN.phoneNumber().phoneNumberInternational().replaceAll("\\s+", "");
+        String phone = noSpaces(MOLDOVAN.phoneNumber().phoneNumberInternational());
         assertThatPhone(phone).matches("\\+373\\d{8}");
     }
 
     private static AbstractStringAssert<?> assertThatPhone(String phoneNumber) {
         return assertThat(phoneNumber)
             .as(() -> "Phone: %s".formatted(phoneNumber));
+    }
+
+    private static String noSpaces(String phone) {
+        return phone.replaceAll("\\s+", "");
     }
 }

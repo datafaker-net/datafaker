@@ -80,13 +80,6 @@ es:
         - "#{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"
 
-    phone_number:
-      formats:
-        - '9## ### ###'
-      formats_international:
-        - '+34 9## ### ###'
-    cell_phone:
-      formats: ['6##-###-###', '6##.###.###', '6## ### ###', '6########']
     music:
       instruments: ['Guitarra Eléctrica', 'Guitarra Acústica', 'Flauta', 'Trompeta', 'Clarinete', 'Violonchelo', 'Arpa', 'Xilofón', 'Armónica', 'Acordión', 'Organo', 'Piano', 'Ukelele', 'Saxofón', 'Bateria', 'Violín', 'Bajo']
     subscription:

@@ -8,43 +8,6 @@ en-CA:
     internet:
       free_email: [gmail.com, yahoo.ca, hotmail.com]
       domain_suffix: [ca, com, biz, info, name, net, org]
-    phone_number:
-      country_code: ['1']
-      area_code: [
-        '403', '587', '780', '825',  # Alberta
-        '236', '250', '604', '672', '778',  # British Columbia
-        '204', '431',  # Manitoba
-        '506',  # New Brunswick
-        '709',  # Newfoundland and Labrador
-        '782', '902',  # Nova Scotia and Prince Edward Island
-        '226', '249', '289', '343', '365', '416', '437', '519', '548', '613', '647', '705', '807', '905',  # Ontario
-        '367', '418', '438', '450', '514', '579', '581', '819', '873',  # Quebec
-        '306', '639',  # Saskatchewan
-        '867'  # Yukon, Northwest Territories and Nunavut
-      ]
-      formats: # National format
-        - '(#{PhoneNumber.area_code}) ###-####'
-      formats_international:
-        - '+1 #{PhoneNumber.area_code}-###-####'
-    cell_phone:
-      country_code: ['1']
-      area_code: [
-        '403', '587', '780', '825',  # Alberta
-        '236', '250', '604', '672', '778',  # British Columbia
-        '204', '431',  # Manitoba
-        '506',  # New Brunswick
-        '709',  # Newfoundland and Labrador
-        '782', '902',  # Nova Scotia and Prince Edward Island
-        '226', '249', '289', '343', '365', '416', '437', '519', '548', '613', '647', '705', '807', '905',  # Ontario
-        '367', '418', '438', '450', '514', '579', '581', '819', '873',  # Quebec
-        '306', '639',  # Saskatchewan
-        '867'  # Yukon, Northwest Territories and Nunavut
-      ]
-      formats:
-        - '#{area_code}-###-####'
-        - '(#{area_code}) ###-####'
-        - '#{country_code}-#{area_code}-###-####'
-        - '#{area_code}.###.####'
 
     vehicle:
       license_plate: '#####' #Dept of national defence format, applicable to all provinces

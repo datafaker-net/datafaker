@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

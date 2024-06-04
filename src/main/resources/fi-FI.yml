@@ -32,18 +32,6 @@ fi-FI:
         - "#{first_name} #{last_name}"
       name_with_middle:
         - "#{first_name} #{last_name} #{last_name}"
-    phone_number:
-      non_geographic_numbers: ['50', '41', '42', '43', '44', '45', '46', '47', '48']
-      formats:
-        - "0#{PhoneNumber.non_geographic_numbers} #######"
-      formats_international:
-        - '+358 #{PhoneNumber.non_geographic_numbers} #######'
-
-    cell_phone:
-      formats:
-        - '04#-#######'
-        - '0457-######'
-        - '050-#######'
 
     passport:
       valid: "[0-9]{9}"

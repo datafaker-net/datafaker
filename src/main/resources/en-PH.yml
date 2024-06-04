@@ -10,17 +10,3 @@ en-PH:
         - "#{male_first_name}"
         - "#{female_first_name}"
       last_name: [Garcia, Reyes, Cruz, Mendoza, Ramos, Bautista, Gonzales, Flores, Fernandez, Villanueva, Lopez, Perez, Castillo, Francisco, Rodriguez, Santiago, Diaz]
-    phone_number:
-      # see: https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Philippines#:~:text=As%20such%2C%20a%20typical%20telephone,63%2D2%2D8123%2D4567
-      area_code: ['895', '896', '897', '898',
-                  '905', '906', '907', '908', '909', '910', '912', '915', '916', '917', '918', ' 919',
-                  '920', '921', '922', '923', '925', '926', '927', '928', '929',
-                  '930', '931', '932', '933', '935', '936', '937', '938', '939',
-                  '942', '943', '945', '946', '947', '948', '949',
-                  '950', '951', '953', '954', '955', '956', '957',
-                  '960', '961', '963', '964', '965', '966', '967', '968', '969',
-                  '970', '975', '976', '977', '981', '991', '992', '993', '994', '995', '996', '997', '998', '999']
-      formats: # National format
-        - '0#{PhoneNumber.area_code} ### ####'
-      formats_international:
-        - '+63 #{PhoneNumber.area_code} ### ####'
