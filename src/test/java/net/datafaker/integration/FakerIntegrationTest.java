@@ -150,11 +150,11 @@ class FakerIntegrationTest {
     private static Stream<Arguments> dataParameters() {
         List<Arguments> arguments = new ArrayList<>();
         arguments.add(Arguments.of(Locale.ENGLISH, new Random()));
-        arguments.add(Arguments.of(new Locale("en-US"), new Random()));
-        arguments.add(Arguments.of(new Locale("en-GB"), new Random()));
-        arguments.add(Arguments.of(new Locale("pt-BR"), null));
-        arguments.add(Arguments.of(new Locale("pt-br"), null));
-        arguments.add(Arguments.of(new Locale("Pt_br"), null));
+        arguments.add(Arguments.of(new Locale("en", "US"), new Random()));
+        arguments.add(Arguments.of(new Locale("en", "GB"), new Random()));
+        arguments.add(Arguments.of(new Locale("pt", "BR"), null));
+        arguments.add(Arguments.of(new Locale("pt", "br"), null));
+        arguments.add(Arguments.of(new Locale("Pt", "br"), null));
         arguments.add(Arguments.of(new Locale("pt", "Br", "x2"), null));
         arguments.add(Arguments.of(null, new Random()));
         arguments.add(Arguments.of(null, null));

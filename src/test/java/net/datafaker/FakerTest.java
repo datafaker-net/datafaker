@@ -266,11 +266,11 @@ class FakerTest extends AbstractFakerTest {
     void differentLocalesTest() {
         BaseFaker localFaker = new Faker();
         Callable<String> stringCallable = () -> localFaker.name().firstName();
-        localFaker.doWith(stringCallable, new Locale("ru_RU"));
+        localFaker.doWith(stringCallable, new Locale("ru", "RU"));
         localFaker.doWith(stringCallable, Locale.GERMAN);
         localFaker.doWith(stringCallable, Locale.SIMPLIFIED_CHINESE);
         for (int i = 0; i < 10; i++) {
-            assertThat(localFaker.doWith(stringCallable, new Locale("ru_RU"))).matches("[а-яА-ЯЁё ]+");
+            assertThat(localFaker.doWith(stringCallable, new Locale("ru", "RU"))).matches("[а-яА-ЯЁё ]+");
         }
     }
 
