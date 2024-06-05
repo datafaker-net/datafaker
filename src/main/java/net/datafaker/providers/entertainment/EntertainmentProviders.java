@@ -23,6 +23,10 @@ public interface EntertainmentProviders extends ProviderRegistration {
         return getProvider(BigBangTheory.class, BigBangTheory::new);
     }
 
+    default Boardgame boardgame() {
+        return getProvider(Boardgame.class, Boardgame::new);
+    }
+
     default BojackHorseman bojackHorseman() {
         return getProvider(BojackHorseman.class, BojackHorseman::new);
     }

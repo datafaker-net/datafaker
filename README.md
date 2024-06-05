@@ -275,6 +275,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Beer
 * Big Bang Theory
 * Blood Type
+* Boardgame
 * Bojack Horseman
 * Book
 * Bool
