@@ -13,3 +13,12 @@ First and foremost thanks to anyone who contributes, very much appreciated.
 ## Building
 
 - Should be as easy as running `mvnw clean install` on the root directory.
+
+## Dependencies
+
+In order to keep datafaker slim and focused the project generally attempts to avoid dependencies. Should a reasonable argument be made to including a library as a dependency it should meet the following criteria (subject to change without notice):
+
+- Minimal size (<1MB)
+- No dependency tree (single level, the library itself) 
+- Fills a need we can't do "simply". 
+ 
