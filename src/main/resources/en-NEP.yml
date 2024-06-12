@@ -45,11 +45,3 @@ en-NEP:
       domain_suffix: ['np', 'com', 'info', 'net', 'org']
     company:
       suffix: ['Pvt Ltd', 'Group', 'Ltd', 'Limited']
-    phone_number:
-      # https://en.wikipedia.org/wiki/Telephone_numbers_in_Nepal
-      first_element_ph: ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-      third_element_ph: ['4', '5', '6']
-      formats: #National format
-        - '01-#{PhoneNumber.third_element_ph}######'
-      formats_international:
-        - '+977 1-#{PhoneNumber.third_element_ph}######'

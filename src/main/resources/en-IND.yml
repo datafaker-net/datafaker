@@ -21,12 +21,3 @@ en-IND:
       domain_suffix: [in, com, biz, info, name, net, org, co.in]
     company:
       suffix: [Pvt Ltd, Limited, Ltd, and Sons, Corp, Group, Brothers]
-    phone_number:
-      area_code_2: ['11', '20', '22', '33', '44', '79', '80']
-      area_code_3: ['261', '278', '621', '612', '641', '657', '712', '721', '724', '731', '751', '761', '821', '831', '836', '870', '891']
-      formats: # National format
-        - "0#{PhoneNumber.area_code_2}### #####"
-        - "0#{PhoneNumber.area_code_3}## #####"
-      formats_international:
-        - '+91 #{PhoneNumber.area_code_2}### #####'
-        - '+91 #{PhoneNumber.area_code_3}## #####'

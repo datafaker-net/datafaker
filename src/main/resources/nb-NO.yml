@@ -57,23 +57,6 @@ nb-NO:
         - "#{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"
 
-    phone_number:
-      area_code_1: ['2', '3', '6', '7']
-      area_code_2: ['51', '52', '53', '55', '56', '57']
-      formats:
-        - '#{PhoneNumber.area_code_1}# ## ## ##'
-        - '#{PhoneNumber.area_code_2} ## ## ##'
-      formats_international:
-        - '+47 #{PhoneNumber.area_code_1}# ## ## ##'
-        - '+47 #{PhoneNumber.area_code_2} ## ## ##'
-
-    cell_phone:
-      formats:
-      - "4## ## ###"
-      - "9## ## ###"
-      - "58# ## ###"
-      - "59# ## ###"
-
     hacker:
       adjective: [online,multiplattform,virtuell,digital,backend,frontend,åpen kilde,primær,blåtann,trådløs,nevral,mobil,optisk,sårbar,ondsinnet,utnyttbar,inntrengende,skjult,sofistikert,vedvarende,uforutsigbar,kybernetisk]
       noun: [driver,protokoll,båndbredde,mikrochip,program,port,kort,tabell,liste,grensesnitt,system,brannmur,harddisk,piksel,sensor,alarm,monitor,applikasjon,feed,buss,krets,kondensator,matrise,virus,skadevare,trojaner,botnett,bakdør]

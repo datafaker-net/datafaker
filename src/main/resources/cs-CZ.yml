@@ -25,58 +25,6 @@ cs-CZ:
         - "#{male_first_name}.#{male_last_name}"
     color:
       name: [červená, zelená, modrá, žlutá, purpurová, bílá, černá, oranžová, růžová, šedá, fialová, tyrkysová, lososová, švesková, cihlová, olivová, magenta, hnědá, vínová, zlatá, stříbrná, azurová]
-    phone_number:
-      area_code_1: [ '2' ]
-      area_code: [ '31', '32', '49', '35', '48', '55', '59', '58', '46', '37', '38', '39', '51', '53', '54', '41', '47', '56', '57' ]
-      formats: # National format
-        - '#{PhoneNumber.area_code_1}## ### ###'
-        - '#{PhoneNumber.area_code}# ### ###'
-      formats_international:
-        - '+420 #{PhoneNumber.area_code_1}## ### ###'
-        - '+420 #{PhoneNumber.area_code}# ### ###'
-    cell_phone:
-      formats:
-        # O2
-        - "601 ### ###"
-        - "602 ### ###"
-        - "606 ### ###"
-        - "607 ### ###"
-        - "702 ### ###"
-        - "720 ### ###"
-        - "721 ### ###"
-        - "722 ### ###"
-        - "723 ### ###"
-        - "724 ### ###"
-        - "725 ### ###"
-        - "726 ### ###"
-        - "727 ### ###"
-        - "728 ### ###"
-        - "729 ### ###"
-        # T-Mobile
-        - "603 ### ###"
-        - "604 ### ###"
-        - "605 ### ###"
-        - "730 ### ###"
-        - "731 ### ###"
-        - "732 ### ###"
-        - "733 ### ###"
-        - "734 ### ###"
-        - "735 ### ###"
-        - "736 ### ###"
-        - "737 ### ###"
-        - "738 ### ###"
-        - "739 ### ###"
-        # Vodafone
-        - "608 ### ###"
-        - "770 ### ###"
-        - "771 ### ###"
-        - "772 ### ###"
-        - "773 ### ###"
-        - "774 ### ###"
-        - "775 ### ###"
-        - "776 ### ###"
-        - "777 ### ###"
-        - "778 ### ###"
     nation:
       language: [angličtina, arabština, arménština, bulharština, čeština, chorvatština, čínština, dánština, esperanto, finština, francouzština, hebrejština, italština, japonština, jidiš, korejština, latina, maďarština, němčina, norština, polština, portugalština, řečtina, rumunština, ruština, sanskrt, slovenština, španělština, švédština, turečtina, vietnamština, zulština]
       capital_city: [ Abú Zabí, Abuja, Addis Abeba, Akkra, Alžír, Ammán, Amsterdam, Andorra la Vella, Ankara, Antananarivo, Apia, Ašchabad, Asmara, Asunción, Atény, Bagdád, Bairiki (Jižní Tarawa), Baku, Bamako, Bandar Seri Begawan, Bangkok, Bangui, Banjul, Basseterre, Bejrút, Bělehrad, Belmopan, Berlín, Bern, Biškek, Bissau, Bogotá, Brasília, Bratislava, Brazzaville, Bridgetown, Brusel, Budapešť, Buenos Aires, Bukurešť, Canberra, Caracas, Castries, Chartúm, Ciudad de Guatemala, Ciudad de México, Ciudad de Panamá, Dakar, Damašek, Dauhá, Dháka, Dili, Dodoma, Dublin, Dušanbe, Džibuti, Džuba, Freetown, Funafuti, Gaborone, Georgetown, Gitega, Hanoj, Harare, Havana, Helsinki, Honiara, Islámábád, Jakarta, Jerevan, Jeruzalém, Kábul, Káhira, Kampala, Káthmándú, Kigali, Kingston, Kingstown, Kinshasa, Kišiněv, Kodaň, Konakry, Kuala Lumpur, Kuvajt, Kyjev, Libreville, Lilongwe, Lima, Lisabon, Lomé, Londýn, Luanda, Lublaň, Lucemburk, Lusaka, Madrid, Majuro, Malabo, Male, Managua, Manáma, Manila, Maputo, Maseru, Maskat, Mbabane, Minsk, Mogadišo, Monaco-Ville, Monrovia, Montevideo, Moroni, Moskva, Nairobi, Nassau, N'Djamena, Neipyijto, Ngerulmud, Niamey, Nikósie, Nové Dillí, Nuakšott, Nuku'alofa, Nur-Sultan, Oslo, Ottawa, Ouagadougou, Palikir, Paramaribo, Paříž, Pchjongjang, Peking, Phnompenh, Podgorica, Port Louis, Port Moresby, Port of Spain, Port Vila, Port-au-Prince, Porto Novo, Praha, Praia, Pretorie, Priština, Quito, Rabat, Reykjavík, Riga, Rijád, Řím, Roseau, Saint George's, Saint John's, San José, San Marino, San Salvador, San'á, Santiago de Chile, Santo Domingo, São Tomé, Sarajevo, Singapur, Skopje, Sofia, Soul, Šrí Džajavardanapura Kotte, Stockholm, Sucre, Suva, Tallinn, Taškent, Tbilisi, Tchaj-pej, Tegucigalpa, Teherán, Thimbú, Tirana, Tokio, Tripolis, Tunis, Ulánbátar, Vaduz, Valletta, Varšava, Vatikán, Victoria, Vídeň, Vientiane, Vilnius, Washington, D.C., Wellington, Windhoek, Yamoussoukro, Yaoundé, Yaren, Záhřeb]

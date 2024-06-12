@@ -15,16 +15,3 @@ en-PAK:
       domain_suffix: [pk, com, com.pk, name, net, org, html, edu]
     company:
       suffix: [Pvt Ltd, Limited, Ltd, and Sons, Corp, Group, Brothers, CO]
-    phone_number:
-#      formats: ['+92##########', '+92 ### #######', '03##-#######']
-      area_code_6_digits: ['457', '544', '546', '606', '852', '853', '855', '926', '938', '992', '997']
-      area_code_7_digits: ['22', '40', '44', '48', '49', '52', '53', '55', '57', '61', '62', '64', '68', '71', '81', '86', '91', '966']
-      area_code_8_digits: ['21', '41', '46', '51', '56']
-      formats: # National format
-        - '(0#{PhoneNumber.area_code_6_digits}) ######'
-        - '(0#{PhoneNumber.area_code_7_digits}) #######'
-        - '(0#{PhoneNumber.area_code_8_digits}) ########'
-      formats_international:
-        - '+92 #{PhoneNumber.area_code_6_digits} ######'
-        - '+92 #{PhoneNumber.area_code_7_digits} #######'
-        - '+92 #{PhoneNumber.area_code_8_digits} ########'

@@ -88,14 +88,6 @@ en-NZ:
       delivery_address: "#{mail_box} #{city} #{postcode}"
       mail_box:
         - 'PO Box ##'
-    phone_number:
-      area_code: ['3', '4', '6', '7', '9']
-      formats:
-        - '0#{PhoneNumber.area_code} ### ####'
-      formats_international:
-        - '+64 #{PhoneNumber.area_code} ### ####'
-    cell_phone:
-      formats: ['02##-###-###', '02## ### ###', '02# ### ###', '02#-###-####']
 
     university:
       name: [Auckland University of Technology, Lincoln University, Massey University, University of Auckland, University of Canterbury, University of Otago, University of Waikato, Victoria University of Wellington]

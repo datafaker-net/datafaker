@@ -499,17 +499,19 @@ Supported Locales
 * en-US
 * en-ZA
 * en-PH
-* es (Hispanian)
+* es_ES (Spain)
 * es-MX (Mexican)
 * et_EE (Estonian)
 * fa
 * fi-FI
-* fr (French)
+* fr_FR (French)
 * fr_CH (country: Switzerland, language: French)
 * ge_GE (Georgia)
-* he
-* hu
-* in-ID
+* he_IL (language: Hebrew, country: Israel)
+* hr_HR (Croatian)
+* hu_HU (Hungarian)
+* hy_AM (Armenian)
+* in-ID (Indonesia)
 * it
 * ja
 * ka
@@ -522,11 +524,12 @@ Supported Locales
 * pt-BR
 * ro_MD (country: Moldova, language: Moldavian a.k.a. Romanian)
 * ru_RU (Russian)
-* sk
+* sk_SK (Slovak)
 * sq_AL (Albanian)
 * sv
 * sv-SE
 * tr
+* th_TH (Thailand)
 * uk
 * vi
 * zh_CN (Chinese)

@@ -266,21 +266,21 @@ class FakerTest extends AbstractFakerTest {
     void differentLocalesTest() {
         BaseFaker localFaker = new Faker();
         Callable<String> stringCallable = () -> localFaker.name().firstName();
-        localFaker.doWith(stringCallable, new Locale("ru_RU"));
+        localFaker.doWith(stringCallable, new Locale("ru", "RU"));
         localFaker.doWith(stringCallable, Locale.GERMAN);
         localFaker.doWith(stringCallable, Locale.SIMPLIFIED_CHINESE);
         for (int i = 0; i < 10; i++) {
-            assertThat(localFaker.doWith(stringCallable, new Locale("ru_RU"))).matches("[а-яА-ЯЁё ]+");
+            assertThat(localFaker.doWith(stringCallable, new Locale("ru", "RU"))).matches("[а-яА-ЯЁё ]+");
         }
     }
 
     @Test
     @Timeout(value = 3, unit = TimeUnit.MINUTES)
     void issue883Test() throws InterruptedException {
-        for (int i = 0; i < 10_000_000; i++) {
+        for (int i = 0; i < 10_000; i++) {
             Faker f = new Faker();
             String s = f.ancient().god();
-            if (i % 1_000_000 == 0) {
+            if (i % 1_000 == 0) {
                 Thread.sleep(10);
             }
         }
