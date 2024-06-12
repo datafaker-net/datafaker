@@ -20,5 +20,5 @@ In order to keep datafaker slim and focused the project generally attempts to av
 
 - Minimal size (<1MB)
 - No dependency tree (single level, the library itself) 
-- Fills a need we can't do "simply". 
+- Fills a need we can't do "simply"
  
