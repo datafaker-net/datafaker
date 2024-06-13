@@ -49,12 +49,17 @@ class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
         PhoneNumber phoneNumberGenerator = f.phoneNumber();
         for (int i = 0; i < COUNT; i++) {
             String generatedNumber = phoneNumberGenerator.phoneNumber();
-            Phonenumber.PhoneNumber parsedNumber = util.parse(generatedNumber, phoneNumberGenerator.countryCodeIso2());
+            Phonenumber.PhoneNumber parsedNumber = parse(generatedNumber, phoneNumberGenerator.countryCodeIso2());
 
             assertThat(util.isValidNumber(parsedNumber))
                 .as(() -> "Generated phone number %s for locale %s (country: %s)".formatted(generatedNumber, supportedLocale, phoneNumberGenerator.countryCodeIso2()))
                 .isTrue();
         }
+    }
+
+    private Phonenumber.PhoneNumber parse(String generatedNumber, String countryCode) throws NumberParseException {
+        String normalizedNumber = "IT".equals(countryCode) || "HU".equals(countryCode) ? generatedNumber : generatedNumber.replaceFirst("^0(.+)", "$1");
+        return util.parse(normalizedNumber, countryCode);
     }
 
     public Stream<Arguments> allSupportedLocales() {

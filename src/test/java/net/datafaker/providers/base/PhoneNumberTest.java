@@ -71,7 +71,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         final PhoneNumber phoneNumberProvider = faker.phoneNumber();
         for (int i = 0; i < COUNT; i++) {
             String phoneNumber = phoneNumberProvider.phoneNumber();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, locale.getCountry());
+            Phonenumber.PhoneNumber proto = parse(phoneNumber, locale.getCountry());
             assertThat(util.isValidNumberForRegion(proto, locale.getCountry()))
                 .as(() -> "Invalid phone %s for locale %s".formatted(phoneNumber, locale))
                 .isTrue();
@@ -85,7 +85,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         final PhoneNumber phoneNumberProvider = faker.phoneNumber();
         for (int i = 0; i < COUNT; i++) {
             String phoneNumber = phoneNumberProvider.phoneNumberInternational();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, locale.getCountry());
+            Phonenumber.PhoneNumber proto = parse(phoneNumber, locale.getCountry());
             assertThat(util.isValidNumberForRegion(proto, locale.getCountry()))
                 .as(() -> "Invalid phone %s for locale %s".formatted(phoneNumber, locale))
                 .isTrue();
@@ -99,7 +99,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         final PhoneNumber phoneNumberProvider = faker.phoneNumber();
         for (int i = 0; i < COUNT; i++) {
             String phoneNumber = phoneNumberProvider.cellPhone();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, locale.getCountry());
+            Phonenumber.PhoneNumber proto = parse(phoneNumber, locale.getCountry());
             assertThat(util.isValidNumberForRegion(proto, locale.getCountry()))
                 .as(() -> "Invalid phone %s for locale %s".formatted(phoneNumber, locale))
                 .isTrue();
@@ -113,11 +113,16 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         final PhoneNumber phoneNumberProvider = faker.phoneNumber();
         for (int i = 0; i < COUNT; i++) {
             String phoneNumber = phoneNumberProvider.cellPhoneInternational();
-            Phonenumber.PhoneNumber proto = util.parse(phoneNumber, locale.getCountry());
+            Phonenumber.PhoneNumber proto = parse(phoneNumber, locale.getCountry());
             assertThat(util.isValidNumberForRegion(proto, locale.getCountry()))
                 .as(() -> "Invalid phone %s for locale %s".formatted(phoneNumber, locale))
                 .isTrue();
         }
+    }
+
+    private Phonenumber.PhoneNumber parse(String generatedNumber, String countryCode) throws NumberParseException {
+        String normalizedNumber = "IT".equals(countryCode) || "HU".equals(countryCode) ? generatedNumber : generatedNumber.replaceFirst("^0(.+)", "$1");
+        return util.parse(normalizedNumber, countryCode);
     }
 
     // `new Locale("en", "IND")` in `new Locale("en", "IND"), "IN")` is a Java's Locale
