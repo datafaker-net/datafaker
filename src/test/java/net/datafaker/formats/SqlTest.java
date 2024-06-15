@@ -13,8 +13,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
@@ -127,7 +130,7 @@ class SqlTest {
 
         String expected =
             "INSERT INTO \"MyTable\" (\"Text\", \"Bool\") VALUES ('Willis', false);" + LINE_SEPARATOR +
-            "INSERT INTO \"MyTable\" (\"Text\", \"Bool\") VALUES ('Carlena', true);";
+                "INSERT INTO \"MyTable\" (\"Text\", \"Bool\") VALUES ('Carlena', true);";
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -147,8 +150,8 @@ class SqlTest {
 
         String expected =
             "INSERT INTO \"MyTable\" (\"Text\", \"Bool\")" + LINE_SEPARATOR +
-            "VALUES ('Willis', false)," + LINE_SEPARATOR +
-            "       ('Carlena', true);";
+                "VALUES ('Willis', false)," + LINE_SEPARATOR +
+                "       ('Carlena', true);";
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -423,9 +426,9 @@ class SqlTest {
                 "", "INSERT INTO \"MyTable\" (\"names_list\") VALUES (MULTISET['hello', 'hello']);"),
             of(Schema.of(field("names_multiset", () -> Set.of("hello"))),
                 "", "INSERT INTO \"MyTable\" (\"names_multiset\") VALUES (MULTISET['hello']);"),
-            of(Schema.of(field("ints_ints", () -> new int[][]{new int[]{1}, null, new int[] {3, 4, 5}})),
+            of(Schema.of(field("ints_ints", () -> new int[][]{new int[]{1}, null, new int[]{3, 4, 5}})),
                 "", "INSERT INTO \"MyTable\" (\"ints_ints\") VALUES (ARRAY[ARRAY[1], NULL, ARRAY[3, 4, 5]]);"),
-            of(Schema.of(field("ints_ints", () -> new int[][]{new int[]{1}, new int[]{2}, new int[] {3, 4, 5}})),
+            of(Schema.of(field("ints_ints", () -> new int[][]{new int[]{1}, new int[]{2}, new int[]{3, 4, 5}})),
                 "", "INSERT INTO \"MyTable\" (\"ints_ints\") VALUES (ARRAY[ARRAY[1], ARRAY[2], ARRAY[3, 4, 5]]);"),
             of(Schema.of(field("multiset", () -> Set.of(Set.of(Set.of("value"))))),
                 "", "INSERT INTO \"MyTable\" (\"multiset\") VALUES (MULTISET[MULTISET[MULTISET['value']]]);"),
@@ -437,11 +440,73 @@ class SqlTest {
                 null, "INSERT INTO \"MyTable\" (\"row\") VALUES (ROW('2'));"),
             of(Schema.of(compositeField("row_row",
                     new Field[]{field("name1", () -> "1"), compositeField("row", new Field[]{field("name", () -> "2")})})),
-                    null, "INSERT INTO \"MyTable\" (\"row_row\") VALUES (ROW('1', ROW('2')));"),
+                null, "INSERT INTO \"MyTable\" (\"row_row\") VALUES (ROW('1', ROW('2')));"),
             of(Schema.of(compositeField("row_array",
                     new Field[]{field("name1", () -> "1"),
                         compositeField("row", new Field[]{field("name", () -> new int[]{1, 2, 3})})})),
                 null, "INSERT INTO \"MyTable\" (\"row_array\") VALUES (ROW('1', ROW(ARRAY[1, 2, 3])));")
         );
     }
+
+
+    @Test
+    void batchTestForSqlTransformerSparkSql() {
+        SqlTransformer<String> transformer =
+            SqlTransformer.<String>builder()
+                .dialect(SqlDialect.SPARKSQL)
+                .batch()
+                .build();
+
+        assertThatThrownBy(() -> transformer.generate(Schema.of(field("ints", () -> new int[]{1, 2})), 1))
+            .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("generateTestSchemaForSparkSql")
+    void simpleSqlTestForSqlTransformerSparkSql(Schema<String, String> schema, String tableSchemaName, String expected) {
+        SqlTransformer<String> transformer =
+            SqlTransformer.<String>builder()
+                .schemaName(tableSchemaName)
+                .dialect(SqlDialect.SPARKSQL)
+                .build();
+
+        assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> generateTestSchemaForSparkSql() {
+
+        /*
+         * Maps must be ordered in order to have deterministic SQL statement.
+         */
+        Supplier<Map<String, String>> supplySmallMap =
+            () -> new TreeMap<>(Map.of("k1", "v1"));
+
+        Supplier<Map<String, Object>> supplyBigMap =
+            () -> new TreeMap<>(Map.of("k1", supplySmallMap.get(), "k2", "v2"));
+
+
+        return Stream.of(
+            of(Schema.of(), null, ""),
+            of(Schema.of(field("bytes", () -> new byte[]{1, 0})), null,
+                "INSERT INTO `MyTable` (`bytes`) VALUES (bytes, ARRAY(1, 0));"),
+            of(Schema.of(field("booleans", () -> new boolean[]{true, false})), null,
+                "INSERT INTO `MyTable` (`booleans`) VALUES (booleans, ARRAY(true, false));"),
+            of(Schema.of(field("ints", () -> new int[]{1, 2, 3})), "",
+                "INSERT INTO `MyTable` (`ints`) VALUES (ints, ARRAY(1, 2, 3));"),
+            of(Schema.of(field("longs", () -> new long[]{23L, 45L})), null,
+                "INSERT INTO `MyTable` (`longs`) VALUES (longs, ARRAY(23, 45));"),
+            of(Schema.of(field("empty_map", Map::of)), null,
+                "INSERT INTO `MyTable` (`empty_map`) VALUES (empty_map, MAP());"),
+            of(Schema.of(field("maps", supplyBigMap)), null,
+                "INSERT INTO `MyTable` (`maps`) VALUES (maps, MAP('k1', MAP('k1', 'v1'), 'k2', 'v2'));"),
+            of(Schema.of(
+                compositeField("struct_array", new Field[]{field("name1", () -> "1"), compositeField("struct", new Field[]{field("name", () -> new int[]{1, 2, 3})})})), null,
+                "INSERT INTO `MyTable` (`struct_array`) VALUES (struct_array, NAMED_STRUCT(name1, '1', struct, NAMED_STRUCT(name, ARRAY(1, 2, 3))));"),
+            of(Schema.of(
+                compositeField("struct_struct", new Field[]{field("name1", () -> "1"), compositeField("struct", new Field[]{field("name", () -> "2")})})), null,
+                "INSERT INTO `MyTable` (`struct_struct`) VALUES (struct_struct, NAMED_STRUCT(name1, '1', struct, NAMED_STRUCT(name, '2')));")
+        );
+    }
 }
+
