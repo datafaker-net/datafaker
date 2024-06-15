@@ -13,8 +13,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
@@ -442,6 +445,66 @@ class SqlTest {
                     new Field[]{field("name1", () -> "1"),
                         compositeField("row", new Field[]{field("name", () -> new int[]{1, 2, 3})})})),
                 null, "INSERT INTO \"MyTable\" (\"row_array\") VALUES (ROW('1', ROW(ARRAY[1, 2, 3])));")
+        );
+    }
+
+
+    @Test
+    void batchTestForSqlTransformerSparkSql() {
+        SqlTransformer<String> transformer =
+            SqlTransformer.<String>builder()
+                .dialect(SqlDialect.SPARKSQL)
+                .batch()
+                .build();
+
+        assertThatThrownBy(() -> transformer.generate(Schema.of(field("ints", () -> new int[]{1, 2})), 1))
+            .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("generateTestSchemaForSparkSql")
+    void simpleSqlTestForSqlTransformerSparkSql(Schema<String, String> schema, String tableSchemaName, String expected) {
+        SqlTransformer<String> transformer =
+            SqlTransformer.<String>builder()
+                .schemaName(tableSchemaName)
+                .dialect(SqlDialect.SPARKSQL)
+                .build();
+
+        assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> generateTestSchemaForSparkSql() {
+
+        /*
+         * Maps must be ordered in order to have deterministic SQL statement.
+         */
+        Supplier<Map<String, String>> supplySmallMap =
+            () -> new TreeMap<>(Map.of("k1", "v1"));
+
+        Supplier<Map<String, Object>> supplyBigMap =
+            () -> new TreeMap<>(Map.of("k1", supplySmallMap.get(), "k2",  supplySmallMap.get()));
+        ;
+        return Stream.of(
+            of(Schema.of(), null, ""),
+            of(Schema.of(field("bytes", () -> new byte[]{1, 0})), null,
+                "INSERT INTO `MyTable` (`bytes`) VALUES (ARRAY(1, 0));"),
+            of(Schema.of(field("booleans", () -> new boolean[]{true, false})), null,
+                "INSERT INTO `MyTable` (`booleans`) VALUES (ARRAY(true, false));"),
+            of(Schema.of(field("ints", () -> new int[]{1, 2, 3})), "",
+                "INSERT INTO `MyTable` (`ints`) VALUES (ARRAY(1, 2, 3));"),
+            of(Schema.of(field("longs", () -> new long[]{23L, 45L})), null,
+                "INSERT INTO `MyTable` (`longs`) VALUES (ARRAY(23, 45));"),
+            of(Schema.of(field("empty_map", Map::of)), null,
+                "INSERT INTO `MyTable` (`empty_map`) VALUES (MAP());"),
+            of(Schema.of(field("maps", supplyBigMap)), null,
+                "INSERT INTO `MyTable` (`maps`) VALUES (MAP('k1', MAP('k1', 'v1'), 'k2', MAP('k1', 'v1')));"),
+            of(Schema.of(
+                compositeField("struct_array", new Field[]{field("name1", () -> "1"), compositeField("struct", new Field[]{field("name", () -> new int[]{1, 2, 3})})})), null,
+                "INSERT INTO `MyTable` (`struct_array`) VALUES (NAMED_STRUCT('name1', '1', 'struct', NAMED_STRUCT('name', ARRAY(1, 2, 3))));"),
+            of(Schema.of(
+                compositeField("struct_struct", new Field[]{field("name1", () -> "1"), compositeField("struct", new Field[]{field("name", () -> "2")})})), null,
+                "INSERT INTO `MyTable` (`struct_struct`) VALUES (NAMED_STRUCT('name1', '1', 'struct', NAMED_STRUCT('name', '2')));")
         );
     }
 }
