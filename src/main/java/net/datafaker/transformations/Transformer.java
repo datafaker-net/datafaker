@@ -48,7 +48,8 @@ public interface Transformer<IN, OUT> {
             }
             item.current++;
             return (OUT) res.toString();
-        }).limit(limit);
+        }).parallel()
+            .limit(limit);
     }
 
     class Item {

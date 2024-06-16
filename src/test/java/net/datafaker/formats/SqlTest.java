@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
@@ -25,6 +26,30 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 class SqlTest {
+
+    @Test
+    void testSqlStream() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Integer, ?> schema = Schema.of(
+            field("Number", () -> faker.number().digit()),
+            field("Password", () -> faker.internet().uuidv3())
+        );
+
+        SqlTransformer<Integer> transformer = SqlTransformer.<Integer>builder().build();
+
+
+        String sql =
+            transformer
+                .generateStream(schema, 3)
+                .collect(Collectors.joining(LINE_SEPARATOR));
+
+        String expected =
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES ('6', '09fd4007-40ba-39df-8cb1-65926bf7b8a9');" + LINE_SEPARATOR +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES ('8', '96c19757-1f18-3051-9acb-f56f0b5555ae');" + LINE_SEPARATOR +
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES ('2', '8a4a0365-cd39-33c1-a52a-279b1076cf2d');";
+
+        assertThat(sql).isEqualTo(expected);
+    }
     @Test
     void generateFromFakeSequenceSeparated() {
         BaseFaker faker = new BaseFaker(new Random(10L));
@@ -38,6 +63,8 @@ class SqlTest {
             .suppliers(() -> faker.number().randomDigit())
             .len(5)
             .build();
+
+        String sql = transformer.generate(fakeSequence, schema);
 
         String expected = "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, 'nf3');" + LINE_SEPARATOR +
             "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (6, '4b0v69');" + LINE_SEPARATOR +
