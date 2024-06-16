@@ -21,7 +21,7 @@ import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.NULL;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.ROW;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.VALUES;
 
-public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
+public class SqlTransformer<IN> implements Transformer<IN, String> {
     private static final char DEFAULT_QUOTE = '\'';
     private static final char DEFAULT_CATALOG_SEPARATOR = '.';
     private static final String DEFAULT_SQL_IDENTIFIER = "\"\"";
@@ -75,12 +75,12 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public CharSequence apply(IN input, Schema<IN, ?> schema) {
+    public String apply(IN input, Schema<IN, ?> schema) {
         return apply(input, schema, 0);
     }
 
     @Override
-    public CharSequence apply(IN input, Schema<IN, ?> schema, long rowId) {
+    public String apply(IN input, Schema<IN, ?> schema, long rowId) {
         //noinspection unchecked
         Field<?, ? extends CharSequence>[] fields = (Field<?, ? extends CharSequence>[]) schema.getFields();
         if (fields.length == 0) {
@@ -261,7 +261,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             }
             for (int j = 0; j < fieldName.length(); j++) {
                 if (openSqlIdentifier == fieldName.charAt(j)
-                        || closeSqlIdentifier == fieldName.charAt(j)) {
+                    || closeSqlIdentifier == fieldName.charAt(j)) {
                     result.append(openSqlIdentifier);
                 }
                 result.append(fieldName.charAt(j));
@@ -360,6 +360,32 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             }
         }
         return sb.toString();
+    }
+
+    @Override
+    public Stream<String> generateStream(final Schema<IN, ?> schema, long limit) {
+        if (schema.getFields().length == 0) {
+            return Stream.empty();
+        }
+
+        if (withBatchMode) {
+            return
+                Stream
+                    .iterate(0L, i -> i <= limit, i -> i + batchSize)
+                    .map(i -> {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(apply(null, schema, i));
+                        sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));
+                        sb.append(";");
+                        return sb.toString();
+                    });
+
+
+        } else {
+            return Stream
+                .generate(() -> apply(null, schema) + ";")
+                .limit(limit);
+        }
     }
 
     private String generateSeparatedStatements(Schema<IN, ?> schema, List<IN> inputs, int limit) {

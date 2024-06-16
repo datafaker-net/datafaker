@@ -39,8 +39,6 @@ class SqlTest {
             .len(5)
             .build();
 
-        String sql = transformer.generate(fakeSequence, schema);
-
         String expected = "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (3, 'nf3');" + LINE_SEPARATOR +
             "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (6, '4b0v69');" + LINE_SEPARATOR +
             "INSERT INTO \"MyTable\" (\"Number\", \"Password\") VALUES (7, '00827v2');" + LINE_SEPARATOR +
