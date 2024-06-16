@@ -16,7 +16,7 @@ First and foremost thanks to anyone who contributes, very much appreciated.
 
 ## Dependencies
 
-In order to keep datafaker slim and focused the project generally attempts to avoid dependencies. Should a reasonable argument be made to including a library as a dependency it should meet the following criteria (subject to change without notice):
+In order to keep Datafaker slim and focused the project generally attempts to avoid introducing new dependencies. Should a reasonable argument be made to including a library as a dependency it should meet the following criteria (subject to change without notice):
 
 - Minimal size (<1MB)
 - No dependency tree (single level, the library itself) 
