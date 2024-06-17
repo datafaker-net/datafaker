@@ -133,7 +133,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                             ? handlePrimitivesInArray(componentType, value)
                             : handleObjectInArray(value)) + dialect.getArrayEnd());
                 } else if (value instanceof Map) {
-                    result.add(MAP.getValue(keywordCase) + "(" + handeObjectInMap(value) + ")");
+                    result.add(MAP.getValue(keywordCase) + "(" + handleObjectInMap(value) + ")");
                 } else if (value instanceof Collection) {
                     result.add(MULTISET.getValue(keywordCase) + "[" +
                         handleObjectInCollection(value) + "]");
@@ -176,7 +176,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return result.toString();
     }
 
-    private String handeObjectInMap(Object value) {
+    private String handleObjectInMap(Object value) {
         StringBuilder result = new StringBuilder();
         Map<Object, Object> map = (Map<Object, Object>) value;
         int i = 0;
@@ -204,7 +204,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     : handleObjectInArray(value);
                 return ARRAY.getValue(keywordCase) + "[" + array + "]";
             } else if (value instanceof Map) {
-                return MAP.getValue(keywordCase) + "(" + handeObjectInMap(value) + ")";
+                return MAP.getValue(keywordCase) + "(" + handleObjectInMap(value) + ")";
             } else if (value instanceof Collection) {
                 return MULTISET.getValue(keywordCase)
                     + "[" + handleObjectInCollection(value) + "]";

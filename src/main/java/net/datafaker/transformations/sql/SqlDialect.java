@@ -46,8 +46,6 @@ public enum SqlDialect {
     PRESTO("\"", Casing.UNCHANGED),
     REDSHIFT("\"", Casing.TO_LOWER),
     SNOWFLAKE("\""),
-    TERADATA("\""),
-    VERTICA("\"", Casing.UNCHANGED),
     SPARKSQL("`",
         (columns, values, caze) -> { throw SqlDialect.AuxiliaryConstants.BATCH_UNSUPPORTED; },
         (columns, values, caze) -> { throw SqlDialect.AuxiliaryConstants.BATCH_UNSUPPORTED; },
@@ -73,7 +71,9 @@ public enum SqlDialect {
         public String getFieldPrefix(String fieldName) {
             return fieldName;
         }
-    };
+    },
+    TERADATA("\""),
+    VERTICA("\"", Casing.UNCHANGED);
 
     private final String sqlQuoteIdentifier;
     private final Casing unquotedCasing;
@@ -82,8 +82,7 @@ public enum SqlDialect {
     private final Function<SqlTransformer.Case, String> lastBatchRow;
 
     private static final String DEFAULT_BEFORE_EACH_BATCH_PREFIX = "       ";
-
-
+    
     SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
                TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
         this.sqlQuoteIdentifier = sqlQuoteIdentifier;
