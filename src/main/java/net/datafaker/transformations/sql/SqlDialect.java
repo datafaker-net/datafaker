@@ -74,7 +74,6 @@ public enum SqlDialect {
     },
     TERADATA("\""),
     VERTICA("\"", Casing.UNCHANGED);
-
     private final String sqlQuoteIdentifier;
     private final Casing unquotedCasing;
     private final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow;
@@ -82,7 +81,7 @@ public enum SqlDialect {
     private final Function<SqlTransformer.Case, String> lastBatchRow;
 
     private static final String DEFAULT_BEFORE_EACH_BATCH_PREFIX = "       ";
-    
+
     SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
                TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
         this.sqlQuoteIdentifier = sqlQuoteIdentifier;
