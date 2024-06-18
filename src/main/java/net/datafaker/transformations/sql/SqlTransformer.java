@@ -408,6 +408,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             this.start = start;
             this.end = end;
         }
+
         public Interval add(Integer offset) {
             return new Interval(start + offset, end + offset);
         }
@@ -439,7 +440,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     .map(interval -> {
                         StringBuilder sb = new StringBuilder();
 
-                        for(int i = interval.getStart(); i < interval.getEnd(); i++) {
+                        for (int i = interval.getStart(); i < interval.getEnd(); i++) {
                             sb.append(apply(null, schema, i));
                         }
                         sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));
@@ -449,8 +450,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         } else {
             return
                 Stream
-                .generate(() -> (CharSequence)(apply(null, schema) + ";"))
-                .limit(limit);
+                    .generate(() -> (CharSequence) (apply(null, schema) + ";"))
+                    .limit(limit);
         }
     }
 
