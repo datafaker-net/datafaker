@@ -81,7 +81,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public String apply(IN input, Schema<IN, ?> schema, long rowId) {
+    public CharSequence apply(IN input, Schema<IN, ?> schema, long rowId) {
         //noinspection unchecked
         Field<?, ? extends CharSequence>[] fields = (Field<?, ? extends CharSequence>[]) schema.getFields();
         if (fields.length == 0) {
