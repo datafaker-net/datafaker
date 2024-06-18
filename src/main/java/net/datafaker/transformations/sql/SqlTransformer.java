@@ -21,7 +21,7 @@ import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.NULL;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.ROW;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.VALUES;
 
-public class SqlTransformer<IN> implements Transformer<IN, String> {
+public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private static final char DEFAULT_QUOTE = '\'';
     private static final char DEFAULT_CATALOG_SEPARATOR = '.';
     private static final String DEFAULT_SQL_IDENTIFIER = "\"\"";
@@ -75,7 +75,7 @@ public class SqlTransformer<IN> implements Transformer<IN, String> {
     }
 
     @Override
-    public String apply(IN input, Schema<IN, ?> schema) {
+    public CharSequence apply(IN input, Schema<IN, ?> schema) {
         return apply(input, schema, 0);
     }
 
@@ -261,7 +261,7 @@ public class SqlTransformer<IN> implements Transformer<IN, String> {
             }
             for (int j = 0; j < fieldName.length(); j++) {
                 if (openSqlIdentifier == fieldName.charAt(j)
-                    || closeSqlIdentifier == fieldName.charAt(j)) {
+                        || closeSqlIdentifier == fieldName.charAt(j)) {
                     result.append(openSqlIdentifier);
                 }
                 result.append(fieldName.charAt(j));
@@ -362,7 +362,12 @@ public class SqlTransformer<IN> implements Transformer<IN, String> {
         return sb.toString();
     }
 
-    //make class Interval with start and end
+    /**
+     * Represents an interval of integers.
+     * Useful to capture range of rows corresponding to batch SQL statements.
+     *
+     * @see SqlTransformer#generateStream(Schema, long)
+     */
     public static class Interval {
         Integer start;
         Integer end;
@@ -390,7 +395,7 @@ public class SqlTransformer<IN> implements Transformer<IN, String> {
 
 
     @Override
-    public Stream<String> generateStream(final Schema<IN, ?> schema, long limit) {
+    public Stream<CharSequence> generateStream(final Schema<IN, ?> schema, long limit) {
         if (schema.getFields().length == 0) {
             return Stream.empty();
         }
@@ -412,7 +417,7 @@ public class SqlTransformer<IN> implements Transformer<IN, String> {
         } else {
             return
                 Stream
-                .generate(() -> apply(null, schema) + ";")
+                .generate(() -> (CharSequence)(apply(null, schema) + ";"))
                 .limit(limit);
         }
     }
