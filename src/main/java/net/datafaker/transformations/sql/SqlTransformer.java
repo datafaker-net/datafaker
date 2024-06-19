@@ -440,7 +440,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     .map(interval -> {
                         StringBuilder sb = new StringBuilder();
 
-                        for (int i = interval.getStart(); i < interval.getEnd(); i++) {
+                        for (int i = interval.getStart(); i < interval.getEnd() && i < limit; i++) {
                             sb.append(apply(null, schema, i));
                         }
                         sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));

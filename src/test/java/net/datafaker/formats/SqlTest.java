@@ -53,6 +53,37 @@ class SqlTest {
 
         assertThat(sql).isEqualTo(expected);
     }
+
+    @Test
+    void testSqlBatch() {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Schema<Integer, ?> schema = Schema.of(
+            field("Number", () -> faker.number().digit()),
+            field("Password", () -> faker.internet().uuidv3())
+        );
+
+        SqlTransformer<Integer> transformer =
+            SqlTransformer
+                .<Integer>builder()
+                .batch(3)
+                .build();
+
+        String sql =
+            transformer
+                .generateStream(schema, 4)
+                .collect(Collectors.joining(LINE_SEPARATOR));
+
+        String expected =
+            "INSERT INTO \"MyTable\" (\"Number\", \"Password\")" + LINE_SEPARATOR +
+                "VALUES ('6', '09fd4007-40ba-39df-8cb1-65926bf7b8a9')," + LINE_SEPARATOR +
+                "       ('8', '96c19757-1f18-3051-9acb-f56f0b5555ae')," + LINE_SEPARATOR +
+                "       ('2', '8a4a0365-cd39-33c1-a52a-279b1076cf2d');" + LINE_SEPARATOR +
+                "INSERT INTO \"MyTable\" (\"Number\", \"Password\")" + LINE_SEPARATOR +
+                "VALUES ('6', 'e807efdd-b6db-319d-8342-a044274d3417');";
+
+        assertThat(sql).isEqualTo(expected);
+    }
+
     @Test
     void generateFromFakeSequenceSeparated() {
         BaseFaker faker = new BaseFaker(new Random(10L));
