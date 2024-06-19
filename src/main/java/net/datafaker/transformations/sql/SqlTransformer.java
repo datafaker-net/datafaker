@@ -413,10 +413,6 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             return new Interval(start + offset, end + offset);
         }
 
-        public Integer diff() {
-            return end - start;
-        }
-
         public Integer getStart() {
             return start;
         }
