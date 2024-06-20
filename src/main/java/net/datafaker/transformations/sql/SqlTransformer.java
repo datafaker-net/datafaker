@@ -400,7 +400,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
      *
      * @see SqlTransformer#generateStream(Schema, long)
      */
-    public static class Interval {
+    private static class Interval {
         Integer start;
         Integer end;
 
