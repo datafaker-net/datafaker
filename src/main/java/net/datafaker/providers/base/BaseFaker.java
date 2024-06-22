@@ -339,7 +339,14 @@ public class BaseFaker implements BaseProviders {
             Class newMappingClass = newMapping.getClass();
             METHODS.putIfAbsent(newMappingClass, new ConcurrentHashMap<>(methods.length));
             for (Method method: methods) {
-                if (method.getParameterCount() > 0) continue;
+                if (method.getParameterCount() > 0
+                    || method.getDeclaringClass() == Object.class
+                    || method.getDeclaringClass() == AbstractProvider.class
+                    || method.getReturnType() == void.class
+                ) {
+                    continue;
+                }
+
                 final String methodName = method.getName();
 
                 Map<String, Method> methodMap = METHODS.get(newMappingClass);
