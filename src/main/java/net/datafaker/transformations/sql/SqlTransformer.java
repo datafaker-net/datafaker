@@ -401,8 +401,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
      * @see SqlTransformer#generateStream(Schema, long)
      */
     private static class Interval {
-        Integer start;
-        Integer end;
+        final Integer start;
+        final Integer end;
 
         public Interval(Integer start, Integer end) {
             this.start = start;
