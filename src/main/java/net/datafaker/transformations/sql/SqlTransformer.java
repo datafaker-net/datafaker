@@ -369,12 +369,12 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String getStartStream(Schema<IN, ?> schema) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Not supported for SQL transformer. Use generate or generateStream instead to create SQL statements.");
     }
 
     @Override
     public String getEndStream() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Not supported for SQL transformer. Use generate or generateStream instead to create SQL statements.");
     }
 
     private String generateBatchModeStatements(Schema<IN, ?> schema, List<IN> inputs, int limit) {
@@ -392,6 +392,63 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * Represents an interval of integers.
+     * Useful to capture range of rows corresponding to batch SQL statements.
+     *
+     * @see SqlTransformer#generateStream(Schema, long)
+     */
+    private static class Interval {
+        final Integer start;
+        final Integer end;
+
+        public Interval(Integer start, Integer end) {
+            this.start = start;
+            this.end = end;
+        }
+
+        public Interval add(Integer offset) {
+            return new Interval(start + offset, end + offset);
+        }
+
+        public Integer getStart() {
+            return start;
+        }
+
+        public Integer getEnd() {
+            return end;
+        }
+    }
+
+
+    @Override
+    public Stream<CharSequence> generateStream(final Schema<IN, ?> schema, long limit) {
+        if (schema.getFields().length == 0) {
+            return Stream.empty();
+        }
+
+        if (withBatchMode) {
+            return
+                Stream
+                    .iterate(new Interval(0, batchSize), interval -> interval.getStart() <= limit, i -> i.add(batchSize))
+                    .map(interval -> {
+                        StringBuilder sb = new StringBuilder();
+
+                        for (int i = interval.getStart(); i < interval.getEnd() && i < limit; i++) {
+                            sb.append(apply(null, schema, i));
+                        }
+                        sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));
+                        sb.append(";");
+                        return sb.toString();
+                    });
+        } else {
+            return
+                Stream
+                    .generate(() -> (CharSequence) (apply(null, schema) + ";"))
+                    .limit(limit);
+        }
     }
 
     private String generateSeparatedStatements(Schema<IN, ?> schema, List<IN> inputs, int limit) {
