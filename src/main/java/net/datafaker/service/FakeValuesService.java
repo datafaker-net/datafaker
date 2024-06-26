@@ -44,6 +44,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import com.github.curiousoddman.rgxgen.RgxGen;
 
+import static java.util.Objects.requireNonNull;
 import static net.datafaker.transformations.Field.field;
 
 public class FakeValuesService {
@@ -76,7 +77,7 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
-    private static final Map<RegExpContext, Supplier<?>> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
+    private final Map<RegExpContext, Supplier<?>> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
 
     public FakeValuesService() {
     }
@@ -103,7 +104,7 @@ public class FakeValuesService {
      * @throws IllegalArgumentException in case of invalid path
      */
     public void addPath(Locale locale, Path path) {
-        Objects.requireNonNull(locale);
+        requireNonNull(locale);
         if (path == null || Files.notExists(path) || Files.isDirectory(path) || !Files.isReadable(path)) {
             throw new IllegalArgumentException("Path should be an existing readable file: \"%s\"".formatted(path));
         }
@@ -122,7 +123,7 @@ public class FakeValuesService {
      * @throws IllegalArgumentException in case of invalid url
      */
     public void addUrl(Locale locale, URL url) {
-        Objects.requireNonNull(locale);
+        requireNonNull(locale);
         if (url == null) {
             throw new IllegalArgumentException("url should be an existing readable file");
         }
@@ -473,7 +474,7 @@ public class FakeValuesService {
             final char key = letterString.charAt(i);
             if (optionsMap.containsKey(key)) {
                 final String[] options = optionsMap.get(key);
-                Objects.requireNonNull(options, "Array with available options should be non null");
+                requireNonNull(options, "Array with available options should be non null");
                 sb.append(options[context.getRandomService().nextInt(options.length)]);
             } else {
                 sb.append(key);
@@ -637,7 +638,7 @@ public class FakeValuesService {
                 }
                 continue;
             }
-            final RegExpContext regExpContext = RegExpContext.of(expr, root, context);
+            final RegExpContext regExpContext = new RegExpContext(expr, root, context);
             final Supplier<?> val = REGEXP2SUPPLIER_MAP.get(regExpContext);
             final Object resolved;
             if (val != null) {
@@ -1184,19 +1185,17 @@ public class FakeValuesService {
      * this is useful as we get to find the method and coerce the arguments in one
      * shot, returning both when successful.  This saves us from doing it more than once (coercing args).
      */
-    private static class MethodAndCoercedArgs {
-
-        private final Method method;
-
-        private final Object[] coerced;
-
-        private MethodAndCoercedArgs(Method m, Object[] coerced) {
-            this.method = Objects.requireNonNull(m, "method cannot be null");
-            this.coerced = Objects.requireNonNull(coerced, "coerced arguments cannot be null");
+    private record MethodAndCoercedArgs(Method method, Object[] coerced) {
+        private MethodAndCoercedArgs {
+            requireNonNull(method, "method cannot be null");
+            requireNonNull(coerced, "coerced arguments cannot be null");
         }
 
         private Object invoke(Object on) throws InvocationTargetException, IllegalAccessException {
             return method.invoke(on, coerced);
         }
+    }
+
+    private record RegExpContext(String exp, ProviderRegistration root, FakerContext context) {
     }
 }
