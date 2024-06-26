@@ -302,7 +302,7 @@ INSERT INTO "MyTable" ("row") VALUES (ROW('2'));
 #### Spark SQL
 
 Some engines like Spark stand out with support for complex types like `STRUCT` and `MAP`.  
-Spark doesn't support batch inserts. The dialect will throw an exception if you attempt to generate batch inserts.
+Spark dialect doesn't support batch inserts. The dialect will throw an exception if you attempt to generate batch inserts.
 
 The following schema:
 
