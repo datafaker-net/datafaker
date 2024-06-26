@@ -788,7 +788,8 @@ public class FakeValuesService {
                             try {
                                 return method.invoke(current);
                             } catch (Exception e) {
-                                throw new RuntimeException(e + " " + Arrays.toString(args), e);
+                                throw new RuntimeException("Failed to call method %s.%s() on %s (args: %s)".formatted(
+                                    method.getDeclaringClass().getName(), method.getName(), current, Arrays.toString(args)), e);
                             }
                         });
                         return res;
@@ -797,14 +798,17 @@ public class FakeValuesService {
                 res.add(resolveFromMethodOn(current, directive, args));
             }
             if (dotIndex > 0) {
-                final AbstractProvider<?> ap = BaseFaker.getProvider(directive.substring(0, dotIndex), context);
-                final Method method = BaseFaker.getMethod(ap, directive.substring(dotIndex + 1));
+                String providerClassName = directive.substring(0, dotIndex);
+                String methodName = directive.substring(dotIndex + 1);
+                final AbstractProvider<?> ap = BaseFaker.getProvider(providerClassName, context);
+                final Method method = BaseFaker.getMethod(ap, methodName);
                 if (method != null) {
                     res.add(() -> {
                         try {
                             return method.invoke(ap);
                         } catch (Exception e) {
-                            throw new RuntimeException(e + " " + Arrays.toString(args));
+                            throw new RuntimeException("Failed to call method %s.%s() on %s (args: %s)".formatted(
+                                method.getDeclaringClass().getName(), method.getName(), ap, Arrays.toString(args)), e);
                         }
                     });
                     return res;
