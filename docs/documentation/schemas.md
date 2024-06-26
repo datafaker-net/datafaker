@@ -329,8 +329,8 @@ The following schema:
 will lead to:
 
 ```
-INSERT INTO "MyTable" ("string", "array", "map", "struct") 
-VALUES ('string', ARRAY[1, 2, 3], MAP('key', 'value'), NAMED_STRUCT('name', '2'));
+INSERT INTO `MyTable` (`string`, `array`, `map`, `struct`) 
+VALUES ('string', ARRAY(1, 2, 3), MAP('key', 'value'), NAMED_STRUCT('name', '2'));
 ```
 
 ## YAML transformation
