@@ -334,9 +334,6 @@ public class BaseFaker implements BaseProviders {
             final String simpleName = clazz.getSimpleName();
             CLASSES.putIfAbsent(simpleName, new ConcurrentHashMap<>());
 
-            Class<?> newMappingClass = newMapping.getClass();
-            ObjectMethods.scan(newMappingClass);
-
             map.putIfAbsent(faker.getContext(), newMapping);
             CLASSES.get(simpleName).put(faker.getContext(), newMapping);
             return newMapping;

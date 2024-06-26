@@ -3,41 +3,29 @@ package net.datafaker.providers.base;
 import java.lang.reflect.Method;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toMap;
 
 public class ObjectMethods {
     private static final Map<Class<?>, Map<String, Method>> METHODS = new IdentityHashMap<>();
 
-    static void scan(Class<?> clazz) {
+    private static synchronized Map<String, Method> scan(Class<?> clazz) {
         Method[] methods = clazz.getMethods();
-        METHODS.putIfAbsent(clazz, new ConcurrentHashMap<>(methods.length));
-        for (Method method: methods) {
-            if (method.getParameterCount() > 0
-                || method.getDeclaringClass() == Object.class
-                || method.getDeclaringClass() == AbstractProvider.class
-                || method.getReturnType() == void.class
-            ) {
-                continue;
-            }
 
-            String methodName = method.getName();
+        return Stream.of(methods)
+            .filter(ObjectMethods::returnsProvider)
+            .collect(toMap(Method::getName, method -> method));
+    }
 
-            Map<String, Method> methodMap = METHODS.get(clazz);
-            if (methodMap == null) {
-                synchronized (ObjectMethods.class) {
-                    methodMap = METHODS.get(clazz);
-                    if (methodMap == null) {
-                        METHODS.put(clazz, new ConcurrentHashMap<>(methods.length));
-                        methodMap = METHODS.get(clazz);
-                    }
-                }
-            }
-            methodMap.put(methodName, method);
-        }
+    private static boolean returnsProvider(Method method) {
+        return method.getParameterCount() == 0
+            && method.getDeclaringClass() != Object.class
+            && method.getDeclaringClass() != AbstractProvider.class
+            && method.getReturnType() != void.class;
     }
 
     static Method getMethod(Object object, String methodName) {
-        Map<String, Method> map = METHODS.get(object.getClass());
-        return map == null ? null : map.get(methodName);
+        return METHODS.computeIfAbsent(object.getClass(), ObjectMethods::scan).get(methodName);
     }
 }
