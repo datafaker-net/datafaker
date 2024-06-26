@@ -373,6 +373,7 @@ class FakerTest extends AbstractFakerTest {
                 try {
                     int currentSize = 0;
                     for (int i = 0; i < numberOfTestsPerMethod && currentSize <= 1; i++) {
+                        m.setAccessible(true);
                         set.add(m.invoke(ap));
                         currentSize = set.size();
                     }

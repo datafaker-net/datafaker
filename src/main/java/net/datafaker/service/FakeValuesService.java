@@ -7,6 +7,7 @@ import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
+import net.datafaker.providers.base.ObjectMethods;
 import net.datafaker.providers.base.ProviderRegistration;
 import net.datafaker.transformations.CsvTransformer;
 import net.datafaker.transformations.Field;
@@ -800,8 +801,8 @@ public class FakeValuesService {
             if (dotIndex > 0) {
                 String providerClassName = directive.substring(0, dotIndex);
                 String methodName = directive.substring(dotIndex + 1);
-                final AbstractProvider<?> ap = BaseFaker.getProvider(providerClassName, context);
-                final Method method = BaseFaker.getMethod(ap, methodName);
+                AbstractProvider<?> ap = root.getProvider(providerClassName);
+                Method method = ap == null ? null : ObjectMethods.getMethodByName(ap, methodName);
                 if (method != null) {
                     res.add(() -> {
                         try {
