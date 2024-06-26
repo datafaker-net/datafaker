@@ -33,7 +33,6 @@ public class BaseFaker implements BaseProviders {
     private final FakeValuesService fakeValuesService;
     private static final Map<Class<?>, Map<FakerContext, AbstractProvider<?>>> PROVIDERS_MAP = new IdentityHashMap<>();
     private static final Map<String, Map<FakerContext, AbstractProvider<?>>> CLASSES = new ConcurrentHashMap<>();
-    private static final Map<Class<?>, Map<String, Method>> METHODS = new IdentityHashMap<>();
 
     public BaseFaker() {
         this(Locale.ENGLISH);
@@ -335,32 +334,9 @@ public class BaseFaker implements BaseProviders {
             final String simpleName = clazz.getSimpleName();
             CLASSES.putIfAbsent(simpleName, new ConcurrentHashMap<>());
 
-            Method[] methods = clazz.getMethods();
-            Class newMappingClass = newMapping.getClass();
-            METHODS.putIfAbsent(newMappingClass, new ConcurrentHashMap<>(methods.length));
-            for (Method method: methods) {
-                if (method.getParameterCount() > 0
-                    || method.getDeclaringClass() == Object.class
-                    || method.getDeclaringClass() == AbstractProvider.class
-                    || method.getReturnType() == void.class
-                ) {
-                    continue;
-                }
+            Class<?> newMappingClass = newMapping.getClass();
+            ObjectMethods.scan(newMappingClass);
 
-                final String methodName = method.getName();
-
-                Map<String, Method> methodMap = METHODS.get(newMappingClass);
-                if (methodMap == null) {
-                    synchronized (BaseFaker.class) {
-                        methodMap = METHODS.get(newMappingClass);
-                        if (methodMap == null) {
-                            METHODS.put(newMappingClass, new ConcurrentHashMap<>(newMappingClass.getMethods().length));
-                            methodMap = METHODS.get(newMappingClass);
-                        }
-                    }
-                }
-                methodMap.put(methodName, method);
-            }
             map.putIfAbsent(faker.getContext(), newMapping);
             CLASSES.get(simpleName).put(faker.getContext(), newMapping);
             return newMapping;
@@ -441,8 +417,6 @@ public class BaseFaker implements BaseProviders {
     }
 
     public static Method getMethod(AbstractProvider<?> ap, String methodName) {
-        Map<String, Method> map;
-        if (ap == null || (map = METHODS.get(ap.getClass())) == null) return null;
-        return map.get(methodName);
+        return ap == null ? null : ObjectMethods.getMethod(ap, methodName);
     }
 }
