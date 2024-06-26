@@ -185,7 +185,7 @@ Dialect could be specified during `SQLTransformaer` build e.g:
             .schemaName(tableSchemaName).dialect(SqlDialect.ORACLE).build()
     ```
 
-Dialect also handle SQL quote identifiers, quotes and other SQL dialect specifics.
+Dialect also handles SQL quote identifiers, quotes and other SQL dialect specifics.
 
 An example of batch mode:
 
@@ -239,10 +239,11 @@ VALUES ('Marcell', 'Walsh'),
 ### Advanced SQL types
 
 It also supports generation of `ARRAY`, `MULTISET` and `ROW` types.
-Please be aware that not every database engine supports it and datafaker could do it for every dialect.
-To generate `ARRAY` schema field should supply and array.
-To generate `MULTISET` schema field should supply a list (SQL `MULTISET` could contain duplicates)
-To generate `ROW` schema field should supply a `compositeField`
+Please be aware that not every database engine supports it and datafaker could do it for every dialect. 
+
+To generate `ARRAY` schema field supply an array.  
+To generate `MULTISET` schema field supply a list (SQL `MULTISET` could contain duplicates).  
+To generate `ROW` schema field should supply a `compositeField`.
 
 e.g.
 
@@ -296,6 +297,40 @@ will lead to
 
 ```
 INSERT INTO "MyTable" ("row") VALUES (ROW('2'));
+```
+
+#### Spark SQL
+
+Some engines like Spark stand out with support for complex types like `STRUCT` and `MAP`.  
+Spark doesn't support batch inserts. The dialect will throw an exception if you attempt to generate batch inserts.
+
+The following schema:
+
+=== "Java"
+    
+    ``` java
+        Schema.of(
+            field("string", () -> "string"),
+            field("array", () -> new int[]{1, 2, 3}),
+            field("map", () -> Map.of("key", "value")),
+            compositeField("struct", new Field[]{field("name", () -> "2")})
+        );
+    ```
+=== "Kotlin"
+
+    ```kotlin
+        Schema.of(
+            field("string", Supplier { "string" }),
+            field("array", Supplier { intArrayOf(1, 2, 3) }),
+            field("map", Supplier { mapOf("key" to "value") }),
+            compositeField("struct", arrayOf(field("name", Supplier { "2" })))
+        )
+    ```
+will lead to:
+
+```
+INSERT INTO "MyTable" ("string", "array", "map", "struct") 
+VALUES ('string', ARRAY[1, 2, 3], MAP('key', 'value'), NAMED_STRUCT('name', '2'));
 ```
 
 ## YAML transformation
