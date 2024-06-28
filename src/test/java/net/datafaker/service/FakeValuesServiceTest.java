@@ -5,6 +5,8 @@ import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.BaseProviders;
+
+import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -291,6 +293,13 @@ class FakeValuesServiceTest extends AbstractFakerTest {
         String expression = fakeValuesService.expression("#{date.past '4','TimeUnit.HOURS'}", faker, context);
         LocalDateTime date = LocalDateTime.parse(expression, DATE_TIME_FORMATTER);
         assertThat(date).isStrictlyBetween(nowMinus5Hours, now);
+    }
+
+    @Test
+    void expressionWithSingleEnumArg() {
+        // https://github.com/datafaker-net/datafaker/issues/1274
+        String masterCard = fakeValuesService.expression("#{finance.creditCard 'CreditCardType.MASTERCARD'}", faker, context);
+        assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(masterCard.replace("-", ""))).isTrue();
     }
 
     @Test

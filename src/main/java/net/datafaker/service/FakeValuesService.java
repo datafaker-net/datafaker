@@ -817,7 +817,10 @@ public class FakeValuesService {
         // simple fetch of a value from the yaml file. the directive may have been mutated
         // such that if the current yml object is car: and directive is #{wheel} then
         // car.wheel will be looked up in the YAML file.
-        res.add(() -> safeFetch(simpleDirective, context, null));
+        // It's only "simple" if there aren't args
+        if (args.length == 0) {
+            res.add(() -> safeFetch(simpleDirective, context, null));
+        }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
         if (dotIndex == -1 && root != null && (current == null || root.getClass() != current.getClass())) {
