@@ -25,8 +25,9 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     private static final Faker NL_FAKER = new Faker(new Locale("nl", "NL"));
     private static final Faker RU_FAKER = new Faker(new Locale("ru", "RU"));
     private static final Faker AU_FAKER = new Faker(new Locale("en", "AU"));
+    private static final Pattern CYRILLIC_LETTERS = Pattern.compile(".*[а-яА-Я].*");
 
-    public static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
+    private static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
             Double.valueOf(s);
         } catch (NumberFormatException nfe) {
@@ -35,26 +36,28 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         return true;
     }, "Is a number");
 
-    public static final BiFunction<String, String, Pattern> BI_LAT_LON_REGEX =
+    private static final BiFunction<String, String, Pattern> BI_LAT_LON_REGEX =
         (decimalDelimiter, delimiter) ->
             Pattern.compile("-?\\d{1,2}" + decimalDelimiter + "\\d{5,10}" + delimiter + "-?\\d{1,3}" + decimalDelimiter + "\\d{5,10}+");
 
-    public static final BiFunction<String, String, Pattern> BI_LON_LAT_REGEX =
+    private static final BiFunction<String, String, Pattern> BI_LON_LAT_REGEX =
         (decimalDelimiter, delimiter) ->
             Pattern.compile("-?\\d{1,3}" + decimalDelimiter + "\\d{5,10}+" + delimiter + "-?\\d{1,2}" + decimalDelimiter + "\\d{5,10}");
 
     private final static Function<Locale, String> ESCAPED_DECIMAL_SEPARATOR = t -> "\\" + new DecimalFormatSymbols(t).getDecimalSeparator();
 
-    @Test
-    void testStreetName() {
+    @ParameterizedTest
+    @ValueSource(strings = {"en", "id", "ca", "cs"})
+    void testLatinStreetName() {
         final BaseFaker faker = new BaseFaker();
-        assertThat(faker.address().streetName()).isNotEmpty();
+        assertThat(faker.address().streetName()).isNotEmpty().doesNotMatch(CYRILLIC_LETTERS);
     }
 
-    @Test
-    void testBulgarianStreetName() {
-        final BaseFaker localFaker = new BaseFaker(new Locale("bg"));
-        assertThat(localFaker.address().streetName()).isNotEmpty();
+    @ParameterizedTest
+    @ValueSource(strings = {"be", "bg", "by", "mk", "ru", "ru_MD", "uk"})
+    void testCyrillicStreetName(String cyrillicLocale) {
+        final BaseFaker localFaker = new BaseFaker(new Locale(cyrillicLocale));
+        assertThat(localFaker.address().streetName()).isNotEmpty().matches(CYRILLIC_LETTERS);
     }
 
     @Test
@@ -136,10 +139,12 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testCityWithLocaleFranceAndSeed() {
-        long seed = 1L;
+        long seed = (long) (Long.MAX_VALUE * Math.random());
         BaseFaker firstFaker = new BaseFaker(Locale.FRANCE, new Random(seed));
         BaseFaker secondFaker = new BaseFaker(Locale.FRANCE, new Random(seed));
-        assertThat(firstFaker.address().city()).isEqualTo(secondFaker.address().city());
+        for (int i = 0; i < 100; i++) {
+            assertThat(firstFaker.address().city()).isEqualTo(secondFaker.address().city());
+        }
     }
 
     @Test
@@ -264,9 +269,9 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
 
     @ParameterizedTest
     @ValueSource(strings = {"bg", "ru", "uk", "by"})
-    void nonDefaultLocaleStreetName(String locale) {
+    void cyrillicStreetName(String locale) {
         BaseFaker localFaker = new BaseFaker(new Locale(locale));
-        assertThat(localFaker.address().streetName()).isNotEmpty();
+        assertThat(localFaker.address().streetName()).isNotEmpty().matches(CYRILLIC_LETTERS);
     }
 
     @RepeatedTest(100)
