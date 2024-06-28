@@ -14,7 +14,7 @@ class UniqueTest {
 
     private BaseFaker faker = new BaseFaker(new Locale("test"));
 
-    private final List<String> defaultValues = List.of(
+    private static final List<String> defaultValues = List.of(
         "firstValue",
         "secondValue",
         "thirdValue",

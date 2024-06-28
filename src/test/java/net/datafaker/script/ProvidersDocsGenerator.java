@@ -40,7 +40,7 @@ public class ProvidersDocsGenerator {
     private final Set<Class<?>> subTypes = new TreeSet<>(providersComparatorBySimpleName);
 
     // Exclude non-providers from generation
-    private final Set<String> providersToExcludeFromGeneration = Set.of("CustomFakerTest", "InsectFromFile", "Insect");
+    private static final Set<String> providersToExcludeFromGeneration = Set.of("CustomFakerTest", "InsectFromFile", "Insect");
 
     private final Set<String> fakersWithoutSinceTag = new HashSet<>();
 
