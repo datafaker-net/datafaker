@@ -174,9 +174,6 @@ public class FakerContext {
 
     @Override
     public String toString() {
-        return "FakerContext{" +
-            ", locale=" + sLocale +
-            ", randomService=" + randomService +
-            '}';
+        return "FakerContext{%s, %s}".formatted(sLocale, randomService);
     }
 }

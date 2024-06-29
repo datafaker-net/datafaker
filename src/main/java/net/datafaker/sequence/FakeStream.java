@@ -65,10 +65,6 @@ public class FakeStream<T> extends FakeSequence<T> {
 
     @Override
     public String toString() {
-        return "FakeStream{" +
-            "minLength=" + minLength +
-            ", maxLength=" + maxLength +
-            ", nullRate=" + nullRate +
-            '}';
+        return "FakeStream{minLength=%d, maxLength=%d, nullRate=%s}".formatted(minLength, maxLength, nullRate);
     }
 }
