@@ -54,8 +54,6 @@ public class SingletonLocale {
 
     @Override
     public String toString() {
-        return "SingletonLocale{" +
-            "locale=" + locale +
-            '}';
+        return "SingletonLocale{%s}".formatted(locale);
     }
 }

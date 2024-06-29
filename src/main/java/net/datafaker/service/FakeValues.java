@@ -212,8 +212,6 @@ public class FakeValues implements FakeValuesInterface {
 
     @Override
     public String toString() {
-        return "FakeValues{" +
-            "fakeValuesContext=" + fakeValuesContext +
-            '}';
+        return "FakeValues{%s}".formatted(fakeValuesContext);
     }
 }

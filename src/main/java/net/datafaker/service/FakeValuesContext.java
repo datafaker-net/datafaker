@@ -125,11 +125,6 @@ class FakeValuesContext {
 
     @Override
     public String toString() {
-        return "FakeValuesContext{" +
-            "sLocale=" + singletonLocale +
-            ", filename='" + filename + '\'' +
-            ", path='" + paths + '\'' +
-            ", url=" + url +
-            '}';
+        return "FakeValuesContext{%s, filename='%s', path='%s', url=%s}".formatted(singletonLocale, filename, paths, url);
     }
 }
