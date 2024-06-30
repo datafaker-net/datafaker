@@ -29,7 +29,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -158,7 +159,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
         // property.resolutionWithList -> #{hello}
         // #{hello} -> DummyService.hello
         class Property extends AbstractProvider<BaseProviders> {
-            protected Property(BaseProviders faker) {
+            private Property(BaseProviders faker) {
                 super(faker);
                 ClassLoader classLoader = getClass().getClassLoader();
                 URL resource = classLoader.getResource("test.yml");
@@ -177,9 +178,19 @@ class FakeValuesServiceTest extends AbstractFakerTest {
                 return resolve("property.resolutionWithList");
             }
         }
-        var testFaker = new BaseFaker(new Locale("test"));
-        assertThat(BaseFaker.getProvider(Property.class, Property::new, testFaker).resolutionWithList())
-            .startsWith("Yo");
+        class PropertyFaker extends BaseFaker {
+            private PropertyFaker() {
+                super(new Locale("test"));
+            }
+
+            public Property property() {
+                return getProvider(Property.class, Property::new);
+            }
+        }
+        var testFaker = new PropertyFaker();
+        Property provider = testFaker.getProvider("Property");
+        String actual = provider.resolutionWithList();
+        assertThat(actual).startsWith("Yo");
     }
 
     @Test

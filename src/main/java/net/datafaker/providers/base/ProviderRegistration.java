@@ -16,10 +16,12 @@ public interface ProviderRegistration {
 
     FakerContext getContext();
 
-    default <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
-        Class<AP> clazz, Function<PR, AP> valueSupplier) {
-        return BaseFaker.getProvider(clazz, valueSupplier, getFaker());
+    default <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(String simpleClassName) {
+        return ObjectMethods.executeMethodByReturnType(this, simpleClassName);
     }
+
+    <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
+        Class<AP> clazz, Function<PR, AP> valueSupplier);
 
     String resolve(String key);
 

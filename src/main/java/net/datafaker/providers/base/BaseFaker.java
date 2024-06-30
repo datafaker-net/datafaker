@@ -18,7 +18,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -31,9 +30,7 @@ import java.util.function.Supplier;
 public class BaseFaker implements BaseProviders {
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
-    private static final Map<Class<?>, Map<FakerContext, AbstractProvider<?>>> PROVIDERS_MAP = new IdentityHashMap<>();
-    private static final Map<String, Map<FakerContext, AbstractProvider<?>>> CLASSES = new ConcurrentHashMap<>();
-    private static final Map<Class<?>, Map<String, Method>> METHODS = new IdentityHashMap<>();
+    private final Map<Class<?>, AbstractProvider<?>> providersCache = new IdentityHashMap<>();
 
     public BaseFaker() {
         this(Locale.ENGLISH);
@@ -317,55 +314,20 @@ public class BaseFaker implements BaseProviders {
         return fakeFactory.generate(schema);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
+    public <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
+        Class<AP> clazz, Function<PR, AP> valueSupplier) {
+        return (AP) providersCache.computeIfAbsent(clazz, (klass) -> valueSupplier.apply(getFaker()));
+    }
+
+    /**
+     * This method is not needed anymore, don't use it.
+     * @deprecated Use non-static method {@link BaseFaker#getProvider(Class, Function)} instead.
+     */
+    @Deprecated
     public static <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(Class<AP> clazz, Function<PR, AP> valueSupplier, PR faker) {
-        Map<FakerContext, AbstractProvider<?>> map = PROVIDERS_MAP.get(clazz);
-        if (map == null) {
-            synchronized (BaseFaker.class) {
-                map = PROVIDERS_MAP.get(clazz);
-                if (map == null) {
-                    PROVIDERS_MAP.put(clazz, new ConcurrentHashMap<>());
-                    map = PROVIDERS_MAP.get(clazz);
-                }
-            }
-        }
-        final AP result = (AP) map.get(faker.getContext());
-        if (result == null) {
-            final AP newMapping = valueSupplier.apply(faker);
-            final String simpleName = clazz.getSimpleName();
-            CLASSES.putIfAbsent(simpleName, new ConcurrentHashMap<>());
-
-            Method[] methods = clazz.getMethods();
-            Class newMappingClass = newMapping.getClass();
-            METHODS.putIfAbsent(newMappingClass, new ConcurrentHashMap<>(methods.length));
-            for (Method method: methods) {
-                if (method.getParameterCount() > 0
-                    || method.getDeclaringClass() == Object.class
-                    || method.getDeclaringClass() == AbstractProvider.class
-                    || method.getReturnType() == void.class
-                ) {
-                    continue;
-                }
-
-                final String methodName = method.getName();
-
-                Map<String, Method> methodMap = METHODS.get(newMappingClass);
-                if (methodMap == null) {
-                    synchronized (BaseFaker.class) {
-                        methodMap = METHODS.get(newMappingClass);
-                        if (methodMap == null) {
-                            METHODS.put(newMappingClass, new ConcurrentHashMap<>(newMappingClass.getMethods().length));
-                            methodMap = METHODS.get(newMappingClass);
-                        }
-                    }
-                }
-                methodMap.put(methodName, method);
-            }
-            map.putIfAbsent(faker.getContext(), newMapping);
-            CLASSES.get(simpleName).put(faker.getContext(), newMapping);
-            return newMapping;
-        }
-        return result;
+        return faker.getProvider(clazz, valueSupplier);
     }
 
     /**
@@ -430,19 +392,12 @@ public class BaseFaker implements BaseProviders {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public final <B extends ProviderRegistration> B getFaker() {
         return (B) this;
     }
 
-    public static AbstractProvider<?> getProvider(String className, FakerContext context) {
-        final Map<FakerContext, AbstractProvider<?>> map = CLASSES.get(className);
-        if (map == null) return null;
-        return map.get(context);
-    }
-
     public static Method getMethod(AbstractProvider<?> ap, String methodName) {
-        Map<String, Method> map;
-        if (ap == null || (map = METHODS.get(ap.getClass())) == null) return null;
-        return map.get(methodName);
+        return ap == null ? null : ObjectMethods.getMethodByName(ap, methodName);
     }
 }

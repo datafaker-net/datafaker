@@ -15,11 +15,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class CustomFakerTest {
     public static class MyCustomFaker extends BaseFaker {
         public Insect insect() {
-            return getProvider(Insect.class, Insect::new, this);
+            return getProvider(Insect.class, Insect::new);
         }
 
         public InsectFromFile insectFromFile() {
-            return getProvider(InsectFromFile.class, InsectFromFile::new, this);
+            return getProvider(InsectFromFile.class, InsectFromFile::new);
         }
     }
 
@@ -103,11 +103,22 @@ class CustomFakerTest {
 
     @Test
     void testMultipleFakerContextsPerOneClassName() {
-        BaseFaker faker1 = new BaseFaker(Locale.ENGLISH);
-        BaseFaker faker2 = new BaseFaker(Locale.GERMAN);
-        faker1.getProvider(Insect.class, Insect::new);
-        faker2.getProvider(Insect.class, Insect::new);
-        assertThat(BaseFaker.getProvider("Insect",  faker1.getContext())).isNotNull();
-        assertThat(BaseFaker.getProvider("Insect",  faker2.getContext())).isNotNull();
+        class InsectFaker extends BaseFaker {
+            public InsectFaker(Locale locale) {
+                super(locale);
+            }
+
+            public Insect insect() {
+                return getProvider(Insect.class, Insect::new);
+            }
+        }
+        BaseFaker faker1 = new InsectFaker(Locale.ENGLISH);
+        BaseFaker faker2 = new InsectFaker(Locale.GERMAN);
+
+        Insect insect1 = faker1.getProvider("Insect");
+        Insect insect2 = faker2.getProvider("Insect");
+        assertThat(insect1).isNotNull();
+        assertThat(insect2).isNotNull();
+        assertThat(insect1).isNotSameAs(insect2);
     }
 }
