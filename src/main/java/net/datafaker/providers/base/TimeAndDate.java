@@ -68,7 +68,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit    the time unit.
      * @return a future date from now, with a minimum time.
      */
-    public Instant future(long atMost, int minimum, TimeUnit unit) {
+    public Instant future(long atMost, long minimum, TimeUnit unit) {
         Instant minimumDate = Instant.now().plus(minimum, unit.toChronoUnit());
         return future(atMost - minimum, unit, minimumDate);
     }
@@ -83,7 +83,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param pattern date time pattern to convert to string.
      * @return a string representation of a future date from now, with a minimum time.
      */
-    public String future(long atMost, int minimum, TimeUnit unit, String pattern) {
+    public String future(long atMost, long minimum, TimeUnit unit, String pattern) {
         return formatInstant(future(atMost, minimum, unit), pattern);
     }
 
