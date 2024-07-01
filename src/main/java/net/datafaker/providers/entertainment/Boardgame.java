@@ -4,7 +4,7 @@ import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseProviders;
 
 /**
- * @since 2.2.3
+ * @since 2.3.0
  */
 public class Boardgame extends AbstractProvider<BaseProviders> {
 
