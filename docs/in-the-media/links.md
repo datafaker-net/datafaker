@@ -1,8 +1,14 @@
 # Articles and news
 
+*Michael Vitz* had a talk at Spring I/O which was a perfect fit for Datafaker, related to Advanced Testing Techniques
+for Spring Boot applications. The reference to Datafaker can be found 19 minutes into the presentation, but it's
+recommended to watch the whole presentation, it contains a lot of great content related to testing:
+
+https://www.youtube.com/watch?v=vn9P38o03TQ&t=1124s
+
 **May 15, 2024**
 
-*Elias Nogueira** had a talk at Devoxx UK called "Datafaker: the most powerful fake data generator".
+*Elias Nogueira* had a talk at Devoxx UK called "Datafaker: the most powerful fake data generator".
 You can find the talk here: 
 
 https://www.youtube.com/watch?v=S6Z7vB5zc0g
