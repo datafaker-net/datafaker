@@ -456,11 +456,29 @@ class SqlTest {
         SqlTransformer<String> transformer =
             SqlTransformer.<String>builder()
                 .dialect(SqlDialect.SPARKSQL)
-                .batch()
+                .batch(10)
                 .build();
 
-        assertThatThrownBy(() -> transformer.generate(Schema.of(field("ints", () -> new int[]{1, 2})), 1))
-            .isInstanceOf(UnsupportedOperationException.class);
+        String generation =
+            transformer
+                .generate(
+                    Schema.of(
+                        field("field1", () -> "value1"),
+                        field("field2", () -> "value2")
+                    ), 10
+                );
+
+        assertThat(generation).isEqualTo("INSERT INTO `MyTable` (`field1`, `field2`)\n" +
+            "VALUES ('value1', 'value2'),\n" +
+            "       ('value1', 'value2'),\n" +
+            "       ('value1', 'value2'),\n" +
+            "       ('value1', 'value2'),\n" +
+            "       ('value1', 'value2'),\n" +
+            "       ('value1', 'value2'),\n" +
+            "       ('value1', 'value2'),\n" +
+            "       ('value1', 'value2'),\n" +
+            "       ('value1', 'value2'),\n" +
+            "       ('value1', 'value2');");
     }
 
 
