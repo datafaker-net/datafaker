@@ -5,6 +5,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -113,7 +114,7 @@ public class FakeValues implements FakeValuesInterface {
                 return result;
             }
         }
-        return null;
+        return Collections.emptyMap();
     }
 
     private void enrichMapWithJavaNames(Map<String, Object> result) {
