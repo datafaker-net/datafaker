@@ -242,6 +242,11 @@ public class FakeValuesService {
             }
         }
         if (local2Add != null) {
+            Object curResult = key2fetchedObject.getOrDefault(local2Add, Collections.emptyMap())
+                .get(key);
+            if (curResult != null) {
+                return result;
+            }
             key2fetchedObject.updateNestedValue(local2Add, MAP_STRING_OBJECT_SUPPLIER, key, result);
         }
         if (result instanceof List list) {
