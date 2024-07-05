@@ -176,50 +176,26 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return resolve("internet.http_method");
     }
 
-    /**
-     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
-     */
-    @Deprecated(since = "2.3.0")
     public String password() {
         return password(8, 16);
     }
 
-    /**
-     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
-     */
-    @Deprecated(since = "2.3.0")
     public String password(boolean includeDigit) {
         return password(8, 16, false, false, includeDigit);
     }
 
-    /**
-     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
-     */
-    @Deprecated(since = "2.3.0")
     public String password(int minimumLength, int maximumLength) {
         return password(minimumLength, maximumLength, false);
     }
 
-    /**
-     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
-     */
-    @Deprecated(since = "2.3.0")
     public String password(int minimumLength, int maximumLength, boolean includeUppercase) {
         return password(minimumLength, maximumLength, includeUppercase, false);
     }
 
-    /**
-     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
-     */
-    @Deprecated(since = "2.3.0")
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial) {
         return password(minimumLength, maximumLength, includeUppercase, includeSpecial, true);
     }
 
-    /**
-     * Consider usage of {@link Text#text(Text.TextRuleConfig)} instead.
-     */
-    @Deprecated(since = "2.3.0")
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
