@@ -383,6 +383,16 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.internet().uuid()).matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
     }
 
+    @RepeatedTest(10)
+    void testUuidv4() {
+        assertThat(faker.internet().uuidv4()).matches("^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$");
+    }
+
+    @RepeatedTest(10)
+    void testUuidv7() {
+        assertThat(faker.internet().uuidv7()).matches("^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$");
+    }
+
     @RepeatedTest(100)
     void testFarsiIDNs() {
         // in this case, we're just making sure Farsi doesn't blow up.

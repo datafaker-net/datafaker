@@ -7,7 +7,9 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.text.Normalizer;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -416,6 +418,37 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public String uuidv3() {
         return UUID.nameUUIDFromBytes(faker.random().nextRandomBytes(16)).toString();
+    }
+
+    public String uuidv4() {
+        return uuid();
+    }
+
+    public String uuidv7() {
+        // Get the current timestamp in milliseconds since Unix epoch
+        long timestamp = Instant.now().toEpochMilli();
+
+        // Generate random bits
+        long randomBits1 = faker.random().nextLong();
+        long randomBits2 = faker.random().nextLong();
+
+        // Combine timestamp and random bits
+        ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+        bb.putLong(timestamp);
+        bb.putLong(randomBits1 ^ randomBits2);
+
+        long mostSigBits = bb.getLong(0);
+        long leastSigBits = bb.getLong(8);
+
+        // Set the version to 7 (bits 4-7 of the time_hi_and_version field)
+        mostSigBits &= ~(0xF000L);  // clear version
+        mostSigBits |= 0x7000L;     // set to version 7
+
+        // Set the variant to IETF variant (bits 6-7 of the clock_seq_hi_and_reserved field)
+        leastSigBits &= ~(0xC000000000000000L); // clear variant
+        leastSigBits |= 0x8000000000000000L;    // set to IETF variant
+
+        return new UUID(mostSigBits, leastSigBits).toString();
     }
 
     /**
