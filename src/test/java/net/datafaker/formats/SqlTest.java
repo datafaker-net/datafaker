@@ -450,37 +450,31 @@ class SqlTest {
         );
     }
 
-
     @Test
     void batchTestForSqlTransformerSparkSql() {
+        int batchSize =  5;
+        int records = 20;
+        Faker faker = new Faker();
+
         SqlTransformer<String> transformer =
             SqlTransformer.<String>builder()
                 .dialect(SqlDialect.SPARKSQL)
-                .batch(10)
+                .batch(batchSize)
                 .build();
 
         String generation =
             transformer
                 .generate(
                     Schema.of(
-                        field("field1", () -> "value1"),
-                        field("field2", () -> "value2")
-                    ), 10
+                        field("name", () -> faker.cat().name()),
+                        field("breed", () -> faker.cat().breed())
+                    ), records
                 );
 
-        assertThat(generation).isEqualTo("INSERT INTO `MyTable` (`field1`, `field2`)\n" +
-            "VALUES ('value1', 'value2'),\n" +
-            "       ('value1', 'value2'),\n" +
-            "       ('value1', 'value2'),\n" +
-            "       ('value1', 'value2'),\n" +
-            "       ('value1', 'value2'),\n" +
-            "       ('value1', 'value2'),\n" +
-            "       ('value1', 'value2'),\n" +
-            "       ('value1', 'value2'),\n" +
-            "       ('value1', 'value2'),\n" +
-            "       ('value1', 'value2');");
+        assertThat(generation.split("INSERT INTO")).hasSize((records / batchSize) + 1);
+        assertThat(generation.split("VALUES")).hasSize((records / batchSize) + 1);
+        assertThat(generation.split(";")).hasSize((records / batchSize));
     }
-
 
     @ParameterizedTest
     @MethodSource("generateTestSchemaForSparkSql")
