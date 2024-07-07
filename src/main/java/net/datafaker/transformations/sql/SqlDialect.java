@@ -46,11 +46,7 @@ public enum SqlDialect {
     PRESTO("\"", Casing.UNCHANGED),
     REDSHIFT("\"", Casing.TO_LOWER),
     SNOWFLAKE("\""),
-    SPARKSQL("`",
-        (columns, values, caze) -> { throw SqlDialect.AuxiliaryConstants.BATCH_UNSUPPORTED; },
-        (columns, values, caze) -> { throw SqlDialect.AuxiliaryConstants.BATCH_UNSUPPORTED; },
-        (caze) -> { throw SqlDialect.AuxiliaryConstants.BATCH_UNSUPPORTED; }
-    ) {
+    SPARKSQL("`") {
 
         @Override
         public String getCompositePrefix(SqlTransformer.Case caze) {
@@ -150,9 +146,6 @@ public enum SqlDialect {
     }
 
     static class AuxiliaryConstants {
-        static final UnsupportedOperationException BATCH_UNSUPPORTED =
-            new UnsupportedOperationException("This dialect not support batch insert.");
-
         static final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> DEFAULT_FIRST_ROW = (supplier, supplier2, caze) -> {
             final String insertAll = INSERT_INTO.getValue(caze) + " ";
             final String values = LINE_SEPARATOR + VALUES.getValue(caze) + " ";

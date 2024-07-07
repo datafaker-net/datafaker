@@ -450,19 +450,31 @@ class SqlTest {
         );
     }
 
-
     @Test
     void batchTestForSqlTransformerSparkSql() {
+        int batchSize =  5;
+        int records = 20;
+        Faker faker = new Faker();
+
         SqlTransformer<String> transformer =
             SqlTransformer.<String>builder()
                 .dialect(SqlDialect.SPARKSQL)
-                .batch()
+                .batch(batchSize)
                 .build();
 
-        assertThatThrownBy(() -> transformer.generate(Schema.of(field("ints", () -> new int[]{1, 2})), 1))
-            .isInstanceOf(UnsupportedOperationException.class);
-    }
+        String generation =
+            transformer
+                .generate(
+                    Schema.of(
+                        field("name", () -> faker.cat().name()),
+                        field("breed", () -> faker.cat().breed())
+                    ), records
+                );
 
+        assertThat(generation.split("INSERT INTO")).hasSize((records / batchSize) + 1);
+        assertThat(generation.split("VALUES")).hasSize((records / batchSize) + 1);
+        assertThat(generation.split(";")).hasSize((records / batchSize));
+    }
 
     @ParameterizedTest
     @MethodSource("generateTestSchemaForSparkSql")
