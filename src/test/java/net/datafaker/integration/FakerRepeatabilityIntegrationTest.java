@@ -11,6 +11,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -74,7 +75,9 @@ public class FakerRepeatabilityIntegrationTest {
 
                 for (Method generatorMethod : generatorMethodList) {
 
-                    if (String.class.isAssignableFrom(generatorMethod.getReturnType()) && generatorMethod.getParameterCount() == 0 && Modifier.isPublic(generatorMethod.getModifiers())) {
+                    if (!Instant.class.isAssignableFrom(generatorMethod.getReturnType()) &&
+                        !byte[].class.isAssignableFrom(generatorMethod.getReturnType())
+                        && generatorMethod.getParameterCount() == 0 && Modifier.isPublic(generatorMethod.getModifiers())) {
                         result.put(provider.getName() + "." + generatorMethod.getName(), generatorMethod.invoke(providerImpl).toString());
                     }
                 }

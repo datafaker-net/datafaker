@@ -9,7 +9,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.text.Normalizer;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -426,7 +425,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
     public String uuidv7() {
         // Get the current timestamp in milliseconds since Unix epoch
-        long timestamp = Instant.now().toEpochMilli();
+        long timestamp = faker.random().nextLong();
 
         // Generate random bits
         long randomBits1 = faker.random().nextLong();
