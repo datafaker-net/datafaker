@@ -24,4 +24,5 @@ module net.datafaker {
     exports net.datafaker.transformations;
     exports net.datafaker.transformations.sql;
 
+    uses net.datafaker.idnumbers.IdNumberGenerator;
 }
