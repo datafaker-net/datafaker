@@ -4,7 +4,6 @@ open module net.datafaker {
 
     exports net.datafaker;
     exports net.datafaker.annotations;
-    exports net.datafaker.formats;
     exports net.datafaker.idnumbers;
     exports net.datafaker.idnumbers.pt.br;
     exports net.datafaker.providers.base;
