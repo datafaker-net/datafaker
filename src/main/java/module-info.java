@@ -1,10 +1,15 @@
-open module net.datafaker {
+module net.datafaker {
+
     requires java.sql;
     requires java.management;
+    requires java.desktop;
+
+    requires org.yaml.snakeyaml;
+    requires libphonenumber;
+    requires rgxgen;
 
     exports net.datafaker;
     exports net.datafaker.annotations;
-    exports net.datafaker.formats;
     exports net.datafaker.idnumbers;
     exports net.datafaker.idnumbers.pt.br;
     exports net.datafaker.providers.base;
@@ -18,5 +23,5 @@ open module net.datafaker {
     exports net.datafaker.service.files;
     exports net.datafaker.transformations;
     exports net.datafaker.transformations.sql;
-    exports net.datafaker.shaded.snakeyaml;
+
 }
