@@ -23,6 +23,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     private final char decimalSeparator = new DecimalFormatSymbols(getFaker().getContext().getLocale()).getDecimalSeparator();
     private static final Faker US_FAKER = new Faker(new Locale("en", "US"));
     private static final Faker NL_FAKER = new Faker(new Locale("nl", "NL"));
+    private static final Faker BELGIAN_FAKER = new Faker(new Locale("nl", "BE"));
     private static final Faker RU_FAKER = new Faker(new Locale("ru", "RU"));
     private static final Faker AU_FAKER = new Faker(new Locale("en", "AU"));
     private static final Pattern CYRILLIC_LETTERS = Pattern.compile(".*[а-яА-Я].*");
@@ -278,6 +279,17 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     void dutchAddress() {
         assertThat(NL_FAKER.address().stateAbbr()).matches("[A-Z]{2}");
         assertThat(NL_FAKER.address().fullAddress()).matches("[A-Z].+, [0-9]{4} [A-Z]{2}, [A-Z].+");
+    }
+
+    @RepeatedTest(100)
+    void belgianSAddress() {
+        assertThat(BELGIAN_FAKER.address().stateAbbr()).matches("[A-Z]{3}");
+        assertThat(BELGIAN_FAKER.address().fullAddress()).matches("[A-Z].+, [0-9]{4}, [A-Z].+");
+    }
+
+    @RepeatedTest(100)
+    void belgianZipcode() {
+        assertThat(Integer.valueOf(BELGIAN_FAKER.address().zipCode())).isBetween(1000, 9992);
     }
 
     @RepeatedTest(100)

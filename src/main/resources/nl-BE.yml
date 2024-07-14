@@ -1,0 +1,18 @@
+nl:
+  faker:
+    address:
+      country_code: [ 'BE' ]
+      # 1000-9992
+      postcode: /1[0-9]{3}|[2-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-2]/
+      # https://onzetaal.nl/taalloket/afkortingen-van-provincienamen
+      state: [ "Antwerpen", "Henegouwen", "Luik", "Limburg", "Luxemburg", "Namen", "Oost-Vlaanderen", "Vlaams-Brabant", "Waals-Brabant", "West-Vlaanderen" ]
+      state_abbr: [ "ANT", "HAI", "LIE", "LIM", "LUX", "NAM", "OVL", "VBR", "WBR", "WVL" ]
+      default_country: [ "België" ]
+
+    internet:
+      free_email: [ gmail.com, yahoo.com, hotmail.be ]
+      domain_suffix: [ be, com, net, org ]
+
+    passport:
+      # https://learn.microsoft.com/en-us/purview/sit-defn-belgium-passport-number
+      valid: "[A-Z]{2}[0-9]{6}"
