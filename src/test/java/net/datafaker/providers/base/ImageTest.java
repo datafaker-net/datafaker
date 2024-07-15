@@ -13,7 +13,7 @@ class ImageTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void jpg() {
-        assertThat(faker.image().base64JPG()).startsWith("data:image/jpg;base64,");
+        assertThat(faker.image().base64JPG()).startsWith("data:image/jpeg;base64,");
     }
 
     @Test

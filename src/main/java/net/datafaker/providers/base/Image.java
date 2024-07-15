@@ -31,7 +31,7 @@ public class Image extends AbstractProvider<BaseProviders> {
     }
 
     public String base64JPG() {
-        return generateBase64Image("jpg");
+        return generateBase64Image("jpeg");
     }
 
     public String base64GIF() {
