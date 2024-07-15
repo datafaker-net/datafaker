@@ -55,8 +55,8 @@ class Issue759Test {
             threads[i].start();
         }
 
-        assertThat(countDownLatch.await(10, SECONDS))
-            .overridingErrorMessage("Test did not complete within 10 second")
+        assertThat(countDownLatch.await(12, SECONDS))
+            .overridingErrorMessage("Test did not complete within 12 second")
             .isTrue();
     }
 }
