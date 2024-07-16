@@ -10,7 +10,7 @@ public class RandomImageGenerator {
         System.out.println("PNG Image:");
         System.out.println(faker.image().base64PNG());
         System.out.println("JPG Image:");
-        System.out.println(faker.image().base64JPG());
+        System.out.println(faker.image().base64JPEG());
         System.out.println("GIF Image:");
         System.out.println(faker.image().base64GIF());
         System.out.println("SVG Image:");
