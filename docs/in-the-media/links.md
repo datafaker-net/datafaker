@@ -1,5 +1,11 @@
 # Articles and news
 
+**July 16, 2024**
+
+*Roman Rybak* published an article titled "Datafaker Gen: Leveraging BigQuery Sink on Google Cloud Platform". You can find it here: https://dzone.com/articles/datafaker-gen-leveraging-bigquery-sink-on-google
+
+**May 31, 2024**
+
 *Michael Vitz* had a talk at Spring I/O which was a perfect fit for Datafaker, related to Advanced Testing Techniques
 for Spring Boot applications. The reference to Datafaker can be found 19 minutes into the presentation, but it's
 recommended to watch the whole presentation, it contains a lot of great content related to testing:
