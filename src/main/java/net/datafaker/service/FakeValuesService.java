@@ -52,7 +52,7 @@ import static net.datafaker.transformations.Field.field;
 public class FakeValuesService {
     private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
-    private static final Logger LOG = Logger.getLogger("faker");
+    private static final Logger LOG = Logger.getLogger(FakeValuesService.class.getName());
     public static final Supplier<Map<String, Object>> MAP_STRING_OBJECT_SUPPLIER = () -> new CopyOnWriteMap<>(() -> new WeakHashMap<>());
     public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> new CopyOnWriteMap<>(() -> new WeakHashMap<>());
 
