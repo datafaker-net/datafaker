@@ -5,7 +5,6 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -23,12 +22,10 @@ class SouthKoreanIdNumberTest {
 
         // Check if contains other character than digit
         assertThat(rrn).matches(D_6_D_7);
-        try {
-            // Check date
-            LocalDate.parse(rrn.substring(0, 6), YYMMDD);
-        } catch (DateTimeParseException e) {
-            assertThat(e).isNull();
-        }
+        // Check date
+        LocalDate date = LocalDate.parse(rrn.substring(0, 6), YYMMDD);
+        int currentYear = LocalDate.now().getYear();
+        assertThat(date.getYear()).isBetween(currentYear - 80, currentYear + 80);
     }
 
 }

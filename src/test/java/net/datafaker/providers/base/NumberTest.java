@@ -10,9 +10,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -198,7 +198,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
      * For all 'uniqueness' values
      * verify the percentage of 'uniqueness' ratios over 80% is 90%.
      * <p>
-     * This isn't perfect but it ensures a pretty good degree of uniqueness in the random number generation.
+     * This isn't perfect, but it ensures a pretty good degree of uniqueness in the random number generation.
      */
     @Test
     void randomDoubleRandomizationQuality() {
@@ -225,7 +225,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
      * For all 'uniqueness' values
      * verify the percentage of 'uniqueness' ratios over 80% is 90%.
      * <p>
-     * This isn't perfect but it ensures a pretty good degree of uniqueness in the random number generation.
+     * This isn't perfect, but it ensures a pretty good degree of uniqueness in the random number generation.
      */
     @Test
     void numberBetweenIntIntRandomizationQuality() {
@@ -253,7 +253,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
      * For all 'uniqueness' values
      * verify the percentage of 'uniqueness' ratios over 80% is 90%.
      * <p>
-     * This isn't perfect but it ensures a pretty good degree of uniqueness in the random number generation.
+     * This isn't perfect, but it ensures a pretty good degree of uniqueness in the random number generation.
      */
     @Test
     void numberBetweenLongLongRandomizationQuality() {
@@ -328,16 +328,12 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
      * Given a number of iterations, calls <em>callable</em> 'iterations' times and collects the results,
      * then calculates the number of results that were unique and returns the percentage that where unique.
      */
-    private <T> double uniquePercentageOfResults(long iterations, Callable<T> callable) {
-        try {
+    private <T> double uniquePercentageOfResults(long iterations, Supplier<T> callable) {
             Set<T> values = new HashSet<>();
             for (long i = 0; i < iterations; i++) {
-                values.add(callable.call());
+                values.add(callable.get());
             }
             return (double) values.size() / (double) iterations;
-        } catch (Exception e) {
-            throw new RuntimeException("error in uniquePercentageOfResults", e);
-        }
     }
 
     /**

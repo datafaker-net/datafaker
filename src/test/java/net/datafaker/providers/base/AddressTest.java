@@ -31,7 +31,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     private static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
             Double.valueOf(s);
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException ignore) {
             return false;
         }
         return true;
@@ -184,7 +184,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         final BaseFaker localFaker = new BaseFaker(new Locale("en", "US"));
         assertThatThrownBy(() -> localFaker.address().countyByZipCode(zipCode))
             .isInstanceOf(RuntimeException.class)
-            .hasMessage("County are not configured for postcode " + zipCode);
+            .hasMessage("County is not configured for postcode " + zipCode);
     }
 
     @Test
