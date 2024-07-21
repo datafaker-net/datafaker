@@ -13,11 +13,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FakeValues implements FakeValuesInterface {
-    private static final Logger LOG = Logger.getLogger("faker");
     private static final Map<FakeValuesContext, FakeValues> FAKE_VALUES_MAP = new HashMap<>();
     private final FakeValuesContext fakeValuesContext;
     private volatile Map<String, Object> values;
@@ -74,9 +71,8 @@ public class FakeValues implements FakeValuesInterface {
         try (InputStream stream = url.openStream()) {
             return readFromStream(stream);
         } catch (IOException e) {
-            LOG.log(Level.SEVERE, "Exception: ", e);
+            throw new RuntimeException("Failed to read fake values from %s".formatted(url), e);
         }
-        return null;
     }
 
     private Map<String, Object> loadValues() {
@@ -102,13 +98,11 @@ public class FakeValues implements FakeValuesInterface {
                     try (InputStream stream2 = getClass().getClassLoader().getResourceAsStream(path)) {
                         result = readFromStream(stream2);
                         enrichMapWithJavaNames(result);
-                    } catch (Exception e) {
-                        LOG.log(Level.SEVERE, "Exception: ", e);
                     }
                 }
 
             } catch (IOException e) {
-                LOG.log(Level.SEVERE, "Exception: ", e);
+                throw new RuntimeException("Failed to read fake values from %s".formatted(path), e);
             }
             if (result != null) {
                 return result;
