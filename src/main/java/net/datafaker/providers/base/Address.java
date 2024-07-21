@@ -62,7 +62,7 @@ public class Address extends AbstractProvider<BaseProviders> {
     }
 
     public String countyByZipCode(String postCode) {
-        return resolve("address.county_by_postcode." + postCode, () -> "County are not configured for postcode " + postCode);
+        return resolve("address.county_by_postcode." + postCode, () -> "County is not configured for postcode " + postCode);
     }
 
     public String streetSuffix() {

@@ -8,7 +8,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -17,7 +16,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.anyOf;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doReturn;
 
@@ -249,15 +249,11 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         Condition<String> colon = getCharacterCondition('.', 3);
         assertThat(faker.internet().ipV4Address()).is(colon);
         for (int i = 0; i < 100; i++) {
-            try {
-                final String[] octets = faker.internet().getIpV4Address().getHostAddress().split("\\.");
-                assertThat(parseInt(octets[0])).isBetween(0, 255);
-                assertThat(parseInt(octets[1])).isBetween(0, 255);
-                assertThat(parseInt(octets[2])).isBetween(0, 255);
-                assertThat(parseInt(octets[3])).isBetween(0, 255);
-            } catch (UnknownHostException e) {
-                fail("Failed with ", e);
-            }
+            final String[] octets = faker.internet().getIpV4Address().getHostAddress().split("\\.");
+            assertThat(parseInt(octets[0])).isBetween(0, 255);
+            assertThat(parseInt(octets[1])).isBetween(0, 255);
+            assertThat(parseInt(octets[2])).isBetween(0, 255);
+            assertThat(parseInt(octets[3])).isBetween(0, 255);
         }
     }
 
@@ -282,18 +278,14 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..+";
 
         for (int i = 0; i < 1000; i++) {
-            try {
-                String addr = faker.internet().getPrivateIpV4Address().getHostAddress();
-                assertThat(addr).is(anyOf(
-                    new Condition<>(s -> s.matches(tenDot), "tenDot"),
-                    new Condition<>(s -> s.matches(oneTwoSeven), "oneTwoSeven"),
-                    new Condition<>(s -> s.matches(oneSixNine), "oneSixNine"),
-                    new Condition<>(s -> s.matches(oneNineTwo), "oneNineTwo"),
-                    new Condition<>(s -> s.matches(oneSevenTwo), "oneSevenTwo")
-                ));
-            } catch (UnknownHostException e) {
-                fail("Failed with", e);
-            }
+            String addr = faker.internet().getPrivateIpV4Address().getHostAddress();
+            assertThat(addr).is(anyOf(
+                new Condition<>(s -> s.matches(tenDot), "tenDot"),
+                new Condition<>(s -> s.matches(oneTwoSeven), "oneTwoSeven"),
+                new Condition<>(s -> s.matches(oneSixNine), "oneSixNine"),
+                new Condition<>(s -> s.matches(oneNineTwo), "oneNineTwo"),
+                new Condition<>(s -> s.matches(oneSevenTwo), "oneSevenTwo")
+            ));
         }
     }
 
@@ -306,16 +298,12 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\.";
 
         for (int i = 0; i < 1000; i++) {
-            try {
-                String addr = faker.internet().getPublicIpV4Address().getHostAddress();
-                assertThat(addr).doesNotMatch(tenDot)
-                    .doesNotMatch(oneTwoSeven)
-                    .doesNotMatch(oneSixNine)
-                    .doesNotMatch(oneNineTwo)
-                    .doesNotMatch(oneSevenTwo);
-            } catch (UnknownHostException e) {
-                fail("Failed with", e);
-            }
+            String addr = faker.internet().getPublicIpV4Address().getHostAddress();
+            assertThat(addr).doesNotMatch(tenDot)
+                .doesNotMatch(oneTwoSeven)
+                .doesNotMatch(oneSixNine)
+                .doesNotMatch(oneNineTwo)
+                .doesNotMatch(oneSevenTwo);
         }
     }
 
@@ -324,11 +312,7 @@ class InternetTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.internet().ipV6Address()).is(getCharacterCondition(':', 7));
 
         for (int i = 0; i < 1000; i++) {
-            try {
-                assertThat(faker.internet().getIpV6Address().getHostAddress()).matches(IPV6_HOST_ADDRESS);
-            } catch (UnknownHostException e) {
-                fail("Failed with", e);
-            }
+            assertThat(faker.internet().getIpV6Address().getHostAddress()).matches(IPV6_HOST_ADDRESS);
         }
     }
 

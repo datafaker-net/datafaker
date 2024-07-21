@@ -35,7 +35,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -327,25 +326,17 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     }
 
     @Test
-    void fileNoExpressionTest() {
-        try {
-            Path tmpPath = Files.createTempFile("tmp", "file");
-            assertThat(String.join("", Files.readAllLines(tmpPath)))
-                .isEqualTo(fakeValuesService.fileExpression(tmpPath, faker, faker.getContext()));
-        } catch (IOException e) {
-            fail("Fail ", e);
-        }
+    void fileNoExpressionTest() throws IOException {
+        Path tmpPath = Files.createTempFile("tmp", "file");
+        assertThat(String.join("", Files.readAllLines(tmpPath)))
+            .isEqualTo(fakeValuesService.fileExpression(tmpPath, faker, faker.getContext()));
     }
 
     @Test
-    void fileExpressionTest() {
-        try {
-            Path path = Paths.get("src/test/test.txt");
-            assertThat(String.join(System.lineSeparator(), Files.readAllLines(path)))
-                .isNotEqualTo(fakeValuesService.fileExpression(path, faker, context));
-        } catch (IOException e) {
-            fail("Fail ", e);
-        }
+    void fileExpressionTest() throws IOException {
+        Path path = Paths.get("src/test/test.txt");
+        assertThat(String.join(System.lineSeparator(), Files.readAllLines(path)))
+            .isNotEqualTo(fakeValuesService.fileExpression(path, faker, context));
     }
 
     /**

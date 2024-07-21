@@ -23,6 +23,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static java.lang.Thread.currentThread;
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.reflections.ReflectionUtils.getAllMethods;
@@ -112,7 +113,8 @@ class FakerIntegrationTest {
             try {
                  returnValue = method.invoke(provider);
             } catch (Exception e) {
-                throw new RuntimeException("Test for method " + method + " and object " + provider + " was failed for locale " + locale, e);
+                throw new RuntimeException("Test for method %s and object %s was failed for locale %s [thread: %s]".formatted(
+                    method, provider, locale, currentThread().getName()), e);
             }
             assertThat(returnValue).as("For method " + provider.getClass() + "#" + method.getName() + "value is '" + returnValue + "'").isInstanceOf(String.class);
             final String returnValueAsString = (String) returnValue;

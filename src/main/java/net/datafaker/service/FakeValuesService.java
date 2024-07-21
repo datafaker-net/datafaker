@@ -45,6 +45,8 @@ import java.util.stream.Collectors;
 import com.github.curiousoddman.rgxgen.RgxGen;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.logging.Level.FINE;
+import static java.util.logging.Level.SEVERE;
 import static net.datafaker.transformations.Field.field;
 
 public class FakeValuesService {
@@ -947,22 +949,15 @@ public class FakeValuesService {
         if (obj == null) {
             return null;
         }
-        try {
-            final MethodAndCoercedArgs accessor = retrieveMethodAccessor(obj, directive, args);
-            return (accessor == null)
-                ? NULL_VALUE
-                : new MethodAndCoercedArgsResolver(accessor, obj);
-        } catch (Exception e) {
-            LOG.log(Level.FINE, "Can't call " + directive + " on " + obj, e);
-            return NULL_VALUE;
-        }
+        final MethodAndCoercedArgs accessor = retrieveMethodAccessor(obj, directive, args);
+        return accessor == null ? NULL_VALUE : new MethodAndCoercedArgsResolver(accessor, obj);
     }
 
     /**
      * Accepts a {@link BaseFaker} instance and a name.firstName style 'key' which is resolved to the return value of:
      * {@link BaseFaker#name()}'s {@link Name#firstName()} method.
      *
-     * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
+     * @throws RuntimeException if there's a problem invoking the method, or it doesn't exist.
      */
     private ValueResolver resolveFakerObjectAndMethod(ProviderRegistration faker, String key, int dotIndex, String[] args) {
         final String[] classAndMethod;
@@ -985,10 +980,11 @@ public class FakeValuesService {
             if (accessor == null) {
                 return NULL_VALUE;
             }
+
             return new MethodAndCoercedArgsResolver(accessor, objectWithMethodToInvoke);
-        } catch (Exception e) {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-            return NULL_VALUE;
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to resolve faker object and method for %s (dotIndex=%s, args=%s)"
+                .formatted(key, dotIndex, Arrays.toString(args)), e);
         }
     }
 
@@ -1020,7 +1016,7 @@ public class FakeValuesService {
      */
     private MethodAndCoercedArgs accessor(Class<?> clazz, String name, String[] args) {
         final String finalName = name;
-        LOG.log(Level.FINE, () -> "Find accessor named " + finalName + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
+        LOG.fine(() -> "Find accessor named " + finalName + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
         name = removeUnderscoreChars(name);
         final Collection<Method> methods;
         if (CLASS_2_METHODS_CACHE.containsKey(clazz)) {
@@ -1155,7 +1151,9 @@ public class FakeValuesService {
                 }
                 coerced[i] = coercedArgument;
             } catch (Exception e) {
-                LOG.fine("Unable to coerce " + args[i] + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor.");
+                Throwable cause = unwrap(e);
+                Level level = cause instanceof IllegalArgumentException || cause instanceof NoSuchMethodException ? FINE : SEVERE;
+                LOG.log(level, "Unable to coerce " + args[i] + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor.", e);
                 return null;
             }
         }
@@ -1249,10 +1247,13 @@ public class FakeValuesService {
         private static Object invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
             try {
                 return accessor.invoke(objectWithMethodToInvoke);
-            } catch (Exception e) {
-                LOG.log(Level.FINE, e.getMessage(), e);
-                return null;
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException("Failed to invoke %s on %s".formatted(accessor, objectWithMethodToInvoke), unwrap(e));
             }
         }
+    }
+
+    private static Throwable unwrap(Throwable e) {
+        return e instanceof InvocationTargetException reflection ? unwrap(reflection.getTargetException()) : e;
     }
 }

@@ -158,8 +158,7 @@ public class Image extends AbstractProvider<BaseProviders> {
             byte[] imageBytes = baos.toByteArray();
             return "data:" + imageType.mimeType + ";base64," + Base64.getEncoder().encodeToString(imageBytes);
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("Failed to generate image %s of size %sx%s".formatted(imageType, width, height), e);
         }
     }
 
