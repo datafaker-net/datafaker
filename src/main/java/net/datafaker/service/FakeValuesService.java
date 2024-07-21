@@ -764,6 +764,7 @@ public class FakeValuesService {
 
     private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
         Object res = resolveExpression(directive, args, current, root, context);
+        LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, regExpContext: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, regExpContext, res));
         if (res instanceof CharSequence) {
             if (((CharSequence) res).isEmpty()) {
                 REGEXP2SUPPLIER_MAP.put(regExpContext, EMPTY_STRING);
@@ -971,7 +972,7 @@ public class FakeValuesService {
             String fakerMethodName = removeUnderscoreChars(classAndMethod[0]);
             final MethodAndCoercedArgs fakerAccessor = retrieveMethodAccessor(faker, fakerMethodName, EMPTY_ARRAY);
             if (fakerAccessor == null) {
-                LOG.fine("Can't find top level faker object named " + fakerMethodName + ".");
+                LOG.fine(() -> "Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
             }
             Object objectWithMethodToInvoke = fakerAccessor.invoke(faker);
@@ -1004,9 +1005,7 @@ public class FakeValuesService {
         stringMapMap.putIfAbsent(methodName, new CopyOnWriteMap<>(WeakHashMap::new));
         stringMapMap.get(methodName).putIfAbsent(args, accessor);
         if (accessor == null) {
-            LOG.fine("Can't find method on "
-                + object.getClass().getSimpleName()
-                + " called " + methodName + ".");
+            LOG.fine(() -> "Can't find method on %s called %s.".formatted(object.getClass().getSimpleName(), methodName));
         }
         return accessor;
     }
@@ -1014,13 +1013,13 @@ public class FakeValuesService {
     /**
      * Find an accessor by name ignoring case.
      */
-    private MethodAndCoercedArgs accessor(Class<?> clazz, String name, String[] args) {
-        final String finalName = name;
-        LOG.fine(() -> "Find accessor named " + finalName + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
-        name = removeUnderscoreChars(name);
+    private MethodAndCoercedArgs accessor(Class<?> clazz, final String accessorName, String[] args) {
+        LOG.fine(() -> "Find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
+        String name = removeUnderscoreChars(accessorName);
         final Collection<Method> methods;
         if (CLASS_2_METHODS_CACHE.containsKey(clazz)) {
             methods = CLASS_2_METHODS_CACHE.get(clazz).getOrDefault(name, Collections.emptyList());
+            LOG.fine(() -> "Found accessor named %s on %s in cache: %s".formatted(accessorName, clazz.getSimpleName(), methods));
         } else {
             Method[] classMethods = clazz.getMethods();
             Map<String, Collection<Method>> methodMap =
@@ -1031,9 +1030,13 @@ public class FakeValuesService {
                 methodMap.get(key).add(m);
             }
             CLASS_2_METHODS_CACHE.putIfAbsent(clazz, methodMap);
+            LOG.fine(() -> "Detected accessor named %s on %s, stored to cache: %s".formatted(accessorName, clazz.getSimpleName(), methodMap));
+
             methods = methodMap.get(name);
+            LOG.fine(() -> "Detected accessor named %s on %s and taken from cache: %s".formatted(accessorName, clazz.getSimpleName(), methods));
         }
         if (methods == null) {
+            LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), null));
             return null;
         }
         for (Method m : methods) {
@@ -1044,6 +1047,7 @@ public class FakeValuesService {
                 }
             }
         }
+        LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
         return null;
     }
 
