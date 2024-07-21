@@ -400,4 +400,9 @@ public class BaseFaker implements BaseProviders {
     public static Method getMethod(AbstractProvider<?> ap, String methodName) {
         return ap == null ? null : ObjectMethods.getMethodByName(ap, methodName);
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
+    }
 }

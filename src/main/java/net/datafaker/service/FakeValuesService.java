@@ -1197,6 +1197,12 @@ public class FakeValuesService {
         private Object invoke(Object on) throws InvocationTargetException, IllegalAccessException {
             return method.invoke(on, coerced);
         }
+
+        @Override
+        public String toString() {
+            return "%s[method=%s.%s(), coerced=%s]".formatted(getClass().getSimpleName(),
+                method.getDeclaringClass().getSimpleName(), method.getName(), Arrays.toString(coerced));
+        }
     }
 
     private record RegExpContext(String exp, ProviderRegistration root, FakerContext context) {
