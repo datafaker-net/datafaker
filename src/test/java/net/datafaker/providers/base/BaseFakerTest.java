@@ -1,7 +1,5 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.Faker;
-import net.datafaker.integration.FakerRepeatabilityIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
@@ -9,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockitoAnnotations;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -23,15 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BaseFakerTest<T extends BaseFaker> {
-
-    static {
-        try {
-            // This will allow to init all the static Faker's vars first in predictable way
-            FakerRepeatabilityIntegrationTest.buildReport(new Faker());
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private static final Logger LOG = Logger.getLogger(BaseFakerTest.class.getCanonicalName());
     protected final T faker = getFaker();
