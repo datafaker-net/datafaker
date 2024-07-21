@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -58,7 +57,6 @@ public class Twitter extends AbstractProvider<BaseProviders> {
      */
     public String twitterId(int expectedLength) {
         if (expectedLength <= 6 || expectedLength >= 25) {
-            LOGGER.setLevel(Level.WARNING);
             LOGGER.warning("expectedLength <= 6 may easily cause twitter id collision. And expectedLength >= 25" +
                 " can be easily out of bound.");
         }

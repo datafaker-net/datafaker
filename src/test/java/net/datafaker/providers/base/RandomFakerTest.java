@@ -14,8 +14,7 @@ class RandomFakerTest extends BaseFakerTest<BaseFaker> {
     private Random random;
 
     @BeforeEach
-    protected void before() {
-        super.before();
+    final void before() {
         random = new Random();
         faker = new BaseFaker(random);
     }

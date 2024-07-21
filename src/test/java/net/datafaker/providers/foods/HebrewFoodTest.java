@@ -15,7 +15,7 @@ class HebrewFoodTest extends FoodFakerTest {
     private Food food = getFaker().food();
 
     @BeforeEach
-    protected void before() {
+    final void before() {
         food = getFaker().food();
     }
 

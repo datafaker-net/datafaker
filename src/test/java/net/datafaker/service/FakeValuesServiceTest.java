@@ -53,19 +53,16 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     @Mock
     private RandomService randomService;
 
+    @Spy
     private FakeValuesService fakeValuesService;
     private FakerContext context;
 
     @BeforeEach
-    protected void before() {
-        super.before();
-
+    final void before() {
         // always return the first element
         when(randomService.nextInt(anyInt())).thenReturn(0);
         context = new FakerContext(new Locale("test"), randomService);
         when(mockedFaker.getContext()).thenReturn(context);
-
-        fakeValuesService = Mockito.spy(new FakeValuesService());
         fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
     }
 

@@ -15,9 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -39,17 +37,11 @@ public class BaseFakerTest<T extends BaseFaker> {
     protected final T faker = getFaker();
 
     @BeforeEach
-    protected void before() {
+    @SuppressWarnings("EmptyTryBlock")
+    final void resetMocks() throws Exception {
         try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
-
-            Logger rootLogger = LogManager.getLogManager().getLogger("");
-            Handler[] handlers = rootLogger.getHandlers();
-            rootLogger.setLevel(Level.INFO);
-            for (Handler h : handlers) {
-                h.setLevel(Level.INFO);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            // Need to reset all @Spy and @Mock fields
+            // because all test methods share the same test class instance due to @TestInstance(PER_CLASS)
         }
     }
 
