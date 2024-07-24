@@ -23,12 +23,6 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
         private int id;
     }
 
-    public static class DifferentPerson {
-        private String firstName;
-        private String lastName;
-        private Date birthDate;
-    }
-
     public record Client(String firstName, String lastName, String phoneNumber, Instant registrationDate, int id) { }
 
     @Test
