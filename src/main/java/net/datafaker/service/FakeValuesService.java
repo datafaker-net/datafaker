@@ -989,25 +989,17 @@ public class FakeValuesService {
 
     private MethodAndCoercedArgs retrieveMethodAccessor(Object object, String methodName, String[] args) {
         Class<?> clazz = object.getClass();
-        Map<String[], MethodAndCoercedArgs> accessorMap =
-            MAP_OF_METHOD_AND_COERCED_ARGS
-                .getOrDefault(clazz, Collections.emptyMap())
-                .getOrDefault(methodName, Collections.emptyMap());
-        // value could be null
-        if (accessorMap.containsKey(args)) {
-            return accessorMap.get(args);
-        }
-        final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
-        MAP_OF_METHOD_AND_COERCED_ARGS
+
+        return MAP_OF_METHOD_AND_COERCED_ARGS
             .computeIfAbsent(clazz, cl -> new CopyOnWriteMap<>(WeakHashMap::new))
             .computeIfAbsent(methodName, mn -> new CopyOnWriteMap<>(WeakHashMap::new))
-            .putIfAbsent(args, accessor);
-        if (accessor == null) {
-            LOG.fine("Can't find method on "
-                + object.getClass().getSimpleName()
-                + " called " + methodName + ".");
-        }
-        return accessor;
+            .computeIfAbsent(args, a -> {
+                final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
+                if (accessor == null) {
+                    LOG.fine(() -> "Can't find method on %s called %s.".formatted(object.getClass().getSimpleName(), methodName));
+                }
+                return accessor;
+            });
     }
 
     private Object invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
