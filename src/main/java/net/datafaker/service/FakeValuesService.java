@@ -998,10 +998,10 @@ public class FakeValuesService {
             return accessorMap.get(args);
         }
         final MethodAndCoercedArgs accessor = accessor(clazz, methodName, args);
-        final Map<String, Map<String[], MethodAndCoercedArgs>> stringMapMap =
-            MAP_OF_METHOD_AND_COERCED_ARGS.computeIfAbsent(clazz, t -> new CopyOnWriteMap<>(WeakHashMap::new));
-        stringMapMap.putIfAbsent(methodName, new CopyOnWriteMap<>(WeakHashMap::new));
-        stringMapMap.get(methodName).putIfAbsent(args, accessor);
+        MAP_OF_METHOD_AND_COERCED_ARGS
+            .computeIfAbsent(clazz, cl -> new CopyOnWriteMap<>(WeakHashMap::new))
+            .computeIfAbsent(methodName, mn -> new CopyOnWriteMap<>(WeakHashMap::new))
+            .putIfAbsent(args, accessor);
         if (accessor == null) {
             LOG.fine("Can't find method on "
                 + object.getClass().getSimpleName()
