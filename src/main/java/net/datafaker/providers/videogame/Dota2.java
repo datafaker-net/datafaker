@@ -14,8 +14,8 @@ public class Dota2 extends AbstractProvider<VideoGameProviders> {
         super(faker);
     }
 
-    public String fraction() {
-        return resolve("games.dota2.fraction");
+    public String faction() {
+        return resolve("games.dota2.faction");
     }
 
     public String rank() {

@@ -9,7 +9,7 @@ class Dota2Test extends VideoGameFakerTest {
     @Override
     protected Collection<TestSpec> providerListTest() {
         return List.of(
-            TestSpec.of(dota2::fraction, "games.dota2.fraction"),
+            TestSpec.of(dota2::faction, "games.dota2.faction"),
             TestSpec.of(dota2::rank, "games.dota2.rank"),
             TestSpec.of(dota2::attribute, "games.dota2.attribute"),
             TestSpec.of(dota2::building, "games.dota2.building"),

@@ -2,7 +2,7 @@ en:
   faker:
     games:
       dota2:
-        fraction:
+        faction:
         - "Dire"
         - "Radiant"
         rank:

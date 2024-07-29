@@ -18,6 +18,7 @@ public interface VideoGameProviders extends ProviderRegistration {
     default DarkSouls darkSouls() {
         return getProvider(DarkSouls.class, DarkSouls::new);
     }
+
     default Dota2 dota2() {
         return getProvider(Dota2.class, Dota2::new);
     }
