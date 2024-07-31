@@ -316,6 +316,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Dog
 * Domain
 * Doraemon
+* Dota 2
 * Dragon Ball
 * Driving License
 * Dumb and Dumber

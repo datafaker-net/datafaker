@@ -19,6 +19,10 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(DarkSouls.class, DarkSouls::new);
     }
 
+    default Dota2 dota2() {
+        return getProvider(Dota2.class, Dota2::new);
+    }
+
     default EldenRing eldenRing() {
         return getProvider(EldenRing.class, EldenRing::new);
     }
