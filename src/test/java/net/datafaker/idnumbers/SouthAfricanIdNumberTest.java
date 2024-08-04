@@ -7,7 +7,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
+import static java.lang.Integer.parseInt;
 import static net.datafaker.idnumbers.SouthAfricanIdNumber.isValidEnZASsn;
+import static net.datafaker.idnumbers.SouthAfricanIdNumber.sequentialNumber;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /*
@@ -38,5 +42,23 @@ class SouthAfricanIdNumberTest {
         final BaseFaker f = new BaseFaker(new Locale("en", "ZA"));
         assertThat(f.idNumber().valid()).matches("\\d{10}[01]8\\d");
         assertThat(f.idNumber().invalid()).matches("\\d{10}[01]8\\d");
+    }
+
+    @RepeatedTest(10000)
+    void sequentialNumber_forMales() {
+        BaseFaker f = new BaseFaker(new Locale("en", "ZA"));
+        String sequentialNumber = sequentialNumber(f, MALE);
+
+        assertThat(sequentialNumber).matches("\\d{4}");
+        assertThat(parseInt(sequentialNumber)).isGreaterThanOrEqualTo(5000);
+    }
+
+    @RepeatedTest(10000)
+    void sequentialNumber_forFemales() {
+        BaseFaker f = new BaseFaker(new Locale("en", "ZA"));
+        String sequentialNumber = sequentialNumber(f, FEMALE);
+
+        assertThat(sequentialNumber).matches("\\d{4}");
+        assertThat(parseInt(sequentialNumber)).isLessThan(5000);
     }
 }

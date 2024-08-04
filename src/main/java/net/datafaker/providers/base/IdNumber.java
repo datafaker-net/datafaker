@@ -48,9 +48,28 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
             .orElseGet(() -> faker.numerify(faker.resolve("id_number.invalid")));
     }
 
+    public PersonIdNumber valid(IdNumberRequest request) {
+        return countryProvider()
+            .map(p -> p.generateValid(faker, request))
+            .orElseThrow(() -> new IllegalArgumentException("ID Number generation not supported for country '%s'".formatted(country())));
+    }
+
+    public record IdNumberRequest(
+        int minAge,
+        int maxAge,
+        GenderRequest gender
+    ) {}
+
+    public enum GenderRequest {
+        FEMALE, MALE, ANY
+    }
+
     private Optional<IdNumberGenerator> countryProvider() {
-        String country = faker.getContext().getLocale().getCountry();
-        return Optional.ofNullable(countryProviders.get(country));
+        return Optional.ofNullable(countryProviders.get(country()));
+    }
+
+    private String country() {
+        return faker.getContext().getLocale().getCountry();
     }
 
     public String ssnValid() {

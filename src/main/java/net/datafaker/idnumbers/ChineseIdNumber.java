@@ -1,7 +1,14 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
 import net.datafaker.service.RandomService;
+
+import java.time.LocalDate;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
 
 
 /**
@@ -32,7 +39,8 @@ public class ChineseIdNumber implements IdNumberGenerator {
      * @return a Chinese ID number string
      */
     @Override
-    public String generateValid(BaseProviders faker) {
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
+        LocalDate birthday = birthday(faker, request);
         RandomService rand = faker.random();
         String loc = faker.options().option(LOCATIONS);
         final int dayLength = 8;
@@ -42,7 +50,7 @@ public class ChineseIdNumber implements IdNumberGenerator {
             res[i] = loc.charAt(i);
         }
 
-        generateDay(rand, 1930, 1, 1, 2030, 1, 12, res, locLength);
+        fillBirthday(res, locLength, birthday);
         res[locLength + dayLength] = (char)('0' + rand.nextInt(10));
         res[locLength + dayLength + 1] = (char)('0' + rand.nextInt(10));
         res[locLength + dayLength + 2] = (char)('0' + rand.nextInt(10));
@@ -65,27 +73,14 @@ public class ChineseIdNumber implements IdNumberGenerator {
         count += (res[15] - '0') * 4;
         count += (res[16] - '0') * 2;
         count %= 11;
-        if (count == 10) {
-            return String.valueOf(res) + "X";
-        } else {
-            return String.valueOf(res) + count;
-        }
+        String idNumber = count == 10 ? String.valueOf(res) + "X" : String.valueOf(res) + count;
+        return new PersonIdNumber(idNumber, birthday, gender(faker, request));
     }
 
-    private void generateDay(RandomService rand, int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd, char[] res, int offset) {
-        final int year = rand.nextInt(yearStart, yearEnd);
-        final int month = rand.nextInt(monthStart, monthEnd);
-        final int lastDay;
-        if (month == 2) {
-            lastDay =
-                (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) ?
-                    29 : 28;
-        } else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-            lastDay = 31;
-        } else {
-            lastDay = 30;
-        }
-        int day = rand.nextInt(dayStart, Math.min(lastDay, dayEnd));
+    private void fillBirthday(char[] res, int offset, LocalDate birthday) {
+        int year = birthday.getYear();
+        int month = birthday.getMonthValue();
+        int day = birthday.getDayOfMonth();
         res[offset] = (char)('0' + year / 1000);
         res[offset + 1] = (char)('0' + (year % 1000) / 100);
         res[offset + 2] = (char)('0' + (year % 100) / 10);

@@ -1,9 +1,17 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber.GenderRequest;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
 
 import java.time.LocalDate;
-import java.util.Optional;
+
+import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.randomGender;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
 
 /**
  * Implementation based on the definition at
@@ -19,30 +27,56 @@ public class PolishIdNumber implements IdNumberGenerator {
         return "PL";
     }
 
+    /**
+     * @deprecated Use {@link GenderRequest} instead
+     */
+    @Deprecated
     public enum Gender {
         MALE, FEMALE, ANY
     }
 
     @Override
-    public String generateValid(BaseProviders faker) {
-        return get(faker, faker.timeAndDate().birthday(0, 100), Gender.ANY);
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
+        LocalDate birthday = birthday(faker, request);
+        PersonIdNumber.Gender gender = gender(faker, request);
+        return new PersonIdNumber(get(faker, birthday, gender), birthday, gender);
     }
 
-    public String get(BaseProviders faker, LocalDate birthDate, Gender gender) {
-        int[] digits = generateDigits(faker, birthDate, Optional.ofNullable(gender).orElse(Gender.ANY));
+    /**
+     * @param requestedGender nullable
+     * @deprecated Use {@link #generateValid(BaseProviders, IdNumberRequest)} instead
+     */
+    @Deprecated
+    public String get(BaseProviders faker, LocalDate birthDate, Gender requestedGender) {
+        PersonIdNumber.Gender gender = pickGender(faker, requestedGender);
+        return get(faker, birthDate, gender);
+    }
+
+    private static PersonIdNumber.Gender pickGender(BaseProviders faker, Gender requestedGender) {
+        return requestedGender == null ? randomGender(faker) :
+            switch (requestedGender) {
+                case ANY -> randomGender(faker);
+                case MALE -> MALE;
+                case FEMALE -> FEMALE;
+            };
+    }
+
+    private String get(BaseProviders faker, LocalDate birthDate, PersonIdNumber.Gender gender) {
+        int[] digits = generateDigits(faker, birthDate, gender);
         int controlDigit = getControlDigit(digits);
         return toString(digits, controlDigit);
     }
 
     @Override
     public String generateInvalid(BaseProviders faker) {
-        int[] digits = generateDigits(faker, faker.timeAndDate().birthday(0, 100), Gender.ANY);
+        PersonIdNumber.Gender gender = randomGender(faker);
+        int[] digits = generateDigits(faker, faker.timeAndDate().birthday(), gender);
         int controlDigit = getControlDigit(digits);
         int invalidControlDigit = (controlDigit + 1) % 10;
         return toString(digits, invalidControlDigit);
     }
 
-    private int[] generateDigits(BaseProviders faker, LocalDate birthDate, Gender gender) {
+    private int[] generateDigits(BaseProviders faker, LocalDate birthDate, PersonIdNumber.Gender gender) {
         int monthEncoded = getMonthEncoded(birthDate.getYear(), birthDate.getMonthValue());
         return new int[]{
             birthDate.getYear() / 10 % 10,
@@ -72,7 +106,7 @@ public class PolishIdNumber implements IdNumberGenerator {
     }
 
     private int randomDigit(BaseProviders faker) {
-        return faker.random().nextInt(10);
+        return faker.number().randomDigit();
     }
 
     private int getControlDigit(int[] digits) {
@@ -81,11 +115,10 @@ public class PolishIdNumber implements IdNumberGenerator {
         return (10 - sum % 10) % 10;
     }
 
-    private int getGenderDigit(BaseProviders faker, Gender gender) {
+    private int getGenderDigit(BaseProviders faker, PersonIdNumber.Gender gender) {
         return switch (gender) {
             case FEMALE -> faker.random().nextInt(5) * 2;
             case MALE -> faker.random().nextInt(5) * 2 + 1;
-            default -> randomDigit(faker);
         };
     }
 

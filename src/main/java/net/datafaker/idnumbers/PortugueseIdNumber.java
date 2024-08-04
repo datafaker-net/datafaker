@@ -1,6 +1,11 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
 
 /**
  * Portuguese VAT identification number (NIF)
@@ -42,6 +47,11 @@ public class PortugueseIdNumber implements IdNumberGenerator {
         }
         int digitSum = calculateDigitSum(digits);
         return digits + digitSum;
+    }
+
+    @Override
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
+        return new PersonIdNumber(generateValid(faker), birthday(faker, request), gender(faker, request));
     }
 
     private int calculateDigitSum(String numbers) {

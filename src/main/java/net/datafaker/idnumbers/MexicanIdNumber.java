@@ -1,9 +1,15 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.Options;
+import net.datafaker.providers.base.PersonIdNumber;
+import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
 
 /**
  * Implementation based on the definition at
@@ -43,7 +49,6 @@ public class MexicanIdNumber implements IdNumberGenerator {
         "OA", "PU", "QT", "QR", "SL", "SI", "SO",
         "TB", "TM", "TL", "VE", "YU", "ZA", "NE",
     };
-    private static final char[] SEX = {'H', 'M'};
 
     @Deprecated
     public String get(BaseProviders faker) {
@@ -57,24 +62,33 @@ public class MexicanIdNumber implements IdNumberGenerator {
      * @return A valid MEX CURP.
      */
     @Override
-    public String generateValid(BaseProviders faker) {
-        final Options options = faker.options();
-        char[] birthDay = getBirthday(faker).toCharArray();
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
+        Gender gender = gender(faker, request);
+        LocalDate birthday = birthday(faker, request);
+        char[] birthDay = formatBirthday(birthday).toCharArray();
         final char[] ssn = new char[18];
 
+        final Options options = faker.options();
         ssn[0] = options.option(CONSONANT);
         ssn[1] = options.option(VOWEL);
         ssn[2] = options.option(CONSONANT);
         ssn[3] = options.option(CONSONANT);
         System.arraycopy(birthDay, 0, ssn, 4, 6);
-        ssn[10] = options.option(SEX);
+        ssn[10] = genderCharacter(gender);
         System.arraycopy(options.option(STATES).toCharArray(), 0, ssn, 11, 2);
         ssn[13] = options.option(VOWEL);
         ssn[14] = options.option(VOWEL);
         ssn[15] = options.option(VOWEL);
         ssn[16] = (birthDay[0] == '1' ? '0' : options.option(CONSONANT));
         ssn[17] = String.valueOf(getChecksum(ssn)).charAt(0);
-        return String.valueOf(ssn);
+        return new PersonIdNumber(String.valueOf(ssn), birthday, gender);
+    }
+
+    private char genderCharacter(Gender gender) {
+        return switch (gender) {
+            case FEMALE -> 'M';
+            case MALE -> 'H';
+        };
     }
 
     @Deprecated
@@ -94,13 +108,9 @@ public class MexicanIdNumber implements IdNumberGenerator {
     }
 
     /**
-     * Randomly gets a birthday.
-     *
-     * @param f A specific instance of Faker.
-     * @return A valid date.
+     * Formats given birthday to fit into ID Number
      */
-    private String getBirthday(BaseProviders f) {
-        LocalDate birthday = f.timeAndDate().birthday(0, 120);
+    private String formatBirthday(LocalDate birthday) {
         return String.valueOf(birthday.getYear() * 10000 + birthday.getMonthValue() * 100 + birthday.getDayOfMonth());
     }
 

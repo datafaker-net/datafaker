@@ -1,16 +1,24 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
 
 /**
  * Implementation based on the definition at
  * <a href="https://en.wikipedia.org/wiki/South_African_identity_card">https://en.wikipedia.org/wiki/South_African_identity_card</a>
  */
 public class SouthAfricanIdNumber implements IdNumberGenerator {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
 
     @Override
     public String countryCode() {
@@ -32,11 +40,21 @@ public class SouthAfricanIdNumber implements IdNumberGenerator {
      * @return a valid social security number on faker
      */
     @Override
-    public String generateValid(BaseProviders f) {
-        String candidate = DATE_TIME_FORMATTER.format(f.timeAndDate().birthday(0, 100))
-            + f.numerify("####")
+    public PersonIdNumber generateValid(BaseProviders f, IdNumberRequest request) {
+        LocalDate birthday = birthday(f, request);
+        Gender gender = gender(f, request);
+        String basePart = DATE_TIME_FORMATTER.format(birthday)
+            + sequentialNumber(f, gender)
             + f.options().option(CODE_PATTERN);
-        return candidate + calculateChecksum(candidate, 12);
+        return new PersonIdNumber(basePart + calculateChecksum(basePart, 12), birthday, gender);
+    }
+
+    static String sequentialNumber(BaseProviders f, Gender gender) {
+        int number = switch (gender) {
+            case FEMALE -> f.number().numberBetween(0, 5000);
+            case MALE -> f.number().numberBetween(5000, 10_000);
+        };
+        return "%04d".formatted(number);
     }
 
     @Deprecated

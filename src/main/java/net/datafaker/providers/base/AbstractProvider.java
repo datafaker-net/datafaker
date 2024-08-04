@@ -37,7 +37,7 @@ public class AbstractProvider<T extends ProviderRegistration> {
         return getClass().hashCode();
     }
 
-    protected <G> List<G> loadGenerators(Class<G> generatorClass) {
+    protected final <G> List<G> loadGenerators(Class<G> generatorClass) {
         return ServiceLoader.load(generatorClass).stream()
             .map(ServiceLoader.Provider::get)
             .toList();

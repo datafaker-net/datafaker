@@ -1,9 +1,15 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
-import net.datafaker.service.RandomService;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
+
+import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
 
 /**
  * Generate number of Resident Registration Number for Republic of Korea.
@@ -23,50 +29,49 @@ public class SouthKoreanIdNumber implements IdNumberGenerator {
     }
 
     @Override
-    public String generateValid(BaseProviders f) {
+    public PersonIdNumber generateValid(BaseProviders f, IdNumberRequest request) {
         StringBuilder patternBuilder = new StringBuilder();
-        LocalDate now = LocalDate.now();
+        LocalDate birthday = birthday(f, request);
         String iso = f.nation().isoCountry();
-        String gender = f.gender().shortBinaryTypes();
+        Gender gender = gender(f, request);
 
         // 1st to 6th digits indicate date of birth
 
-        patternBuilder.append(generateDay(f.random(), now.getYear() - 65,
-            now.getMonthValue(), now.getDayOfMonth(), now.getYear() - 18,
-            now.getMonthValue(), now.getDayOfMonth()));
+        patternBuilder.append(generateDay(birthday));
 
         // Matches RRN Pattern ( ######-####### )
         patternBuilder.append('-');
 
         // 7th digit indicates birth century, gender, nationality
-        patternBuilder.append(get7thDigit(now.getYear(), gender, iso));
+        patternBuilder.append(get7thDigit(birthday.getYear(), gender, iso));
 
         // From Oct 2020, 8 to 13 digits are randomized
         // 8th to 13th digits are random digits
         patternBuilder.append("######");
 
-        return f.numerify(patternBuilder.toString());
+        String idNumber = f.numerify(patternBuilder.toString());
+        return new PersonIdNumber(idNumber, birthday, gender);
     }
 
-    private int get7thDigit(int year, String shortBinaryGender, String isoCountry) {
+    private int get7thDigit(int year, Gender gender, String isoCountry) {
         // Local starts with 1, foreigner starts with 5
         int locality = isoCountry.equalsIgnoreCase("kr") ? 1 : 5;
         if (year < 1900) {
             // Male: 9 | Female: 0
-            return shortBinaryGender.equalsIgnoreCase("m") ? 9 : 0;
+            return gender == MALE ? 9 : 0;
         } else if (year < 2000) {
             // Male: 1, 5 | Female: 2, 6
-            return locality + (shortBinaryGender.equalsIgnoreCase("m") ? 0 : 1);
+            return locality + (gender == MALE ? 0 : 1);
         } else {
             // Male: 3, 7 | Female: 4, 8
-            return locality + (shortBinaryGender.equalsIgnoreCase("m") ? 2 : 3);
+            return locality + (gender == MALE ? 2 : 3);
         }
     }
 
-    private String generateDay(RandomService rand, int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd) {
-        final int year = rand.nextInt(yearStart, yearEnd) % 100;
-        final int month = rand.nextInt(monthStart, monthEnd);
-        final int day = rand.nextInt(dayStart, dayEnd);
+    private String generateDay(LocalDate birthday) {
+        final int year = birthday.getYear() % 100;
+        final int month = birthday.getMonthValue();
+        final int day = birthday.getDayOfMonth();
         final char[] res = new char[6];
         res[0] = (char) ('0' + (year / 10));
         res[1] = (char) ('0' + (year % 10));
