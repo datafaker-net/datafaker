@@ -249,6 +249,7 @@ public class EnFile {
         "the_venture_bros.yml",
         "verbs.yml",
         "weather.yml",
+        "words.yml",
         "witcher.yml",
         "kaamelott.yml",
         "touhou.yml",
