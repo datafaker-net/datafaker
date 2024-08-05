@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * @since 0.8.0
@@ -31,9 +30,6 @@ public class Finance extends AbstractProvider<BaseProviders> {
         FORBRUGSFORENINGEN,
         LASER
     }
-
-    private static final Pattern NUMBERS = Pattern.compile("[^0-9]");
-    private static final Pattern EMPTY_STRING = Pattern.compile("");
 
     protected Finance(BaseProviders faker) {
         super(faker);
@@ -152,16 +148,6 @@ public class Finance extends AbstractProvider<BaseProviders> {
 
     private CreditCardType randomCreditCardType() {
         return CreditCardType.values()[this.faker.random().nextInt(CreditCardType.values().length)];
-    }
-
-    private static int sum(String[] string) {
-        int sum = 0;
-        for (String s : string) {
-            if (!s.isEmpty()) {
-                sum += Integer.parseInt(s);
-            }
-        }
-        return sum;
     }
 
     private static String calculateIbanChecksum(String countryCode, String basicBankAccountNumber) {
