@@ -11,7 +11,6 @@ import java.util.List;
 import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.birthday;
 import static net.datafaker.idnumbers.Utils.randomGender;
-import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
 
 /**
  * The Macedonian Identity Number is a unique personal identification number of 13 digits in a form "DD MM YYY RR BBB K"
@@ -75,7 +74,10 @@ public class MacedonianIdNumber implements IdNumberGenerator {
      * - from 500 to 999 for the female citizens.
      */
     private String sss(BaseProviders faker, Gender gender) {
-        int ordinal = gender == FEMALE ? faker.number().numberBetween(500, 1000) : faker.number().numberBetween(0, 500);
+        int ordinal = switch (gender) {
+            case FEMALE -> faker.number().numberBetween(500, 1000);
+            case MALE -> faker.number().numberBetween(0, 500);
+        };
         return "%03d".formatted(ordinal);
     }
 
