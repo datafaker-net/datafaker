@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.Faker;
 
 /**
  * Since 2.4.0
@@ -38,6 +37,5 @@ public class Word extends AbstractProvider<BaseProviders> {
     public String verb() {
         return resolve("words.verb");
     }
-
 
 }
