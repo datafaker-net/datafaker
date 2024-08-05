@@ -489,6 +489,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Weather.class, Weather::new);
     }
 
+    default Word word() {
+        return getProvider(Word.class, Word::new);
+    }
+
     default Yoda yoda() {
         return getProvider(Yoda.class, Yoda::new);
     }
