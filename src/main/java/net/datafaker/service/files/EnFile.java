@@ -113,6 +113,7 @@ public class EnFile {
         "final_fantasy_xiv.yml",
         "final_space.yml",
         "finance.yml",
+        "financial_terms.yml",
         "food.yml",
         "football.yml",
         "formula1.yml",
