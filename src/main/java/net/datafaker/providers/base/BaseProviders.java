@@ -213,6 +213,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Finance.class, Finance::new);
     }
 
+    default FinancialTerms financialTerms() {
+        return getProvider(FinancialTerms.class, FinancialTerms::new);
+    }
+
     default FunnyName funnyName() {
         return getProvider(FunnyName.class, FunnyName::new);
     }
