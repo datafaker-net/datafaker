@@ -21,8 +21,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import static java.lang.Thread.currentThread;
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.reflections.ReflectionUtils.getAllMethods;
@@ -36,6 +39,7 @@ import static org.reflections.ReflectionUtils.withReturnType;
  * are correct. These tests just ensure that the methods can be invoked.
  */
 class FakerIntegrationTest {
+    private static final Logger log = Logger.getLogger(FakerIntegrationTest.class.getName());
 
     /**
      * a collection of Locales -> Exceptions.
@@ -84,13 +88,15 @@ class FakerIntegrationTest {
     @ParameterizedTest
     @MethodSource("dataParameters")
     void testAllFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
+        log.fine(() -> "  (%s, %s)".formatted(locale, random));
         final Faker faker = init(locale, random);
 
         Method[] methods = faker.getClass().getMethods();
         for (Method provider : methods) {
             if (AbstractProvider.class.isAssignableFrom(provider.getReturnType()) && provider.getParameterCount() == 0) {
-                AbstractProvider<?> providerImpl = (AbstractProvider<?>) provider.invoke(faker);
+                log.fine(() -> "    (%s), method: %s.%s()".formatted(locale, provider.getDeclaringClass().getSimpleName(), provider.getName()));
 
+                AbstractProvider<?> providerImpl = (AbstractProvider<?>) provider.invoke(faker);
                 testAllMethodsThatReturnStringsActuallyReturnStrings(providerImpl);
             }
         }
@@ -110,13 +116,15 @@ class FakerIntegrationTest {
             }
             final Object returnValue;
             try {
-                 returnValue = method.invoke(provider);
+                log.fine(() -> "        (%s), method: %s.%s()".formatted(locale, method.getDeclaringClass(), method.getName()));
+                returnValue = method.invoke(provider);
             } catch (Exception e) {
-                throw new RuntimeException("Test for method " + method + " and object " + provider + " was failed for locale " + locale, e);
+                throw new RuntimeException("Test for method %s and object %s was failed for locale %s [thread: %s]".formatted(
+                    method, provider, locale, currentThread().getName()), e);
             }
-            assertThat(returnValue).as("For method " + provider.getClass() + "#" + method.getName() + "value is '" + returnValue + "'").isInstanceOf(String.class);
-            final String returnValueAsString = (String) returnValue;
-            assertThat(returnValueAsString).as("For method " + provider.getClass() + "#" + method.getName()).isNotEmpty();
+            Supplier<String> description = () -> "For method %s.%s(), value is '%s'".formatted(provider.getClass().getSimpleName(), method.getName(), returnValue);
+            assertThat(returnValue).as(description).isInstanceOf(String.class);
+            assertThat((String) returnValue).as(description).isNotEmpty();
         }
     }
 

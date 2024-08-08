@@ -45,12 +45,14 @@ import java.util.stream.Collectors;
 import com.github.curiousoddman.rgxgen.RgxGen;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.logging.Level.FINE;
+import static java.util.logging.Level.SEVERE;
 import static net.datafaker.transformations.Field.field;
 
 public class FakeValuesService {
     private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
-    private static final Logger LOG = Logger.getLogger("faker");
+    private static final Logger LOG = Logger.getLogger(FakeValuesService.class.getName());
     public static final Supplier<Map<String, Object>> MAP_STRING_OBJECT_SUPPLIER = () -> new CopyOnWriteMap<>(() -> new WeakHashMap<>());
     public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> new CopyOnWriteMap<>(() -> new WeakHashMap<>());
 
@@ -77,7 +79,7 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
-    private final Map<RegExpContext, Supplier<?>> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
+    private final Map<RegExpContext, ValueResolver> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
 
     public FakeValuesService() {
     }
@@ -163,6 +165,26 @@ public class FakeValuesService {
      */
     public String fetchString(String key, FakerContext context) {
         return (String) fetch(key, context);
+    }
+
+    private class SafeFetchResolver implements ValueResolver {
+        private final String simpleDirective;
+        private final FakerContext context;
+
+        private SafeFetchResolver(String simpleDirective, FakerContext context) {
+            this.simpleDirective = simpleDirective;
+            this.context = context;
+        }
+
+        @Override
+        public Object resolve() {
+            return safeFetch(simpleDirective, context, null);
+        }
+
+        @Override
+        public String toString() {
+            return "%s[simpleDirective=%s, context=%s]".formatted(getClass().getSimpleName(), simpleDirective, context);
+        }
     }
 
     /**
@@ -644,10 +666,10 @@ public class FakeValuesService {
                 continue;
             }
             final RegExpContext regExpContext = new RegExpContext(expr, root, context);
-            final Supplier<?> val = REGEXP2SUPPLIER_MAP.get(regExpContext);
+            final ValueResolver val = REGEXP2SUPPLIER_MAP.get(regExpContext);
             final Object resolved;
             if (val != null) {
-                resolved = val.get();
+                resolved = val.resolve();
             } else {
                 int j = 0;
                 final int length = expr.length();
@@ -742,23 +764,24 @@ public class FakeValuesService {
 
     private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
         Object res = resolveExpression(directive, args, current, root, context);
+        LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, regExpContext: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, regExpContext, res));
         if (res instanceof CharSequence) {
             if (((CharSequence) res).isEmpty()) {
-                REGEXP2SUPPLIER_MAP.put(regExpContext, () -> "");
+                REGEXP2SUPPLIER_MAP.put(regExpContext, EMPTY_STRING);
             }
             return res;
         }
         if (res instanceof List) {
-            Iterator it = ((List) res).iterator();
+            Iterator<ValueResolver> it = ((List) res).iterator();
             while (it.hasNext()) {
-                Object supplier = it.next();
+                Object valueResolver = it.next();
                 Object value;
-                if (supplier instanceof Supplier<?>) {
-                    value = ((Supplier<?>) supplier).get();
+                if (valueResolver instanceof ValueResolver resolver) {
+                    value = resolver.resolve();
                     if (value == null) {
                         it.remove();
                     } else {
-                        REGEXP2SUPPLIER_MAP.put(regExpContext, (Supplier<?>) supplier);
+                        REGEXP2SUPPLIER_MAP.put(regExpContext, resolver);
                         return value;
                     }
                 }
@@ -783,7 +806,7 @@ public class FakeValuesService {
         }
         final int dotIndex = getDotIndex(directive);
 
-        List<Supplier<Object>> res = new ArrayList<>();
+        List<ValueResolver> res = new ArrayList<>();
         if (args.length == 0) {
             // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
             // #{ssn_valid} on IdNumber
@@ -791,14 +814,7 @@ public class FakeValuesService {
                 if (current instanceof AbstractProvider) {
                     final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
                     if (method != null) {
-                        res.add(() -> {
-                            try {
-                                return method.invoke(current);
-                            } catch (Exception e) {
-                                throw new RuntimeException("Failed to call method %s.%s() on %s (args: %s)".formatted(
-                                    method.getDeclaringClass().getName(), method.getName(), current, Arrays.toString(args)), e);
-                            }
-                        });
+                        res.add(new MethodResolver(method, current, args));
                         return res;
                     }
                 }
@@ -810,14 +826,7 @@ public class FakeValuesService {
                 AbstractProvider<?> ap = root.getProvider(providerClassName);
                 Method method = ap == null ? null : ObjectMethods.getMethodByName(ap, methodName);
                 if (method != null) {
-                    res.add(() -> {
-                        try {
-                            return method.invoke(ap);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Failed to call method %s.%s() on %s (args: %s)".formatted(
-                                method.getDeclaringClass().getName(), method.getName(), ap, Arrays.toString(args)), e);
-                        }
-                    });
+                    res.add(new MethodResolver(method, ap, args));
                     return res;
                 }
             }
@@ -830,7 +839,7 @@ public class FakeValuesService {
         // car.wheel will be looked up in the YAML file.
         // It's only "simple" if there aren't args
         if (args.length == 0) {
-            res.add(() -> safeFetch(simpleDirective, context, null));
+            res.add(new SafeFetchResolver(simpleDirective, context));
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
@@ -850,7 +859,7 @@ public class FakeValuesService {
         // class.method_name (lowercase)
         if (dotIndex >= 0) {
             final String key = javaNameToYamlName(simpleDirective);
-            res.add(() -> safeFetch(key, context, null));
+            res.add(new SafeFetchResolver(key, context));
         }
 
         return res;
@@ -937,28 +946,21 @@ public class FakeValuesService {
      * {@link Name} then this method would return {@link Name#firstName()}.  Returns null if the directive is nested
      * (i.e. has a '.') or the method doesn't exist on the <em>obj</em> object.
      */
-    private Supplier<Object> resolveFromMethodOn(Object obj, String directive, String[] args) {
+    private ValueResolver resolveFromMethodOn(Object obj, String directive, String[] args) {
         if (obj == null) {
             return null;
         }
-        try {
-            final MethodAndCoercedArgs accessor = retrieveMethodAccessor(obj, directive, args);
-            return (accessor == null)
-                ? () -> null
-                : () -> invokeAndToString(accessor, obj);
-        } catch (Exception e) {
-            LOG.log(Level.FINE, "Can't call " + directive + " on " + obj, e);
-            return () -> null;
-        }
+        final MethodAndCoercedArgs accessor = retrieveMethodAccessor(obj, directive, args);
+        return accessor == null ? NULL_VALUE : new MethodAndCoercedArgsResolver(accessor, obj);
     }
 
     /**
      * Accepts a {@link BaseFaker} instance and a name.firstName style 'key' which is resolved to the return value of:
      * {@link BaseFaker#name()}'s {@link Name#firstName()} method.
      *
-     * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
+     * @throws RuntimeException if there's a problem invoking the method, or it doesn't exist.
      */
-    private Supplier<Object> resolveFakerObjectAndMethod(ProviderRegistration faker, String key, int dotIndex, String[] args) {
+    private ValueResolver resolveFakerObjectAndMethod(ProviderRegistration faker, String key, int dotIndex, String[] args) {
         final String[] classAndMethod;
         if (dotIndex == -1) {
             classAndMethod = new String[]{key};
@@ -970,20 +972,20 @@ public class FakeValuesService {
             String fakerMethodName = removeUnderscoreChars(classAndMethod[0]);
             final MethodAndCoercedArgs fakerAccessor = retrieveMethodAccessor(faker, fakerMethodName, EMPTY_ARRAY);
             if (fakerAccessor == null) {
-                LOG.fine("Can't find top level faker object named " + fakerMethodName + ".");
+                LOG.fine(() -> "Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
             }
             Object objectWithMethodToInvoke = fakerAccessor.invoke(faker);
             String nestedMethodName = removeUnderscoreChars(classAndMethod[1]);
             final MethodAndCoercedArgs accessor = retrieveMethodAccessor(objectWithMethodToInvoke, nestedMethodName, args);
             if (accessor == null) {
-                return () -> null;
+                return NULL_VALUE;
             }
 
-            return () -> invokeAndToString(accessor, objectWithMethodToInvoke);
-        } catch (Exception e) {
-            LOG.fine(e.getMessage());
-            return () -> null;
+            return new MethodAndCoercedArgsResolver(accessor, objectWithMethodToInvoke);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to resolve faker object and method for %s (dotIndex=%s, args=%s)"
+                .formatted(key, dotIndex, Arrays.toString(args)), e);
         }
     }
 
@@ -1003,33 +1005,21 @@ public class FakeValuesService {
         stringMapMap.putIfAbsent(methodName, new CopyOnWriteMap<>(WeakHashMap::new));
         stringMapMap.get(methodName).putIfAbsent(args, accessor);
         if (accessor == null) {
-            LOG.fine("Can't find method on "
-                + object.getClass().getSimpleName()
-                + " called " + methodName + ".");
+            LOG.fine(() -> "Can't find method on %s called %s.".formatted(object.getClass().getSimpleName(), methodName));
         }
         return accessor;
     }
 
-    private Object invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
-        try {
-            return accessor.invoke(objectWithMethodToInvoke);
-        } catch (Exception e) {
-            LOG.fine(e.getMessage());
-            return null;
-        }
-    }
-
-
     /**
      * Find an accessor by name ignoring case.
      */
-    private MethodAndCoercedArgs accessor(Class<?> clazz, String name, String[] args) {
-        final String finalName = name;
-        LOG.log(Level.FINE, () -> "Find accessor named " + finalName + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
-        name = removeUnderscoreChars(name);
+    private MethodAndCoercedArgs accessor(Class<?> clazz, final String accessorName, String[] args) {
+        LOG.fine(() -> "Find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
+        String name = removeUnderscoreChars(accessorName);
         final Collection<Method> methods;
         if (CLASS_2_METHODS_CACHE.containsKey(clazz)) {
             methods = CLASS_2_METHODS_CACHE.get(clazz).getOrDefault(name, Collections.emptyList());
+            LOG.fine(() -> "Found accessor named %s on %s in cache: %s".formatted(accessorName, clazz.getSimpleName(), methods));
         } else {
             Method[] classMethods = clazz.getMethods();
             Map<String, Collection<Method>> methodMap =
@@ -1040,9 +1030,13 @@ public class FakeValuesService {
                 methodMap.get(key).add(m);
             }
             CLASS_2_METHODS_CACHE.putIfAbsent(clazz, methodMap);
+            LOG.fine(() -> "Detected accessor named %s on %s, stored to cache: %s".formatted(accessorName, clazz.getSimpleName(), methodMap));
+
             methods = methodMap.get(name);
+            LOG.fine(() -> "Detected accessor named %s on %s and taken from cache: %s".formatted(accessorName, clazz.getSimpleName(), methods));
         }
         if (methods == null) {
+            LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), null));
             return null;
         }
         for (Method m : methods) {
@@ -1053,6 +1047,7 @@ public class FakeValuesService {
                 }
             }
         }
+        LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
         return null;
     }
 
@@ -1160,7 +1155,9 @@ public class FakeValuesService {
                 }
                 coerced[i] = coercedArgument;
             } catch (Exception e) {
-                LOG.fine("Unable to coerce " + args[i] + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor.");
+                Throwable cause = unwrap(e);
+                Level level = cause instanceof IllegalArgumentException || cause instanceof NoSuchMethodException ? FINE : SEVERE;
+                LOG.log(level, "Unable to coerce " + args[i] + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor.", e);
                 return null;
             }
         }
@@ -1202,8 +1199,65 @@ public class FakeValuesService {
         private Object invoke(Object on) throws InvocationTargetException, IllegalAccessException {
             return method.invoke(on, coerced);
         }
+
+        @Override
+        public String toString() {
+            return "%s[method=%s.%s(), coerced=%s]".formatted(getClass().getSimpleName(),
+                method.getDeclaringClass().getSimpleName(), method.getName(), Arrays.toString(coerced));
+        }
     }
 
     private record RegExpContext(String exp, ProviderRegistration root, FakerContext context) {
+    }
+
+    private interface ValueResolver {
+        Object resolve();
+    }
+
+    private record ConstantResolver(String value) implements ValueResolver {
+        @Override
+        public Object resolve() {
+            return value;
+        }
+    }
+
+    private static final ConstantResolver EMPTY_STRING = new ConstantResolver("");
+    private static final ConstantResolver NULL_VALUE = new ConstantResolver(null);
+
+    private record MethodResolver(Method method, Object current, Object[] args) implements ValueResolver {
+        @Override
+        public Object resolve() {
+            try {
+                return method.invoke(current);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to call method %s.%s() on %s (args: %s)".formatted(
+                    method.getDeclaringClass().getName(), method.getName(), current, Arrays.toString(args)), e);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "%s[method=%s.%s(), current=%s, args=%s]".formatted(getClass().getSimpleName(),
+                method.getDeclaringClass().getSimpleName(), method.getName(), current, Arrays.toString(args));
+        }
+    }
+
+    private record MethodAndCoercedArgsResolver(MethodAndCoercedArgs accessor, Object obj) implements ValueResolver {
+        @Override
+        public Object resolve() {
+            return invokeAndToString(accessor, obj);
+        }
+
+        private static Object invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
+            try {
+                return accessor.invoke(objectWithMethodToInvoke);
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException("Failed to invoke %s on %s".formatted(accessor, objectWithMethodToInvoke), unwrap(e));
+            }
+        }
+    }
+
+    private static Throwable unwrap(Throwable e) {
+        return e instanceof InvocationTargetException reflection ? unwrap(reflection.getTargetException()) : e;
     }
 }

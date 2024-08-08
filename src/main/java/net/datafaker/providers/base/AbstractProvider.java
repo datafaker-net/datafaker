@@ -42,4 +42,9 @@ public class AbstractProvider<T extends ProviderRegistration> {
             .map(ServiceLoader.Provider::get)
             .toList();
     }
+
+    @Override
+    public String toString() {
+        return "%s(%s)@%s".formatted(getClass().getSimpleName(), faker, Integer.toHexString(hashCode()));
+    }
 }

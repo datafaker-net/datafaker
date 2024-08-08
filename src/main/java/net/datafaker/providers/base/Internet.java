@@ -246,11 +246,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @return a correctly formatted IPv4 address.
      */
     public String ipV4Address() {
-        try {
-            return getIpV4Address().getHostAddress();
-        } catch (UnknownHostException e) {
-            return "127.0.0.1";
-        }
+        return getIpV4Address().getHostAddress();
     }
 
     /**
@@ -258,29 +254,21 @@ public class Internet extends AbstractProvider<BaseProviders> {
      *
      * @return an IPv4 address.
      */
-    public InetAddress getIpV4Address() throws UnknownHostException {
-        return Inet4Address.getByAddress(new byte[]{
-            (byte) (faker.random().nextInt(254) + 2),
-            (byte) (faker.random().nextInt(254) + 2),
-            (byte) (faker.random().nextInt(254) + 2),
-            (byte) (faker.random().nextInt(254) + 2)});
+    public InetAddress getIpV4Address() {
+        return inet4Address((byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2));
     }
 
     /**
      * @return a valid private IPV4 address in dot notation
      */
     public String privateIpV4Address() {
-        try {
-            return getPrivateIpV4Address().getHostAddress();
-        } catch (UnknownHostException e) {
-            return "127.0.0.1";
-        }
+        return getPrivateIpV4Address().getHostAddress();
     }
 
     /**
      * @return a private IPV4 address
      */
-    public InetAddress getPrivateIpV4Address() throws UnknownHostException {
+    public InetAddress getPrivateIpV4Address() {
         final Byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
         final Byte[] PRIVATE_SECOND_OCTET_172 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 
@@ -295,24 +283,20 @@ public class Internet extends AbstractProvider<BaseProviders> {
             case (byte) 192 -> second = (byte) 168;
             case (byte) 169 -> second = (byte) 254;
         }
-        return Inet4Address.getByAddress(new byte[]{first, second, third, fourth});
+        return inet4Address(first, second, third, fourth);
     }
 
     /**
      * @return a valid public IPV4 address in dot notation
      */
     public String publicIpV4Address() {
-        try {
-            return getPublicIpV4Address().getHostAddress();
-        } catch (UnknownHostException e) {
-            return "127.0.0.1";
-        }
+        return getPublicIpV4Address().getHostAddress();
     }
 
     /**
      * @return a valid public IPV4 address
      */
-    public InetAddress getPublicIpV4Address() throws UnknownHostException {
+    public InetAddress getPublicIpV4Address() {
         final RandomService r = faker.random();
 
         final byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
@@ -325,7 +309,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
             first = (byte) r.nextInt(256);
         }
-        return Inet4Address.getByAddress(new byte[]{first, second, third, fourth});
+        return inet4Address(first, second, third, fourth);
     }
 
     /**
@@ -343,11 +327,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @return a correctly formatted IPv6 address.
      */
     public String ipV6Address() {
-        try {
-            return getIpV6Address().getHostAddress();
-        } catch (UnknownHostException e) {
-            return "0:0:0:0:0:0:0:1";
-        }
+        return getIpV6Address().getHostAddress();
     }
 
     /**
@@ -355,7 +335,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      *
      * @return a IPV6 address.
      */
-    public InetAddress getIpV6Address() throws UnknownHostException {
+    public InetAddress getIpV6Address() {
         final RandomService random = faker.random();
         final char[] res = new char[4 * 8 + 7];
         for (int i = 0; i < 8; i++) {
@@ -366,7 +346,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
             char[] hex = random.hex(4, false).toCharArray();
             System.arraycopy(hex, 0, res, i + offset, hex.length);
         }
-        return Inet6Address.getByName(String.valueOf(res));
+        return inet6Address(String.valueOf(res));
     }
 
     /**
@@ -548,6 +528,22 @@ public class Internet extends AbstractProvider<BaseProviders> {
         @Override
         public String toString() {
             return browserName;
+        }
+    }
+
+    private static InetAddress inet4Address(byte first, byte second, byte third, byte fourth) {
+        try {
+            return Inet4Address.getByAddress(new byte[]{first, second, third, fourth});
+        } catch (UnknownHostException e) {
+            throw new RuntimeException("Failed to create Inet4Address from %s %s %s %s".formatted(first, second, third, fourth), e);
+        }
+    }
+
+    private static InetAddress inet6Address(String host) {
+        try {
+            return Inet6Address.getByName(host);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException("Failed to create Inet6Address from host '%s'".formatted(host), e);
         }
     }
 }

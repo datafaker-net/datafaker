@@ -34,7 +34,8 @@ class Issue759Test {
         try {
             String county = faker.address().countyByZipCode(zipCode);
             assertThat(county).isNotEqualTo(zipCode);
-        } catch (Exception ignore) {
+        } catch (RuntimeException expected) {
+            assertThat(expected).hasMessageStartingWith("County is not configured for postcode " + zipCode);
         }
     }
 

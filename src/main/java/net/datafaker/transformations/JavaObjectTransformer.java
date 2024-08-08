@@ -66,8 +66,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
                         CLASS2CONSTRUCTOR.put(clazz, primaryConstructor);
                     }
                     result = primaryConstructor.newInstance();
-                } catch (InstantiationException | IllegalAccessException |
-                         InvocationTargetException e) {
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
             }

@@ -14,14 +14,14 @@ public class FakerIDN {
     public static String toASCII(String in) {
         try {
             return IDN.toASCII(in);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignore) {
             // let's continue with the character by character encoding hack.
         }
         final StringBuilder asciiResult = new StringBuilder();
         for (int i = 0; i < in.length(); i++) {
             try {
                 asciiResult.append(IDN.toASCII(in.substring(i, i + 1)));
-            } catch (Exception ignored) {
+            } catch (IllegalArgumentException ignored) {
             }
         }
         if (asciiResult.isEmpty()) {

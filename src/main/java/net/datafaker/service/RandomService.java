@@ -120,4 +120,9 @@ public class RandomService {
         if (random == SHARED_RANDOM) return 1;
         return random != null ? random.hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "@" + random;
+    }
 }
