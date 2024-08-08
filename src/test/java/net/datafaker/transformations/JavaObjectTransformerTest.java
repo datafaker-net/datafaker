@@ -66,4 +66,68 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
         }
         assertThat(clients).hasSize(10);
     }
+
+    @Test
+    void javaStreamingTest() {
+        JavaObjectTransformer jTransformer = (new JavaObjectTransformer()).from(Person.class);
+        Schema<Object, ?> schema = Schema.of(
+            field("firstName", () -> faker.name().firstName()),
+            field("lastName", () -> faker.name().lastName()),
+            field("birthDate", () -> faker.date().birthday()),
+            field("registrationDate", () -> faker.timeAndDate().past())
+            );
+
+        Collection<Person> persons = new ArrayList<>();
+        jTransformer
+            .generateStream(schema, 10)
+            .map(object -> (Person) object)
+            .forEach(person -> {
+                assertThat(person.birthDate).isNotNull();
+                assertThat(person.lastName).isNotNull();
+                assertThat(person.firstName).isNotNull();
+                assertThat(person.registrationDate).isNotNull();
+                persons.add((Person)person);
+            });
+
+        assertThat(persons).hasSize(10);
+    }
+
+    @Test
+    void javaEmptyStreamTest() {
+        JavaObjectTransformer jTransformer = (new JavaObjectTransformer());
+        Schema<Object, ?> schema = Schema.of(
+            field("firstName", () -> faker.name().firstName()),
+            field("lastName", () -> faker.name().lastName()),
+            field("birthDate", () -> faker.date().birthday()),
+            field("registrationDate", () -> faker.timeAndDate().past())
+        );
+
+        assertThat(jTransformer.generateStream(schema, 10).count()).isEqualTo(0);
+    }
+
+    @Test
+    void javaCollectionTest() {
+        JavaObjectTransformer jTransformer = (new JavaObjectTransformer()).from(Person.class);
+        Schema<Object, ?> schema = Schema.of(
+            field("firstName", () -> faker.name().firstName()),
+            field("lastName", () -> faker.name().lastName()),
+            field("birthDate", () -> faker.date().birthday()),
+            field("registrationDate", () -> faker.timeAndDate().past())
+        );
+
+        Collection<Person> persons = new ArrayList<>();
+        jTransformer
+            .generate(schema, 10)
+            .stream()
+            .map(object -> (Person) object)
+            .forEach(person -> {
+                assertThat(person.birthDate).isNotNull();
+                assertThat(person.lastName).isNotNull();
+                assertThat(person.firstName).isNotNull();
+                assertThat(person.registrationDate).isNotNull();
+                persons.add((Person)person);
+            });
+
+        assertThat(persons).hasSize(10);
+    }
 }

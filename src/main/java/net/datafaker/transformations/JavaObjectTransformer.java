@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -18,6 +19,8 @@ import java.util.stream.Stream;
 public class JavaObjectTransformer implements Transformer<Object, Object> {
     private static final Map<Schema<Object, ?>, Consumer<Object>> SCHEMA2CONSUMER = new IdentityHashMap<>();
     private static final Map<Class<?>, Constructor<?>> CLASS2CONSTRUCTOR = new IdentityHashMap<>();
+
+    private Optional<Object> sourceClazz = Optional.empty();
 
     @Override
     public Object apply(Object input, Schema<Object, ?> schema) {
@@ -115,9 +118,30 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
         return collection;
     }
 
+    public JavaObjectTransformer from(Class input) {
+        sourceClazz = Optional.of(input);
+        return this;
+    }
+
+    /**
+     * The output is tied to provided Class source.
+     * An empty source will output an empty stream.
+     *
+     * Configure available input with {@link #from(Class source)}.
+     */
     @Override
-    public Object generate(Schema<Object, ?> schema, int limit) {
-        throw new UnsupportedOperationException("Object as input is required");
+    public Stream<Object> generateStream(final Schema<Object, ?> schema, long limit) {
+        if(sourceClazz.isEmpty())
+            return Stream.empty();
+        else
+            return Stream
+                .generate(() -> apply(sourceClazz.get(), schema))
+                .limit(limit);
+    }
+
+    @Override
+    public Collection<Object> generate(Schema<Object, ?> schema, int limit) {
+        return this.generateStream(schema, limit).collect(Collectors.toList());
     }
 
     @Override
