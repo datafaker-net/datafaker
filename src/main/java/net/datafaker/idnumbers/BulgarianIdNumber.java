@@ -1,8 +1,15 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.randomGender;
 
 /**
  * <a href="https://en.wikipedia.org/wiki/Unique_citizenship_number">Specification</a>
@@ -18,21 +25,22 @@ public class BulgarianIdNumber implements IdNumberGenerator {
     }
 
     @Override
-    public String generateValid(BaseProviders faker) {
-        String basePart = basePart(faker);
-        return basePart + checksum(basePart);
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
+        LocalDate birthday = birthday(faker, request);
+        Gender gender = gender(faker, request);
+        String basePart = basePart(faker, birthday, gender);
+        String idNumber = basePart + checksum(basePart);
+        return new PersonIdNumber(idNumber, birthday, gender);
     }
 
     @Override
     public String generateInvalid(BaseProviders faker) {
-        String basePart = basePart(faker);
+        String basePart = basePart(faker, faker.timeAndDate().birthday(), randomGender(faker));
         return basePart + (checksum(basePart) + 1) % 10;
     }
 
-    private String basePart(BaseProviders faker) {
-        LocalDate birthDate = faker.timeAndDate().birthday(0, 200);
-        boolean female = faker.bool().bool();
-        return yy(birthDate) + mm(birthDate) + dd(birthDate) + order(faker, female);
+    private String basePart(BaseProviders faker, LocalDate birthDate, Gender gender) {
+        return yy(birthDate) + mm(birthDate) + dd(birthDate) + order(faker, gender);
     }
 
     private String yy(LocalDate birthDate) {
@@ -49,8 +57,11 @@ public class BulgarianIdNumber implements IdNumberGenerator {
         return "%02d".formatted(birthDate.getDayOfMonth());
     }
 
-    private String order(BaseProviders faker, boolean female) {
-        int[] availableLastDigits = female ? ODD_DIGITS : EVEN_DIGITS;
+    private String order(BaseProviders faker, Gender gender) {
+        int[] availableLastDigits = switch (gender) {
+            case FEMALE -> ODD_DIGITS;
+            case MALE -> EVEN_DIGITS;
+        };
         int lastDigit = availableLastDigits[faker.number().numberBetween(0, 5)];
         return faker.number().digits(2) + lastDigit;
     }

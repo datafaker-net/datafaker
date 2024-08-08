@@ -1,10 +1,16 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber;
+import net.datafaker.providers.base.PersonIdNumber;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
 
 /**
  * Implementation based on the definition at
@@ -13,6 +19,8 @@ import java.time.temporal.ChronoField;
  * <a href="https://en.wikipedia.org/wiki/Personal_identity_number_">https://en.wikipedia.org/wiki/Personal_identity_number_</a>(Sweden)
  */
 public class SwedenIdNumber implements IdNumberGenerator {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
+
     @Override
     public String countryCode() {
         return "SE";
@@ -27,12 +35,14 @@ public class SwedenIdNumber implements IdNumberGenerator {
     }
 
     @Override
-    public String generateValid(BaseProviders f) {
+    public PersonIdNumber generateValid(BaseProviders f, IdNumber.IdNumberRequest request) {
+        LocalDate birthday = birthday(f, request);
         String end = f.numerify("###");
-        String candidate = DATE_TIME_FORMATTER.format(f.timeAndDate().birthday(0, 100))
+        String basePart = DATE_TIME_FORMATTER.format(birthday)
             + f.options().option(PLUS_MINUS)
             + end;
-        return candidate + calculateChecksum(candidate);
+        String idNumber = basePart + calculateChecksum(basePart);
+        return new PersonIdNumber(idNumber, birthday, gender(f, request));
     }
 
     @Deprecated

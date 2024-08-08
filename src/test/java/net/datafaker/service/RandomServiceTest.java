@@ -54,6 +54,16 @@ class RandomServiceTest extends AbstractFakerTest {
     }
 
     @Test
+    void nextInt_returnsValueWithinGivenRange() {
+        RandomService randomService = new RandomService();
+        for (int i = 0; i < 10_000; i++) {
+            assertThat(randomService.nextInt(2, 6))
+                .isGreaterThanOrEqualTo(2)
+                .isLessThanOrEqualTo(6);
+        }
+    }
+
+    @Test
     void predictableRandomRange() {
         RandomService randomService = new RandomService(new Random(10));
 

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.Integer.parseInt;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AlbanianIdNumberTest {
@@ -44,14 +46,14 @@ class AlbanianIdNumberTest {
 
     @Test
     void mm() {
-        assertThat(generator.mm(1, false)).isEqualTo("01");
-        assertThat(generator.mm(2, false)).isEqualTo("02");
-        assertThat(generator.mm(9, false)).isEqualTo("09");
-        assertThat(generator.mm(12, false)).isEqualTo("12");
-        assertThat(generator.mm(1, true)).isEqualTo("51");
-        assertThat(generator.mm(2, true)).isEqualTo("52");
-        assertThat(generator.mm(8, true)).isEqualTo("58");
-        assertThat(generator.mm(12, true)).isEqualTo("62");
+        assertThat(generator.mm(1, MALE)).isEqualTo("01");
+        assertThat(generator.mm(2, MALE)).isEqualTo("02");
+        assertThat(generator.mm(9, MALE)).isEqualTo("09");
+        assertThat(generator.mm(12, MALE)).isEqualTo("12");
+        assertThat(generator.mm(1, FEMALE)).isEqualTo("51");
+        assertThat(generator.mm(2, FEMALE)).isEqualTo("52");
+        assertThat(generator.mm(8, FEMALE)).isEqualTo("58");
+        assertThat(generator.mm(12, FEMALE)).isEqualTo("62");
     }
 
     @Test
