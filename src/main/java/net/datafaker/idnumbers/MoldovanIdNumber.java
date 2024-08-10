@@ -7,6 +7,7 @@ import net.datafaker.providers.base.PersonIdNumber;
 import java.time.LocalDate;
 
 import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.multiply;
 import static net.datafaker.idnumbers.Utils.randomGender;
 
 /**
@@ -74,14 +75,7 @@ public class MoldovanIdNumber implements IdNumberGenerator {
     }
 
     char checksum(String text) {
-        int checksum = 0;
-        for (int i = 0; i < text.length(); i++) {
-            checksum += digitAt(text, i) * CHECKSUM_MASK[i];
-        }
+        int checksum = multiply(text, CHECKSUM_MASK);
         return (char) ('0' + checksum % 10);
-    }
-
-    private int digitAt(String text, int index) {
-        return text.charAt(index) - '0';
     }
 }

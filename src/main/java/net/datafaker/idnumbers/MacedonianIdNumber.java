@@ -8,8 +8,9 @@ import net.datafaker.providers.base.PersonIdNumber.Gender;
 import java.time.LocalDate;
 import java.util.List;
 
-import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.digitAt;
+import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.randomGender;
 
 /**
@@ -103,9 +104,5 @@ public class MacedonianIdNumber implements IdNumberGenerator {
             case 10, 11 -> 0;
             default -> m;
         };
-    }
-
-    private int digitAt(String text, int index) {
-        return text.charAt(index) - '0';
     }
 }

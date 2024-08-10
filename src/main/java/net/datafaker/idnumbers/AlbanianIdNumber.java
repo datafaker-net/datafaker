@@ -7,8 +7,10 @@ import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
 
-import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.digit;
+import static net.datafaker.idnumbers.Utils.digitAt;
+import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
 
 /**
@@ -65,13 +67,5 @@ public class AlbanianIdNumber implements IdNumberGenerator {
 
     int checksumOfFirstChar(char c) {
         return Character.isLetter(c) ? CHECKSUM_CHAR.indexOf(c) : digit(c);
-    }
-
-    private int digitAt(String text, int index) {
-        return digit(text.charAt(index));
-    }
-
-    int digit(char c) {
-        return c - '0';
     }
 }

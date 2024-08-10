@@ -24,6 +24,7 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     private static final Faker ALBANIAN = new Faker(new Locale("sq", "AL"));
     private static final Faker BULGARIAN = new Faker(new Locale("bg", "BG"));
     private static final Faker MACEDONIAN = new Faker(new Locale("mk", "MK"));
+    private static final Faker ROMANIAN = new Faker(new Locale("ro", "RO"));
 
     private static final Pattern SWEDISH_ID_NUMBER_PATTERN = Pattern.compile("\\d{6}[-+]\\d{4}");
     private static final Pattern SOUTH_AFRICA_ID_NUMBER_PATTERN = Pattern.compile("[0-9]{10}([01])8[0-9]");
@@ -166,6 +167,12 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     @RepeatedTest(100)
     void macedonianPersonalCode_valid() {
         String pin = MACEDONIAN.idNumber().valid();
+        assertThatPin(pin).matches("\\d{13}");
+    }
+
+    @RepeatedTest(100)
+    void romanianPersonalCode_valid() {
+        String pin = ROMANIAN.idNumber().valid();
         assertThatPin(pin).matches("\\d{13}");
     }
 
