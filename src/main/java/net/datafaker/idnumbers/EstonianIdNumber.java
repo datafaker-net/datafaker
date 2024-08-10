@@ -1,9 +1,16 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.randomGender;
 
 /**
  * Estonian personal identification number ("Isikukood" in estonian)
@@ -25,25 +32,38 @@ public class EstonianIdNumber implements IdNumberGenerator {
 
     @Override
     public String generateInvalid(final BaseProviders faker) {
-        String digits = basePart(faker);
+        LocalDate birthday = faker.timeAndDate().birthday();
+        String digits = basePart(faker, birthday, randomGender(faker));
         return digits + (checksum(digits) + 1) % 10;
     }
 
     @Override
-    public String generateValid(final BaseProviders faker) {
-        String digits = basePart(faker);
-        return digits + checksum(digits);
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
+        LocalDate birthday = birthday(faker, request);
+        Gender gender = gender(faker, request);
+        String digits = basePart(faker, birthday, gender);
+        String idNumber = digits + checksum(digits);
+        return new PersonIdNumber(idNumber, birthday, gender);
     }
 
-    private String basePart(BaseProviders faker) {
-        LocalDate birthday = faker.timeAndDate().birthday(0, 100);
-        return firstDigit(faker) +
+    private String basePart(BaseProviders faker, LocalDate birthday, Gender gender) {
+        return firstDigit(birthday.getYear(), gender) +
             BIRTHDAY_FORMAT.format(birthday) +
             faker.number().digits(3);
     }
 
-    private int firstDigit(BaseProviders faker) {
-        return faker.random().nextInt(1, 6);
+    static int firstDigit(int birthYear, Gender gender) {
+        int digit = switch (birthYear / 100) {
+            case 18 -> 1;
+            case 19 -> 3;
+            case 20 -> 5;
+            case 21 -> 7;
+            default -> throw new IllegalStateException("Too far in future: " + birthYear);
+        };
+        return switch (gender) {
+            case FEMALE -> digit + 1;
+            case MALE -> digit;
+        };
     }
 
     static int checksum(String numbers) {

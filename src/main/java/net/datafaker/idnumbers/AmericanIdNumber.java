@@ -1,9 +1,14 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber;
+import net.datafaker.providers.base.PersonIdNumber;
 
 import java.util.List;
 import java.util.regex.Pattern;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
 
 public class AmericanIdNumber implements IdNumberGenerator {
     @Override
@@ -34,6 +39,11 @@ public class AmericanIdNumber implements IdNumberGenerator {
         boolean isValid = INVALID_SSN_PATTERNS.stream()
             .noneMatch(invalidSSNPattern -> invalidSSNPattern.matcher(ssn).matches());
         return isValid ? ssn : generateValid(f);
+    }
+
+    @Override
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumber.IdNumberRequest request) {
+        return new PersonIdNumber(generateValid(faker), birthday(faker, request), gender(faker, request));
     }
 
     @Override

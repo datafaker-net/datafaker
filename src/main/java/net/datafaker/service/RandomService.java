@@ -33,7 +33,7 @@ public class RandomService {
     }
 
     public Integer nextInt(int min, int max) {
-        return random.nextInt((max - min) + 1) + min;
+        return random.nextInt(min, max + 1);
     }
 
     @SuppressWarnings("unused")

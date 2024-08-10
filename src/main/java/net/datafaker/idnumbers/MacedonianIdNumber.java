@@ -1,9 +1,16 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.randomGender;
 
 /**
  * The Macedonian Identity Number is a unique personal identification number of 13 digits in a form "DD MM YYY RR BBB K"
@@ -20,21 +27,23 @@ public class MacedonianIdNumber implements IdNumberGenerator {
     }
 
     @Override
-    public String generateValid(BaseProviders faker) {
-        String basePart = basePart(faker);
-        return basePart + checksum(basePart);
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
+        LocalDate birthday = birthday(faker, request);
+        Gender gender = gender(faker, request);
+        String basePart = basePart(faker, birthday, gender);
+        return new PersonIdNumber(basePart + checksum(basePart), birthday, gender);
     }
 
     @Override
     public String generateInvalid(BaseProviders faker) {
-        String basePart = basePart(faker);
+        LocalDate birthday = faker.timeAndDate().birthday();
+        Gender gender = randomGender(faker);
+        String basePart = basePart(faker, birthday, gender);
         return basePart + (checksum(basePart) + 1) % 10;
     }
 
-    private String basePart(BaseProviders faker) {
-        LocalDate bd = faker.timeAndDate().birthday(0, 120);
-        boolean female = faker.bool().bool();
-        return dd(bd) + mm(bd) + yyy(bd) + rr(faker) + sss(faker, female);
+    private String basePart(BaseProviders faker, LocalDate bd, Gender gender) {
+        return dd(bd) + mm(bd) + yyy(bd) + rr(faker) + sss(faker, gender);
     }
 
     private String dd(LocalDate bd) {
@@ -64,8 +73,11 @@ public class MacedonianIdNumber implements IdNumberGenerator {
      * - from 000 to 499 for the male, and
      * - from 500 to 999 for the female citizens.
      */
-    private String sss(BaseProviders faker, boolean female) {
-        int ordinal = female ? faker.number().numberBetween(500, 1000) : faker.number().numberBetween(0, 500);
+    private String sss(BaseProviders faker, Gender gender) {
+        int ordinal = switch (gender) {
+            case FEMALE -> faker.number().numberBetween(500, 1000);
+            case MALE -> faker.number().numberBetween(0, 500);
+        };
         return "%03d".formatted(ordinal);
     }
 

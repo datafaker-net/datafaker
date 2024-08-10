@@ -1,8 +1,15 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
+
+import static net.datafaker.idnumbers.Utils.gender;
+import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
 
 /**
  * The Albanian Identity Number is a unique personal identification number of 10 characters in the format YYMMDDSSSC
@@ -24,19 +31,20 @@ public class AlbanianIdNumber implements IdNumberGenerator {
     }
 
     @Override
-    public String generateValid(BaseProviders faker) {
-        LocalDate birthDate = faker.timeAndDate().birthday(0, 200);
-        boolean female = faker.bool().bool();
-        String basePart = yy(birthDate.getYear()) + mm(birthDate.getMonthValue(), female) + dd(birthDate.getDayOfMonth()) + sss(faker);
-        return basePart + checksum(basePart);
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
+        LocalDate birthDate = birthday(faker, request);
+        Gender gender = gender(faker, request);
+        String basePart = yy(birthDate.getYear()) + mm(birthDate.getMonthValue(), gender) + dd(birthDate.getDayOfMonth()) + sss(faker);
+        String idNumber = basePart + checksum(basePart);
+        return new PersonIdNumber(idNumber, birthDate, gender);
     }
 
     String yy(int year) {
         return FIRST_CHAR.charAt((year - 1800) / 10) + String.valueOf(year % 10);
     }
 
-    String mm(int month, boolean female) {
-        return String.format("%02d", (female ? 50 : 0) + month);
+    String mm(int month, Gender gender) {
+        return String.format("%02d", (gender == FEMALE ? 50 : 0) + month);
     }
 
     String dd(int dayOfMonth) {
