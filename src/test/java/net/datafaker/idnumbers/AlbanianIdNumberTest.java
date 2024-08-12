@@ -83,13 +83,4 @@ class AlbanianIdNumberTest {
         assertThat(generator.checksumOfFirstChar('V')).isEqualTo(22);
         assertThat(generator.checksumOfFirstChar('W')).isEqualTo(0);
     }
-
-    @Test
-    void digit() {
-        assertThat(generator.digit('0')).isEqualTo(0);
-        assertThat(generator.digit('1')).isEqualTo(1);
-        assertThat(generator.digit('2')).isEqualTo(2);
-        assertThat(generator.digit('8')).isEqualTo(8);
-        assertThat(generator.digit('9')).isEqualTo(9);
-    }
 }

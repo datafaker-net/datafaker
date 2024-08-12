@@ -29,4 +29,19 @@ public class Utils {
         return faker.bool().bool() ? FEMALE : MALE;
     }
 
+    static int digitAt(String text, int index) {
+        return digit(text.charAt(index));
+    }
+
+    static int digit(char c) {
+        return c - '0';
+    }
+
+    static int multiply(String text, int[] weights) {
+        int checksum = 0;
+        for (int i = 0; i < text.length(); i++) {
+            checksum += digitAt(text, i) * weights[i];
+        }
+        return checksum;
+    }
 }

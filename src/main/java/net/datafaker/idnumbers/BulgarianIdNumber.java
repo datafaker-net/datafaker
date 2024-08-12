@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.multiply;
 import static net.datafaker.idnumbers.Utils.randomGender;
 
 /**
@@ -67,14 +68,7 @@ public class BulgarianIdNumber implements IdNumberGenerator {
     }
 
     int checksum(String text) {
-        int checksum = 0;
-        for (int i = 0; i < text.length(); i++) {
-            checksum += digitAt(text, i) * CHECKSUM_WEIGHTS[i];
-        }
+        int checksum = multiply(text, CHECKSUM_WEIGHTS);
         return (checksum % 11) % 10;
-    }
-
-    private int digitAt(String text, int index) {
-        return text.charAt(index) - '0';
     }
 }
