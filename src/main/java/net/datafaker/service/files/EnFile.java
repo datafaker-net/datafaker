@@ -1,12 +1,10 @@
 package net.datafaker.service.files;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class EnFile {
-    public static final String YML = ".yml";
+    private static final String YML = ".yml";
     private final String file;
     private final String path;
 
@@ -260,7 +258,7 @@ public class EnFile {
         "zodiac.yml").map(EnFile::new).toList();
 
     // files where the search path can't be derived from the filename
-    private static final List<EnFile> FILES_WITH_A_DIFFERENT_PATH = Arrays.asList(
+    private static final List<EnFile> FILES_WITH_A_DIFFERENT_PATH = List.of(
         new EnFile("animal.yml", "creature"),
         new EnFile("cat.yml", "creature"),
         new EnFile("dog.yml", "creature"),
@@ -294,14 +292,7 @@ public class EnFile {
         new EnFile("observation.yml", "healthcare")
     );
 
-    private static final List<EnFile> ALL_FILES;
-
-    static {
-        ALL_FILES = new ArrayList<>(FILES);
-        ALL_FILES.addAll(FILES_WITH_A_DIFFERENT_PATH);
-    }
-
-    public static List<EnFile> getFiles() {
-        return ALL_FILES;
+    public static Stream<EnFile> getFiles() {
+        return Stream.concat(FILES.stream(), FILES_WITH_A_DIFFERENT_PATH.stream());
     }
 }

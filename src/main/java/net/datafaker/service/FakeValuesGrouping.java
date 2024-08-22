@@ -14,9 +14,9 @@ public class FakeValuesGrouping implements FakeValuesInterface {
     private final Map<String, Collection<FakeValuesInterface>> fakeValues = new HashMap<>();
 
     static {
-        for (EnFile file : EnFile.getFiles()) {
+        EnFile.getFiles().forEach(file -> {
             ENGLISH_FAKE_VALUE_GROUPING.add(FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, file.getFile(), file.getPath())));
-        }
+        });
     }
 
     public void add(FakeValuesInterface fakeValue) {
