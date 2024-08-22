@@ -1,59 +1,56 @@
 package net.datafaker.providers.base;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 /**
  * @since 0.8.0
  */
 public class Relationship extends AbstractProvider<BaseProviders> {
 
+    private enum Kind {
+        direct("relationship.familial.direct"),
+        extended("relationship.familial.extended"),
+        inLaw("relationship.in_law"),
+        spouse("relationship.spouse"),
+        parent("relationship.parent"),
+        sibling("relationship.sibling");
+
+        private final String expression;
+        Kind(String expression) {
+            this.expression = expression;
+        }
+    }
+
     protected Relationship(final BaseProviders faker) {
         super(faker);
     }
 
     public String direct() {
-        return resolve("relationship.familial.direct");
+        return resolve(Kind.direct.expression);
     }
 
     public String extended() {
-        return resolve("relationship.familial.extended");
+        return resolve(Kind.extended.expression);
     }
 
     public String inLaw() {
-        return resolve("relationship.in_law");
+        return resolve(Kind.inLaw.expression);
     }
 
     public String spouse() {
-        return resolve("relationship.spouse");
+        return resolve(Kind.spouse.expression);
     }
 
     public String parent() {
-        return resolve("relationship.parent");
+        return resolve(Kind.parent.expression);
     }
 
     public String sibling() {
-        return resolve("relationship.sibling");
+        return resolve(Kind.sibling.expression);
     }
 
     public String any() {
-        // Get name of current method
-        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        final String currentMethodName = stackTrace[1].getMethodName();
-
-        try {
-            Method[] methods = Arrays.stream(Relationship.class.getDeclaredMethods())
-                .filter(declaredMethod -> !declaredMethod.getName().equals(currentMethodName) && Modifier.isPublic(declaredMethod.getModifiers()))
-                .toArray(Method[]::new);
-            int indx = faker.random().nextInt(methods.length);
-            Method runMethod = methods[indx];
-            Relationship relationship = new Relationship(faker);
-            return (String) runMethod.invoke(relationship);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+        Kind kind = faker.options().option(Kind.values());
+        return resolve(kind.expression);
     }
 
 }
