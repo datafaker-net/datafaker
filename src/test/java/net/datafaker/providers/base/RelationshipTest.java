@@ -1,27 +1,30 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.service.FakeValuesService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 class RelationshipTest extends BaseFakerTest<BaseFaker> {
 
-    private BaseFaker mockFaker;
-    private final Relationship relationship = faker.relationships();
+    private final BaseFaker mockFaker = spy(new BaseFaker());
+    private final FakeValuesService fakeValuesService = mock();
+    private final Relationship relationship = new Relationship(mockFaker);
 
     @BeforeEach
-    protected void before() {
-        super.before();
-        mockFaker = Mockito.mock(BaseFaker.class);
+    final void beforeEach() {
+        reset(mockFaker, fakeValuesService);
     }
 
     @RepeatedTest(100)
@@ -41,36 +44,43 @@ class RelationshipTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void anyWithIllegalArgumentExceptionThrown() {
-        when(mockFaker.random()).thenThrow(new IllegalArgumentException());
-        assertThatThrownBy(() -> new Relationship(mockFaker).any())
-            .isInstanceOf(IllegalArgumentException.class);
+        when(mockFaker.fakeValuesService()).thenReturn(fakeValuesService);
+        when(fakeValuesService.resolve(any(), any(), any())).thenThrow(new IllegalArgumentException("Oops"));
+
+        assertThatThrownBy(() -> relationship.any())
+            .isInstanceOf(RuntimeException.class)
+            .hasMessageMatching("Failed to call \\w+: java.lang.IllegalArgumentException: Oops");
     }
 
     @Test
     void anyWithSecurityExceptionThrown() {
-        when(mockFaker.random()).thenThrow(new SecurityException());
-        assertThatThrownBy(() -> new Relationship(mockFaker).any())
-            .isInstanceOf(SecurityException.class);
+        when(mockFaker.fakeValuesService()).thenReturn(fakeValuesService);
+        when(fakeValuesService.resolve(any(), any(), any())).thenThrow(new SecurityException("Oops"));
+
+        assertThatThrownBy(() -> relationship.any())
+            .isInstanceOf(RuntimeException.class)
+            .hasMessageMatching("Failed to call \\w+: java.lang.SecurityException: Oops");
     }
 
     @Test
     void anyWithIllegalAccessExceptionThrown() {
-        when(mockFaker.random()).then(invocationOnMock -> {
+        when(mockFaker.fakeValuesService()).thenReturn(fakeValuesService);
+        when(fakeValuesService.resolve(any(), any(), any())).thenAnswer(invocation -> {
             throw new IllegalAccessException("Oops");
         });
-        assertThatThrownBy(() -> new Relationship(mockFaker).any())
+
+        assertThatThrownBy(() -> relationship.any())
             .isInstanceOf(RuntimeException.class)
-            .hasMessageStartingWith("java.lang.IllegalAccessException: Oops");
+            .hasMessageMatching("Failed to call \\w+: java.lang.IllegalAccessException: Oops");
     }
 
     @Test
     void anyWithInvocationTargetExceptionThrown() {
-        when(mockFaker.random()).then(invocationOnMock -> {
-            throw new InvocationTargetException(new Exception("Oops"));
-        });
-        assertThatThrownBy(() -> new Relationship(mockFaker).any())
-            .isInstanceOf(RuntimeException.class)
-            .hasMessage("java.lang.reflect.InvocationTargetException");
-    }
+        when(mockFaker.fakeValuesService()).thenReturn(fakeValuesService);
+        when(fakeValuesService.resolve(any(), any(), any())).thenThrow(new NullPointerException("Oops"));
 
+        assertThatThrownBy(() -> relationship.any())
+            .isInstanceOf(RuntimeException.class)
+            .hasMessageMatching("Failed to call \\w+: java.lang.NullPointerException: Oops");
+    }
 }

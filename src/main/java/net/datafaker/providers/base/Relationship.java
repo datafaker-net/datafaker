@@ -2,7 +2,6 @@ package net.datafaker.providers.base;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 /**
@@ -39,20 +38,18 @@ public class Relationship extends AbstractProvider<BaseProviders> {
     }
 
     public String any() {
-        // Get name of current method
-        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        final String currentMethodName = stackTrace[1].getMethodName();
+        Method[] methods = Arrays.stream(Relationship.class.getDeclaredMethods())
+            .filter(declaredMethod -> !"any".equals(declaredMethod.getName()))
+            .filter(declaredMethod -> !declaredMethod.isSynthetic())
+            .toArray(Method[]::new);
+        Method runMethod = faker.options().option(methods);
 
         try {
-            Method[] methods = Arrays.stream(Relationship.class.getDeclaredMethods())
-                .filter(declaredMethod -> !declaredMethod.getName().equals(currentMethodName) && Modifier.isPublic(declaredMethod.getModifiers()))
-                .toArray(Method[]::new);
-            int indx = faker.random().nextInt(methods.length);
-            Method runMethod = methods[indx];
-            Relationship relationship = new Relationship(faker);
-            return (String) runMethod.invoke(relationship);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            return (String) runMethod.invoke(this);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Failed to call " + runMethod.getName() + ": " + e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("Failed to call " + runMethod.getName() + ": " + e.getTargetException());
         }
     }
 
