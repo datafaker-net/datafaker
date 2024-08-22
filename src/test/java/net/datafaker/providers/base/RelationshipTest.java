@@ -48,30 +48,8 @@ class RelationshipTest extends BaseFakerTest<BaseFaker> {
         when(fakeValuesService.resolve(any(), any(), any())).thenThrow(new IllegalArgumentException("Oops"));
 
         assertThatThrownBy(() -> relationship.any())
-            .isInstanceOf(RuntimeException.class)
-            .hasMessageMatching("Failed to call \\w+: java.lang.IllegalArgumentException: Oops");
-    }
-
-    @Test
-    void anyWithSecurityExceptionThrown() {
-        when(mockFaker.fakeValuesService()).thenReturn(fakeValuesService);
-        when(fakeValuesService.resolve(any(), any(), any())).thenThrow(new SecurityException("Oops"));
-
-        assertThatThrownBy(() -> relationship.any())
-            .isInstanceOf(RuntimeException.class)
-            .hasMessageMatching("Failed to call \\w+: java.lang.SecurityException: Oops");
-    }
-
-    @Test
-    void anyWithIllegalAccessExceptionThrown() {
-        when(mockFaker.fakeValuesService()).thenReturn(fakeValuesService);
-        when(fakeValuesService.resolve(any(), any(), any())).thenAnswer(invocation -> {
-            throw new IllegalAccessException("Oops");
-        });
-
-        assertThatThrownBy(() -> relationship.any())
-            .isInstanceOf(RuntimeException.class)
-            .hasMessageMatching("Failed to call \\w+: java.lang.IllegalAccessException: Oops");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Oops");
     }
 
     @Test
@@ -80,7 +58,7 @@ class RelationshipTest extends BaseFakerTest<BaseFaker> {
         when(fakeValuesService.resolve(any(), any(), any())).thenThrow(new NullPointerException("Oops"));
 
         assertThatThrownBy(() -> relationship.any())
-            .isInstanceOf(RuntimeException.class)
-            .hasMessageMatching("Failed to call \\w+: java.lang.NullPointerException: Oops");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Oops");
     }
 }

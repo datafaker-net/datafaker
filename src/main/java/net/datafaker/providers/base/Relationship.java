@@ -1,56 +1,56 @@
 package net.datafaker.providers.base;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 
 /**
  * @since 0.8.0
  */
 public class Relationship extends AbstractProvider<BaseProviders> {
 
+    private enum Kind {
+        direct("relationship.familial.direct"),
+        extended("relationship.familial.extended"),
+        inLaw("relationship.in_law"),
+        spouse("relationship.spouse"),
+        parent("relationship.parent"),
+        sibling("relationship.sibling");
+
+        private final String expression;
+        Kind(String expression) {
+            this.expression = expression;
+        }
+    }
+
     protected Relationship(final BaseProviders faker) {
         super(faker);
     }
 
     public String direct() {
-        return resolve("relationship.familial.direct");
+        return resolve(Kind.direct.expression);
     }
 
     public String extended() {
-        return resolve("relationship.familial.extended");
+        return resolve(Kind.extended.expression);
     }
 
     public String inLaw() {
-        return resolve("relationship.in_law");
+        return resolve(Kind.inLaw.expression);
     }
 
     public String spouse() {
-        return resolve("relationship.spouse");
+        return resolve(Kind.spouse.expression);
     }
 
     public String parent() {
-        return resolve("relationship.parent");
+        return resolve(Kind.parent.expression);
     }
 
     public String sibling() {
-        return resolve("relationship.sibling");
+        return resolve(Kind.sibling.expression);
     }
 
     public String any() {
-        Method[] methods = Arrays.stream(Relationship.class.getDeclaredMethods())
-            .filter(declaredMethod -> !"any".equals(declaredMethod.getName()))
-            .filter(declaredMethod -> !declaredMethod.isSynthetic())
-            .toArray(Method[]::new);
-        Method runMethod = faker.options().option(methods);
-
-        try {
-            return (String) runMethod.invoke(this);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Failed to call " + runMethod.getName() + ": " + e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("Failed to call " + runMethod.getName() + ": " + e.getTargetException());
-        }
+        Kind kind = faker.options().option(Kind.values());
+        return resolve(kind.expression);
     }
 
 }
