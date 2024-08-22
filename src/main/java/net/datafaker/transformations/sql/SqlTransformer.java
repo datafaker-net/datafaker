@@ -400,28 +400,11 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
      *
      * @see SqlTransformer#generateStream(Schema, long)
      */
-    private static class Interval {
-        final Integer start;
-        final Integer end;
-
-        public Interval(Integer start, Integer end) {
-            this.start = start;
-            this.end = end;
-        }
-
-        public Interval add(Integer offset) {
+    private record Interval(int start, int end) {
+        private Interval add(int offset) {
             return new Interval(start + offset, end + offset);
         }
-
-        public Integer getStart() {
-            return start;
-        }
-
-        public Integer getEnd() {
-            return end;
-        }
     }
-
 
     @Override
     public Stream<CharSequence> generateStream(final Schema<IN, ?> schema, long limit) {
@@ -432,11 +415,11 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         if (withBatchMode) {
             return
                 Stream
-                    .iterate(new Interval(0, batchSize), interval -> interval.getStart() <= limit, i -> i.add(batchSize))
+                    .iterate(new Interval(0, batchSize), interval -> interval.start() <= limit, i -> i.add(batchSize))
                     .map(interval -> {
                         StringBuilder sb = new StringBuilder();
 
-                        for (int i = interval.getStart(); i < interval.getEnd() && i < limit; i++) {
+                        for (int i = interval.start(); i < interval.end() && i < limit; i++) {
                             sb.append(apply(null, schema, i));
                         }
                         sb.append(SqlDialect.getLastRowSuffix(dialect, keywordCase));
