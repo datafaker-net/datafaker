@@ -498,7 +498,7 @@ class SqlTest {
 
         Supplier<Map<String, Object>> supplyBigMap =
             () -> new TreeMap<>(Map.of("k1", supplySmallMap.get(), "k2",  supplySmallMap.get()));
-        ;
+
         return Stream.of(
             of(Schema.of(), null, ""),
             of(Schema.of(field("bytes", () -> new byte[]{1, 0})), null,
