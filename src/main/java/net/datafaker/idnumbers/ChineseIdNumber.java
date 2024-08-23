@@ -54,6 +54,10 @@ public class ChineseIdNumber implements IdNumberGenerator {
         res[locLength + dayLength] = (char)('0' + rand.nextInt(10));
         res[locLength + dayLength + 1] = (char)('0' + rand.nextInt(10));
         res[locLength + dayLength + 2] = (char)('0' + rand.nextInt(10));
+        return new PersonIdNumber(idNumber(res), birthday, gender(faker, request));
+    }
+
+    private static String idNumber(char[] res) {
         int count = 0;
         count += (res[0] - '0') * 7;
         count += (res[1] - '0') * 9;
@@ -62,7 +66,7 @@ public class ChineseIdNumber implements IdNumberGenerator {
         count += (res[4] - '0') * 8;
         count += (res[5] - '0') * 4;
         count += (res[6] - '0') * 2;
-        count += (res[7] - '0') * 1;
+        count += (res[7] - '0');
         count += (res[8] - '0') * 6;
         count += (res[9] - '0') * 3;
         count += (res[10] - '0') * 7;
@@ -73,8 +77,9 @@ public class ChineseIdNumber implements IdNumberGenerator {
         count += (res[15] - '0') * 4;
         count += (res[16] - '0') * 2;
         count %= 11;
-        String idNumber = count == 10 ? String.valueOf(res) + "X" : String.valueOf(res) + count;
-        return new PersonIdNumber(idNumber, birthday, gender(faker, request));
+        return count == 10 ?
+            String.valueOf(res) + "X" :
+            String.valueOf(res) + count;
     }
 
     private void fillBirthday(char[] res, int offset, LocalDate birthday) {
