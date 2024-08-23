@@ -37,6 +37,18 @@ class JavaNamesTest {
     }
 
     @Test
+    void oneChar() {
+        assertThat(toJavaNames("x", false)).isEqualTo("X");
+        assertThat(toJavaNames("x", true)).isEqualTo("x");
+    }
+
+    @Test
+    void oneChar_underscore() {
+        assertThat(toJavaNames("_", false)).isEqualTo("");
+        assertThat(toJavaNames("_", true)).isEqualTo("");
+    }
+
+    @Test
     void big_bang_theory() {
         assertThat(toJavaNames("big_bang_theory", false)).isEqualTo("BigBangTheory");
         assertThat(toJavaNames("big_bang_theory", true)).isEqualTo("bigBangTheory");
@@ -52,5 +64,11 @@ class JavaNamesTest {
     void upper_first_character_with_underscores() {
         assertThat(toJavaNames("IATA_airline", false)).isEqualTo("IATAAirline");
         assertThat(toJavaNames("IATA_airline", true)).isEqualTo("iATAAirline");
+    }
+
+    @Test
+    void endsWithUnderscore() {
+        assertThat(toJavaNames("name_", false)).isEqualTo("Name");
+        assertThat(toJavaNames("name_", true)).isEqualTo("name");
     }
 }
