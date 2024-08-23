@@ -1,5 +1,6 @@
 package net.datafaker.service;
 
+import net.datafaker.internal.helper.LazyEvaluated;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -11,56 +12,26 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static java.util.Collections.emptyMap;
 
 public class FakeValues implements FakeValuesInterface {
-    private static final Map<FakeValuesContext, FakeValues> FAKE_VALUES_MAP = new HashMap<>();
+    private static final Map<FakeValuesContext, FakeValues> FAKE_VALUES_MAP = new ConcurrentHashMap<>();
     private final FakeValuesContext fakeValuesContext;
-    private volatile Map<String, Object> values;
-    private final Lock lock = new ReentrantLock();
+    private final LazyEvaluated<Map<String, Object>> values = new LazyEvaluated<>(() -> loadValues());
 
     private FakeValues(FakeValuesContext fakeValuesContext) {
         this.fakeValuesContext = fakeValuesContext;
-        if (fakeValuesContext.getPaths() == null) {
-            lock.lock();
-            try {
-                if (values == null) {
-                    values = loadValues();
-                }
-            } finally {
-                lock.unlock();
-            }
-            fakeValuesContext.setPaths(values == null || values.isEmpty() ? null : values.keySet());
-        }
     }
 
-    public static FakeValues of(FakeValuesContext fakeValuesContext) {
-        FakeValues fakeValues = FAKE_VALUES_MAP.get(fakeValuesContext);
-        if (fakeValues != null) return fakeValues;
-        synchronized (FakeValues.class) {
-            fakeValues = FAKE_VALUES_MAP.get(fakeValuesContext);
-            if (fakeValues != null) return fakeValues;
-            fakeValues = new FakeValues(fakeValuesContext);
-            FAKE_VALUES_MAP.put(fakeValuesContext, fakeValues);
-            return fakeValues;
-        }
+    static FakeValues of(FakeValuesContext fakeValuesContext) {
+        return FAKE_VALUES_MAP.computeIfAbsent(fakeValuesContext, FakeValues::new);
     }
 
     @Override
     public Map<String, Object> get(String key) {
-        if (values == null) {
-            lock.lock();
-            try {
-                if (values == null) {
-                    values = loadValues();
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
-
-        return values == null ? null : (Map) values.get(key);
+        return getMap(values.get(), key);
     }
 
     private Map<String, Object> loadFromUrl() {
@@ -78,8 +49,7 @@ public class FakeValues implements FakeValuesInterface {
     private Map<String, Object> loadValues() {
         Map<String, Object> result = loadFromUrl();
         if (result != null) return result;
-        result = loadFromUrl();
-        if (result != null) return result;
+
         final Locale locale = fakeValuesContext.getLocale();
         final String fileName = fakeValuesContext.getFilename();
         final String[] paths = fileName.isEmpty()
@@ -108,7 +78,7 @@ public class FakeValues implements FakeValuesInterface {
                 return result;
             }
         }
-        return Collections.emptyMap();
+        return emptyMap();
     }
 
     private void enrichMapWithJavaNames(Map<String, Object> result) {
@@ -118,6 +88,7 @@ public class FakeValues implements FakeValuesInterface {
                 final String key = entry.getKey();
                 Object value = entry.getValue();
                 if (entry.getValue() instanceof Map) {
+                    @SuppressWarnings("unchecked")
                     Map<String, Object> entryMap = (Map<String, Object>) entry.getValue();
                     Map<String, Object> nestedMap = new HashMap<>(entryMap.size());
                     for (Map.Entry<String, Object> e: entryMap.entrySet()) {
@@ -133,10 +104,9 @@ public class FakeValues implements FakeValuesInterface {
                     map.put(toJavaNames(key, false), value);
                 }
             }
-            if (map == null) {
-                return;
+            if (map != null) {
+                result.putAll(map);
             }
-            result.putAll(map);
         }
     }
 
@@ -174,19 +144,26 @@ public class FakeValues implements FakeValuesInterface {
     private Map<String, Object> readFromStream(InputStream stream) {
         if (stream == null) return null;
         final Map<String, Object> valuesMap = new Yaml().loadAs(stream, Map.class);
-        Map<String, Object> localeBased = (Map<String, Object>) valuesMap.get(fakeValuesContext.getLocale().getLanguage());
+        Map<String, Object> localeBased = getMap(valuesMap, fakeValuesContext.getLocale().getLanguage());
         if (localeBased == null) {
-            localeBased = (Map<String, Object>) valuesMap.get(fakeValuesContext.getFilename());
+            localeBased = getMap(valuesMap, fakeValuesContext.getFilename());
         }
-        return (Map<String, Object>) localeBased.get("faker");
+        return getMap(localeBased, "faker");
     }
 
-    boolean supportsPath(String path) {
-        return fakeValuesContext.getPaths().contains(path);
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> getMap(Map<String, Object> map, String key) {
+        return (Map<String, Object>) map.get(key);
     }
 
-    Set<String> getPathes() {
-        return fakeValuesContext.getPaths();
+    Set<String> getPaths() {
+        return fakeValuesContext.getPath() != null ?
+            Set.of(fakeValuesContext.getPath()) :
+            keysOf(values.get());
+    }
+
+    private static Set<String> keysOf(Map<String, ?> map) {
+        return map == null || map.isEmpty() ? null : map.keySet();
     }
 
     Locale getLocale() {
