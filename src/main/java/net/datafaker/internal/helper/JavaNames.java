@@ -1,48 +1,44 @@
 package net.datafaker.internal.helper;
 
 import static java.lang.Character.isLetter;
-import static java.lang.Character.isLowerCase;
-import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
 import static java.lang.Character.toUpperCase;
+import static net.datafaker.internal.helper.JavaNames.Transform.SAME;
+import static net.datafaker.internal.helper.JavaNames.Transform.TO_LOWER;
+import static net.datafaker.internal.helper.JavaNames.Transform.TO_UPPER;
 
 public class JavaNames {
     public static String toJavaNames(String string, boolean isMethod) {
         if (string == null || string.isEmpty()) return string;
 
         int length = string.length();
-        int cnt = count(string, length, '_');
-        if (cnt == 0 && !isMethod && isUpperCase(string.charAt(0))) return string;
-        if (cnt == 0 && isMethod && isLowerCase(string.charAt(0))) return string;
-
-        char[] res = new char[length - cnt];
+        char[] res = new char[length];
         int pos = 0;
+        Transform next = isMethod ? TO_LOWER : TO_UPPER;
+
         for (int i = 0; i < length; i++) {
             char c = string.charAt(i);
-            if (i == 0 && isLetter(c)) {
-                res[pos++] = isMethod ? toLowerCase(c) : toUpperCase(c);
+            if (isLetter(c)) {
+                res[pos++] = next.transform(c);
+                next = SAME;
             } else if (c == '_') {
-                if (i < length - 1) {
-                    char next = string.charAt(i + 1);
-                    if (isLetter(next)) {
-                        res[pos++] = toUpperCase(next);
-                        i++;
-                    }
-                }
+                next = TO_UPPER;
             } else {
                 res[pos++] = c;
             }
         }
-        return new String(res);
+        return new String(res, 0, pos);
     }
 
-    private static int count(String text, int length, char character) {
-        int cnt = 0;
-        for (int i = 0; i < length; i++) {
-            if (text.charAt(i) == character) {
-                cnt++;
-            }
+    enum Transform {
+        SAME, TO_LOWER, TO_UPPER;
+
+        public char transform(char c) {
+            return switch (this) {
+                case SAME -> c;
+                case TO_LOWER -> toLowerCase(c);
+                case TO_UPPER -> toUpperCase(c);
+            };
         }
-        return cnt;
     }
 }

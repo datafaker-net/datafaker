@@ -49,9 +49,21 @@ class JavaNamesTest {
     }
 
     @Test
+    void only_underscores() {
+        assertThat(toJavaNames("__", false)).isEqualTo("");
+        assertThat(toJavaNames("___", true)).isEqualTo("");
+    }
+
+    @Test
     void big_bang_theory() {
         assertThat(toJavaNames("big_bang_theory", false)).isEqualTo("BigBangTheory");
         assertThat(toJavaNames("big_bang_theory", true)).isEqualTo("bigBangTheory");
+    }
+
+    @Test
+    void two_underscores() {
+        assertThat(toJavaNames("big__bang___theory", false)).isEqualTo("BigBangTheory");
+        assertThat(toJavaNames("big__bang___theory", true)).isEqualTo("bigBangTheory");
     }
 
     @Test
