@@ -1,19 +1,18 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.internal.helper.FakerIDN;
+import net.datafaker.internal.helper.LazyEvaluated;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @since 0.8.0
  */
 public class Company extends AbstractProvider<BaseProviders> {
 
-    private volatile List<String> allBuzzwords = null;
-    private final Lock lock = new ReentrantLock();
+    private final LazyEvaluated<List<String>> allBuzzwords = new LazyEvaluated<>(() -> loadBuzzwords());
 
     protected Company(BaseProviders faker) {
         super(faker);
@@ -36,23 +35,12 @@ public class Company extends AbstractProvider<BaseProviders> {
     }
 
     public String buzzword() {
-        if (allBuzzwords == null) {
-            try {
-                lock.lock();
-                if (allBuzzwords == null) {
-                    @SuppressWarnings("unchecked")
-                    List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
-                    List<String> buzzwords = new ArrayList<>();
-                    for (List<String> buzzwordList : buzzwordLists) {
-                        buzzwords.addAll(buzzwordList);
-                    }
-                    allBuzzwords = buzzwords;
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
-        return allBuzzwords.get(faker.random().nextInt(allBuzzwords.size()));
+        return faker.options().nextElement(allBuzzwords.get());
+    }
+
+    private List<String> loadBuzzwords() {
+        List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
+        return buzzwordLists.stream().flatMap(Collection::stream).toList();
     }
 
     /**
