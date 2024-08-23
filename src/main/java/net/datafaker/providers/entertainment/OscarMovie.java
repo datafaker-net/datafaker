@@ -27,7 +27,7 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
         super(faker);
         this.year = () -> this.faker.resolve("oscar_movie.year.years");
         this.choice = () -> this.faker.resolve("oscar_movie.year.choice");
-        this.str = () -> "oscar_movie.".concat(year.get()).concat(".").concat(choice.get());
+        this.str = () -> "oscar_movie." + year.get() + "." + choice.get();
     }
 
     /**
@@ -50,7 +50,7 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random actor
      */
     public String actor() {
-        return resolve(str.get().concat(".actor"));
+        return resolve(str.get() + ".actor");
     }
 
     /**
@@ -59,7 +59,7 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random movieName
      */
     public String movieName() {
-        return resolve(str.get().concat(".movieName"));
+        return resolve(str.get() + ".movieName");
     }
 
     /**
@@ -68,7 +68,7 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random quote
      */
     public String quote() {
-        return resolve(str.get().concat(".quote"));
+        return resolve(str.get() + ".quote");
     }
 
     /**
@@ -77,7 +77,7 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random character
      */
     public String character() {
-        return resolve(str.get().concat(".character"));
+        return resolve(str.get() + ".character");
     }
 
     /**
@@ -86,6 +86,6 @@ public class OscarMovie extends AbstractProvider<EntertainmentProviders> {
      * @return random releaseDate
      */
     public String releaseDate() {
-        return resolve(str.get().concat(".releaseDate"));
+        return resolve(str.get() + ".releaseDate");
     }
 }

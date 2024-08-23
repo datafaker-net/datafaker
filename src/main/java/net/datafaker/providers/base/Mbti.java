@@ -17,27 +17,27 @@ public class Mbti extends AbstractProvider<BaseProviders> {
     }
 
     public String type() {
-        return resolve("mbti.".concat(choice.get()).concat(".type"));
+        return resolve("mbti." + choice.get() + ".type");
     }
 
     public String name() {
-        return resolve("mbti.".concat(choice.get()).concat(".name"));
+        return resolve("mbti." + choice.get() + ".name");
     }
 
     public String characteristic() {
-        return resolve("mbti.".concat(choice.get()).concat(".characteristic"));
+        return resolve("mbti." + choice.get() + ".characteristic");
     }
 
     public String personage() {
-        return resolve("mbti.".concat(choice.get()).concat(".personage"));
+        return resolve("mbti." + choice.get() + ".personage");
     }
 
     public String merit() {
-        return resolve("mbti.".concat(choice.get()).concat(".merit"));
+        return resolve("mbti." + choice.get() + ".merit");
     }
 
     public String weakness() {
-        return resolve("mbti.".concat(choice.get()).concat(".weakness"));
+        return resolve("mbti." + choice.get() + ".weakness");
     }
 
 
