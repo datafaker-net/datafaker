@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Collections.emptyMap;
+import static net.datafaker.internal.helper.JavaNames.toJavaNames;
 
 public class FakeValues implements FakeValuesInterface {
     private static final Map<FakeValuesContext, FakeValues> FAKE_VALUES_MAP = new ConcurrentHashMap<>();
@@ -107,37 +108,6 @@ public class FakeValues implements FakeValuesInterface {
                 result.putAll(map);
             }
         }
-    }
-
-    private static String toJavaNames(String string, boolean isMethod) {
-        final int length;
-        if (string == null || (length = string.length()) == 0) {
-            return string;
-        }
-        int cnt = 0;
-        for (int i = 0; i < length; i++) {
-            if (string.charAt(i) == '_') {
-                cnt++;
-            }
-        }
-        if (cnt == 0 && (Character.isUpperCase(string.charAt(0)) && !isMethod || isMethod && Character.isLowerCase(string.charAt(0)))) return string;
-        final char[] res = new char[length - cnt];
-        int pos = 0;
-        for (int i = 0; i < length; i++) {
-            char c = string.charAt(i);
-            if (i == 0 && Character.isLetter(c)) {
-                res[pos++] = isMethod ? Character.toLowerCase(c) : Character.toUpperCase(c);
-            } else if (c == '_') {
-                final char next = string.charAt(i + 1);
-                if (i < length - 1 && Character.isLetter(next)) {
-                    res[pos++] = Character.toUpperCase(next);
-                    i++;
-                }
-            } else {
-                res[pos++] = c;
-            }
-        }
-        return new String(res);
     }
 
     private Map<String, Object> readFromStream(InputStream stream) {
