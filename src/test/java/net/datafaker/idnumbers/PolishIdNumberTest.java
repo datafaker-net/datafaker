@@ -64,7 +64,7 @@ class PolishIdNumberTest {
         assertControlDigit(gotPesel);
     }
 
-    @ParameterizedTest()
+    @ParameterizedTest
     @ValueSource(ints = {1799, 2300})
     void testInvalidCenturiesPesel(int givenBirthYear) {
         /*
@@ -141,8 +141,8 @@ class PolishIdNumberTest {
             case MALE:
                 assertThat(gotGenderDigit % 2).isOne();
                 break;
-            default:
             case ANY:
+            default:
                 break;
         }
     }

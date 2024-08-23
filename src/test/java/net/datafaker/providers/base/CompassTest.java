@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.providers.base.Compass.CompassPoint;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -9,8 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CompassTest extends BaseFakerTest<BaseFaker> {
 
     @ParameterizedTest
-    @EnumSource(value = Compass.CompassPoint.class)
-    void compassDirectionWordWithCompassPoint(Compass.CompassPoint compassPointOfDirection) {
+    @EnumSource(CompassPoint.class)
+    void compassDirectionWordWithCompassPoint(CompassPoint compassPointOfDirection) {
         assertThat(faker.compass().compassPoint(compassPointOfDirection).word()).isNotEmpty();
     }
 
@@ -20,8 +21,8 @@ public class CompassTest extends BaseFakerTest<BaseFaker> {
     }
 
     @ParameterizedTest
-    @EnumSource(value = Compass.CompassPoint.class)
-    void compassDirectionAbbreviationWithCompassPoint(Compass.CompassPoint compassPointOfDirection) {
+    @EnumSource(CompassPoint.class)
+    void compassDirectionAbbreviationWithCompassPoint(CompassPoint compassPointOfDirection) {
         assertThat(faker.compass().compassPoint(compassPointOfDirection).abbreviation()).isNotEmpty();
     }
 
@@ -31,8 +32,8 @@ public class CompassTest extends BaseFakerTest<BaseFaker> {
     }
 
     @ParameterizedTest
-    @EnumSource(value = Compass.CompassPoint.class)
-    void compassAzimuthWithCompassPoint(Compass.CompassPoint compassPointOfDirection) {
+    @EnumSource(CompassPoint.class)
+    void compassAzimuthWithCompassPoint(CompassPoint compassPointOfDirection) {
         assertThat(faker.compass().compassPoint(compassPointOfDirection).azimuth()).isNotEmpty();
     }
 
