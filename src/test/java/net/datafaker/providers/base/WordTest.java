@@ -3,8 +3,6 @@ package net.datafaker.providers.base;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class WordTest extends BaseFakerTest<BaseFaker> {
 
     private final Word word = faker.word();
