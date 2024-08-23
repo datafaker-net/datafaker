@@ -5,7 +5,6 @@ import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.BaseProviders;
-
 import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -15,7 +14,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 
 import java.io.IOException;
@@ -35,7 +33,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.anyInt;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -78,12 +76,13 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void fetchObjectShouldReturnValue() {
-        assertThat((Iterable<?>) fakeValuesService.fetchObject("property.dummy", mockedFaker.getContext())).isEqualTo(List.of("x", "y", "z"));
+        List<String> dummy = fakeValuesService.fetchObject("property.dummy", mockedFaker.getContext());
+        assertThat(dummy).isEqualTo(List.of("x", "y", "z"));
     }
 
     @Test
     void safeFetchShouldReturnValueInList() {
-        doReturn(0).when(randomService).nextInt(Mockito.anyInt());
+        doReturn(0).when(randomService).nextInt(anyInt());
         assertThat(fakeValuesService.safeFetch("property.dummy", mockedFaker.getContext(), null)).isEqualTo("x");
     }
 

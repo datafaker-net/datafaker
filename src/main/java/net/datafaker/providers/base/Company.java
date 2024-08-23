@@ -3,9 +3,10 @@ package net.datafaker.providers.base;
 import net.datafaker.internal.helper.FakerIDN;
 import net.datafaker.internal.helper.LazyEvaluated;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * @since 0.8.0
@@ -39,7 +40,7 @@ public class Company extends AbstractProvider<BaseProviders> {
     }
 
     private List<String> loadBuzzwords() {
-        List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
+        List<List<String>> buzzwordLists = faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
         return buzzwordLists.stream().flatMap(Collection::stream).toList();
     }
 
@@ -47,8 +48,7 @@ public class Company extends AbstractProvider<BaseProviders> {
      * Generate a buzzword-laden catch phrase.
      */
     public String catchPhrase() {
-        @SuppressWarnings("unchecked")
-        List<List<String>> catchPhraseLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
+        List<List<String>> catchPhraseLists = faker.fakeValuesService().fetchObject("company.buzzwords", faker.getContext());
         return joinSampleOfEachList(catchPhraseLists);
     }
 
@@ -56,8 +56,7 @@ public class Company extends AbstractProvider<BaseProviders> {
      * When a straight answer won't do, BS to the rescue!
      */
     public String bs() {
-        @SuppressWarnings("unchecked")
-        List<List<String>> buzzwordLists = (List<List<String>>) faker.fakeValuesService().fetchObject("company.bs", faker.getContext());
+        List<List<String>> buzzwordLists = faker.fakeValuesService().fetchObject("company.bs", faker.getContext());
         return joinSampleOfEachList(buzzwordLists);
     }
 
@@ -93,10 +92,8 @@ public class Company extends AbstractProvider<BaseProviders> {
     }
 
     private String joinSampleOfEachList(List<List<String>> listOfLists) {
-        List<String> words = new ArrayList<>();
-        for (List<String> list : listOfLists) {
-            words.add(list.get(faker.random().nextInt(list.size())));
-        }
-        return String.join(" ", words);
+        return listOfLists.stream()
+            .map(list -> faker.options().nextElement(list))
+            .collect(joining(" "));
     }
 }

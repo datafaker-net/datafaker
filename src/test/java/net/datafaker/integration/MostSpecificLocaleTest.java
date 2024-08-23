@@ -2,7 +2,6 @@ package net.datafaker.integration;
 
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,28 +16,23 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class MostSpecificLocaleTest {
 
-    private FakerContext en;
-    private FakerContext en_US;
-
-    @BeforeEach
-    void setupFakers() {
-        en = new FakerContext(new Locale("en"), null);
-        en_US = new FakerContext(new Locale("en", "US"), null);
-    }
+    private final FakerContext en = new FakerContext(new Locale("en"), null);
+    private final FakerContext en_US = new FakerContext(new Locale("en", "US"), null);
 
     @Test
-    @SuppressWarnings("unchecked")
     void resolvesTheMostSpecificLocale() {
-        FakeValuesService fakeValuesService = new FakeValuesService();
-        fakeValuesService.updateFakeValuesInterfaceMap(en.getLocaleChain());
-        final List<String> enDefaultCountries = (List<String>) fakeValuesService.fetchObject("address.default_country", en);
-        fakeValuesService = new FakeValuesService();
-        fakeValuesService.updateFakeValuesInterfaceMap(en_US.getLocaleChain());
-        final List<String> enUsDefaultCountries = (List<String>) fakeValuesService.fetchObject("address.default_country", en_US);
+        List<String> enDefaultCountries = fakeValuesService(en).fetchObject("address.default_country", en);
+        List<String> enUsDefaultCountries = fakeValuesService(en_US).fetchObject("address.default_country", en_US);
 
         assertThat(enDefaultCountries).hasSize(1);
         assertThat(enUsDefaultCountries).hasSize(3);
 
         assertThat(enDefaultCountries).as("the default country for en is not en_US").isNotEqualTo(enUsDefaultCountries);
+    }
+
+    private static FakeValuesService fakeValuesService(FakerContext context) {
+        FakeValuesService service = new FakeValuesService();
+        service.updateFakeValuesInterfaceMap(context.getLocaleChain());
+        return service;
     }
 }

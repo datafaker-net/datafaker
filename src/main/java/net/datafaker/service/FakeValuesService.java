@@ -81,9 +81,6 @@ public class FakeValuesService {
 
     private final Map<RegExpContext, ValueResolver> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
 
-    public FakeValuesService() {
-    }
-
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
@@ -197,7 +194,7 @@ public class FakeValuesService {
      * If the retrieved value is an slash encoded regular expression such as {@code /[a-b]/} then
      * the regex will be converted to a regexify expression and returned (ex. {@code #regexify '[a-b]'})
      * <p>
-     * Otherwise it will just return the value as a string.
+     * Otherwise, it will just return the value as a string.
      *
      * @param key           the key to fetch from the YML structure.
      * @param defaultIfNull the value to return if the fetched value is null
@@ -229,7 +226,8 @@ public class FakeValuesService {
      * @param key key contains path to an object. Path segment is separated by
      *            dot. E.g. name.first_name
      */
-    public Object fetchObject(String key, FakerContext context) {
+    @SuppressWarnings("unchecked")
+    public <T> T fetchObject(String key, FakerContext context) {
         Object result = null;
         final List<SingletonLocale> localeChain = context.getLocaleChain();
         final boolean hasMoreThanOneLocales = localeChain.size() > 1;
@@ -240,7 +238,7 @@ public class FakeValuesService {
             }
             Map<String, Object> stringObjectMap = key2fetchedObject.get(sLocale);
             if (stringObjectMap != null && (result = stringObjectMap.get(key)) != null) {
-                return result;
+                return (T) result;
             }
         }
 
@@ -267,7 +265,7 @@ public class FakeValuesService {
             Object curResult = key2fetchedObject.getOrDefault(local2Add, Collections.emptyMap())
                 .get(key);
             if (curResult != null) {
-                return result;
+                return (T) result;
             }
             key2fetchedObject.updateNestedValue(local2Add, MAP_STRING_OBJECT_SUPPLIER, key, result);
         }
@@ -299,7 +297,7 @@ public class FakeValuesService {
                             sb = new StringBuilder();
                         }
                         sb.append(itemStr, start, startWord);
-                        sb.append(WordUtils.capitalize(path[0]) + "." + toJavaNames(itemStr.substring(startWord, j), true) + "}");
+                        sb.append(WordUtils.capitalize(path[0])).append(".").append(toJavaNames(itemStr.substring(startWord, j), true)).append("}");
                         start = j + 1;
                     }
                 }
@@ -311,7 +309,7 @@ public class FakeValuesService {
                 }
             }
         }
-        return result;
+        return (T) result;
     }
 
 
@@ -638,7 +636,7 @@ public class FakeValuesService {
     }
 
     /**
-     * processes a expression in the style #{X.y} using the current objects as the 'current' location
+     * processes expression in the style #{X.y} using the current objects as the 'current' location
      * within the yml file (or the {@link BaseFaker} object hierarchy as it were).
      * <p>
      * #{Address.streetName} would get resolved to {@link BaseFaker#address()}'s {@link Address#streetName()}
@@ -772,7 +770,7 @@ public class FakeValuesService {
             return res;
         }
         if (res instanceof List) {
-            Iterator<ValueResolver> it = ((List) res).iterator();
+            Iterator<ValueResolver> it = ((List<ValueResolver>) res).iterator();
             while (it.hasNext()) {
                 Object valueResolver = it.next();
                 Object value;
@@ -855,7 +853,7 @@ public class FakeValuesService {
         // last ditch effort.  Due to Ruby's dynamic nature, something like 'Address.street_title' will resolve
         // because 'street_title' is a dynamic method on the Address object.  We can't do this in Java so we go
         // through the normal resolution above, but if we will can't resolve it, we once again do a 'safeFetch' as we
-        // did first but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
+        // did first, but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
         if (dotIndex >= 0) {
             final String key = javaNameToYamlName(simpleDirective);
@@ -868,7 +866,7 @@ public class FakeValuesService {
 
     /**
      * @param expression input expression
-     * @return true if s is non null and is a slash delimited regex (ex. {@code /[ab]/})
+     * @return true if s is non-null and is a slash delimited regex (ex. {@code /[ab]/})
      */
     private boolean isSlashDelimitedRegex(String expression) {
         return expression != null && expression.startsWith("/") && expression.endsWith("/");

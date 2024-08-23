@@ -38,9 +38,8 @@ public class BaseFakerTest<T extends BaseFaker> {
         return (T) new BaseFaker();
     }
 
-    @SuppressWarnings("unchecked")
     protected List<String> getBaseList(String key) {
-        return (List<String>) faker.fakeValuesService().fetchObject(key, faker.getContext());
+        return faker.fakeValuesService().fetchObject(key, faker.getContext());
     }
 
     @ParameterizedTest(name = "{0}")
