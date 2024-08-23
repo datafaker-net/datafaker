@@ -25,6 +25,7 @@ public class JavaNames {
                 next = TO_UPPER;
             } else {
                 res[pos++] = c;
+                next = SAME;
             }
         }
         return new String(res, 0, pos);
