@@ -21,7 +21,7 @@ public class FakeValuesGrouping implements FakeValuesInterface {
 
     public void add(FakeValuesInterface fakeValue) {
         if (fakeValue instanceof FakeValues) {
-            ((FakeValues) fakeValue).getPathes().forEach(p ->
+            ((FakeValues) fakeValue).getPaths().forEach(p ->
             fakeValues.computeIfAbsent(p, key -> new HashSet<>())
                 .add(fakeValue));
         } else if (fakeValue instanceof FakeValuesGrouping) {

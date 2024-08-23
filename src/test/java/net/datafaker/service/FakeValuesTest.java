@@ -63,16 +63,6 @@ class FakeValuesTest {
 */
 
     @Test
-    void supportsPathIsTrueWithTheSameValueAsThePath() {
-        assertThat(fakeValues.supportsPath(PATH)).isTrue();
-    }
-
-    @Test
-    void supportsPathIsFalseWhenValueIsNotTheSame() {
-        assertThat(fakeValues.supportsPath("dog")).isFalse();
-    }
-
-    @Test
     void getAValueReturnsAValue() {
         assertThat(fakeValues.get(PATH)).isNotNull();
     }
@@ -97,13 +87,13 @@ class FakeValuesTest {
     @Test
     void correctPathForHebrewLanguage() {
         FakeValues hebrew = FakeValues.of(FakeValuesContext.of(new Locale("iw")));
-        assertThat(hebrew.getPathes()).containsExactly("he");
+        assertThat(hebrew.getPaths()).containsExactly("he");
     }
 
     @Test
     void incorrectPathForHebrewLanguage() {
         FakeValues hebrew = FakeValues.of(FakeValuesContext.of(new Locale("iw")));
-        assertThat(hebrew.getPathes()).doesNotContain("iw");
+        assertThat(hebrew.getPaths()).doesNotContain("iw");
     }
 
     @Test

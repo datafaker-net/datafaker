@@ -6,13 +6,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 
 class FakeValuesContext {
     private final SingletonLocale singletonLocale;
     private final String filename;
     private final int filenameHashCode;
-    private Set<String> paths;
+    private final String path;
     private final URL url;
     private final int urlHashCode;
 
@@ -31,7 +30,7 @@ class FakeValuesContext {
     private FakeValuesContext(Locale locale, String filename, String path, URL url) {
         this.singletonLocale = SingletonLocale.get(locale);
         this.filename = filename;
-        this.paths = path == null ? null : Set.of(path);
+        this.path = path;
         this.url = url;
         this.filenameHashCode = filename == null ? 0 : filename.hashCode();
         try {
@@ -89,12 +88,8 @@ class FakeValuesContext {
         return filename;
     }
 
-    public Set<String> getPaths() {
-        return paths;
-    }
-
-    public void setPaths(Set<String> paths) {
-        this.paths = paths;
+    String getPath() {
+        return path;
     }
 
     public URL getUrl() {
@@ -110,7 +105,7 @@ class FakeValuesContext {
 
         if (!Objects.equals(singletonLocale, that.singletonLocale)) return false;
         if (!Objects.equals(filename, that.filename)) return false;
-        if (!Objects.equals(paths, that.paths)) return false;
+        if (!Objects.equals(path, that.path)) return false;
         return Objects.equals(url, that.url);
     }
 
@@ -118,13 +113,13 @@ class FakeValuesContext {
     public int hashCode() {
         int result = singletonLocale == null ? 0 : singletonLocale.hashCode();
         result = 31 * result + filenameHashCode;
-        result = 31 * result + (paths == null ? 0 : paths.hashCode());
+        result = 31 * result + (path == null ? 0 : path.hashCode());
         result = 31 * result + urlHashCode;
         return result;
     }
 
     @Override
     public String toString() {
-        return "FakeValuesContext{%s, filename='%s', path='%s', url=%s}".formatted(singletonLocale, filename, paths, url);
+        return "FakeValuesContext{%s, filename='%s', path='%s', url=%s}".formatted(singletonLocale, filename, path, url);
     }
 }
