@@ -42,8 +42,16 @@ public class Dota2 extends AbstractProvider<VideoGameProviders> {
         return resolve("games.dota2.item");
     }
 
+    public String neutralItem() {
+        return resolve("games.dota2.neutral_item");
+    }
+
     public String team() {
         return resolve("games.dota2.team");
+    }
+
+    public String tier() {
+        return resolve("games.dota2.tier");
     }
 
     public String player() {
