@@ -92,7 +92,7 @@ en:
         - "Morphling"
         - "Muerta"
         - "Naga Siren"
-        - "Natures Prophet"
+        - "Nature`s Prophet"
         - "Necrophos"
         - "Night Stalker"
         - "Nyx Assassin"
@@ -546,7 +546,7 @@ en:
           - "The great disabler comes."
           - "I rise against the tide."
           - "My song grows sweeter."
-        natures_prophet:
+        nature`s_prophet:
           quote:
           - "Nature calls."
           - "Wild is my way!"
