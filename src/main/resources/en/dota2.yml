@@ -92,7 +92,7 @@ en:
         - "Morphling"
         - "Muerta"
         - "Naga Siren"
-        - "Nature's Prophet"
+        - "Natures Prophet"
         - "Necrophos"
         - "Night Stalker"
         - "Nyx Assassin"
@@ -111,6 +111,7 @@ en:
         - "Queen of Pain"
         - "Razor"
         - "Riki"
+        - "Ringmaster"
         - "Rubick"
         - "Sand King"
         - "Shadow Demon"
@@ -157,6 +158,24 @@ en:
           - "From House Avernus, I set forth."
           - "The mist chose me, it is not mine to command."
           - "To die at a noble hand is no guarantee of a noble death."
+        anti-mage:
+          quote:
+          - "I bring an end to magic."
+          - "The true path!"
+          - "Such sorcery shall not prevail."
+          - "Magic is an abomination."
+        arc_warden:
+          quote:
+          - "Zeth is the Self, and the Self is Zeth."
+          - "The self is looking for the perfect fusion."
+          - "And that's when the Self appeared."
+          - "Matter has separated from its intended form, we need to put them back together again."
+        ancient_apparition:
+          quote:
+          - "Ice elemental."
+          - "In cold blood."
+          - "Ancient onslaught."
+          - "A dark summons!"
         alchemist:
           quote:
           - "Easy now, this stuff is explosive!"
@@ -175,6 +194,32 @@ en:
           - "Meet your master…snuhg… beastmaster."
           - "I'm a natural disaster."
           - "A death not fit for man or beast."
+        bloodseeker:
+          quote:
+          - "I am called Bloodseeker."
+          - "I smell blood."
+          - "Let the seas run red."
+          - "Your blood is mine."
+        bane:
+          quote:
+          - "Bane of your existence…"
+          - "Your Nightmare is here."
+          - "Atropos…"
+          - "Welcome to my nightmare!"
+          - "By the ichor of Nyctasha!"
+          - "Nightmares, follow me into the light."
+        batrider:
+          quote:
+          - "You can't tame me!"
+          - "Here I am!"
+          - "I flew in from the underworld - learned a couple new tricks!"
+          - "Hey, bat! Fly!"
+        bounty_hunter:
+          quote:
+          - "No job is too big, no fee is too big."
+          - "I'll take the job."
+          - "You can run but you can't hide."
+          - "Now there's nowhere left to hide."
         brewmaster:
           quote:
           - "I fight any thing in the house."
@@ -185,7 +230,13 @@ en:
           - "Time to mash some faces, I'd say."
           - "A good bashing, never hurt nobody."
           - "I'm more than a pretty face."
-        centaur:
+        broodmother:
+          quote:
+          - "You're not afraid of spiders, are you?"
+          - "The spiderlings are bursting to get out."
+          - "Maternity capital."
+          - "Feeding time."
+        centaur_warrunner:
           quote:
           - "Long shall my name be remembered."
           - "I don't always wear a saddlebag, but when I do, I put this one in it."
@@ -202,7 +253,26 @@ en:
           - "I've a mind like a steel trap, and the physique to go with it!"
           - "What time is it? It's killing time."
           - "A good offense is the best armor. Good armor is also good armor."
-        dawn_breaker:
+        clinkz:
+          quote:
+          - "The fires of war are flaring."
+          - "An arrow shines my way."
+          - "Death is coming for you."
+          - "Enemies will be burned."
+        crystal_maiden:
+          quote:
+          - "The battle begins!"
+          - "Who calls the Crystal Maiden?"
+          - "It's all fun and games until someone's frozen solid."
+          - "Is it cold in here or is it just me?"
+        chen:
+          quote:
+          - "For Obelis, the one God."
+          - "Obelis infuses me."
+          - "Say your prayers."
+          - "Your judgment comes."
+          - "So begins the persecution."
+        dawnbreaker:
           quote:
           - "Let fire light the sky!"
           - "Darkness fears the break of dawn!"
@@ -221,6 +291,41 @@ en:
           - "Live by the sword, die by the dragon."
           - "Good night, Sven. I mean bad knight. [Talking to Sven]"
           - "Never make a deal with a dragon, unless you're prepared to keep your end of it."
+        drow_ranger:
+          quote:
+          - "My bow is drawn!"
+          - "I quiver with anticipation!"
+          - "Death comes silently."
+          - "Pride of the Drow!"
+        disruptor:
+          quote:
+          - "War is an equation, death the solution."
+          - "I'll ride you down."
+          - "Thunder approaches."
+          - "I'm well-practiced in my craft."
+        death_prophet:
+          quote:
+          - "You brought me back?"
+          - "Let me tell your fate."
+          - "Hear my prophecy!"
+          - "Death calls and my enemies come!"
+        dark_seer:
+          quote:
+          - "An enemy destroyed cannot rise against you."
+          - "From the land behind the wall, I come."
+          - "A mind sharper than any blade."
+          - "Damathryx guides me."
+        dark_willow:
+          quote:
+          - "They're not ready for what I have planned..."
+          - "The Sylph is here!"
+          - "I can take care of myself..."
+          - "You think I don't know how to fight?"
+        dazzle:
+          quote:
+          - "I cast a long shadow."
+          - "From shadow to shallow."
+          - "Who needs healing?"
         earth_spirit:
           quote:
           - "Body is flesh, but spirit immortal."
@@ -238,6 +343,49 @@ en:
           - "Strong as a world new-formed."
           - "What is weak must break."
           - "I broke the world, did you think I could not break you?"
+        ember_spirit:
+          quote:
+          - "Ember Spirit!"
+          - "Recast in ember heat."
+          - "War's flames blaze again!"
+          - "Destiny awaits us all."
+        enchantress:
+          quote:
+          - "What an enchanting day for battle!"
+          - "There they are!"
+          - "I'll trample you."
+          - "This fawn's afternoon is looking up!"
+          - "Charmed, I'm sure!"
+          - "How enchanting."
+        enigma:
+          quote:
+          - "From void and shadow, I assemble."
+          - "My pattern emerges."
+          - "I am a universal constant."
+          - "Void made flesh."
+        faceless_void:
+          quote:
+          - "Your fate approaches."
+          - "Time tells, the mace fells."
+          - "Foreseen is forearmed."
+          - "Your end comes."
+        gyrocopter:
+          quote:
+          - "Expect some turbulence."
+          - "Locked and loaded!"
+          - "Flying the friendly skies."
+          - "Spin 'em up!"
+        grimstroke:
+          quote:
+          - "I alone hold back the ink tide."
+          - "What dark mural comes to life today?"
+          - "The battlefield is merely a canvas, waiting for my brush."
+        hoodwink:
+          quote:
+          - "Throw down your gold, I might let you live."
+          - "Say hello to my little friend."
+          - "Let's not get squirrely now, it'd be a shame to have to kill you."
+          - "Who said you could stroll in my woods?"
         huskar:
           quote:
           - "You must learn to sacrifice."
@@ -247,6 +395,25 @@ en:
         io:
           quote:
           - "Really?! If you play Dota 2, you know IO can't talk. ¬¬'"
+        invoker:
+          quote:
+          - "So begins a new age of knowledge."
+          - "Orbs light my path."
+          - "The learned one strikes."
+        jakiro:
+          quote:
+          - "With ice and fire!"
+          - "Two sides of the same coin."
+          - "Double trouble."
+          - "We blow hot and cold."
+          - "Fire and ice!"
+          - "The twins return."
+        juggernaut:
+          quote:
+          - "You have summoned Juggernaut."
+          - "I bring my blade."
+          - "Each blow sharpens my blade!"
+          - "Oh, it's the Juggernaut."
         kunkka:
           quote:
           - "An old vessel, but more than seaworthy."
@@ -255,6 +422,12 @@ en:
           - "Damn, I thought this bottle would have rum in it. [Acquiring Bottle]"
           - "That's a lot for an empty bottle. [Acquiring Bottle]"
           - "When I'm done with this, I'll fill it with rum. [Acquiring Bottle]"
+        keeper_of_the_light:
+          quote:
+          - "I am honored."
+          - "Stand aside or be trampled!"
+          - "It's a new age of magic!"
+          - "I am the keeper of the light!"
         legion_commander:
           quote:
           - "I've come to put an end to hope."
@@ -267,16 +440,90 @@ en:
           - "I steal your life…someone else already stole your face. [Talking to Faceless Void]"
           - "Even a thief must sometimes pay the asking price. [buying an item]"
           - "It pains me to purchase what ought to be stolen. [Buying an item]"
+        luna:
+          quote:
+          - "Blessings upon a loyal warrior."
+          - "On the prowl."
+          - "They will fear me."
+        leshrac:
+          quote:
+          - "By the impure powers of nature."
+          - "Stronger than the brittle earth."
+          - "I shall restore the imbalance."
+          - "I blast the land."
+        lich:
+          quote:
+          - "A chill wind…"
+          - "Feel my cold embrace!"
+          - "A killing frost!"
+          - "To the cold grave!"
+        lina:
+          quote:
+          - "Wanna play with fire?"
+          - "Watch it, I'm hot."
+          - "Let's heat things up."
+          - "I bring the heat."
+        lion:
+          quote:
+          - "You summon the Demon Witch."
+          - "Where's the fight?"
+          - "To Hell and back."
+          - "Feel my claw!"
+        lone_druid:
+          quote:
+          - "My spirit is hungry."
+          - "The cycle shall be complete!"
+          - "I feel the wild in me."
+          - "Taste this sharpness!"
         lycan:
           quote:
           - "A wolf in man's clothing."
           - "Who fears the wolf should fear the forest."
           - "A peaceful man is but a patient wolf."
+        mars:
+          quote:
+          - "Oh ho, I live for this!"
+          - "To war! And glorious conquest! Yaaahh!"
+          - "Mars Ultor!"
+          - "They cheer for me!"
+        medusa:
+          quote:
+          - "Gorgons, I'll avenge you!"
+          - "Gaze upon Medusa's beauty, and despair!"
+          - "Lock eyes with a Gorgon!"
+          - "Fall before me!"
+        monkey_king:
+          quote:
+          - "I need no introduction!"
+          - "Time to pick a fight."
+          - "These guys aren't gonna know what hit them."
+          - "None can stand against Sun Wukong."
+        morphling:
+          quote:
+          - "My waters rise."
+          - "Beware the riptide."
+          - "The wave breaks."
+          - "The waters are teeming!"
+          - "Dead in the water…"
+        muerta:
+          quote:
+          - "Who seeks death?"
+          - "A deal is a deal."
+          - "How do you put up with these fools?"
         magnus:
           quote:
           - "Under my hoof you will find your fate."
           - "My horn is sharp, my pike is sharper still."
           - "Compared to my horn, all precious items are cheap."
+        marci:
+          quote:
+          - "Really?! If you play Dota 2, you know Marci can't talk. ¬¬'"
+        mirana:
+          quote:
+          - "We ride in perfect union."
+          - "Look, Sagan! Prey!"
+          - "On the prowl…"
+          - "Tonight, we ride."
         meepo:
           quote:
           - "Got dirt between my toes."
@@ -292,17 +539,93 @@ en:
           - "Devil by day, demon by night."
           - "Flesh sustains, gold remains."
           - "I feed the darkness and the darkness feeds me."
+        naga_siren:
+          quote:
+          - "Time to sink or swim."
+          - "Sleep with the fishes."
+          - "The great disabler comes."
+          - "I rise against the tide."
+          - "My song grows sweeter."
+        natures_prophet:
+          quote:
+          - "Nature calls."
+          - "Wild is my way!"
+          - "Ah, the sun in my leaves."
+        necrophos:
+          quote:
+          - "Greet the reaper!"
+          - "Sweet spoilage."
+          - "Spoiling for a fight."
+          - "A pox upon you!"
+        nyx_assassin:
+          quote:
+          - "My purpose is clear, my targets doomed."
+          - "I see your fears."
+          - "I am the pride of Nyx."
+          - "To better to kill them with."
+        ogre_magi:
+          quote:
+          - "I like this part! Me too."
+          - "After you. No, me first!"
+          - "Pleased to meet ya. Likewise I'm sure."
+          - "Hittin stuff is fun. Hah aha ha ha ha!"
         omniknight:
           quote:
           - "Fear not my friends, our guardian is here."
           - "Knowledge is peace."
           - "Let this be the last crusade. Let me find peace."
+        oracle:
+          quote:
+          - "Like those odds, do you, hmm?"
+          - "Trust in the Oracle!"
+          - "Beware what you wish for."
+          - "I want to die."
+          - "The Oracle sees all."
+          - "Poor choices…"
+        outworld_destroyer:
+          quote:
+          - "I will crush the enemy's mind as well as his will to win."
+          - "The bloody sun rises."
+          - "The Path of Destruction."
+          - "I come from the citadel that soars in the outer darkness."
         primal_beast:
           quote:
           - "Really?! If you play Dota 2, you know Primal Beast can't talk. ¬¬'"
         phoenix:
           quote:
           - "Really?! If you play Dota 2, you know Phoenix can't talk. ¬¬'"
+        phantom_assassin:
+          quote:
+          - "Where falls my shadow, fells my blade."
+          - "Don't blink, or you'll miss me."
+          - "Marked for death!"
+          - "I sting from the shadows."
+        phantom_lancer:
+          quote:
+          - "We shall strike."
+          - "Our lance is ready."
+          - "Nothing can stop our march!"
+          - "We will set things to right."
+        puck:
+          quote:
+          - "This should be less tiresome than another age in chrysalis."
+          - "Interesting."
+          - "What is this, a game of some sort?"
+          - "Ah, gambits and exploits await."
+          - "Stay and amuse me!"
+        pugna:
+          quote:
+          - "I'll take all you have and more."
+          - "Oblivion's power infuses."
+          - "A new age of dark magic starts now."
+          - "Who needs a blade when you have oblivion?"
+          - "Time to earn myself a bad reputation."
+        pangolier:
+          quote:
+          - "The honorable Donté Panlin, at your service."
+          - "They say it can't be done. That is why I'm here."
+          - "Look closely. Something special is about to happen."
+          - "Now the adventure truly begins."
         pudge:
           quote:
           - "They call me the Butcher."
@@ -314,6 +637,37 @@ en:
           - "You can't chop a chopper!"
           - "Sweetbreads ain't sweet and they ain't bread…and they need a butcher, not a baker."
           - "Only trouble with carrion…an hour after eating you're hungry again!"
+        queen_of_pain:
+          quote:
+          - "Pain is the best teacher."
+          - "Agony awaits!"
+          - "Long live your Queen!"
+          - "I'm a pain specialist."
+        razor:
+          quote:
+          - "I enter the fray."
+          - "The Lightning Revenant lives!"
+          - "With Razor, you get the edge."
+          - "Your ashes will fall like rain."
+        riki:
+          quote:
+          - "My trade is deathcraft."
+          - "Heh-ho, you didn't see that coming."
+          - "Cloaked and daggered."
+          - "Rikimaru comes for you."
+          - "Rikimaru, at your service."
+        ringmaster:
+          quote:
+          - "Gaze and know true wonder."
+          - "You won't believe your eyes!"
+          - "The show simply must go on."
+          - "I am a showman. The rest of you are the circus."
+        rubick:
+          quote:
+          - "Rubick!"
+          - "Friends, I think we can all agree: it's a done deal!"
+          - "What wonders will I see today?"
+          - "My thirst for knowledge cannot be quenched."
         sand_king:
           quote:
           - "King of the Desert."
@@ -331,6 +685,70 @@ en:
           - "I'll break their spirits and their backs."
           - "Attack is the best defense."
           - "You'll be dead before you know it."
+        shadow_fiend:
+          quote:
+          - "I come for souls."
+          - "It's now or Nevermore."
+          - "Never say Nevermore…."
+          - "Your soul is mine."
+        slark:
+          quote:
+          - "Nightcrawler."
+          - "If I'd known I'd end up here, I'd have stayed in Dark Reef Prison."
+          - "Oh no, you'll bait no hook with me."
+          - "The dark runs deep."
+          - "It's never dark enough."
+        sniper:
+          quote:
+          - "Time for target practice."
+          - "I come: Lock, stock and barrel."
+          - "Sure as shootin'!"
+          - "Into the breach!"
+        spectre:
+          quote:
+          - "Closer to Ascension!"
+          - "Soon I will ascend!"
+          - "Into disorder!"
+          - "From another dimension, a world beyond."
+          - "I have come here a stranger, lost."
+        shadow_demon:
+          quote:
+          - "This time it is the demon who will do the summoning!"
+          - "I will scatter all who gather here today."
+          - "Dominion is mine!"
+          - "Fall before me!"
+          - "Come into my dominion!"
+          - "How my shadow darkens."
+        shadow_shaman:
+          quote:
+          - "I am the medium between the worlds!"
+          - "The bones are thrown."
+          - "Beat you like a drum!"
+          - "The ancestors are expecting you."
+        silencer:
+          quote:
+          - "Silence is virtue."
+          - "I'll cut you down."
+          - "Hush now. I'm here."
+          - "The glaives will silence you."
+        skywrath_mage:
+          quote:
+          - "By the Ancient Seal!"
+          - "The Skywrath live through me!"
+          - "Who dares fly against me?"
+          - "'Tis my honor."
+        storm_spirit:
+          quote:
+          - "Storm clouds are gathering."
+          - "Told you a storm was coming!"
+          - "Storm Spirit has arrived!"
+          - "The calm before the storm…"
+        snapfire:
+          quote:
+          - "Smells like a battle's cookin."
+          - "Perfect. I've got baking to do!"
+          - "I love the smell of black powder in the morning."
+          - "Name's Beatrix. But my friends call me Beadie."
         sven:
           quote:
           - "Rogue Knight at your service!"
@@ -367,51 +785,59 @@ en:
           - "Trees can be ferocious if provoked."
           - "Nature is not always kind."
           - "I would like nothing more than to plant myself in the sunshine, next to a cool stream."
+        templar_assassin:
+          quote:
+          - "So it is revealed."
+          - "Lanaya."
+          - "The Temple sent me!"
+          - "I am driven by secrets!"
+        terrorblade:
+          quote:
+          - "The self-righteous shall choke on their sanctimony."
+          - "From the Hell of Hells I come."
+          - "Terror steals across the land."
+          - "Fear he who fears nothing."
+        troll_warlord:
+          quote:
+          - "The strong shall eat the weak."
+          - "All will bleed."
+          - "These blades are too dry."
+          - "My axes thirst."
         tusk:
           quote:
           - "They call me the Terror from the Barrier. They call me the Snowball from Cobalt. But you may call me Tusk!"
           - "Who's ready for a fight? The first hit is free! Anyone?"
           - "It's a great day to do some squat thrusts and lift a barrel of fish, is it not?"
-        underlord:
-          quote:
-          - "I rule the Abyssal Horde."
-          - "Fear is my dominion."
-          - "The Abyss knows no mercy. It knows no light. It knows only fear and despair."
-          - "Nothing can stop us. Nothing can slow our march. And when we have arrived, all will burn."
-        undying:
-          quote:
-          - "I bring the song of death."
-          - "I need… gummy vitamins."
-          - "I need to work out more, but… my arm keeps snapping off."
-        wraith_king:
-          quote:
-          - "King am I of all the wraiths."
-          - "Submit to the Wraith King's rule!"
-          - "Purer than flesh, stronger than bone, imperishable is the essence of the wraith."
-          - "I miss my bones."
-          - "Where once was bone, wraith flesh as far as the eye can see."
         tinker:
           quote:
           - "Clinker… I mean, Tinker!"
           - "Greetings!"
           - "Ready, willing and fully enabled!"
           - "I have several theories I'd like to put into practice."
-        muerta:
+        techies:
           quote:
-          - "Who seeks death?"
-          - "A deal is a deal."
-        arc_warden:
+          - "They call me Squee! They call me Spleen! They don't know I'm here. Who said that?"
+          - "Techies Demolitions! We put the tech in tech-nically we meant to do that."
+          - "I am Squee! I'm Spleen! And I'm Spoon!"
+          - "If you want explosions. Accept no substitutes!"
+        underlord:
           quote:
-          - "Zeth is the Self, and the Self is Zeth."
-          - "The self is looking for the perfect fusion."
-          - "And that's when the Self appeared."
-          - "Matter has separated from its intended form, we need to put them back together again."
-        batrider:
+          - "I rule the Abyssal Horde."
+          - "Fear is my dominion."
+          - "The Abyss knows no mercy. It knows no light. It knows only fear and despair."
+          - "Nothing can stop us. Nothing can slow our march. And when we have arrived, all will burn."
+        ursa:
           quote:
-          - "You can't tame me!"
-          - "Here I am!"
-          - "I flew in from the underworld - learned a couple new tricks!"
-          - "Hey, bat! Fly!"
+          - "Fuzzy Wuzzy!"
+          - "Hraauuugh-oooo-hrrooogh!"
+          - "I'll have you in my claws!"
+          - "It is my spirit that keeps me safe, and not mere armor."
+          - "Come not near the darkwoods where my kindred sleep."
+        undying:
+          quote:
+          - "I bring the song of death."
+          - "I need… gummy vitamins."
+          - "I need to work out more, but… my arm keeps snapping off."
         visage:
           quote:
           - "I am Visage."
@@ -420,18 +846,23 @@ en:
           - "Your end arrives."
           - "That which passes beyond the veil must forever stay."
           - "I perceive beyond this realm."
-        broodmother:
+        vengeful_spirit:
           quote:
-          - "You're not afraid of spiders, are you?"
-          - "The spiderlings are bursting to get out."
-          - "Maternity capital."
-          - "Feeding time."
-        techies:
+          - "With a vengeance!"
+          - "By Scree'auk's talons!"
+          - "Power like a promise of revenge!"
+        venomancer:
           quote:
-          - "They call me Squee! They call me Spleen! They don't know I'm here. Who said that?"
-          - "Techies Demolitions! We put the tech in tech-nically we meant to do that."
-          - "I am Squee! I'm Spleen! And I'm Spoon!"
-          - "If you want explosions. Accept no substitutes!"
+          - "A touch of venom."
+          - "Ah, sweet toxicity!"
+          - "Concentrated venom."
+          - "Ever more venomous."
+        void_spirit:
+          quote:
+          - "Before me, the map of all of time unfolds..."
+          - "The great confluence approaches and my time finally comes."
+          - "I step again into the mortal plane."
+          - "Friend or foe, in the wake of the confluence, you will follow where I lead."
         viper:
           quote:
           - "Death…from above."
@@ -439,47 +870,13 @@ en:
           - "From the nether reaches, I return."
           - "Prepare for poison."
           - "I fly the nest."
-        rubick:
+        wraith_king:
           quote:
-          - "Rubick!"
-          - "Friends, I think we can all agree: it's a done deal!"
-          - "What wonders will I see today?"
-          - "My thirst for knowledge cannot be quenched."
-        morphling:
-          quote:
-          - "My waters rise."
-          - "Beware the riptide."
-          - "The wave breaks."
-          - "The waters are teeming!"
-          - "Dead in the water…"
-        outworld_destroyer:
-          quote:
-          - "I will crush the enemy's mind as well as his will to win."
-          - "The bloody sun rises."
-          - "The Path of Destruction."
-          - "I come from the citadel that soars in the outer darkness."
-        puck:
-          quote:
-          - "This should be less tiresome than another age in chrysalis."
-          - "Interesting."
-          - "What is this, a game of some sort?"
-          - "Ah, gambits and exploits await."
-          - "Stay and amuse me!"
-        chen:
-          quote:
-          - "For Obelis, the one God."
-          - "Obelis infuses me."
-          - "Say your prayers."
-          - "Your judgment comes."
-          - "So begins the persecution."
-        oracle:
-          quote:
-          - "Like those odds, do you, hmm?"
-          - "Trust in the Oracle!"
-          - "Beware what you wish for."
-          - "I want to die."
-          - "The Oracle sees all."
-          - "Poor choices…"
+          - "King am I of all the wraiths."
+          - "Submit to the Wraith King's rule!"
+          - "Purer than flesh, stronger than bone, imperishable is the essence of the wraith."
+          - "I miss my bones."
+          - "Where once was bone, wraith flesh as far as the eye can see."
         warlock:
           quote:
           - "Summoned forth."
@@ -488,61 +885,23 @@ en:
           - "Mordakar!"
           - "I come and I command."
           - "A new chapter in my Black Grimoire."
-        bane:
+        witch_doctor:
           quote:
-          - "Bane of your existence…"
-          - "Your Nightmare is here."
-          - "Atropos…"
-          - "Welcome to my nightmare!"
-          - "By the ichor of Nyctasha!"
-          - "Nightmares, follow me into the light."
-        spectre:
+          - "By my bones."
+          - "Malpractice makes perfect."
+          - "Dis won't hurt a bit."
+        windranger:
           quote:
-          - "Closer to Ascension!"
-          - "Soon I will ascend!"
-          - "Into disorder!"
-          - "From another dimension, a world beyond."
-          - "I have come here a stranger, lost."
-        clinkz:
+          - "As the arrow flies."
+          - "Feel the wind in your hair!"
+          - "My next arrow will find its mark."
+          - "I'm a straight shooter."
+        winter_wyvern:
           quote:
-          - "The fires of war are flaring."
-          - "An arrow shines my way."
-          - "Death is coming for you."
-          - "Enemies will be burned."
-        shadow_demon:
-          quote:
-          - "This time it is the demon who will do the summoning!"
-          - "I will scatter all who gather here today."
-          - "Dominion is mine!"
-          - "Fall before me!"
-          - "Come into my dominion!"
-          - "How my shadow darkens."
-        pugna:
-          quote:
-          - "I'll take all you have and more."
-          - "Oblivion's power infuses."
-          - "A new age of dark magic starts now."
-          - "Who needs a blade when you have oblivion?"
-          - "Time to earn myself a bad reputation."
-        marci:
-          quote:
-          - "Really?! If you play Dota 2, you know Marci can't talk. ¬¬'"
-        enchantress:
-          quote:
-          - "What an enchanting day for battle!"
-          - "There they are!"
-          - "I'll trample you."
-          - "This fawn's afternoon is looking up!"
-          - "Charmed, I'm sure!"
-          - "How enchanting."
-        jakiro:
-          quote:
-          - "With ice and fire!"
-          - "Two sides of the same coin."
-          - "Double trouble."
-          - "We blow hot and cold."
-          - "Fire and ice!"
-          - "The twins return."
+          - "From the roost of winter."
+          - "I carry winter wherever I go!"
+          - "A wyvern's breath!"
+          - "In on wings of winter!"
         weaver:
           quote:
           - "Let's weave a battle plan."
@@ -550,13 +909,12 @@ en:
           - "The loom weaves and a new pattern appears."
           - "I enter the pattern."
           - "Skitter on."
-        naga_siren:
+        zeus:
           quote:
-          - "Time to sink or swim."
-          - "Sleep with the fishes."
-          - "The great disabler comes."
-          - "I rise against the tide."
-          - "My song grows sweeter."
+          - "It's true. I am Zeus."
+          - "Your god has arrived."
+          - "Your prayers are answered."
+          - "Time to play God."
         item:
         - "Abyssal Blade"
         - "Aegis of the Immortal"
@@ -577,6 +935,7 @@ en:
         - "Blades of Attack"
         - "Blight Stone"
         - "Blink Dagger"
+        - "Blitz Knuckles"
         - "Blood Grenade"
         - "Bloodstone"
         - "Bloodthorn"
@@ -597,6 +956,7 @@ en:
         - "Cloak"
         - "Cornucopia"
         - "Crimson Guard"
+        - "Crown"
         - "Crystalys"
         - "Dagon"
         - "Daedalus"
@@ -638,7 +998,6 @@ en:
         - "Helm of the Dominator"
         - "Helm of the Overlord"
         - "Holy Locket"
-        - "Hood of Defiance"
         - "Hurricane Pike"
         - "Hyperstone"
         - "Infused Raindrop"
@@ -650,13 +1009,12 @@ en:
         - "Linken's Sphere"
         - "Lotus Orb"
         - "Mage Slayer"
-        - "Magic Stick"
+        - "Regular Stick"
         - "Magic Wand"
         - "Maelstrom"
         - "Manta Style"
         - "Mantle of Intelligence"
         - "Mask of Madness"
-        - "Medallion of Courage"
         - "Mekansm"
         - "Meteor Hammer"
         - "Mithril Hammer"
@@ -684,7 +1042,12 @@ en:
         - "Platemail"
         - "Point Booster"
         - "Power Treads"
-        - "Quarterstaff"
+        - "Voodoo Mask"
+        - "Roshan's Banner"
+        - "Block of Cheese"
+        - "Greater Healing Lotus"
+        - "Great Healing Lotus"
+        - "Healing Lotus"
         - "Quelling Blade"
         - "Radiance"
         - "Refresher Orb"
@@ -717,12 +1080,10 @@ en:
         - "Soul Ring"
         - "Spirit Vessel"
         - "Staff of Wizardry"
-        - "Stout Shield"
         - "Swift Blink"
         - "Talisman of Evasion"
         - "Tango"
         - "Tiara of Selemene"
-        - "Tome of Knowledge"
         - "Town Portal Scroll"
         - "Tranquil Boots"
         - "Ultimate Orb"
@@ -738,6 +1099,66 @@ en:
         - "Wraith Band"
         - "Yasha"
         - "Yasha and Kaya"
+        neutral_item:
+        - "Ancient Guardian"
+        - "Apex"
+        - "Arcanist's Armor"
+        - "Arcane Ring"
+        - "Ascetic's Cap"
+        - "Aviana's Feather"
+        - "Book of Shadows"
+        - "Book of the Dead"
+        - "Broom Handle"
+        - "Bullwhip"
+        - "Ceremonial Robe"
+        - "Cloak of Flames"
+        - "Craggy Coat"
+        - "Defiant Shell"
+        - "Dandelion Amulet"
+        - "Dragon Scale"
+        - "Doubloon"
+        - "Duelist Gloves"
+        - "Elven Tunic"
+        - "Enchanted Quiver"
+        - "Eye of the Vizier"
+        - "Faded Broach"
+        - "Force Boots"
+        - "Giant's Ring"
+        - "Gossamer Cape"
+        - "Grove Bow"
+        - "Havoc Hammer"
+        - "Ironwood Tree"
+        - "Iron Talon"
+        - "Magic Lamp"
+        - "Mirror Shield"
+        - "Mind Breaker"
+        - "Ninja Gear"
+        - "Nemesis Curse"
+        - "Ogre Seal Totem"
+        - "Paladin Sword"
+        - "Philosopher's Stone"
+        - "Pig Pole"
+        - "Pirate Hat"
+        - "Pupil's Gift"
+        - "Psychic Headband"
+        - "Rattlecage"
+        - "Royal Jelly"
+        - "Safety Bubble"
+        - "Seer Stone"
+        - "Seeds of Serenity"
+        - "Specialist's Array"
+        - "Spark of Courage"
+        - "Stygian Desolator"
+        - "Stormcrafter"
+        - "Telescope"
+        - "Timeless Relic"
+        - "Trickster Cloak"
+        - "Trusty Shovel"
+        - "Unwavering Condition"
+        - "Vambrace"
+        - "Vampire Fangs"
+        - "Vindicator's Axe"
+        - "Whisper of the Dread"
         team:
         - "Evil Geniuses"
         - "OG"
@@ -810,6 +1231,13 @@ en:
         - "Neon Esports"
         - "Adroit Esports"
         - "Nemiga Gaming"
+        tier:
+        - "Bronze"
+        - "Silver"
+        - "Gold"
+        - "Platinum"
+        - "Master"
+        - "Grandmaster"
         player:
         - "Alliance.AdmiralBulldog"
         - "Dendi"
