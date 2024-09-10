@@ -20,6 +20,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
+
+import static java.util.Collections.emptySet;
 
 /**
  * Generates random locales in different forms.
@@ -27,6 +31,8 @@ import java.util.Set;
  * @since 1.7.0
  */
 public class Locality extends AbstractProvider<BaseProviders> {
+    private static final Logger log = Logger.getLogger(Locality.class.getName());
+    private static final Predicate<String> SCAN_ALL_JARS = name -> true;
 
     private final List<String> locales;
     private final List<String> shuffledLocales = new ArrayList<>();
@@ -43,11 +49,11 @@ public class Locality extends AbstractProvider<BaseProviders> {
     /**
      * Retrieves list of all locales supported by Datafaker
      *
-     * @return a List of Strings with the name of the locale (eg. "es", "es-MX")
+     * @return a List of Strings with the name of the locale (e.g. "es", "es-MX")
      */
     @Deterministic
-    public List<String> allSupportedLocales() {
-        return allSupportedLocales(Set.of("datafaker"));
+    public final List<String> allSupportedLocales() {
+        return allSupportedLocales(SCAN_ALL_JARS);
     }
 
     private boolean addLocaleIfPresent(Path file, Set<String> langs, Set<String> locales) {
@@ -67,20 +73,13 @@ public class Locality extends AbstractProvider<BaseProviders> {
     }
 
     public List<String> allSupportedLocales(Set<String> fileMasks) {
+        return allSupportedLocales((name) -> fileMasks.stream().anyMatch(name::contains));
+    }
+
+    private List<String> allSupportedLocales(Predicate<String> jarFileFilter) {
         Set<String> langs = Set.of(Locale.getISOLanguages());
         String[] paths = ManagementFactory.getRuntimeMXBean().getClassPath().split(File.pathSeparator);
         Set<String> locales = new HashSet<>();
-        final SimpleFileVisitor<Path> simpleFileVisitor = new SimpleFileVisitor<>() {
-
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                if (file.getNameCount() > 2) {
-                    return super.visitFile(file, attrs);
-                }
-                addLocaleIfPresent(file, langs, locales);
-                return super.visitFile(file, attrs);
-            }
-        };
 
         final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
             @Override
@@ -88,12 +87,17 @@ public class Locality extends AbstractProvider<BaseProviders> {
                 final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
                 if (addLocaleIfPresent(file, langs, locales)) {
                     // do nothing, everything is done at addLocaleIfPresent
-                } else if (filename.endsWith(".jar") && fileMasks.stream().anyMatch(filename::contains) && Files.isRegularFile(file) && Files.isReadable(file)) {
+                } else if (filename.endsWith(".jar") && jarFileFilter.test(filename)) {
 
-                    try (FileSystem jarfs = FileSystems.newFileSystem(file, (ClassLoader) null)) {
-                        for (Path rootPath : jarfs.getRootDirectories()) {
-                            Files.walkFileTree(rootPath, simpleFileVisitor);
+                    if (Files.isRegularFile(file) && Files.isReadable(file)) {
+                        try (FileSystem jarfs = FileSystems.newFileSystem(file, (ClassLoader) null)) {
+                            for (Path rootPath : jarfs.getRootDirectories()) {
+                                log.fine(() -> "  Scanning %s for locales...".formatted(rootPath));
+                                Files.walkFileTree(rootPath, emptySet(), 3, this);
+                            }
                         }
+                    } else {
+                        log.warning(() -> "Failed to scan file %s".formatted(file));
                     }
                 }
                 return super.visitFile(file, attrs);
@@ -101,6 +105,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
         };
         for (String s: paths) {
             try {
+                log.fine(() -> "  Scanning %s for locales...".formatted(s));
                 Files.walkFileTree(Paths.get(s).toAbsolutePath(), visitor);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to read path \"%s\"".formatted(s), e);
@@ -129,7 +134,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return Randomly selected locale (eg. "es", "es-MX").
+     * @return Randomly selected locale (e.g. "es", "es-MX").
      * Locale is selected at random WITH replacement from all supported locales
      */
     public String localeString() {
@@ -140,7 +145,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * Select a locale at random with replacement
      *
      * @param random random number generator (can utilize seed for deterministic random selection)
-     * @return String of a randomly selected locale (eg. "es", "es-MX")
+     * @return String of a randomly selected locale (e.g. "es", "es-MX")
      */
     public String localeStringWithRandom(Random random) {
 
@@ -150,7 +155,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return Randomly selected locale (eg. "es", "es-MX").
+     * @return Randomly selected locale (e.g. "es", "es-MX").
      * Locale is selected at random WITHOUT replacement from all supported locales
      */
     public String localeStringWithoutReplacement() {
@@ -161,7 +166,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * Select a locale at random without replacement. This can be used to rotate through all supported locales
      *
      * @param random random number generator (can utilize seed for deterministic random selection)
-     * @return String of a randomly selected locale (eg. "es", "es-MX")
+     * @return String of a randomly selected locale (e.g. "es", "es-MX")
      */
     public synchronized String localeStringWithoutReplacement(Random random) {
         if (shuffledLocales.isEmpty() || shuffledLocaleIndex >= shuffledLocales.size() - 1) {
