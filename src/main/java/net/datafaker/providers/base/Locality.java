@@ -15,7 +15,7 @@ import java.util.Set;
  * @since 1.7.0
  */
 public class Locality extends AbstractProvider<BaseProviders> {
-    private static final List<String> locales = List.of(
+    private static final List<String> LOCALES = List.of(
         "_al", "_bg", "_by", "_ca", "_ch", "_cn", "_cz", "_ee", "_ge", "_md", "_mk", "_ru", "_us",
         "ar", "be", "bg", "by", "ca", "ca-cat", "cs", "cs-cz",
         "da-dk", "de", "de-at", "de-ch",
@@ -55,7 +55,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
      */
     @Deterministic
     public final List<String> allSupportedLocales() {
-        return locales;
+        return LOCALES;
     }
 
     /**
@@ -64,8 +64,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * @return locale in the form: "English (United States) or English"
      */
     public String displayName() {
-        int randomIndex = faker.random().nextInt(locales.size());
-        Locale locale = Locale.forLanguageTag(locales.get(randomIndex));
+        int randomIndex = faker.random().nextInt(LOCALES.size());
+        Locale locale = Locale.forLanguageTag(LOCALES.get(randomIndex));
 
         String displayLanguage = locale.getDisplayLanguage(Locale.ROOT);
         String displayCountry = locale.getDisplayCountry(Locale.ROOT);
@@ -93,8 +93,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
     public String localeStringWithRandom(Random random) {
 
         // Randomly select a locale from list of all locales supported
-        int randomIndex = random.nextInt(locales.size());
-        return locales.get(randomIndex);
+        int randomIndex = random.nextInt(LOCALES.size());
+        return LOCALES.get(randomIndex);
     }
 
     /**
@@ -115,7 +115,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
         if (shuffledLocales.isEmpty() || shuffledLocaleIndex >= shuffledLocales.size() - 1) {
             // copy list of locales supported into shuffledLocales
             shuffledLocales.clear();
-            shuffledLocales.addAll(locales);
+            shuffledLocales.addAll(LOCALES);
             shuffledLocaleIndex = 0;
             Collections.shuffle(shuffledLocales, random);
         }
