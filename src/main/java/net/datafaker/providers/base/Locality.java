@@ -2,28 +2,12 @@ package net.datafaker.providers.base;
 
 import net.datafaker.annotations.Deterministic;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Predicate;
-import java.util.logging.Logger;
-
-import static java.util.Collections.emptySet;
 
 /**
  * Generates random locales in different forms.
@@ -31,10 +15,19 @@ import static java.util.Collections.emptySet;
  * @since 1.7.0
  */
 public class Locality extends AbstractProvider<BaseProviders> {
-    private static final Logger log = Logger.getLogger(Locality.class.getName());
-    private static final Predicate<String> SCAN_ALL_JARS = name -> true;
+    private static final List<String> LOCALES = List.of(
+        "_al", "_bg", "_by", "_ca", "_ch", "_cn", "_cz", "_ee", "_ge", "_md", "_mk", "_ru", "_us",
+        "ar", "be", "bg", "by", "ca", "ca-cat", "cs", "cs-cz",
+        "da-dk", "de", "de-at", "de-ch",
+        "el-gr", "en", "en-au", "en-au-ocker", "en-bork", "en-ca", "en-gb", "en-ind", "en-md", "en-ms", "en-nep",
+        "en-ng", "en-nz", "en-pak", "en-ph", "en-pk", "en-sg", "en-ug", "en-us", "en-za",
+        "es", "es-ar", "es-mx", "es-py", "et", "fa", "fi-fi", "fr", "fr-ca", "fr-ch",
+        "he", "hr", "hu", "hy", "id", "id-id", "it", "ja", "ka", "ko", "lv", "mk",
+        "nb-no", "nl", "nl-be", "no-no", "pl", "pt", "pt-br",
+        "ro-md", "ru", "ru-md", "sk", "sq", "sv", "sv-se",
+        "th", "tr", "uk", "vi", "zh-cn", "zh-tw"
+    );
 
-    private final List<String> locales;
     private final List<String> shuffledLocales = new ArrayList<>();
     private int shuffledLocaleIndex = 0;
 
@@ -43,7 +36,16 @@ public class Locality extends AbstractProvider<BaseProviders> {
      */
     public Locality(BaseProviders baseProviders) {
         super(baseProviders);
-        this.locales = allSupportedLocales();
+    }
+
+    /**
+     * @param fileMasks is not used anymore
+     * @deprecated Use {{@link #allSupportedLocales()}} instead
+     */
+    @Deprecated
+    @SuppressWarnings("unused")
+    public List<String> allSupportedLocales(Set<String> fileMasks) {
+        return allSupportedLocales();
     }
 
     /**
@@ -53,66 +55,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
      */
     @Deterministic
     public final List<String> allSupportedLocales() {
-        return allSupportedLocales(SCAN_ALL_JARS);
-    }
-
-    private boolean addLocaleIfPresent(Path file, Set<String> langs, Set<String> locales) {
-        final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
-        if ((filename.endsWith(".yml") || filename.endsWith(".yaml")) && Files.isRegularFile(file) && Files.isReadable(file)) {
-            final Path parent = file.getParent();
-            final String parentFileName = parent == null || parent.getFileName() == null ? null : parent.getFileName().toString();
-            if (parentFileName != null && langs.contains(parentFileName)) {
-                locales.add(parentFileName);
-            } else {
-                // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
-                locales.add(filename.substring(0, filename.indexOf(".")));
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public List<String> allSupportedLocales(Set<String> fileMasks) {
-        return allSupportedLocales((name) -> fileMasks.stream().anyMatch(name::contains));
-    }
-
-    private List<String> allSupportedLocales(Predicate<String> jarFileFilter) {
-        Set<String> langs = Set.of(Locale.getISOLanguages());
-        String[] paths = ManagementFactory.getRuntimeMXBean().getClassPath().split(File.pathSeparator);
-        Set<String> locales = new HashSet<>();
-
-        final SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<>() {
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                final String filename = file.getFileName().toString().toLowerCase(Locale.ROOT);
-                if (addLocaleIfPresent(file, langs, locales)) {
-                    // do nothing, everything is done at addLocaleIfPresent
-                } else if (filename.endsWith(".jar") && jarFileFilter.test(filename)) {
-
-                    if (Files.isRegularFile(file) && Files.isReadable(file)) {
-                        try (FileSystem jarfs = FileSystems.newFileSystem(file, (ClassLoader) null)) {
-                            for (Path rootPath : jarfs.getRootDirectories()) {
-                                log.fine(() -> "  Scanning %s for locales...".formatted(rootPath));
-                                Files.walkFileTree(rootPath, emptySet(), 3, this);
-                            }
-                        }
-                    } else {
-                        log.warning(() -> "Failed to scan file %s".formatted(file));
-                    }
-                }
-                return super.visitFile(file, attrs);
-            }
-        };
-        for (String s: paths) {
-            try {
-                log.fine(() -> "  Scanning %s for locales...".formatted(s));
-                Files.walkFileTree(Paths.get(s).toAbsolutePath(), visitor);
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to read path \"%s\"".formatted(s), e);
-            }
-        }
-
-        return new ArrayList<>(locales);
+        return LOCALES;
     }
 
     /**
@@ -121,8 +64,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * @return locale in the form: "English (United States) or English"
      */
     public String displayName() {
-        int randomIndex = faker.random().nextInt(locales.size());
-        Locale locale = Locale.forLanguageTag(locales.get(randomIndex));
+        int randomIndex = faker.random().nextInt(LOCALES.size());
+        Locale locale = Locale.forLanguageTag(LOCALES.get(randomIndex));
 
         String displayLanguage = locale.getDisplayLanguage(Locale.ROOT);
         String displayCountry = locale.getDisplayCountry(Locale.ROOT);
@@ -150,8 +93,8 @@ public class Locality extends AbstractProvider<BaseProviders> {
     public String localeStringWithRandom(Random random) {
 
         // Randomly select a locale from list of all locales supported
-        int randomIndex = random.nextInt(locales.size());
-        return locales.get(randomIndex);
+        int randomIndex = random.nextInt(LOCALES.size());
+        return LOCALES.get(randomIndex);
     }
 
     /**
@@ -172,7 +115,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
         if (shuffledLocales.isEmpty() || shuffledLocaleIndex >= shuffledLocales.size() - 1) {
             // copy list of locales supported into shuffledLocales
             shuffledLocales.clear();
-            shuffledLocales.addAll(this.locales);
+            shuffledLocales.addAll(LOCALES);
             shuffledLocaleIndex = 0;
             Collections.shuffle(shuffledLocales, random);
         }

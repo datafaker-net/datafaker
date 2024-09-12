@@ -1,7 +1,6 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.Faker;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -11,36 +10,29 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import static java.util.Locale.ROOT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class LocalityTest extends BaseFakerTest<BaseFaker> {
-
-    private BaseFaker f;
-    private Locality locality;
-    private List<String> allLocales;
-
-    /**
-     * Initialize tests by instantiating a Locality object and list of all supported locales
-     */
-    @BeforeEach
-    void init() {
-        f = new Faker();
-        locality = f.locality();
-        allLocales = locality.allSupportedLocales();
-    }
+    private final BaseFaker f = new Faker();
+    private final Locality locality = f.locality();
 
     /**
      * Test to check that list of all locales support is loaded
      */
     @Test
-    void testAllSupportedLocales() {
+    void allSupportedLocales() {
         // Check that directory of locale resources exists
         File resourceDirectory = new File("./src/main/resources");
         assertThat(resourceDirectory).exists();
 
-        // Check that list of locales is not empty
-        assertThat(allLocales).isNotEmpty();
+        List<String> allLocales = locality.allSupportedLocales();
+        assertThat(allLocales).hasSize(87);
+        assertThat(allLocales)
+            .as("Somebody forgot to add the new locale to Locality.LOCALES")
+            .containsExactlyInAnyOrderElementsOf(findAllSupportedLocales(resourceDirectory));
     }
 
     @Test
@@ -54,7 +46,7 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
      * should have deterministic results.
      */
     @Test
-    void testLocaleStringRandom() {
+    void localeStringRandom() {
         // Check that we get the same locale when using pseudorandom number generator with a fixed seed
         final long fixedSeed = 5;
 
@@ -72,33 +64,42 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
      * locale is within the set of all supported locales
      */
     @RepeatedTest(100)
-    void testLocaleStringWithRandom() {
+    void localeStringWithRandom() {
         Random random = new Random();
         String randomLocale = locality.localeStringWithRandom(random);
-        assertThat(allLocales).contains(randomLocale);
+        assertThat(locality.allSupportedLocales()).contains(randomLocale);
     }
 
     @Test
-    void testLocaleStringWithoutReplacement() {
+    void localeStringWithoutReplacement() {
         Random random = new Random();
         // loop through all supported locales
         for (int i = 0; i < 2; i++) {
-            Set<String> returnedLocales = IntStream.range(0, allLocales.size())
+            Set<String> returnedLocales = IntStream.range(0, locality.allSupportedLocales().size())
                 .mapToObj(j -> locality.localeStringWithoutReplacement(random))
                 .collect(Collectors.toSet());
 
-            assertThat(allLocales).containsAll(returnedLocales);
+            assertThat(locality.allSupportedLocales()).containsAll(returnedLocales);
         }
     }
 
     @Test
-    void testLocaleString() {
-        assertThat(allLocales).contains(locality.localeString());
+    void localeString() {
+        assertThat(locality.allSupportedLocales()).contains(locality.localeString());
     }
 
     @Test
-    void testLocaleWithoutReplacement() {
+    void localeWithoutReplacement() {
         assertThat(locality.localeStringWithoutReplacement()).isNotNull();
     }
 
+    private List<String> findAllSupportedLocales(File resourceDirectory) {
+        File[] localeFiles = resourceDirectory.listFiles((dir, name) -> name.endsWith(".yml"));
+        assert localeFiles != null;
+        return Stream.of(localeFiles)
+            .peek(f -> assertThat(f).isFile())
+            .peek(f -> assertThat(f).isReadable())
+            .map(f -> f.getName().toLowerCase(ROOT).replace(".yml", ""))
+            .toList();
+    }
 }
