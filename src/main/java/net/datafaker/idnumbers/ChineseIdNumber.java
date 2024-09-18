@@ -57,7 +57,7 @@ public class ChineseIdNumber implements IdNumberGenerator {
         return new PersonIdNumber(idNumber(res), birthday, gender(faker, request));
     }
 
-    private static String idNumber(char[] res) {
+    static String idNumber(char[] res) {
         int count = 0;
         count += (res[0] - '0') * 7;
         count += (res[1] - '0') * 9;
@@ -76,7 +76,7 @@ public class ChineseIdNumber implements IdNumberGenerator {
         count += (res[14] - '0') * 8;
         count += (res[15] - '0') * 4;
         count += (res[16] - '0') * 2;
-        count %= 11;
+        count = (12 - count % 11) % 11;
         return count == 10 ?
             String.valueOf(res) + "X" :
             String.valueOf(res) + count;
