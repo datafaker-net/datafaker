@@ -25,8 +25,10 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     private static final Faker BULGARIAN = new Faker(new Locale("bg", "BG"));
     private static final Faker MACEDONIAN = new Faker(new Locale("mk", "MK"));
     private static final Faker ROMANIAN = new Faker(new Locale("ro", "RO"));
+    private static final Faker UKRAINIAN = new Faker(new Locale("uk", "UA"));
 
     private static final Pattern SWEDISH_ID_NUMBER_PATTERN = Pattern.compile("\\d{6}[-+]\\d{4}");
+    private static final Pattern UKRAINIAN_UNZR_PATTERN = Pattern.compile("\\d{8}-\\d{5}");
     private static final Pattern SOUTH_AFRICA_ID_NUMBER_PATTERN = Pattern.compile("[0-9]{10}([01])8[0-9]");
 
     @Test
@@ -180,6 +182,16 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     void macedonianPersonalCode_invalid() {
         String pin = MACEDONIAN.idNumber().invalid();
         assertThatPin(pin).matches("\\d{13}");
+    }
+
+    @RepeatedTest(100)
+    void ukrainianUznr_valid() {
+        assertThatPin(UKRAINIAN.idNumber().valid()).matches(UKRAINIAN_UNZR_PATTERN);
+    }
+
+    @RepeatedTest(100)
+    void ukrainianUznr_invalid() {
+        assertThatPin(UKRAINIAN.idNumber().invalid()).matches(UKRAINIAN_UNZR_PATTERN);
     }
 
     private static AbstractStringAssert<?> assertThatPin(String pin) {
