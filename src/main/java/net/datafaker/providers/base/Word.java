@@ -2,7 +2,7 @@ package net.datafaker.providers.base;
 
 
 /**
- * Since 2.4.0
+ * @since 2.4.0
  */
 public class Word extends AbstractProvider<BaseProviders> {
 
