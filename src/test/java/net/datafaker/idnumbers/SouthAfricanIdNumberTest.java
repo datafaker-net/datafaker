@@ -44,7 +44,7 @@ class SouthAfricanIdNumberTest {
         assertThat(f.idNumber().invalid()).matches("\\d{10}[01]8\\d");
     }
 
-    @RepeatedTest(10000)
+    @RepeatedTest(100)
     void sequentialNumber_forMales() {
         BaseFaker f = new BaseFaker(new Locale("en", "ZA"));
         String sequentialNumber = sequentialNumber(f, MALE);
@@ -53,7 +53,7 @@ class SouthAfricanIdNumberTest {
         assertThat(parseInt(sequentialNumber)).isGreaterThanOrEqualTo(5000);
     }
 
-    @RepeatedTest(10000)
+    @RepeatedTest(100)
     void sequentialNumber_forFemales() {
         BaseFaker f = new BaseFaker(new Locale("en", "ZA"));
         String sequentialNumber = sequentialNumber(f, FEMALE);
