@@ -23,7 +23,11 @@ public class ObjectMethods {
     private static synchronized Map<String, Method> scanMethodsByReturnType(Class<?> clazz) {
         return Stream.of(clazz.getMethods())
             .filter(ObjectMethods::isUseful)
-            .collect(toMap(method -> method.getReturnType().getSimpleName(), method -> method));
+            .collect(toMap(method -> method.getReturnType().getSimpleName(), method -> method, ObjectMethods::chooseFirstByAlphabet));
+    }
+
+    private static Method chooseFirstByAlphabet(Method m1, Method m2) {
+        return m1.getName().compareTo(m2.getName()) < 0 ? m1 : m2;
     }
 
     /**

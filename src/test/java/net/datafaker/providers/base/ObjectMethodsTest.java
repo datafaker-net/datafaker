@@ -28,6 +28,11 @@ class ObjectMethodsTest {
         assertThat((CharSequence) executeMethodByReturnType(personName, "CharSequence")).isEqualTo("Smith");
     }
 
+    @Test
+    void multipleMethodsWithSameReturnType() {
+        assertThat((Float) executeMethodByReturnType(personName, "float")).isEqualTo(90.0f);
+    }
+
     private static class Person {
         public Age age() {
             return new Age();
@@ -49,6 +54,12 @@ class ObjectMethodsTest {
         }
         public CharSequence lastName() {
             return "Smith";
+        }
+        public float weight() {
+            return 90.0f;
+        }
+        public float width() {
+            return 60.0f;
         }
     }
 }
