@@ -98,8 +98,6 @@ en:
       - "SHU-I"
       - "T-ara"
       - "December"
-      - "2NE1"
-      - "EXO"
       iii_groups:
       - "APeace"
       - "CNBLUE"
@@ -315,6 +313,8 @@ en:
       - "Triple H"
       - "Wanna One"
       - "Weki Meki"
+      - "Sunmi"
+      - "Stray Kids"
       girl_groups:
       - "2NB"
       - "2NE1"
@@ -619,7 +619,6 @@ en:
       - "Winner"
       - "Yurisangja"
       - "ZE:A"
-      - "NCT"
       - "Stray Kids"
       solo:
       - "Ailee"
