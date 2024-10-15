@@ -1,0 +1,14 @@
+# encoding: utf-8
+# India
+_IN:
+  faker:
+    address:
+      postcode: ['######']
+      state_abbr: [AP, AR, AS, BR, CG, DL, GA, GJ, HR, HP, JK, JS, KA, KL, MP, MH, MN, ML, MZ, NL, OR, PB, RJ, SK, TN, TS, TR, UK, UP, WB, AN, CH, DN, DD, LD, PY]
+      default_time_zone: ["Asia/Kolkata"]
+      default_country_code: ["IN"]
+    internet:
+      free_email: [gmail.com, yahoo.co.in, hotmail.com, rediffmail.com]
+      domain_suffix: [in, com, biz, info, name, net, org, co.in]
+    phone_number:
+      formats: ['+91###-###-####', '+91##########', '+91-###-#######']

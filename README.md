@@ -489,7 +489,7 @@ Supported Locales
 * en-BORK
 * en-CA
 * en-GB
-* en-IND
+* en-IN (India)
 * en-MS
 * en-NEP
 * en-NG
