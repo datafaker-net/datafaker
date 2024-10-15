@@ -529,6 +529,7 @@ Supported Locales
 * sq_AL (Albanian)
 * sv
 * sv-SE
+* ta (Tamil)
 * tr
 * th_TH (Thailand)
 * uk
