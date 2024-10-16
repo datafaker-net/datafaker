@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  * it should be ok and moreover it will allow to have non-blocking reads.
  *
  * In case for whatever reason there is a need to change this class,
- * please double check jmh report before and after e.g.
+ * please double-check jmh report before and after e.g.
  * {@code mvn clean package exec:exec -Dbenchmarks="DatafakerSimpleMethods" -Ddatafaker.version=2.2.3-SNAPSHOT}
  */
 public class CopyOnWriteMap<K, V> implements Map<K, V> {
@@ -50,6 +50,11 @@ public class CopyOnWriteMap<K, V> implements Map<K, V> {
     @Override
     public V get(Object key) {
         return map.get(key);
+    }
+
+    @Override
+    public V putIfAbsent(K key, V value) {
+        throw new UnsupportedOperationException("Avoid pattern 'get+put'. Use computeIfAbsent instead.");
     }
 
     @Override
@@ -96,16 +101,5 @@ public class CopyOnWriteMap<K, V> implements Map<K, V> {
     @Override
     public Set<Entry<K, V>> entrySet() {
         return map.entrySet();
-    }
-
-    public <K2, V2> void updateNestedValue(K key, Supplier<V> valueSupplier, K2 key2, V2 value) {
-        if (!map.containsKey(key)) {
-            Map<K, V> newMap = mapSupplier.get();
-            newMap.putAll(map);
-            newMap.put(key, valueSupplier.get());
-            map = newMap;
-        }
-        // It is assumed that nested could be only Map
-        ((Map<K2, V2>)map.get(key)).put(key2, value);
     }
 }
