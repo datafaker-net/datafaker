@@ -45,11 +45,9 @@ class CopyOnWriteMapTest {
 
                 try {
                     Thread.sleep(random.nextInt(10));
-                    stringMapMap.putIfAbsent(methodName, new CopyOnWriteMap<>(WeakHashMap::new));
-                    if (random.nextInt(10) < 4) System.gc();
-
-                    // here `stringMapMap.get(methodName)` sometimes returns NULL
-                    stringMapMap.get(methodName).putIfAbsent(new String[0], 42);
+                    stringMapMap
+                            .computeIfAbsent(methodName, (m) -> new CopyOnWriteMap<>(WeakHashMap::new))
+                            .computeIfAbsent(new String[0], (x) -> 42);
                 } catch (Throwable e) {
                     log.log(Level.SEVERE, e, () -> "Fail to put and get (%s, %s)".formatted(klass, methodName));
                     softly.fail(e);

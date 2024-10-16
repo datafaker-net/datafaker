@@ -1,5 +1,6 @@
 package net.datafaker.service;
 
+import com.github.curiousoddman.rgxgen.RgxGen;
 import net.datafaker.internal.helper.CopyOnWriteMap;
 import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.internal.helper.WordUtils;
@@ -29,7 +30,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -42,8 +42,10 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import com.github.curiousoddman.rgxgen.RgxGen;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.Locale.ROOT;
 import static java.util.Objects.requireNonNull;
 import static net.datafaker.transformations.Field.field;
 
@@ -78,9 +80,6 @@ public class FakeValuesService {
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
     private final Map<RegExpContext, Supplier<?>> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
-
-    public FakeValuesService() {
-    }
 
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
@@ -224,7 +223,7 @@ public class FakeValuesService {
 
         String[] path = split(key);
         SingletonLocale local2Add = null;
-        path[0] = path[0].toLowerCase(Locale.ROOT);
+        path[0] = path[0].toLowerCase(ROOT);
         for (SingletonLocale sLocale : localeChain) {
             Object currentValue = fakeValuesInterfaceMap.get(sLocale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
@@ -242,12 +241,14 @@ public class FakeValuesService {
             }
         }
         if (local2Add != null) {
-            Object curResult = key2fetchedObject.getOrDefault(local2Add, Collections.emptyMap())
-                .get(key);
+            Object valueToCache = result;
+            Object curResult = key2fetchedObject.getOrDefault(local2Add, emptyMap()).get(key);
             if (curResult != null) {
-                return result;
+                return result; // Strange... Why return result, not curResult?
             }
-            key2fetchedObject.updateNestedValue(local2Add, MAP_STRING_OBJECT_SUPPLIER, key, result);
+            key2fetchedObject
+                .computeIfAbsent(local2Add, (__) -> MAP_STRING_OBJECT_SUPPLIER.get())
+                .computeIfAbsent(key, (__) -> valueToCache);
         }
         if (result instanceof List list) {
             for (int i = 0; i < list.size(); i++) {
@@ -325,33 +326,31 @@ public class FakeValuesService {
     }
 
     private String[] split(String string) {
-        String[] result = KEY_2_SPLITTED_KEY.get(string);
-        if (result != null) {
-            return result;
-        }
-        int size = 0;
-        final char splitChar = '.';
-        final int length = string.length();
-        for (int i = 0; i < length; i++) {
-            if (string.charAt(i) == splitChar) {
-                size++;
-            }
-        }
-        result = new String[size + 1];
-        final char[] chars = string.toCharArray();
-        int start = 0;
-        int j = 0;
-        for (int i = 0; i < length; i++) {
-            if (string.charAt(i) == splitChar) {
-                if (i - start > 0) {
-                    result[j++] = String.valueOf(chars, start, i - start);
+        return KEY_2_SPLITTED_KEY.computeIfAbsent(string, (__) -> {
+            int size = 0;
+            final char splitChar = '.';
+            final int length = string.length();
+            for (int i = 0; i < length; i++) {
+                if (string.charAt(i) == splitChar) {
+                    size++;
                 }
-                start = i + 1;
             }
-        }
-        result[j] = String.valueOf(chars, start, chars.length - start);
-        KEY_2_SPLITTED_KEY.putIfAbsent(string, result);
-        return result;
+
+            String[] result = new String[size + 1];
+            final char[] chars = string.toCharArray();
+            int start = 0;
+            int j = 0;
+            for (int i = 0; i < length; i++) {
+                if (string.charAt(i) == splitChar) {
+                    if (i - start > 0) {
+                        result[j++] = String.valueOf(chars, start, i - start);
+                    }
+                    start = i + 1;
+                }
+            }
+            result[j] = String.valueOf(chars, start, chars.length - start);
+            return result;
+        });
     }
 
     /**
@@ -412,11 +411,7 @@ public class FakeValuesService {
      * Generates a String that matches the given regular expression.
      */
     public String regexify(String regex, FakerContext context) {
-        RgxGen rgxGen = expression2generex.get(regex);
-        if (rgxGen == null) {
-            rgxGen = RgxGen.parse(regex);
-            expression2generex.putIfAbsent(regex, rgxGen);
-        }
+        RgxGen rgxGen = expression2generex.computeIfAbsent(regex, (__) -> RgxGen.parse(regex));
         return rgxGen.generate(context.getRandomService().getRandomInternal());
     }
 
@@ -510,14 +505,15 @@ public class FakeValuesService {
      * <p>
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
-    public String resolve(String key, Object current, ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
-        String expression = root == null ? key2Expression.get(context.getSingletonLocale()).get(key) : null;
-        if (expression == null) {
+    public String resolve(String key, Object current, final ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
+        String expression;
+        if (root == null) {
+            expression = key2Expression
+                .computeIfAbsent(context.getSingletonLocale(), (__) -> MAP_STRING_STRING_SUPPLIER.get())
+                .computeIfAbsent(key, (__) -> safeFetch(key, context, null));
+        }
+        else {
             expression = safeFetch(key, context, null);
-            if (root == null) {
-                key2Expression.updateNestedValue(context.getSingletonLocale(),
-                    MAP_STRING_STRING_SUPPLIER, key, expression);
-            }
         }
 
         if (expression == null) {
@@ -671,73 +667,64 @@ public class FakeValuesService {
         if (arguments == null || (length = arguments.length()) == 0) {
             return EMPTY_ARRAY;
         }
-        String[] res = ARGS_2_SPLITTED_ARGS.get(arguments);
-        if (res != null) {
-            return res;
-        }
-        List<String> result = new ArrayList<>();
-        int start = 0;
-        boolean argsStarted = false;
-        for (int i = 0; i < length; i++) {
-            if (argsStarted) {
-                int cnt = 0;
-                while (i < length && arguments.charAt(i) == '\'') {
-                    cnt++;
-                    i++;
+        return ARGS_2_SPLITTED_ARGS.computeIfAbsent(arguments, (__) -> {
+            List<String> result = new ArrayList<>();
+            int start = 0;
+            boolean argsStarted = false;
+            for (int i = 0; i < length; i++) {
+                if (argsStarted) {
+                    int cnt = 0;
+                    while (i < length && arguments.charAt(i) == '\'') {
+                        cnt++;
+                        i++;
+                    }
+                    if ((cnt & 1) == 1) {
+                        result.add(arguments.substring(start, i - 1).replace("''", "'"));
+                        argsStarted = false;
+                    }
+                } else if (arguments.charAt(i) == '\'') {
+                    argsStarted = true;
+                    start = i + 1;
                 }
-                if ((cnt & 1) == 1) {
-                    result.add(arguments.substring(start, i - 1).replace("''", "'"));
-                    argsStarted = false;
-                }
-            } else if (arguments.charAt(i) == '\'') {
-                argsStarted = true;
-                start = i + 1;
             }
-        }
-        final String[] resultArray = result.toArray(EMPTY_ARRAY);
-
-        ARGS_2_SPLITTED_ARGS.putIfAbsent(arguments, resultArray);
-        return resultArray;
+            return result.toArray(EMPTY_ARRAY);
+        });
     }
 
     private String[] splitExpressions(String expression, int length) {
-        String[] result = EXPRESSION_2_SPLITTED.get(expression);
-        if (result != null) {
-            return result;
-        }
-        int cnt = 0;
-        for (int i = 0; i < length; i++) {
-            if (expression.charAt(i) == '}') {
-                cnt++;
-            }
-        }
-        List<String> list = new ArrayList<>((cnt << 1) + 1);
-        boolean isExpression = false;
-        int start = 0;
-        int quoteCnt = 0;
-        for (int i = 0; i < length; i++) {
-            final char c = expression.charAt(i);
-            if (isExpression) {
-                if (c == '}' && (quoteCnt & 1) == 0) {
-                    list.add(expression.substring(start, i));
-                    start = i + 1;
-                    isExpression = false;
-                } else if (c == '\'') {
-                    quoteCnt++;
+        return EXPRESSION_2_SPLITTED.computeIfAbsent(expression, (__) -> {
+            int cnt = 0;
+            for (int i = 0; i < length; i++) {
+                if (expression.charAt(i) == '}') {
+                    cnt++;
                 }
-            } else if (i < length - 2 && c == '#' && expression.charAt(i + 1) == '{') {
-                list.add(expression.substring(start, i));
-                isExpression = true;
-                start = i + 2;
-                i++;
             }
-        }
-        if (start < length) {
-            list.add(expression.substring(start));
-        }
-        result = list.toArray(EMPTY_ARRAY);
-        EXPRESSION_2_SPLITTED.putIfAbsent(expression, result);
-        return result;
+            List<String> list = new ArrayList<>((cnt << 1) + 1);
+            boolean isExpression = false;
+            int start = 0;
+            int quoteCnt = 0;
+            for (int i = 0; i < length; i++) {
+                final char c = expression.charAt(i);
+                if (isExpression) {
+                    if (c == '}' && (quoteCnt & 1) == 0) {
+                        list.add(expression.substring(start, i));
+                        start = i + 1;
+                        isExpression = false;
+                    } else if (c == '\'') {
+                        quoteCnt++;
+                    }
+                } else if (i < length - 2 && c == '#' && expression.charAt(i + 1) == '{') {
+                    list.add(expression.substring(start, i));
+                    isExpression = true;
+                    start = i + 2;
+                    i++;
+                }
+            }
+            if (start < length) {
+                list.add(expression.substring(start));
+            }
+            return list.toArray(EMPTY_ARRAY);
+        });
     }
 
     private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
@@ -891,44 +878,39 @@ public class FakeValuesService {
      * @return a yaml style name like 'phone_number' from a java style name like 'PhoneNumber'
      */
     private String javaNameToYamlName(String expression) {
-        String result = NAME_2_YAML.get(expression);
-        if (result != null) {
-            return result;
-        }
+        return NAME_2_YAML.computeIfAbsent(expression, (__) -> {
 
-        final int length = expression.length();
-        final boolean firstLetterUpperCase = length > 0 && Character.isUpperCase(expression.charAt(0));
-        int cnt = firstLetterUpperCase ? 1 : 0;
-        for (int i = 1; i < length; i++) {
-            if (Character.isUpperCase(expression.charAt(i))) {
-                cnt++;
+            final int length = expression.length();
+            final boolean firstLetterUpperCase = length > 0 && Character.isUpperCase(expression.charAt(0));
+            int cnt = firstLetterUpperCase ? 1 : 0;
+            for (int i = 1; i < length; i++) {
+                if (Character.isUpperCase(expression.charAt(i))) {
+                    cnt++;
+                }
             }
-        }
-        if (cnt == 0) {
-            NAME_2_YAML.putIfAbsent(expression, expression);
-            return expression;
-        }
-        final char[] res = new char[length + (firstLetterUpperCase ? cnt - 1 : cnt)];
-        int pos = 0;
-        for (int i = 0; i < length; i++) {
-            final char c = expression.charAt(i);
-            if (cnt > 0) {
-                if (Character.isUpperCase(c)) {
-                    if (pos > 0) {
-                        res[pos++] = '_';
+            if (cnt == 0) {
+                return expression;
+            }
+            final char[] res = new char[length + (firstLetterUpperCase ? cnt - 1 : cnt)];
+            int pos = 0;
+            for (int i = 0; i < length; i++) {
+                final char c = expression.charAt(i);
+                if (cnt > 0) {
+                    if (Character.isUpperCase(c)) {
+                        if (pos > 0) {
+                            res[pos++] = '_';
+                        }
+                        res[pos++] = Character.toLowerCase(c);
+                        cnt--;
+                    } else {
+                        res[pos++] = c;
                     }
-                    res[pos++] = Character.toLowerCase(c);
-                    cnt--;
                 } else {
                     res[pos++] = c;
                 }
-            } else {
-                res[pos++] = c;
             }
-        }
-        result = new String(res);
-        NAME_2_YAML.putIfAbsent(expression, result);
-        return result;
+            return new String(res);
+        });
     }
 
 
@@ -947,7 +929,7 @@ public class FakeValuesService {
                 ? () -> null
                 : () -> invokeAndToString(accessor, obj);
         } catch (Exception e) {
-            LOG.log(Level.FINE, "Can't call " + directive + " on " + obj, e);
+            LOG.log(Level.FINE, e, () -> "Can't call " + directive + " on " + obj);
             return () -> null;
         }
     }
@@ -956,7 +938,7 @@ public class FakeValuesService {
      * Accepts a {@link BaseFaker} instance and a name.firstName style 'key' which is resolved to the return value of:
      * {@link BaseFaker#name()}'s {@link Name#firstName()} method.
      *
-     * @throws RuntimeException if there's a problem invoking the method or it doesn't exist.
+     * @throws RuntimeException if there's a problem invoking the method, or it doesn't exist.
      */
     private Supplier<Object> resolveFakerObjectAndMethod(ProviderRegistration faker, String key, int dotIndex, String[] args) {
         final String[] classAndMethod;
@@ -970,7 +952,7 @@ public class FakeValuesService {
             String fakerMethodName = removeUnderscoreChars(classAndMethod[0]);
             final MethodAndCoercedArgs fakerAccessor = retrieveMethodAccessor(faker, fakerMethodName, EMPTY_ARRAY);
             if (fakerAccessor == null) {
-                LOG.fine("Can't find top level faker object named " + fakerMethodName + ".");
+                LOG.fine(() -> "Can't find top level faker object named " + fakerMethodName + ".");
                 return null;
             }
             Object objectWithMethodToInvoke = fakerAccessor.invoke(faker);
@@ -982,8 +964,7 @@ public class FakeValuesService {
 
             return () -> invokeAndToString(accessor, objectWithMethodToInvoke);
         } catch (Exception e) {
-            LOG.fine(e.getMessage());
-            return () -> null;
+            throw new RuntimeException("Failed to call %s(%s)".formatted(key, Arrays.toString(args)), e);
         }
     }
 
@@ -1019,21 +1000,19 @@ public class FakeValuesService {
         final String finalName = name;
         LOG.log(Level.FINE, () -> "Find accessor named " + finalName + " on " + clazz.getSimpleName() + " with args " + Arrays.toString(args));
         name = removeUnderscoreChars(name);
-        final Collection<Method> methods;
-        if (CLASS_2_METHODS_CACHE.containsKey(clazz)) {
-            methods = CLASS_2_METHODS_CACHE.get(clazz).getOrDefault(name, Collections.emptyList());
-        } else {
+
+        Map<String, Collection<Method>> classMethodsMap = CLASS_2_METHODS_CACHE.computeIfAbsent(clazz, (__) -> {
             Method[] classMethods = clazz.getMethods();
             Map<String, Collection<Method>> methodMap =
-                classMethods.length == 0 ? Collections.emptyMap() : new HashMap<>(classMethods.length);
+                classMethods.length == 0 ? emptyMap() : new HashMap<>(classMethods.length);
             for (Method m : classMethods) {
-                final String key = m.getName().toLowerCase(Locale.ROOT);
-                methodMap.computeIfAbsent(key, k -> new ArrayList<>());
-                methodMap.get(key).add(m);
+                String key = m.getName().toLowerCase(ROOT);
+                methodMap.computeIfAbsent(key, k -> new ArrayList<>()).add(m);
             }
-            CLASS_2_METHODS_CACHE.putIfAbsent(clazz, methodMap);
-            methods = methodMap.get(name);
-        }
+            return methodMap;
+        });
+
+        Collection<Method> methods = classMethodsMap.getOrDefault(name, emptyList());;
         if (methods == null) {
             return null;
         }
@@ -1049,31 +1028,26 @@ public class FakeValuesService {
     }
 
     private String removeUnderscoreChars(String string) {
-        String valueWithRemovedUnderscores = REMOVED_UNDERSCORE.get(string);
-        if (valueWithRemovedUnderscores != null) {
-            return valueWithRemovedUnderscores;
-        }
-        // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
-        if (!string.contains("_")) {
-            REMOVED_UNDERSCORE.putIfAbsent(string, string.toLowerCase(Locale.ROOT));
-            return string;
-        }
-        final char[] res = string.toCharArray();
-        int offset = 0;
-        int length = 0;
-        final int strLen = string.length();
-        for (int i = strLen - 1; i >= offset; i--) {
-            while (i > offset && string.charAt(i - offset) == '_') {
-                offset++;
+        return REMOVED_UNDERSCORE.computeIfAbsent(string, (__) -> {
+            // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
+            if (!string.contains("_")) {
+                return string.toLowerCase(ROOT);
             }
-            res[i] = res[i - offset];
-            if (res[i] != '_') {
-                length++;
+            final char[] res = string.toCharArray();
+            int offset = 0;
+            int length = 0;
+            final int strLen = string.length();
+            for (int i = strLen - 1; i >= offset; i--) {
+                while (i > offset && string.charAt(i - offset) == '_') {
+                    offset++;
+                }
+                res[i] = res[i - offset];
+                if (res[i] != '_') {
+                    length++;
+                }
             }
-        }
-        valueWithRemovedUnderscores = String.valueOf(res, strLen - length, length);
-        REMOVED_UNDERSCORE.putIfAbsent(string, valueWithRemovedUnderscores.toLowerCase(Locale.ROOT));
-        return valueWithRemovedUnderscores;
+            return String.valueOf(res, strLen - length, length).toLowerCase(ROOT);
+        });
     }
 
     /**
@@ -1087,8 +1061,8 @@ public class FakeValuesService {
         final Class<?>[] parameterTypes = accessor.getParameterTypes();
         for (int i = 0; i < accessor.getParameterCount(); i++) {
             final boolean isVarArg = i == accessor.getParameterCount() - 1 && accessor.isVarArgs();
-            Class<?> toType = primitiveToWrapper(parameterTypes[i]);
-            toType = isVarArg ? toType.getComponentType() : toType;
+            final Class<?> toType0 = primitiveToWrapper(parameterTypes[i]);
+            final Class<?> toType = isVarArg ? toType0.getComponentType() : toType0;
             try {
                 final Object coercedArgument;
                 if (toType.isEnum()) {
@@ -1105,17 +1079,15 @@ public class FakeValuesService {
                     }
                 } else {
                     if (isVarArg) {
-                        Constructor<?> ctor = CLASS_2_CONSTRUCTOR_CACHE.get(toType);
-                        if (ctor == null) {
+                        Constructor<?> ctor = CLASS_2_CONSTRUCTOR_CACHE.computeIfAbsent(toType, (__) -> {
                             final Constructor<?>[] constructors = toType.getConstructors();
                             for (Constructor<?> c : constructors) {
                                 if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == String.class) {
-                                    ctor = toType.getConstructor(String.class);
-                                    CLASS_2_CONSTRUCTOR_CACHE.putIfAbsent(toType, ctor);
-                                    break;
+                                    return getConstructorWithString(toType);
                                 }
                             }
-                        }
+                            return null;
+                        });
                         if (ctor == null) {
                             return null;
                         }
@@ -1146,17 +1118,26 @@ public class FakeValuesService {
                     } else if (BigInteger.class.isAssignableFrom(toType)) {
                         coercedArgument = new BigInteger(args[i]);
                     } else {
-                        final Constructor<?> ctor = toType.getConstructor(String.class);
+                        final Constructor<?> ctor = getConstructorWithString(toType);
                         coercedArgument = ctor.newInstance(args[i]);
                     }
                 }
                 coerced[i] = coercedArgument;
-            } catch (Exception e) {
-                LOG.fine("Unable to coerce " + args[i] + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor.");
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
+                     InvocationTargetException | NoSuchMethodException | NoSuchMethodRuntimeException e) {
+                LOG.fine("Unable to coerce " + args[i] + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor: " + e);
                 return null;
             }
         }
         return coerced;
+    }
+
+    private static Constructor<?> getConstructorWithString(Class<?> toType) {
+        try {
+            return toType.getConstructor(String.class);
+        } catch (NoSuchMethodException e) {
+            throw new NoSuchMethodRuntimeException(e);
+        }
     }
 
     private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP = new IdentityHashMap<>();
@@ -1197,5 +1178,11 @@ public class FakeValuesService {
     }
 
     private record RegExpContext(String exp, ProviderRegistration root, FakerContext context) {
+    }
+
+    private static class NoSuchMethodRuntimeException extends RuntimeException {
+        public NoSuchMethodRuntimeException(NoSuchMethodException cause) {
+            super(cause);
+        }
     }
 }
