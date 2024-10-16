@@ -6,7 +6,7 @@ import net.datafaker.transformations.JavaObjectTransformer
 import net.datafaker.transformations.Schema
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.util.*
+import java.time.LocalDate
 import java.util.function.Supplier
 
 class SchemaExampleTest {
@@ -20,7 +20,7 @@ class SchemaExampleTest {
         val schema: Schema<Any, Any> = Schema.of(
             Field.field("firstName", Supplier { faker.name().firstName() }),
             Field.field("lastName", Supplier { faker.name().lastName() }),
-            Field.field("birthDate", Supplier { faker.date().birthday() }),
+            Field.field("birthDate", Supplier { faker.timeAndDate().birthday() }),
             Field.field("id", Supplier { faker.number().positive() })
         )
 
@@ -36,7 +36,7 @@ class SchemaExampleTest {
 data class Person(
     var firstName: String,
     var lastName: String,
-    var birthDate: Date,
+    var birthDate: LocalDate,
     var id: Int
 )
 
