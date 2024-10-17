@@ -10,6 +10,7 @@ class EmojiTest extends BaseFakerTest<BaseFaker> {
         Emoji emoji = faker.emoji();
         
         return List.of(TestSpec.of(emoji::smiley, "emoji.smileys"),
-            TestSpec.of(emoji::cat, "emoji.cats"));
+            TestSpec.of(emoji::cat, "emoji.cats"),
+            TestSpec.of(emoji::vehicle, "emoji.vehicles"));
     }
 }
