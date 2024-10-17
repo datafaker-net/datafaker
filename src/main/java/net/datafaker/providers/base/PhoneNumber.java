@@ -71,7 +71,6 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
         return switch (country) {
             case "" -> detectCountryByLanguage(locale.getLanguage());
             case "CAT" -> "ES";
-            case "IND" -> "IN";
             case "NEP" -> "NP";
             case "PAK" -> "PK";
             case "BORK" -> "US"; // what the hell is BORK?
