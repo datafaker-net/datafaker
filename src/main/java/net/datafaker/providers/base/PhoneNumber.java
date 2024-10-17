@@ -79,6 +79,17 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
         };
     }
 
+    /**
+     * A hack to detect country when only a language is given.
+     * <p>
+     *     It's not correct because most languages are used in multiple countries.
+     *     If users need to generate random phone number, they should create locale with country,
+     *     e.g. {@code new Locale("ta_IN")}, and not just {@code new Locale("ta")}.
+     * </p>
+     * <p>
+     *     We keep this mapping here just for backward compatibility.
+     * </p>
+     */
     private static String detectCountryByLanguage(String language) {
         return switch (language) {
             case "en" -> "US"; // it has been used by default for English
@@ -93,6 +104,7 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
             case "be" -> "BY"; // Belarus
             case "ko" -> "KR"; // Korea
             case "he" -> "IL"; // Israel
+            case "ta" -> "IN"; // Tamil language -> India (though, Tamil is used in multiple countries)
             default -> language.toUpperCase(ROOT);
         };
     }
