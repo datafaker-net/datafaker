@@ -33,6 +33,11 @@ public class RandomService {
     }
 
     public Integer nextInt(int min, int max) {
+        if (min > max)
+            throw new IllegalArgumentException("Min (%s) > Max (%s)".formatted(min, max));
+        if (max + 1 < 0)
+            return (int) nextLong(min, max);
+
         return random.nextInt(min, max + 1);
     }
 
@@ -47,21 +52,13 @@ public class RandomService {
 
     // lifted from http://stackoverflow.com/questions/2546078/java-random-long-number-in-0-x-n-range
     public long nextLong(long n) {
-        if (n <= 0) {
-            throw new IllegalArgumentException("bound must be positive: " + n);
-        }
-
-        long bits, val;
-        do {
-            long randomLong = random.nextLong();
-            bits = (randomLong << 1) >>> 1;
-            val = bits % n;
-        } while (bits - val + (n - 1) < 0L);
-        return val;
+        return random.nextLong(n);
     }
 
     public long nextLong(long min, long max) {
-        return min + (long) (nextDouble() * (max - min));
+        return max + 1 < 0 ?
+            random.nextLong(min, max) :
+            random.nextLong(min, max + 1);
     }
 
     public double nextDouble() {

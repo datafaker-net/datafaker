@@ -2,6 +2,7 @@ package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
 import org.assertj.core.api.Condition;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -86,10 +87,24 @@ class RandomServiceTest extends AbstractFakerTest {
         assertThat(f1).isEqualTo(0.41291267F);
 
         assertThat(l1).isEqualTo(1092083446069765248L);
-        assertThat(l2).isOne();
-        assertThat(l3).isEqualTo(836L);
+        assertThat(l2).isEqualTo(0L);
+        assertThat(l3).isEqualTo(756L);
 
         assertThat(b).isFalse();
+    }
+
+    @Test
+    void equalMinAndMax() {
+        RandomService randomService = new RandomService();
+        assertThat(randomService.nextInt(42, 42)).isEqualTo(42);
+    }
+
+    @RepeatedTest(10)
+    void extremeIntegerValues() {
+        RandomService randomService = new RandomService();
+        assertThat(randomService.nextInt(1, Integer.MAX_VALUE)).isBetween(1, Integer.MAX_VALUE);
+        assertThat(randomService.nextInt(Integer.MIN_VALUE, 0)).isBetween(Integer.MIN_VALUE, 0);
+        assertThat(randomService.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE)).isBetween(Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     @ParameterizedTest
@@ -105,11 +120,17 @@ class RandomServiceTest extends AbstractFakerTest {
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
     void testLongInRange(RandomService randomService) {
-        final Condition<Long> lessThanOrEqual = new Condition<>(t -> t <= 5_000_000_000L, "should be less than or equal 5_000_000_000L");
-        final Condition<Long> greaterThanOrEqual = new Condition<>(t -> t >= -5_000_000_000L, "should be greater than or equal -5_000_000_000L");
         for (int i = 1; i < 1_000; i++) {
-            assertThat(randomService.nextLong(-5_000_000_000L, 5_000_000_000L)).is(allOf(lessThanOrEqual, greaterThanOrEqual));
+            assertThat(randomService.nextLong(-5_000_000_000L, 5_000_000_000L)).isBetween(-5_000_000_000L, 5_000_000_000L);
         }
+    }
+
+    @RepeatedTest(10)
+    void extremeLongValues() {
+        RandomService randomService = new RandomService();
+        assertThat(randomService.nextLong(0, Long.MAX_VALUE - 1)).isBetween(0L, Long.MAX_VALUE - 1);
+        assertThat(randomService.nextLong(Long.MIN_VALUE, 0)).isBetween(Long.MIN_VALUE, 0L);
+        assertThat(randomService.nextLong(Long.MIN_VALUE, Long.MAX_VALUE)).isBetween(Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
     @ParameterizedTest
