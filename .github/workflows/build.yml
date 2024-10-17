@@ -52,6 +52,9 @@ jobs:
       - name: 'Test with downstream project'
         if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
         run: cd datafaker_gen && ./mvnw clean install -Ddatafaker.version=${{ steps.version-extract.outputs.release_version }} -DskipBigQueryIntegrationTests=true
+      - name: 'Publish Test Report'
+        if: success() || failure()
+        uses: scacap/action-surefire-report@v1
       - name: 'Upload test results'
         uses: actions/upload-artifact@v4
         if: always()
