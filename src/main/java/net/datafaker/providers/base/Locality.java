@@ -25,7 +25,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
         "he", "hr", "hu", "hy", "id", "id-id", "it", "ja", "ka", "ko", "lv", "mk",
         "nb-no", "nl", "nl-be", "no-no", "pl", "pt", "pt-br",
         "ro-md", "ru", "ru-md", "sk", "sq", "sv", "sv-se",
-        "ta", "th", "tr", "uk", "vi", "zh-cn", "zh-tw"
+        "ta", "ta-in", "th", "tr", "uk", "vi", "zh-cn", "zh-tw"
     );
 
     private final List<String> shuffledLocales = new ArrayList<>();
