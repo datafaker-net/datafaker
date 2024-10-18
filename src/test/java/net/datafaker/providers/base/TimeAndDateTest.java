@@ -173,19 +173,23 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
             .as("Duration must be equal or greater than min value")
             .isLessThanOrEqualTo(generated);
         assertThat(max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated))
-            .as("Duration must be lower than max value").isTrue();
+            .as(() -> "Duration (%s) must be lower than max value (%s) / min value (%s)".formatted(generated, max, min)).isTrue();
     }
 
     @ParameterizedTest
     @MethodSource("generateDurationsWithMaxOnly")
     void durationTest(long maxValue, ChronoUnit unit) {
         Duration generated = timeAndDate.duration(maxValue, unit);
-        Duration max = Duration.of(maxValue, unit);
-        assertThat(max.compareTo(generated) > 0 || maxValue == 0)
-            .as("Duration must be lower than max value")
-            .isTrue();
+        assertThat(generated)
+            .as(() -> "Duration (%s) must be lower than max value (%s %s)".formatted(generated, maxValue, unit))
+            .isLessThan(Duration.of(maxValue, unit));
     }
 
+    @Test
+    void durationIsZero_ifMaxIsZero() {
+        assertThat(timeAndDate.duration(0, ChronoUnit.DAYS))
+            .isEqualTo(Duration.of(0, ChronoUnit.DAYS));
+    }
 
     @ParameterizedTest
     @MethodSource("generatePeriod")
@@ -196,7 +200,6 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
 
     private static Stream<Arguments> generateDurationsWithMaxOnly() {
         return Stream.of(
-            Arguments.of(0, ChronoUnit.DAYS),
             Arguments.of(100, ChronoUnit.DAYS),
             Arguments.of(456, ChronoUnit.HOURS),
             Arguments.of(43, ChronoUnit.MINUTES),

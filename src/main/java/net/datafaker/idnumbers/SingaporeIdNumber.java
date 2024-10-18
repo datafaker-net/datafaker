@@ -83,9 +83,9 @@ public class SingaporeIdNumber implements IdNumberGenerator {
         int now = LocalDate.now().getYear();
         return switch (type) {
             case SINGAPOREAN_TWENTIETH_CENTURY,
-                 FOREIGNER_TWENTIETH_CENTURY -> faker.timeAndDate().birthday(now - 1900, now - 1999);
+                 FOREIGNER_TWENTIETH_CENTURY -> faker.timeAndDate().birthday(now - 1999, now - 1900);
             case SINGAPOREAN_TWENTY_FIRST_CENTURY,
-                 FOREIGNER_TWENTY_FIRST_CENTURY -> faker.timeAndDate().birthday(now - 2000, now - 2099);
+                 FOREIGNER_TWENTY_FIRST_CENTURY -> faker.timeAndDate().birthday(Math.max(0, now - 2099), now - 2000);
         };
     }
 
