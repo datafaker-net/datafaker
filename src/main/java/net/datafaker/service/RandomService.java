@@ -28,17 +28,17 @@ public class RandomService {
         return random.nextInt();
     }
 
-    public int nextInt(int n) {
-        return random.nextInt(n);
+    public int nextInt(int maxInclusive) {
+        return random.nextInt(maxInclusive);
     }
 
-    public Integer nextInt(int min, int max) {
-        if (min > max)
-            throw new IllegalArgumentException("Min (%s) > Max (%s)".formatted(min, max));
-        if (max + 1 < 0)
-            return (int) nextLong(min, max);
+    public Integer nextInt(int minInclusive, int maxInclusive) {
+        if (minInclusive > maxInclusive)
+            throw new IllegalArgumentException("Min (%s) > Max (%s)".formatted(minInclusive, maxInclusive));
+        if (maxInclusive + 1 < 0)
+            return (int) nextLong(minInclusive, maxInclusive);
 
-        return random.nextInt(min, max + 1);
+        return random.nextInt(minInclusive, maxInclusive + 1);
     }
 
     @SuppressWarnings("unused")
@@ -50,15 +50,23 @@ public class RandomService {
         return random.nextLong();
     }
 
-    // lifted from http://stackoverflow.com/questions/2546078/java-random-long-number-in-0-x-n-range
-    public long nextLong(long n) {
-        return random.nextLong(n);
+    public long nextLong(long maxInclusive) {
+        if (maxInclusive <= 0) {
+            throw new IllegalArgumentException("bound must be positive: " + maxInclusive);
+        }
+
+        long bits, val;
+        do {
+            long randomLong = random.nextLong();
+            bits = (randomLong << 1) >>> 1;
+            val = bits % maxInclusive;
+        } while (bits - val + (maxInclusive - 1) < 0L);
+        return val;
     }
 
-    public long nextLong(long min, long max) {
-        return max + 1 < 0 ?
-            random.nextLong(min, max) :
-            random.nextLong(min, max + 1);
+    public long nextLong(long minInclusive, long maxInclusive) {
+        long result = minInclusive + (long) (nextDouble() * (maxInclusive - minInclusive));
+        return result;
     }
 
     public double nextDouble() {
