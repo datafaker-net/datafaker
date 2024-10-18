@@ -2,8 +2,9 @@
 tr:
   faker:
     name:
-      male_first_name: [Ahmet Mehmet, Hasan, Ali, Mustafa, Kemal, Murat, Emre, Serkan, İsmail, Yusuf, Hakan, Can, Onur, Eren, Orhan, Kaan, Selim, Fatih, Erhan]
-      female_first_name: [Ayşe Fatma, Elif, Zeynep, Merve, Hatice, Aylin, Sevgi, Ceren, Ebru, Sibel, Özlem, Gül, Yasemin, Derya, Deniz, Selin, Büşra, Funda, Melis]
+      male_first_name: [Mehmet, Ali, Mustafa, Ahmet, Muhammed, Hüseyin, İbrahim, Hasan, Yusuf, Ömer, Murat, İsmail, Emre, Osman, Halil, Can, Ramazan, Efe, Fatih, Emir, Abdullah, Salih, Mert, Yunus, Kadir, Enes, Emin, Kemal, Furkan, Recep, Burak, Süleyman, Hakan, Eren, Yüğüt, Adem, Mahmut, Yasin, Umut, Eymen, Metin, Berat, Faruk, Uğur, Yaşar, Bayram, Musa, Hamza, Serkan, Onur, Orhan, Bekir, Gökhan, Kerem, Arda, Veli, Aydın, Serhat, Rıza, Oğuzhan, Asaf]
+      female_first_name: [Fatma, Ayşe, Zeynep, Elif, Emine, Hatice, Nur, Zehra, Havva, Meryem, Merve, Esma, Şerife, Rabia, Esra, Melek, Büşra, Kübra, Sultan, Özlem, Hanife, Nisa, Zeliha, Yasemin, Hacer, İrem, Hülya, Sevim, Leyla, Dilek, Keziban, Yağmur, Betül, Gülsüm, Aysel, Songül, Cemile, Tuğba, Sude, Eda, Ayşegül, Aynur, Aslı, Neslihan, Zekiye, Safiye, Nuriye, İlknur]
+      last_name: [Şen, Kandemir, Çevik, Erkuran, Tüten, Öztürk, Yüzbaşıoğlu, Vural, Yücel, Sönmez, Ertekin, Dede, Uyanık, Aslan, Akbulut, Orhon, Uz, Yavuz, Erdem, Kulaç, Kaya, Selvi, Akpınar, Abacıoğlu, Çay, Işık, Özer, Tahtacı, Büyükcam, Kulaksız, Aksel, Eroğlu, Karakum, Dal, Öcal, Ayhan, Yarbil, Canacankatan, Gümüşay, Murt, Halhallı, Uluöz, Şeyhanlı, Çalışkantürk, Yılmaz, Saraçoğlu, Sezer, Demir, Kayayurt, Sürüm, Yavaşi, Turgut, Tanrıkulu, Barbaros, Aldinç, Tekin, Gülşan, Küfeciler, Almacıoğlu, Çildir, Türkdoğan, Öner, Şeliman, Yaman, Atik, Giray, Yalçınkaya, Kılıç, Şentürk, Karabağ, Değirmenci, Boduroğlu, Yıldız, Güler, Eraslan, Üzer, Pişirgen, Adanır, Koç, Korkmaz, Yenidoğan, Aydoğan, Acarbulut, Erge, Erdoğan, Öğüt, Kuşku, Pektaş, Kayacan, Gülen, Akküçük, Candan, Temel, Yenigün, Yıldırım]
       prefix: ["Bay", "Bayan", "Hanım", "Bayan", "Doktor"]
       suffix: []
       title:
