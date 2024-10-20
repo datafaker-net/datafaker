@@ -20,6 +20,7 @@ class UniversityTest extends BaseFakerTest<BaseFaker> {
     protected Collection<TestSpec> providerListTest() {
         return List.of(TestSpec.of(university::prefix, "university.prefix"),
             TestSpec.of(university::suffix, "university.suffix"),
-            TestSpec.of(university::degree, "university.degree"));
+            TestSpec.of(university::degree, "university.degree"),
+            TestSpec.of(university::place, "university.place"));
     }
 }

@@ -24,4 +24,8 @@ public class University extends AbstractProvider<BaseProviders> {
     public String suffix() {
         return resolve("university.suffix");
     }
+
+    public String place() {
+        return resolve("university.place");
+    }
 }
