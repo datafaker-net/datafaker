@@ -14,6 +14,7 @@ public class FakeCollection<T> extends FakeSequence<T> {
         super(suppliers, minLength, maxLength, randomService, nullRate);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<T> get() {
         int size = randomService.nextInt(minLength, maxLength);
@@ -43,6 +44,7 @@ public class FakeCollection<T> extends FakeSequence<T> {
             super(elems);
         }
 
+        @Override
         public FakeCollection<T> build() {
             if (maxLength < 0) {
                 maxLen(FAKE_COLLECTION_DEFAULT_SIZE);

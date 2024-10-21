@@ -58,6 +58,7 @@ public class BaseFaker implements BaseProviders {
         fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
     }
 
+    @Override
     public FakerContext getContext() {
         return context;
     }
@@ -126,6 +127,7 @@ public class BaseFaker implements BaseProviders {
      * @param numberString Template for string generation
      * @return Generated string
      */
+    @Override
     public String numerify(String numberString) {
         return fakeValuesService.numerify(numberString, context);
     }
@@ -139,6 +141,7 @@ public class BaseFaker implements BaseProviders {
      * @param letterString Template for string generation
      * @return Generated string.
      */
+    @Override
     public String letterify(String letterString) {
         return fakeValuesService.letterify(letterString, context);
     }
@@ -149,6 +152,7 @@ public class BaseFaker implements BaseProviders {
      * <p>
      * For example, the string "12??34" could be replaced with a string like "12AB34".
      */
+    @Override
     public String letterify(String letterString, boolean isUpper) {
         return fakeValuesService.letterify(letterString, context, isUpper);
     }
@@ -157,6 +161,7 @@ public class BaseFaker implements BaseProviders {
      * Applies both a {@link #numerify(String)} and a {@link #letterify(String)}
      * over the incoming string.
      */
+    @Override
     public String bothify(String string) {
         return fakeValuesService.bothify(string, context);
     }
@@ -165,6 +170,7 @@ public class BaseFaker implements BaseProviders {
      * Applies both a {@link #numerify(String)} and a {@link #letterify(String)}
      * over the incoming string.
      */
+    @Override
     public String bothify(String string, boolean isUpper) {
         return fakeValuesService.bothify(string, context, isUpper);
     }
@@ -172,6 +178,7 @@ public class BaseFaker implements BaseProviders {
     /**
      * Generates a String that matches the given regular expression.
      */
+    @Override
     public String regexify(String regex) {
         return fakeValuesService.regexify(regex, context);
     }
@@ -188,6 +195,7 @@ public class BaseFaker implements BaseProviders {
      * @param example The input string
      * @return The output string based on the input pattern
      */
+    @Override
     public String examplify(String example) {
         return fakeValuesService.examplify(example, context);
     }
@@ -203,6 +211,7 @@ public class BaseFaker implements BaseProviders {
      * @param options      Options to use while filling the template
      * @return Generated string
      */
+    @Override
     public String templatify(String string, char char2replace, String... options) {
         return fakeValuesService().templatify(string, char2replace, context, options);
     }
@@ -218,6 +227,7 @@ public class BaseFaker implements BaseProviders {
      * @param optionsMap Map with replacement rules
      * @return Generated string
      */
+    @Override
     public String templatify(String string, Map<Character, String[]> optionsMap) {
         return fakeValuesService().templatify(string, optionsMap, context);
     }
@@ -238,6 +248,7 @@ public class BaseFaker implements BaseProviders {
      *                          The odd numbers args are used for columns names, and even for column values.
      * @return Generated string
      */
+    @Override
     public String csv(int limit, String... columnExpressions) {
         return fakeValuesService().csv(limit, columnExpressions);
     }
@@ -261,22 +272,27 @@ public class BaseFaker implements BaseProviders {
      *                          The odd numbers args are used for columns names, and even for column values.
      * @return Generated string
      */
+    @Override
     public String csv(String separator, char quote, boolean withHeader, int limit, String... columnExpressions) {
         return fakeValuesService().csv(separator, quote, withHeader, limit, columnExpressions);
     }
 
+    @Override
     public String json(String... fieldExpressions) {
         return fakeValuesService().json(fieldExpressions);
     }
 
+    @Override
     public String jsona(String... fieldExpressions) {
         return fakeValuesService().jsona(fieldExpressions);
     }
 
+    @Override
     public RandomService random() {
         return this.context.getRandomService();
     }
 
+    @Override
     public FakeValuesService fakeValuesService() {
         return this.fakeValuesService;
     }
@@ -288,6 +304,7 @@ public class BaseFaker implements BaseProviders {
      * @param path   path to a file with YAML structure
      * @throws IllegalArgumentException in case of invalid path
      */
+    @Override
     public void addPath(Locale locale, Path path) {
         fakeValuesService().addPath(locale, path);
     }
@@ -299,7 +316,7 @@ public class BaseFaker implements BaseProviders {
      * @param url   url of a file with YAML structure
      * @throws IllegalArgumentException in case of invalid url
      */
-
+    @Override
     public void addUrl(Locale locale, URL url) {
         fakeValuesService().addUrl(locale, url);
     }
@@ -362,10 +379,12 @@ public class BaseFaker implements BaseProviders {
         return new FakeStream.Builder<>(suppliers).faker(this);
     }
 
+    @Override
     public String resolve(String key) {
         return this.fakeValuesService.resolve(key, this, this, context);
     }
 
+    @Override
     public String resolve(String key, Supplier<String> message) {
         return this.fakeValuesService.resolve(key, this, this, message, context);
     }
@@ -387,6 +406,7 @@ public class BaseFaker implements BaseProviders {
      * @return the evaluated string expression
      * @throws RuntimeException if unable to evaluate the expression
      */
+    @Override
     public String expression(String expression) {
         return this.fakeValuesService.expression(expression, this, getContext());
     }

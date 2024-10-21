@@ -83,6 +83,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         return "]";
     }
 
+    @Override
     public String getElementSeparator() {
         return ",";
     }
