@@ -1,5 +1,6 @@
 package net.datafaker.service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -105,6 +106,44 @@ public class RandomService {
 
     public Random getRandomInternal() {
         return random;
+    }
+
+    /**
+     * Returns a weighted random element from the given list of items.
+     * Each item should contain a weight and a value.
+     *
+     * @param items List of items, each with a weight and a value.
+     * @return The randomly selected value based on weights.
+     * @throws IllegalArgumentException If the list is empty or contains invalid weights.
+     */
+    public <T> T weightedArrayElement(List<WeightedItem<T>> items) {
+        if (items.isEmpty()) {
+            throw new IllegalArgumentException("weightedArrayElement expects a list with at least one element");
+        }
+
+        // Validate weights
+        for (WeightedItem<T> item : items) {
+            if (item.weight() <= 0) {
+                throw new IllegalArgumentException("weightedArrayElement expects all weights to be positive numbers");
+            }
+        }
+
+        // Calculate total weight
+        double totalWeight = items.stream().mapToDouble(WeightedItem::weight).sum();
+
+        // Select a random value based on weights
+        double randomValue = nextDouble() * totalWeight;
+
+        double currentWeight = 0.0;
+        for (WeightedItem<T> item : items) {
+            currentWeight += item.weight();
+            if (randomValue < currentWeight) {
+                return item.item();
+            }
+        }
+
+        // This should never happen
+        throw new IllegalStateException("weightedArrayElement failed to select a value");
     }
 
     @Override
