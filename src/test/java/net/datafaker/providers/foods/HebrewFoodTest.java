@@ -19,6 +19,7 @@ class HebrewFoodTest extends FoodFakerTest {
         food = getFaker().food();
     }
 
+    @Override
     protected FoodFaker getFaker() {
         return new FoodFaker(new Locale("he"));
     }
