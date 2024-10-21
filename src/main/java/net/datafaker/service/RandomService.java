@@ -28,12 +28,17 @@ public class RandomService {
         return random.nextInt();
     }
 
-    public int nextInt(int n) {
-        return random.nextInt(n);
+    public int nextInt(int maxExclusive) {
+        return random.nextInt(maxExclusive);
     }
 
-    public Integer nextInt(int min, int max) {
-        return random.nextInt(min, max + 1);
+    public Integer nextInt(int minInclusive, int maxInclusive) {
+        if (minInclusive > maxInclusive)
+            throw new IllegalArgumentException("Min (%s) > Max (%s)".formatted(minInclusive, maxInclusive));
+        if (maxInclusive + 1 < 0)
+            return (int) nextLong(minInclusive, maxInclusive);
+
+        return random.nextInt(minInclusive, maxInclusive + 1);
     }
 
     @SuppressWarnings("unused")
@@ -45,23 +50,33 @@ public class RandomService {
         return random.nextLong();
     }
 
-    // lifted from http://stackoverflow.com/questions/2546078/java-random-long-number-in-0-x-n-range
-    public long nextLong(long n) {
-        if (n <= 0) {
-            throw new IllegalArgumentException("bound must be positive: " + n);
+    public long nextLong(long maxInclusive) {
+        if (maxInclusive <= 0) {
+            throw new IllegalArgumentException("bound must be positive: " + maxInclusive);
         }
 
         long bits, val;
         do {
             long randomLong = random.nextLong();
             bits = (randomLong << 1) >>> 1;
-            val = bits % n;
-        } while (bits - val + (n - 1) < 0L);
+            val = bits % maxInclusive;
+        } while (bits - val + (maxInclusive - 1) < 0L);
         return val;
     }
 
+    /**
+     * A random long value within given range.
+     * If {@code min == max} then method always returns {@code min}.
+     * Otherwise, {@code max} is exclusive.
+     *
+     * @param min lower bound (inclusive)
+     * @param max upper bound (exclusive in most case)
+     * @return a random long value between {@code min} and {@code max}
+     */
     public long nextLong(long min, long max) {
-        return min + (long) (nextDouble() * (max - min));
+        return min == max ?
+            min :
+            random.nextLong(min, max);
     }
 
     public double nextDouble() {

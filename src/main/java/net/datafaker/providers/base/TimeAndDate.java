@@ -301,8 +301,8 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
     /**
      * Generates a random Duration between min and max.
      *
-     * @param min  the maximum value
-     * @param max  the minimal value
+     * @param min  the minimum value
+     * @param max  the maximum value
      * @param unit the temporal unit (day or shorter than a day)
      * @return a random Duration between {@code min} inclusive and {@code max} exclusive if {@code max} greater {@code min}.
      * @throws IllegalArgumentException if the {@code unit} is invalid.
