@@ -219,7 +219,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private String handledObjectToString(int length, String strValue) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(32);
 
         for (int k = 0; k < length; k++) {
             if (strValue.charAt(k) == quote) {

@@ -1,5 +1,12 @@
 test:
   faker:
+    book:
+      title:
+        - "Blood's a Rover"
+        - "All the King's Men"
+    address:
+      country:
+        - "Cote d'Ivoire"
     code:
       isbn_gs1:
       - "333"
