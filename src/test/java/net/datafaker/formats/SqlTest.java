@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -566,6 +567,30 @@ class SqlTest {
                 "       ('2', '8a4a0365-cd39-33c1-a52a-279b1076cf2d');" + LINE_SEPARATOR +
                 "INSERT INTO \"MyTable\" (\"Number\", \"Password\")" + LINE_SEPARATOR +
                 "VALUES ('6', 'e807efdd-b6db-319d-8342-a044274d3417');";
+
+        assertThat(sql).isEqualTo(expected);
+    }
+
+    @Test
+    void testWordTruncated() {
+        BaseFaker faker = new BaseFaker(new Locale("test"),new Random(10L));
+        Schema<Integer, ?> schema = Schema.of(
+            field("Adress", () -> faker.address().country()),
+            field("Book", () -> faker.book().title())
+        );
+
+        SqlTransformer<Integer> transformer =
+            SqlTransformer
+                .<Integer>builder()
+                .batch(4)
+                .build();
+
+        String sql = transformer.generateStream(schema,3).collect(Collectors.joining(LINE_SEPARATOR));
+
+        String expected = "INSERT INTO \"MyTable\" (\"Adress\", \"Book\")" + LINE_SEPARATOR +
+            "VALUES ('Cote d\\'Ivoire', 'All the King\\'s Men')," + LINE_SEPARATOR +
+            "       ('Cote d\\'Ivoire', 'Blood\\'s a Rover')," + LINE_SEPARATOR +
+            "       ('Cote d\\'Ivoire', 'Blood\\'s a Rover');";
 
         assertThat(sql).isEqualTo(expected);
     }
