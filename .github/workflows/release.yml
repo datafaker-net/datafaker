@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Validation for release version
         run: |
-          echo "Validating that release version ${{ github.event.inputs.tag } is a version in the correct format according to semver (MAJOR.MINOR.PATCH)"
+          echo "Validating that release version ${{ github.event.inputs.tag }} is a version in the correct format according to semver (MAJOR.MINOR.PATCH)"
           echo "${{ github.event.inputs.release_version }}" | grep -P '^2\.[0-9]+\.[0-9]+$'        
 
       - uses: actions/checkout@v4
