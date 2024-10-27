@@ -1,6 +1,13 @@
 package net.datafaker.providers.base;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,5 +21,38 @@ class GreekPhilosopherTest extends BaseFakerTest<BaseFaker> {
     @RepeatedTest(10)
     void testQuote() {
         assertThat(faker.greekPhilosopher().quote()).matches("^[a-zA-Z ,.']+$");
+    }
+
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        GreekPhilosopher greekPhilosopher = faker.greekPhilosopher();
+        return getProviderListTests(greekPhilosopher);
+    }
+
+    @Nested
+    class GreekPhilosopherInGreekTest extends BaseFakerTest<BaseFaker> {
+
+        @BeforeAll
+        void setup() {
+            this.setFaker(new BaseFaker(new Locale("el", "GR")));
+        }
+
+        @AfterAll
+        void reset() {
+            this.setFaker(this.getFaker());
+        }
+
+        @Override
+        protected Collection<TestSpec> providerListTest() {
+            GreekPhilosopher greekPhilosopher = faker.greekPhilosopher();
+            return getProviderListTests(greekPhilosopher);
+        }
+    }
+
+    private Collection<TestSpec> getProviderListTests(GreekPhilosopher greekPhilosopher) {
+        return List.of(
+            TestSpec.of(greekPhilosopher::name, "greek_philosophers.names"),
+            TestSpec.of(greekPhilosopher::quote, "greek_philosophers.quotes")
+        );
     }
 }
