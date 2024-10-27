@@ -10,6 +10,15 @@ import java.util.Locale;
 
 class AncientTest extends BaseFakerTest<BaseFaker> {
 
+    private static Collection<TestSpec> getProviderListTests(Ancient ancient) {
+        return List.of(
+            TestSpec.of(ancient::god, "ancient.god"),
+            TestSpec.of(ancient::primordial, "ancient.primordial"),
+            TestSpec.of(ancient::titan, "ancient.titan"),
+            TestSpec.of(ancient::hero, "ancient.hero")
+        );
+    }
+
     @Override
     protected Collection<TestSpec> providerListTest() {
         Ancient ancient = faker.ancient();
@@ -34,14 +43,5 @@ class AncientTest extends BaseFakerTest<BaseFaker> {
             Ancient ancient = faker.ancient();
             return getProviderListTests(ancient);
         }
-    }
-
-    private Collection<TestSpec> getProviderListTests(Ancient ancient) {
-        return List.of(
-            TestSpec.of(ancient::god, "ancient.god"),
-            TestSpec.of(ancient::primordial, "ancient.primordial"),
-            TestSpec.of(ancient::titan, "ancient.titan"),
-            TestSpec.of(ancient::hero, "ancient.hero")
-        );
     }
 }

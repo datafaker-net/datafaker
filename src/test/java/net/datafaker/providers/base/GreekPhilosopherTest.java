@@ -23,6 +23,13 @@ class GreekPhilosopherTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.greekPhilosopher().quote()).matches("^[a-zA-Z ,.']+$");
     }
 
+    private static Collection<TestSpec> getProviderListTests(GreekPhilosopher greekPhilosopher) {
+        return List.of(
+            TestSpec.of(greekPhilosopher::name, "greek_philosophers.names"),
+            TestSpec.of(greekPhilosopher::quote, "greek_philosophers.quotes")
+        );
+    }
+
     @Override
     protected Collection<TestSpec> providerListTest() {
         GreekPhilosopher greekPhilosopher = faker.greekPhilosopher();
@@ -47,12 +54,5 @@ class GreekPhilosopherTest extends BaseFakerTest<BaseFaker> {
             GreekPhilosopher greekPhilosopher = faker.greekPhilosopher();
             return getProviderListTests(greekPhilosopher);
         }
-    }
-
-    private Collection<TestSpec> getProviderListTests(GreekPhilosopher greekPhilosopher) {
-        return List.of(
-            TestSpec.of(greekPhilosopher::name, "greek_philosophers.names"),
-            TestSpec.of(greekPhilosopher::quote, "greek_philosophers.quotes")
-        );
     }
 }
