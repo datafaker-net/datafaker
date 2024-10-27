@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BaseFakerTest<T extends BaseFaker> {
 
     private static final Logger LOG = Logger.getLogger(BaseFakerTest.class.getCanonicalName());
-    protected final T faker = getFaker();
+    protected T faker = getFaker();
 
     @BeforeEach
     @SuppressWarnings("EmptyTryBlock")
@@ -36,6 +36,10 @@ public class BaseFakerTest<T extends BaseFaker> {
     @SuppressWarnings("unchecked")
     protected T getFaker() {
         return (T) new BaseFaker();
+    }
+
+    protected void setFaker(T faker) {
+        this.faker = faker;
     }
 
     protected List<String> getBaseList(String key) {
