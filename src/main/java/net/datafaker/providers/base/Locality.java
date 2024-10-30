@@ -16,16 +16,16 @@ import java.util.Set;
  */
 public class Locality extends AbstractProvider<BaseProviders> {
     private static final List<String> LOCALES = List.of(
-        "_al", "_bg", "_by", "_ca", "_ch", "_cn", "_cz", "_ee", "_ge", "_md", "_mk", "_ru", "_us",
+        "_al", "_bg", "_by", "_ca", "_ch", "_cn", "_cz", "_ee", "_ge", "_in", "_md", "_mk", "_ru", "_us",
         "ar", "be", "bg", "by", "ca", "ca-cat", "cs", "cs-cz",
         "da-dk", "de", "de-at", "de-ch",
-        "el-gr", "en", "en-au", "en-au-ocker", "en-bork", "en-ca", "en-gb", "en-ind", "en-md", "en-ms", "en-nep",
+        "el-gr", "en", "en-au", "en-au-ocker", "en-bork", "en-ca", "en-gb", "en-in", "en-md", "en-ms", "en-nep",
         "en-ng", "en-nz", "en-pak", "en-ph", "en-pk", "en-sg", "en-ug", "en-us", "en-za",
         "es", "es-ar", "es-mx", "es-py", "et", "fa", "fi-fi", "fr", "fr-ca", "fr-ch",
         "he", "hr", "hu", "hy", "id", "id-id", "it", "ja", "ka", "ko", "lv", "mk",
         "nb-no", "nl", "nl-be", "no-no", "pl", "pt", "pt-br",
         "ro-md", "ru", "ru-md", "sk", "sq", "sv", "sv-se",
-        "th", "tr", "uk", "vi", "zh-cn", "zh-tw"
+        "ta", "ta-in", "th", "tr", "uk", "vi", "zh-cn", "zh-tw"
     );
 
     private final List<String> shuffledLocales = new ArrayList<>();

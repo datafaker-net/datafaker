@@ -489,7 +489,7 @@ Supported Locales
 * en-BORK
 * en-CA
 * en-GB
-* en-IND
+* en-IN (India)
 * en-MS
 * en-NEP
 * en-NG
@@ -529,12 +529,30 @@ Supported Locales
 * sq_AL (Albanian)
 * sv
 * sv-SE
+* ta (Tamil)
 * tr
 * th_TH (Thailand)
 * uk
 * vi
 * zh_CN (Chinese)
 * zh-TW
+
+NATIVE IMAGE
+------------
+
+Since version 2.4.1, Datafaker provides **experimental** native-image support. 
+This is done by providing a `reachability-metadata.json` file in the META-INF directory.
+
+This file is currently created manually by running all the unit tests, and having an agent collect tracing info:
+
+```
+-agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image
+```
+
+Future enhancements should automate and improve this process, but if you encounter any unexpected behaviour, 
+feel free to report an issue.
+
+An example usage of this can be found here: https://github.com/datafaker-net/datafaker-native-demo
 
 LICENSE
 -------

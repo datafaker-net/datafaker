@@ -219,19 +219,16 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private String handledObjectToString(int length, String strValue) {
-        StringJoiner joiner = null;
+        StringBuilder builder = new StringBuilder(length);
 
-        int j = 0;
         for (int k = 0; k < length; k++) {
             if (strValue.charAt(k) == quote) {
-                if (joiner == null) {
-                    joiner = new StringJoiner("" + quote);
-                }
-                joiner.add(strValue.substring(j, k + 1));
-                j = k + 1;
+                builder.append('\\').append(quote);
+            }else {
+                builder.append(strValue.charAt(k));
             }
         }
-        return joiner == null ? strValue : joiner.toString();
+        return builder.toString();
     }
 
     private String handlePrimitivesInArray(Class<?> componentType, Object value) {

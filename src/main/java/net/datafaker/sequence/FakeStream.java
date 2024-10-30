@@ -12,6 +12,7 @@ public class FakeStream<T> extends FakeSequence<T> {
         super(suppliers, minLength, maxLength, randomService, nullRate);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Stream<T> get() {
         if (isInfinite()) {
@@ -22,6 +23,7 @@ public class FakeStream<T> extends FakeSequence<T> {
         return Stream.generate(this::singleton).limit(size);
     }
 
+    @Override
     public boolean isInfinite() {
         return maxLength < 0;
     }

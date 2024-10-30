@@ -32,8 +32,8 @@
         <google.javaformat.version>1.17.0</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <jbanking.version>4.2.0</jbanking.version>
-        <junit.version>5.11.2</junit.version>
-        <libphonenumber.version>8.13.47</libphonenumber.version>
+        <junit.version>5.11.3</junit.version>
+        <libphonenumber.version>8.13.49</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
@@ -45,7 +45,7 @@
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.5.1</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-        <mockito-core.version>5.14.1</mockito-core.version>
+        <mockito-core.version>5.14.2</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.26.2</javaparser.version>
