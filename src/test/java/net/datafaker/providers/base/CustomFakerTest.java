@@ -4,14 +4,13 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import net.datafaker.service.RandomService;
-import net.datafaker.service.WeightedItem;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -32,7 +31,7 @@ class CustomFakerTest {
 
     // TODO: 1. provider
     public static class Insect extends AbstractProvider<BaseProviders> {
-        private static final String[] INSECT_NAMES = {"Ant", "Beetle", "Butterfly", "Wasp"};
+        private static final String[] INSECT_NAMES = { "Ant", "Beetle", "Butterfly", "Wasp" };
 
         public Insect(BaseProviders faker) {
             super(faker);
@@ -43,10 +42,10 @@ class CustomFakerTest {
         }
 
         public String weightedInsectName() {
-            List<WeightedItem<String>> insects = new ArrayList<>();
-            insects.add(new WeightedItem<>(6, "Driver ant"));
-            insects.add(new WeightedItem<>(3, "Fire ant"));
-            insects.add(new WeightedItem<>(1, "Harvester ant"));
+            List<Map.Entry<Double, String>> insects = new ArrayList<>();
+            insects.add(new AbstractMap.SimpleEntry<>(6.0, "Driver ant"));
+            insects.add(new AbstractMap.SimpleEntry<>(3.0, "Fire ant"));
+            insects.add(new AbstractMap.SimpleEntry<>(1.0, "Harvester ant"));
 
             return faker.random().weightedArrayElement(insects);
         }

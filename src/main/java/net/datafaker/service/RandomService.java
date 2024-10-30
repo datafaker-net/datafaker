@@ -1,6 +1,7 @@
 package net.datafaker.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -109,41 +110,39 @@ public class RandomService {
     }
 
     /**
-     * Returns a weighted random element from the given list of items.
-     * Each item should contain a weight and a value.
+     * Returns a weighted random element from the given list, where each element is represented as a Map.Entry
+     * with the key being the weight (Double) and the value being the actual element (T).
      *
-     * @param items List of items, each with a weight and a value.
-     * @return The randomly selected value based on weights.
-     * @throws IllegalArgumentException If the list is empty or contains invalid weights.
+     * @param items List of entries where each entry has a weight and a corresponding value.
+     * @param <T> The type of the element to pick from.
+     * @return A randomly selected element based on its weight.
+     * @throws IllegalArgumentException if the list is null, empty, or contains non-positive weights.
      */
-    public <T> T weightedArrayElement(List<WeightedItem<T>> items) {
-        if (items.isEmpty()) {
-            throw new IllegalArgumentException("weightedArrayElement expects a list with at least one element");
+    public <T> T weightedArrayElement(List<Map.Entry<Double, T>> items) {
+        if (items == null || items.isEmpty()) {
+            throw new IllegalArgumentException("weightedArrayElement expects a non-empty list");
         }
 
-        // Validate weights
-        for (WeightedItem<T> item : items) {
-            if (item.weight() <= 0) {
-                throw new IllegalArgumentException("weightedArrayElement expects all weights to be positive numbers");
+        double totalWeight = 0.0;
+        for (Map.Entry<Double, T> item : items) {
+            if (item.getKey() <= 0) {
+                throw new IllegalArgumentException("All weights must be positive numbers");
             }
+            totalWeight += item.getKey();
         }
 
-        // Calculate total weight
-        double totalWeight = items.stream().mapToDouble(WeightedItem::weight).sum();
-
-        // Select a random value based on weights
-        double randomValue = nextDouble() * totalWeight;
-
+        double randomValue = random.nextDouble() * totalWeight;
         double currentWeight = 0.0;
-        for (WeightedItem<T> item : items) {
-            currentWeight += item.weight();
+
+        for (Map.Entry<Double, T> item : items) {
+            currentWeight += item.getKey();
             if (randomValue < currentWeight) {
-                return item.item();
+                return item.getValue();
             }
         }
 
-        // This should never happen
-        throw new IllegalStateException("weightedArrayElement failed to select a value");
+        // Return the last element in case of rounding errors
+        return items.get(items.size() - 1).getValue();
     }
 
     @Override

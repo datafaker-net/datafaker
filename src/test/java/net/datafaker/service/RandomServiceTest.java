@@ -1,15 +1,22 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
+
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.AbstractMap;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import net.datafaker.utils.TestConstants;
 import static org.assertj.core.api.Assertions.allOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,6 +25,73 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @author pmiklos
  */
 class RandomServiceTest extends AbstractFakerTest {
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withSingleElement(RandomService randomService) {
+        List<Map.Entry<Double, String>> items = List.of(new AbstractMap.SimpleEntry<>(TestConstants.ELEMENT_1_WEIGHT, TestConstants.ELEMENT_1));
+        String result = randomService.weightedArrayElement(items);
+        assertThat(result).isEqualTo(TestConstants.ELEMENT_1);
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withMultipleElements(RandomService randomService) {
+        List<Map.Entry<Double, String>> items = List.of(
+            new AbstractMap.SimpleEntry<>(TestConstants.ELEMENT_1_WEIGHT, TestConstants.ELEMENT_1),
+            new AbstractMap.SimpleEntry<>(TestConstants.ELEMENT_2_WEIGHT, TestConstants.ELEMENT_2),
+            new AbstractMap.SimpleEntry<>(TestConstants.ELEMENT_3_WEIGHT, TestConstants.ELEMENT_3)
+        );
+
+        Map<String, Integer> counts = countResults(randomService, items);
+
+        assertThat(counts).containsKeys(TestConstants.ELEMENT_1, TestConstants.ELEMENT_2, TestConstants.ELEMENT_3);
+        assertThat(counts.get(TestConstants.ELEMENT_1)).isLessThan(counts.get(TestConstants.ELEMENT_2));
+        assertThat(counts.get(TestConstants.ELEMENT_2)).isLessThan(counts.get(TestConstants.ELEMENT_3));
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withNullItems(RandomService randomService) {
+        assertThatThrownBy(() -> randomService.weightedArrayElement(null))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("weightedArrayElement expects a non-empty list");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withEmptyItems(RandomService randomService) {
+        List<Map.Entry<Double, String>> items = Collections.emptyList();
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("weightedArrayElement expects a non-empty list");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withZeroWeight(RandomService randomService) {
+        List<Map.Entry<Double, String>> items = List.of(
+            new AbstractMap.SimpleEntry<>(TestConstants.ZERO_WEIGHT, TestConstants.ELEMENT_1),
+            new AbstractMap.SimpleEntry<>(TestConstants.ELEMENT_2_WEIGHT, TestConstants.ELEMENT_2)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("All weights must be positive numbers");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withNegativeWeight(RandomService randomService) {
+        List<Map.Entry<Double, String>> items = List.of(
+            new AbstractMap.SimpleEntry<>(TestConstants.NEGATIVE_WEIGHT, TestConstants.ELEMENT_1),
+            new AbstractMap.SimpleEntry<>(TestConstants.ELEMENT_2_WEIGHT, TestConstants.ELEMENT_2)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("All weights must be positive numbers");
+    }
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
@@ -122,6 +196,15 @@ class RandomServiceTest extends AbstractFakerTest {
     @MethodSource("randomServiceProvider")
     void testDefaultHex(RandomService randomService) {
         assertThat(randomService.hex()).matches("^[0-9A-F]{8}$");
+    }
+
+    private Map<String, Integer> countResults(RandomService randomService, List<Map.Entry<Double, String>> items) {
+        Map<String, Integer> counts = new HashMap<>();
+        for (int i = 0; i < TestConstants.ITERATIONS; i++) {
+            String result = randomService.weightedArrayElement(items);
+            counts.merge(result, 1, Integer::sum);
+        }
+        return counts;
     }
 
     private static Stream<Arguments> randomServiceProvider() {
