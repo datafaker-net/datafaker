@@ -29,7 +29,7 @@ class RandomServiceTest extends AbstractFakerTest {
     @MethodSource("randomServiceProvider")
     void testWeightedArrayElement_withSingleElement(RandomService randomService) {
         List<Map<String, Object>> items = List.of(
-            Map.of(TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_1_WEIGHT, TestConstants.VALUE_KEY, TestConstants.ELEMENT_1)
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_1_WEIGHT)
         );
 
         String result = randomService.weightedArrayElement(items);
@@ -40,9 +40,9 @@ class RandomServiceTest extends AbstractFakerTest {
     @MethodSource("randomServiceProvider")
     void testWeightedArrayElement_withMultipleElements(RandomService randomService) {
         List<Map<String, Object>> items = List.of(
-            Map.of(TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_1_WEIGHT, TestConstants.VALUE_KEY, TestConstants.ELEMENT_1),
-            Map.of(TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT, TestConstants.VALUE_KEY, TestConstants.ELEMENT_2),
-            Map.of(TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_3_WEIGHT, TestConstants.VALUE_KEY, TestConstants.ELEMENT_3)
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_1_WEIGHT),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_2, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_3, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_3_WEIGHT)
         );
 
         Map<String, Integer> counts = countResults(randomService, items);
@@ -73,8 +73,8 @@ class RandomServiceTest extends AbstractFakerTest {
     @MethodSource("randomServiceProvider")
     void testWeightedArrayElement_withZeroWeight(RandomService randomService) {
         List<Map<String, Object>> items = List.of(
-            Map.of(TestConstants.WEIGHT_KEY, TestConstants.ZERO_WEIGHT, TestConstants.VALUE_KEY, TestConstants.ELEMENT_1),
-            Map.of(TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT, TestConstants.VALUE_KEY, TestConstants.ELEMENT_2)
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, TestConstants.ZERO_WEIGHT),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_2, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT)
         );
 
         assertThatThrownBy(() -> randomService.weightedArrayElement(items))
@@ -86,8 +86,8 @@ class RandomServiceTest extends AbstractFakerTest {
     @MethodSource("randomServiceProvider")
     void testWeightedArrayElement_withNegativeWeight(RandomService randomService) {
         List<Map<String, Object>> items = List.of(
-            Map.of(TestConstants.WEIGHT_KEY, TestConstants.NEGATIVE_WEIGHT, TestConstants.VALUE_KEY, TestConstants.ELEMENT_1),
-            Map.of(TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT, TestConstants.VALUE_KEY, TestConstants.ELEMENT_2)
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, TestConstants.NEGATIVE_WEIGHT),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_2, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT)
         );
 
         assertThatThrownBy(() -> randomService.weightedArrayElement(items))
