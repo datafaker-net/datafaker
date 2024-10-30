@@ -6,6 +6,8 @@ import java.util.Objects;
 import java.util.Random;
 
 public class RandomService {
+    private static final String WEIGHT_KEY = "weight";
+    private static final String VALUE_KEY = "value";
     private static final char[] HEX_UP = "0123456789ABCDEF".toCharArray();
     private static final char[] HEX_LOWER = "0123456789abcdef".toCharArray();
     private static final Random SHARED_RANDOM = new Random();
@@ -110,39 +112,44 @@ public class RandomService {
     }
 
     /**
-     * Returns a weighted random element from the given list, where each element is represented as a Map.Entry
-     * with the key being the weight (Double) and the value being the actual element (T).
+     * Returns a weighted random element from the given list, where each element is represented as a Map
+     * containing the weight and the corresponding value.
      *
-     * @param items List of entries where each entry has a weight and a corresponding value.
-     * @param <T> The type of the element to pick from.
+     * @param items A list of maps, where each map contains:
+     *              - weight: A Double representing the weight of the element, influencing its selection probability.
+     *              - value: The actual element of type T to be randomly selected based on its weight.
+     * @param <T> The type of the element to be selected from the list.
      * @return A randomly selected element based on its weight.
-     * @throws IllegalArgumentException if the list is null, empty, or contains non-positive weights.
+     * @throws IllegalArgumentException if the list is null, empty, or if any weight is non-positive.
      */
-    public <T> T weightedArrayElement(List<Map.Entry<Double, T>> items) {
+    public <T> T weightedArrayElement(List<Map<String, Object>> items) {
         if (items == null || items.isEmpty()) {
             throw new IllegalArgumentException("weightedArrayElement expects a non-empty list");
         }
 
         double totalWeight = 0.0;
-        for (Map.Entry<Double, T> item : items) {
-            if (item.getKey() <= 0) {
+
+        // Validate weights and calculate totalWeight
+        for (Map<String, Object> item : items) {
+            double weight = (double) item.get(WEIGHT_KEY);
+            if (weight <= 0) {
                 throw new IllegalArgumentException("All weights must be positive numbers");
             }
-            totalWeight += item.getKey();
+            totalWeight += weight;
         }
 
         double randomValue = random.nextDouble() * totalWeight;
         double currentWeight = 0.0;
 
-        for (Map.Entry<Double, T> item : items) {
-            currentWeight += item.getKey();
+        for (Map<String, Object> item : items) {
+            currentWeight += (double) item.get(WEIGHT_KEY);
             if (randomValue < currentWeight) {
-                return item.getValue();
+                return (T) item.get(VALUE_KEY);
             }
         }
 
         // Return the last element in case of rounding errors
-        return items.get(items.size() - 1).getValue();
+        return (T) items.get(items.size() - 1).get(VALUE_KEY);
     }
 
     @Override

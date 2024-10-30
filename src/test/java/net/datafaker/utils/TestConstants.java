@@ -1,6 +1,8 @@
 package net.datafaker.utils;
 
 public class TestConstants {
+    public static final String WEIGHT_KEY = "weight";
+    public static final String VALUE_KEY = "value";
     public static final String ELEMENT_1 = "Element1";
     public static final String ELEMENT_2 = "Element2";
     public static final String ELEMENT_3 = "Element3";
