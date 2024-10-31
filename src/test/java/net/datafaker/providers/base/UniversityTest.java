@@ -9,11 +9,12 @@ import java.util.Collection;
 
 class UniversityTest extends BaseFakerTest<BaseFaker> {
 
+    private static final String UNIVERSITY_MATCHER = "[A-Za-z'() öèü-]+";
     private final University university = faker.university();
 
     @Test
     void testName() {
-        assertThat(university.name()).matches("[A-Za-z'() ]+");
+        assertThat(university.name()).matches(UNIVERSITY_MATCHER);
     }
 
     @Override
@@ -21,6 +22,6 @@ class UniversityTest extends BaseFakerTest<BaseFaker> {
         return List.of(TestSpec.of(university::prefix, "university.prefix"),
             TestSpec.of(university::suffix, "university.suffix"),
             TestSpec.of(university::degree, "university.degree"),
-            TestSpec.of(university::place, "university.place"));
+            TestSpec.of(university::place, "university.place", UNIVERSITY_MATCHER));
     }
 }
