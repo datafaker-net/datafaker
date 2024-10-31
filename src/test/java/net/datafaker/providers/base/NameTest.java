@@ -1,5 +1,8 @@
 package net.datafaker.providers.base;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -88,5 +91,52 @@ class NameTest extends BaseFakerTest<BaseFaker> {
     void test() {
         var faker = new BaseFaker(new Locale("id"));
         System.out.println(faker.name().name());
+    }
+
+    @Nested
+    class NameInGreekTest extends BaseFakerTest<BaseFaker> {
+
+        private Name name;
+
+        @BeforeAll
+        void setup() {
+            this.setFaker(new BaseFaker(new Locale("el", "GR")));
+            this.name = faker.name();
+        }
+
+        @AfterAll
+        void reset() {
+            this.setFaker(this.getFaker());
+        }
+
+        @RepeatedTest(10)
+        void testName() {
+            assertThat(name.fullName()).matches("(\\p{L}+\\.?( )?){2,3}");
+        }
+
+        @Test
+        void testFullName() {
+            testName();
+        }
+
+        @Test
+        void testFirstName() {
+            assertThat(name.firstName()).matches("\\p{L}+");
+        }
+
+        @RepeatedTest(10)
+        void testFemaleFirstName() {
+            assertThat(name.femaleFirstName()).matches("\\p{L}+");
+        }
+
+        @RepeatedTest(10)
+        void testMaleFirstName() {
+            assertThat(name.malefirstName()).matches("\\p{L}+");
+        }
+
+        @Test
+        void testPrefix() {
+            assertThat(name.prefix()).matches("\\p{L}+\\.?");
+        }
     }
 }
