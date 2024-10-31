@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -159,6 +160,47 @@ class RandomServiceTest extends AbstractFakerTest {
         assertThatThrownBy(() -> randomService.weightedArrayElement(items))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Weight must be a positive number and cannot be NaN or infinite");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withNullItem(RandomService randomService) {
+        List<Map<String, Object>> items = new ArrayList<>();
+        items.add(null);
+        items.add(Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_1_WEIGHT));
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Item cannot be null or empty");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withEmptyItem(RandomService randomService) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_1_WEIGHT)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Item cannot be null or empty");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withNullValue(RandomService randomService) {
+        List<Map<String, Object>> items = new ArrayList<>();
+        
+        Map<String, Object> itemWithNullValue = new HashMap<>();
+        itemWithNullValue.put(TestConstants.VALUE_KEY, null);
+        itemWithNullValue.put(TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_1_WEIGHT);
+
+        items.add(itemWithNullValue);
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Value cannot be null");
     }
 
     @ParameterizedTest
