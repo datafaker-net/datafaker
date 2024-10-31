@@ -33,7 +33,7 @@ class RandomServiceTest extends AbstractFakerTest {
         assertThat(randomService.nextLong(1)).isZero();
 
         for (int i = 1; i < 10; i++) {
-            assertThat(randomService.nextLong(2)).isLessThan(2L);
+            assertThat(randomService.nextLong(2)).isGreaterThanOrEqualTo(0).isLessThan(2L);
         }
     }
 
@@ -87,7 +87,7 @@ class RandomServiceTest extends AbstractFakerTest {
         assertThat(f1).isEqualTo(0.41291267F);
 
         assertThat(l1).isEqualTo(1092083446069765248L);
-        assertThat(l2).isEqualTo(1L);
+        assertThat(l2).isEqualTo(0L);
         assertThat(l3).isEqualTo(538L);
 
         assertThat(b).isFalse();

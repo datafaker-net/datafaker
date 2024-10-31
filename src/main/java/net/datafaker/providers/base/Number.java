@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.service.Range;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -60,8 +62,8 @@ public class Number extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @param min the lower bound (include min)
-     * @param max the upper bound (not include max)
+     * @param min the lower bound (inclusive)
+     * @param max the upper bound (exclusive in most cases)
      * @return a random number on faker.number() between min and max
      * if min = max, return min
      */
@@ -71,26 +73,31 @@ public class Number extends AbstractProvider<BaseProviders> {
         final long realMax = Math.max(min, max);
         final long amplitude = realMax - realMin;
         if (amplitude >= 0) {
-            return faker.random().nextLong(amplitude) + realMin;
+            return faker.random().nextLong(Range.inclusiveExclusive(realMin, realMax));
         }
         return decimalBetween(realMin, realMax).longValue();
     }
 
     /**
      * @param numberOfDigits the number of digits the generated value should have
-     * @param strict         whether or not the generated value should have exactly <code>numberOfDigits</code>
+     * @param strict         NOT USED
+     * @deprecated use {@link #randomNumber(int)} instead
      */
+    @Deprecated
     public long randomNumber(int numberOfDigits, boolean strict) {
+        return randomNumber(numberOfDigits);
+    }
+
+    /**
+     * @param numberOfDigits the number of digits the generated value should have
+     */
+    public long randomNumber(int numberOfDigits) {
         if (numberOfDigits <= 0) {
-            return faker.random().nextInt(1);
+            throw new IllegalArgumentException("Number of digits must be positive");
         }
         long min = pow(10, numberOfDigits - 1);
-        if (strict) {
-            long max = min * 10;
-            return faker.random().nextLong(max - min) + min;
-        }
-
-        return faker.random().nextLong(min * 10);
+        long max = min * 10;
+        return faker.random().nextLong(min, max);
     }
 
     private long pow(long value, int d) {
@@ -108,8 +115,7 @@ public class Number extends AbstractProvider<BaseProviders> {
      * Returns a random number
      */
     public long randomNumber() {
-        int numberOfDigits = faker.random().nextInt(1, 10);
-        return randomNumber(numberOfDigits, false);
+        return faker.random().nextLong();
     }
 
     public double randomDouble(int maxNumberOfDecimals, int min, int max) {

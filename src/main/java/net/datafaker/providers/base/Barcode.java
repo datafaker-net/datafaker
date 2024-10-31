@@ -45,7 +45,7 @@ public class Barcode extends AbstractProvider<BaseProviders> {
 
     private long ean(int length) {
         long firstPart = switch (length) {
-            case 8, 12, 13, 14 -> this.faker.number().randomNumber(length - 1, true);
+            case 8, 12, 13, 14 -> this.faker.number().randomNumber(length - 1);
             default -> 0;
         };
         int odd = 0;
