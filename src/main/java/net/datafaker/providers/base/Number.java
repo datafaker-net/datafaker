@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.service.Range;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -60,8 +62,8 @@ public class Number extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @param min the lower bound (include min)
-     * @param max the upper bound (not include max)
+     * @param min the lower bound (inclusive)
+     * @param max the upper bound (exclusive in most cases)
      * @return a random number on faker.number() between min and max
      * if min = max, return min
      */
@@ -71,7 +73,7 @@ public class Number extends AbstractProvider<BaseProviders> {
         final long realMax = Math.max(min, max);
         final long amplitude = realMax - realMin;
         if (amplitude >= 0) {
-            return faker.random().nextLong(amplitude) + realMin;
+            return faker.random().nextLong(Range.inclusiveExclusive(realMin, realMax));
         }
         return decimalBetween(realMin, realMax).longValue();
     }
