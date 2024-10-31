@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.Objects.requireNonNullElse;
+
 /**
  * This is a Copy On Write map. The main idea behind this is that
  * there is lots of static info per provider to make the providers operate.
@@ -59,6 +62,7 @@ public class CopyOnWriteMap<K, V> implements Map<K, V> {
 
     @Override
     public V put(K key, V value) {
+        requireNonNull(value, () -> "value is null for key " + key);
         Map<K, V> newMap = mapSupplier.get();
         newMap.putAll(map);
         final V result = newMap.put(key, value);
@@ -101,5 +105,16 @@ public class CopyOnWriteMap<K, V> implements Map<K, V> {
     @Override
     public Set<Entry<K, V>> entrySet() {
         return map.entrySet();
+    }
+
+    @Override
+    public String toString() {
+        return map.toString();
+    }
+
+    @Override
+    public V getOrDefault(Object key, V defaultValue) {
+        V v = get(key);
+        return requireNonNullElse(v, defaultValue);
     }
 }
