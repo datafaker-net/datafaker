@@ -2,14 +2,14 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UniversityTest extends BaseFakerTest<BaseFaker> {
 
-    private static final String UNIVERSITY_MATCHER = "[A-Za-z'() öèü-]+";
+    private static final String UNIVERSITY_MATCHER = "[A-Za-z'() öèü\\-.]+";
     private final University university = faker.university();
 
     @Test
