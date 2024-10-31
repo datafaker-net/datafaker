@@ -218,7 +218,11 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(65, 98, ChronoUnit.SECONDS),
             Arguments.of(76, 100, ChronoUnit.MILLIS),
             Arguments.of(879, 1030, ChronoUnit.MICROS),
-            Arguments.of(879, 1030, ChronoUnit.NANOS)
+            Arguments.of(879, 1030, ChronoUnit.NANOS),
+            Arguments.of(0, Long.MAX_VALUE, ChronoUnit.NANOS),
+            Arguments.of(Long.MIN_VALUE, 0, ChronoUnit.NANOS),
+            Arguments.of(Long.MAX_VALUE - 1, Long.MAX_VALUE, ChronoUnit.NANOS),
+            Arguments.of(Long.MIN_VALUE, Long.MAX_VALUE, ChronoUnit.NANOS)
         );
     }
 

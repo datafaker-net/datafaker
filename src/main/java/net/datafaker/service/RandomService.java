@@ -45,6 +45,10 @@ public class RandomService {
         return random.nextInt(minInclusive, maxInclusive + 1);
     }
 
+    public int nextInt(Range<Integer> range) {
+        return (int) nextLong(range.cast(Integer::longValue));
+    }
+
     @SuppressWarnings("unused")
     public float nextFloat() {
         return random.nextFloat();
@@ -54,18 +58,28 @@ public class RandomService {
         return random.nextLong();
     }
 
-    public long nextLong(long maxInclusive) {
-        if (maxInclusive <= 0) {
-            throw new IllegalArgumentException("bound must be positive: " + maxInclusive);
+    public long nextLong(long maxExclusive) {
+        if (maxExclusive <= 0) {
+            throw new IllegalArgumentException("bound must be positive: " + maxExclusive);
         }
+        return nextLong(0, maxExclusive);
+    }
 
-        long bits, val;
-        do {
-            long randomLong = random.nextLong();
-            bits = (randomLong << 1) >>> 1;
-            val = bits % maxInclusive;
-        } while (bits - val + (maxInclusive - 1) < 0L);
-        return val;
+    public long nextLong(Range<Long> range) {
+        return switch (range.from().end()) {
+            case EXCLUSIVE -> switch (range.to().end()) {
+                case EXCLUSIVE -> random.nextLong(plusOne(range.from().value()), range.to().value());
+                case INCLUSIVE -> random.nextLong(plusOne(range.from().value()), plusOne(range.to().value()));
+            };
+            case INCLUSIVE -> switch (range.to().end()) {
+                case EXCLUSIVE -> random.nextLong(range.from().value(), range.to().value());
+                case INCLUSIVE -> random.nextLong(range.from().value(), plusOne(range.to().value()));
+            };
+        };
+    }
+
+    private static long plusOne(long value) {
+        return value == Long.MAX_VALUE ? value : value + 1;
     }
 
     /**
@@ -74,7 +88,7 @@ public class RandomService {
      * Otherwise, {@code max} is exclusive.
      *
      * @param min lower bound (inclusive)
-     * @param max upper bound (exclusive in most case)
+     * @param max upper bound (exclusive in most cases)
      * @return a random long value between {@code min} and {@code max}
      */
     public long nextLong(long min, long max) {
@@ -87,6 +101,11 @@ public class RandomService {
         return random.nextDouble();
     }
 
+    /**
+     * @param min (inclusive)
+     * @param max (inclusive)
+     * @return a random double value between {@code min} and {@code max} (both inclusive)
+     */
     public double nextDouble(double min, double max) {
         return min + (nextDouble() * (max - min));
     }

@@ -15,6 +15,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class NumberTest extends BaseFakerTest<BaseFaker> {
 
@@ -62,19 +63,17 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
     void testRandomNumberWithSingleDigitStrict() {
         final Number number = faker.number();
         for (int i = 0; i < 100; ++i) {
-            long value = number.randomNumber(1, true);
+            long value = number.randomNumber(1);
             assertThat(value).isLessThan(10L)
                 .isGreaterThanOrEqualTo(0L);
         }
     }
 
     @Test
-    void testRandomNumberWithZeroDigitsStrict() {
+    void randomNumberWithZeroDigits() {
         final Number number = faker.number();
-        for (int i = 0; i < 100; ++i) {
-            long value = number.randomNumber(0, true);
-            assertThat(value).isZero();
-        }
+        assertThatThrownBy(() -> number.randomNumber(0))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -82,7 +81,7 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
         final Number number = faker.number();
         for (int i = 1; i < 9; ++i) {
             for (int x = 0; x < 100; ++x) {
-                long value = number.randomNumber(i, true);
+                long value = number.randomNumber(i);
                 String stringValue = String.valueOf(value);
                 assertThat(stringValue).hasSize(i);
             }

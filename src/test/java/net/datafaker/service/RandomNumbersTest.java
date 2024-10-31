@@ -14,12 +14,34 @@ class RandomNumbersTest {
 
     @Test
     void nextInt_minInclusive_maxExclusive() {
+        assertThat(all(() -> randomService.nextInt(3))).containsExactly(0, 1, 2);
+        assertThat(all(() -> randomService.nextInt(2, 4))).containsExactly(2, 3, 4); // legacy
         assertThat(all(() -> randomService.nextLong(3))).containsExactly(0L, 1L, 2L);
         assertThat(all(() -> randomService.nextLong(2, 4))).containsExactly(2L, 3L);
-        assertThat(all(() -> randomService.nextInt(3))).containsExactly(0, 1, 2);
+    }
 
-        // inclusive: see https://github.com/datafaker-net/datafaker/issues/1395
-        assertThat(all(() -> randomService.nextInt(2, 4))).containsExactly(2, 3, 4);
+    @Test
+    void range_inclusive() {
+        assertThat(all(() -> randomService.nextInt(Range.inclusive(2, 4)))).containsExactly(2, 3, 4);
+        assertThat(all(() -> randomService.nextLong(Range.inclusive(2L, 4L)))).containsExactly(2L, 3L, 4L);
+    }
+
+    @Test
+    void range_inclusive_exclusive() {
+        assertThat(all(() -> randomService.nextInt(Range.inclusiveExclusive(2, 5)))).containsExactly(2, 3, 4);
+        assertThat(all(() -> randomService.nextLong(Range.inclusiveExclusive(2L, 5L)))).containsExactly(2L, 3L, 4L);
+    }
+
+    @Test
+    void range_exclusive_inclusive() {
+        assertThat(all(() -> randomService.nextInt(Range.exclusiveInclusive(2, 5)))).containsExactly(3, 4, 5);
+        assertThat(all(() -> randomService.nextLong(Range.exclusiveInclusive(2L, 5L)))).containsExactly(3L, 4L, 5L);
+    }
+
+    @Test
+    void range_exclusive() {
+        assertThat(all(() -> randomService.nextLong(Range.exclusive(2L, 5L)))).containsExactly(3L, 4L);
+        assertThat(all(() -> randomService.nextInt(Range.exclusive(2, 5)))).containsExactly(3, 4);
     }
 
     @RepeatedTest(100)
@@ -35,5 +57,4 @@ class RandomNumbersTest {
         }
         return result;
     }
-
 }
