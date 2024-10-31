@@ -72,6 +72,58 @@ class RandomServiceTest extends AbstractFakerTest {
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withMissingWeightKey(RandomService randomService) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_2, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Each item must contain 'weight' and 'value' keys");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withMissingValueKey(RandomService randomService) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_1_WEIGHT),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_2, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Each item must contain 'weight' and 'value' keys");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withInvalidWeightType(RandomService randomService) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, TestConstants.STRING_WEIGHT),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_2, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Weight must be a non-null Double");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withNaNWeight(RandomService randomService) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, Double.NaN),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_2, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Weight must be a positive number and cannot be NaN or infinite");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
     void testWeightedArrayElement_withZeroWeight(RandomService randomService) {
         List<Map<String, Object>> items = List.of(
             Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, TestConstants.ZERO_WEIGHT),
@@ -80,7 +132,7 @@ class RandomServiceTest extends AbstractFakerTest {
 
         assertThatThrownBy(() -> randomService.weightedArrayElement(items))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("All weights must be positive numbers");
+            .hasMessage("Weight must be a positive number and cannot be NaN or infinite");
     }
 
     @ParameterizedTest
@@ -93,7 +145,20 @@ class RandomServiceTest extends AbstractFakerTest {
 
         assertThatThrownBy(() -> randomService.weightedArrayElement(items))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("All weights must be positive numbers");
+            .hasMessage("Weight must be a positive number and cannot be NaN or infinite");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testWeightedArrayElement_withInfiniteWeight(RandomService randomService) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_1, TestConstants.WEIGHT_KEY, Double.POSITIVE_INFINITY),
+            Map.of(TestConstants.VALUE_KEY, TestConstants.ELEMENT_2, TestConstants.WEIGHT_KEY, TestConstants.ELEMENT_2_WEIGHT)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Weight must be a positive number and cannot be NaN or infinite");
     }
 
     @ParameterizedTest

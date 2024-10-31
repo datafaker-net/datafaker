@@ -128,36 +128,73 @@ public class RandomService {
 
     /**
      * Returns a weighted random element from the given list, where each element is represented as a Map
-     * containing the weight and the corresponding value.
+     * containing a weight and the corresponding value.
      *
      * @param items A list of maps, where each map contains:
      *              - weight: A Double representing the weight of the element, influencing its selection probability.
      *              - value: The actual element of type T to be randomly selected based on its weight.
-     * @param <T> The type of the element to be selected from the list.
+     * @param <T> The type of the element to be selected from the list. The value associated with the weight can be of any type.
      * @return A randomly selected element based on its weight.
-     * @throws IllegalArgumentException if the list is null, empty, or if any weight is non-positive.
+     * @throws IllegalArgumentException if the list is null, empty, if any item in the list is null or empty,
+     *                                  if any weight is null, non-positive, NaN, negative zero, infinite,
+     *                                  or if the item does not contain 'weight' or 'value' keys.
      */
     public <T> T weightedArrayElement(List<Map<String, Object>> items) {
+        validateItemsList(items);
+
+        double totalWeight = calculateTotalWeight(items);
+        double randomValue = random.nextDouble() * totalWeight;
+
+        return selectWeightedElement(items, randomValue);
+    }
+
+    private void validateItemsList(List<Map<String, Object>> items) {
         if (items == null || items.isEmpty()) {
             throw new IllegalArgumentException("weightedArrayElement expects a non-empty list");
         }
+        items.forEach(this::validateItem);
+    }
 
-        double totalWeight = 0.0;
+    private void validateItem(Map<String, Object> item) {
+        if (item == null || item.isEmpty()) {
+            throw new IllegalArgumentException("Item cannot be null or empty");
+        }
+        if (!item.containsKey(WEIGHT_KEY) || !item.containsKey(VALUE_KEY)) {
+            throw new IllegalArgumentException("Each item must contain 'weight' and 'value' keys");
+        }
+        validateValue(item.get(VALUE_KEY));
+        validateWeight(item.get(WEIGHT_KEY));
+    }
 
-        // Validate weights and calculate totalWeight
-        for (Map<String, Object> item : items) {
-            double weight = (double) item.get(WEIGHT_KEY);
-            if (weight <= 0) {
-                throw new IllegalArgumentException("All weights must be positive numbers");
-            }
-            totalWeight += weight;
+    private void validateValue(Object valueObj) {
+        if (valueObj == null) {
+            throw new IllegalArgumentException("Value cannot be null");
+        }
+    }
+
+    private void validateWeight(Object weightObj) {
+        if (!(weightObj instanceof Double)) {
+            throw new IllegalArgumentException("Weight must be a non-null Double");
         }
 
-        double randomValue = random.nextDouble() * totalWeight;
+        double weight = (Double) weightObj;
+
+        if (weight <= 0 || Double.isNaN(weight) || Double.isInfinite(weight)) {
+            throw new IllegalArgumentException("Weight must be a positive number and cannot be NaN or infinite");
+        }
+    }
+
+    private double calculateTotalWeight(List<Map<String, Object>> items) {
+        return items.stream()
+            .mapToDouble(item -> (Double) item.get(WEIGHT_KEY))
+            .sum();
+    }
+
+    private <T> T selectWeightedElement(List<Map<String, Object>> items, double randomValue) {
         double currentWeight = 0.0;
 
         for (Map<String, Object> item : items) {
-            currentWeight += (double) item.get(WEIGHT_KEY);
+            currentWeight += (Double) item.get(WEIGHT_KEY);
             if (randomValue < currentWeight) {
                 return (T) item.get(VALUE_KEY);
             }
