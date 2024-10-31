@@ -4,7 +4,10 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,6 +35,16 @@ class CustomFakerTest {
 
         public String nextInsectName() {
             return INSECT_NAMES[faker.random().nextInt(INSECT_NAMES.length)];
+        }
+
+        public String weightedInsectName() {
+            List<Map<String, Object>> insects = List.of(
+                Map.of("value", "Driver ant", "weight", 6.0),
+                Map.of("value", "Fire ant", "weight", 3.0),
+                Map.of("value", "Harvester ant", "weight", 1.0)
+            );
+
+            return faker.random().weightedArrayElement(insects);
         }
     }
 
@@ -120,5 +133,23 @@ class CustomFakerTest {
         assertThat(insect1).isNotNull();
         assertThat(insect2).isNotNull();
         assertThat(insect1).isNotSameAs(insect2);
+    }
+
+    @Test
+    void weightedInsectNameTest() {
+        MyCustomFaker myFaker = new MyCustomFaker();
+        Map<String, Integer> insectCounts = new HashMap<>();
+        insectCounts.put("Driver ant", 0);
+        insectCounts.put("Fire ant", 0);
+        insectCounts.put("Harvester ant", 0);
+
+        // Perform the weighted selection 100 times to check the distribution
+        for (int i = 0; i < 100; i++) {
+            String selectedInsect = myFaker.insect().weightedInsectName();
+            insectCounts.put(selectedInsect, insectCounts.get(selectedInsect) + 1);
+        }
+
+        assertThat(insectCounts.get("Driver ant")).isGreaterThan(insectCounts.get("Fire ant"));
+        assertThat(insectCounts.get("Fire ant")).isGreaterThan(insectCounts.get("Harvester ant"));
     }
 }
