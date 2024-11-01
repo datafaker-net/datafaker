@@ -26,18 +26,20 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 class RandomServiceTest extends AbstractFakerTest {
 
-    public static final int ITERATIONS = 1000;
+
     public static final String WEIGHT_KEY = "weight";
     public static final String VALUE_KEY = "value";
     public static final String ELEMENT_1 = "Element1";
     public static final String ELEMENT_2 = "Element2";
     public static final String ELEMENT_3 = "Element3";
+    public static final String STRING_WEIGHT = "1.0";
+    public static final int ITERATIONS = 1000;
     public static final double ELEMENT_1_WEIGHT = 1.0;
     public static final double ELEMENT_2_WEIGHT = 2.0;
     public static final double ELEMENT_3_WEIGHT = 3.0;
     public static final double ZERO_WEIGHT = 0.0;
     public static final double NEGATIVE_WEIGHT = -1.0;
-    public static final String STRING_WEIGHT = "1.0";
+
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")
@@ -213,6 +215,34 @@ class RandomServiceTest extends AbstractFakerTest {
         assertThatThrownBy(() -> randomService.weightedArrayElement(items))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Value cannot be null");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testCalculateTotalWeight_withOverflowingWeights(RandomService randomService) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.MAX_VALUE - 1),
+            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, Double.MAX_VALUE - 1)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Sum of the weights exceeds Double.MAX_VALUE");
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomServiceProvider")
+    void testCalculateTotalWeight_withDuplicateKeys(RandomService randomService) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_1_WEIGHT)
+        );
+
+        assertThatThrownBy(() -> randomService.weightedArrayElement(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Duplicate value found: Element2. Values must be unique.");
     }
 
     @ParameterizedTest

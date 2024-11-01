@@ -1,9 +1,11 @@
 package net.datafaker.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 
 public class RandomService {
     private static final String WEIGHT_KEY = "weight";
@@ -171,7 +173,20 @@ public class RandomService {
         if (items == null || items.isEmpty()) {
             throw new IllegalArgumentException("weightedArrayElement expects a non-empty list");
         }
-        items.forEach(this::validateItem);
+
+        Set<Object> values = new HashSet<>();
+
+        for (var item : items) {
+            validateItem(item);
+            assertUniqueValues(item, values);
+        }
+    }
+
+    private void assertUniqueValues(Map<String, Object> item, Set<Object> values) {
+        Object value = item.get(VALUE_KEY);
+        if (!values.add(value)) {
+            throw new IllegalArgumentException("Duplicate value found: " + value + ". Values must be unique.");
+        }
     }
 
     private void validateItem(Map<String, Object> item) {
@@ -192,21 +207,28 @@ public class RandomService {
     }
 
     private void validateWeight(Object weightObj) {
-        if (!(weightObj instanceof Double)) {
+        if (!(weightObj instanceof Double weight)) {
             throw new IllegalArgumentException("Weight must be a non-null Double");
         }
-
-        double weight = (Double) weightObj;
-
         if (weight <= 0 || Double.isNaN(weight) || Double.isInfinite(weight)) {
             throw new IllegalArgumentException("Weight must be a positive number and cannot be NaN or infinite");
         }
     }
 
     private double calculateTotalWeight(List<Map<String, Object>> items) {
-        return items.stream()
-            .mapToDouble(item -> (Double) item.get(WEIGHT_KEY))
-            .sum();
+        double totalWeight = 0.0;
+
+        for (Map<String, Object> item : items) {
+            double weight = (Double) item.get(WEIGHT_KEY);
+
+            if (Double.MAX_VALUE - totalWeight < weight) {
+                throw new IllegalArgumentException("Sum of the weights exceeds Double.MAX_VALUE");
+            }
+
+            totalWeight += weight;
+        }
+
+        return totalWeight;
     }
 
     private <T> T selectWeightedElement(List<Map<String, Object>> items, double randomValue) {
