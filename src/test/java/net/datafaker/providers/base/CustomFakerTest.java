@@ -151,5 +151,7 @@ class CustomFakerTest {
 
         assertThat(insectCounts.get("Driver ant")).isGreaterThan(insectCounts.get("Fire ant"));
         assertThat(insectCounts.get("Fire ant")).isGreaterThan(insectCounts.get("Harvester ant"));
+
+        // insectCounts.forEach((insect, count) -> System.out.println(insect + ": " + count));
     }
 }

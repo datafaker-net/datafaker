@@ -1,5 +1,6 @@
 package net.datafaker.service;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,9 @@ public class RandomService {
     private static final char[] HEX_LOWER = "0123456789abcdef".toCharArray();
     private static final Random SHARED_RANDOM = new Random();
     private final Random random;
+
+    private double[] cumulativeWeights;
+    private Object[] values;
 
     /**
      * Uses a default shared random.
@@ -162,11 +166,10 @@ public class RandomService {
      */
     public <T> T weightedArrayElement(List<Map<String, Object>> items) {
         validateItemsList(items);
+        preprocessItems(items);
+        double randomValue = random.nextDouble() * cumulativeWeights[cumulativeWeights.length - 1];
 
-        double totalWeight = calculateTotalWeight(items);
-        double randomValue = random.nextDouble() * totalWeight;
-
-        return selectWeightedElement(items, randomValue);
+        return selectWeightedElement(randomValue);
     }
 
     private void validateItemsList(List<Map<String, Object>> items) {
@@ -174,11 +177,11 @@ public class RandomService {
             throw new IllegalArgumentException("weightedArrayElement expects a non-empty list");
         }
 
-        Set<Object> values = new HashSet<>();
+        Set<Object> uniqueValues = new HashSet<>();
 
         for (var item : items) {
             validateItem(item);
-            assertUniqueValues(item, values);
+            assertUniqueValues(item, uniqueValues);
         }
     }
 
@@ -215,34 +218,32 @@ public class RandomService {
         }
     }
 
-    private double calculateTotalWeight(List<Map<String, Object>> items) {
+    private void preprocessItems(List<Map<String, Object>> items) {
+        int size = items.size();
+        cumulativeWeights = new double[size];
+        values = new Object[size];
+
         double totalWeight = 0.0;
-
-        for (Map<String, Object> item : items) {
-            double weight = (Double) item.get(WEIGHT_KEY);
-
+        for (int i = 0; i < size; i++) {
+            double weight = (Double) items.get(i).get(WEIGHT_KEY);
             if (Double.MAX_VALUE - totalWeight < weight) {
                 throw new IllegalArgumentException("Sum of the weights exceeds Double.MAX_VALUE");
             }
-
             totalWeight += weight;
+            cumulativeWeights[i] = totalWeight;
+            values[i] = items.get(i).get(VALUE_KEY);
         }
-
-        return totalWeight;
     }
 
-    private <T> T selectWeightedElement(List<Map<String, Object>> items, double randomValue) {
-        double currentWeight = 0.0;
+    private <T> T selectWeightedElement(double randomValue) {
+        int index = Arrays.binarySearch(cumulativeWeights, randomValue);
+        index = (index < 0) ? -index - 1 : index;
 
-        for (Map<String, Object> item : items) {
-            currentWeight += (Double) item.get(WEIGHT_KEY);
-            if (randomValue < currentWeight) {
-                return (T) item.get(VALUE_KEY);
-            }
+        if (index >= cumulativeWeights.length) {
+            index = cumulativeWeights.length - 1;
         }
 
-        // Return the last element in case of rounding errors
-        return (T) items.get(items.size() - 1).get(VALUE_KEY);
+        return (T) values[index];
     }
 
     @Override
