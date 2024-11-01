@@ -1,13 +1,21 @@
 package net.datafaker;
 
 import org.junit.jupiter.api.RepeatedTest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import static java.util.Collections.synchronizedList;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class Issue759Test {
+    private static final List<Throwable> errors = synchronizedList(new ArrayList<>());
+    private static final Logger log = LoggerFactory.getLogger(Issue759Test.class);
+
     private static class WorkerThread extends Thread {
         private final Faker _faker;
         private final int _maxIterations;
@@ -29,13 +37,17 @@ class Issue759Test {
     }
 
     public static void fakeSomeData(Faker faker) {
-        String state = faker.address().stateAbbr();
-        String zipCode = faker.address().zipCodeByState(state);
         try {
+            String state = faker.address().stateAbbr();
+            String zipCode = faker.address().zipCodeByState(state);
             String county = faker.address().countyByZipCode(zipCode);
             assertThat(county).isNotEqualTo(zipCode);
-        } catch (RuntimeException expected) {
-            assertThat(expected).hasMessageStartingWith("County is not configured for postcode " + zipCode);
+        } catch (RuntimeException | Error e) {
+            boolean expected = e.getMessage() != null && e.getMessage().startsWith("County is not configured ");
+            if (!expected) {
+                errors.add(e);
+                log.error("Failed to generate county", e);
+            }
         }
     }
 
@@ -59,5 +71,6 @@ class Issue759Test {
         assertThat(countDownLatch.await(12, SECONDS))
             .overridingErrorMessage("Test did not complete within 12 second")
             .isTrue();
+        assertThat(errors).isEmpty();
     }
 }
