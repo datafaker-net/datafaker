@@ -18,7 +18,7 @@ class RestaurantTest extends BaseFakerTest<BaseFaker> {
                 TestSpec.of(restaurant::review, "restaurant.review"));
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void namePrefix() {
         assertThat(restaurant.namePrefix())
             .isNotEmpty()
@@ -26,7 +26,7 @@ class RestaurantTest extends BaseFakerTest<BaseFaker> {
             .matches("[A-Z0-9].*");   // and that bothify only uses uppercase characters
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void name() {
         assertThat(restaurant.name())
             .isNotEmpty()

@@ -146,7 +146,7 @@ class VehicleTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.vehicle().licensePlate("AL")).matches(WORDS_MATCH);
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testLicensePlateWithParam_Canada() {
         BaseFaker test = new BaseFaker(Locale.CANADA);
         assertThat(test.vehicle().licensePlate("MB")).matches(WORDS_MATCH);

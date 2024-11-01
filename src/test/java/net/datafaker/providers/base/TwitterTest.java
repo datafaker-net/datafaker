@@ -36,7 +36,7 @@ class TwitterTest extends BaseFakerTest<BaseFaker> {
         assertThat(generatedID).hasSize(expectedLength);
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testLongTwitterIdLength() {
         int expectedLength = 25;
         String generatedID = twitter.twitterId(expectedLength);

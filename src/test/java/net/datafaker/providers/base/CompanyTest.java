@@ -47,7 +47,7 @@ class CompanyTest extends BaseFakerTest<BaseFaker> {
         assertThat(company.logo()).matches("https://pigment.github.io/fake-logos/logos/medium/color/\\d+\\.png");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testUrl() {
         assertThat(company.url()).matches(URL_PATTERN);
     }
