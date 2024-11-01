@@ -211,7 +211,7 @@ class FakerTest extends AbstractFakerTest {
 
     @RepeatedTest(100)
     void numberBetweenRepeated() {
-        assertThat(faker.expression("#{number.number_between '1','10'}")).matches("[1-9]");
+        assertThat(faker.expression("#{number.number_between '1','10'}")).matches("[1-9](\\.[0-9]+)?");
     }
 
     @Test
