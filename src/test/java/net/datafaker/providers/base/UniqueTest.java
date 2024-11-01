@@ -31,13 +31,13 @@ class UniqueTest {
 
         faker = new BaseFaker(new Locale("test"), randomService);
 
-        Set<String> results = new HashSet<>();
-
-        results.add(faker.unique().fetchFromYaml(key));
-        results.add(faker.unique().fetchFromYaml(key));
-        results.add(faker.unique().fetchFromYaml(key));
-        results.add(faker.unique().fetchFromYaml(key));
-        results.add(faker.unique().fetchFromYaml(key));
+        Set<String> results = Set.of(
+            faker.unique().fetchFromYaml(key),
+            faker.unique().fetchFromYaml(key),
+            faker.unique().fetchFromYaml(key),
+            faker.unique().fetchFromYaml(key),
+            faker.unique().fetchFromYaml(key)
+        );
 
         assertThat(results)
             .hasSize(5)

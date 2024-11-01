@@ -28,12 +28,21 @@ public class RandomService {
         return random.nextInt();
     }
 
-    public int nextInt(int n) {
-        return random.nextInt(n);
+    public int nextInt(int maxExclusive) {
+        return random.nextInt(maxExclusive);
     }
 
-    public Integer nextInt(int min, int max) {
-        return random.nextInt(min, max + 1);
+    public Integer nextInt(int minInclusive, int maxInclusive) {
+        if (minInclusive > maxInclusive)
+            throw new IllegalArgumentException("Min (%s) > Max (%s)".formatted(minInclusive, maxInclusive));
+        if (maxInclusive + 1 < 0)
+            return (int) nextLong(minInclusive, maxInclusive);
+
+        return random.nextInt(minInclusive, maxInclusive + 1);
+    }
+
+    public int nextInt(Range<Integer> range) {
+        return (int) nextLong(range.cast(Integer::longValue));
     }
 
     @SuppressWarnings("unused")
@@ -45,29 +54,54 @@ public class RandomService {
         return random.nextLong();
     }
 
-    // lifted from http://stackoverflow.com/questions/2546078/java-random-long-number-in-0-x-n-range
-    public long nextLong(long n) {
-        if (n <= 0) {
-            throw new IllegalArgumentException("bound must be positive: " + n);
+    public long nextLong(long maxExclusive) {
+        if (maxExclusive <= 0) {
+            throw new IllegalArgumentException("bound must be positive: " + maxExclusive);
         }
-
-        long bits, val;
-        do {
-            long randomLong = random.nextLong();
-            bits = (randomLong << 1) >>> 1;
-            val = bits % n;
-        } while (bits - val + (n - 1) < 0L);
-        return val;
+        return nextLong(0, maxExclusive);
     }
 
+    public long nextLong(Range<Long> range) {
+        return switch (range.from().end()) {
+            case EXCLUSIVE -> switch (range.to().end()) {
+                case EXCLUSIVE -> random.nextLong(plusOne(range.from().value()), range.to().value());
+                case INCLUSIVE -> random.nextLong(plusOne(range.from().value()), plusOne(range.to().value()));
+            };
+            case INCLUSIVE -> switch (range.to().end()) {
+                case EXCLUSIVE -> random.nextLong(range.from().value(), range.to().value());
+                case INCLUSIVE -> random.nextLong(range.from().value(), plusOne(range.to().value()));
+            };
+        };
+    }
+
+    private static long plusOne(long value) {
+        return value == Long.MAX_VALUE ? value : value + 1;
+    }
+
+    /**
+     * A random long value within given range.
+     * If {@code min == max} then method always returns {@code min}.
+     * Otherwise, {@code max} is exclusive.
+     *
+     * @param min lower bound (inclusive)
+     * @param max upper bound (exclusive in most cases)
+     * @return a random long value between {@code min} and {@code max}
+     */
     public long nextLong(long min, long max) {
-        return min + (long) (nextDouble() * (max - min));
+        return min == max ?
+            min :
+            random.nextLong(min, max);
     }
 
     public double nextDouble() {
         return random.nextDouble();
     }
 
+    /**
+     * @param min (inclusive)
+     * @param max (inclusive)
+     * @return a random double value between {@code min} and {@code max} (both inclusive)
+     */
     public double nextDouble(double min, double max) {
         return min + (nextDouble() * (max - min));
     }

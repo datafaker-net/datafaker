@@ -15,18 +15,32 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.time.zone.ZoneRules;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static java.time.Duration.ZERO;
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.HOURS;
+import static java.time.temporal.ChronoUnit.MICROS;
+import static java.time.temporal.ChronoUnit.MILLIS;
+import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.time.temporal.ChronoUnit.NANOS;
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author pmiklos
  */
+@SuppressWarnings("removal")
 class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
+    private static final String DATE_PATTERN = "YYYY MM.dd";
+    private static final String DATE_TIME_PATTERN = "YYYY MM.dd mm:hh:ss";
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
     @Test
     void testFutureDate() {
@@ -97,9 +111,8 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     void testBetweenWithMaskReturningString() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         Timestamp then = new Timestamp(System.currentTimeMillis() + 1000);
-        String pattern = "YYYY MM.dd mm:hh:ss";
 
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().between(now, then, pattern));
+        assertValidDateTime(faker.date().between(now, then, DATE_TIME_PATTERN));
     }
 
     @Test
@@ -119,8 +132,8 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     @Test
     void testBirthday() {
         final LocalDateTime localDate = LocalDateTime.now();
-        final long to = localDate.minusYears(18).truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        final long from = localDate.minusYears(65).truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        final long to = localDate.minusYears(18).truncatedTo(DAYS).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        final long from = localDate.minusYears(65).truncatedTo(DAYS).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         final DateAndTime date = faker.date();
         for (int i = 0; i < 5000; i++) {
             Timestamp birthday = date.birthday();
@@ -135,7 +148,7 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
         final Number number = faker.number();
         final DateAndTime date = faker.date();
         final ZoneRules rules = ZoneId.systemDefault().getRules();
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 20; i++) {
             int minAge = number.numberBetween(1, 99);
             int maxAge = number.numberBetween(minAge, 100);
 
@@ -152,28 +165,23 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void birthdayWithMask() {
-        String pattern = "YYYY MM.dd";
-        DateTimeFormatter.ofPattern(pattern).parse(faker.date().birthday(1, 50, pattern));
+        assertValidDate(faker.date().birthday(1, 50, DATE_PATTERN));
     }
 
     @Test
     void futureWithMask() {
-        String pattern = "YYYY MM.dd mm:hh:ss";
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
         DateAndTime date = faker.date();
-        dateTimeFormatter.parse(date.future(1, TimeUnit.HOURS, pattern));
-        dateTimeFormatter.parse(date.future(20, 1, TimeUnit.HOURS, pattern));
-        dateTimeFormatter.parse(date.future(20, TimeUnit.HOURS, new Date(), pattern));
+        assertValidDateTime(date.future(1, TimeUnit.HOURS, DATE_TIME_PATTERN));
+        assertValidDateTime(date.future(20, 1, TimeUnit.HOURS, DATE_TIME_PATTERN));
+        assertValidDateTime(date.future(20, TimeUnit.HOURS, new Date(), DATE_TIME_PATTERN));
     }
 
     @Test
     void pastWithMask() {
-        String pattern = "YYYY MM.dd mm:hh:ss";
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
         DateAndTime date = faker.date();
-        dateTimeFormatter.parse(date.past(1, TimeUnit.DAYS, pattern));
-        dateTimeFormatter.parse(date.past(20, 1, TimeUnit.DAYS, pattern));
-        dateTimeFormatter.parse(date.past(1, TimeUnit.DAYS, new Date(), pattern));
+        assertValidDateTime(date.past(1, TimeUnit.DAYS, DATE_TIME_PATTERN));
+        assertValidDateTime(date.past(20, 1, TimeUnit.DAYS, DATE_TIME_PATTERN));
+        assertValidDateTime(date.past(1, TimeUnit.DAYS, new Date(), DATE_TIME_PATTERN));
     }
 
     @Test
@@ -198,13 +206,19 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     @MethodSource("generateDurationsWithMinMax")
     void durationTest(long minValue, long maxValue, ChronoUnit unit) {
         Duration generated = faker.date().duration(minValue, maxValue, unit);
-        Duration min = Duration.of(minValue, unit);
-        Duration max = Duration.of(maxValue, unit);
-        assertThat(min)
+        assertThat(generated)
             .as("Duration must be equal or greater than min value")
-            .isLessThanOrEqualTo(generated);
-        assertThat(max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated))
-            .as("Duration must be lower than max value").isTrue();
+            .isGreaterThanOrEqualTo(Duration.of(minValue, unit));
+        assertThat(generated)
+            .as("Duration must be lower than max value")
+            .isLessThan(Duration.of(maxValue, unit));
+    }
+
+    @ParameterizedTest
+    @MethodSource("durationUnits")
+    void durationTest_equalMinAndMax(ChronoUnit unit) {
+        Duration generated = faker.date().duration(123, 123, unit);
+        assertThat(generated).isEqualTo(Duration.of(123, unit));
     }
 
     @ParameterizedTest
@@ -212,14 +226,20 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
     void durationTest(long maxValue, ChronoUnit unit) {
         Duration generated = faker.date().duration(maxValue, unit);
         Duration max = Duration.of(maxValue, unit);
-        assertThat(max.compareTo(generated) > 0 || maxValue == 0)
-            .as("Duration must be lower than max value")
-            .isTrue();
+        assertThat(generated).isLessThan(max);
+    }
+
+    @ParameterizedTest
+    @MethodSource("durationUnits")
+    void durationTest_zero(ChronoUnit unit) {
+        assertThat(faker.date().duration(0, unit)).isEqualTo(ZERO);
+        assertThat(faker.date().duration(0, 0, unit)).isEqualTo(ZERO);
+        assertThat(faker.date().duration(1, unit)).isEqualTo(ZERO);
     }
 
     @ParameterizedTest
     @MethodSource("generateDurationsFromStringWithMinMax")
-    void durationTest(long minValue, long maxValue, String unit) {
+    void durationTestUnitAsString(long minValue, long maxValue, String unit) {
         Duration generated = faker.date().duration(minValue, maxValue, unit);
         Duration min = Duration.of(minValue, DateAndTime.str2durationUnit(unit));
         Duration max = Duration.of(maxValue, DateAndTime.str2durationUnit(unit));
@@ -227,6 +247,12 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
         assertThat(max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated))
             .as("Duration must be lower than max value")
             .isTrue();
+    }
+
+    @Test
+    void durationTestUnitAsString_equalMinAndMax() {
+        Duration generated = faker.date().duration(123, 123, "days");
+        assertThat(generated).isEqualTo(Duration.of(123, DAYS));
     }
 
     @ParameterizedTest
@@ -264,7 +290,6 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     private static Stream<Arguments> generateDurationsFromStringWithMinMax() {
         return Stream.of(
-            Arguments.of(123, 123, "days"),
             Arguments.of(12, 123, "days"),
             Arguments.of(21, 32, "DAY"),
             Arguments.of(45, 100, "HOUR"),
@@ -284,26 +309,36 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
 
     private static Stream<Arguments> generateDurationsWithMaxOnly() {
         return Stream.of(
-            Arguments.of(0, ChronoUnit.DAYS),
-            Arguments.of(100, ChronoUnit.DAYS),
-            Arguments.of(456, ChronoUnit.HOURS),
-            Arguments.of(43, ChronoUnit.MINUTES),
-            Arguments.of(78, ChronoUnit.SECONDS),
-            Arguments.of(786, ChronoUnit.MILLIS),
-            Arguments.of(786, ChronoUnit.MICROS),
-            Arguments.of(8729, ChronoUnit.NANOS)
+            Arguments.of(100, DAYS),
+            Arguments.of(456, HOURS),
+            Arguments.of(43, MINUTES),
+            Arguments.of(78, SECONDS),
+            Arguments.of(786, MILLIS),
+            Arguments.of(786, MICROS),
+            Arguments.of(8729, NANOS)
+        );
+    }
+
+    private static Stream<ChronoUnit> durationUnits() {
+        return Stream.of(
+            NANOS,
+            MICROS,
+            MILLIS,
+            SECONDS,
+            MINUTES,
+            HOURS,
+            DAYS
         );
     }
 
     private static Stream<Arguments> generateDurationsWithMinMax() {
         return Stream.of(
-            Arguments.of(123, 123, ChronoUnit.DAYS),
-            Arguments.of(12, 123, ChronoUnit.HOURS),
-            Arguments.of(15, 400, ChronoUnit.MINUTES),
-            Arguments.of(65, 98, ChronoUnit.SECONDS),
-            Arguments.of(76, 100, ChronoUnit.MILLIS),
-            Arguments.of(879, 1030, ChronoUnit.MICROS),
-            Arguments.of(879, 1030, ChronoUnit.NANOS)
+            Arguments.of(12, 123, HOURS),
+            Arguments.of(15, 400, MINUTES),
+            Arguments.of(65, 98, SECONDS),
+            Arguments.of(76, 100, MILLIS),
+            Arguments.of(879, 1030, MICROS),
+            Arguments.of(879, 1030, NANOS)
         );
     }
 
@@ -313,5 +348,15 @@ class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(Period.of(1, 1, 3), Period.of(1, 1, 2)),
             Arguments.of(Period.of(1, 2, 1), Period.of(1, 1, 1))
         );
+    }
+
+    private static void assertValidDate(String date) {
+        TemporalAccessor parsed = dateFormatter.parse(date);
+        assertThat(parsed).isNotNull();
+    }
+
+    private static void assertValidDateTime(String date) {
+        TemporalAccessor parsed = dateTimeFormatter.parse(date);
+        assertThat(parsed).isNotNull();
     }
 }

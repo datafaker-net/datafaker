@@ -4,11 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,17 +45,17 @@ class LoremTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void testCharactersShouldIncludeMinAndMaxLenght() {
-        List<String> results = new ArrayList<>();
+    void testCharactersShouldIncludeMinAndMaxLength() {
+        Pattern RE = Pattern.compile("[a-z\\d]{1,10}");
+
+        Set<Integer> allLengths = new HashSet<>();
         for (int i = 0; i < 300; i++) {
-            results.add(lorem.characters(1, 10));
+            String characters = lorem.characters(1, 10);
+            assertThat(characters).matches(RE);
+            allLengths.add(characters.length());
         }
 
-        final List<String> min = results.stream().filter(x -> x.length() == 1).collect(Collectors.toList());
-        final List<String> max = results.stream().filter(x -> x.length() == 10).collect(Collectors.toList());
-
-        assertThat(min).isNotEmpty();
-        assertThat(max).isNotEmpty();
+        assertThat(allLengths).contains(1, 10);
     }
 
     @Test

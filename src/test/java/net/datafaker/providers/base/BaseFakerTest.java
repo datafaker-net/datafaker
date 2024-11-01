@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BaseFakerTest<T extends BaseFaker> {
 
     private static final Logger LOG = Logger.getLogger(BaseFakerTest.class.getCanonicalName());
-    protected final T faker = getFaker();
+    protected T faker = getFaker();
 
     @BeforeEach
     @SuppressWarnings("EmptyTryBlock")
@@ -36,6 +36,10 @@ public class BaseFakerTest<T extends BaseFaker> {
     @SuppressWarnings("unchecked")
     protected T getFaker() {
         return (T) new BaseFaker();
+    }
+
+    protected void setFaker(T faker) {
+        this.faker = faker;
     }
 
     protected List<String> getBaseList(String key) {
@@ -74,9 +78,16 @@ public class BaseFakerTest<T extends BaseFaker> {
 
         var terms = getBaseList(testSpec.key);
 
-        assertThat(new HashSet<>(terms))
-                .as("Check no duplications in " + testSpec.key)
-                .hasSameSizeAs(terms);
+        Set<String> uniques = new HashSet<>();
+        Set<String> duplicates = new HashSet<>();
+        for (String term : terms) {
+            if (!uniques.add(term)) {
+                duplicates.add(term);
+            }
+        }
+        assertThat(duplicates)
+            .as("Check no duplications in " + testSpec.key + " with terms " + terms)
+            .isEmpty();
     }
 
     protected Collection<TestSpec> providerListTest() {
