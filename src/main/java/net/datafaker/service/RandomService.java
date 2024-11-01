@@ -160,9 +160,13 @@ public class RandomService {
      *              - value: The actual element of type T to be randomly selected based on its weight.
      * @param <T> The type of the element to be selected from the list. The value associated with the weight can be of any type.
      * @return A randomly selected element based on its weight.
-     * @throws IllegalArgumentException if the list is null, empty, if any item in the list is null or empty,
-     *                                  if any weight is null, non-positive, NaN, negative zero, infinite,
-     *                                  or if the item does not contain 'weight' or 'value' keys.
+     * @throws IllegalArgumentException if:
+     *                                  - the list is null or empty,
+     *                                  - any item in the list is null or empty,
+     *                                  - the item does not contain 'weight' or 'value' keys,
+     *                                  - any weight is null, non-positive, NaN or infinite,
+     *                                  - any values in the list are not unique or null,
+     *                                  - the sum of weights exceeds Double.MAX_VALUE.
      */
     public <T> T weightedArrayElement(List<Map<String, Object>> items) {
         validateItemsList(items);
