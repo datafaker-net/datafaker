@@ -163,7 +163,7 @@ class FakerTest extends AbstractFakerTest {
         assertThat(faker.expression("#{letterify '????','true'}")).matches("[A-Z]{4}");
         assertThat(faker.expression("#{templatify '????','?','1','2','q','r'}")).matches("([12qr]){4}");
         assertThat(faker.expression("#{Name.first_name} #{Name.first_name} #{Name.last_name}")).matches("[a-zA-Z']+ [a-zA-Z']+ [a-zA-Z']+");
-        assertThat(faker.expression("#{number.number_between '1','10'}")).matches("[1-9]");
+        assertThat(faker.expression("#{number.number_between '1','10'}")).matches("[1-9](\\.[0-9]+)?");
         assertThat(faker.expression("#{color.name}")).matches("[a-z\\s]+");
         assertThat(faker.expression("#{date.past '15','SECONDS','dd/MM/yyyy hh:mm:ss'}"))
             .matches("[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}");
