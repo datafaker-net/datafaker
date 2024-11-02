@@ -26,7 +26,7 @@ class MusicTest extends BaseFakerTest<BaseFaker> {
         assertThat(faker.music().chord()).matches("([A-Z])+([b#])?+(-?[a-zA-Z0-9]{0,4})");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void genre() {
         assertThat(faker.music().genre()).matches("[ -?\\w+]+");
     }

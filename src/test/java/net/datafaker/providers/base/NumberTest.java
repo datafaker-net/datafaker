@@ -142,6 +142,24 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
             .isGreaterThanOrEqualTo(low);
     }
 
+    @RepeatedTest(100)
+    void testDoubleNumberBetweenRepeatedLowHigh() {
+        double low = 1.0;
+        double high = 10.0;
+        double v = faker.number().numberBetween(low, high);
+        assertThat(v).isLessThan(high)
+            .isGreaterThanOrEqualTo(low);
+    }
+
+    @RepeatedTest(100)
+    void testDoubleNumberBetweenRepeatedHighLow() {
+        double low = 1.0;
+        double high = 10.0;
+        double v = faker.number().numberBetween(high, low);
+        assertThat(v).isLessThan(high)
+            .isGreaterThanOrEqualTo(low);
+    }
+
     @Test
     void testNumberBetweenOneAndThree() {
         Set<Integer> nums = new HashSet<>(3);

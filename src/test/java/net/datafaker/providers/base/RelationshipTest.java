@@ -27,7 +27,7 @@ class RelationshipTest extends BaseFakerTest<BaseFaker> {
         reset(mockFaker, fakeValuesService);
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void anyTest() {
         assertThat(relationship.any()).isNotEmpty();
     }

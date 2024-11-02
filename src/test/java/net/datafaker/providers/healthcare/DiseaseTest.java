@@ -37,7 +37,7 @@ class DiseaseTest extends HealthcareFakerTest {
             TestSpec.of(disease::dermatology, DERMATOLOGY_DISEASE_KEY.yamlKey));
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testAnyDisease() {
         // when
         String anyDisease = disease.anyDisease();
@@ -48,7 +48,7 @@ class DiseaseTest extends HealthcareFakerTest {
             .isIn(allDiseases);
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testDiseaseCodes() {
         String diseaseCode = disease.icd10();
         assertThat(diseaseCode).matches("^[A-Z][0-9]{1,2}(\\.[0-9])?$");

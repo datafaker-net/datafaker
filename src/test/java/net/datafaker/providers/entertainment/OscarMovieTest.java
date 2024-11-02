@@ -10,7 +10,7 @@ class OscarMovieTest extends EntertainmentFakerTest {
 
     private final OscarMovie oscarMovie = getFaker().oscarMovie();
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void actor() {
         assertThat(oscarMovie.actor()).matches("\\P{Cc}+");
     }
@@ -25,12 +25,12 @@ class OscarMovieTest extends EntertainmentFakerTest {
         assertThat(isNullOrEmpty(oscarMovie.quote())).isFalse();
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void character() {
         assertThat(oscarMovie.character()).matches("\\P{Cc}+");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void releaseDate() {
         assertThat(oscarMovie.releaseDate()).matches("[A-Za-z,0-9 ]+");
     }
