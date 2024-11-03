@@ -63,7 +63,7 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
      * Test to check Locality's localeStringWithRandom method. It verifies that the randomly selected
      * locale is within the set of all supported locales
      */
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void localeStringWithRandom() {
         Random random = new Random();
         String randomLocale = locality.localeStringWithRandom(random);

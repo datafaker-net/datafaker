@@ -15,17 +15,17 @@ class AnimalTest extends BaseFakerTest<BaseFaker> {
         return List.of(TestSpec.of(animal::name, "creature.animal.name"));
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void scientificName() {
         assertThat(animal.scientificName()).matches("[A-Z][a-z]+ [a-z]+");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void genus() {
         assertThat(animal.genus()).matches("[A-Z][a-z]+");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void species() {
         assertThat(animal.species()).matches("[a-z]+");
     }

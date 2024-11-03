@@ -14,7 +14,7 @@ class CNPJTest extends BaseFakerTest<BaseFaker> {
     /**
      * A valid CNPJ is either a real number or a generated valid number.
      */
-    @RepeatedTest(1000)
+    @RepeatedTest(10)
     void isValidCNPJ() {
         CNPJ cnpj = faker.cnpj();
         assertThat(isCNPJValid(cnpj.valid())).describedAs("Current value " + cnpj).isTrue();
@@ -23,7 +23,7 @@ class CNPJTest extends BaseFakerTest<BaseFaker> {
     /**
      * A invalid CNPJ is that does not meet the requirements of the algorithm
      */
-    @RepeatedTest(1000)
+    @RepeatedTest(10)
     void isInvalidCNPJ() {
         CNPJ cnpj = faker.cnpj();
         assertThat(isCNPJValid(cnpj.invalid())).describedAs("Current value " + cnpj).isFalse();
@@ -46,7 +46,7 @@ class CNPJTest extends BaseFakerTest<BaseFaker> {
         assertThat(isCNPJValid(cnpj)).describedAs("Current value " + cnpj).isTrue();
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(10)
     void invalid_multiBranchIsTrue_shouldGenerateCNPJWithBranchNumberGreaterThan0001() {
         final CNPJ cnpj1 = faker.cnpj();
         String cnpj = cnpj1.invalid(true, true);

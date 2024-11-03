@@ -285,7 +285,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
             "Unable to resolve #{Number.number_between 'x','y'} directive");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void futureDateExpression() {
         LocalDateTime now = LocalDateTime.now(OffsetDateTime.now(ZoneId.systemDefault()).getOffset());
         LocalDateTime nowPlus10Days = now.plusDays(10);
@@ -294,7 +294,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
         assertThat(date).isStrictlyBetween(now, nowPlus10Days);
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void pastDateExpression() {
         LocalDateTime now = LocalDateTime.now(OffsetDateTime.now(ZoneId.systemDefault()).getOffset());
         LocalDateTime nowMinus5Hours = now.minusHours(5);

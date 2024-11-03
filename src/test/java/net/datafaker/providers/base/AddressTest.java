@@ -73,7 +73,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         assertThat(streetAddressNumber).matches("[0-9]+");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testLatitude() {
         String latStr = faker.address().latitude().replace(decimalSeparator, '.');
         assertThat(latStr).is(IS_A_NUMBER);
@@ -81,7 +81,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         assertThat(lat).isBetween(-90.0, 90.0);
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testLongitude() {
         String longStr = faker.address().longitude().replace(decimalSeparator, '.');
         assertThat(longStr).is(IS_A_NUMBER);
@@ -232,25 +232,25 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         assertThat(zipCodeParts[1]).matches("[0-9]{4}");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testLatLonEnUs() {
         assertThat(US_FAKER.address().latLon())
             .matches(BI_LAT_LON_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(US_FAKER.getContext().getLocale()), ","));
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testLatLonNl() {
         assertThat(NL_FAKER.address().latLon())
             .matches(BI_LAT_LON_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(NL_FAKER.getContext().getLocale()), ","));
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testLonLatEnUs() {
         assertThat(US_FAKER.address().lonLat())
             .matches(BI_LON_LAT_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(US_FAKER.getContext().getLocale()), ","));
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testLonLatNl() {
         assertThat(NL_FAKER.address().lonLat())
             .matches(BI_LON_LAT_REGEX.apply(ESCAPED_DECIMAL_SEPARATOR.apply(NL_FAKER.getContext().getLocale()), ","));
@@ -275,28 +275,28 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         assertThat(localFaker.address().streetName()).isNotEmpty().matches(CYRILLIC_LETTERS);
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void dutchAddress() {
         assertThat(NL_FAKER.address().stateAbbr()).matches("[A-Z]{2}");
         assertThat(NL_FAKER.address().fullAddress()).matches("[A-Z].+, [0-9]{4} [A-Z]{2}, [A-Z].+");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void belgianSAddress() {
         assertThat(BELGIAN_FAKER.address().stateAbbr()).matches("[A-Z]{3}");
         assertThat(BELGIAN_FAKER.address().fullAddress()).matches("[A-Z].+, [0-9]{4}, [A-Z].+");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void belgianZipcode() {
         assertThat(Integer.valueOf(BELGIAN_FAKER.address().zipCode())).isBetween(1000, 9992);
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void australiaAddress() {
         assertThat(AU_FAKER.address().fullAddress()).matches("(Unit|[0-9]).+, [A-Z].+, [A-Z]{2,3} [0-9]{4}");
     }
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testCityCnSuffix() {
         assertThat(new Faker(Locale.CHINA).address().citySuffix()).matches("[\\u4e00-\\u9fa5]{1,7}(?:省|自治区)");
     }

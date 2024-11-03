@@ -50,7 +50,7 @@ public class Number extends AbstractProvider<BaseProviders> {
      * @return a random number on faker.number() between min and max
      * if min = max, return min
      */
-    public int numberBetween(final int min, final int max) {
+    public int numberBetween(int min, int max) {
         if (min == max) return min;
         final int realMin = Math.min(min, max);
         final int realMax = Math.max(min, max);
@@ -64,6 +64,16 @@ public class Number extends AbstractProvider<BaseProviders> {
     /**
      * @param min the lower bound (inclusive)
      * @param max the upper bound (exclusive in most cases)
+     * @return a random number on faker.number() between min and max
+     * if min = max, return min
+     */
+    public double numberBetween(double min, double max) {
+        return faker.random().nextDouble(min, max);
+    }
+
+    /**
+     * @param min the lower bound (include min)
+     * @param max the upper bound (not include max)
      * @return a random number on faker.number() between min and max
      * if min = max, return min
      */

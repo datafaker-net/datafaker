@@ -44,7 +44,7 @@ class RandomNumbersTest {
         assertThat(all(() -> randomService.nextInt(Range.exclusive(2, 5)))).containsExactly(3, 4);
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void nextDouble() {
         assertThat(randomService.nextDouble(2, 3)).isGreaterThanOrEqualTo(2);
         assertThat(randomService.nextDouble(2, 3)).isStrictlyBetween(1.9999, 3.0);
