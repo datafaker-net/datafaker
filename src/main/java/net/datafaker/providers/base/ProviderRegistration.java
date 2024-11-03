@@ -3,6 +3,7 @@ package net.datafaker.providers.base;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
+import net.datafaker.service.WeightedRandomSelector;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -149,6 +150,8 @@ public interface ProviderRegistration {
     String jsona(String... fieldExpressions);
 
     RandomService random();
+
+    WeightedRandomSelector weightedRandomSelector();
 
     String expression(String expression);
 

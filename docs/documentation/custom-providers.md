@@ -31,6 +31,16 @@ Create a custom provider of data:
         public String nextInsectName() {
             return INSECT_NAMES[faker.random().nextInt(INSECT_NAMES.length)];
         }
+
+        public String weightedInsectName() {
+            List<Map<String, Object>> insects = List.of(
+                Map.of("value", "Driver ant", "weight", 6.0),
+                Map.of("value", "Fire ant", "weight", 3.0),
+                Map.of("value", "Harvester ant", "weight", 1.0)
+            );
+
+            return faker.weightedRandomSelector().select(insects);
+        }
     }
     ```
 
@@ -66,6 +76,20 @@ This will print something like the following:
 Wasp
 ```
 
+To use a random selector based on weights, you can do the following:
+
+=== "Java"
+
+    ``` java
+    MyCustomFaker myFaker = new MyCustomFaker();
+    System.out.println(myFaker.insect().weightedInsectName());
+    ```
+
+This will return a random insect name but based on the provided weights
+```
+Driver ant
+```
+
 ## Custom provider using Yaml file
 
 In case you have a large set of data to load, it might be better to use a Yaml file.
@@ -89,6 +113,7 @@ First, create the custom provider which loads the data from a file:
             super(faker);
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/weightedAnts.yml"));
         }
 
         public String ant() {
@@ -97,6 +122,11 @@ First, create the custom provider which loads the data from a file:
 
         public String bee() {
             return resolve(KEY + ".bees");
+        }
+
+        public String weightedInsectName() {
+            List<Map<String, Object>> insects = faker.fakeValuesService().fetchWeightedList(KEY + ".weightedAnts", faker.getContext());
+            return faker.weightedRandomSelector().select(insects);
         }
     }
     ```
@@ -119,6 +149,20 @@ en:
       bees: ['Bumblebee', 'Euglossine bee', 'Honeybee', 'Carpenter bee', 'Leaf-cutter bee', 'Mining bee']
 ```
 
+And the `weightedAnts.yml` would look like this:
+
+```yaml
+en:
+  faker:
+    insectsfromfile:
+      weightedAnts:
+        - value: 'Driver ant'
+          weight: 6.0
+        - value: 'Fire ant'
+          weight: 3.0
+        - value: 'Harvester ant'
+          weight: 1.0
+```
 
 ### Register provider
 
@@ -149,4 +193,18 @@ This will print something like the following:
 
 ```
 Honey ant
+```
+
+To use a random selector based on weights, you can do the following:
+
+=== "Java"
+
+    ``` java
+    MyCustomFaker myFaker = new MyCustomFaker();
+    System.out.println(myFaker.insectFromFile().weightedInsectName());
+    ```
+
+This will return a random insect name but based on the provided weights
+```
+Driver ant
 ```

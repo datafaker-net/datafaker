@@ -1208,4 +1208,19 @@ public class FakeValuesService {
             super(cause);
         }
     }
+
+    /**
+     * Fetches a list of maps from the YAML structure, where each map contains a value and a weight.
+     *
+     * @param key the key to fetch from the YAML structure.
+     * @param context the FakerContext.
+     * @return a list of maps, each containing a value and a weight.
+     */
+    public List<Map<String, Object>> fetchWeightedList(String key, FakerContext context) {
+        Object result = fetchObject(key, context);
+        if (result instanceof List) {
+            return (List<Map<String, Object>>) result;
+        }
+        throw new IllegalArgumentException("Expected a list of maps for key: " + key);
+    }
 }

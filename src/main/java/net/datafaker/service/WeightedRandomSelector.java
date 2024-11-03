@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * A utility class for selecting a random element from a list based on assigned weights.
+ **/
 public class WeightedRandomSelector {
     private static final String WEIGHT_KEY = "weight";
     private static final String VALUE_KEY = "value";
@@ -21,7 +24,7 @@ public class WeightedRandomSelector {
     /**
      * Returns a weighted random element from the given list, where each element is represented as a Map
      * containing a weight and the corresponding value.
-     *
+     * <p>
      * @param items A list of maps, where each map contains:
      *              - weight: A Double representing the weight of the element, influencing its selection probability.
      *              - value: The actual element of type T to be randomly selected based on its weight.

@@ -1,7 +1,7 @@
 en:
   faker:
     insectsfromfile:
-      ants:
+      weightedAnts:
         - value: "Driver ant"
           weight: 6.0
         - value: "Fire ant"

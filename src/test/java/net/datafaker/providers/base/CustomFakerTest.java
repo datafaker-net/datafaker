@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * This is a demo of how to create a custom faker and register a custom faker in it.
+ * This is a demo of how to create a custom data provider and register a custom faker to use it.
  */
 class CustomFakerTest {
     public static class MyCustomFaker extends BaseFaker {
@@ -37,15 +37,15 @@ class CustomFakerTest {
             return INSECT_NAMES[faker.random().nextInt(INSECT_NAMES.length)];
         }
 
-//        public String weightedInsectName() {
-//            List<Map<String, Object>> insects = List.of(
-//                Map.of("value", "Driver ant", "weight", 6.0),
-//                Map.of("value", "Fire ant", "weight", 3.0),
-//                Map.of("value", "Harvester ant", "weight", 1.0)
-//            );
-//
-//            return faker.random().weightedArrayElement(insects);
-//        }
+        public String weightedInsectName() {
+            List<Map<String, Object>> insects = List.of(
+                Map.of("value", "Driver ant", "weight", 6.0),
+                Map.of("value", "Fire ant", "weight", 3.0),
+                Map.of("value", "Harvester ant", "weight", 1.0)
+            );
+
+            return faker.weightedRandomSelector().select(insects);
+        }
     }
 
     public static class InsectFromFile extends AbstractProvider<BaseProviders> {
@@ -55,6 +55,7 @@ class CustomFakerTest {
             super(faker);
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/weightedAnts.yml"));
         }
 
         public String ant() {
@@ -63,6 +64,11 @@ class CustomFakerTest {
 
         public String bee() {
             return resolve(KEY + ".bees");
+        }
+
+        public String weightedInsectName() {
+            List<Map<String, Object>> insects = faker.fakeValuesService().fetchWeightedList(KEY + ".weightedAnts", faker.getContext());
+            return faker.weightedRandomSelector().select(insects);
         }
     }
 
@@ -121,9 +127,6 @@ class CustomFakerTest {
                 super(locale);
             }
 
-            public Insect insect() {
-                return getProvider(Insect.class, Insect::new);
-            }
         }
         BaseFaker faker1 = new InsectFaker(Locale.ENGLISH);
         BaseFaker faker2 = new InsectFaker(Locale.GERMAN);
@@ -135,23 +138,37 @@ class CustomFakerTest {
         assertThat(insect1).isNotSameAs(insect2);
     }
 
-//    @Test
-//    void weightedInsectNameTest() {
-//        MyCustomFaker myFaker = new MyCustomFaker();
-//        Map<String, Integer> insectCounts = new HashMap<>();
-//        insectCounts.put("Driver ant", 0);
-//        insectCounts.put("Fire ant", 0);
-//        insectCounts.put("Harvester ant", 0);
-//
-//        // Perform the weighted selection 100 times to check the distribution
-//        for (int i = 0; i < 100; i++) {
-//            String selectedInsect = myFaker.insect().weightedInsectName();
-//            insectCounts.put(selectedInsect, insectCounts.get(selectedInsect) + 1);
-//        }
-//
-//        assertThat(insectCounts.get("Driver ant")).isGreaterThan(insectCounts.get("Fire ant"));
-//        assertThat(insectCounts.get("Fire ant")).isGreaterThan(insectCounts.get("Harvester ant"));
-//
-//        // insectCounts.forEach((insect, count) -> System.out.println(insect + ": " + count));
-//    }
+    @Test
+    void weightedInsectNameTest() {
+        MyCustomFaker myFaker = new MyCustomFaker();
+        Map<String, Integer> insectCounts = new HashMap<>();
+        insectCounts.put("Driver ant", 0);
+        insectCounts.put("Fire ant", 0);
+        insectCounts.put("Harvester ant", 0);
+
+        for (int i = 0; i < 100; i++) {
+            String selectedInsect = myFaker.insect().weightedInsectName();
+            insectCounts.put(selectedInsect, insectCounts.get(selectedInsect) + 1);
+        }
+
+        assertThat(insectCounts.get("Driver ant")).isGreaterThan(insectCounts.get("Fire ant"));
+        assertThat(insectCounts.get("Fire ant")).isGreaterThan(insectCounts.get("Harvester ant"));
+    }
+
+    @Test
+    void weightedInsectNameFromFileTest() {
+        MyCustomFaker myFaker = new MyCustomFaker();
+        Map<String, Integer> insectCounts = new HashMap<>();
+        insectCounts.put("Driver ant", 0);
+        insectCounts.put("Fire ant", 0);
+        insectCounts.put("Harvester ant", 0);
+
+        for (int i = 0; i < 100; i++) {
+            String selectedInsect = myFaker.insectFromFile().weightedInsectName();
+            insectCounts.put(selectedInsect, insectCounts.get(selectedInsect) + 1);
+        }
+
+        assertThat(insectCounts.get("Driver ant")).isGreaterThan(insectCounts.get("Fire ant"));
+        assertThat(insectCounts.get("Fire ant")).isGreaterThan(insectCounts.get("Harvester ant"));
+    }
 }

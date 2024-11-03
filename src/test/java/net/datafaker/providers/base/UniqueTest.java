@@ -31,6 +31,8 @@ class UniqueTest {
 
         faker = new BaseFaker(new Locale("test"), randomService);
 
+        Mockito.reset(randomService);
+
         Set<String> results = Set.of(
             faker.unique().fetchFromYaml(key),
             faker.unique().fetchFromYaml(key),
