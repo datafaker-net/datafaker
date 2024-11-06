@@ -14,6 +14,7 @@ class SwedishIdNumberTest {
 
     @Test
     void invalidSwedishSsn() {
+        assertThat(SwedenIdNumber.isValidSwedishSsn("020914-0001")).isFalse();
         assertThat(SwedenIdNumber.isValidSwedishSsn("8112289873")).isFalse();
         assertThat(SwedenIdNumber.isValidSwedishSsn("foo228-9873")).isFalse();
         assertThat(SwedenIdNumber.isValidSwedishSsn("811228-9873")).isFalse();
