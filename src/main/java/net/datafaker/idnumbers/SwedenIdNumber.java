@@ -49,7 +49,7 @@ public class SwedenIdNumber implements IdNumberGenerator {
         String end;
         do {
             end = f.numerify("###");
-        } while (!end.equals("000"));
+        } while (end.equals("000"));
 
         return end;
     }
@@ -84,6 +84,10 @@ public class SwedenIdNumber implements IdNumberGenerator {
                 return false;
             }
         } catch (DateTimeParseException | NumberFormatException ignore) {
+            return false;
+        }
+
+        if(ssn.startsWith("000", 7)){
             return false;
         }
 
