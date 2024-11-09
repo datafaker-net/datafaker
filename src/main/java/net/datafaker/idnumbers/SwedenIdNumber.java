@@ -37,12 +37,16 @@ public class SwedenIdNumber implements IdNumberGenerator {
     @Override
     public PersonIdNumber generateValid(BaseProviders f, IdNumber.IdNumberRequest request) {
         LocalDate birthday = birthday(f, request);
-        String end = f.numerify("###");
+        String end = generateEndPart(f);
         String basePart = DATE_TIME_FORMATTER.format(birthday)
             + f.options().option(PLUS_MINUS)
             + end;
         String idNumber = basePart + calculateChecksum(basePart);
         return new PersonIdNumber(idNumber, birthday, gender(f, request));
+    }
+
+    public static String generateEndPart(BaseProviders f) {
+        return "%03d".formatted(f.number().numberBetween(1, 1000));
     }
 
     @Deprecated
@@ -75,6 +79,10 @@ public class SwedenIdNumber implements IdNumberGenerator {
                 return false;
             }
         } catch (DateTimeParseException | NumberFormatException ignore) {
+            return false;
+        }
+
+        if (ssn.startsWith("000", 7)) {
             return false;
         }
 
