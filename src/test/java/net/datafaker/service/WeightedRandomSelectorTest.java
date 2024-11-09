@@ -1,6 +1,9 @@
 package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -29,6 +32,13 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
     public static final double ELEMENT_3_WEIGHT = 3.0;
     public static final double ZERO_WEIGHT = 0.0;
     public static final double NEGATIVE_WEIGHT = -1.0;
+
+    private WeightedRandomSelector weightedRandomSelector;
+
+    @BeforeEach
+    void setUp() {
+        weightedRandomSelector = new WeightedRandomSelector(new Random());
+    }
 
     @ParameterizedTest
     @MethodSource("weightedRandomSelectorProvider")
@@ -232,6 +242,75 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         assertThatThrownBy(() -> weightedRandomSelector.select(items))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Duplicate value found: Element2. Values must be unique.");
+    }
+
+    @Test
+    void testSelectWeightedElement_randomValueInRange() {
+        // Setup items for controlled cumulative weights
+        List<Map<String, Object>> items = List.of(
+            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
+        );
+        weightedRandomSelector.preprocessItems(items);
+
+        assertThat((String) weightedRandomSelector.selectWeightedElement(0.5)).isEqualTo(ELEMENT_1);
+        assertThat((String) weightedRandomSelector.selectWeightedElement(2.0)).isEqualTo(ELEMENT_2);
+        assertThat((String) weightedRandomSelector.selectWeightedElement(5.5)).isEqualTo(ELEMENT_3);
+    }
+
+    @Test
+    void testSelectWeightedElement_randomValueTriggersLastIndex() {
+        List<Map<String, Object>> items = List.of(
+            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
+        );
+        weightedRandomSelector.preprocessItems(items);
+
+        assertThat((String) weightedRandomSelector.selectWeightedElement(5.9)).isEqualTo(ELEMENT_3);
+    }
+
+    @Test
+    void testSelectWeightedElement_randomValueAtLastBoundary() {
+        // Setup items for boundary case
+        List<Map<String, Object>> items = List.of(
+            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
+        );
+        weightedRandomSelector.preprocessItems(items);
+
+        assertThat((String) weightedRandomSelector.selectWeightedElement(6.0)).isEqualTo(ELEMENT_3);
+    }
+
+    @Test
+    void testSelectWeightedElement_randomValueExceedsCumulativeWeight() {
+        List<Map<String, Object>> items = List.of(
+            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
+        );
+        weightedRandomSelector.preprocessItems(items);
+
+        double randomValue = 6.1;
+
+        assertThat((String) weightedRandomSelector.selectWeightedElement(randomValue)).isEqualTo(ELEMENT_3);
+    }
+
+    @Test
+    void testConstructorWithNonNullRandom() {
+        Random providedRandom = new Random();
+        WeightedRandomSelector selector = new WeightedRandomSelector(providedRandom);
+
+        assertThat(selector.getRandom()).isSameAs(providedRandom);
+    }
+
+    @Test
+    void testConstructorWithNullRandom() {
+        WeightedRandomSelector selector = new WeightedRandomSelector(null);
+
+        assertThat(selector.getRandom()).isNotNull();
     }
 
     private Map<String, Integer> countResults(WeightedRandomSelector weightedRandomSelector, List<Map<String, Object>> items) {

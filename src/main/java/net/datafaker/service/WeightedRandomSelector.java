@@ -21,6 +21,10 @@ public class WeightedRandomSelector {
         this.random = random != null ? random : new Random();
     }
 
+    public Random getRandom() {
+        return random;
+    }
+
     /**
      * Returns a weighted random element from the given list, where each element is represented as a Map
      * containing a weight and the corresponding value.
@@ -92,7 +96,7 @@ public class WeightedRandomSelector {
         }
     }
 
-    private void preprocessItems(List<Map<String, Object>> items) {
+    public void preprocessItems(List<Map<String, Object>> items) {
         int size = items.size();
         cumulativeWeights = new double[size];
         values = new Object[size];
@@ -109,7 +113,7 @@ public class WeightedRandomSelector {
         }
     }
 
-    private <T> T selectWeightedElement(double randomValue) {
+    public <T> T selectWeightedElement(double randomValue) {
         int index = Arrays.binarySearch(cumulativeWeights, randomValue);
         index = (index < 0) ? -index - 1 : index;
 
