@@ -28,7 +28,8 @@ public class Finance extends AbstractProvider<BaseProviders> {
         SOLO,
         DANKORT,
         FORBRUGSFORENINGEN,
-        LASER
+        LASER,
+        UNIONPAY
     }
 
     protected Finance(BaseProviders faker) {
