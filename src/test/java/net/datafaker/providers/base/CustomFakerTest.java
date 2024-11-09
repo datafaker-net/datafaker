@@ -126,13 +126,12 @@ class CustomFakerTest {
             public InsectFaker(Locale locale) {
                 super(locale);
             }
-
         }
         BaseFaker faker1 = new InsectFaker(Locale.ENGLISH);
         BaseFaker faker2 = new InsectFaker(Locale.GERMAN);
 
-        Insect insect1 = faker1.getProvider("Insect");
-        Insect insect2 = faker2.getProvider("Insect");
+        Insect insect1 = faker1.getProvider(Insect.class, Insect::new);
+        Insect insect2 = faker2.getProvider(Insect.class, Insect::new);
         assertThat(insect1).isNotNull();
         assertThat(insect2).isNotNull();
         assertThat(insect1).isNotSameAs(insect2);
