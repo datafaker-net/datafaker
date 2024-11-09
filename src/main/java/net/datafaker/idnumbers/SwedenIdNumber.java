@@ -82,7 +82,7 @@ public class SwedenIdNumber implements IdNumberGenerator {
             return false;
         }
 
-        if(ssn.startsWith("000", 7)){
+        if (ssn.startsWith("000", 7)) {
             return false;
         }
 
