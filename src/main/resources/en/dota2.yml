@@ -72,6 +72,7 @@ en:
         - "Jakiro"
         - "Juggernaut"
         - "Keeper of the Light"
+        - "Kez"
         - "Kunkka"
         - "Legion Commander"
         - "Leshrac"
@@ -428,6 +429,12 @@ en:
           - "Stand aside or be trampled!"
           - "It's a new age of magic!"
           - "I am the keeper of the light!"
+        kez:
+          quote:
+          - "I see you over there!"
+          - "Pecked. To death."
+          - "Death from ground level!"
+          - "I am the duck's back."
         legion_commander:
           quote:
           - "I've come to put an end to hope."
