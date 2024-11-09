@@ -45,13 +45,8 @@ public class SwedenIdNumber implements IdNumberGenerator {
         return new PersonIdNumber(idNumber, birthday, gender(f, request));
     }
 
-    private String generateEndPart(BaseProviders f) {
-        String end;
-        do {
-            end = f.numerify("###");
-        } while (end.equals("000"));
-
-        return end;
+    public static String generateEndPart(BaseProviders f) {
+        return "%03d".formatted(f.number().numberBetween(1, 1000));
     }
 
     @Deprecated
