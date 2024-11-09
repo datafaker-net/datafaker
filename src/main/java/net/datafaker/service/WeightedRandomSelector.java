@@ -13,8 +13,6 @@ import java.util.Set;
 public class WeightedRandomSelector {
     private static final String WEIGHT_KEY = "weight";
     private static final String VALUE_KEY = "value";
-    private double[] cumulativeWeights;
-    private Object[] values;
     private final Random random;
 
     public WeightedRandomSelector(Random random) {
@@ -44,10 +42,12 @@ public class WeightedRandomSelector {
      */
     public <T> T select(List<Map<String, Object>> items) {
         validateItemsList(items);
-        preprocessItems(items);
-        double randomValue = random.nextDouble() * cumulativeWeights[cumulativeWeights.length - 1];
 
-        return selectWeightedElement(randomValue);
+        Object[] values = new Object[items.size()];
+        double[] cumulativeWeights = preprocessItems(items, values);
+
+        double randomValue = random.nextDouble() * cumulativeWeights[cumulativeWeights.length - 1];
+        return selectWeightedElement(randomValue, cumulativeWeights, values);
     }
 
     private void validateItemsList(List<Map<String, Object>> items) {
@@ -96,13 +96,11 @@ public class WeightedRandomSelector {
         }
     }
 
-    public void preprocessItems(List<Map<String, Object>> items) {
-        int size = items.size();
-        cumulativeWeights = new double[size];
-        values = new Object[size];
+    public double[] preprocessItems(List<Map<String, Object>> items, Object[] values) {
+        double[] cumulativeWeights = new double[items.size()];
 
         double totalWeight = 0.0;
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < items.size(); i++) {
             double weight = (Double) items.get(i).get(WEIGHT_KEY);
             if (Double.MAX_VALUE - totalWeight < weight) {
                 throw new IllegalArgumentException("Sum of the weights exceeds Double.MAX_VALUE");
@@ -111,9 +109,11 @@ public class WeightedRandomSelector {
             cumulativeWeights[i] = totalWeight;
             values[i] = items.get(i).get(VALUE_KEY);
         }
+
+        return cumulativeWeights;
     }
 
-    public <T> T selectWeightedElement(double randomValue) {
+    public <T> T selectWeightedElement(double randomValue, double[] cumulativeWeights, Object[] values) {
         int index = Arrays.binarySearch(cumulativeWeights, randomValue);
         index = (index < 0) ? -index - 1 : index;
 

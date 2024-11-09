@@ -246,17 +246,18 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
 
     @Test
     void testSelectWeightedElement_randomValueInRange() {
-        // Setup items for controlled cumulative weights
         List<Map<String, Object>> items = List.of(
             Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
             Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
             Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
         );
-        weightedRandomSelector.preprocessItems(items);
 
-        assertThat((String) weightedRandomSelector.selectWeightedElement(0.5)).isEqualTo(ELEMENT_1);
-        assertThat((String) weightedRandomSelector.selectWeightedElement(2.0)).isEqualTo(ELEMENT_2);
-        assertThat((String) weightedRandomSelector.selectWeightedElement(5.5)).isEqualTo(ELEMENT_3);
+        Object[] values = new Object[items.size()];
+        double[] cumulativeWeights = weightedRandomSelector.preprocessItems(items, values);
+
+        assertThat((String) weightedRandomSelector.selectWeightedElement(0.5, cumulativeWeights, values)).isEqualTo(ELEMENT_1);
+        assertThat((String) weightedRandomSelector.selectWeightedElement(2.0, cumulativeWeights, values)).isEqualTo(ELEMENT_2);
+        assertThat((String) weightedRandomSelector.selectWeightedElement(5.5, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
     }
 
     @Test
@@ -266,22 +267,25 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
             Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
             Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
         );
-        weightedRandomSelector.preprocessItems(items);
 
-        assertThat((String) weightedRandomSelector.selectWeightedElement(5.9)).isEqualTo(ELEMENT_3);
+        Object[] values = new Object[items.size()];
+        double[] cumulativeWeights = weightedRandomSelector.preprocessItems(items, values);
+
+        assertThat((String) weightedRandomSelector.selectWeightedElement(5.9, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
     }
 
     @Test
     void testSelectWeightedElement_randomValueAtLastBoundary() {
-        // Setup items for boundary case
         List<Map<String, Object>> items = List.of(
             Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
             Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
             Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
         );
-        weightedRandomSelector.preprocessItems(items);
 
-        assertThat((String) weightedRandomSelector.selectWeightedElement(6.0)).isEqualTo(ELEMENT_3);
+        Object[] values = new Object[items.size()];
+        double[] cumulativeWeights = weightedRandomSelector.preprocessItems(items, values);
+
+        assertThat((String) weightedRandomSelector.selectWeightedElement(6.0, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
     }
 
     @Test
@@ -291,11 +295,13 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
             Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
             Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
         );
-        weightedRandomSelector.preprocessItems(items);
+
+        Object[] values = new Object[items.size()];
+        double[] cumulativeWeights = weightedRandomSelector.preprocessItems(items, values);
 
         double randomValue = 6.1;
 
-        assertThat((String) weightedRandomSelector.selectWeightedElement(randomValue)).isEqualTo(ELEMENT_3);
+        assertThat((String) weightedRandomSelector.selectWeightedElement(randomValue, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
     }
 
     @Test
