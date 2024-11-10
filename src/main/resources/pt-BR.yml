@@ -723,3 +723,6 @@ pt-BR:
                     "Taiwaneses", "Tanzanianos", "Tailandeses", "Tibetanos", "Trinitinos", "Tobagonianos", "Tunisianos", "Turcos", "Tuvaluenses",
                     "Ugandenses", "Ucranianos", "Uruguaios", "Uzbeques", "Vanuatuenses", "Venezuelanos", "Vietnamitas", "Galeses", "Iemenitas",
                     "Zambianos", "Zimbabuanos"]
+
+    passport:
+      valid: "[A-Z]{2}[0-9]{6}"
