@@ -69,4 +69,5 @@ jobs:
             ${{ steps.changelog.outputs.changelog }}
           draft: false
           prerelease: false
-
+  call_pom_update:
+    uses: ./.github/workflows/pom_update.yml
