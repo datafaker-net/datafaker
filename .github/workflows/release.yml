@@ -70,4 +70,5 @@ jobs:
           draft: false
           prerelease: false
   call_pom_update:
+    needs: publish
     uses: ./.github/workflows/pom_update.yml
