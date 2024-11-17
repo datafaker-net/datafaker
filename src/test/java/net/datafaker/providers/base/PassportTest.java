@@ -78,4 +78,11 @@ class PassportTest extends BaseFakerTest<BaseFaker> {
             .hasSize(9);
     }
 
+    @RepeatedTest(10)
+    void testValidBrazil() {
+        assertThat(new BaseFaker(new Locale("pt", "BR")).passport().valid())
+            .hasSize(8)
+            .matches("[A-Z]{2}[0-9]{6}");
+    }
+
 }

@@ -99,6 +99,12 @@ class FinanceTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(100)
+    void unionpayCard() {
+        String creditCard = finance.creditCard(CreditCardType.UNIONPAY).replace("-", "");
+        assertThat(creditCard).startsWith("62").hasSize(16);
+    }
+
+    @RepeatedTest(100)
     void usRoutingNumber() {
         String rtn = finance.usRoutingNumber();
         assertThat(rtn).matches("\\d{9}");
