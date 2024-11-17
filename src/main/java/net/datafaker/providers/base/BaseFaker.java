@@ -7,7 +7,6 @@ import net.datafaker.sequence.FakeStream;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
-import net.datafaker.service.WeightedRandomSelector;
 import net.datafaker.transformations.Schema;
 
 import java.lang.reflect.Method;
@@ -31,7 +30,6 @@ import java.util.function.Supplier;
 public class BaseFaker implements BaseProviders {
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
-    private final WeightedRandomSelector weightedRandomSelector;
     private final Map<Class<?>, AbstractProvider<?>> providersCache = new IdentityHashMap<>();
 
     public BaseFaker() {
@@ -58,7 +56,6 @@ public class BaseFaker implements BaseProviders {
         this.fakeValuesService = fakeValuesService;
         this.context = context;
         fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
-        this.weightedRandomSelector = new WeightedRandomSelector(context.getRandomService().getRandomInternal());
     }
 
     @Override
@@ -298,11 +295,6 @@ public class BaseFaker implements BaseProviders {
     @Override
     public FakeValuesService fakeValuesService() {
         return this.fakeValuesService;
-    }
-
-    @Override
-    public WeightedRandomSelector weightedRandomSelector() {
-        return this.weightedRandomSelector;
     }
 
     /**

@@ -27,10 +27,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -369,58 +367,6 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
         // then
         assertThat(actual).isEqualTo("1 2");
-    }
-
-    @Test
-    void fetchWeightedListShouldReturnListOfMaps() {
-        List<Map<String, Object>> expectedList = List.of(
-            Map.of(WeightedRandomSelectorTest.VALUE_KEY, WeightedRandomSelectorTest.ELEMENT_1, WeightedRandomSelectorTest.WEIGHT_KEY,
-                WeightedRandomSelectorTest.ELEMENT_1_WEIGHT),
-            Map.of(WeightedRandomSelectorTest.VALUE_KEY, WeightedRandomSelectorTest.ELEMENT_2, WeightedRandomSelectorTest.WEIGHT_KEY,
-                WeightedRandomSelectorTest.ELEMENT_2_WEIGHT)
-        );
-
-        when(fakeValuesService.fetchObject("property.weightedList", context)).thenReturn(expectedList);
-
-        List<Map<String, Object>> actualList = fakeValuesService.fetchWeightedList("property.weightedList", context);
-        assertThat(actualList).isEqualTo(expectedList);
-    }
-
-    @Test
-    void fetchWeightedListShouldThrowExceptionWhenNotList() {
-        when(fakeValuesService.fetchObject("property.invalidKey", context)).thenReturn("Invalid Data");
-
-        assertThatThrownBy(() -> fakeValuesService.fetchWeightedList("property.invalidKey", context))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Expected a list of maps for key: property.invalidKey");
-    }
-
-    @Test
-    void fetchWeightedListShouldReturnEmptyListWhenKeyNotPresent() {
-        when(fakeValuesService.fetchObject("property.emptyList", context)).thenReturn(List.of());
-
-        List<Map<String, Object>> actualList = fakeValuesService.fetchWeightedList("property.emptyList", context);
-        assertThat(actualList).isEmpty();
-    }
-
-    @Test
-    void fetchWeightedListShouldContainValueAndWeightKeys() {
-        List<Map<String, Object>> testList = List.of(
-            new HashMap<>(Map.of(WeightedRandomSelectorTest.VALUE_KEY, WeightedRandomSelectorTest.ELEMENT_1, WeightedRandomSelectorTest.WEIGHT_KEY,
-                WeightedRandomSelectorTest.ELEMENT_1_WEIGHT)),
-            new HashMap<>(Map.of(WeightedRandomSelectorTest.VALUE_KEY, WeightedRandomSelectorTest.ELEMENT_2, WeightedRandomSelectorTest.WEIGHT_KEY,
-                WeightedRandomSelectorTest.ELEMENT_2_WEIGHT))
-        );
-
-        when(fakeValuesService.fetchObject("property.weightedList", context)).thenReturn(testList);
-
-        List<Map<String, Object>> result = fakeValuesService.fetchWeightedList("property.weightedList", context);
-
-        result.forEach(map -> {
-            assertThat(map).containsKeys(WeightedRandomSelectorTest.VALUE_KEY, WeightedRandomSelectorTest.WEIGHT_KEY);
-            assertThat(map.get(WeightedRandomSelectorTest.VALUE_KEY)).isInstanceOf(String.class);
-            assertThat(map.get(WeightedRandomSelectorTest.WEIGHT_KEY)).isInstanceOf(Double.class);
-        });
     }
 
     public static class DummyService {

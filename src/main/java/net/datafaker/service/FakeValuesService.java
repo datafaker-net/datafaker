@@ -375,23 +375,23 @@ public class FakeValuesService {
         final char[] res = input.toCharArray();
         for (int i = 0; i < res.length; i++) {
             switch (res[i]) {
-                case '#' -> {
-                    if (numerify) {
-                        res[i] = DIGITS[context.getRandomService().nextInt(10)];
-                    }
+            case '#' -> {
+                if (numerify) {
+                    res[i] = DIGITS[context.getRandomService().nextInt(10)];
                 }
-                case 'Ø' -> {
-                    if (numerify) {
-                        res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
-                    }
+            }
+            case 'Ø' -> {
+                if (numerify) {
+                    res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
                 }
-                case '?' -> {
-                    if (letterify) {
-                        res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
-                    }
+            }
+            case '?' -> {
+                if (letterify) {
+                    res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
                 }
-                default -> {
-                }
+            }
+            default -> {
+            }
             }
         }
 
@@ -1207,20 +1207,5 @@ public class FakeValuesService {
         public NoSuchMethodRuntimeException(NoSuchMethodException cause) {
             super(cause);
         }
-    }
-
-    /**
-     * Fetches a list of maps from the YAML structure, where each map contains a value and a weight.
-     *
-     * @param key the key to fetch from the YAML structure.
-     * @param context the FakerContext.
-     * @return a list of maps, each containing a value and a weight.
-     */
-    public List<Map<String, Object>> fetchWeightedList(String key, FakerContext context) {
-        Object result = fetchObject(key, context);
-        if (result instanceof List) {
-            return (List<Map<String, Object>>) result;
-        }
-        throw new IllegalArgumentException("Expected a list of maps for key: " + key);
     }
 }
