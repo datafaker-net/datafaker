@@ -39,7 +39,9 @@ Create a custom provider of data:
                 Map.of("value", "Harvester ant", "weight", 1.0)
             );
 
-            return faker.weightedRandomSelector().select(insects);
+            WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
+
+            return selector.select(insects);
         }
     }
     ```
@@ -113,7 +115,6 @@ First, create the custom provider which loads the data from a file:
             super(faker);
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"));
             faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"));
-            faker.addPath(Locale.ENGLISH, Paths.get("src/test/weightedAnts.yml"));
         }
 
         public String ant() {
@@ -122,11 +123,6 @@ First, create the custom provider which loads the data from a file:
 
         public String bee() {
             return resolve(KEY + ".bees");
-        }
-
-        public String weightedInsectName() {
-            List<Map<String, Object>> insects = faker.fakeValuesService().fetchWeightedList(KEY + ".weightedAnts", faker.getContext());
-            return faker.weightedRandomSelector().select(insects);
         }
     }
     ```
@@ -147,21 +143,6 @@ en:
   faker:
     insectsfromfile:
       bees: ['Bumblebee', 'Euglossine bee', 'Honeybee', 'Carpenter bee', 'Leaf-cutter bee', 'Mining bee']
-```
-
-And the `weightedAnts.yml` would look like this:
-
-```yaml
-en:
-  faker:
-    insectsfromfile:
-      weightedAnts:
-        - value: 'Driver ant'
-          weight: 6.0
-        - value: 'Fire ant'
-          weight: 3.0
-        - value: 'Harvester ant'
-          weight: 1.0
 ```
 
 ### Register provider
@@ -193,18 +174,4 @@ This will print something like the following:
 
 ```
 Honey ant
-```
-
-To use a random selector based on weights, you can do the following:
-
-=== "Java"
-
-    ``` java
-    MyCustomFaker myFaker = new MyCustomFaker();
-    System.out.println(myFaker.insectFromFile().weightedInsectName());
-    ```
-
-This will return a random insect name but based on the provided weights
-```
-Driver ant
 ```

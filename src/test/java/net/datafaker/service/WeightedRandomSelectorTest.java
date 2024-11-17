@@ -2,7 +2,6 @@ package net.datafaker.service;
 
 import net.datafaker.AbstractFakerTest;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,13 +31,6 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
     public static final double ELEMENT_3_WEIGHT = 3.0;
     public static final double ZERO_WEIGHT = 0.0;
     public static final double NEGATIVE_WEIGHT = -1.0;
-
-    private WeightedRandomSelector weightedRandomSelector;
-
-    @BeforeEach
-    void setUp() {
-        weightedRandomSelector = new WeightedRandomSelector(new Random());
-    }
 
     @ParameterizedTest
     @MethodSource("weightedRandomSelectorProvider")
@@ -72,7 +64,7 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
     void testWeightedArrayElement_withNullItems(WeightedRandomSelector weightedRandomSelector) {
         assertThatThrownBy(() -> weightedRandomSelector.select(null))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("weightedArrayElement expects a non-empty list");
+            .hasMessage("Input list cannot be null");
     }
 
     @ParameterizedTest
@@ -81,7 +73,7 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         List<Map<String, Object>> items = Collections.emptyList();
         assertThatThrownBy(() -> weightedRandomSelector.select(items))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("weightedArrayElement expects a non-empty list");
+            .hasMessage("Input list cannot be empty");
     }
 
     @ParameterizedTest
@@ -184,7 +176,7 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
 
         assertThatThrownBy(() -> weightedRandomSelector.select(items))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Item cannot be null or empty");
+            .hasMessage("Item cannot be null");
     }
 
     @ParameterizedTest
@@ -197,7 +189,7 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
 
         assertThatThrownBy(() -> weightedRandomSelector.select(items))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Item cannot be null or empty");
+            .hasMessage("Item cannot be empty");
     }
 
     @ParameterizedTest
@@ -245,6 +237,21 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
     }
 
     @Test
+    void testConstructorWithNonNullRandom() {
+        Random providedRandom = new Random();
+        WeightedRandomSelector selector = new WeightedRandomSelector(providedRandom);
+
+        assertThat(selector.random()).isSameAs(providedRandom);
+    }
+
+    @Test
+    void testConstructorWithNullRandom() {
+        WeightedRandomSelector selector = new WeightedRandomSelector(null);
+
+        assertThat(selector.random()).isNotNull();
+    }
+
+    @Test
     void testSelectWeightedElement_randomValueInRange() {
         List<Map<String, Object>> items = List.of(
             Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
@@ -253,11 +260,11 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         );
 
         Object[] values = new Object[items.size()];
-        double[] cumulativeWeights = weightedRandomSelector.preprocessItems(items, values);
+        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
 
-        assertThat((String) weightedRandomSelector.selectWeightedElement(0.5, cumulativeWeights, values)).isEqualTo(ELEMENT_1);
-        assertThat((String) weightedRandomSelector.selectWeightedElement(2.0, cumulativeWeights, values)).isEqualTo(ELEMENT_2);
-        assertThat((String) weightedRandomSelector.selectWeightedElement(5.5, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
+        assertThat((String) WeightedRandomSelector.selectWeightedElement(0.5, cumulativeWeights, values)).isEqualTo(ELEMENT_1);
+        assertThat((String) WeightedRandomSelector.selectWeightedElement(2.0, cumulativeWeights, values)).isEqualTo(ELEMENT_2);
+        assertThat((String) WeightedRandomSelector.selectWeightedElement(5.5, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
     }
 
     @Test
@@ -269,9 +276,9 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         );
 
         Object[] values = new Object[items.size()];
-        double[] cumulativeWeights = weightedRandomSelector.preprocessItems(items, values);
+        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
 
-        assertThat((String) weightedRandomSelector.selectWeightedElement(5.9, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
+        assertThat((String) WeightedRandomSelector.selectWeightedElement(5.9, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
     }
 
     @Test
@@ -283,9 +290,9 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         );
 
         Object[] values = new Object[items.size()];
-        double[] cumulativeWeights = weightedRandomSelector.preprocessItems(items, values);
+        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
 
-        assertThat((String) weightedRandomSelector.selectWeightedElement(6.0, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
+        assertThat((String) WeightedRandomSelector.selectWeightedElement(6.0, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
     }
 
     @Test
@@ -297,26 +304,11 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         );
 
         Object[] values = new Object[items.size()];
-        double[] cumulativeWeights = weightedRandomSelector.preprocessItems(items, values);
+        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
 
         double randomValue = 6.1;
 
-        assertThat((String) weightedRandomSelector.selectWeightedElement(randomValue, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
-    }
-
-    @Test
-    void testConstructorWithNonNullRandom() {
-        Random providedRandom = new Random();
-        WeightedRandomSelector selector = new WeightedRandomSelector(providedRandom);
-
-        assertThat(selector.getRandom()).isSameAs(providedRandom);
-    }
-
-    @Test
-    void testConstructorWithNullRandom() {
-        WeightedRandomSelector selector = new WeightedRandomSelector(null);
-
-        assertThat(selector.getRandom()).isNotNull();
+        assertThat((String) WeightedRandomSelector.selectWeightedElement(randomValue, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
     }
 
     private Map<String, Integer> countResults(WeightedRandomSelector weightedRandomSelector, List<Map<String, Object>> items) {

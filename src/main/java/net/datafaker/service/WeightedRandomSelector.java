@@ -10,27 +10,23 @@ import java.util.Set;
 /**
  * A utility class for selecting a random element from a list based on assigned weights.
  **/
-public class WeightedRandomSelector {
+public record WeightedRandomSelector(Random random) {
     private static final String WEIGHT_KEY = "weight";
     private static final String VALUE_KEY = "value";
-    private final Random random;
 
     public WeightedRandomSelector(Random random) {
         this.random = random != null ? random : new Random();
-    }
-
-    public Random getRandom() {
-        return random;
     }
 
     /**
      * Returns a weighted random element from the given list, where each element is represented as a Map
      * containing a weight and the corresponding value.
      * <p>
+     *
      * @param items A list of maps, where each map contains:
      *              - weight: A Double representing the weight of the element, influencing its selection probability.
      *              - value: The actual element of type T to be randomly selected based on its weight.
-     * @param <T> The type of the element to be selected from the list. The value associated with the weight can be of any type.
+     * @param <T>   The type of the element to be selected from the list. The value associated with the weight can be of any type.
      * @return A randomly selected element based on its weight.
      * @throws IllegalArgumentException if:
      *                                  - the list is null or empty,
@@ -50,9 +46,12 @@ public class WeightedRandomSelector {
         return selectWeightedElement(randomValue, cumulativeWeights, values);
     }
 
-    private void validateItemsList(List<Map<String, Object>> items) {
-        if (items == null || items.isEmpty()) {
-            throw new IllegalArgumentException("weightedArrayElement expects a non-empty list");
+    private static void validateItemsList(List<Map<String, Object>> items) {
+        if (items == null) {
+            throw new IllegalArgumentException("Input list cannot be null");
+        }
+        if (items.isEmpty()) {
+            throw new IllegalArgumentException("Input list cannot be empty");
         }
 
         Set<Object> uniqueValues = new HashSet<>();
@@ -63,16 +62,19 @@ public class WeightedRandomSelector {
         }
     }
 
-    private void assertUniqueValues(Map<String, Object> item, Set<Object> values) {
+    private static void assertUniqueValues(Map<String, Object> item, Set<Object> values) {
         Object value = item.get(VALUE_KEY);
         if (!values.add(value)) {
             throw new IllegalArgumentException("Duplicate value found: " + value + ". Values must be unique.");
         }
     }
 
-    private void validateItem(Map<String, Object> item) {
-        if (item == null || item.isEmpty()) {
-            throw new IllegalArgumentException("Item cannot be null or empty");
+    private static void validateItem(Map<String, Object> item) {
+        if (item == null) {
+            throw new IllegalArgumentException("Item cannot be null");
+        }
+        if (item.isEmpty()) {
+            throw new IllegalArgumentException("Item cannot be empty");
         }
         if (!item.containsKey(WEIGHT_KEY) || !item.containsKey(VALUE_KEY)) {
             throw new IllegalArgumentException("Each item must contain 'weight' and 'value' keys");
@@ -81,13 +83,13 @@ public class WeightedRandomSelector {
         validateWeight(item.get(WEIGHT_KEY));
     }
 
-    private void validateValue(Object valueObj) {
+    private static void validateValue(Object valueObj) {
         if (valueObj == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
     }
 
-    private void validateWeight(Object weightObj) {
+    private static void validateWeight(Object weightObj) {
         if (!(weightObj instanceof Double weight)) {
             throw new IllegalArgumentException("Weight must be a non-null Double");
         }
@@ -96,7 +98,7 @@ public class WeightedRandomSelector {
         }
     }
 
-    public double[] preprocessItems(List<Map<String, Object>> items, Object[] values) {
+    static double[] preprocessItems(List<Map<String, Object>> items, Object[] values) {
         double[] cumulativeWeights = new double[items.size()];
 
         double totalWeight = 0.0;
@@ -113,7 +115,7 @@ public class WeightedRandomSelector {
         return cumulativeWeights;
     }
 
-    public <T> T selectWeightedElement(double randomValue, double[] cumulativeWeights, Object[] values) {
+    static <T> T selectWeightedElement(double randomValue, double[] cumulativeWeights, Object[] values) {
         int index = Arrays.binarySearch(cumulativeWeights, randomValue);
         index = (index < 0) ? -index - 1 : index;
 
