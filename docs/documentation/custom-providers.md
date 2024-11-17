@@ -45,8 +45,7 @@ Create a custom provider of data:
         }
     }
     ```
-
-
+ 
 ### Register provider
 
 Create your own custom faker, which extends `Faker`, and register the custom provider:
@@ -77,6 +76,8 @@ This will print something like the following:
 ```
 Wasp
 ```
+
+**Usafe of weigted random selector is in the POC stage and is currently available only for custom hardcoded providers.**
 
 To use a random selector based on weights, you can do the following:
 
@@ -144,6 +145,7 @@ en:
     insectsfromfile:
       bees: ['Bumblebee', 'Euglossine bee', 'Honeybee', 'Carpenter bee', 'Leaf-cutter bee', 'Mining bee']
 ```
+
 
 ### Register provider
 
