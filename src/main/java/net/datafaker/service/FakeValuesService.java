@@ -375,23 +375,23 @@ public class FakeValuesService {
         final char[] res = input.toCharArray();
         for (int i = 0; i < res.length; i++) {
             switch (res[i]) {
-            case '#' -> {
-                if (numerify) {
-                    res[i] = DIGITS[context.getRandomService().nextInt(10)];
+                case '#' -> {
+                    if (numerify) {
+                        res[i] = DIGITS[context.getRandomService().nextInt(10)];
+                    }
                 }
-            }
-            case 'Ø' -> {
-                if (numerify) {
-                    res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
+                case 'Ø' -> {
+                    if (numerify) {
+                        res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
+                    }
                 }
-            }
-            case '?' -> {
-                if (letterify) {
-                    res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
+                case '?' -> {
+                    if (letterify) {
+                        res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
+                    }
                 }
-            }
-            default -> {
-            }
+                default -> {
+                }
             }
         }
 
