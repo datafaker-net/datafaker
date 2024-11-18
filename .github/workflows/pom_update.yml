@@ -1,0 +1,29 @@
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create_pr:
+    name: Create Pull Request
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Set up Git
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        echo "BRANCH=pom-snapshot-updt" >> $GITHUB_ENV
+    - name: Build PR
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git checkout -b $BRANCH
+        ./mvnw build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT
+        git add .
+        git commit -m "Update pom SNAPSHOT version" -m "A release just completed, this PR increments the SNAPSHOT version in pom.xml" --signoff
+        git push --set-upstream origin $BRANCH --force
+        gh pr create --fill
