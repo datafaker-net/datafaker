@@ -10,7 +10,9 @@ class MovieTest extends EntertainmentFakerTest {
     @Override
     protected Collection<TestSpec> providerListTest() {
         return List.of(
-            TestSpec.of(movie::quote, "movie.quote")
+            TestSpec.of(movie::quote, "movie.quote"),
+            TestSpec.of(movie::name, "movie.name")
         );
     }
+
 }
