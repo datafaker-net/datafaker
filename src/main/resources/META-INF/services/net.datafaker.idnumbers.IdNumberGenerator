@@ -3,6 +3,7 @@ net.datafaker.idnumbers.AmericanIdNumber
 net.datafaker.idnumbers.BulgarianIdNumber
 net.datafaker.idnumbers.ChineseIdNumber
 net.datafaker.idnumbers.EstonianIdNumber
+net.datafaker.idnumbers.FrenchIdNumber
 net.datafaker.idnumbers.GeorgianIdNumber
 net.datafaker.idnumbers.MacedonianIdNumber
 net.datafaker.idnumbers.MexicanIdNumber
