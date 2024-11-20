@@ -111,7 +111,7 @@ nav:
 #      - Changes: changelog/index.md
 #      - How to upgrade: upgrade.md
   - Releases:
-    - 2.4.2-SNAPSHOT: releases/2.4.1-SNAPSHOT.md
+    - 2.4.3-SNAPSHOT: releases/2.4.3-SNAPSHOT.md
     - 2.4.2: releases/2.4.2.md
     - 2.4.1: releases/2.4.1.md
     - 2.4.0: releases/2.4.0.md
