@@ -28,6 +28,7 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     private static final Faker ROMANIAN = new Faker(new Locale("ro", "RO"));
     private static final Faker UKRAINIAN = new Faker(new Locale("uk", "UA"));
     private static final Faker FRENCH = new Faker(new Locale("fr", "FR"));
+    private static final Faker ITALIAN = new Faker(new Locale("it", "IT"));
 
     @Test
     void testValid() {
@@ -196,6 +197,17 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     void frenchIdNumber() {
         String actual = FRENCH.idNumber().valid();
         assertThat(actual).matches(IdNumberPatterns.FRENCH);
+    }
+
+    @Test
+    void italianIdNumberSample() {
+        assertThatPin("PTRJHN89T04Z222B").matches(IdNumberPatterns.ITALIAN);
+        assertThatPin("BBBTTT20H12X122H").matches(IdNumberPatterns.ITALIAN);
+    }
+
+    @RepeatedTest(100)
+    void italianIdNumber() {
+        assertThatPin(ITALIAN.idNumber().valid()).matches(IdNumberPatterns.ITALIAN);
     }
 
     private static AbstractStringAssert<?> assertThatPin(String pin) {
