@@ -4,18 +4,13 @@ import net.datafaker.AbstractFakerTest;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class WeightedRandomSelectorTest extends AbstractFakerTest {
 
@@ -29,213 +24,235 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
     public static final double ELEMENT_1_WEIGHT = 1.0;
     public static final double ELEMENT_2_WEIGHT = 2.0;
     public static final double ELEMENT_3_WEIGHT = 3.0;
-    public static final double ZERO_WEIGHT = 0.0;
     public static final double NEGATIVE_WEIGHT = -1.0;
 
+    /**
+     * Tests for exception scenarios using parameterized tests.
+     */
     @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withSingleElement(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT)
-        );
-
-        String result = weightedRandomSelector.select(items);
-        assertThat(result).isEqualTo(ELEMENT_1);
+    @MethodSource("exceptionCasesProvider")
+    void testWeightedArrayElement_exceptions(List<Map<String, Object>> items, String expectedMessage) {
+        WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
+        assertThatThrownBy(() -> selector.select(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(expectedMessage);
     }
 
+    static Stream<Arguments> exceptionCasesProvider() {
+        return Stream.of(
+            Arguments.of(
+                null,
+                "Input list cannot be null"
+            ),
+            Arguments.of(
+                Collections.emptyList(),
+                "Input list cannot be empty"
+            ),
+            Arguments.of(
+                List.of(
+                    Map.of(VALUE_KEY, ELEMENT_1),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                ),
+                "Each item must contain 'weight' and 'value' keys"
+            ),
+            Arguments.of(
+                List.of(
+                    Map.of(WEIGHT_KEY, ELEMENT_1_WEIGHT),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                ),
+                "Each item must contain 'weight' and 'value' keys"
+            ),
+            Arguments.of(
+                List.of(
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, STRING_WEIGHT),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                ),
+                "Weight must be a non-null Double"
+            ),
+            Arguments.of(
+                Arrays.asList(
+                    null,
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT)
+                ),
+                "Item cannot be null"
+            ),
+            Arguments.of(
+                List.of(
+                    Map.of(),
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT)
+                ),
+                "Item cannot be empty"
+            ),
+            Arguments.of(
+                List.of(
+                    new HashMap<String, Object>() {{
+                        put(VALUE_KEY, null);
+                        put(WEIGHT_KEY, ELEMENT_1_WEIGHT);
+                    }}
+                ),
+                "Value cannot be null"
+            ),
+            Arguments.of(
+                List.of(
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.MAX_VALUE - 1),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, Double.MAX_VALUE - 1)
+                ),
+                "Sum of the weights exceeds Double.MAX_VALUE"
+            ),
+            Arguments.of(
+                List.of(
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+                    Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_1_WEIGHT)
+                ),
+                "Duplicate value found: Element2. Values must be unique."
+            )
+        );
+    }
+
+    /**
+     * Tests for invalid weight values using parameterized tests.
+     */
     @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withMultipleElements(WeightedRandomSelector weightedRandomSelector) {
+    @MethodSource("invalidWeightsProvider")
+    void testWeightedArrayElement_withInvalidWeights(List<Map<String, Object>> items, String expectedMessage) {
+        WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
+        assertThatThrownBy(() -> selector.select(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(expectedMessage);
+    }
+
+    static Stream<Arguments> invalidWeightsProvider() {
+        return Stream.of(
+            Arguments.of(
+                List.of(
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.NaN),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                ),
+                "Weight must be a non-negative number and cannot be NaN or infinite"
+            ),
+            Arguments.of(
+                List.of(
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, NEGATIVE_WEIGHT),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                ),
+                "Weight must be a non-negative number and cannot be NaN or infinite"
+            ),
+            Arguments.of(
+                List.of(
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.POSITIVE_INFINITY),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                ),
+                "Weight must be a non-negative number and cannot be NaN or infinite"
+            ),
+            Arguments.of(
+                List.of(
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, 0.0),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, 0.0),
+                    Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, 0.0)
+                ),
+                "The total weight must be greater than 0. At least one item must have a positive weight"
+            )
+        );
+    }
+
+    /**
+     * Tests the selection logic with specific random values using parameterized tests.
+     */
+    @ParameterizedTest
+    @MethodSource("selectWeightedElementProvider")
+    void testSelectWeightedElement(double randomValue, String expectedElement) {
         List<Map<String, Object>> items = List.of(
             Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
             Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
             Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
         );
 
-        Map<String, Integer> counts = countResults(weightedRandomSelector, items);
+        Object[] values = new Object[items.size()];
+        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
 
-        assertThat(counts).containsKeys(ELEMENT_1, ELEMENT_2, ELEMENT_3);
-        assertThat(counts.get(ELEMENT_1)).isLessThan(counts.get(ELEMENT_2));
-        assertThat(counts.get(ELEMENT_2)).isLessThan(counts.get(ELEMENT_3));
+        String result = (String) WeightedRandomSelector.selectWeightedElement(randomValue, cumulativeWeights, values);
+        assertThat(result).isEqualTo(expectedElement);
     }
 
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withNullItems(WeightedRandomSelector weightedRandomSelector) {
-        assertThatThrownBy(() -> weightedRandomSelector.select(null))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input list cannot be null");
-    }
-
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withEmptyItems(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = Collections.emptyList();
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input list cannot be empty");
-    }
-
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withMissingWeightKey(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+    static Stream<Arguments> selectWeightedElementProvider() {
+        return Stream.of(
+            Arguments.of(0.5, ELEMENT_1),
+            Arguments.of(2.0, ELEMENT_2),
+            Arguments.of(5.5, ELEMENT_3),
+            Arguments.of(5.9, ELEMENT_3),
+            Arguments.of(6.0, ELEMENT_3),
+            Arguments.of(6.1, ELEMENT_3)
         );
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Each item must contain 'weight' and 'value' keys");
     }
 
+    /**
+     * Tests selection with a single element using parameterized tests.
+     */
     @ParameterizedTest
     @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withMissingValueKey(WeightedRandomSelector weightedRandomSelector) {
+    void testWeightedArrayElement_withSingleElement(WeightedRandomSelector selector) {
         List<Map<String, Object>> items = List.of(
-            Map.of(WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
-        );
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Each item must contain 'weight' and 'value' keys");
-    }
-
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withInvalidWeightType(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, STRING_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
-        );
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Weight must be a non-null Double");
-    }
-
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withNaNWeight(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.NaN),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
-        );
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Weight must be a positive number and cannot be NaN or infinite");
-    }
-
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withZeroWeight(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ZERO_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
-        );
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Weight must be a positive number and cannot be NaN or infinite");
-    }
-
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withNegativeWeight(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, NEGATIVE_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
-        );
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Weight must be a positive number and cannot be NaN or infinite");
-    }
-
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withInfiniteWeight(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.POSITIVE_INFINITY),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
-        );
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Weight must be a positive number and cannot be NaN or infinite");
-    }
-
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withNullItem(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = new ArrayList<>();
-        items.add(null);
-        items.add(Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT));
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Item cannot be null");
-    }
-
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withEmptyItem(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(),
             Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT)
         );
 
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Item cannot be empty");
+        String result = selector.select(items);
+        assertThat(result).isEqualTo(ELEMENT_1);
     }
 
+    /**
+     * Tests selection with multiple elements and verifies the distribution using parameterized tests.
+     */
     @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withNullValue(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = new ArrayList<>();
+    @MethodSource("multipleElementsProvider")
+    void testWeightedArrayElement_withMultipleElements(List<Map<String, Object>> items, Map<String, Integer> expectedCounts) {
+        WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
 
-        Map<String, Object> itemWithNullValue = new HashMap<>();
-        itemWithNullValue.put(VALUE_KEY, null);
-        itemWithNullValue.put(WEIGHT_KEY, ELEMENT_1_WEIGHT);
+        Map<String, Integer> counts = countResults(selector, items);
 
-        items.add(itemWithNullValue);
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Value cannot be null");
+        assertThat(counts.keySet()).containsExactlyInAnyOrderElementsOf(expectedCounts.keySet());
+        for (String element : expectedCounts.keySet()) {
+            assertThat(counts.get(element)).isCloseTo(expectedCounts.get(element), withinPercentage(20));
+        }
     }
 
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testCalculateTotalWeight_withOverflowingWeights(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.MAX_VALUE - 1),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, Double.MAX_VALUE - 1)
+    static Stream<Arguments> multipleElementsProvider() {
+        return Stream.of(
+            Arguments.of(
+                List.of(
+                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
+                    Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
+                ),
+                Map.of(
+                    ELEMENT_1, (int) (ITERATIONS * ELEMENT_1_WEIGHT / (ELEMENT_1_WEIGHT + ELEMENT_2_WEIGHT + ELEMENT_3_WEIGHT)),
+                    ELEMENT_2, (int) (ITERATIONS * ELEMENT_2_WEIGHT / (ELEMENT_1_WEIGHT + ELEMENT_2_WEIGHT + ELEMENT_3_WEIGHT)),
+                    ELEMENT_3, (int) (ITERATIONS * ELEMENT_3_WEIGHT / (ELEMENT_1_WEIGHT + ELEMENT_2_WEIGHT + ELEMENT_3_WEIGHT))
+                )
+            )
         );
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Sum of the weights exceeds Double.MAX_VALUE");
     }
 
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testCalculateTotalWeight_withDuplicateKeys(WeightedRandomSelector weightedRandomSelector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_1_WEIGHT)
-        );
-
-        assertThatThrownBy(() -> weightedRandomSelector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Duplicate value found: Element2. Values must be unique.");
+    /**
+     * Counts the number of times each element is selected.
+     */
+    private Map<String, Integer> countResults(WeightedRandomSelector selector, List<Map<String, Object>> items) {
+        Map<String, Integer> counts = new HashMap<>();
+        for (int i = 0; i < ITERATIONS; i++) {
+            String result = selector.select(items);
+            counts.merge(result, 1, Integer::sum);
+        }
+        return counts;
     }
 
+    private static Stream<WeightedRandomSelector> weightedRandomSelectorProvider() {
+        return Stream.of(new WeightedRandomSelector(new Random()));
+    }
+
+    /**
+     * Tests the constructor with a non-null Random instance.
+     */
     @Test
     void testConstructorWithNonNullRandom() {
         Random providedRandom = new Random();
@@ -244,83 +261,13 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         assertThat(selector.random()).isSameAs(providedRandom);
     }
 
+    /**
+     * Tests the constructor with a null Random instance.
+     */
     @Test
     void testConstructorWithNullRandom() {
         WeightedRandomSelector selector = new WeightedRandomSelector(null);
 
         assertThat(selector.random()).isNotNull();
-    }
-
-    @Test
-    void testSelectWeightedElement_randomValueInRange() {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
-        );
-
-        Object[] values = new Object[items.size()];
-        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
-
-        assertThat((String) WeightedRandomSelector.selectWeightedElement(0.5, cumulativeWeights, values)).isEqualTo(ELEMENT_1);
-        assertThat((String) WeightedRandomSelector.selectWeightedElement(2.0, cumulativeWeights, values)).isEqualTo(ELEMENT_2);
-        assertThat((String) WeightedRandomSelector.selectWeightedElement(5.5, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
-    }
-
-    @Test
-    void testSelectWeightedElement_randomValueTriggersLastIndex() {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
-        );
-
-        Object[] values = new Object[items.size()];
-        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
-
-        assertThat((String) WeightedRandomSelector.selectWeightedElement(5.9, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
-    }
-
-    @Test
-    void testSelectWeightedElement_randomValueAtLastBoundary() {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
-        );
-
-        Object[] values = new Object[items.size()];
-        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
-
-        assertThat((String) WeightedRandomSelector.selectWeightedElement(6.0, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
-    }
-
-    @Test
-    void testSelectWeightedElement_randomValueExceedsCumulativeWeight() {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
-        );
-
-        Object[] values = new Object[items.size()];
-        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
-
-        double randomValue = 6.1;
-
-        assertThat((String) WeightedRandomSelector.selectWeightedElement(randomValue, cumulativeWeights, values)).isEqualTo(ELEMENT_3);
-    }
-
-    private Map<String, Integer> countResults(WeightedRandomSelector weightedRandomSelector, List<Map<String, Object>> items) {
-        Map<String, Integer> counts = new HashMap<>();
-        for (int i = 0; i < ITERATIONS; i++) {
-            String result = weightedRandomSelector.select(items);
-            counts.merge(result, 1, Integer::sum);
-        }
-        return counts;
-    }
-
-    private static Stream<WeightedRandomSelector> weightedRandomSelectorProvider() {
-        return Stream.of(new WeightedRandomSelector(new Random()));
     }
 }

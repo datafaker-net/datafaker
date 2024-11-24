@@ -21,8 +21,15 @@ Create a custom provider of data:
 === "Java"
 
     ``` java
-    public class Insect extends AbstractProvider<BaseProviders> {
-        private static final String[] INSECT_NAMES = new String[]{"Ant", "Beetle", "Butterfly", "Wasp"};
+    public static class Insect extends AbstractProvider<BaseProviders> {
+        private static final WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
+
+        private static final String[] INSECT_NAMES = { "Ant", "Beetle", "Butterfly", "Wasp" };
+        private static final List<Map<String, Object>> WEIGHTED_INSECTS = List.of(
+            Map.of("value", "Driver ant", "weight", 6.0),
+            Map.of("value", "Fire ant", "weight", 3.0),
+            Map.of("value", "Harvester ant", "weight", 1.0)
+        );
 
         public Insect(BaseProviders faker) {
             super(faker);
@@ -33,15 +40,7 @@ Create a custom provider of data:
         }
 
         public String weightedInsectName() {
-            List<Map<String, Object>> insects = List.of(
-                Map.of("value", "Driver ant", "weight", 6.0),
-                Map.of("value", "Fire ant", "weight", 3.0),
-                Map.of("value", "Harvester ant", "weight", 1.0)
-            );
-
-            WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
-
-            return selector.select(insects);
+            return selector.select(WEIGHTED_INSECTS);
         }
     }
     ```

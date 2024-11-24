@@ -93,8 +93,14 @@ public record WeightedRandomSelector(Random random) {
         if (!(weightObj instanceof Double weight)) {
             throw new IllegalArgumentException("Weight must be a non-null Double");
         }
-        if (weight <= 0 || Double.isNaN(weight) || Double.isInfinite(weight)) {
-            throw new IllegalArgumentException("Weight must be a positive number and cannot be NaN or infinite");
+        if (weight < 0 || Double.isNaN(weight) || Double.isInfinite(weight)) {
+            throw new IllegalArgumentException("Weight must be a non-negative number and cannot be NaN or infinite");
+        }
+    }
+
+    private static void validateTotalWeight(double totalWeight) {
+        if (totalWeight <= 0) {
+            throw new IllegalArgumentException("The total weight must be greater than 0. At least one item must have a positive weight");
         }
     }
 
@@ -111,6 +117,8 @@ public record WeightedRandomSelector(Random random) {
             cumulativeWeights[i] = totalWeight;
             values[i] = items.get(i).get(VALUE_KEY);
         }
+
+        validateTotalWeight(totalWeight);
 
         return cumulativeWeights;
     }
