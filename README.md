@@ -500,6 +500,7 @@ Supported Locales
 * en-US
 * en-ZA
 * en-PH
+* es-AR (Argentine)
 * es_ES (Spain)
 * es-MX (Mexican)
 * et_EE (Estonian)
