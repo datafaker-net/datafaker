@@ -27,15 +27,97 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
     public static final double NEGATIVE_WEIGHT = -1.0;
 
     /**
+     * Tests the constructor with a non-null Random instance.
+     */
+    @Test
+    void testConstructorWithNonNullRandom() {
+        Random providedRandom = new Random();
+        WeightedRandomSelector selector = new WeightedRandomSelector(providedRandom);
+
+        assertThat(selector.random()).isSameAs(providedRandom);
+    }
+
+    /**
+     * Tests the constructor with a null Random instance.
+     */
+    @Test
+    void testConstructorWithNullRandom() {
+        WeightedRandomSelector selector = new WeightedRandomSelector(null);
+
+        assertThat(selector.random()).isNotNull();
+    }
+
+    /**
      * Tests for exception scenarios using parameterized tests.
      */
     @ParameterizedTest
     @MethodSource("exceptionCasesProvider")
-    void testWeightedArrayElement_exceptions(List<Map<String, Object>> items, String expectedMessage) {
+    void testWeightedArrayElementFailureCase(List<Map<String, Object>> items, String expectedMessage) {
         WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
         assertThatThrownBy(() -> selector.select(items))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(expectedMessage);
+    }
+
+    /**
+     * Tests for invalid weight values using parameterized tests.
+     */
+    @ParameterizedTest
+    @MethodSource("invalidWeightsProvider")
+    void testWeightedArrayElementWithInvalidWeights(List<Map<String, Object>> items, String expectedMessage) {
+        WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
+        assertThatThrownBy(() -> selector.select(items))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(expectedMessage);
+    }
+
+    /**
+     * Tests the selection logic with specific random values using parameterized tests.
+     */
+    @ParameterizedTest
+    @MethodSource("selectWeightedElementProvider")
+    void testSelectWeightedElement(double randomValue, String expectedElement) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
+            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
+        );
+
+        Object[] values = new Object[items.size()];
+        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
+
+        String result = WeightedRandomSelector.selectWeightedElement(randomValue, cumulativeWeights, values);
+        assertThat(result).isEqualTo(expectedElement);
+    }
+
+    /**
+     * Tests selection with a single element using parameterized tests.
+     */
+    @ParameterizedTest
+    @MethodSource("weightedRandomSelectorProvider")
+    void testWeightedArrayElementWithSingleElement(WeightedRandomSelector selector) {
+        List<Map<String, Object>> items = List.of(
+            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT)
+        );
+
+        String result = selector.select(items);
+        assertThat(result).isEqualTo(ELEMENT_1);
+    }
+
+    /**
+     * Tests selection with multiple elements and verifies the distribution using parameterized tests.
+     */
+    @ParameterizedTest
+    @MethodSource("multipleElementsProvider")
+    void testWeightedArrayElementWithMultipleElements(List<Map<String, Object>> items, Map<String, Integer> expectedCounts) {
+        WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
+
+        Map<String, Integer> counts = countResults(selector, items);
+
+        assertThat(counts.keySet()).containsExactlyInAnyOrderElementsOf(expectedCounts.keySet());
+        for (String element : expectedCounts.keySet()) {
+            assertThat(counts.get(element)).isCloseTo(expectedCounts.get(element), withinPercentage(20));
+        }
     }
 
     static Stream<Arguments> exceptionCasesProvider() {
@@ -111,18 +193,6 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         );
     }
 
-    /**
-     * Tests for invalid weight values using parameterized tests.
-     */
-    @ParameterizedTest
-    @MethodSource("invalidWeightsProvider")
-    void testWeightedArrayElement_withInvalidWeights(List<Map<String, Object>> items, String expectedMessage) {
-        WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
-        assertThatThrownBy(() -> selector.select(items))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage(expectedMessage);
-    }
-
     static Stream<Arguments> invalidWeightsProvider() {
         return Stream.of(
             Arguments.of(
@@ -157,25 +227,6 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         );
     }
 
-    /**
-     * Tests the selection logic with specific random values using parameterized tests.
-     */
-    @ParameterizedTest
-    @MethodSource("selectWeightedElementProvider")
-    void testSelectWeightedElement(double randomValue, String expectedElement) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
-        );
-
-        Object[] values = new Object[items.size()];
-        double[] cumulativeWeights = WeightedRandomSelector.preprocessItems(items, values);
-
-        String result = (String) WeightedRandomSelector.selectWeightedElement(randomValue, cumulativeWeights, values);
-        assertThat(result).isEqualTo(expectedElement);
-    }
-
     static Stream<Arguments> selectWeightedElementProvider() {
         return Stream.of(
             Arguments.of(0.5, ELEMENT_1),
@@ -185,36 +236,6 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
             Arguments.of(6.0, ELEMENT_3),
             Arguments.of(6.1, ELEMENT_3)
         );
-    }
-
-    /**
-     * Tests selection with a single element using parameterized tests.
-     */
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElement_withSingleElement(WeightedRandomSelector selector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT)
-        );
-
-        String result = selector.select(items);
-        assertThat(result).isEqualTo(ELEMENT_1);
-    }
-
-    /**
-     * Tests selection with multiple elements and verifies the distribution using parameterized tests.
-     */
-    @ParameterizedTest
-    @MethodSource("multipleElementsProvider")
-    void testWeightedArrayElement_withMultipleElements(List<Map<String, Object>> items, Map<String, Integer> expectedCounts) {
-        WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
-
-        Map<String, Integer> counts = countResults(selector, items);
-
-        assertThat(counts.keySet()).containsExactlyInAnyOrderElementsOf(expectedCounts.keySet());
-        for (String element : expectedCounts.keySet()) {
-            assertThat(counts.get(element)).isCloseTo(expectedCounts.get(element), withinPercentage(20));
-        }
     }
 
     static Stream<Arguments> multipleElementsProvider() {
@@ -234,9 +255,6 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
         );
     }
 
-    /**
-     * Counts the number of times each element is selected.
-     */
     private Map<String, Integer> countResults(WeightedRandomSelector selector, List<Map<String, Object>> items) {
         Map<String, Integer> counts = new HashMap<>();
         for (int i = 0; i < ITERATIONS; i++) {
@@ -248,26 +266,5 @@ class WeightedRandomSelectorTest extends AbstractFakerTest {
 
     private static Stream<WeightedRandomSelector> weightedRandomSelectorProvider() {
         return Stream.of(new WeightedRandomSelector(new Random()));
-    }
-
-    /**
-     * Tests the constructor with a non-null Random instance.
-     */
-    @Test
-    void testConstructorWithNonNullRandom() {
-        Random providedRandom = new Random();
-        WeightedRandomSelector selector = new WeightedRandomSelector(providedRandom);
-
-        assertThat(selector.random()).isSameAs(providedRandom);
-    }
-
-    /**
-     * Tests the constructor with a null Random instance.
-     */
-    @Test
-    void testConstructorWithNullRandom() {
-        WeightedRandomSelector selector = new WeightedRandomSelector(null);
-
-        assertThat(selector.random()).isNotNull();
     }
 }
