@@ -5,15 +5,19 @@ import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.text.DecimalFormatSymbols;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -175,6 +179,18 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     void testCountyByZipCode() {
         final BaseFaker localFaker = new BaseFaker(new Locale("en", "US"));
         assertThat(localFaker.address().countyByZipCode("47732")).isNotEmpty();
+    }
+
+    Collection<String> argentineZipCodesSource() {
+        return Stream.generate(() -> new BaseFaker(Locale.forLanguageTag("es-AR")).address().zipCode())
+            .distinct().limit(4025)
+            .collect(Collectors.toSet());
+    }
+
+    @ParameterizedTest
+    @MethodSource("argentineZipCodesSource")
+    void testArgentineZipCodes(String zipCode) {
+        assertThat(zipCode).matches("^[ABDEFGHJKLMNPQRSTUVWXYZ][0-9]{4}$");
     }
 
     @ParameterizedTest
