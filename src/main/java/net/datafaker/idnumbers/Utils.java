@@ -1,14 +1,17 @@
 package net.datafaker.idnumbers;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.IntStream.concat;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
+
+import java.time.LocalDate;
+import java.util.stream.IntStream;
+
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber.Gender;
-
-import java.time.LocalDate;
-
-import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
-import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
 
 public class Utils {
 
@@ -44,4 +47,13 @@ public class Utils {
         }
         return checksum;
     }
+
+    static String join(IntStream chars1, IntStream chars2, IntStream chars3, int maxLength) {
+        return concat(chars1, concat(chars2, chars3))
+            .limit(maxLength)
+            .mapToObj(c -> (char) c)
+            .map(Object::toString)
+            .collect(joining());
+    }
+
 }
