@@ -1,19 +1,20 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.Faker;
-import net.datafaker.idnumbers.SouthAfricanIdNumber;
-import net.datafaker.idnumbers.SwedenIdNumber;
+import static java.lang.Integer.parseInt;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Locale;
+
 import org.assertj.core.api.AbstractStringAssert;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Locale;
-import java.util.regex.Pattern;
-
-import static java.lang.Integer.parseInt;
-import static org.assertj.core.api.Assertions.assertThat;
+import net.datafaker.Faker;
+import net.datafaker.helpers.IdNumberPatterns;
+import net.datafaker.idnumbers.SouthAfricanIdNumber;
+import net.datafaker.idnumbers.SwedenIdNumber;
 
 class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
@@ -26,10 +27,8 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     private static final Faker MACEDONIAN = new Faker(new Locale("mk", "MK"));
     private static final Faker ROMANIAN = new Faker(new Locale("ro", "RO"));
     private static final Faker UKRAINIAN = new Faker(new Locale("uk", "UA"));
-
-    private static final Pattern SWEDISH_ID_NUMBER_PATTERN = Pattern.compile("\\d{6}[-+]\\d{4}");
-    private static final Pattern UKRAINIAN_UNZR_PATTERN = Pattern.compile("\\d{8}-\\d{5}");
-    private static final Pattern SOUTH_AFRICA_ID_NUMBER_PATTERN = Pattern.compile("[0-9]{10}([01])8[0-9]");
+    private static final Faker FRENCH = new Faker(new Locale("fr", "FR"));
+    private static final Faker ITALIAN = new Faker(new Locale("it", "IT"));
 
     @Test
     void testValid() {
@@ -58,27 +57,27 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     @RepeatedTest(100)
     void testValidSwedishSsn() {
         String actual = SWEDISH.idNumber().valid();
-        assertThat(actual).matches(SWEDISH_ID_NUMBER_PATTERN);
+        assertThat(actual).matches(IdNumberPatterns.SWEDISH);
         assertThat(SwedenIdNumber.isValidSwedishSsn(actual)).isTrue();
     }
 
     @RepeatedTest(100)
     void testInvalidSwedishSsn() {
         String actual = SWEDISH.idNumber().invalid();
-        assertThat(actual).matches(SWEDISH_ID_NUMBER_PATTERN);
+        assertThat(actual).matches(IdNumberPatterns.SWEDISH);
         assertThat(SwedenIdNumber.isValidSwedishSsn(actual)).isFalse();
     }
 
     @RepeatedTest(100)
     void southAfrica_valid() {
         String actual = SOUTH_AFRICA.idNumber().valid();
-        assertThat(actual).matches(SOUTH_AFRICA_ID_NUMBER_PATTERN);
+        assertThat(actual).matches(IdNumberPatterns.SOUTH_AFRICAN);
         assertThat(SouthAfricanIdNumber.isValidEnZASsn(actual)).isTrue();
     }
 
     @RepeatedTest(100)
     void southAfrica_invalid() {
-        assertThat(SOUTH_AFRICA.idNumber().invalid()).matches(SOUTH_AFRICA_ID_NUMBER_PATTERN);
+        assertThat(SOUTH_AFRICA.idNumber().invalid()).matches(IdNumberPatterns.SOUTH_AFRICAN);
     }
 
     @RepeatedTest(100)
@@ -186,12 +185,29 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void ukrainianUznr_valid() {
-        assertThatPin(UKRAINIAN.idNumber().valid()).matches(UKRAINIAN_UNZR_PATTERN);
+        assertThatPin(UKRAINIAN.idNumber().valid()).matches(IdNumberPatterns.UKRAINIAN);
     }
 
     @RepeatedTest(100)
     void ukrainianUznr_invalid() {
-        assertThatPin(UKRAINIAN.idNumber().invalid()).matches(UKRAINIAN_UNZR_PATTERN);
+        assertThatPin(UKRAINIAN.idNumber().invalid()).matches(IdNumberPatterns.UKRAINIAN);
+    }
+
+    @Test
+    void frenchIdNumber() {
+        String actual = FRENCH.idNumber().valid();
+        assertThat(actual).matches(IdNumberPatterns.FRENCH);
+    }
+
+    @Test
+    void italianIdNumberSample() {
+        assertThatPin("PTRJHN89T04Z222B").matches(IdNumberPatterns.ITALIAN);
+        assertThatPin("BBBTTT20H12X122H").matches(IdNumberPatterns.ITALIAN);
+    }
+
+    @RepeatedTest(100)
+    void italianIdNumber() {
+        assertThatPin(ITALIAN.idNumber().valid()).matches(IdNumberPatterns.ITALIAN);
     }
 
     private static AbstractStringAssert<?> assertThatPin(String pin) {
