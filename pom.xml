@@ -33,7 +33,7 @@
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <jbanking.version>4.2.0</jbanking.version>
         <junit.version>5.11.3</junit.version>
-        <libphonenumber.version>8.13.50</libphonenumber.version>
+        <libphonenumber.version>8.13.51</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
