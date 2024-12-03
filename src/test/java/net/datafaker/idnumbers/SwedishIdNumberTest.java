@@ -1,10 +1,7 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.Faker;
-import net.datafaker.providers.base.IdNumber;
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SwedishIdNumberTest {
