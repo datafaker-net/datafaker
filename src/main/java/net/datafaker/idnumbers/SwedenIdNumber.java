@@ -9,8 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 
-import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.gender;
 
 /**
  * Implementation based on the definition at
@@ -20,6 +20,7 @@ import static net.datafaker.idnumbers.Utils.birthday;
  */
 public class SwedenIdNumber implements IdNumberGenerator {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
+    private static final DateTimeFormatter FULL_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     @Override
     public String countryCode() {
@@ -27,7 +28,6 @@ public class SwedenIdNumber implements IdNumberGenerator {
     }
 
     private static final String[] VALID_PATTERNS = {"######-####", "######+####"};
-    private static final String[] PLUS_MINUS = {"+", "-"};
 
     @Deprecated
     public String getValidSsn(BaseProviders f) {
@@ -39,10 +39,14 @@ public class SwedenIdNumber implements IdNumberGenerator {
         LocalDate birthday = birthday(f, request);
         String end = generateEndPart(f);
         String basePart = DATE_TIME_FORMATTER.format(birthday)
-            + f.options().option(PLUS_MINUS)
+            + generateSymbol(birthday)
             + end;
         String idNumber = basePart + calculateChecksum(basePart);
         return new PersonIdNumber(idNumber, birthday, gender(f, request));
+    }
+
+    private String generateSymbol(LocalDate date){
+        return isYearOver100YearsAgo(date.toString().substring(0, 4)) ? "+" : "-";
     }
 
     public static String generateEndPart(BaseProviders f) {
@@ -75,7 +79,7 @@ public class SwedenIdNumber implements IdNumberGenerator {
         }
 
         try {
-            if (parseDate(ssn)) {
+            if (isDateIncorrect(ssn)) {
                 return false;
             }
         } catch (DateTimeParseException | NumberFormatException ignore) {
@@ -91,19 +95,48 @@ public class SwedenIdNumber implements IdNumberGenerator {
         return checksum == calculatedChecksum;
     }
 
-    private static boolean parseDate(String ssn) {
+    private static boolean isDateIncorrect(String ssn) {
         String dateString = ssn.substring(0, 6);
-        if (ChronoField.YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(0, 2)))) {
-            if (ChronoField.MONTH_OF_YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(2, 4)))) {
-                if (ChronoField.DAY_OF_MONTH.range().isValidIntValue(Integer.parseInt(dateString.substring(4)))) {
-                    LocalDate date = LocalDate.parse(dateString, DATE_TIME_FORMATTER);
-                    // want to check that the parsed date is equal to the supplied data, most of the attempts will fail
-                    String reversed = date.format(DATE_TIME_FORMATTER);
-                    return !reversed.equals(dateString);
-                }
+
+        if (!ChronoField.YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(0, 2)))) {
+            return true;
+        }
+
+        if (!ChronoField.MONTH_OF_YEAR.range().isValidIntValue(Integer.parseInt(dateString.substring(2, 4)))) {
+            return true;
+        }
+
+        if (!ChronoField.DAY_OF_MONTH.range().isValidIntValue(Integer.parseInt(dateString.substring(4)))) {
+            return true;
+        }
+
+        char symbol = ssn.charAt(6);
+
+        if (symbol == '+') {
+            dateString = "19" + dateString;
+            if (!isYearOver100YearsAgo(dateString)) {
+                return true;
+            }
+        } else if (symbol == '-') {
+            int year = Integer.parseInt(dateString.substring(0, 2));
+            int currentYear = LocalDate.now().getYear() % 100;
+            if (year > currentYear) {
+                dateString = "19" + dateString;
+            } else {
+                dateString = "20" + dateString;
             }
         }
-        return true;
+
+        LocalDate date = LocalDate.parse(dateString, FULL_DATE_FORMATTER);
+        // want to check that the parsed date is equal to the supplied data, most of the attempts will fail
+        String reversed = date.format(FULL_DATE_FORMATTER);
+        return !reversed.equals(dateString);
+    }
+
+    private static boolean isYearOver100YearsAgo(String date) {
+        int year = Integer.parseInt(date);
+        LocalDate hundredYearsAgo = LocalDate.now().minusYears(100);
+        return LocalDate.of(year, 1, 1).isBefore(hundredYearsAgo);
     }
 
     private static int calculateChecksum(String number) {

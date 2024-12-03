@@ -1,7 +1,10 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.Faker;
+import net.datafaker.providers.base.IdNumber;
 import org.junit.jupiter.api.Test;
 
+import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SwedishIdNumberTest {
@@ -10,6 +13,7 @@ class SwedishIdNumberTest {
     void validSwedishSsn() {
         assertThat(SwedenIdNumber.isValidSwedishSsn("670919-9530")).isTrue();
         assertThat(SwedenIdNumber.isValidSwedishSsn("811228-9874")).isTrue();
+        assertThat(SwedenIdNumber.isValidSwedishSsn("000229-9873")).isTrue();
     }
 
     @Test
@@ -21,5 +25,6 @@ class SwedishIdNumberTest {
         assertThat(SwedenIdNumber.isValidSwedishSsn("811228-9875")).isFalse();
         assertThat(SwedenIdNumber.isValidSwedishSsn("811200-9874")).isFalse();
         assertThat(SwedenIdNumber.isValidSwedishSsn("810028-9874")).isFalse();
+        assertThat(SwedenIdNumber.isValidSwedishSsn("000229+9873")).isFalse();
     }
 }
