@@ -46,7 +46,7 @@ public class SwedenIdNumber implements IdNumberGenerator {
     }
 
     private String generateSymbol(LocalDate date){
-        return isYearOver100YearsAgo(date.toString().substring(0, 4)) ? "+" : "-";
+        return isYearOver100YearsAgo(date.toString().substring(0, 4), LocalDate.now()) ? "+" : "-";
     }
 
     public static String generateEndPart(BaseProviders f) {
@@ -112,18 +112,21 @@ public class SwedenIdNumber implements IdNumberGenerator {
 
         char symbol = ssn.charAt(6);
 
+        String lastCenturyPrefix = String.valueOf(LocalDate.now().minusYears(100).getYear()).substring(0, 2);
+        String thisCenturyPrefix = String.valueOf(LocalDate.now().getYear()).substring(0, 2);
+
         if (symbol == '+') {
-            dateString = "19" + dateString;
-            if (!isYearOver100YearsAgo(dateString)) {
+            dateString = lastCenturyPrefix + dateString;
+            if (!isYearOver100YearsAgo(dateString, LocalDate.now())) {
                 return true;
             }
         } else if (symbol == '-') {
             int year = Integer.parseInt(dateString.substring(0, 2));
             int currentYear = LocalDate.now().getYear() % 100;
             if (year > currentYear) {
-                dateString = "19" + dateString;
+                dateString = lastCenturyPrefix + dateString;
             } else {
-                dateString = "20" + dateString;
+                dateString = thisCenturyPrefix + dateString;
             }
         }
 
@@ -133,9 +136,9 @@ public class SwedenIdNumber implements IdNumberGenerator {
         return !reversed.equals(dateString);
     }
 
-    private static boolean isYearOver100YearsAgo(String date) {
+    static boolean isYearOver100YearsAgo(String date, LocalDate currentDate) {
         int year = Integer.parseInt(date);
-        LocalDate hundredYearsAgo = LocalDate.now().minusYears(100);
+        LocalDate hundredYearsAgo = currentDate.minusYears(100);
         return LocalDate.of(year, 1, 1).isBefore(hundredYearsAgo);
     }
 
