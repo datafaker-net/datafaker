@@ -110,25 +110,7 @@ public class SwedenIdNumber implements IdNumberGenerator {
             return true;
         }
 
-        char symbol = ssn.charAt(6);
-
-        String lastCenturyPrefix = String.valueOf(LocalDate.now().minusYears(100).getYear()).substring(0, 2);
-        String thisCenturyPrefix = String.valueOf(LocalDate.now().getYear()).substring(0, 2);
-
-        if (symbol == '+') {
-            dateString = lastCenturyPrefix + dateString;
-            if (!isYearOver100YearsAgo(dateString, LocalDate.now())) {
-                return true;
-            }
-        } else if (symbol == '-') {
-            int year = Integer.parseInt(dateString.substring(0, 2));
-            int currentYear = LocalDate.now().getYear() % 100;
-            if (year > currentYear) {
-                dateString = lastCenturyPrefix + dateString;
-            } else {
-                dateString = thisCenturyPrefix + dateString;
-            }
-        }
+        dateString = findYearBeginningFromSsn(ssn) + dateString;
 
         LocalDate date = LocalDate.parse(dateString, FULL_DATE_FORMATTER);
         // want to check that the parsed date is equal to the supplied data, most of the attempts will fail
@@ -136,10 +118,28 @@ public class SwedenIdNumber implements IdNumberGenerator {
         return !reversed.equals(dateString);
     }
 
-    static boolean isYearOver100YearsAgo(String date, LocalDate currentDate) {
-        int year = Integer.parseInt(date);
+    static String findYearBeginningFromSsn(String ssn) {
+        char symbol = ssn.charAt(6);
+        String yearEnd = ssn.substring(0, 2);
+
+        int startYear = (symbol == '+') ? LocalDate.now().minusYears(100).getYear() - 1 : LocalDate.now().getYear();
+
+        for (int year = startYear; year >= 0; year--) {
+            if (String.valueOf(year).endsWith(yearEnd)) {
+                return String.valueOf(year).substring(0, 2);
+            }
+        }
+
+        String errorMessage = symbol == '+'
+            ? "Cannot find year that ends with %s and is before %d".formatted(yearEnd, startYear + 1)
+            : "Cannot find year that ends with %s".formatted(yearEnd);
+
+        throw new RuntimeException(errorMessage);
+    }
+
+    static boolean isYearOver100YearsAgo(String year, LocalDate currentDate) {
         LocalDate hundredYearsAgo = currentDate.minusYears(100);
-        return LocalDate.of(year, 1, 1).isBefore(hundredYearsAgo);
+        return LocalDate.of(Integer.parseInt(year), 1, 1).isBefore(hundredYearsAgo);
     }
 
     private static int calculateChecksum(String number) {

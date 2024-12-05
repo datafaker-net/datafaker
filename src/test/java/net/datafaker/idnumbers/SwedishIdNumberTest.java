@@ -17,6 +17,8 @@ class SwedishIdNumberTest {
         assertThat(SwedenIdNumber.isValidSwedishSsn("670919-9530")).isTrue();
         assertThat(SwedenIdNumber.isValidSwedishSsn("811228-9874")).isTrue();
         assertThat(SwedenIdNumber.isValidSwedishSsn("000229-9873")).isTrue();
+        assertThat(SwedenIdNumber.isValidSwedishSsn("991221+4146")).isTrue();
+        assertThat(SwedenIdNumber.isValidSwedishSsn("991227+0262")).isTrue();
     }
 
     @Test
@@ -45,6 +47,23 @@ class SwedishIdNumberTest {
             Arguments.of("1990", false),
             Arguments.of("2003", false),
             Arguments.of("2035", false)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideSsnForFindYearBeginning")
+    void testFindYearBeginningFromSsn(String ssn, String expectedYearBeginning) {
+        assertThat(SwedenIdNumber.findYearBeginningFromSsn(ssn)).isEqualTo(expectedYearBeginning);
+    }
+
+    private static Stream<Arguments> provideSsnForFindYearBeginning() {
+        return Stream.of(
+            Arguments.of("670919-9530", "19"),
+            Arguments.of("811228-9874", "19"),
+            Arguments.of("000225-9873", "20"),
+            Arguments.of("000225+9877", "19"),
+            Arguments.of("991221+4146", "18"),
+            Arguments.of("981227+0262", "18")
         );
     }
 }
