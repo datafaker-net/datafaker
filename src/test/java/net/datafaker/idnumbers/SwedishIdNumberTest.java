@@ -1,16 +1,33 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.Faker;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
-import java.util.stream.Stream;
 
+import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SwedishIdNumberTest {
+    private final Faker faker = new Faker();
+    private final SwedenIdNumber impl = new SwedenIdNumber();
+
+    @RepeatedTest(20)
+    void swedishSsn_containsPlus_forPersonsOlderThan100Years() {
+        PersonIdNumber person = impl.generateValid(faker, new IdNumberRequest(101, 125, ANY));
+        assertThat(person.idNumber()).matches("(\\d{6})\\+(\\d{4})");
+        assertThat(SwedenIdNumber.isValidSwedishSsn(person.idNumber())).as(person.idNumber()).isTrue();
+    }
+
+    @RepeatedTest(20)
+    void swedishSsn_containsMinus_forPersonsYoungerThan100Years() {
+        PersonIdNumber person = impl.generateValid(faker, new IdNumberRequest(23, 99, ANY));
+        assertThat(person.idNumber()).matches("(\\d{6})-(\\d{4})");
+        assertThat(SwedenIdNumber.isValidSwedishSsn(person.idNumber())).as(person.idNumber()).isTrue();
+    }
 
     @Test
     void validSwedishSsn() {
@@ -33,37 +50,25 @@ class SwedishIdNumberTest {
         assertThat(SwedenIdNumber.isValidSwedishSsn("000229+9873")).isFalse();
     }
 
-    @ParameterizedTest
-    @MethodSource("getYears")
-    void testIsYearOver100YearsAgo(String year, boolean value) {
-        assertThat(SwedenIdNumber.isYearOver100YearsAgo(year, LocalDate.of(2024, 6, 1))).isEqualTo(value);
+    @Test
+    void isYearOver100YearsAgo() {
+        LocalDate today = LocalDate.of(2024, 6, 1);
+        assertThat(SwedenIdNumber.isYearOver100YearsAgo("1900", today)).isTrue();
+        assertThat(SwedenIdNumber.isYearOver100YearsAgo("1918", today)).isTrue();
+        assertThat(SwedenIdNumber.isYearOver100YearsAgo("1924", today)).isTrue();
+        assertThat(SwedenIdNumber.isYearOver100YearsAgo("1925", today)).isFalse();
+        assertThat(SwedenIdNumber.isYearOver100YearsAgo("1990", today)).isFalse();
+        assertThat(SwedenIdNumber.isYearOver100YearsAgo("2003", today)).isFalse();
+        assertThat(SwedenIdNumber.isYearOver100YearsAgo("2035", today)).isFalse();
     }
 
-    private static Stream<Arguments> getYears() {
-        return Stream.of(
-            Arguments.of("1900", true),
-            Arguments.of("1918", true),
-            Arguments.of("1924", true),
-            Arguments.of("1990", false),
-            Arguments.of("2003", false),
-            Arguments.of("2035", false)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideSsnForFindYearBeginning")
-    void testFindYearBeginningFromSsn(String ssn, String expectedYearBeginning) {
-        assertThat(SwedenIdNumber.findYearBeginningFromSsn(ssn)).isEqualTo(expectedYearBeginning);
-    }
-
-    private static Stream<Arguments> provideSsnForFindYearBeginning() {
-        return Stream.of(
-            Arguments.of("670919-9530", "19"),
-            Arguments.of("811228-9874", "19"),
-            Arguments.of("000225-9873", "20"),
-            Arguments.of("000225+9877", "19"),
-            Arguments.of("991221+4146", "18"),
-            Arguments.of("981227+0262", "18")
-        );
+    @Test
+    void findYearBeginningFromSsn() {
+        assertThat(SwedenIdNumber.findYearBeginningFromSsn("670919-9530")).isEqualTo("19");
+        assertThat(SwedenIdNumber.findYearBeginningFromSsn("811228-9874")).isEqualTo("19");
+        assertThat(SwedenIdNumber.findYearBeginningFromSsn("000225-9873")).isEqualTo("20");
+        assertThat(SwedenIdNumber.findYearBeginningFromSsn("000225+9877")).isEqualTo("19");
+        assertThat(SwedenIdNumber.findYearBeginningFromSsn("991221+4146")).isEqualTo("18");
+        assertThat(SwedenIdNumber.findYearBeginningFromSsn("981227+0262")).isEqualTo("18");
     }
 }
