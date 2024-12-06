@@ -3,148 +3,115 @@ package net.datafaker.idnumbers;
 import net.datafaker.Faker;
 import net.datafaker.idnumbers.PolishIdNumber.Gender;
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
 import java.util.Locale;
 
+import static java.lang.Integer.parseInt;
+import static net.datafaker.helpers.IdNumberPatterns.POLISH;
+import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.fail;
 
 class PolishIdNumberTest {
-
-    public static final int PESEL_EXPECTED_LENGTH = 11;
 
     private static final Faker faker = new Faker(new Locale("pl", "PL"));
     private static final PolishIdNumber peselNumber = new PolishIdNumber();
 
-    @ParameterizedTest
-    @EnumSource(value = Gender.class, names = {"MALE", "FEMALE"})
-    void testGenderedPesel(Gender givenGender) {
-        /*
-         * Given
-         */
-        final LocalDate givenBirthDate = new BaseFaker().timeAndDate().birthday(0, 100);
-        /*
-         * When
-         */
-        final String gotPesel = peselNumber.get(faker, givenBirthDate, givenGender);
+    @RepeatedTest(100)
+    void idNumberConsistsOf11Digits() {
+        PersonIdNumber actual = peselNumber.generateValid(faker, new IdNumberRequest(0, 222, ANY));
 
-        /*
-         * Then
-         */
-        assertBasics(gotPesel);
-        assertBirthDate(givenBirthDate, gotPesel);
-        assertGender(givenGender, gotPesel);
-        assertControlDigit(gotPesel);
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1850, 1950, 2050, 2150, 2250})
-    void testCenturiesPesel(int givenBirthYear) {
-        /*
-         * Given
-         */
-        final LocalDate givenBirthDate = LocalDate.of(givenBirthYear, 6, 28);
-
-        /*
-         * When
-         */
-        final String gotPesel = peselNumber.get(faker, givenBirthDate, Gender.ANY);
-
-        /*
-         * Then
-         */
-        assertBasics(gotPesel);
-        assertBirthDate(givenBirthDate, gotPesel);
-        assertControlDigit(gotPesel);
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1799, 2300})
-    void testInvalidCenturiesPesel(int givenBirthYear) {
-        /*
-         * Given
-         */
-        final LocalDate givenBirthDate = LocalDate.of(givenBirthYear, 6, 28);
-
-        /*
-         * When
-         */
-        assertThatThrownBy(() -> peselNumber.get(faker, givenBirthDate, Gender.ANY))
-            .isInstanceOf(IllegalArgumentException.class);
+        assertThat(actual.idNumber()).matches(POLISH);
+        assertThat(year(actual.idNumber()) % 100).isEqualTo(actual.birthDate().getYear() % 100);
+        assertThat(day(actual.idNumber())).isEqualTo(actual.birthDate().getDayOfMonth());
+        assertControlDigit(actual.idNumber());
     }
 
     @Test
-    void testNullGender() {
-        /*
-         * Given
-         */
-        final LocalDate givenBirthDate = LocalDate.now();
+    @SuppressWarnings("deprecation")
+    void generateIdNumberForFemale() {
+        LocalDate birthDate = new BaseFaker().timeAndDate().birthday(0, 100);
+        String actual = peselNumber.get(faker, birthDate, Gender.FEMALE);
 
-        /*
-         * When
-         */
-        final String gotPesel = peselNumber.get(faker, givenBirthDate, null);
-
-        /*
-         * Then
-         */
-        assertBasics(gotPesel);
-        assertBirthDate(givenBirthDate, gotPesel);
-        assertControlDigit(gotPesel);
+        assertThat(getGenderDigit(actual) % 2).isZero();
     }
 
-    private void assertBasics(String gotPesel) {
-        assertThat(gotPesel).hasSize(PESEL_EXPECTED_LENGTH);
-        assertThat(gotPesel.chars().allMatch(Character::isDigit)).isTrue();
+    @Test
+    @SuppressWarnings("deprecation")
+    void generateIdNumberForMale() {
+        LocalDate birthDate = new BaseFaker().timeAndDate().birthday(0, 100);
+        String actual = peselNumber.get(faker, birthDate, Gender.MALE);
+
+        assertThat(getGenderDigit(actual) % 2).isOne();
     }
 
-    private void assertBirthDate(LocalDate givenBirthDate, String gotPesel) {
-        final int gotYear = toNumber(gotPesel.charAt(0), gotPesel.charAt(1));
-        assertThat(givenBirthDate.getYear() % 100).isEqualTo(gotYear);
-
-        final int gotMonth = toNumber(gotPesel.charAt(2), gotPesel.charAt(3));
-
-        final int givenYear = givenBirthDate.getYear();
-
-        if (givenYear < 1800) {
-            fail("Year is before 1800. Test case is broken.");
-        } else if (givenYear < 1900) {
-            assertThat(givenBirthDate.getMonthValue() + 80).isEqualTo(gotMonth);
-        } else if (givenYear < 2000) {
-            assertThat(givenBirthDate.getMonthValue()).isEqualTo(gotMonth);
-        } else if (givenYear < 2100) {
-            assertThat(givenBirthDate.getMonthValue() + 20).isEqualTo(gotMonth);
-        } else if (givenYear < 2200) {
-            assertThat(givenBirthDate.getMonthValue() + 40).isEqualTo(gotMonth);
-        } else if (givenYear < 2300) {
-            assertThat(givenBirthDate.getMonthValue() + 60).isEqualTo(gotMonth);
-        } else {
-            throw new IllegalArgumentException("Year %s is after 2300. Test case is broken.".formatted(givenYear));
-        }
-
-        final int gotDay = toNumber(gotPesel.charAt(4), gotPesel.charAt(5));
-        assertThat(givenBirthDate.getDayOfMonth()).isEqualTo(gotDay);
+    @Test
+    void centuryIsEncodedInMonthNumber() {
+        assertThat(month(bornAt(6, 1800))).isEqualTo(86);
+        assertThat(month(bornAt(6, 1801))).isEqualTo(86);
+        assertThat(month(bornAt(6, 1899))).isEqualTo(86);
+        assertThat(month(bornAt(3, 1900))).isEqualTo(3);
+        assertThat(month(bornAt(3, 1950))).isEqualTo(3);
+        assertThat(month(bornAt(3, 1999))).isEqualTo(3);
+        assertThat(month(bornAt(5, 2000))).isEqualTo(25);
+        assertThat(month(bornAt(5, 2001))).isEqualTo(25);
+        assertThat(month(bornAt(5, 2050))).isEqualTo(25);
+        assertThat(month(bornAt(5, 2099))).isEqualTo(25);
+        assertThat(month(bornAt(5, 2100))).isEqualTo(45);
+        assertThat(month(bornAt(5, 2199))).isEqualTo(45);
+        assertThat(month(bornAt(5, 2200))).isEqualTo(65);
+        assertThat(month(bornAt(5, 2299))).isEqualTo(65);
     }
 
-    private void assertGender(Gender givenGender, String gotPesel) {
-        final int gotGenderDigit = gotPesel.charAt(9) - '0';
-        switch (givenGender) {
-            case FEMALE:
-                assertThat(gotGenderDigit % 2).isZero();
-                break;
-            case MALE:
-                assertThat(gotGenderDigit % 2).isOne();
-                break;
-            case ANY:
-            default:
-                break;
-        }
+    @ParameterizedTest
+    @ValueSource(ints = {-100, 1699, 1799})
+    @SuppressWarnings("deprecation")
+    void tooEarlyCenturies(int birthYear) {
+        LocalDate birthDate = LocalDate.of(birthYear, 6, 28);
+
+        assertThatThrownBy(() -> peselNumber.get(faker, birthDate, Gender.ANY))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Year is before 1800: %s", birthYear);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {2300, 2399, 9999})
+    @SuppressWarnings("deprecation")
+    void tooLateCenturies(int birthYear) {
+        LocalDate birthDate = LocalDate.of(birthYear, 6, 28);
+
+        assertThatThrownBy(() -> peselNumber.get(faker, birthDate, Gender.ANY))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Year is after 2300: %s", birthYear);
+    }
+
+    private int getGenderDigit(String idNumber) {
+        return idNumber.charAt(9) - '0';
+    }
+
+    @SuppressWarnings("deprecation")
+    private String bornAt(int month, int year) {
+        LocalDate birthDate = LocalDate.of(year, month, 28);
+        return peselNumber.get(faker, birthDate, Gender.ANY);
+    }
+
+    private int year(String idNumber) {
+        return parseInt(idNumber.substring(0, 2));
+    }
+
+    private int month(String idNumber) {
+        return parseInt(idNumber.substring(2, 4));
+    }
+
+    private int day(String idNumber) {
+        return parseInt(idNumber.substring(4, 6));
     }
 
     private void assertControlDigit(String gotPesel) {
@@ -152,9 +119,5 @@ class PolishIdNumberTest {
             + 3 * (gotPesel.charAt(1) + gotPesel.charAt(5) + gotPesel.charAt(9))
             + 7 * (gotPesel.charAt(2) + gotPesel.charAt(6)) + 9 * (gotPesel.charAt(3) + gotPesel.charAt(7))) % 10;
         assertThat(gotSum).isZero();
-    }
-
-    private int toNumber(char digit2, char digit1) {
-        return (digit2 - '0') * 10 + digit1 - '0';
     }
 }
