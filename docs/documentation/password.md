@@ -11,7 +11,7 @@ Imagine there is a need to generate a password with length 8 and containing mini
          String password = faker.text().text(Text.TextSymbolsBuilder.builder()
                              .len(8)
                              .with(EN_UPPERCASE, 2)
-                             .with(DIGITS, 3);
+                             .with(DIGITS, 3).build());
     ```
 It also allows to use custom symbol sets. For example this will generate a string with length between 8 and 10. 
 The string will contain min 3 lower case symbols from ru locale and minimum 5 symbols from the defined string `customSpecialSymbols`.
