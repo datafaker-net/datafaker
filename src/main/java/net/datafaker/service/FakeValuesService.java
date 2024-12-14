@@ -53,6 +53,7 @@ import static net.datafaker.internal.helper.JavaNames.toJavaNames;
 import static net.datafaker.transformations.Field.field;
 
 public class FakeValuesService {
+    private static final Class<?>[] PRIMITIVES = {Byte.TYPE, Short.TYPE, Integer.TYPE, Long.TYPE, Float.TYPE, Double.TYPE};
     private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger(FakeValuesService.class.getName());
@@ -979,16 +980,60 @@ public class FakeValuesService {
         }
         LOG.fine(() -> "Found accessor named %s on %s in cache: %s".formatted(accessorName, clazz.getSimpleName(), methods));
 
-        for (Method m : methods) {
-            if (m.getParameterCount() == args.length || m.getParameterCount() < args.length && m.isVarArgs()) {
-                final Object[] coercedArguments = args.length == 0 ? EMPTY_ARRAY : coerceArguments(m, args);
-                if (coercedArguments != null) {
-                    return new MethodAndCoercedArgs(m, coercedArguments);
+        Method mostRestrictive = null;
+        Object[] coercedArgumentsForMostRestrictive = null;
+        for (Method current : methods) {
+            if (current.getParameterCount() == args.length || current.getParameterCount() < args.length && current.isVarArgs()) {
+                final Object[] coercedArguments = args.length == 0 ? EMPTY_ARRAY : coerceArguments(current, args);
+                if (coercedArguments != null && rightIsMostRestrictive(mostRestrictive, current)) {
+                        mostRestrictive = current;
+                        coercedArgumentsForMostRestrictive = coercedArguments;
+                    }
                 }
-            }
+        }
+        if (mostRestrictive != null) {
+            return new MethodAndCoercedArgs(mostRestrictive, coercedArgumentsForMostRestrictive);
         }
         LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
         return null;
+    }
+
+    private static boolean rightIsMostRestrictive(Method method1, Method method2) {
+        if (method1 == null && method2 == null) {
+            throw new NullPointerException("Both methods are null");
+        }
+        if (method2 == null) {
+            return false;
+        }
+        if (method1 == null) {
+            return true;
+        }
+        Class<?>[] parameterTypes1 = method1.getParameterTypes();
+        Class<?>[] parameterTypes2 = method2.getParameterTypes();
+        for (int j = 0; j < parameterTypes1.length; j++) {
+            if (parameterTypes1[j] == parameterTypes2[j]) {
+                continue;
+            }
+            if (parameterTypes1[j].isPrimitive() && !parameterTypes2[j].isPrimitive()) {
+                return false;
+            }
+            if (!parameterTypes1[j].isPrimitive() && parameterTypes2[j].isPrimitive()) {
+                return true;
+            }
+            if (parameterTypes1[j].isPrimitive()) {
+                for (Class<?> primitive: PRIMITIVES) {
+                    if (primitive == parameterTypes1[j]) {
+                        return false;
+                    } else if (primitive == parameterTypes2[j]) {
+                        return true;
+                    }
+                }
+            }
+            if (parameterTypes1[j].isAssignableFrom(parameterTypes2[j])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String removeUnderscoreChars(String string) {
