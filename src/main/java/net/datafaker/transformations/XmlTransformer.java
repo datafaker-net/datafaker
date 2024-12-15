@@ -55,12 +55,12 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String getStartStream(Schema<IN, ?> schema) {
-        return null;
+        return "";
     }
 
     @Override
     public String getEndStream() {
-        return null;
+        return "";
     }
 
     public static class XmlTransformerBuilder<IN> {

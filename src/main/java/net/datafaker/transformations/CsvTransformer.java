@@ -119,7 +119,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String getEndStream() {
-        return null;
+        return "";
     }
 
     public static class CsvTransformerBuilder<IN> {
