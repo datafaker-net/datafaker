@@ -141,6 +141,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
     @Override
     public void writeToOutputStream(OutputStream outputStream, Schema<Object, ?> schema, long limit) {
+        // Before implementing please provide a valid use case
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
