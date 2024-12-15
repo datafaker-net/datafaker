@@ -37,7 +37,10 @@ public interface Transformer<IN, OUT> {
         return Stream.generate(() -> {
             StringBuilder res = new StringBuilder();
             if (item.current == 0) {
-                res.append(getStartStream(schema)).append(getLineSeparator());
+                final String startStream = getStartStream(schema);
+                if (startStream != null) {
+                    res.append(getStartStream(schema)).append(getLineSeparator());
+                }
             }
             res.append(apply(null, schema, item.current));
 

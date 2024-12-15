@@ -10,6 +10,7 @@ import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.Transformer;
+import net.datafaker.transformations.XmlTransformer;
 import net.datafaker.transformations.sql.SqlTransformer;
 import org.assertj.core.util.Files;
 import org.junit.jupiter.api.RepeatedTest;
@@ -371,6 +372,9 @@ class FakeStreamTest extends AbstractFakerTest {
 
     private static Stream<Arguments> inputForFilesCreatedTest() {
         return Stream.of(
+            Arguments.of("xml", new XmlTransformer.XmlTransformerBuilder().build(), List.of(
+                "<FirstName>Willis</FirstName><LastName>Huels</LastName>",
+                "<FirstName>Carlena</FirstName><LastName>Jenkins</LastName>")),
             Arguments.of("csv", CsvTransformer.builder().build(), List.of(
                 "\"FirstName\";\"LastName\"",
                 "\"Willis\";\"Huels\"",
