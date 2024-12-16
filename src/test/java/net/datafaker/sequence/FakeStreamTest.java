@@ -9,11 +9,22 @@ import net.datafaker.transformations.CsvTransformer;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
+import net.datafaker.transformations.Transformer;
+import net.datafaker.transformations.XmlTransformer;
+import net.datafaker.transformations.sql.SqlTransformer;
+import org.assertj.core.util.Files;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -334,5 +345,50 @@ class FakeStreamTest extends AbstractFakerTest {
         }
 
         assertThat(count).isEqualTo(amountOfElementsToTake);
+    }
+
+    @ParameterizedTest(name = "{index}: {0}")
+    @MethodSource("inputForFilesCreatedTest")
+    void testCsvFilesCreated(final String testName, final Transformer transformer, final List<String> expected) {
+        BaseFaker faker = new BaseFaker(new Random(10L));
+        Name name = faker.name();
+        Schema<Object, ?> schema = Schema.of(
+            field("FirstName", name::firstName),
+            field("LastName", name::lastName)
+        );
+
+        File csvFile = Files.newTemporaryFile();
+        assertThat(csvFile).exists().isEmpty();
+
+        try (BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(csvFile))) {
+            transformer.writeToOutputStream(fos, schema, 2);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThat(Files.linesOf(csvFile, StandardCharsets.UTF_8))
+            .containsAll(expected);
+    }
+
+    private static Stream<Arguments> inputForFilesCreatedTest() {
+        return Stream.of(
+            Arguments.of("xml", new XmlTransformer.XmlTransformerBuilder().build(), List.of(
+                "<FirstName>Willis</FirstName><LastName>Huels</LastName>",
+                "<FirstName>Carlena</FirstName><LastName>Jenkins</LastName>")),
+            Arguments.of("csv", CsvTransformer.builder().build(), List.of(
+                "\"FirstName\";\"LastName\"",
+                "\"Willis\";\"Huels\"",
+                "\"Carlena\";\"Jenkins\"")),
+            Arguments.of("sql", SqlTransformer.builder().build(), List.of(
+                "INSERT INTO \"MyTable\" (\"FirstName\", \"LastName\") VALUES ('Willis', 'Huels');",
+                "INSERT INTO \"MyTable\" (\"FirstName\", \"LastName\") VALUES ('Carlena', 'Jenkins');"
+            )),
+            Arguments.of("json", JsonTransformer.builder().build(), List.of(
+                "[",
+                "{\"FirstName\": \"Willis\", \"LastName\": \"Huels\"},",
+                "{\"FirstName\": \"Carlena\", \"LastName\": \"Jenkins\"}",
+                "]"
+            ))
+        );
     }
 }

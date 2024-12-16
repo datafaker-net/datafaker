@@ -1,5 +1,8 @@
 package net.datafaker.transformations;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
 public interface Transformer<IN, OUT> {
@@ -29,7 +32,6 @@ public interface Transformer<IN, OUT> {
         return "";
     }
 
-
     default Stream<OUT> generateStream(final Schema<IN, ?> schema, long limit) {
         Item item = new Item(0);
         return Stream.generate(() -> {
@@ -49,6 +51,17 @@ public interface Transformer<IN, OUT> {
             item.current++;
             return (OUT) res.toString();
         }).limit(limit);
+    }
+
+    default void writeToOutputStream(OutputStream outputStream, final Schema<IN, ?> schema, long limit) {
+        generateStream(schema, limit).forEach(item -> {
+            byte[] bytes = (item + System.lineSeparator()).getBytes(StandardCharsets.UTF_8);
+            try {
+                outputStream.write(bytes);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     class Item {

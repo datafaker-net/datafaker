@@ -44,7 +44,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         StringBuilder sb = new StringBuilder();
-        generateHeader(schema, sb);
+        generateHeader(schema, sb, true);
 
         Iterator<IN> iterator = input.iterator();
         boolean hasNext = iterator.hasNext();
@@ -83,7 +83,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
         sb.append(quote);
     }
 
-    private void generateHeader(Schema<?, ?> schema, StringBuilder sb) {
+    private void generateHeader(Schema<?, ?> schema, StringBuilder sb, boolean insertSeparator) {
         if (withHeader) {
             for (int i = 0; i < schema.getFields().length; i++) {
                 addLine(sb, schema.getFields()[i].getName());
@@ -91,14 +91,16 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
                     sb.append(separator);
                 }
             }
-            sb.append(LINE_SEPARATOR);
+            if (insertSeparator) {
+                sb.append(LINE_SEPARATOR);
+            }
         }
     }
 
     @Override
     public String generate(Schema<IN, ?> schema, int limit) {
         StringBuilder sb = new StringBuilder();
-        generateHeader(schema, sb);
+        generateHeader(schema, sb, true);
         for (int i = 0; i < limit; i++) {
             sb.append(apply(null, schema, i));
             if (i < limit - 1) {
@@ -111,13 +113,13 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
     @Override
     public String getStartStream(Schema<IN, ?> schema) {
         StringBuilder sb = new StringBuilder();
-        generateHeader(null, sb);
+        generateHeader(schema, sb, false);
         return sb.toString();
     }
 
     @Override
     public String getEndStream() {
-        return null;
+        return "";
     }
 
     public static class CsvTransformerBuilder<IN> {
