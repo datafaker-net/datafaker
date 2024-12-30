@@ -6,7 +6,7 @@ import net.datafaker.providers.base.AbstractProvider;
  * Dota 2 is a multiplayer online battle arena (MOBA) game developed and published by Valve Corporation.
  *
  * @author panic08
- * @since 2.3.1
+ * @since 2.4.0
  */
 public class Dota2 extends AbstractProvider<VideoGameProviders> {
 

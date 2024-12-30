@@ -29,8 +29,8 @@ Number of providers per Datafaker version
 | 2.1.0   | 1                       | 236                       |
 | 2.2.0   | 2                       | 238                       |
 | 2.3.0   | 9                       | 247                       |
-| 2.3.1   | 1                       | 248                       |
-| 2.4.0   | 2                       | 250                       |
+| 2.3.1   | 0                       | 248                       |
+| 2.4.0   | 3                       | 250                       |
 
 Datafaker comes with a total of 250 data providers:
 
@@ -108,7 +108,7 @@ Datafaker comes with a total of 250 data providers:
 | [Dog](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Dog.html)                                                              |                                                                                                                                                                                                             | Base          | 0.8.0 |
 | [Domain](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Domain.html)                                                        | A domain name generator.                                                                                                                                                                                    | Base          | 0.9.0 |
 | [Doraemon](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/Doraemon.html)                                           |                                                                                                                                                                                                             | Entertainment | 1.7.0 |
-| [Dota2](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/Dota2.html)                                                     | Dota 2 is a multiplayer online battle arena (MOBA) game developed and published by Valve Corporation.                                                                                                       | Videogame     | 2.3.1 |
+| [Dota2](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/Dota2.html)                                                     | Dota 2 is a multiplayer online battle arena (MOBA) game developed and published by Valve Corporation.                                                                                                       | Videogame     | 2.4.0 |
 | [Dragon Ball](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/DragonBall.html)                                      |                                                                                                                                                                                                             | Entertainment | 0.8.0 |
 | [Driving License](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/DrivingLicense.html)                                       |                                                                                                                                                                                                             | Base          | 1.5.0 |
 | [Drone](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Drone.html)                                                          | An unmanned aerial vehicle (UAV), commonly known as a drone, is an aircraft without any human pilot, crew, or passengers on board.                                                                          | Base          | 1.7.0 |
