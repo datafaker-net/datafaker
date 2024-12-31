@@ -8542,3 +8542,8 @@ en:
       - "ASX"
       - "JSE"
       - "BOVESPA"
+      - "MOEX"
+      - "SGX"
+      - "TSE"
+      - "EURONEXT-DUBLIN"
+      - "NZX"
