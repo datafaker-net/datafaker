@@ -7,7 +7,7 @@ en-GB:
       country_code: ["GB"]
       default_country: [England, Scotland, Wales, Northern Ireland]
     internet:
-      domain_suffix: [co.uk, com, biz, info, name]
+      domain_suffix: [co.uk, org.uk, me.uk, uk, ni.uk, scot, wales, cymru, com, biz, info, name]
 
     passport:
       valid: "[0-9]{9}"
