@@ -557,4 +557,4 @@ An example usage of this can be found here: https://github.com/datafaker-net/dat
 
 LICENSE
 -------
-Copyright (c) 2024 Datafaker.net See the LICENSE file for license rights and limitations.
+Copyright (c) 2025 Datafaker.net See the LICENSE file for license rights and limitations.
