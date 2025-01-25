@@ -117,7 +117,7 @@ public class FakeAnnotationTest {
     }
 
     public static Schema<Object, ?> complexSchema() {
-        var faker = new Faker(Locale.forLanguageTag("de-en"), new RandomService(new Random(1)));
+        var faker = new Faker(Locale.forLanguageTag("de-DE"), new RandomService(new Random(1)));
         return Schema.of(
             field("name", () -> faker.superhero().name()),
             field("address", () -> faker.address().fullAddress()),
