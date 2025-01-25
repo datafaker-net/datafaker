@@ -1,0 +1,15 @@
+# encoding: utf-8
+# Latvia
+_LV:
+  faker:
+    address:
+      country_code: ['LV']
+      postcode: ["LV-####"]
+      building_number: ["####", "###", "##"]
+
+    internet:
+      free_email: [gmail.com, yahoo.com, hotmail.com]
+      domain_suffix: [com, lv, net, org]
+
+    phone_number:
+      country_code: ['371']

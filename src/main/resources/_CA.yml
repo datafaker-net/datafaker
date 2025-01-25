@@ -1,5 +1,36 @@
 # encoding: utf-8
+# Canada
 _CA:
   faker:
+    address:
+      country_code: ['CA']
+      postcode: /[A-CEJ-NPR-TVXY][0-9][A-CEJ-NPR-TV-Z] ?[0-9][A-CEJ-NPR-TV-Z][0-9]/
+      state_abbr: ["AB", "BC", "MB", "NB", "NL", "NS", "NU", "NT", "ON", "PE", "QC", "SK", "YT"]
+      building_number: ['####', '###', '##', '#']
+
+    internet:
+      free_email: [gmail.com, yahoo.ca, hotmail.com]
+      domain_suffix: [ca, com, biz, info, name, net, org]
+
     passport:
       valid: "[A-Z]{2}[0-9]{6}"
+
+    vehicle:
+      license_plate: '#####' #Dept of national defence format, applicable to all provinces
+      license_plate_by_state:
+        AB: '???-####'
+        BC: ['??# ##?', '?? ####']
+        MB: '??? ###'
+        NB: '??? ###'
+        NL: '??? ###'
+        NT: '######'
+        NS: '??? ###'
+        NU: '### ###'
+        "ON": ['????-###', '??-#####']
+        PE: '## #??'
+        QC: '?## ???'
+        SK: '### ???'
+        YT: ['???##', '??? ##']
+
+    phone_number:
+      country_code: ['1']

@@ -1,8 +1,7 @@
 # encoding: UTF-8
+# Hebrew
 he:
   faker:
-    internet:
-      domain_suffix: [com, biz.il, info.il, net.il, org.il, co.il, gov.il]
     address:
       full_address:
       - "#{street_address}, #{city}, #{zip_code}, #{default_country}"
@@ -10,7 +9,6 @@ he:
       city:
       - "#{city_prefix} #{Name.first_name}"
       - "#{city_prefix} #{Name.last_name}"
-      building_number: ['###', '##', '#']
       street_prefix: [רחוב,רחוב,נחל,דרך,שדרות,סמטת]
       street_name:
       - "#{street_prefix} #{Name.name}"

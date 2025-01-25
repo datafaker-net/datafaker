@@ -1,4 +1,5 @@
 # encoding: utf-8
+# Turkish
 tr:
   faker:
     name:
@@ -20,11 +21,6 @@ tr:
         - "#{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"
-
-    internet:
-      free_email: [gmail.com, hotmail.com, outlook.com, outlook.com.tr, yandex.com yandex.com.tr]
-      domain_suffix: [co, com, com.tr, net, net.tr, org, org.tr, info, info.tr, biz, biz.tr, tv, tv.tr, gen.tr, web.tr, bbs.tr, .istanbul]
-      safe_email: ['kep.tr']
 
     address:
       city_prefix: ["Kuzey","Doğu","Batı","Güney","Yeni","Göl","Liman"]

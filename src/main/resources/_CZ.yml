@@ -1,5 +1,19 @@
 # encoding: utf-8
+# Czech Republic
 _CZ:
   faker:
     phone_number:
       country_code: ['420']
+    address:
+      building_number: ['#', '##', '###']
+      postcode: ['#####', '### ##', '## ###']
+      city:
+        - "#{city_name}"
+      street_name:
+        - "#{street}"
+      street_address:
+        - "#{street_name} #{building_number}"
+
+    internet:
+      free_email: [gmail.com, seznam.cz, volny.cz, centrum.cz, email.cz]
+      domain_suffix: [cz, com, net, eu, org]

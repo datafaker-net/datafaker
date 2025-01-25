@@ -29,7 +29,6 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
         assertThat(resourceDirectory).exists();
 
         List<String> allLocales = locality.allSupportedLocales();
-        assertThat(allLocales).hasSize(90);
         assertThat(allLocales)
             .as("Somebody forgot to add the new locale to Locality.LOCALES")
             .containsExactlyInAnyOrderElementsOf(findAllSupportedLocales(resourceDirectory));

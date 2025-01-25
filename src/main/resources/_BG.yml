@@ -1,5 +1,12 @@
 # encoding: utf-8
+# Bulgaria
 _BG:
   faker:
+    address:
+      country_code: [ 'BG' ]
+
     passport:
       valid: "[0-9]{9}"
+
+    phone_number:
+      country_code: ['359']

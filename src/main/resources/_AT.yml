@@ -1,0 +1,25 @@
+# Austria
+_AT:
+  faker:
+    address:
+      country_code: [ 'AT' ]
+      building_number: ['###', '##', '#', '##a', '##b', '##c']
+      postcode: ['####']
+
+    company:
+      suffix: [GmbH, AG, Gruppe, KG, GmbH & Co. KG, UG, OG]
+      legal_form: [GmbH, AG, Gruppe, KG, GmbH & Co. KG, UG, OG]
+      name:
+        - "#{Name.last_name} #{suffix}"
+        - "#{Name.last_name}-#{Name.last_name}"
+        - "#{Name.last_name}, #{Name.last_name} und #{Name.last_name}"
+
+    internet:
+      free_email: [gmail.com, yahoo.com, hotmail.com]
+      domain_suffix: [com, info, name, net, org, de, ch, at]
+
+    passport:
+      valid: "[A-Z][0-9]{7}"
+
+    phone_number:
+      country_code: ['43']

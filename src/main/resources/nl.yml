@@ -1,3 +1,4 @@
+# Dutch
 nl:
   faker:
     address:
@@ -10,7 +11,6 @@ nl:
         - "#{Name.last_name}#{city_suffix}"
         - "#{city_prefix} #{Name.first_name}#{city_suffix}"
         - "#{city_prefix} #{Name.last_name}#{city_suffix}"
-      country_code: ['NL']
       country: [ "Afghanistan", "Akrotiri", "Albanië", "Algerije", "Amerikaanse Maagdeneilanden", "Amerikaans-Samoa", "Andorra", "Angola", "Anguilla",
                  "Antarctica", "Antigua en Barbuda", "Noordelijke IJszee", "Argentinië", "Armenië", "Aruba", "Ashmore- en Cartiereilanden", "Atlantische Oceaan",
                  "Australië", "Azerbeidzjan", "Bahama's", "Bahrein", "Bangladesh", "Barbados", "Belarus", "België", "Belize", "Benin", "Bermuda", "Bhutan",
@@ -38,7 +38,6 @@ nl:
                  "Turks-en Caicoseilanden", "Tuvalu", "Uganda", "Uruguay", "Vanuatu", "Venezuela", "Verenigd Koninkrijk", "Verenigde Arabische Emiraten",
                  "Verenigde Staten van Amerika", "Vietnam", "Wake (eiland)", "Wallis en Futuna", "Wereld", "Westelijke Jordaanoever", "Westelijke Sahara", "Zambia",
                  "Zimbabwe", "Zuid-Afrika", "Zuid-Korea", "Zweden", "Zwitserland"]
-      building_number: ["#", "Ø#", "Ø##", "Ø##a", "Ø##b", "Ø##c", "Ø## I", "Ø## II", "Ø## III"]
       street_suffix: ["straat", "laan", "weg", "plantsoen", "park"]
       secondary_address: ["1 hoog", "2 hoog", "3 hoog"]
       street_name:
@@ -47,9 +46,7 @@ nl:
 
       street_address:
         - "#{street_name} #{building_number}"
-      postcode: /[1-9][0-9]{3} (AA|AB|AC|AD|AE|AF|AG|AH|AI|AJ|AK|AL|AM|AN|AO|AP|AQ|AR|AS|AT|AU|AV|AW|AX|AY|AZ|BA|BB|BC|BD|BE|BF|BG|BH|BI|BJ|BK|BL|BM|BN|BO|BP|BQ|BR|BS|BT|BU|BV|BW|BX|BY|BZ|CA|CB|CC|CD|CE|CF|CG|CH|CI|CJ|CK|CL|CM|CN|CO|CP|CQ|CR|CS|CT|CU|CV|CW|CX|CY|CZ|DA|DB|DC|DD|DE|DF|DG|DH|DI|DJ|DK|DL|DM|DN|DO|DP|DQ|DR|DS|DT|DU|DV|DW|DX|DY|DZ|EA|EB|EC|ED|EE|EF|EG|EH|EI|EJ|EK|EL|EM|EN|EO|EP|EQ|ER|ES|ET|EU|EV|EW|EX|EY|EZ|FA|FB|FC|FD|FE|FF|FG|FH|FI|FJ|FK|FL|FM|FN|FO|FP|FQ|FR|FS|FT|FU|FV|FW|FX|FY|FZ|GA|GB|GC|GD|GE|GF|GG|GH|GI|GJ|GK|GL|GM|GN|GO|GP|GQ|GR|GS|GT|GU|GV|GW|GX|GY|GZ|HA|HB|HC|HD|HE|HF|HG|HH|HI|HJ|HK|HL|HM|HN|HO|HP|HQ|HR|HS|HT|HU|HV|HW|HX|HY|HZ|IA|IB|IC|ID|IE|IF|IG|IH|II|IJ|IK|IL|IM|IN|IO|IP|IQ|IR|IS|IT|IU|IV|IW|IX|IY|IZ|JA|JB|JC|JD|JE|JF|JG|JH|JI|JJ|JK|JL|JM|JN|JO|JP|JQ|JR|JS|JT|JU|JV|JW|JX|JY|JZ|KA|KB|KC|KD|KE|KF|KG|KH|KI|KJ|KK|KL|KM|KN|KO|KP|KQ|KR|KS|KT|KU|KV|KW|KX|KY|KZ|LA|LB|LC|LD|LE|LF|LG|LH|LI|LJ|LK|LL|LM|LN|LO|LP|LQ|LR|LS|LT|LU|LV|LW|LX|LY|LZ|MA|MB|MC|MD|ME|MF|MG|MH|MI|MJ|MK|ML|MM|MN|MO|MP|MQ|MR|MS|MT|MU|MV|MW|MX|MY|MZ|NA|NB|NC|ND|NE|NF|NG|NH|NI|NJ|NK|NL|NM|NN|NO|NP|NQ|NR|NS|NT|NU|NV|NW|NX|NY|NZ|OA|OB|OC|OD|OE|OF|OG|OH|OI|OJ|OK|OL|OM|ON|OO|OP|OQ|OR|OS|OT|OU|OV|OW|OX|OY|OZ|PA|PB|PC|PD|PE|PF|PG|PH|PI|PJ|PK|PL|PM|PN|PO|PP|PQ|PR|PS|PT|PU|PV|PW|PX|PY|PZ|QA|QB|QC|QD|QE|QF|QG|QH|QI|QJ|QK|QL|QM|QN|QO|QP|QQ|QR|QS|QT|QU|QV|QW|QX|QY|QZ|RA|RB|RC|RD|RE|RF|RG|RH|RI|RJ|RK|RL|RM|RN|RO|RP|RQ|RR|RS|RT|RU|RV|RW|RX|RY|RZ|SB|SC|SE|SF|SG|SH|SI|SJ|SK|SL|SM|SN|SO|SP|SQ|SR|ST|SU|SV|SW|SX|SY|SZ|TA|TB|TC|TD|TE|TF|TG|TH|TI|TJ|TK|TL|TM|TN|TO|TP|TQ|TR|TS|TT|TU|TV|TW|TX|TY|TZ|UA|UB|UC|UD|UE|UF|UG|UH|UI|UJ|UK|UL|UM|UN|UO|UP|UQ|UR|US|UT|UU|UV|UW|UX|UY|UZ|VA|VB|VC|VD|VE|VF|VG|VH|VI|VJ|VK|VL|VM|VN|VO|VP|VQ|VR|VS|VT|VU|VV|VW|VX|VY|VZ|WA|WB|WC|WD|WE|WF|WG|WH|WI|WJ|WK|WL|WM|WN|WO|WP|WQ|WR|WS|WT|WU|WV|WW|WX|WY|WZ|XA|XB|XC|XD|XE|XF|XG|XH|XI|XJ|XK|XL|XM|XN|XO|XP|XQ|XR|XS|XT|XU|XV|XW|XX|XY|XZ|YA|YB|YC|YD|YE|YF|YG|YH|YI|YJ|YK|YL|YM|YN|YO|YP|YQ|YR|YS|YT|YU|YV|YW|YX|YY|YZ|ZA|ZB|ZC|ZD|ZE|ZF|ZG|ZH|ZI|ZJ|ZK|ZL|ZM|ZN|ZO|ZP|ZQ|ZR|ZS|ZT|ZU|ZV|ZW|ZX|ZY|ZZ)/
       state: ["Noord-Holland", "Zuid-Holland", "Utrecht", "Zeeland", "Overijssel", "Gelderland", "Drenthe", "Friesland", "Groningen", "Noord-Brabant", "Limburg", "Flevoland"]
-      state_abbr: ["NH", "ZH", "UT", "ZL", "OV", "GD", "DR", "FR", "GR", "NB", "LB", "FL"]
       default_country: [Nederland]
 
     company:
@@ -58,10 +55,6 @@ nl:
         - "#{Name.last_name} #{suffix}"
         - "#{Name.last_name}-#{Name.last_name}"
         - "#{Name.last_name}, #{Name.last_name} en #{Name.last_name}"
-
-    internet:
-      free_email: [gmail.com, yahoo.com, hotmail.nl, live.nl, outlook.com, kpnmail.nl]
-      domain_suffix: [nl, com, net, org]
 
     lorem:
       words: [alias, consequatur, aut, perferendis, sit, voluptatem, accusantium, doloremque, aperiam, eaque, ipsa, quae, ab, illo, inventore, veritatis, et, quasi, architecto, beatae, vitae, dicta, sunt, explicabo, aspernatur, aut, odit, aut, fugit, sed, quia, consequuntur, magni, dolores, eos, qui, ratione, voluptatem, sequi, nesciunt, neque, dolorem, ipsum, quia, dolor, sit, amet, consectetur, adipisci, velit, sed, quia, non, numquam, eius, modi, tempora, incidunt, ut, labore, et, dolore, magnam, aliquam, quaerat, voluptatem, ut, enim, ad, minima, veniam, quis, nostrum, exercitationem, ullam, corporis, nemo, enim, ipsam, voluptatem, quia, voluptas, sit, suscipit, laboriosam, nisi, ut, aliquid, ex, ea, commodi, consequatur, quis, autem, vel, eum, iure, reprehenderit, qui, in, ea, voluptate, velit, esse, quam, nihil, molestiae, et, iusto, odio, dignissimos, ducimus, qui, blanditiis, praesentium, laudantium, totam, rem, voluptatum, deleniti, atque, corrupti, quos, dolores, et, quas, molestias, excepturi, sint, occaecati, cupiditate, non, provident, sed, ut, perspiciatis, unde, omnis, iste, natus, error, similique, sunt, in, culpa, qui, officia, deserunt, mollitia, animi, id, est, laborum, et, dolorum, fuga, et, harum, quidem, rerum, facilis, est, et, expedita, distinctio, nam, libero, tempore, cum, soluta, nobis, est, eligendi, optio, cumque, nihil, impedit, quo, porro, quisquam, est, qui, minus, id, quod, maxime, placeat, facere, possimus, omnis, voluptas, assumenda, est, omnis, dolor, repellendus, temporibus, autem, quibusdam, et, aut, consequatur, vel, illum, qui, dolorem, eum, fugiat, quo, voluptas, nulla, pariatur, at, vero, eos, et, accusamus, officiis, debitis, aut, rerum, necessitatibus, saepe, eveniet, ut, et, voluptates, repudiandae, sint, et, molestiae, non, recusandae, itaque, earum, rerum, hic, tenetur, a, sapiente, delectus, ut, aut, reiciendis, voluptatibus, maiores, doloribus, asperiores, repellat]
@@ -95,6 +88,3 @@ nl:
       name:
         - "#{University.prefix} #{Name.last_name}"
         - "#{University.prefix} #{Address.city}"
-
-    passport:
-      valid: "[A-NP-Z]{2}[0-9A-NP-Z]{6}[0-9]"

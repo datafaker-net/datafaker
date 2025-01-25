@@ -1,0 +1,14 @@
+# encoding: utf-8
+# Turkey
+_TR:
+  faker:
+    address:
+      default_country_code: ["TR"]
+
+    internet:
+      free_email: [gmail.com, hotmail.com, outlook.com, outlook.com.tr, yandex.com yandex.com.tr]
+      domain_suffix: [co, com, com.tr, net, net.tr, org, org.tr, info, info.tr, biz, biz.tr, tv, tv.tr, gen.tr, web.tr, bbs.tr, .istanbul]
+      safe_email: ['kep.tr']
+
+    phone_number:
+      country_code: ['90']

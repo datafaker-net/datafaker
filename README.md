@@ -475,20 +475,20 @@ Supported Locales
 * ar (Armenian)
 * be_BY (Belarusian)
 * bg_BG (Bulgarian)
-* ca_CA
+* ca_CA (Canada)
 * ca-CAT
 * cs_CZ (Czech republic)
-* da-DK
-* de
-* de-AT
-* de_CH (country: Switzerland, language: German)
-* el-GR
+* da-DK (language: Danish, country: Denmark)
+* de (German)
+* de-AT (language: German, country: Austria)
+* de_CH (language: German, country: Switzerland)
+* el-GR (Greek)
 * en
-* en-AU
+* en-AU (Australia)
 * en-au-ocker
 * en-BORK
 * en-CA
-* en-GB
+* en-GB (Great Britain)
 * en-IN (India)
 * en-MS
 * en-NEP
@@ -500,43 +500,46 @@ Supported Locales
 * en-US
 * en-ZA
 * en-PH
-* es-AR (Argentine)
-* es_ES (Spain)
-* es-MX (Mexican)
+* es-AR (language: Spanish, country: Argentine)
+* es_ES (language: Spanish, country: Spain)
+* es-MX (language: Spanish, country: Mexico)
+* es-PY (language: Spanish, country: Paraguay)
 * et_EE (Estonian)
-* fa
-* fi-FI
-* fr_FR (French)
-* fr_CH (country: Switzerland, language: French)
+* fa (Persian)
+* fi-FI (language: Finnish, country: Finland)
+* fr_FR (language: French, country: France)
+* fr_CH (language: French, country: Switzerland)
 * ge_GE (Georgia)
 * he_IL (language: Hebrew, country: Israel)
 * hr_HR (Croatian)
 * hu_HU (Hungarian)
 * hy_AM (Armenian)
-* in-ID (Indonesia)
-* it
-* ja
-* ka
-* ko
+* id_ID (Indonesia)
+* it (Italian)
+* ja_JP (language: Japanese, country: Japan)
+* ka_GE (language: Georgian, country: Georgia)
+* ko_KR (language: Korean, country: South Korea)
+* lv_LV (language: Latvian, country: Latvia)
 * mk_MK (North Macedonia)
-* nb-NO
-* nl
-* pl
-* pt
-* pt-BR
-* ro_MD (country: Moldova, language: Moldavian a.k.a. Romanian)
+* nb_NO (language: Norwegian, country: Norway)
+* nl_NL (language: Dutch, country: Netherlands)
+* nl_BE (language: Dutch, country: Belgium)
+* pl (language: Polish, country: Poland)
+* pt (language: Portuguese)
+* pt_BR (language: Portuguese, country: Brazil)
+* ro_MD (language: Romanian a.k.a. Moldavian, country: Moldova)
 * ru_RU (Russian)
 * sk_SK (Slovak)
 * sq_AL (Albanian)
-* sv
-* sv-SE
+* sv (Swedish)
+* sv-SE (language: Swedish, country: Sweden)
 * ta (Tamil)
-* tr
-* th_TH (Thailand)
-* uk
-* vi
-* zh_CN (Chinese)
-* zh-TW
+* tr (Turkish)
+* th_TH (language: Thai, country: Thailand)
+* uk_UA (language: Ukrainian, country: Ukraine)
+* vi_VN (language: Vietnamese, country: Vietnam)
+* zh_CN (language: Chinese, country: China)
+* zh-TW (language: Chinese, country: Taiwan)
 
 NATIVE IMAGE
 ------------

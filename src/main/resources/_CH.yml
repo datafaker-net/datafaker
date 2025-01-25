@@ -1,12 +1,24 @@
 # encoding: utf-8
+# Switzerland
 _CH:
   faker:
     address:
       country_code: [CH, CH, CH, DE, AT, US, LI, US, HK, VN]
       postcode: ['1###', '2###', '3###', '4###', '5###', '6###', '7###', '8###', '9###']
+      state_abbr: [ZH, BE, LU, UR, SZ, OW, NW, GL, ZG, FR, SO, BS, BL, SH, AR, AI, SG, GR, AG, TG, TI, VD, VS, NE, GE, JU]
+      time_zone: [MEZ, Europe/Berlin, Central European Time, CET]
+      building_number: ['####', '###', '##', '#']
+
     company:
       suffix: [AG, GmbH, et associés, "& Co.", Groupe, LLC, Inc.]
       name:
         - "#{Name.last_name} #{suffix}"
         - "#{Name.last_name}-#{Name.last_name}"
         - "#{Name.last_name}, #{Name.last_name} et #{Name.last_name}"
+
+    internet:
+      domain_suffix: [com, info, name, net, org, biz, ch, de, li, at]
+      free_email: [gmail.com, yahoo.com, hotmail.com, gmx.ch, swissonline.ch, bluewin.ch]
+
+    phone_number:
+      country_code: ['41']

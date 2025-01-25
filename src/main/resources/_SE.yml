@@ -1,0 +1,13 @@
+# Sweden
+_SE:
+  faker:
+    address:
+      country_code: ['SE']
+      postcode: ['#####']
+      building_number: ['###', '##', '#']
+
+    internet:
+      domain_suffix: [se, nu, info, com, org]
+
+    phone_number:
+      country_code: ['46']

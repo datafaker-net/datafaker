@@ -1,9 +1,9 @@
 # encoding: utf-8
+# Macedonian
 mk:
   faker:
     address:
       city_name: [ Скопје, Битола, Куманово, Прилеп, Тетово, Валандово, "Демир Капија", "Демир Хисар", "Македонски Брод", Пехчево ]
-      country_code: [ 'MK' ]
       default_country: [ Македонија ]
 
     name:

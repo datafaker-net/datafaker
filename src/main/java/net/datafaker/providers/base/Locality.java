@@ -16,7 +16,14 @@ import java.util.Set;
  */
 public class Locality extends AbstractProvider<BaseProviders> {
     private static final List<String> LOCALES = List.of(
-        "_al", "_bg", "_by", "_ca", "_ch", "_cn", "_cz", "_ee", "_ge", "_in", "_md", "_mk", "_ru", "_us",
+        "_al", "_ar", "_au", "_at", "_bg", "_by", "_ca", "_ch", "_cn", "_cz", "_dk", "_ee",
+        "_fi", "_fr",
+        "_gb", "_ge", "_hu",
+        "_jp",
+        "_il", "_in",
+        "_kr",
+        "_lv", "_no", "_md", "_mk", "_nl", "_pl", "_py", "_ru", "_se", "_tr", "_tw", "_ua", "_us", "_vn",
+        "_es", "_sk", "_id", "_hr", "_pt", "_it", "_de", "_am", "_mx", "_br", "_be", "_th",
         "ar", "be", "bg", "by", "ca", "ca-cat", "cs", "cs-cz",
         "da-dk", "de", "de-at", "de-ch",
         "el-gr", "en", "en-au", "en-au-ocker", "en-bork", "en-ca", "en-gb", "en-in", "en-md", "en-ms", "en-nep",

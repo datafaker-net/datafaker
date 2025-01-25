@@ -1,11 +1,9 @@
+# French
 fr:
   faker:
     address:
-      country_code: ['FR']
-      building_number: ['####', '###', '##', '#']
       street_prefix: ["Allée, Voie", "Rue", "Avenue", "Boulevard", "Quai", "Passage", "Impasse", "Place"]
       secondary_address: ['Apt. ###', '# étage']
-      postcode: ['#####']
       state: ['Alsace', 'Aquitaine', 'Auvergne', 'Basse-Normandie', 'Bourgogne', 'Bretagne', 'Centre', 'Champagne-Ardenne', 'Corse', 'Franche-Comté', 'Guadeloupe', 'Guyane', 'Haute-Normandie', 'Île-de-France', 'La Réunion', 'Languedoc-Roussillon', 'Limousin', 'Lorraine', 'Martinique', 'Mayotte', 'Midi-Pyrénées', 'Nord-Pas-de-Calais', 'Pays de la Loire', 'Picardie', 'Poitou-Charentes', "Provence-Alpes-Côte d'Azur", 'Rhône-Alpes']
       city_name: ["Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier", "Bordeaux", "Lille", "Rennes", "Reims", "Le Havre", "Saint-Étienne", "Toulon", "Grenoble", "Dijon", "Angers", "Saint-Denis", "Villeurbanne", "Le Mans", "Aix-en-Provence", "Brest", "Nîmes", "Limoges", "Clermont-Ferrand", "Tours", "Amiens", "Metz", "Perpignan", "Besançon", "Orléans", "Boulogne-Billancourt", "Mulhouse", "Rouen", "Caen", "Nancy", "Saint-Denis", "Saint-Paul", "Montreuil", "Argenteuil", "Roubaix", "Dunkerque", "Tourcoing", "Nanterre", "Avignon", "Créteil", "Poitiers", "Fort-de-France", "Courbevoie", "Versailles", "Vitry-sur-Seine", "Colombes", "Pau", "Aulnay-sous-Bois", "Asnières-sur-Seine", "Rueil-Malmaison", "Saint-Pierre", "Antibes", "Saint-Maur-des-Fossés", "Champigny-sur-Marne", "La Rochelle", "Aubervilliers", "Calais", "Cannes", "Le Tampon", "Béziers", "Colmar", "Bourges", "Drancy", "Mérignac", "Saint-Nazaire", "Valence", "Ajaccio", "Issy-les-Moulineaux", "Villeneuve-d'Ascq", "Levallois-Perret", "Noisy-le-Grand", "Quimper", "La Seyne-sur-Mer", "Antony", "Troyes", "Neuilly-sur-Seine", "Sarcelles", "Les Abymes", "Vénissieux", "Clichy", "Lorient", "Pessac", "Ivry-sur-Seine", "Cergy", "Cayenne", "Niort", "Chambéry", "Montauban", "Saint-Quentin", "Villejuif", "Hyères", "Beauvais", "Cholet"]
       city:
@@ -72,10 +70,6 @@ fr:
     demographic:
       sex: ["Homme", "Femme"]
 
-    internet:
-      free_email: [gmail.com, yahoo.fr, hotmail.fr]
-      domain_suffix: [com, fr, eu, info, name, net, org, immo, paris, alsace, bzh]
-
     gender:
       binary_types: ["Masculin", "Féminin"]
 
@@ -121,6 +115,3 @@ fr:
 
     appliance:
       equipment: ["Ioniseur d'air", "Purificateur d'air", "Alimentation électrique", "Diffuseur de parfum", "Ventilateur de grenier", "Mini-four", "Insert", "Décapsuleur", "Mixeur", "Essoreuse", "Ouvre-boîte", "Ventilateur de plafond", "Aspirateur Central", "Sèche-linge", "Fer à repasser", "Presse-agrumes", "Lave-linge tout-en-un", "Placard égouttoir", "Lave-vaisselle", "Robot domestique", "Lave-vaisselle à tiroir", "Bouilloire électrique", "Refroidisseur par évaporation", "Hotte aspirante", "Radiateur soufflant", "Contrôleur de flamme", "Chauffage par air pulsé", "Sèche-futon", "Broyeur de cuisine", "Chaudière à gaz", "Boîte d'allumettes pour le lit", "CVC", "Sèche-cheveux", "Fer à lisser", "Plaque de cuisson", "Serveur personnel", "Humidificateur", "Glacière", "Réfrigérateur à kimchi", "Mangle", "Chauffage micathermique", "Micro-ondes", "Piège à souris", "Chaudière au fioul", "Four", "Déchiqueteuse à papier", "Chauffe-terrasse", "Radiateur", "Réfrigérateur", "Machine à coudre", "Chauffe-eau solaire", "Chauferette", "Nettoyeur vapeur", "Cuisinière", "Pompe de puisard", "Télévision", "Presse à Cravates", "Grille-pain", "Presse à pantalons", "Aspirateur", "Lave-linge", "Bouilloire", "Chauffe-eau", "Filtre à eau", "Ventilateur de fenêtre"]
-
-    passport:
-      valid: "[0-9]{2}[A-Z]{2}[0-9]{5}"
