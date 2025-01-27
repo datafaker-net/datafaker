@@ -1,20 +1,24 @@
 package net.datafaker.providers.base;
 
-import static java.lang.Integer.parseInt;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Locale;
-
+import net.datafaker.Faker;
+import net.datafaker.helpers.IdNumberPatterns;
+import net.datafaker.idnumbers.SouthAfricanIdNumber;
+import net.datafaker.idnumbers.SwedenIdNumber;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import org.assertj.core.api.AbstractStringAssert;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import net.datafaker.Faker;
-import net.datafaker.helpers.IdNumberPatterns;
-import net.datafaker.idnumbers.SouthAfricanIdNumber;
-import net.datafaker.idnumbers.SwedenIdNumber;
+import java.time.LocalDate;
+import java.util.Locale;
+
+import static java.lang.Integer.parseInt;
+import static java.time.format.DateTimeFormatter.ofPattern;
+import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 class IdNumberTest extends BaseFakerTest<BaseFaker> {
 
@@ -22,6 +26,7 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     private static final Faker SOUTH_AFRICA = new Faker(new Locale("en", "ZA"));
     private static final Faker US = new Faker(new Locale("en", "US"));
     private static final Faker ESTONIAN = new Faker(new Locale("et", "EE"));
+    private static final Faker LATVIAN = new Faker(new Locale("lv", "LV"));
     private static final Faker ALBANIAN = new Faker(new Locale("sq", "AL"));
     private static final Faker BULGARIAN = new Faker(new Locale("bg", "BG"));
     private static final Faker MACEDONIAN = new Faker(new Locale("mk", "MK"));
@@ -113,6 +118,26 @@ class IdNumberTest extends BaseFakerTest<BaseFaker> {
     @RepeatedTest(100)
     void estonianPersonalCode_invalid() {
         assertThatPin(ESTONIAN.idNumber().invalid()).matches("[1-6][0-9]{10}");
+    }
+
+    @RepeatedTest(100)
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    void latvianPersonalCode_valid_oldFormat_before_2017_07_01() {
+        int minAgeApplicableForOldFormat = LocalDate.now().getYear() - 2017 + 1;
+        String idNumber = LATVIAN.idNumber().valid(new IdNumberRequest(minAgeApplicableForOldFormat, minAgeApplicableForOldFormat + 50, ANY)).idNumber();
+        assertThatPin(idNumber).matches("[0-3]\\d[0-1]\\d{3}-[0-2]\\d{4}");
+        assertThatCode(() -> LocalDate.parse(idNumber.substring(0, 6), ofPattern("ddMMyy"))).doesNotThrowAnyException();
+    }
+
+    @RepeatedTest(100)
+    void latvianPersonalCode_valid_newFormat_since_2017_07_01() {
+        int maxAgeApplicableForNewFormat = LocalDate.now().getYear() - 2017 - 1;
+        assertThatPin(LATVIAN.idNumber().valid(new IdNumberRequest(0, maxAgeApplicableForNewFormat, ANY)).idNumber()).matches("3[2-9]\\d{9}");
+    }
+
+    @RepeatedTest(100)
+    void latvianPersonalCode_invalid() {
+        assertThatPin(LATVIAN.idNumber().invalid()).matches("[0-3]\\d[0-1]\\d{3}-[0-2]\\d{4}");
     }
 
     @RepeatedTest(100)
