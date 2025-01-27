@@ -58,7 +58,7 @@ public class LatvianIdNumber implements IdNumberGenerator {
             case 18 -> 0;
             case 19 -> 1;
             case 20 -> 2;
-            default -> throw new IllegalStateException("Too far in future: " + birthYear);
+            default -> throw new IllegalStateException("Birth year %s is out of allowed range [1800, 2017]".formatted(birthYear));
         };
     }
 

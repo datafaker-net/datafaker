@@ -58,7 +58,7 @@ public class EstonianIdNumber implements IdNumberGenerator {
             case 19 -> 3;
             case 20 -> 5;
             case 21 -> 7;
-            default -> throw new IllegalStateException("Too far in future: " + birthYear);
+            default -> throw new IllegalStateException("Birth year %s is out of allowed range [1800, 2199]".formatted(birthYear));
         };
         return switch (gender) {
             case FEMALE -> digit + 1;
