@@ -136,18 +136,21 @@ class CustomFakerTest {
 
     @Test
     void weightedInsectNameTest() {
+        int count = 300;
         MyCustomFaker myFaker = new MyCustomFaker();
         Map<String, Integer> insectCounts = new HashMap<>();
         insectCounts.put("Driver ant", 0);
         insectCounts.put("Fire ant", 0);
         insectCounts.put("Harvester ant", 0);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < count; i++) {
             String selectedInsect = myFaker.insect().weightedInsectName();
             insectCounts.put(selectedInsect, insectCounts.get(selectedInsect) + 1);
         }
 
-        assertThat(insectCounts.get("Driver ant")).isGreaterThan(insectCounts.get("Fire ant"));
-        assertThat(insectCounts.get("Fire ant")).isGreaterThan(insectCounts.get("Harvester ant"));
+        assertThat(insectCounts.keySet()).containsExactlyInAnyOrder("Driver ant", "Fire ant", "Harvester ant");
+        assertThat(insectCounts.values().stream().mapToInt(f -> f).sum()).as(() -> "Insects: " + insectCounts).isEqualTo(count);
+        assertThat(insectCounts.get("Driver ant")).as(() -> "Insects: " + insectCounts).isGreaterThan(insectCounts.get("Fire ant"));
+        assertThat(insectCounts.get("Fire ant")).as(() -> "Insects: " + insectCounts).isGreaterThan(insectCounts.get("Harvester ant"));
     }
 }
