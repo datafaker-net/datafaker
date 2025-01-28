@@ -470,7 +470,9 @@ In the example above,
 * "en", "sq", "ru" are language codes (English, Albanian and Russian), and 
 * "US", "AL", "MD" are country codes (USA, Albanian and Moldova)
 
-Supported Locales
+<details>
+<summary>Supported Locales</summary>
+
 -----
 * ar (Armenian)
 * be_BY (Belarusian)
@@ -500,7 +502,7 @@ Supported Locales
 * en-US
 * en-ZA
 * en-PH
-* es-AR (language: Spanish, country: Argentine)
+* es-AR (language: Spanish, country: Argentina)
 * es_ES (language: Spanish, country: Spain)
 * es-MX (language: Spanish, country: Mexico)
 * es-PY (language: Spanish, country: Paraguay)
@@ -540,6 +542,7 @@ Supported Locales
 * vi_VN (language: Vietnamese, country: Vietnam)
 * zh_CN (language: Chinese, country: China)
 * zh-TW (language: Chinese, country: Taiwan)
+</details>
 
 NATIVE IMAGE
 ------------
