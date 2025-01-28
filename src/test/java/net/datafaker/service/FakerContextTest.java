@@ -26,15 +26,8 @@ class FakerContextTest {
     }
 
     @ParameterizedTest
-    @MethodSource("languagesMatchingCountryCode")
-    void appendsDefaultCountryForGivenLanguage(String language) {
-        String countryCode = language.toUpperCase(Locale.ROOT);
-        assertThat(chain(new Locale(language))).containsExactly(new Locale(language), new Locale("", countryCode), ENGLISH);
-    }
-
-    @ParameterizedTest
-    @MethodSource("languagesDifferentFromCountryCode")
-    void appendsDefaultCountryForGivenLanguage2(String language, String country) {
+    @MethodSource("supportedLanguagesAndCountries")
+    void appendsDefaultCountryForGivenLanguage(String language, String country) {
         assertThat(chain(new Locale(language))).containsExactly(
             new Locale(language),
             new Locale("", country),
@@ -42,17 +35,11 @@ class FakerContextTest {
         );
     }
 
-    private static Stream<Arguments> languagesDifferentFromCountryCode() {
-        return languageCountry().entrySet().stream()
-            .map(e -> Arguments.of(e.getKey(), e.getValue()));
-    }
-
-    private static List<String> languagesMatchingCountryCode() {
+    private static Stream<Arguments> supportedLanguagesAndCountries() {
         return new Locality(new BaseFaker()).allSupportedLocales().stream()
-            .filter(l -> !l.startsWith("_") && l.length() == 2)
-            .filter(l -> !languageCountry().containsKey(l))
-            .filter(l -> !"en".equals(l))
-            .toList();
+            .filter(lang -> lang.length() == 2)
+            .filter(lang -> !"en".equals(lang))
+            .map(lang -> Arguments.of(lang, languageCountry().getOrDefault(lang, lang)));
     }
 
     private static Map<String, String> languageCountry() {
@@ -73,8 +60,7 @@ class FakerContextTest {
             Map.entry("ta", "IN"),
             Map.entry("uk", "UA"),
             Map.entry("vi", "VN"),
-            Map.entry("zh", "CN"),
-            Map.entry("", "")
+            Map.entry("zh", "CN")
         );
     }
 
