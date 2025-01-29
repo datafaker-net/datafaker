@@ -11,4 +11,5 @@ _IN:
       free_email: [gmail.com, yahoo.co.in, hotmail.com, rediffmail.com]
       domain_suffix: [in, com, biz, info, name, net, org, co.in]
     phone_number:
+      country_code: ['91']
       formats: ['+91###-###-####', '+91##########', '+91-###-#######']

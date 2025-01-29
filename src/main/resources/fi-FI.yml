@@ -1,3 +1,4 @@
+# Finnish / Finland
 fi-FI:
   faker:
     invoice:
@@ -8,9 +9,7 @@ fi-FI:
     address:
       city_prefix: [Haap, He, Kau, Oul, Ra, Ni, 'No', Ke, La, Or]
       city_suffix: [sjärvi, kano, ahe, inen, esi, uma, mi, inen, valta, mina]
-      building_number: ['###', '##', '#']
       street_suffix: [katu, gatan, ranta]
-      postcode: ['#####']
       # Source: https://www2.stat.fi/fi/luokitukset/maakunta/
       state: [ Uusimaa, Varsinais-Suomi, Satakunta, Kanta-Häme, Pirkanmaa, Päijät-Häme, Kymenlaakso, Etelä-Karjala, Etelä-Savo, Pohjois-Savo, Pohjois-Karjala, Keski-Suomi, Etelä-Pohjanmaa, Pohjanmaa, Keski-Pohjanmaa, Pohjois-Pohjanmaa, Kainuu, Lappi, Ahvenanmaa ]
       city:
@@ -32,7 +31,3 @@ fi-FI:
         - "#{first_name} #{last_name}"
       name_with_middle:
         - "#{first_name} #{last_name} #{last_name}"
-
-    passport:
-      valid: "[0-9]{9}"
-

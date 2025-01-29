@@ -1,0 +1,35 @@
+# Germany (Deutschland)
+_DE:
+  faker:
+    address:
+      country_code: [ 'DE' ]
+      building_number: ['###', '##', '#', '##a', '##b', '##c']
+      postcode: ['#####', '#####']
+      state_abbr: [BW, BY, BE, BB, HB, HH, HE, MV, NI, NW, RP, SL, SN, ST, SH, TH]
+      time_zone: [MEZ, Europe/Berlin, Central European Time, CET]
+
+    company:
+      suffix: [GmbH, AG, Gruppe, KG, GmbH & Co. KG, UG, OHG]
+      legal_form: [GmbH, AG, Gruppe, KG, GmbH & Co. KG, UG, OHG]
+
+    internet:
+      free_email: [gmail.com, yahoo.com, hotmail.com, gmx.de, web.de, mail.de, freenet.de]
+      domain_suffix: [com, info, name, net, org, de, ch]
+
+    vehicle:
+      license_plate_base: [
+        "? ?? #", "?? ?? #", "??? ?? #",
+        "? ?? ##", "?? ?? ##", "??? ?? ##",
+        "? ?? ###", "?? ?? ###", "??? ?? ###",
+        "? ?? ####", "?? ?? ####", "??? ?? ####"
+      ]
+      license_plate:
+        - "#{vehicle.license_plate_base}"
+        - "#{vehicle.license_plate_base}E"
+        - "#{vehicle.license_plate_base}H"
+
+    passport:
+      valid: "[CFGHJK][0-9CFGHJKLMNPRTVWXYZ]{8}"
+
+    phone_number:
+      country_code: ['49']

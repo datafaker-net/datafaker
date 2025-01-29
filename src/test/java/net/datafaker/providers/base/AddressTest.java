@@ -77,6 +77,16 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         assertThat(streetAddressNumber).matches("[0-9]+");
     }
 
+    @Test
+    void usingOnlyCountryCodeWithoutLanguage() {
+        assertThat(new BaseFaker(new Locale("xx", "AL")).address().countryCode()).isEqualTo("AL");
+        assertThat(new BaseFaker(new Locale("xx", "AM")).address().countryCode()).isEqualTo("AM");
+        assertThat(new BaseFaker(new Locale("xx", "BG")).address().countryCode()).isEqualTo("BG");
+        assertThat(new BaseFaker(new Locale("xx", "BY")).address().countryCode()).isEqualTo("BY");
+        assertThat(new BaseFaker(new Locale("xx", "BY")).address().postcode()).matches("\\d{6}");
+        assertThat(new BaseFaker(new Locale("xx", "EE")).address().postcode()).matches("\\d{5}");
+    }
+
     @RepeatedTest(10)
     void testLatitude() {
         String latStr = faker.address().latitude().replace(decimalSeparator, '.');

@@ -1,3 +1,4 @@
+# Indonesian
 id:
   faker:
     name:
@@ -11,8 +12,6 @@ id:
       city:
         - "#{city_name}"
       province: [Aceh, Bali, Banten, Bengkulu, DI Yogyakarta, DKI Jakarta, Gorontalo, Jambi, Jawa Barat, Jawa Tengah, Jawa Timur, Kalimantan Barat, Kalimantan Selatan, Kalimantan Tengah, Kalimantan Timur, Kalimantan Utara, Kepulauan Bangka Belitung, Kepulauan Riau, Lampung, Maluku, Maluku Utara, Nusa Tenggara Barat, Nusa Tenggara Timur, Papua, Papua Barat, Riau, Sulawesi Barat, Sulawesi Selatan, Sulawesi Tengah, Sulawesi Tenggara, Sulawesi Utara, Sumatera Barat, Sumatera Selatan, Sumatera Utara]
-      postcode: ['#####']
-      building_number: ['##']
       street_prefix: [Jl.]
       street_title: [Ahmad Yani, Diponegoro, Gajahmada, Gatot Soebroto, Hayamwuruk, Jend. Sudirman, Juanda, Kartini, MH. Thamrin, Rasuna Said]
       street_name:

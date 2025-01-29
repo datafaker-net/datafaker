@@ -1,5 +1,9 @@
 # encoding: utf-8
+# North Macedonia
 _MK:
   faker:
+    address:
+      country_code: [ 'MK' ]
+
     phone_number:
       country_code: ['389']

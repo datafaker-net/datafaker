@@ -1,9 +1,9 @@
 # encoding: utf-8
+# Albanian
 sq:
   faker:
     address:
       city_name: [ Bajram Curri, Bajzë, Ballsh, Berat, Bilisht, Bulqizë, Cërrik, Çorovodë, Durrës, Kamëz, Tirana, Ulëz, "Ura Vajgurore", "Vau i Dejës", Vlorë, Vorë]
-      country_code: ['AL']
       default_country: [Shqipëria]
 
     name:

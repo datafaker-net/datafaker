@@ -1,4 +1,5 @@
 # encoding: utf-8
+# United States of America
 _US:
   faker:
     internet:
@@ -41035,3 +41036,6 @@ _US:
         - 'X[0-9]{8}'
         - 'Y[0-9]{8}'
         - 'Z[0-9]{8}'
+
+    phone_number:
+      country_code: ['1']

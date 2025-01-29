@@ -1,0 +1,17 @@
+# encoding: utf-8
+# Armenia
+_AM:
+  faker:
+    address:
+      country_code: ['AM']
+      postcode: ['0###', '1###', '2###', '3###', '4###']
+      building_number: ['#####', '####', '###']
+
+    phone_number:
+      country_code: ['374']
+
+    country_code: ['1-374', '374']
+
+    internet:
+      free_email: [freenet.am, namag.net, yandex.ru, mail.ru, gmail.com, yahoo.com, hotmail.com]
+      domain_suffix: [am, com, info, net, org]

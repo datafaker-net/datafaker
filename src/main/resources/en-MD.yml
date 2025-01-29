@@ -3,7 +3,6 @@ en-MD:
   faker:
     address:
       city_name: [ "Anenii Noi", "Basarabeasca", "Bălți", "Căinari", "Călărași", "Căușeni", "Ceadîr-Lunga", "Chișinău", "Cimișlia", "Costești", "Dubăsari", "Fălești", "Frunză", "Grigoriopol", "Hîncești", "Rîbnița", "Rîșcani", "Strășeni", "Șoldănești", "Ștefan Vodă", "Tiraspol", "Tiraspolul Nou", "Ungheni", "Vadul lui Vodă", "Vulcănești"]
-      country_code: ['MD']
       country: [Moldova]
 
     name:

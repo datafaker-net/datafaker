@@ -1,8 +1,7 @@
+# Swedish / Sweden
 sv-SE:
   faker:
-
     address:
       city_name: [Alingsås, Arboga, Arvika, Askersund, Boden, Bollnäs, Borgholm, Borlänge, Borås, Djursholm, Eksjö, Enköping, Eslöv, Falköping, Gothenburg, Gränna, Gävle, Helsingborg, Härnösand, Hässleholm, Höganäs, Jönköping, Karlstad, Katrineholm, Kungälv, Köping, Lidingö, Lidköping, Lindesberg, Linköping, Luleå, Malmö, Mjölby, Norrköping, Norrtälje, Nynäshamn, Stockholm, Strängnäs, Strömstad, Torshälla, Umeå, Uppsala, Växjö, Åmål, Ängelholm, Örnsköldsvik]
-      country_code: ['SE']
 
 

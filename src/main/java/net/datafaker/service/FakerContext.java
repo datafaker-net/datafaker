@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import static java.util.Locale.ROOT;
 import static net.datafaker.service.FakeValuesService.DEFAULT_LOCALE;
 
 /**
@@ -20,6 +21,26 @@ public class FakerContext {
     private static final Map<SingletonLocale, List<SingletonLocale>> LOCALE_2_LOCALES_CHAIN = new IdentityHashMap<>();
     private static final Map<SingletonLocale, SingletonLocale> STRING_LOCALE_HASH_MAP = new IdentityHashMap<>();
     public static final List<SingletonLocale> DEFAULT_SINGLETON_LOCALE_LIST = List.of(DEFAULT_LOCALE);
+    private static final Map<String, String> LANGUAGE_DEFAULT_COUNTRY = Map.ofEntries(
+        Map.entry("be", "BY"),
+        Map.entry("cs", "CZ"),
+        Map.entry("da", "DK"),
+        Map.entry("el", "GR"),
+        Map.entry("et", "EE"),
+        Map.entry("he", "IL"),
+        Map.entry("hy", "AM"),
+        Map.entry("ja", "JP"),
+        Map.entry("ka", "GE"),
+        Map.entry("ko", "KR"),
+        Map.entry("nb", "NO"),
+        Map.entry("sq", "AL"),
+        Map.entry("sv", "SE"),
+        Map.entry("ta", "IN"),
+        Map.entry("uk", "UA"),
+        Map.entry("vi", "VN"),
+        Map.entry("zh", "CN")
+    );
+
     private SingletonLocale sLocale;
     private RandomService randomService;
 
@@ -107,7 +128,7 @@ public class FakerContext {
         return res;
     }
 
-    public void setCurrentLocale(Locale locale) {
+    public final void setCurrentLocale(Locale locale) {
         Objects.requireNonNull(locale);
         this.sLocale = normalizeLocale(SingletonLocale.get(locale));
         if (LOCALE_2_LOCALES_CHAIN.containsKey(this.sLocale)) {
@@ -144,14 +165,20 @@ public class FakerContext {
     private List<SingletonLocale> calculateLocaleChain(SingletonLocale locale) {
         final List<SingletonLocale> chain = new ArrayList<>(4);
         chain.add(locale);
-        if (!"".equals(locale.getLocale().getCountry())) {
+        if (locale.getLocale().getCountry().isEmpty()) {
+            chain.add(SingletonLocale.get(new Locale("", defaultCountryForLanguage(locale.getLocale().getLanguage()))));
+        } else {
             if (!DEFAULT_LOCALE.getLocale().getLanguage().equals(locale.getLocale().getLanguage())) {
                 chain.add(SingletonLocale.get(new Locale(locale.getLocale().getLanguage())));
             }
             chain.add(SingletonLocale.get(new Locale("", locale.getLocale().getCountry())));
         }
-        chain.add(DEFAULT_LOCALE); // default
+        chain.add(DEFAULT_LOCALE);
         return chain;
+    }
+
+    private String defaultCountryForLanguage(String language) {
+        return LANGUAGE_DEFAULT_COUNTRY.getOrDefault(language, language.toUpperCase(ROOT));
     }
 
     @Override

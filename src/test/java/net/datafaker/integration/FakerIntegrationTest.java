@@ -169,7 +169,7 @@ class FakerIntegrationTest {
 
         String[] ymlFiles = new File("./src/main/resources").list();
         for (String ymlFileName : ymlFiles) {
-            if (ymlFileName.endsWith(".yml")) {
+            if (ymlFileName.endsWith(".yml") && !ymlFileName.startsWith("_")) {
                 String locale = substringBefore(ymlFileName, ".").replace("-", "_");
                 arguments.add(Arguments.of(new Locale(locale), null));
             }

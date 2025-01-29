@@ -1,0 +1,13 @@
+# Finland
+_FI:
+  faker:
+    address:
+      country_code: ['FI']
+      building_number: ['###', '##', '#']
+      postcode: ['#####']
+
+    passport:
+      valid: "[0-9]{9}"
+
+    phone_number:
+      country_code: ['358']

@@ -1,0 +1,17 @@
+# Croatia
+_HR:
+  faker:
+    address:
+      country_code: [ 'HR' ]
+      building_number: ['###', '##', '#', '##a', '##b', '##c']
+      postcode: ['10###', '20###', '21###', '22###', '23###', '31###', '32###', '33###', '34###', '35###', '40###', '42###', '43###', '44###', '47###', '48###', '20###', '49###', '51###', '52###', '53###']
+
+    internet:
+      free_email: [gmail.com, yahoo.com, hotmail.com, net.hr]
+      domain_suffix: [com, info, net, org, hr]
+
+    passport:
+      valid: "[0-9]{9}"
+
+    phone_number:
+      country_code: ['385']

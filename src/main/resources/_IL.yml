@@ -1,0 +1,12 @@
+# Israel
+_IL:
+  faker:
+    address:
+      country_code: [ 'IL' ]
+      building_number: ['###', '##', '#']
+
+    internet:
+      domain_suffix: [com, biz.il, info.il, net.il, org.il, co.il, gov.il]
+
+    phone_number:
+      country_code: ['972']

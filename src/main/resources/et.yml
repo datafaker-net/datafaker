@@ -1,14 +1,12 @@
+# Estonian
 et:
   faker:
     separator: ' ja '
     address:
       city_name: [Tallinn, Tartu, Narva, Pärnu, Kohtla-Järve, Viljandi, Rakvere, Maardu, Sillamäe, Kuressaare, Valga, Võru, Haapsalu, Jõhvi, Keila, Põlva, Rapla, Türi, Paide, Tapa, Saue, Elva, Kehra, Kiviõli, Suure-Jaani, Jõgeva, Räpina, Kärdla, Põltsamaa, Otepää, Kilingi-Nõmme, Sindi, Paldiski, Tamsalu, Antsla, Karksi-Nuia, Kunda, Püssi, Narva-Jõesuu, Tõrva, Loksa, Lihula, Abja-Paluoja, Võhma, Mustvee, Kallaste, Mõisaküla]
       country: [ "Afganistanis", "Albaania", "Eesti", "Läti", "Leedu", "Ukraina", "Valgevene", "Venemaa", "Saksamaa", "Rumeenia", "Armeenia"]
-      country_code: ['EE']
-      building_number: ["###", "##", "#"]
       street_suffix: ["tee", "maantee", "tänav", "põik"]
       secondary_address: ['kt. ###', 'Maja ###', 'Ehitis ###']
-      postcode: ["#####"]
       state: [Harjumaa, Tartumaa, Ida-Virumaa, Pärnumaa, Lääne-Virumaa, Viljandimaa, Raplamaa, Võrumaa, Saaremaa, Jõgevamaa, Järvamaa, Valgamaa, Põlvamaa, Läänemaa, Hiiumaa]
       state_abbr: [Harjumaa, Tartumaa, Ida-Virumaa, Pärnumaa, Lääne-Virumaa, Viljandimaa, Raplamaa, Võrumaa, Saaremaa, Jõgevamaa, Järvamaa, Valgamaa, Põlvamaa, Läänemaa, Hiiumaa]
       default_country: [Eesti]
@@ -24,10 +22,6 @@ et:
       name:
         - "#{Name.last_name} #{suffix}"
         - "#{suffix} #{Name.last_name}"
-
-    internet:
-      free_email: [gmail.com, mail.ee, online.ee]
-      domain_suffix: [ee, eu, com, com.ee, eesti.ee]
 
     lorem:
       words: [tere, tiiger, mõis, vanduda, võeti, revolutsioon, relv, kinnitab, kunst, lipsunõelad, lugege, mu, huultelt, maksud, ei, tõuse, punkt]

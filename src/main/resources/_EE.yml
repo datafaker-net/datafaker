@@ -1,9 +1,22 @@
 # encoding: utf-8
+# Estonia
 _EE:
   faker:
+    address:
+      country_code: ['EE']
+      building_number: ["###", "##", "#"]
+      postcode: ["#####"]
+
+    internet:
+      free_email: [gmail.com, mail.ee, online.ee]
+      domain_suffix: [ee, eu, com, com.ee, eesti.ee]
+
     invoice:
       reference:
         # '#' means the place where check digit is placed
         # Source: http://www.pangaliit.ee/en/settlements-and-standards/reference-number-of-the-invoice
         check_digit_method: method_731
         pattern: '\d{1,19}#'
+
+    phone_number:
+      country_code: ['372']

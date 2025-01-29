@@ -1,5 +1,9 @@
 # encoding: utf-8
+# Albania
 _AL:
   faker:
+    address:
+      country_code: ['AL']
+
     phone_number:
       country_code: ['355']

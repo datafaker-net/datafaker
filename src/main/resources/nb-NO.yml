@@ -1,4 +1,5 @@
 # coding: utf-8
+# Norwegian / Norway
 nb-NO:
   faker:
     address:
@@ -8,9 +9,7 @@ nb-NO:
       street_root: ["Eike", "Bjørke", "Gran", "Vass", "Furu", "Litj", "Lille", "Høy", "Fosse", "Elve", "Ku", "Konvall", "Soldugg", "Hestemyr", "Granitt", "Hegge", "Rogne", "Fiol", "Sol", "Ting", "Malm", "Klokker", "Preste", "Dam", "Geiterygg", "Bekke", "Berg", "Kirke", "Kors", "Bru", "Blåveis", "Torg", "Sjø"]
       street_suffix: ["alléen", "bakken", "berget", "bråten", "eggen", "engen", "ekra", "faret", "flata", "gata", "gjerdet", "grenda", "gropa", "hagen", "haugen", "havna", "holtet", "høgda", "jordet", "kollen", "kroken", "lia", "lunden", "lyngen", "løkka", "marka", "moen", "myra", "plassen", "ringen", "roa", "røa", "skogen", "skrenten", "spranget", "stien", "stranda", "stubben", "stykket", "svingen", "tjernet", "toppen", "tunet", "vollen", "vika", "åsen"]
       common_street_suffix: ["sgate", "svei", "s Gate", "s Vei", "gata", "veien"]
-      building_number: ["#", "##"]
       secondary_address: ['Leil. ###', 'Oppgang A', 'Oppgang B']
-      postcode: ["####", "####", "####", "0###"]
       state: [Østfold, Akershus, Oslo, Hedmark, Oppland, Buskerud, Vestfold, Telemark, Aust-Agder, Vest-Agder, Rogaland, Hordaland, Sogn og Fjordane, Møre og Romsdal, Sør-Trøndelag, Nord-Trøndelag, Nordland, Troms, Finnmark, Svalbard]
       city:
         - "#{city_root}#{city_suffix}"
@@ -29,9 +28,6 @@ nb-NO:
         - "#{Name.last_name} #{suffix}"
         - "#{Name.last_name}-#{Name.last_name}"
         - "#{Name.last_name}, #{Name.last_name} og #{Name.last_name}"
-
-    internet:
-      domain_suffix: ["no", "com", "net", "org"]
 
     name:
       female_first_name: ["Emma", "Sara", "Thea", "Ida", "Julie", "Nora", "Emilie", "Ingrid", "Hanna", "Maria", "Sofie", "Anna", "Malin", "Amalie", "Vilde", "Frida", "Andrea", "Tuva", "Victoria", "Mia", "Karoline", "Mathilde", "Martine", "Linnea", "Marte", "Hedda", "Marie", "Helene", "Silje", "Leah", "Maja", "Elise", "Oda", "Kristine", "Aurora", "Kaja", "Camilla", "Mari", "Maren", "Mina", "Selma", "Jenny", "Celine", "Eline", "Sunniva", "Natalie", "Tiril", "Synne", "Sandra", "Madeleine"]

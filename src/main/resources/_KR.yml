@@ -1,0 +1,14 @@
+# coding: utf-8
+# South Korea (the Republic of Korea)
+_KR:
+  faker:
+    address:
+      country_code: ['KR']
+      postcode: ["#####"]
+
+    internet:
+      free_email: [gmail.com, yahoo.co.kr, hanmail.net, naver.com, daum.net]
+      domain_suffix: [co.kr, com, biz, info, ne.kr, net, or.kr, org]
+
+    phone_number:
+      country_code: ['82']

@@ -1,5 +1,15 @@
 # encoding: utf-8
+# Belarus
 _BY:
   faker:
+    address:
+      country_code: ['BY']
+      postcode: ['######']
+      building_number: ['###']
+
     phone_number:
       country_code: ['375']
+
+    internet:
+      free_email: [yandex.ru, ya.ru, mail.ru, gmail.com, yahoo.com, hotmail.com]
+      domain_suffix: [com, ru, info, бел, net, org, by]

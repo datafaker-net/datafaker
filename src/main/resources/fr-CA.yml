@@ -1,11 +1,8 @@
+# French / Canada
 fr-CA:
   faker:
     address:
-      postcode: /[A-CEJ-NPR-TVXY][0-9][A-CEJ-NPR-TV-Z] ?[0-9][A-CEJ-NPR-TV-Z][0-9]/
       state: [Alberta, British Columbia, Manitoba, New Brunswick, Newfoundland and Labrador, Nova Scotia, Northwest Territories, Nunavut, Ontario, Prince Edward Island, Quebec, Saskatchewan, Yukon]
-      state_abbr: ["AB", "BC", "MB", "NB", "NL", "NS", "NU", "NT", "ON", "PE", "QC", "SK", "YT"]
-      country_code: ['CA']
-      building_number: ['####', '###', '##', '#']
       street_prefix: ["Allée, Voie", "Rue", "Avenue", "Boulevard", "Quai", "Passage", "Impasse", "Place"]
       street_suffix: ["de l'Abbaye", "Adolphe Mille", "d'Alésia", "d'Argenteuil", "d'Assas", "du Bac", "de Paris", "La Boétie", "Bonaparte", "de la Bûcherie", "de Caumartin", "Charlemagne", "du Chat-qui-Pêche", "de la Chaussée-d'Antin", "du Dahomey", "Dauphine", "Delesseux", "du Faubourg Saint-Honoré", "du Faubourg-Saint-Denis", "de la Ferronnerie", "des Francs-Bourgeois", "des Grands Augustins", "de la Harpe", "du Havre", "de la Huchette", "Joubert", "Laffitte", "Lepic", "des Lombards", "Marcadet", "Molière", "Monsieur-le-Prince", "de Montmorency", "Montorgueil", "Mouffetard", "de Nesle", "Oberkampf", "de l'Odéon", "d'Orsel", "de la Paix", "des Panoramas", "Pastourelle", "Pierre Charron", "de la Pompe", "de Presbourg", "de Provence", "de Richelieu", "de Rivoli", "des Rosiers", "Royale", "d'Abbeville", "Saint-Honoré", "Saint-Bernard", "Saint-Denis", "Saint-Dominique", "Saint-Jacques", "Saint-Séverin", "des Saussaies", "de Seine", "de Solférino", "Du Sommerard", "de Tilsitt", "Vaneau", "de Vaugirard", "de la Victoire", "Zadkine"]
       street_name:
@@ -13,10 +10,6 @@ fr-CA:
       street_address:
         - " #{street_name} #{building_number}"
       default_country: [Canada]
-
-    internet:
-      free_email: [gmail.com, yahoo.ca, hotmail.com]
-      domain_suffix: [ca, com, biz, info, name, net, org]
 
     company:
       suffix: [SARL, SA, EURL, SAS, SEM, SCOP, GIE, EI]
