@@ -539,6 +539,7 @@ In the example above,
 * tr (Turkish)
 * th_TH (language: Thai, country: Thailand)
 * uk_UA (language: Ukrainian, country: Ukraine)
+* uz (language: Uzbek, country: Uzbekistan)
 * vi_VN (language: Vietnamese, country: Vietnam)
 * zh_CN (language: Chinese, country: China)
 * zh-TW (language: Chinese, country: Taiwan)

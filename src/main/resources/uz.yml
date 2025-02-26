@@ -1,0 +1,176 @@
+# Uzbek
+uz:
+  faker:
+    address:
+      building_number: [ '###' ]
+      street_suffix: [ 'ko‘ch.', 'ko‘cha', 'shohko‘cha', 'maydon', 'm.' ]
+      secondary_address: [ 'uy ###' ]
+      state: [ Toshkent shahri, Toshkent viloyati, Andijon viloyati, Buxoro viloyati, Farg‘ona viloyati, Jizzax viloyati, Xorazm viloyati, Namangan viloyati, Navoiy viloyati, Qashqadaryo viloyati, Samarqand viloyati, Sirdaryo viloyati, Surxondaryo viloyati, Qoraqalpog‘iston Respublikasi ]
+      street_title: [ Navoiy, Alisher Navoiy, Amir Temur, Mustaqillik, Istiqlol, Bog‘ishamol, O‘zbekiston, Furqat, Pushkin, Beruniy, Xalqlar Do‘stligi, Chilonzor, Yunusobod, Mirzo Ulug‘bek, Chilanzor, Qo‘yliq, Olmazor, Sergeli, Shayxontohur, Shota Rustaveli, G‘afur G‘ulom, Bobur, Temur Malik, Zarafshon, Do‘stlik, Katta Xalqa Yo‘li, Qo‘rg‘ontepa, Yangi Asr, Sodiqjon Azimov, Islom Karimov, Sharof Rashidov, Abdullaev, Mirabad, Nukus, Termiz, Guliston, Qorasuv, Paxta, Mehnat, Firdavsiy, Xadra, Sabir Rahimov, Sayram, Kichik Xalqa Yo‘li, Yangi Hayot, Taraqqiyot, Beshqo‘rg‘on, Yakkasaroy, Labzak, Sebzor ]
+      city_name: [ Toshkent, Samarqand, Namangan, Andijon, Nukus, Buxoro, Farg‘ona, Qarshi, Urganch, Jizzax, Termiz, Navoiy, Guliston, Chirchiq, Qo‘qon, Marg‘ilon, Angren, Olmaliq, Bekobod, Denov, Shahrisabz ]
+      city:
+        - "#{Address.city_name}"
+      street_name:
+        - "#{Address.street_title} #{street_suffix}"
+      street_address:
+        - "#{street_name}, #{building_number}"
+      full_address:
+        - "#{postcode} #{city}, #{street_address}"
+        - "#{postcode} #{state}, #{city}, #{street_address}"
+        - "#{postcode} #{city}, #{street_address} #{secondary_address}"
+
+    color:
+      name: [ qizil, yashil, ko'k, sariq, binafsha, yalpiz yashil, to'q ko'k, oq, qora, to'q sariq, pushti, kulrang, to'q qizil, to'q binafsha, to'q moviy, to'q sariq-jigarrang, osmon rang, to'q pushti, olxo'ri rang, orkide rang, zaytun rang, to'q pushti, och yashil, fil suyagi rangi, to'q ko'm-ko'k, oltin rang, och pushti, och moviy, to'q ko'k-moviy, lavanta rangi, kumush rang ]
+
+    creature:
+      animal:
+        name: [ "aligator", "timsoh", "alpaka", "chumoli", "antilopa", "maymun", "armadillo", "eshak", "babun", "bo‘rsiq", "ko‘rshapalak", "ayiq", "qunduz", "ari", "qo‘ng‘iz", "bufalo", "kapalak", "tuya", "suv bufalosi", "karibu", "mushuk", "qoramol", "gepard", "shimpanze", "chinchilla", "chigirtka", "molusk", "tarakan", "treska", "koyot", "qisqichbaqa", "kriket", "qarg‘a", "kiyik", "dinozavr", "it", "delfin", "o‘rdak", "burgut", "silliq baliq", "fil", "bug‘u", "parom", "baliq", "pashsha", "tulki", "qurbaqa", "gerbil", "jirafa", "chivin", "gnu", "echki", "oltin baliq", "g‘oz", "gorilla", "gvineya cho‘chqasi", "hamster", "quyon", "kirpi", "seld baliqi", "gippopotam", "shoxli ari", "ot", "ov iti", "sirtlon", "impala", "cho‘qmor", "meduza", "kenguru", "vallabi", "koala", "leopard", "sher", "kaltakesak", "lama", "bit", "makao", "yovvoyi o‘rdak", "mamont", "manati", "suvsichqon", "norka", "mayda baliq", "ko‘tarmich", "los", "sichqon", "kalamush", "xachir", "suv mushugi", "buka", "ustritsa", "panda", "cho‘chqa", "platipus", "preriya iti", "pug", "yenot", "karkidon", "losos", "sardina", "chayon", "tyulen", "suv sheri", "serval", "akula", "qo‘y", "skuns", "salyangoz", "ilon", "o‘rgimchak", "oqqush", "termit", "yo‘lbars", "alabalik", "toshbaqa", "morj", "kelinchak", "kit", "bo‘ri", "vombat", "sug‘ur", "qurt", "yak", "sariq ari", "zebra" ]
+
+    name:
+      male_first_name: [
+        "Ali","Abror" ,"Bahodir", "Elbek", "Davron", "Eldor", "Farrux", "G‘afur", "Hasan", "Ibrohim",
+        "Jahongir", "Kamol", "Laziz", "Mirzo", "Nodir", "O‘tkir", "Pulat", "Qodir", "Vali","Ozod", "Muzaffar",
+        "Rustam", "Sardor", "Temur", "Umid", "Xurshid", "Yusuf", "Zafar", "Shavkat", "Shoxjahon", "Asliddin",
+        "Jamshid", "Aziz", "Bobur", "Dilshod", "Erkin", "Farhod", "Islom", "Jasur", "Iskandar","jahong1r_t"
+      ]
+      male_middle_name: [
+        "Alievich", "Bahodirovich", "Davronovich", "Eldorovich", "Farruxovich",
+        "G‘afurovich", "Hasanovich", "Ibrohimovich", "Jahongirovich", "Kamolvich",
+        "Lazizovich", "Mirzoevich", "Nodirovich", "O‘tkirovich", "Pulatovich",
+        "Qodirovich", "Rustamovich", "Sardorovich", "Temurovich", "Umidovich",
+        "Xurshidovich", "Yusufovich", "Zafarovich", "Shavkatovich", "Jamshidovich",
+        "Azizovich", "Boburovich", "Dilshodovich", "Erkinovich", "Farhodovich",
+        "Islomovich", "Jasurovich","Iskandarovich",
+      ]
+      male_last_name: [
+        "Ahmedov", "Ismoilov", "Raxmonov", "Saidov", "To‘xtayev", "Umarov", "Xolmatov",
+        "Yo‘ldoshev", "Zokirov", "Abdullayev", "Botirov", "G‘aniyev", "Hakimov",
+        "Ibragimov", "Karimov", "Murodov", "Nazarov", "Odilov", "Qosimov", "Rahimov",
+        "Sobirov", "Toshpulatov", "Usmonov", "Xoshimov", "Yusupov", "Sharipov",
+        "Ergashev", "Fozilov", "Hamidov", "Jalilov", "Kobilov", "Mirzayev", "Norov",
+        "Oripov", "Pirmatov", "Qurbonov", "Rasulov", "Safarov", "Tursunov", "Xudoyberdiyev","Iskandarov"
+      ]
+      female_first_name: [
+        "Gulnoza", "Zilola", "Dilnoza", "Malika", "Nigora", "Oydin", "Saida", "Zarina",
+        "Feruza", "Laylo", "Madina", "Nodira", "Ruxsora", "Sevara", "Umida", "Xilola",
+        "Yulduz", "Asal", "Diyora", "Gavhar", "Kamola", "Lobar", "Muxtasar", "Nasiba",
+        "Ozoda", "Robiya", "Sitora", "Shaxnoza", "Zuhra", "Anora", "Barno", "Dur dona", "Rayxona"
+      ]
+      female_middle_name: [
+        "Ahmedovna", "Ismoilovna", "Raxmonovna", "Saidovna", "To‘xtayevna", "Umarovna",
+        "Xolmatovna", "Yo‘ldoshevna", "Zokirovna", "Abdullayevna", "Botirovna",
+        "G‘aniyevna", "Hakimovna", "Ibragimovna", "Karimovna", "Murodovna", "Nazarovna",
+        "Odilovna", "Qosimova", "Rahimovna", "Sobirovna", "Toshpulatovna", "Usmonovna",
+        "Xoshimovna", "Yusupovna", "Sharipovna", "Ergashevna", "Fozilovna", "Hamidovna",
+        "Jalilovna", "Kobilovna", "Mirzayevna"
+      ]
+      female_last_name: [
+        "Ahmedova", "Ismoilova", "Raxmonova", "Saidova", "To‘xtayeva", "Umarova",
+        "Xolmatova", "Yo‘ldosheva", "Zokirova", "Abdullayeva", "Botirova", "G‘aniyeva",
+        "Hakimova", "Ibragimova", "Karimova", "Murodova", "Nazarova", "Odilova",
+        "Qosimova", "Rahimova", "Sobirova", "Toshpulatova", "Usmonova", "Xoshimova",
+        "Yusupova", "Sharipova", "Ergasheva", "Fozilova", "Hamidova", "Jalilova",
+        "Kobilova", "Mirzayeva", "Norova", "Oripova", "Pirmatova", "Qurbonova",
+        "Rasulova", "Safarova", "Tursunova", "Xudoyberdiyeva"
+      ]
+      first_name:
+        - "#{female_first_name}"
+        - "#{male_first_name}"
+      last_name:
+        - "#{female_last_name}"
+        - "#{male_last_name}"
+      name:
+        - "#{male_first_name} #{male_last_name}"
+        - "#{male_last_name} #{male_first_name}"
+        - "#{male_first_name} #{male_middle_name} #{male_last_name}"
+        - "#{male_last_name} #{male_first_name} #{male_middle_name}"
+        - "#{female_first_name} #{female_last_name}"
+        - "#{female_last_name} #{female_first_name}"
+        - "#{female_first_name} #{female_middle_name} #{female_last_name}"
+        - "#{female_last_name} #{female_first_name} #{female_middle_name}"
+      name_with_middle:
+        - "#{first_name} #{last_name} #{last_name}"
+
+    passport:
+      valid: "AA[0-9]{7}"
+
+    phone_number:
+      formats: [ '+998(9#)###-##-##' ]
+      country_code: [ '998' ]
+
+    company:
+      prefix: [ "MChJ", "OAJ", "XK", "QKJ", "TJK", "NP" ]
+      suffix: [ "Ta’minot", "Savdo", "Sanoat", "Tijorat", "Sotish" ]
+      name:
+        - "#{Name.female_first_name} #{prefix}"
+        - "#{Name.male_first_name} #{prefix}"
+        - "#{Name.male_last_name} #{prefix}"
+        - "#{suffix}#{suffix} #{prefix}"
+        - "#{suffix}#{suffix}#{suffix} #{prefix}"
+        - "#{Address.city_name}#{suffix} #{prefix}"
+        - "#{Address.city_name}#{suffix}#{suffix} #{prefix}"
+        - "#{Address.city_name}#{suffix}#{suffix}#{suffix} #{prefix}"
+
+    commerce:
+      color: [ "qizil", "yashil", "ko‘k", "sariq", "qip-qizil", "yalpiz rangi", "yashil-ko‘k", "oq", "qora", "to‘q sariq", "pushti", "kulrang", "qizil-jigarrang", "siyohrang", "biryuza", "sariq-jigarrang", "osmon ko‘k", "to‘q sariq-pushti", "to‘q siyohrang", "orxideya rangi", "zaytun rangi", "binafsha", "limon rangi", "krem rangi", "ko‘k-siyohrang", "oltin", "qizil-binafsha", "moviy", "lazur", "lola rangi", "kumush" ]
+      department: [ "Kitoblar", "Filmlar", "Musiqa", "O‘yinlar", "Elektronika", "Kompyuterlar", "Uy", "Bog‘ va asboblar", "Oziq-ovqat", "Salomatlik", "Go‘zallik", "O‘yinchoqlar", "Bolalar uchun", "Chaqaloqlar uchun", "Kiyim-kechak", "Poyabzal", "Zargarlik buyumlari", "Sport", "Turizm", "Avtomobil uchun", "Sanoat" ]
+      product_name:
+        adjective: [ "Kichik", "Qulay", "Qo‘pol", "Aqlli", "Muhtasham", "Ajoyib", "Hayoliy", "Amaliy", "Yaltirab turgan", "Hayratlanarli", "Katta", "Qoniqarli", "Sinergik", "Og‘ir", "Yengil", "Aerodinamik", "Mustahkam" ]
+        material: [ "Po‘lat", "Yog‘och", "Beton", "Plastik", "Paxta", "Granit", "Kauçuk", "Charm", "Ipak", "Jun", "Zig‘ir", "Marmar", "Temir", "Bronza", "Mis", "Alyuminiy", "Qog‘oz" ]
+        product: [ "Stul", "Avtomobil", "Kompyuter", "Beret", "Marjon", "Stol", "Sviter", "Kamar", "Etik", "Likopcha", "Pichoq", "Shisha", "Palto", "Chiroq", "Klaviatura", "Sumka", "Skameyka", "Soat", "Hamyon" ]
+
+    food:
+      dish: [ "Non va go‘sht", "Palov", "Somsa", "Mastava", "Sho‘rva", "Lag‘mon", "Manti", "Chuchvara", "Norin", "Kabob", "Dimlama", "Qovurma lag‘mon", "Xonim", "Jiz", "Qaynatma", "Shashlik", "Tuxum Barak", "Grechka bilan go‘sht", "Qozon kabob", "Osh", "Sumalak", "Qovurdoq", "Non va qaymoq", "Qatiqli sho‘rva", "Tandir kabob", "Cholov", "Beshbarmoq", "Patir non", "Xalim", "Qaymoqli manti" ]
+      ingredients: [ "Achchiq o‘t", "Adzuki loviya", "Agar", "Agava siropi", "Ajovan urug‘i", "Albakore orkinos", "Bedana", "Bahor", "Bodom yog‘i", "Bodom", "Amarant", "Amchur", "Anchovi", "Anis urug‘i", "Annatto urug‘i", "Olma sirkasi", "Olma sharbati", "Olma sharbati konsentrati", "Olma", "Bonza olma", "O‘rik", "Arborio guruch", "Arrowroot", "Artishok", "Rukkola", "Asafoetida", "Osiyo ko‘katlari", "Osiyo noodle", "Qushqo‘nmas", "Baqlajon", "Avokado", "Avokado yog‘i", "Avokado yoymasi", "Bekon", "Pishirish kukuni", "Soda", "Balsamik sirka", "Bambuk kurtaklari", "Banan", "Barberi", "Arpa", "Barramundi", "Bazil basmati guruch", "Dafna yaprog‘i", "Loviya kurtaklari", "Loviya", "Yashil loviya", "Mol go‘shti", "Lavlagi", "Rezavorlar", "Qora ko‘zli loviya", "Qora rezavor", "Qon apelsinlari", "Moviy pishloq", "Moviy ko‘z trevalla", "Moviy suzuvchi qisqichbaqa", "Ko‘k yemis", "Bokkonchini", "Bok choy", "Bonito parchasi", "Borlotti loviya", "Braziliya yong‘oqg‘i", "Kepak", "Non", "Javdar noni", "Xamirturush noni", "Spelt noni", "Oq non", "To‘liq donli non", "Bug‘doy", "Bri pishloqi", "Brokkoli", "Brokkolini", "Jigarrang guruch", "Jigarrang guruch sirkasi", "Bryussel karami", "Grechka", "Grechka noodle", "Bulg‘ur", "Yovvoyi pomidor", "Sariyog‘", "Yog‘li loviya", "Ayran", "Butternut salati", "Butternut qovoq", "Karam", "Kakao", "Kek", "Kalamari", "Choy yog‘i", "Kamember pishloqi", "Romashka", "Yong‘oq chandani", "Kannellini loviya", "Kanola yog‘i", "Kantalupa", "Kapers", "Qalampir", "Yulduz meva", "Karavay urug‘i", "Kardamom", "Karob sabzi", "Sabzi", "Kaju", "Kassiya qobig‘i", "Gulkarim", "Kavalo", "Kayen", "Kereviz", "Kereviz urug‘i", "Cheddar pishloqi", "Gilos", "Kashnicha", "Chia urug‘lari", "Tovuq", "Chikori", "Noxat", "Chili qalampiri", "Yangi chili", "Quritilgan xitoy brokkolisi", "Xitoy karami", "Xitoy besh ziravor", "Piyozcha", "Qora shokolad", "Sutli shokolad", "Choy sum", "Dolchin", "Chig‘anoq", "Chinnigullar", "Kakao kukuni", "Kokos", "Kokos yog‘i", "Kokos suvi", "Qahva", "Corella nok", "Kashnich yaprog‘i", "Kashnich urug‘i", "Makkajo‘xori yog‘i", "Makkajo‘xori siropi", "Makkajo‘xori tortillasi", "Kornishonlar", "Makkajo‘xori uni", "Kos salati", "Tvorog pishloqi", "Kuskus", "Qisqichbaqa", "Klyukva", "Qaymoq", "Krem pishloq", "Bodring", "Zira", "Kumkvat", "Quruq uzum", "Kori barglari", "Kori kukuni", "Krem olma", "Qizilgul ko‘kati", "Dashi", "Xurmo", "Ukrop", "Ajdaho mevasi", "Quritilgan o‘rik", "O‘rdak", "Edam pishloqi", "Edamame", "Tuxum meva", "Tuxum", "Murchak", "Endiviy", "Ingliz ismaloq", "Zaytun yog‘i", "Qisqichbaqa fermasi", "Feyxoa", "Arpabodiyon", "Arpabodiyon urug‘lari", "Fenugreek", "Feta pishloqi", "Anjir", "File kukuni", "Barmoq limon", "Baliq sousi", "Flathead", "Zig‘ir urug‘i", "Zig‘ir yog‘i", "Flounder", "Un", "Besan uni", "Grechka uni", "Sul‘gi uni", "Kartoshka uni", "Guruch uni", "Jigarrang un", "Oq un", "Soya uni", "Tapioka uni", "Oqlanmagan un", "Bug‘doy uni", "Freekeh", "Fransuz eshallotlari", "Fromaj blan", "Meva", "Galangal", "Garam masala", "Sarimsoq", "Ko‘k piyoz", "Echki pishloqi", "Echki suti", "Goji reza", "Uzum yog‘i", "Greypfrut", "Uzum", "Yashil qalampir", "Yashil choy", "Yashil choy noodle", "Yashil bug‘doy freekeh", "Gruyere pishloqi", "Guava", "Gula melaka", "Xalumi pishloqi", "Jambon", "Harikot loviya", "Harissa", "Findiq", "Hijiki", "Hiramasa qirol baliq", "Hokkien noodle", "Asal", "Qovun", "Xren", "Dudlangan qizil ikra", "Hummus", "Aysberg salati", "Inkaberries", "Jarrahdale qovoq", "Jasmin guruch", "Jelli", "Quddus artishoki", "Jewfish", "Jicama", "Juniper rezavorlari", "Limon barglari", "Kale", "Kanguru", "Kecap manis", "Kenchur", "Buur loviya", "Jigar", "Kivi mevasi", "Kivi rezavorlari", "Kohlrabi", "Kokam", "Kombu", "Koshihikari guruch", "Kudzu", "Kumera", "Qo‘zi go‘shti", "Lavanda gullari", "Piyoz po‘st", "Limon", "Limon o‘ti", "Yasmiq", "Salat", "Miyya", "Laym", "Jigar (hayvon)", "Omar", "Longan", "Loquatlar", "Lotus ildizi", "Lichilar", "Makadamiya yong‘oqlari", "Makadamiya yog‘i", "Mace", "Skumbriya", "Konservalangan", "Mahi mahi", "Mahlab", "Malt sirkasi", "Mandarin",
+                     "Mango", "Mangostin", "Chinor siropi", "Margarin", "Marigold", "Mayoram", "Mastik", "Qovun", "Sut", "Yalpiz", "Miso", "Molasses", "Monkfish", "Morwong", "Tog‘ noni", "Motsarella pishloqi", "Myusli", "Tut", "Mullet", "Mung loviya", "Yassi qo‘ziqorin", "Jigarrang qo‘ziqorin", "Odatdagi qo‘ziqorin", "Enoki qo‘ziqorin", "Oyster qo‘ziqorin", "Shiitake qo‘ziqorin", "Midiya", "Xantal", "Xantal urug‘i", "Nashi nok", "Nasturtium", "Nektarin", "Nori", "Muskat yong‘og‘i", "Oziq kvas", "Yong‘oqlar", "Jo‘xori", "Sul‘gi", "Sakkizoyoq", "Okra", "Zaytun yog‘i", "Zaytun", "Omega yoymasi", "Piyoz", "Apelsin", "Oregano", "Oyster sousi", "Ustritsa", "Nok", "Pandanus barglari", "Papaw", "Papaya", "Paprika", "Parmezan pishloqi", "Parrotfish", "Maydanoz", "Chirish", "Passionfruit", "Makaron", "Shaftoli", "Yer yong‘oq", "Nok sharbati", "Noklar", "Noxat", "Pekan yong‘oqlari", "Pecorino pishloqi", "Pepitas", "Szechuan qalampir reza", "Qalampir donalari", "Yalpizcha", "Qalampirlar", "Xurmo mevasi", "Chili yong‘oqlari", "Ananas", "Pinto loviya", "Pistachio yong‘oqlari", "O‘rik", "Polenta", "Anor", "Mak yong‘oqlari", "Porcini qo‘ziqorin", "Cho‘chqa go‘shti", "Kartoshka", "Provolone pishloqi", "Quritilgan o‘rik", "Qovoq", "Qovoq urug‘i", "Binafsha sabzi", "Binafsha guruch", "Quark", "Quinoa", "Radikkio", "Turp", "Kishmish", "Malina", "Qizil karam", "Qizil yasmiq", "Qizil qalampir", "Revon", "Guruch noodle", "Guruch qog‘ozi", "Guruch siropi", "Guruch suti", "Rikotta pishloqi", "Rokmelon", "Atirgul suvi", "Rozmarin", "Javdar", "Safora yog‘i", "Za’faron", "Adaçayı", "Sake", "Qizil ikra", "Sardin", "Kolbasa", "Taroz", "Dengiz tuzi", "Yirma", "Kunjut yog‘i", "Kunjut urug‘lari", "Akula", "Silverbeet", "Maydalangan bodom", "Dudlangan alabalik", "Snapper", "Qor no‘xati kurtaklari", "Qor no‘xati", "Soba", "Soya loviya", "Soya suti", "Soya sousi", "Soya", "Kurtaklar", "Soya suti", "Yalpizcha", "Spelt", "Ismaloq", "Bahor piyozlari", "Qovoqcha", "Kalmar", "Yulduz anis", "Yulduz meva", "Steviya", "Mol bulyoni", "Tovuq bulyoni", "Baliq bulyoni", "Sabzavot bulyoni", "Qulupnay", "Shakar", "Sultana", "Quyoshda quritilgan pomidor", "Kungaboqar yog‘i", "Kungaboqar urug‘lari", "Shirin chili sousi", "Shirin kartoshka", "Shveytsar karami", "Qilich baliq", "Tabasko", "Tahini", "Taleggio pishloqi", "Tamari", "Tamarillo", "Tangelo", "Tapioka", "Tarxon", "Choy", "Choy yog‘i", "Tempeh", "Timyan", "Tofu", "Tom Yum", "Pomidor", "Alabalik", "Orkinos", "Kurka", "Zardob", "Sholg‘om", "Vanil loviya", "Sabzavot yog‘i", "Sabzavot spagettisi", "Vermicelli noodle", "Sirka", "Vakame", "Yong‘oq", "Warehou", "Vasabi", "Suv", "Kress", "Tarvuz", "Wattleseed", "Bug‘doy", "Bug‘doy sharbati", "Oq guruch", "Oq sharob sirkasi", "Yovvoyi guruch", "William nok", "Qizil sharob", "Oq sharob", "Xamirturush", "Sariq papaw", "Yellowtail qirol baliq", "Yogurt", "Qovoqcha" ]
+      fruits: [ "Olma", "O‘rik", "Baqlajon", "Avokado", "Banan", "Rezavorlar", "Qora rezavor", "Qon apelsinlari", "Ko‘k yemis", "Yovvoyi pomidor", "Butternut qovoq", "Kantalupa", "Kavalo", "Yulduz meva", "Gilos", "Corella nok", "Klyukva", "Kumkvat", "Quruq uzum", "Krem olma", "Daikon krem olma", "Xurmo", "Ajdaho mevasi", "Quritilgan o‘rik", "Murchak", "Feyxoa", "Greypfrut", "Uzum", "Anjir", "Barmoq limon", "Goji reza", "Guava", "Qovun", "Inkaberries", "Jarrahdale qovoq", "Juniper rezavorlari", "Kivi mevasi", "Kivi rezavorlari", "Limon", "Laym", "Longan", "Loquatlar", "Lichilar", "Mango", "Mangostin", "Qovun", "Mandarin", "Tut", "Nashi nok", "Nektarin", "Zaytun", "Apelsin", "Papaw", "Papaya", "Passionfruit", "Shaftoli", "Nok", "Ananas", "Anor", "O‘rik", "Quritilgan o‘rik", "Rokmelon", "Qor no‘xati", "Kurtaklar", "Qulupnay", "Sultana", "Tangelo", "Pomidor", "Tarvuz" ]
+
+      vegetables: [ "Artishok", "Rukkola", "Osiyo ko‘katlari", "Qushqo‘nmas", "Loviya kurtaklari", "Loviya", "Yashil loviya", "Lavlagi", "Bok choy", "Brokkoli", "Brokkolini", "Bryussel karami", "Butternut salati", "Karam", "Kapers", "Karob sabzi", "Sabzi", "Gulkarim", "Kereviz", "Chili qalampiri", "Xitoy karami", "Yangi chili", "Quritilgan xitoy brokkolisi", "Kornishonlar", "Kos salati", "Bodring", "Tuxum meva", "Endiviy", "Ingliz ismaloq", "Fransuz eshallotlari", "Sarimsoq", "Ko‘k piyoz", "Yashil qalampir", "Hijiki", "Aysberg salati", "Quddus artishoki", "Jicama", "Kale", "Kohlrabi", "Piyoz po‘st", "Salat", "Piyoz", "Okra", "Chirish", "Noxat", "Qalampirlar", "Kartoshka", "Qovoq", "Binafsha sabzi", "Radikkio", "Turp", "Malina", "Qizil karam", "Qizil qalampir", "Revon", "Qor no‘xati kurtaklari", "Ismaloq", "Qovoqcha", "Quyoshda quritilgan pomidor", "Shirin kartoshka", "Shveytsar karami", "Sholg‘om", "Qovoqcha" ]
+      spices: [ "Achiote urug‘i", "Ajovan urug‘i", "Bahor maydalangan", "Bahor butun", "Amchoor", "Anis", "Yulduz anis", "Anis urug‘i butun", "Annatto urug‘i", "Arrowroot", "Asafoetida", "Baharat", "Balti masala", "Balti qovurma aralashmasi", "Reyhon", "Dafna barglari", "Dafna barglari maydalangan", "Barbekyu ziravori", "Biryani ziravor aralashmasi", "Kajun ziravori", "Karavay urug‘i", "Kardamom maydalangan", "Kardamom butun", "Kassiya", "Kassiya qobig‘i", "Kayen qalampiri", "Kereviz yaprog‘i", "Kereviz tuzi", "Kereviz urug‘i", "Romashka", "Chervil", "Tovuq ziravori", "Chili maydalangan", "Chili kukuni", "Chili qalampiri", "Chili butun", "Xitoy yulduzi", "Xitoy besh ziravor", "Piyozcha", "Dolchin qobig‘i", "Dolchin kukuni", "Dolchin tayoqchalari", "Chinnigullar maydalangan", "Chinnigullar butun", "Kolombo kukuni", "Kashnich maydalangan", "Kashnich yaprog‘i", "Kashnich urug‘i", "Kreol ziravori", "Zira maydalangan", "Zira urug‘i", "Qora zira urug‘i", "Royal zira urug‘i", "Jingalak maydanoz", "Xitoy kori", "Qaynoq kori", "Kori barglari", "Madrass o‘rtacha kori", "Yengil kori", "Tay yashil kori", "Tay qizil kori", "Dhansak ziravor aralashmasi", "Ukrop o‘ti", "Ukrop yaprog‘i", "Ukrop urug‘i", "Fajita ziravori", "Arpabodiyon urug‘i", "Fenugreek maydalangan", "Fenugreek yaprog‘i", "Fenugreek urug‘i", "Nozik o‘tlar", "Baliq ziravori", "Besh ziravor aralashmasi", "Fransuz lavandasi", "Galangal maydalangan", "Garam masala", "Sarimsoq chiplari", "Sarimsoq granulalari", "Sarimsoq kukuni", "Sarimsoq tuzi", "Nemis romashkasi", "Zanjabil ildizi", "Zanjabil maydalangan", "Yashil kardamom", "Provans o‘tlari", "Jalfrezi kori kukuni", "Jalfrezi aralashmasi", "Jerk ziravori", "Juniper rezavorlari", "Kafir barglari", "Korma kori kukuni", "Korma aralashmasi", "Qo‘zi ziravori", "Lavanda", "Limon o‘ti", "Limon o‘ti maydalangan", "Limon qalampiri", "Limon barglari", "Limon barglari maydalangan", "Miyya ildizi", "Mace maydalangan", "Mace butun", "Mango kukuni", "Mayoram", "Methi", "Methi barglari", "Meksika salsa aralashmasi", "Yalpiz", "Aralash o‘tlar", "Aralash ziravor", "Mulled sidr ziravorlari", "Mulled sharob ziravorlari", "Xantal kukuni", "Qora xantal urug‘i", "Jigarrang xantal urug‘i", "Oq xantal urug‘i", "Sariq xantal urug‘i", "Nigella", "Muskat kukuni", "Muskat butun", "Piyoz urug‘i", "Apelsin qobig‘i", "Oregano", "Paella ziravori", "Paprika", "Venger paprika", "Dudlangan paprika", "Maydanoz", "Jingalak maydanoz", "Qora qalampir qo‘pol", "Qora qalampir maydalangan", "Oq qalampir maydalangan", "Qora qalampir donalari", "Qora qalampir yorilgan", "Yashil qalampir donalari", "Aralash qalampir donalari", "Pushti qalampir donalari", "Szechuan qalampir donalari", "Oq qalampir donalari", "Tuzlama ziravori", "Pimento rezavorlari", "Pimento maydalangan", "Piri piri ziravori", "Pizza ustki aralashmasi", "Mak urug‘i", "Qozon mayorami", "Poudre de Kolombo", "Ras-el-hanout", "Guruch qog‘ozi", "Rogan josh kori kukuni", "Rogan josh aralashmasi", "Rose baie", "Rozmarin", "Za’faron", "Adaçayı", "Dengiz tuzi qo‘pol", "Ziravor tuzi", "O‘z-o‘zidan yopishqoq ziravor yorliqlari", "Kunjut urug‘i", "Yalpizcha", "Ziravor jadvallari", "Steyk ziravori",
+                "Sumak maydalangan", "Shirin reyhon", "Shirin dafna", "Tagin ziravori", "Tanduri masala", "Tanduri aralashmasi", "Tarxon", "Tay yashil kori aralashmasi", "Tay qizil kori aralashmasi", "Tay qovurma", "Timyan", "Tikka masala", "Tikka masala kori kukuni", "Zardob", "Zardob kukuni", "Vanil loviya", "Vanil qobiqlari", "Sabzavot ziravori", "Zahtar ziravor aralashmasi" ]
+      measurements: [ "choy qoshiq", "osh qoshiq", "piyola", "pint", "kvart", "gallon" ]
+      measurement_sizes: [ "1/4", "1/3", "1/2", "1", "2", "3" ]
+      metric_measurements: [ "millilitr", "desilitr", "sentilitr", "litr" ]
+      sushi: [ "Abalon", "Alyaska pushti qisqichbaqa", "Amberjak", "Bastard palov", "Qonli chig‘anoq", "Botan qisqichbaqa", "Qisqichbaqa", "Nuqtali ichak shad", "Silliq baliq", "Yorug‘lik kalmar", "Katta amberjak", "Yarim beak", "Shoxli turban", "Yapon ot skumbriyasi", "Yapon dengiz bassi", "Yapon ispaniya skumbriyasi", "Yapon uslubidagi qalin omlet", "Yapon oq baliq", "Skumbriya", "Sut ikra", "Mirugai chig‘anoq", "Sakkizoyoq", "Orient chig‘anoq", "Ustritsa", "Pushti dengiz bassi", "Qizil ikra ikrasi", "Qizil ikra", "Taroz", "Dengiz o‘rami", "Skipjak orkinos", "Kichik amberjak", "Kalmar", "Chuvalchang chig‘anoqlari", "Alabalik", "Orkinos", "Oq trevalli", "Oppoq konqer" ]
+
+    weather:
+      description: [ "Yaxshi", "Quyoshli", "Ochiq osmon", "Bulutli vaqtlari", "Qisman bulutli", "Ko‘p bulutli", "To‘la bulutli", "Yomg‘irchilik", "Yomg‘ir", "Mayda yomg‘ir", "Momaqaldiroq", "Momaqaldiroq yog‘ishi", "Qor", "Qor bilan yomg‘ir", "Do‘l" ]
+      temperature:
+        celsius: "°C"
+        fahrenheit: "°F"
+
+    university:
+      name: [ "Toshkent xalqaro Vestminster universiteti", "Muhammad al-Xorazmiy nomidagi Toshkent axborot texnologiyalari universiteti", "Toshkentdagi Inha universiteti", "Toshkent moliya instituti", "Toshkentdagi Singapur menejmentni rivojlantirish instituti", "Oʻzbekiston milliy universiteti", "Jahon iqtisodiyoti va diplomatiya universiteti", "Nizomiy nomidagi Toshkent davlat pedagogika universiteti", "Oʻzbekiston davlat jahon tillari universiteti", "Samarqand davlat tibbiyot instituti", "Toshkent irrigatsiya va qishloq xoʻjaligini mexanizatsiyalash muhandislari instituti Milliy tadqiqot universiteti", "Mirzo Ulugʻbek nomidagi Oʻzbekiston milliy universiteti", "Toshkent davlat texnika universiteti", "Toshkent davlat iqtisodiyot universiteti", "Toshkent davlat yuridik universiteti", "Oʻzbekiston davlat konservatoriyasi", "Toshkent arxitektura va qurilish instituti", "Toshkent davlat agrar universiteti", "Toshkent farmatsevtika instituti", "Toshkent pediatriya tibbiyot instituti", "Toshkent davlat stomatologiya instituti", "Toshkent davlat sharqshunoslik universiteti", "Toshkent davlat transport universiteti", "Toshkent kimyo-texnologiya instituti", "Toshkent to'qimachilik va yengil sanoat instituti", "Toshkent davlat san'at va madaniyat instituti", "Toshkent davlat o'zbek tili va adabiyoti universiteti", "Samarqand davlat universiteti", "Buxoro davlat universiteti", "Xorazm davlat universiteti", "Qarshi davlat universiteti", "Termiz davlat universiteti", "Farg‘ona davlat universiteti", "Namangan davlat universiteti", "Andijon davlat universiteti", "Navoiy davlat pedagogika instituti", "Jizzax davlat pedagogika instituti", "Guliston davlat universiteti", "Qo‘qon davlat pedagogika instituti", "Urganch davlat universiteti", "Andijon davlat tibbiyot instituti", "Buxoro davlat tibbiyot instituti", "Samarqand davlat tibbiyot universiteti", "Farg‘ona davlat tibbiyot instituti", "Namangan davlat tibbiyot instituti", "O‘zbekiston xalqaro islom akademiyasi", "Toshkent islom instituti", "Toshkent davlat stomatologiya instituti", "Toshkent davlat jismoniy tarbiya va sport universiteti", "O‘zbekiston jurnalistika va ommaviy kommunikatsiyalar universiteti", "Sirdaryo davlat universiteti" ]
+
+    gender:
+      binary_types: [ "Erkak", "Ayol" ]
+
+    internet:
+      free_email: [ "gmail.com", "mail.ru", "inbox.uz", "yahoo.com" ]
+      domain_suffix: [ "uz", "com", "net", "org", "info" ]
+
+    book:
+      title: [ 'O‘tkan kunlar', 'Mehrobdan chayon', 'Kecha va kunduz', 'Ufq', 'Shum bola', 'Yulduzli tunlar', 'Ikki eshik orasi', 'Tong nafasi', 'Ko‘hna dunyo', 'Sarob', 'Ajdodlar dovi', 'Qorako‘z majnun', 'Ko‘zgudagi sir', 'Ot kishnagan oqshom', 'Erk', 'Jannati odamlar', 'Mungli ko‘zlar', 'Boqiy hayot', 'Yuz yilga tatigulik kun', 'Ayolga qarab dunyo', 'Chinor', 'Girdob', 'Oqar suvlar', 'Kichkina tabib', 'Gung yurak', 'Dunyo ishlari', 'Sariq devni minib', 'Juftlik', 'So‘nggi umid', 'Bolalik', 'Muqaddas', 'Mungli qissalar', 'Oq kema', 'Diyonat', 'Muvozanat', 'Temir xotin', 'Mehrigiyo', 'Ko‘rkam diyor', 'Qishloq shifokori', 'Hayot abadiy', 'Tushda kechgan umrlar', 'Bevafo', 'Vaqt o‘tadi', 'Muhabbat' ]
+      author: [ 'Abdulla Qodiriy', 'Cho‘lpon', 'Oybek', 'Shukur Xolmirzayev', 'G‘afur G‘ulom', 'Pirimqul Qodirov', 'Utkir Hoshimov', 'O‘tkir Hoshimov', 'Said Ahmad', 'Odil Yoqubov', 'Asqad Muxtor' ]
+      publisher: [ 'G‘afur G‘ulom nomidagi nashriyot', 'O‘zbekiston', 'Yangi asr avlodi', 'Sharq', 'Cho‘lpon', 'Ma’naviyat', 'Adib' ]
+      quote: [ 'Qui vivra verra', 'L’habit ne fait pas le moine', 'Chacun voit midi à sa porte', 'Mieux vaut prévenir que guérir', 'Petit a petit, l’oiseau fait son nid', 'Qui court deux lievres a la fois, n’en prend aucun', 'Qui n’avance pas, recule' ]
+
+    compass:
+      cardinal:
+        word: [ 'shimol', 'sharq', 'janub', 'g‘arb' ]
+      ordinal:
+        word: [ 'shimol-sharq', 'janub-sharq', 'janub-g‘arb', 'shimol-g‘arb' ]
+      half-wind:
+        word: [ 'shimol-shimol-sharq', 'sharq-shimol-sharq', 'sharq-janub-sharq', 'janub-janub-sharq', 'janub-janub-g‘arb', 'g‘arb-janub-g‘arb', 'g‘arb-shimol-g‘arb', 'shimol-shimol-g‘arb' ]
+
+    job:
+      field: [ Marketing, IT, Hisob-kitob, Ma'muriyat, Reklama, Bank ishi, Jamoat xizmati, Qurilish, Konsalting, Dizayn, Ta'lim, Dehqonchilik, Hukumat, Sog‘liqni saqlash, Mehmondo‘stlik, Huquq, Ishlab chiqarish, Marketing, Konchilik, Ko‘chmas mulk, Chakana savdo, Savdo, Texnologiya ]
+      seniority: [ Rahbar, Katta, Mahsulot, Milliy, Mintaqaviy, Tuman, Markaziy, Global, Mijoz, Investor, Dinamik, Xalqaro, Meros, Oldinga qarovchi, Ichki, Bosh, To‘g‘ridan-to‘g‘ri, Korporativ, Kelajak, Inson, Asosiy ]
+      position: [ Nazoratchi, Hamkor, Ijrochi, Aloqador, Xodim, Menejer, Muhandis, Mutaxassis, Direktor, Koordinator, Ma'mur, Arxitektor, Tahlilchi, Dizayner, Rejachi, Tashkilotchi, Texnik, Dasturchi, Ishlab chiqaruvchi, Maslahatchi, Yordamchi, Muvofiqlashtiruvchi, Agent, Vakil, Strateg ]
+      key_skills: [ Jamoada ishlash, Muloqot, Muammolarni hal qilish, Yetakchilik, Tashkilotchilik, Bosim ostida ishlash, Ishonch, O‘z-o‘zini rag‘batlantirish, Tarmoq tuzish, Faollik, Tez o‘rganish, Texnik bilim ]
+      employment_type: [ To‘liq stavka, Yarim stavka, Vaqtincha, Shartnoma asosida, Amaliyot, Komissiya ]
+      education_level: [ Kollej, Bakalavr, Magistr, Doktorantura ]
+      title:
+        - "#{seniority} #{field} #{position}"
+        - "#{field} #{position}"
+        - "#{seniority} #{position}"

@@ -22,7 +22,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
         "_jp",
         "_il", "_in",
         "_kr",
-        "_lv", "_no", "_md", "_mk", "_nl", "_pl", "_py", "_ru", "_se", "_tr", "_tw", "_ua", "_us", "_vn",
+        "_lv", "_no", "_md", "_mk", "_nl", "_pl", "_py", "_ru", "_se", "_tr", "_tw", "_ua", "_us", "_uz", "_vn",
         "_es", "_sk", "_id", "_hr", "_pt", "_it", "_de", "_am", "_mx", "_br", "_be", "_th",
         "ar", "be", "bg", "by", "ca", "ca-cat", "cs", "cs-cz",
         "da-dk", "de", "de-at", "de-ch",
@@ -32,7 +32,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
         "he", "hr", "hu", "hy", "id", "id-id", "it", "ja", "ka", "ko", "lv", "mk",
         "nb-no", "nl", "nl-be", "no-no", "pl", "pt", "pt-br",
         "ro-md", "ru", "ru-md", "sk", "sq", "sv", "sv-se",
-        "ta", "ta-in", "th", "tr", "uk", "vi", "zh-cn", "zh-tw"
+        "ta", "ta-in", "th", "tr", "uk", "uz", "vi", "zh-cn", "zh-tw"
     );
 
     private final List<String> shuffledLocales = new ArrayList<>();
