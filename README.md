@@ -5,9 +5,9 @@
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![codecov](https://codecov.io/gh/datafaker-net/datafaker/branch/main/graph/badge.svg?token=FJ6EXMUTFD)](https://codecov.io/gh/datafaker-net/datafaker)
 
-This library is a modern fork of [java-faker](https://github.com/DiUS/java-faker) with up to date libraries and several newly added Fake Generators. 
+This library is a modern fork of [java-faker](https://github.com/DiUS/java-faker) with up to date libraries and several newly added Fake Generators.
 
-Datafaker 2.x has Java 17 as the minimum requirement. 
+Datafaker 2.x has Java 17 as the minimum requirement.
 
 *If Java 17 is not an option for you, you can choose to use Datafaker 1.x. Datafaker 1.x is built on Java 8, but this version is no longer maintained. We recommend all users to upgrade to Datafaker 2.x.*
 
@@ -271,7 +271,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Barcode
 * Baseball
 * Basketball
-* Battlefield 1  
+* Battlefield 1
 * Beer
 * Big Bang Theory
 * Blood Type
@@ -467,7 +467,7 @@ String moldovanPhone = new Faker(new Locale("ru", "MD")).phoneNumber().cellPhone
 Note that most of the data depends on language,
 but some data depends purely on country (personal ID and phone numbers).
 In the example above,
-* "en", "sq", "ru" are language codes (English, Albanian and Russian), and 
+* "en", "sq", "ru" are language codes (English, Albanian and Russian), and
 * "US", "AL", "MD" are country codes (USA, Albanian and Moldova)
 
 <details>
@@ -539,6 +539,7 @@ In the example above,
 * tr (Turkish)
 * th_TH (language: Thai, country: Thailand)
 * uk_UA (language: Ukrainian, country: Ukraine)
+* uz (Uzbek)
 * vi_VN (language: Vietnamese, country: Vietnam)
 * zh_CN (language: Chinese, country: China)
 * zh-TW (language: Chinese, country: Taiwan)
@@ -547,7 +548,7 @@ In the example above,
 NATIVE IMAGE
 ------------
 
-Since version 2.4.1, Datafaker provides **experimental** native-image support. 
+Since version 2.4.1, Datafaker provides **experimental** native-image support.
 This is done by providing a `reachability-metadata.json` file in the META-INF directory.
 
 This file is currently created manually by running all the unit tests, and having an agent collect tracing info:
@@ -556,7 +557,7 @@ This file is currently created manually by running all the unit tests, and havin
 -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image
 ```
 
-Future enhancements should automate and improve this process, but if you encounter any unexpected behaviour, 
+Future enhancements should automate and improve this process, but if you encounter any unexpected behaviour,
 feel free to report an issue.
 
 An example usage of this can be found here: https://github.com/datafaker-net/datafaker-native-demo
