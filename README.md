@@ -1,15 +1,16 @@
-
 # Datafaker
 
 [![Maven Status](https://maven-badges.herokuapp.com/maven-central/net.datafaker/datafaker/badge.svg?style=flat)](http://mvnrepository.com/artifact/net.datafaker/datafaker)
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![codecov](https://codecov.io/gh/datafaker-net/datafaker/branch/main/graph/badge.svg?token=FJ6EXMUTFD)](https://codecov.io/gh/datafaker-net/datafaker)
 
-This library is a modern fork of [java-faker](https://github.com/DiUS/java-faker) with up to date libraries and several newly added Fake Generators. 
+This library is a modern fork of [java-faker](https://github.com/DiUS/java-faker) with up to date libraries and several
+newly added Fake Generators.
 
-Datafaker 2.x has Java 17 as the minimum requirement. 
+Datafaker 2.x has Java 17 as the minimum requirement.
 
-*If Java 17 is not an option for you, you can choose to use Datafaker 1.x. Datafaker 1.x is built on Java 8, but this version is no longer maintained. We recommend all users to upgrade to Datafaker 2.x.*
+*If Java 17 is not an option for you, you can choose to use Datafaker 1.x. Datafaker 1.x is built on Java 8, but this
+version is no longer maintained. We recommend all users to upgrade to Datafaker 2.x.*
 
 This library generates fake data, similar to other fake data generators, such as:
 
@@ -26,6 +27,7 @@ It's useful when you're developing a new project and need some pretty data for s
 In the pom.xml, add the following fragment to the `dependencies` section:
 
 ```xml
+
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
@@ -73,6 +75,7 @@ val streetAddress = faker.address().streetAddress() // 60018 Sawayn Brooks Suite
 ```
 
 JShell
+
 ```
 # from project root folder
 jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
@@ -95,53 +98,80 @@ $5 ==> "Vernie Schmidt"
 
 ```java
 Faker faker = new Faker();
-faker.expression("#{letterify 'test????test'}"); // testqwastest
-faker.expression("#{numerify '#test#'}"); // 3test5
-faker.expression("#{templatify 'test','t','q','@'}"); // @esq
-faker.expression("#{examplify 'test'}"); // ghjk
-faker.expression("#{regexify '[a-z]{4,10}'}"); // wbevoa
-faker.expression("#{options.option '23','2','5','$','%','*'}"); // *
-faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}"); // 61 327 08:11:45
-faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
+faker.
+
+expression("#{letterify 'test????test'}"); // testqwastest
+faker.
+
+expression("#{numerify '#test#'}"); // 3test5
+faker.
+
+expression("#{templatify 'test','t','q','@'}"); // @esq
+faker.
+
+expression("#{examplify 'test'}"); // ghjk
+faker.
+
+expression("#{regexify '[a-z]{4,10}'}"); // wbevoa
+faker.
+
+expression("#{options.option '23','2','5','$','%','*'}"); // *
+faker.
+
+expression("#{date.birthday 'yy DDD hh:mm:ss'}"); // 61 327 08:11:45
+faker.
+
+expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
 // "name_column","last_name_column"
 // "Sabrina","Kihn"
-faker.expression("#{json 'person','#{json ''first_name'',''#{Name.first_name}'',''last_name'',''#{Name.last_name}''}','address','#{json ''country'',''#{Address.country}'',''city'',''#{Address.city}''}'}");
+faker.
+
+expression("#{json 'person','#{json ''first_name'',''#{Name.first_name}'',''last_name'',''#{Name.last_name}''}','address','#{json ''country'',''#{Address.country}'',''city'',''#{Address.city}''}'}");
 // {"person": {"first_name": "Barbie", "last_name": "Durgan"}, "address": {"country": "Albania", "city": "East Catarinahaven"}}
 ```
+
 also more examples at https://www.datafaker.net/documentation/expressions/
 
 ### Collections
+
 ```java
 Faker faker = new Faker();
 List<String> names = faker.collection(
-                              () -> faker.name().firstName(),
-                              () -> faker.name().lastName())
-                         .len(3, 5)
-                         .generate();
-System.out.println(names);
+                () -> faker.name().firstName(),
+                () -> faker.name().lastName())
+        .len(3, 5)
+        .generate();
+System.out.
+
+println(names);
 // [Skiles, O'Connell, Lorenzo, West]
 ```
+
 more examples about that at https://www.datafaker.net/documentation/sequences/
 
 ### Streams
+
 ```java
 Faker faker = new Faker();
 // generate an infinite stream
 Stream<String> names = faker.stream(
-                              () -> faker.name().firstName(),
-                              () -> faker.name().lastName())
-                         .generate();
+                () -> faker.name().firstName(),
+                () -> faker.name().lastName())
+        .generate();
 ```
 
 ### Formats
 
 #### Schema
+
 There are 2 ways of data generation in specific formats
+
 1. Generate it from scratch
 2. There is already a sequence of objects and we could extract from them some values and return it in specific format
 
 For both cases we need a `Schema` which could describe fields and a way of data generation.
 In case of generation from scratch `Suppliers` are enough, in case of transformation `Functions` are required
+
 #### CSV
 
 ```java
@@ -150,9 +180,11 @@ CsvTransformer<Name> transformer =
         CsvTransformer.<Name>builder().header(true).separator(",").build();
 // Schema for from scratch
 Schema<Name, String> fromScratch =
-    Schema.of(field("firstName", () -> faker.name().firstName()),
-        field("lastname", () -> faker.name().lastName()));
-System.out.println(transformer.generate(fromScratch, 2));
+        Schema.of(field("firstName", () -> faker.name().firstName()),
+                field("lastname", () -> faker.name().lastName()));
+System.out.
+
+println(transformer.generate(fromScratch, 2));
 // POSSIBLE OUTPUT
 // "first_name" ; "last_name"
 // "Kimberely" ; "Considine"
@@ -160,12 +192,18 @@ System.out.println(transformer.generate(fromScratch, 2));
 // ----------------------
 // Schema for transformations
 Schema<Name, String> schemaForTransformations =
-    Schema.of(field("firstName", Name::firstName),
-        field("lastname", Name::lastName));
+        Schema.of(field("firstName", Name::firstName),
+                field("lastname", Name::lastName));
 // Here we pass a collection of Name objects and extract first and lastnames from each element
-System.out.println(
-    transformer.generate(
-        faker.collection(faker::name).maxLen(2).generate(), schemaForTransformations));
+System.out.
+
+println(
+        transformer.generate(
+        faker.collection(faker::name).
+
+maxLen(2).
+
+generate(),schemaForTransformations));
 // POSSIBLE OUTPUT
 // "first_name" ; "last_name"
 // "Kimberely" ; "Considine"
@@ -212,16 +250,18 @@ jshell> System.out.println(transformer.generate(fromScratch, 2));
 
 ```java
 Schema<Object, ?> schema = Schema.of(
-    field("firstName", () -> faker.name().firstName()),
-    field("lastName", () -> faker.name().lastName())
-    );
+        field("firstName", () -> faker.name().firstName()),
+        field("lastName", () -> faker.name().lastName())
+);
 
 JsonTransformer<Object> transformer = JsonTransformer.builder().build();
 String json = transformer.generate(schema, 2);
 // [{"firstName": "Oleta", "lastName": "Toy"},
 // {"firstName": "Gerard", "lastName": "Windler"}]
 ```
-More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/formats/
+
+More complex examples and other formats like YAML, XML could be found
+at https://www.datafaker.net/documentation/formats/
 
 ### Unique Values
 
@@ -232,6 +272,7 @@ Faker faker = new Faker();
 String firstUniqueInstrument = faker.unique().fetchFromYaml("music.instruments"); // "Flute"
 String secondUniqueInstrument = faker.unique().fetchFromYaml("music.instruments"); // "Clarinet"
 ```
+
 More examples can be found in https://www.datafaker.net/documentation/unique-values
 
 ### Custom provider
@@ -247,12 +288,13 @@ Contributions
 -------------
 See [CONTRIBUTING.md](https://github.com/datafaker-net/datafaker/blob/main/CONTRIBUTING.md)
 
-If this is your first time contributing then you may find it helpful to read [FIRST_TIME_CONTRIBUTOR.md](https://github.com/datafaker-net/datafaker/blob/main/FIRST_TIME_CONTRIBUTOR.md)
+If this is your first time contributing then you may find it helpful to
+read [FIRST_TIME_CONTRIBUTOR.md](https://github.com/datafaker-net/datafaker/blob/main/FIRST_TIME_CONTRIBUTOR.md)
 
 Providers
 -----
-The list below is not complete and shows only a part of available providers. To view the full list of providers, please follow the link: [Full list of providers](https://www.datafaker.net/documentation/providers/).
-
+The list below is not complete and shows only a part of available providers. To view the full list of providers, please
+follow the link: [Full list of providers](https://www.datafaker.net/documentation/providers/).
 
 * Address
 * Ancient
@@ -271,7 +313,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Barcode
 * Baseball
 * Basketball
-* Battlefield 1  
+* Battlefield 1
 * Beer
 * Big Bang Theory
 * Blood Type
@@ -467,13 +509,15 @@ String moldovanPhone = new Faker(new Locale("ru", "MD")).phoneNumber().cellPhone
 Note that most of the data depends on language,
 but some data depends purely on country (personal ID and phone numbers).
 In the example above,
-* "en", "sq", "ru" are language codes (English, Albanian and Russian), and 
+
+* "en", "sq", "ru" are language codes (English, Albanian and Russian), and
 * "US", "AL", "MD" are country codes (USA, Albanian and Moldova)
 
 <details>
 <summary>Supported Locales</summary>
 
 -----
+
 * ar (Armenian)
 * be_BY (Belarusian)
 * bg_BG (Bulgarian)
@@ -539,16 +583,17 @@ In the example above,
 * tr (Turkish)
 * th_TH (language: Thai, country: Thailand)
 * uk_UA (language: Ukrainian, country: Ukraine)
-* uz (language: Uzbek, country: Uzbekistan)
+* uz (Uzbek)
 * vi_VN (language: Vietnamese, country: Vietnam)
 * zh_CN (language: Chinese, country: China)
 * zh-TW (language: Chinese, country: Taiwan)
+
 </details>
 
 NATIVE IMAGE
 ------------
 
-Since version 2.4.1, Datafaker provides **experimental** native-image support. 
+Since version 2.4.1, Datafaker provides **experimental** native-image support.
 This is done by providing a `reachability-metadata.json` file in the META-INF directory.
 
 This file is currently created manually by running all the unit tests, and having an agent collect tracing info:
@@ -557,7 +602,7 @@ This file is currently created manually by running all the unit tests, and havin
 -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image
 ```
 
-Future enhancements should automate and improve this process, but if you encounter any unexpected behaviour, 
+Future enhancements should automate and improve this process, but if you encounter any unexpected behaviour,
 feel free to report an issue.
 
 An example usage of this can be found here: https://github.com/datafaker-net/datafaker-native-demo
