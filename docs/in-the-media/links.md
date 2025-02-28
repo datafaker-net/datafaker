@@ -1,5 +1,12 @@
 # Articles and news
 
+**February 27, 2025**
+
+*Manfred Moser* and *Cole Bowden* are joined by *Jan Waś* in "Trino Community BroadCast 71: Fake it real good" to learn about the new Faker connector and the Datafaker library. You can find the episode here: 
+
+https://trino.io/broadcast/71.html
+
+
 **July 16, 2024**
 
 *Roman Rybak* published an article titled "Datafaker Gen: Leveraging BigQuery Sink on Google Cloud Platform". You can find it here: https://dzone.com/articles/datafaker-gen-leveraging-bigquery-sink-on-google
