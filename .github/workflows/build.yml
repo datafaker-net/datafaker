@@ -7,6 +7,10 @@ on:
   push:
     branches: [ main, 1.x ]
   pull_request:
+    paths-ignore:
+      - 'material/**'
+      - 'docs/**'
+      - '**.md'
     branches: [ main, 1.x ]
 
 env:
