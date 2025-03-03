@@ -46,6 +46,10 @@ public class Dota2 extends AbstractProvider<VideoGameProviders> {
         return resolve("games.dota2.neutral_item");
     }
 
+    public String neutralEnchantment() {
+        return resolve("games.dota2.neutral_enchantment");
+    }
+
     public String team() {
         return resolve("games.dota2.team");
     }
