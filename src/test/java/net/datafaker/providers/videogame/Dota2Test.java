@@ -35,6 +35,7 @@ class Dota2Test extends VideoGameFakerTest {
             TestSpec.of(dota2::hero, "games.dota2.hero"),
             TestSpec.of(dota2::item, "games.dota2.item"),
             TestSpec.of(dota2::neutralItem, "games.dota2.neutral_item"),
+            TestSpec.of(dota2::neutralEnchantment, "games.dota2.neutral_enchantment"),
             TestSpec.of(dota2::team, "games.dota2.team"),
             TestSpec.of(dota2::tier, "games.dota2.tier"),
             TestSpec.of(dota2::player, "games.dota2.player")
