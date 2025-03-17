@@ -53,7 +53,7 @@ jobs:
           # MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       - name: Generate changelog
         id: changelog
-        uses: metcalfc/changelog-generator@v4.3.1
+        uses: metcalfc/changelog-generator@v4.5.0
         with:
           mytoken: "${{ secrets.GITHUB_TOKEN }}"
       - name: Create GitHub Release
