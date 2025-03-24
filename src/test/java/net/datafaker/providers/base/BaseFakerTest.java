@@ -12,8 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BaseFakerTest<T extends BaseFaker> {
 
-    private static final Logger LOG = Logger.getLogger(BaseFakerTest.class.getCanonicalName());
     protected T faker = getFaker();
 
     @BeforeEach
@@ -46,14 +43,9 @@ public class BaseFakerTest<T extends BaseFaker> {
         return faker.fakeValuesService().fetchObject(key, faker.getContext());
     }
 
-    @ParameterizedTest(name = "{0}")
+    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
     @MethodSource("providerListTest")
     protected void testProviderList(TestSpec testSpec, TestInfo testInfo) {
-        if (testSpec.isDummy) {
-            // skip and log dummy
-            LOG.log(Level.WARNING, "Dummy test for " + testInfo.getTestClass().get());
-            return;
-        }
         // Given
         Set<String> actual = new HashSet<>(getBaseList(testSpec.key));
         // When
@@ -69,13 +61,9 @@ public class BaseFakerTest<T extends BaseFaker> {
         }
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(allowZeroInvocations = true)
     @MethodSource("providerListTest")
     void testNoDuplications(TestSpec testSpec) {
-        if (testSpec.isDummy) {
-            return;
-        }
-
         var terms = getBaseList(testSpec.key);
 
         Set<String> uniques = new HashSet<>();
@@ -91,21 +79,18 @@ public class BaseFakerTest<T extends BaseFaker> {
     }
 
     protected Collection<TestSpec> providerListTest() {
-        // dummy test since parameterized test requires non-empty collection
-        return Set.of(new TestSpec(null, null, null));
+        return Set.of();
     }
 
     protected static class TestSpec {
         private final Supplier<?> supplier;
         private final String key;
-        private final boolean isDummy;
         @SuppressWarnings("unused")
         private final String regex;
 
         private TestSpec(Supplier<?> supplier, String key, String regex) {
             this.supplier = supplier;
             this.key = key;
-            this.isDummy = key == null || supplier == null;
             this.regex = regex;
         }
 
