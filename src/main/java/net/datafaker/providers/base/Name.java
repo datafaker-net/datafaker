@@ -72,6 +72,7 @@ public class Name extends AbstractProvider<BaseProviders> {
 
     /**
      * Returns a random male 'given' name.
+     * @deprecated Use {@link #maleFirstName()} instead.
      *
      * @return a male 'given' name
      */
