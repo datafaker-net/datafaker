@@ -46,7 +46,7 @@ public class BaseFakerTest<T extends BaseFaker> {
         return faker.fakeValuesService().fetchObject(key, faker.getContext());
     }
 
-    @ParameterizedTest(name = "{0}")
+    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
     @MethodSource("providerListTest")
     protected void testProviderList(TestSpec testSpec, TestInfo testInfo) {
         if (testSpec.isDummy) {
@@ -69,7 +69,7 @@ public class BaseFakerTest<T extends BaseFaker> {
         }
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(allowZeroInvocations = true)
     @MethodSource("providerListTest")
     void testNoDuplications(TestSpec testSpec) {
         if (testSpec.isDummy) {
@@ -91,8 +91,7 @@ public class BaseFakerTest<T extends BaseFaker> {
     }
 
     protected Collection<TestSpec> providerListTest() {
-        // dummy test since parameterized test requires non-empty collection
-        return Set.of(new TestSpec(null, null, null));
+        return Set.of();
     }
 
     protected static class TestSpec {
