@@ -75,7 +75,17 @@ public class Name extends AbstractProvider<BaseProviders> {
      *
      * @return a male 'given' name
      */
+    @Deprecated(since = "2.4.3", forRemoval = true)
     public String malefirstName() {
+        return maleFirstName();
+    }
+
+    /**
+     * Returns a random male 'given' name.
+     *
+     * @return a male 'given' name
+     */
+    public String maleFirstName() {
         return resolve("name.male_first_name");
     }
 

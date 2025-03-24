@@ -64,7 +64,7 @@ class NameTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(10)
     void testMaleFirstName() {
-        assertThat(name.malefirstName()).matches("\\w+");
+        assertThat(name.maleFirstName()).matches("\\w+");
     }
 
     @Test
@@ -131,7 +131,7 @@ class NameTest extends BaseFakerTest<BaseFaker> {
 
         @RepeatedTest(10)
         void testMaleFirstName() {
-            assertThat(name.malefirstName()).matches("\\p{L}+");
+            assertThat(name.maleFirstName()).matches("\\p{L}+");
         }
 
         @Test
