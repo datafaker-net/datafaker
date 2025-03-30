@@ -2282,6 +2282,10 @@
           "parameterTypes": []
         },
         {
+          "name": "eircode",
+          "parameterTypes": []
+        },
+        {
           "name": "secondaryAddress",
           "parameterTypes": []
         },

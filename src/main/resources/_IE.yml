@@ -4,7 +4,7 @@ _IE:
   faker:
     address:
       country_code: ["IE"]
-      eircode: /([AC-FHKNPRTV-Y]{1}[0-9]{2}|D6W)[ ]?[0-9AC-FHKNPRTV-Y]{4}/
+      postcode: /([AC-FHKNPRTV-Y]{1}[0-9]{2}|D6W)[ ]?[0-9AC-FHKNPRTV-Y]{4}/
 
     internet:
       domain_suffix: [ie, ireland, eire, irish, name]

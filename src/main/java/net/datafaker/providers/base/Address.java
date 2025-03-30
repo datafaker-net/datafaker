@@ -47,6 +47,10 @@ public class Address extends AbstractProvider<BaseProviders> {
         return faker.bothify(resolve("address.postcode"));
     }
 
+    public String eircode() {
+        return faker.bothify(resolve("address.postcode"));
+    }
+
     /**
      * Returns a String representing a ZIP+4 code for greater geographic specificity.
      * This is a 9-digit zip code, but the String itself is 10 characters including the hyphen.
