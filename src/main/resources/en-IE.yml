@@ -1,0 +1,11 @@
+en-IE:
+  faker:
+    name:
+      first_name: [Seán, Cian, Darragh, David, Eoin, Rían, Tadhg, Niall, Cathal, Padraig, Aoife, Niamh, Saoirse, Ciara, Aisling, Roisin, Siobhán, Maeve, Caoimhe, Orla]
+      last_name: [O'Brien, O'Connor, McGlynn, O'Malley, Walsh, O'Neill, Crowley, O'Dwyer, O'Hara, McCarthy, O'Dea, O'Rourke, O'Shea, Prendergast, O'Mahony, Murphy, O'Farrell, O'Loughlin, O'Carroll, O'Toole]
+      name_with_middle:
+        - "#{first_name} #{last_name} #{last_name}"
+    address:
+      county: [Galway, Leitrim, Mayo, Roscommon, Sligo, Donegal, Cavan, Monaghan, Clare, Cork, Kerry, Limerick, Tipperary, Waterford, Carlow, Dublin, Kildare, Kilkenny, Laois, Longford, Louth, Meath, Offaly, Westmeath, Wexford, Wicklow]
+      dublin-postcode: [D01, D02, D03, D04, DO5, D06, D07, D08, D09, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20, D21, D22, D23, D24, D6W]
+      default_country: [Ireland, Republic of Ireland]

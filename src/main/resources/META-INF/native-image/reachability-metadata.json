@@ -2282,6 +2282,10 @@
           "parameterTypes": []
         },
         {
+          "name": "eircode",
+          "parameterTypes": []
+        },
+        {
           "name": "secondaryAddress",
           "parameterTypes": []
         },
@@ -18709,6 +18713,9 @@
       "glob": "/en/en-GB"
     },
     {
+      "glob": "/en/en-IE"
+    },
+    {
       "glob": "/en/en-IND"
     },
     {
@@ -19471,6 +19478,9 @@
       "glob": "en-GB.yml"
     },
     {
+      "glob": "en-IE.yml"
+    },
+    {
       "glob": "en-IND.yml"
     },
     {
@@ -19757,6 +19767,9 @@
     },
     {
       "glob": "en/en-GB"
+    },
+    {
+      "glob": "en/en-IE"
     },
     {
       "glob": "en/en-IND"

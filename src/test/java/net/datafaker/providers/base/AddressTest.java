@@ -174,6 +174,12 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
+    void eircode_ireland() {
+        BaseFaker f = new BaseFaker(new Locale("en", "IE"));
+        assertThat(f.address().eircode()).isNotEmpty();
+    }
+
+    @Test
     void testZipCodeByState() {
         final BaseFaker localFaker = new BaseFaker(new Locale("en", "US"));
         assertThat(localFaker.address().zipCodeByState(localFaker.address().stateAbbr())).matches("[0-9]{5}");

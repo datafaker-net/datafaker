@@ -187,7 +187,8 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
             locale("no", "NO"),
             locale("da", "DK"),
             locale("vi", "VI"),
-            locale("fr", "CH")
+            locale("fr", "CH"),
+            locale("en", "IE")
         );
     }
 

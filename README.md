@@ -491,6 +491,7 @@ In the example above,
 * en-BORK
 * en-CA
 * en-GB (Great Britain)
+* en-IE (Republic Of Ireland)
 * en-IN (India)
 * en-MS
 * en-NEP

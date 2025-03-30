@@ -54,6 +54,13 @@ class PassportTest extends BaseFakerTest<BaseFaker> {
     }
 
     @RepeatedTest(10)
+    void testValidRepublicOfIreland() {
+        assertThat(new BaseFaker(new Locale("en", "IE")).passport().valid())
+            .hasSize(9);
+    }
+
+
+    @RepeatedTest(10)
     void testValidJapan() {
         assertThat(new BaseFaker(new Locale("ja")).passport().valid())
             .hasSize(9)
