@@ -10,7 +10,7 @@ _IE:
       domain_suffix: [ie, ireland, eire, irish, name]
 
     passport:
-      valid: "[0-9]{9}"
+      valid: "(P|L)[A-Z]{1}[0-9]{7}"
 
     phone_number:
       country_code: ['353']
