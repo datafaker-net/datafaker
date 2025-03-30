@@ -1,0 +1,16 @@
+# coding: utf-8
+# Republic OF Ireland
+_IE:
+  faker:
+    address:
+      country_code: ["IE"]
+      eircode: /([AC-FHKNPRTV-Y]{1}[0-9]{2}|D6W)[ ]?[0-9AC-FHKNPRTV-Y]{4}/
+
+    internet:
+      domain_suffix: [ie, ireland, eire, irish, name]
+
+    passport:
+      valid: "[0-9]{9}"
+
+    phone_number:
+      country_code: ['353']
