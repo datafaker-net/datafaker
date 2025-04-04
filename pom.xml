@@ -45,7 +45,7 @@
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-        <mockito-core.version>5.16.1</mockito-core.version>
+        <mockito-core.version>5.17.0</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.26.4</javaparser.version>
