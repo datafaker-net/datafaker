@@ -48,7 +48,7 @@ class FinanceTest extends BaseFakerTest<BaseFaker> {
 
     @RepeatedTest(100)
     void iban() {
-        assertThat(finance.iban()).matches("[A-Z]{2}\\p{Alnum}{13,30}");
+        assertThat(finance.iban()).matches("[A-Z]{2}[A-Z0-9]{13,30}");
     }
 
     @Test
