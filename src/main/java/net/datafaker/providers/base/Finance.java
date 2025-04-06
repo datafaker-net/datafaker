@@ -148,7 +148,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
     }
 
     private CreditCardType randomCreditCardType() {
-        return CreditCardType.values()[this.faker.random().nextInt(CreditCardType.values().length)];
+        return faker.random().nextEnum(CreditCardType.class);
     }
 
     private static String calculateIbanChecksum(String countryCode, String basicBankAccountNumber) {
