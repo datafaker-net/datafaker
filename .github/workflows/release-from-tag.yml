@@ -46,25 +46,7 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-      
-      - name: Update Release Notes
-        id: changelog
-        uses: metcalfc/changelog-generator@v4.6.2
-        with:
-          mytoken: "${{ secrets.GITHUB_TOKEN }}"
-      
-      - name: Update GitHub Release with Changelog
-        uses: octokit/request-action@v2.x
-        with:
-          route: PATCH /repos/{repo}/releases/{release_id}
-          repo: ${{ github.repository }}
-          release_id: ${{ github.event.release.id }}
-          body: |
-            ### Things that changed in this release
-            ${{ steps.changelog.outputs.changelog }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
   call_pom_update:
     needs: publish
     uses: ./.github/workflows/pom_update.yml
