@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -156,13 +156,13 @@ class RandomServiceTest extends AbstractFakerTest {
     @Test
     void nextEnum() {
         RandomService randomService = new RandomService();
-        Set<Ring> all = new HashSet<>();
+        Set<Ring> all = EnumSet.noneOf(Ring.class);
         for (int i = 1; i < 200; i++) {
             Ring actual = randomService.nextEnum(Ring.class);
             all.add(actual);
             assertThat(actual).isIn(ELVES, DWARVES, MEN, LORD);
         }
-        assertThat(all).hasSize(4);
+        assertThat(all).containsExactly(Ring.values());
     }
 
     @ParameterizedTest
@@ -178,7 +178,7 @@ class RandomServiceTest extends AbstractFakerTest {
             randomService.nextEnum(Ring.class),
             randomService.nextEnum(Ring.class),
             randomService.nextEnum(Ring.class)
-        )).isEqualTo(List.of(expected1, expected2, expected3, expected4, expected5));
+        )).containsExactly(expected1, expected2, expected3, expected4, expected5);
     }
 
     enum Ring {ELVES, DWARVES, MEN, LORD}
