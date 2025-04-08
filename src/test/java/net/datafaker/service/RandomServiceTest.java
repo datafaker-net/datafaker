@@ -6,11 +6,19 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Stream;
 
+import static net.datafaker.service.RandomServiceTest.Ring.DWARVES;
+import static net.datafaker.service.RandomServiceTest.Ring.ELVES;
+import static net.datafaker.service.RandomServiceTest.Ring.MEN;
+import static net.datafaker.service.RandomServiceTest.Ring.LORD;
 import static org.assertj.core.api.Assertions.allOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -144,6 +152,36 @@ class RandomServiceTest extends AbstractFakerTest {
     void testDefaultHex(RandomService randomService) {
         assertThat(randomService.hex()).matches("^[0-9A-F]{8}$");
     }
+
+    @Test
+    void nextEnum() {
+        RandomService randomService = new RandomService();
+        Set<Ring> all = new HashSet<>();
+        for (int i = 1; i < 200; i++) {
+            Ring actual = randomService.nextEnum(Ring.class);
+            all.add(actual);
+            assertThat(actual).isIn(ELVES, DWARVES, MEN, LORD);
+        }
+        assertThat(all).hasSize(4);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "12345, DWARVES, MEN, LORD, LORD, LORD",
+        "42, MEN, ELVES, MEN, ELVES, DWARVES",
+    })
+    void predictableEnum(int seed, Ring expected1, Ring expected2, Ring expected3, Ring expected4, Ring expected5) {
+        RandomService randomService = new RandomService(new Random(seed));
+        assertThat(List.of(
+            randomService.nextEnum(Ring.class),
+            randomService.nextEnum(Ring.class),
+            randomService.nextEnum(Ring.class),
+            randomService.nextEnum(Ring.class),
+            randomService.nextEnum(Ring.class)
+        )).isEqualTo(List.of(expected1, expected2, expected3, expected4, expected5));
+    }
+
+    enum Ring {ELVES, DWARVES, MEN, LORD}
 
     private static Stream<Arguments> randomServiceProvider() {
         return Stream.of(
