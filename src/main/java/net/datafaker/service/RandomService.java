@@ -116,6 +116,11 @@ public class RandomService {
         return randomBytes;
     }
 
+    public <T extends Enum<T>> T nextEnum(Class<T> klass) {
+        T[] enumConstants = klass.getEnumConstants();
+        return enumConstants[nextInt(enumConstants.length)];
+    }
+
     public String hex() {
         return hex(8);
     }
