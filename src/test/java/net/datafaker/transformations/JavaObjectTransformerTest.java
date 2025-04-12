@@ -4,9 +4,9 @@ import net.datafaker.AbstractFakerTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +16,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
     public static class Person {
         private String firstName;
         private String lastName;
-        private Date birthDate;
+        private LocalDate birthDate;
         private Instant registrationDate;
         private int id;
     }
@@ -29,7 +29,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
         Schema<Object, ?> schema = Schema.of(
             field("firstName", () -> faker.name().firstName()),
             field("lastName", () -> faker.name().lastName()),
-            field("birthDate", () -> faker.date().birthday()),
+            field("birthDate", () -> faker.timeAndDate().birthday()),
             field("registrationDate", () -> faker.timeAndDate().past()),
             field("id", () -> faker.number().positive()));
 
@@ -73,7 +73,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
         Schema<Object, ?> schema = Schema.of(
             field("firstName", () -> faker.name().firstName()),
             field("lastName", () -> faker.name().lastName()),
-            field("birthDate", () -> faker.date().birthday()),
+            field("birthDate", () -> faker.timeAndDate().birthday()),
             field("registrationDate", () -> faker.timeAndDate().past())
             );
 
@@ -98,7 +98,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
         Schema<Object, ?> schema = Schema.of(
             field("firstName", () -> faker.name().firstName()),
             field("lastName", () -> faker.name().lastName()),
-            field("birthDate", () -> faker.date().birthday()),
+            field("birthDate", () -> faker.timeAndDate().birthday()),
             field("registrationDate", () -> faker.timeAndDate().past())
         );
 
@@ -111,7 +111,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
         Schema<Object, ?> schema = Schema.of(
             field("firstName", () -> faker.name().firstName()),
             field("lastName", () -> faker.name().lastName()),
-            field("birthDate", () -> faker.date().birthday()),
+            field("birthDate", () -> faker.timeAndDate().birthday()),
             field("registrationDate", () -> faker.timeAndDate().past())
         );
 
