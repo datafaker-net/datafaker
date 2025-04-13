@@ -373,22 +373,27 @@ public class FakeValuesService {
 
     private String bothify(String input, FakerContext context, boolean isUpper, boolean numerify, boolean letterify) {
         final int baseChar = isUpper ? 'A' : 'a';
+        boolean changed = false;
         final char[] res = input.toCharArray();
+        RandomService randomService = context.getRandomService();
         for (int i = 0; i < res.length; i++) {
             switch (res[i]) {
                 case '#' -> {
                     if (numerify) {
-                        res[i] = DIGITS[context.getRandomService().nextInt(10)];
+                        changed = true;
+                        i += GenerationUtils.generateAndSetNumber(i, res, res[i], randomService) - 1;
                     }
                 }
                 case 'Ø' -> {
                     if (numerify) {
-                        res[i] = DIGITS[context.getRandomService().nextInt(1, 9)];
+                        changed = true;
+                        res[i] = DIGITS[randomService.nextInt(1, 9)];
                     }
                 }
                 case '?' -> {
                     if (letterify) {
-                        res[i] = (char) (baseChar + context.getRandomService().nextInt(26)); // a-z
+                        changed = true;
+                        res[i] = (char) (baseChar + randomService.nextInt(26)); // a-z
                     }
                 }
                 default -> {
@@ -396,7 +401,7 @@ public class FakeValuesService {
             }
         }
 
-        return String.valueOf(res);
+        return changed ? String.valueOf(res) : input;
     }
 
     /**
