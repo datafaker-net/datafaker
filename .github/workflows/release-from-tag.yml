@@ -46,7 +46,3 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-
-  call_pom_update:
-    needs: publish
-    uses: ./.github/workflows/pom_update.yml
