@@ -7,6 +7,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.reflections.Reflections;
 
@@ -76,24 +77,19 @@ class FakerTest extends AbstractFakerTest {
         assertThat(faker.bothify("ABC????DEF")).matches("ABC\\w{4}DEF");
     }
 
-    @Test
-    void numerifyShouldGenerateNumbers() {
-        assertThat(faker.numerify("####")).matches("\\d{4}");
-    }
-
-    @RepeatedTest(25)
-    void numerifyShouldGenerateNumbersNotStartingWithZero() {
-        assertThat(faker.numerify("Ø###")).matches("[1-9]\\d{3}");
-    }
-
-    @RepeatedTest(25)
-    void numerifyShouldGenerateNonZeroNumbers() {
-        assertThat(faker.numerify("ØØ")).matches("[1-9]{2}");
-    }
-
-    @Test
-    void numerifyShouldLeaveNonSpecialCharactersAlone() {
-        assertThat(faker.numerify("####123")).matches("\\d{4}123");
+    @ParameterizedTest
+    @CsvSource(delimiter = ';',
+        value = {
+        "Ø###;[1-9]\\d{3}",
+        "ØØ;[1-9]{2}",
+        "####123;\\d{4}123",
+        "####;\\d{4}",
+        "#############;\\d{13}",
+        "################;\\d{16}",
+        "####################;\\d{20}"
+        } )
+    void numerifyTest(String input, String expected) {
+        assertThat(faker.numerify(input)).matches(expected);
     }
 
     @Test

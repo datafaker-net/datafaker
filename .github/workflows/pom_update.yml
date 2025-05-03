@@ -1,5 +1,9 @@
 on:
-  workflow_call:
+  workflow_run:
+    workflows:
+      - Release from GitHub Release
+    types:
+      - completed
 
 permissions:
   contents: write
@@ -24,6 +28,10 @@ jobs:
         git checkout -b $BRANCH
         ./mvnw build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT
         git add pom.xml
+        VERS=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout|tr -d SNAPSHOT|tr -d "-")
+        # Replace version in README.md look for >, :, ` (greater than, colon, backtick) followed by 2 period number period number and replace it with the leading char and new version
+        sed -i -E 's/([\>`\:]{1})2\.[0-9]\.[0-9]/\1'"$VERS"'/g' README.md
+        git add README.md
         git commit -m "Update pom SNAPSHOT version" -m "A release just completed, this PR increments the SNAPSHOT version in pom.xml" --signoff
         git push --set-upstream origin $BRANCH --force
         gh pr create --fill

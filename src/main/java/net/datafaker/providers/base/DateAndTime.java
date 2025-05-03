@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author pmiklos
  * @since 0.8.0
+ * @deprecated Use {@link TimeAndDate} instead.
  */
 @Deprecated(since = "2.3.0", forRemoval = true)
 public class DateAndTime extends AbstractProvider<BaseProviders> {
