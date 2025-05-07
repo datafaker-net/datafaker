@@ -35,4 +35,8 @@ public interface SportProviders extends ProviderRegistration {
         return getProvider(Volleyball.class, Volleyball::new);
     }
 
+    default MartialArt martialart() {
+        return getProvider(MartialArt.class, MartialArt::new);
+    }
+
 }
