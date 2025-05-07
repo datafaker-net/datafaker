@@ -9,7 +9,7 @@ import net.datafaker.providers.base.AbstractProvider;
  * <p>Contributed by Paulo Cunha</p>
  *
  * @see <a href="https://github.com/paulofranklins2/">https://github.com/paulofranklins2/</a>
- * @see <a href="https://www.linkedin.com/in/paulofranklins2/">https://www.linkedin.com/in/paulofranklins2/</a>
+ * @see <a href="https://www.linkedin.com/in/paulofranklins2/">https://www.linkedin.com/in/paulofranklins/</a>
  */
 public class MartialArt extends AbstractProvider<SportProviders> {
 
@@ -19,9 +19,5 @@ public class MartialArt extends AbstractProvider<SportProviders> {
 
     public String name() {
         return resolve("martial_art.name");
-    }
-
-    public String origin() {
-        return resolve("martial_art.origin");
     }
 }
