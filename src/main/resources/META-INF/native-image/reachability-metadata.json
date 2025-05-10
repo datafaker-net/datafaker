@@ -12480,6 +12480,10 @@
           "parameterTypes": []
         },
         {
+          "name": "severance",
+          "parameterTypes": []
+        },
+        {
           "name": "show",
           "parameterTypes": []
         },
@@ -13794,6 +13798,35 @@
     },
     {
       "type": "net.datafaker.providers.entertainment.SeinfeldTest",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "providerListTest",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "net.datafaker.providers.entertainment.Severance",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "net.datafaker.providers.entertainment.EntertainmentProviders"
+          ]
+        },
+        {
+          "name": "character",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "net.datafaker.providers.entertainment.SeveranceTest",
       "allDeclaredFields": true,
       "methods": [
         {
@@ -20105,6 +20138,9 @@
       "glob": "en/seinfeld.yml"
     },
     {
+      "glob": "en/severance.yml"
+    },
+    {
       "glob": "en/show.yml"
     },
     {
@@ -20696,7 +20732,7 @@
       "glob": "sun/util/logging/resources/logging_tr_TR.properties"
     }
   ],
-  
+
   "bundles": [
     {
       "name": "sun.awt.resources.awt",

@@ -203,6 +203,7 @@ public class EnFile {
         "rupaul.yml",
         "science.yml",
         "seinfeld.yml",
+        "severance.yml",
         "shakespeare.yml",
         "show.yml",
         "silicon_valley.yml",
