@@ -143,7 +143,7 @@ public interface EntertainmentProviders extends ProviderRegistration {
     default HowToTrainYourDragon howToTrainYourDragon() {
         return getProvider(HowToTrainYourDragon.class, HowToTrainYourDragon::new);
     }
-    
+
     default Joke joke() {
         return getProvider(Joke.class, Joke::new);
     }
@@ -206,6 +206,10 @@ public interface EntertainmentProviders extends ProviderRegistration {
 
     default Seinfeld seinfeld() {
         return getProvider(Seinfeld.class, Seinfeld::new);
+    }
+
+    default Severance severance() {
+        return getProvider(Severance.class, Severance::new);
     }
 
     default Show show() {
