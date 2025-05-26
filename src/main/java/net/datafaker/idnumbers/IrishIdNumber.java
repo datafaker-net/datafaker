@@ -5,25 +5,56 @@ import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
 
 import java.util.Random;
+import java.util.regex.Pattern;
+
+import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.gender;
 
 /**
- * Generates ID numbers for Irish citizens and Residents
+ * Generator for Irish Personal Public Service Numbers (PPSN).
  * <p>
- * See <a href="https://www.citizensinformation.ie/en/social-welfare/irish-social-welfare-system/personal-public-service-number/#958a6b">PPSN code</a>.
+ * The PPSN is a unique identifier used in Ireland for citizens and residents.
+ * This generator produces both valid and invalid PPSN codes according to official specifications:
+ * <ul>
+ *   <li>7 numeric digits followed by one or two uppercase letters</li>
+ *   <li>The check character is calculated using a Modulo 23 algorithm</li>
+ *   <li>An optional suffix (A, B, H, W) may be added and affects the checksum calculation</li>
+ * </ul>
+ * <b>Reference:</b>
+ * <a href="https://www.citizensinformation.ie/en/social-welfare/irish-social-welfare-system/personal-public-service-number/#958a6b">PPSN code</a>
+ *
+ * <p>Main methods:</p>
+ * <ul>
+ *   <li>{@link #countryCode()} Returns the ISO-2 country code ("IE")</li>
+ *   <li>{@link #generateValid(BaseProviders)} Generates a valid PPSN as a string</li>
+ *   <li>{@link #generateInvalid(BaseProviders)} Generates an invalid PPSN</li>
+ *   <li>{@link #generateValid(BaseProviders, IdNumber.IdNumberRequest)} Generates a valid {@link PersonIdNumber} object</li>
+ *   <li>{@link #validateAndCheckModulo23(String)} Validates a PPSN and checks its checksum</li>
+ * </ul>
  */
 public class IrishIdNumber implements IdNumberGenerator {
+
+    private static final Pattern IRISH_PPSN = Pattern.compile("\\d{7}[A-Z]{1,2}$");
+
     @Override
     public String countryCode() {
         return "IE";
     }
 
     @Override
-    public String generateInvalid(BaseProviders faker) {
-        return "1234567F";
+    public String generateInvalid(final BaseProviders faker) {
+        // Generate 7 digits
+        Random random = new Random();
+        StringBuilder digits = new StringBuilder();
+        for (int i = 0; i < 7; i++) {
+            digits.append(random.nextInt(10));
+        }
+        // Append always invalid character (es: 'Z')
+        return digits.append('Z').toString();
     }
 
     @Override
-    public PersonIdNumber generateValid(BaseProviders faker, IdNumber.IdNumberRequest request) {
+    public String generateValid(final BaseProviders faker) {
         Random random = new Random();
         int[] weights = {8, 7, 6, 5, 4, 3, 2};
         int[] digits = new int[7];
@@ -60,13 +91,13 @@ public class IrishIdNumber implements IdNumberGenerator {
         }
         ppsn.append(checkChar).append(suffix);
 
-        return new PersonIdNumber(ppsn.toString(), null, null);
+        return ppsn.toString();
     }
 
-    public boolean checkModulo23(String ppsn) {
-        if (ppsn == null || (ppsn.length() != 8 && ppsn.length() != 9)) {
-            return false;
-        }
+    public boolean validateAndCheckModulo23(String ppsn) {
+       if (ppsn == null ||  !IRISH_PPSN.matcher(ppsn).matches()) {
+           return false;
+       }
         int sum = 0;
         int[] weights = {8, 7, 6, 5, 4, 3, 2};
         for (int i = 0; i < 7; i++) {
@@ -91,6 +122,11 @@ public class IrishIdNumber implements IdNumberGenerator {
         int remainder = sum % 23;
         char expectedCheckChar = (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
         return checkChar == expectedCheckChar;
+    }
+
+    @Override
+    public PersonIdNumber generateValid(BaseProviders faker, IdNumber.IdNumberRequest request) {
+        return new PersonIdNumber(generateValid(faker), birthday(faker, request), gender(faker, request));
     }
 }
 

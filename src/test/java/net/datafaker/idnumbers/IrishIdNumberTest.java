@@ -2,7 +2,6 @@ package net.datafaker.idnumbers;
 
 import net.datafaker.Faker;
 import net.datafaker.helpers.IdNumberPatterns;
-import net.datafaker.service.FakeValuesService;
 import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Locale;
@@ -18,8 +17,14 @@ public class IrishIdNumberTest {
     @RepeatedTest(100)
     void validIrishIdNumber() {
         String actual = irishIdNumber.generateValid(faker);
-        LOG.info("PPSN Generated: " + actual);
         assertThat(actual).matches(IdNumberPatterns.IRISH);
-        assertThat(irishIdNumber.checkModulo23(actual)).isTrue();
+        assertThat(irishIdNumber.validateAndCheckModulo23(actual)).isTrue();
+    }
+
+    @RepeatedTest(100)
+    void invalidIrishIdNumber() {
+        String actual = irishIdNumber.generateInvalid(faker);
+        assertThat(actual).matches(IdNumberPatterns.IRISH);
+        assertThat(irishIdNumber.validateAndCheckModulo23(actual)).isFalse();
     }
 }
