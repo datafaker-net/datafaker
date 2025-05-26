@@ -33,7 +33,7 @@
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <jbanking.version>4.2.0</jbanking.version>
         <junit.version>5.12.2</junit.version>
-        <libphonenumber.version>9.0.4</libphonenumber.version>
+        <libphonenumber.version>9.0.5</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
@@ -45,7 +45,7 @@
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-        <mockito-core.version>5.17.0</mockito-core.version>
+        <mockito-core.version>5.18.0</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.26.4</javaparser.version>
@@ -54,7 +54,7 @@
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
         <surefire.argline>@{argLine} -Duser.language=TR -Duser.country=tr</surefire.argline>
-        <kotlin.version>2.1.20</kotlin.version>
+        <kotlin.version>2.1.21</kotlin.version>
     </properties>
     <licenses>
         <license>

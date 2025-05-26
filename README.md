@@ -417,6 +417,7 @@ The list below is not complete and shows only a part of available providers. To 
 * RuPaul's Drag Race
 * Science
 * Seinfeld
+* Severance
 * Shakespeare
 * Silicon Valley
 * Simpsons
