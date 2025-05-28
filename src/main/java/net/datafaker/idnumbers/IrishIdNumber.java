@@ -96,7 +96,7 @@ public class IrishIdNumber implements IdNumberGenerator {
             }
             sum += (c - '0') * weights[i];
         }
-        // if there is a suffic incude it in the checksum
+        // if there is a suffix incude it in the checksum
         if (ppsn.length() == 9) {
             char extraChar = ppsn.charAt(8);
             int extraValue = switch (extraChar) {
