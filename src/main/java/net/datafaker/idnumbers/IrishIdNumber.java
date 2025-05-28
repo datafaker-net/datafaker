@@ -44,28 +44,23 @@ public class IrishIdNumber implements IdNumberGenerator {
     @Override
     public String generateInvalid(final BaseProviders faker) {
         // Generate 7 digits
-        Random random = new Random();
-        StringBuilder digits = new StringBuilder();
-        for (int i = 0; i < 7; i++) {
-            digits.append(random.nextInt(10));
-        }
+        String digits = faker.number().digits(7);
         // Append always invalid character (es: 'Z')
-        return digits.append('Z').toString();
+        return digits + "Z";
     }
 
     @Override
     public String generateValid(final BaseProviders faker) {
         Random random = new Random();
         int[] weights = {8, 7, 6, 5, 4, 3, 2};
-        int[] digits = new int[7];
+        // Generate 7 digits
+        int[] digits = faker.number().digits(7).chars().map(c -> c - '0').toArray();
         String[] allowedSuffixes = {"A", "B", "H", "W"};
         boolean addSuffix = random.nextBoolean(); // 50% chance
         String suffix = addSuffix ? allowedSuffixes[random.nextInt(allowedSuffixes.length)] : "";
         int sum = 0;
 
-        // Generate 7 digits
         for (int i = 0; i < 7; i++) {
-            digits[i] = random.nextInt(10); // 0–9
             sum += digits[i] * weights[i];
         }
 
