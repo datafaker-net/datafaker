@@ -43,10 +43,8 @@ public class IrishIdNumber implements IdNumberGenerator {
 
     @Override
     public String generateInvalid(final BaseProviders faker) {
-        // Generate 7 digits
-        String digits = faker.number().digits(7);
-        // Append always invalid character (es: 'Z')
-        return digits + "Z";
+        // Generate 7 digits and Append always invalid character (es: 'Z')
+        return faker.number().digits(7) + "Z";
     }
 
     @Override
@@ -54,7 +52,9 @@ public class IrishIdNumber implements IdNumberGenerator {
         Random random = new Random();
         int[] weights = {8, 7, 6, 5, 4, 3, 2};
         // Generate 7 digits
-        int[] digits = faker.number().digits(7).chars().map(c -> c - '0').toArray();
+        String digitsPpsn = faker.number().digits(7);
+        int[] digits = digitsPpsn.chars().map(c -> c - '0').toArray();
+
         String[] allowedSuffixes = {"A", "B", "H", "W"};
         boolean addSuffix = random.nextBoolean(); // 50% chance
         String suffix = addSuffix ? allowedSuffixes[random.nextInt(allowedSuffixes.length)] : "";
@@ -80,16 +80,10 @@ public class IrishIdNumber implements IdNumberGenerator {
         char checkChar = (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
 
         // Build the PPSN
-        StringBuilder ppsn = new StringBuilder();
-        for (int d : digits) {
-            ppsn.append(d);
-        }
-        ppsn.append(checkChar).append(suffix);
-
-        return ppsn.toString();
+        return digitsPpsn + checkChar + suffix;
     }
 
-    public boolean validateAndCheckModulo23(String ppsn) {
+    boolean validateAndCheckModulo23(String ppsn) {
        if (ppsn == null ||  !IRISH_PPSN.matcher(ppsn).matches()) {
            return false;
        }
