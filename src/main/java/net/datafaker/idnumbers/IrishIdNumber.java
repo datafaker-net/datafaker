@@ -57,7 +57,7 @@ public class IrishIdNumber implements IdNumberGenerator {
 
         String[] allowedSuffixes = {"A", "B", "H", "W"};
         boolean addSuffix = faker.bool().bool();//Random boolean 50% chance
-        String suffix = addSuffix ? allowedSuffixes[random.nextInt(allowedSuffixes.length)] : "";
+        String suffix = addSuffix ? faker.options().option(allowedSuffixes) : "";
         int sum = 0;
 
         for (int i = 0; i < 7; i++) {
