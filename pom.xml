@@ -50,7 +50,7 @@
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.26.4</javaparser.version>
         <snakeyaml.version>2.4</snakeyaml.version>
-        <spotless-maven-plugin.version>2.44.4</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>2.44.5</spotless-maven-plugin.version>
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
         <surefire.argline>@{argLine} -Duser.language=TR -Duser.country=tr</surefire.argline>
