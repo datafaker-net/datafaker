@@ -82,7 +82,7 @@ public class IrishIdNumber implements IdNumberGenerator {
     }
 
     boolean validateAndCheckModulo23(String ppsn) {
-       if (ppsn == null ||  !IRISH_PPSN.matcher(ppsn).matches()) {
+       if (ppsn == null || !IRISH_PPSN.matcher(ppsn).matches()) {
            return false;
        }
         int sum = 0;
