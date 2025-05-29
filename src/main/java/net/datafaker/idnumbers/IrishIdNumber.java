@@ -107,10 +107,8 @@ public class IrishIdNumber implements IdNumberGenerator {
             if (extraValue == -1) return false;
             sum += extraValue * 9;
         }
-        char checkChar = ppsn.charAt(7);
         int remainder = sum % 23;
-        char expectedCheckChar = (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
-        return checkChar == expectedCheckChar;
+        return ppsn.charAt(7) == (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
     }
 
     @Override
