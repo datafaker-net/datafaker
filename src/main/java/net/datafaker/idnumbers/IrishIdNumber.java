@@ -53,7 +53,7 @@ public class IrishIdNumber implements IdNumberGenerator {
         int[] weights = {8, 7, 6, 5, 4, 3, 2};
         // Generate 7 digits
         String digitsPpsn = faker.number().digits(7);
-        int[] digits = digitsPpsn.chars().map(c -> c - '0').toArray();
+        int[] digits = digitsPpsn.chars().map(c -> Character.getNumericValue(c)).toArray();
 
         String[] allowedSuffixes = {"A", "B", "H", "W"};
         boolean addSuffix = faker.bool().bool();//Random boolean 50% chance
