@@ -54,7 +54,7 @@ public class IrishIdNumber implements IdNumberGenerator {
         String digitsPpsn = faker.number().digits(7);
         int[] digits = digitsPpsn.chars().map(c -> Character.getNumericValue(c)).toArray();
 
-        String suffix = faker.bool().bool() ? faker.options().option({"A", "B", "H", "W"}) : "";
+        String suffix = faker.bool().bool() ? faker.options().option(new String[]{"A", "B", "H", "W"}) : "";
         int sum = 0;
 
         for (int i = 0; i < 7; i++) {
@@ -105,7 +105,7 @@ public class IrishIdNumber implements IdNumberGenerator {
             sum += extraValue * 9;
         }
         int remainder = sum % 23;
-        return ppsn.charAt(7) == (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
+        return ppsn.charAt(7) == ((remainder == 0) ? 'W' : (char) ('A' + remainder - 1));
     }
 
     @Override
