@@ -49,7 +49,6 @@ public class IrishIdNumber implements IdNumberGenerator {
 
     @Override
     public String generateValid(final BaseProviders faker) {
-        Random random = new Random();
         int[] weights = {8, 7, 6, 5, 4, 3, 2};
         // Generate 7 digits
         String digitsPpsn = faker.number().digits(7);

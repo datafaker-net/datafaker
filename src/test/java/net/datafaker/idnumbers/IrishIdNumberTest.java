@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class IrishIdNumberTest {
-    private static final Logger LOG = Logger.getLogger(IrishIdNumberTest.class.getName());
     private final IrishIdNumber irishIdNumber = new IrishIdNumber();
     private final Faker faker = new Faker(new Locale("en", "IE"));
 
