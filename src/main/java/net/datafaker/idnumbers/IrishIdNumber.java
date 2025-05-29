@@ -94,7 +94,7 @@ public class IrishIdNumber implements IdNumberGenerator {
             if (!Character.isDigit(c)) {
                 return false;
             }
-            sum += (c - '0') * weights[i];
+            sum += Character.getNumericValue(c) * weights[i];
         }
         // if there is a suffix incude it in the checksum
         if (ppsn.length() == 9) {
