@@ -102,7 +102,7 @@ public class IrishIdNumber implements IdNumberGenerator {
             int extraValue = switch (extraChar) {
                 case 'A', 'B', 'H' -> extraChar - 'A' + 1;
                 case 'W' -> 0;
-                default -> -1; // Suffisso non valido
+                default -> -1; // Invalid suffix
             };
             if (extraValue == -1) return false;
             sum += extraValue * 9;
