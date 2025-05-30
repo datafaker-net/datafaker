@@ -2,12 +2,13 @@ package net.datafaker.service;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 public class RandomService {
     private static final char[] HEX_UP = "0123456789ABCDEF".toCharArray();
     private static final char[] HEX_LOWER = "0123456789abcdef".toCharArray();
     private static final Random SHARED_RANDOM = new Random();
-    private final Random random;
+    private final RandomGenerator random;
 
     /**
      * Uses a default shared random.
@@ -19,7 +20,7 @@ public class RandomService {
     /**
      * @param random If null is passed in, a default Random is assigned
      */
-    public RandomService(Random random) {
+    public RandomService(RandomGenerator random) {
         this.random = random != null ? random : SHARED_RANDOM;
     }
 
@@ -142,7 +143,7 @@ public class RandomService {
         return new String(hexChars);
     }
 
-    public Random getRandomInternal() {
+    public RandomGenerator getRandomInternal() {
         return random;
     }
 
