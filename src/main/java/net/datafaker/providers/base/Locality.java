@@ -3,11 +3,10 @@ package net.datafaker.providers.base;
 import net.datafaker.annotations.Deterministic;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import java.util.Set;
+import java.util.random.RandomGenerator;
 
 /**
  * Generates random locales in different forms.
@@ -97,7 +96,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * @param random random number generator (can utilize seed for deterministic random selection)
      * @return String of a randomly selected locale (e.g. "es", "es-MX")
      */
-    public String localeStringWithRandom(Random random) {
+    public String localeStringWithRandom(RandomGenerator random) {
 
         // Randomly select a locale from list of all locales supported
         int randomIndex = random.nextInt(LOCALES.size());
@@ -118,17 +117,23 @@ public class Locality extends AbstractProvider<BaseProviders> {
      * @param random random number generator (can utilize seed for deterministic random selection)
      * @return String of a randomly selected locale (e.g. "es", "es-MX")
      */
-    public synchronized String localeStringWithoutReplacement(Random random) {
+    public synchronized String localeStringWithoutReplacement(RandomGenerator random) {
         if (shuffledLocales.isEmpty() || shuffledLocaleIndex >= shuffledLocales.size() - 1) {
             // copy list of locales supported into shuffledLocales
             shuffledLocales.clear();
             shuffledLocales.addAll(LOCALES);
             shuffledLocaleIndex = 0;
-            Collections.shuffle(shuffledLocales, random);
+            // can be removed as soon as min jdk is 21 and replaced with Collection.shuffle()
+            shuffle(shuffledLocales, random);
         }
 
         // retrieve next locale in shuffledLocales and increase the index
         return shuffledLocales.get(shuffledLocaleIndex++);
     }
 
+    private static void shuffle(List<String> list, RandomGenerator rnd) {
+        for (int i = list.size(); i > 1; i--) {
+            list.set(i - 1, list.set(rnd.nextInt(i), list.get(i - 1)));
+        }
+    }
 }
