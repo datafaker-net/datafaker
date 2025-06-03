@@ -72,12 +72,8 @@ public class IrishIdNumber implements IdNumberGenerator {
             sum += extraValue * 9;
         }
 
-        // Calculate checksum character for modulus 23
-        int remainder = sum % 23;
-        char checkChar = (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
-
         // Build the PPSN
-        return digitsPpsn + checkChar + suffix;
+        return digitsPpsn + calculateCheckSumCharacter(sum) + suffix;
     }
 
     boolean validateAndCheckModulo23(String ppsn) {
@@ -104,13 +100,23 @@ public class IrishIdNumber implements IdNumberGenerator {
             if (extraValue == -1) return false;
             sum += extraValue * 9;
         }
-        int remainder = sum % 23;
-        return ppsn.charAt(7) == ((remainder == 0) ? 'W' : (char) ('A' + remainder - 1));
+        return ppsn.charAt(7) ==  calculateCheckSumCharacter(sum);
     }
 
     @Override
     public PersonIdNumber generateValid(BaseProviders faker, IdNumber.IdNumberRequest request) {
         return new PersonIdNumber(generateValid(faker), birthday(faker, request), gender(faker, request));
+    }
+
+    /**
+     * Calculates the checksum character for a given sum using the Modulo 23 algorithm.
+     *
+     * @param sum The weighted sum of the PPSN digits and optional suffix value.
+     * @return The checksum character.
+     */
+    private char calculateCheckSumCharacter(int sum){
+        int remainder = sum % 23;
+        return (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
     }
 }
 
