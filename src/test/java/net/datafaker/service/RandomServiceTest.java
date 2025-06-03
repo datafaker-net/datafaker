@@ -13,6 +13,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.SplittableRandom;
 import java.util.stream.Stream;
 
 import static net.datafaker.service.RandomServiceTest.Ring.DWARVES;
@@ -179,6 +180,17 @@ class RandomServiceTest extends AbstractFakerTest {
             randomService.nextEnum(Ring.class),
             randomService.nextEnum(Ring.class)
         )).containsExactly(expected1, expected2, expected3, expected4, expected5);
+    }
+
+    @RepeatedTest(10)
+    void customRandomGenerator() {
+        RandomService randomService = new RandomService(new SplittableRandom());
+        assertThat(randomService.nextInt()).isBetween(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        assertThat(randomService.nextLong()).isBetween(Long.MIN_VALUE, Long.MAX_VALUE);
+        assertThat(randomService.nextFloat()).isBetween(Float.MIN_VALUE, Float.MAX_VALUE);
+        assertThat(randomService.nextDouble()).isBetween(Double.MIN_VALUE, Double.MAX_VALUE);
+        assertThat(randomService.nextBoolean()).isIn(List.of(true, false));
+        assertThat(randomService.nextRandomBytes(8)).hasSize(8);
     }
 
     enum Ring {ELVES, DWARVES, MEN, LORD}
