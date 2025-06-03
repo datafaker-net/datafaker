@@ -5,7 +5,6 @@ import net.datafaker.helpers.IdNumberPatterns;
 import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

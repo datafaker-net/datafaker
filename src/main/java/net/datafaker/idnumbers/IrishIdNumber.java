@@ -4,7 +4,6 @@ import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
 
-import java.util.Random;
 import java.util.regex.Pattern;
 
 import static net.datafaker.idnumbers.Utils.birthday;
