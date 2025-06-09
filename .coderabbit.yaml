@@ -1,0 +1,17 @@
+reviews:
+  branches:
+    include: ["*"]  # 允许所有分支触发自动审查
+    # 或指定特定分支: ["main", "feature/*"]
+
+  scope:
+    include: [ "src/**" ]  # 只审查 src 目录
+    exclude: [ "src/test/**" ]  # 但排除测试代码
+
+  # 其他 常见排除场景：
+    #  scope:
+      #    exclude:
+      #      - "docs/**"          # 文档目录
+      #      - "test/**"          # 测试代码
+      #      - "static/**"        # 静态资源
+      #      - "**/*.md"          # Markdown 文件
+      #      - "scripts/deploy.sh" # 部署脚本
