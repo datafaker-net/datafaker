@@ -5,7 +5,7 @@ reviews:
 
   scope:
     include: [ "src/**" ]  # 只审查 src 目录
-    exclude: [ "src/test/**", "src/static/**", "**/*.md" ]  # 但排除测试代码、静态资源、Markdown文件
+    exclude: [ "src/test/**" ]  # 但排除测试代码
 
   # 其他 常见排除场景：
     #  scope:
