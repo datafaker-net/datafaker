@@ -48,7 +48,7 @@
         <mockito-core.version>5.18.0</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
-        <javaparser.version>3.26.4</javaparser.version>
+        <javaparser.version>3.27.0</javaparser.version>
         <snakeyaml.version>2.4</snakeyaml.version>
         <spotless-maven-plugin.version>2.44.5</spotless-maven-plugin.version>
         <!-- Run tests in Turkish to make sure that they don't depend on
