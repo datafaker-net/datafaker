@@ -58,7 +58,6 @@ public record Range<T extends Comparable<T>>(Bound<T> from, Bound<T> to) {
         return new Range<>(new Bound<>(from, End.EXCLUSIVE), new Bound<>(to, End.INCLUSIVE));
     }
 
-    @SuppressWarnings("unchecked")
     public <V extends Comparable<V>> Range<V> cast(Function<T, V> caster) {
         return new Range<>(
             new Bound<>(caster.apply(from.value), from.end),

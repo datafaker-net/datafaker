@@ -10,7 +10,7 @@ import java.util.Collection;
 
 class CountryTest extends BaseFakerTest<BaseFaker> {
 
-    Country country = faker.country();
+    private final Country country = faker.country();
 
     @RepeatedTest(10)
     void testFlag() {

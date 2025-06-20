@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
-public class FakeValuesGrouping implements FakeValuesInterface {
+public final class FakeValuesGrouping implements FakeValuesInterface {
     private static final FakeValuesGrouping ENGLISH_FAKE_VALUE_GROUPING = new FakeValuesGrouping();
     private final Map<String, Collection<FakeValuesInterface>> fakeValues = new HashMap<>();
 
@@ -17,6 +17,13 @@ public class FakeValuesGrouping implements FakeValuesInterface {
         EnFile.getFiles().forEach(file -> {
             ENGLISH_FAKE_VALUE_GROUPING.add(FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, file.getFile(), file.getPath())));
         });
+    }
+
+    public FakeValuesGrouping() {
+    }
+
+    public FakeValuesGrouping(FakeValues values) {
+        add(values);
     }
 
     public void add(FakeValuesInterface fakeValue) {

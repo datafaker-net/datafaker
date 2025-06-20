@@ -2,15 +2,13 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
-import java.text.DecimalFormatSymbols;
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
+import static java.lang.Float.parseFloat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CommerceTest extends BaseFakerTest<BaseFaker> {
-
-    private final char decimalSeparator = new DecimalFormatSymbols(getFaker().getContext().getLocale()).getDecimalSeparator();
 
     private static final String CAPITALIZED_WORD_REGEX = "[A-Z][a-z]+";
 
@@ -37,12 +35,20 @@ class CommerceTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void testPrice() {
-        assertThat(commerce.price()).matches("\\d{1,3}\\" + decimalSeparator + "\\d{2}");
+        String price = commerce.price();
+        assertThat(price)
+            .as("random price between 0.00 and 100.00")
+            .matches("\\d{1,3}\\.\\d{2}");
+        assertThat(parseFloat(price)).isBetween(0f, 100f);
     }
 
     @Test
     void testPriceMinMax() {
-        assertThat(commerce.price(100, 1000)).matches("\\d{3,4}\\" + decimalSeparator + "\\d{2}");
+        String price = commerce.price(100, 1000);
+        assertThat(price)
+            .as("random price between 100.00 and 1000.00")
+            .matches("\\d{3,4}\\.\\d{2}");
+        assertThat(parseFloat(price)).isBetween(100f, 1000f);
     }
 
     @Test

@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import java.nio.file.FileSystems;
+
 /**
  * @since 0.8.0
  */
@@ -22,7 +24,7 @@ public class File extends AbstractProvider<BaseProviders> {
     }
 
     public String fileName(String dirOrNull, String nameOrNull, String extensionOrNull, String separatorOrNull) {
-        final String sep = separatorOrNull == null ? System.getProperty("file.separator") : separatorOrNull;
+        final String sep = separatorOrNull == null ? FileSystems.getDefault().getSeparator() : separatorOrNull;
         final String dir = dirOrNull == null ? faker.internet().slug() : dirOrNull;
         final String name = nameOrNull == null ? faker.lorem().word().toLowerCase(faker.getContext().getLocale()) : nameOrNull;
         final String ext = extensionOrNull == null ? extension() : extensionOrNull;
