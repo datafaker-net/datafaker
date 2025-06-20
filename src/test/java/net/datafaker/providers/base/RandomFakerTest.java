@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -10,14 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RandomFakerTest extends BaseFakerTest<BaseFaker> {
 
     private static final int CONSTANT_SEED_VALUE = 10;
-    private BaseFaker faker;
-    private Random random;
-
-    @BeforeEach
-    final void before() {
-        random = new Random();
-        faker = new BaseFaker(random);
-    }
+    private final Random random = new Random();
+    private final BaseFaker faker = new BaseFaker(random);
 
     @Test
     void testNumerifyRandomnessCanBeControlled() {

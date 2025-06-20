@@ -9,7 +9,7 @@ import java.util.Collection;
 
 class ScienceTest extends BaseFakerTest<BaseFaker> {
 
-    Science science = faker.science();
+    private final Science science = faker.science();
 
     @Override
     protected Collection<TestSpec> providerListTest() {

@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class NationTest extends BaseFakerTest<BaseFaker> {
 
-    Nation nation = faker.nation();
+    private final Nation nation = faker.nation();
 
     @Test
     void nationality() {

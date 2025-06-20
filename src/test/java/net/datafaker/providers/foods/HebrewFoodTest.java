@@ -2,7 +2,6 @@ package net.datafaker.providers.foods;
 
 import net.datafaker.providers.food.Food;
 import net.datafaker.providers.food.FoodFaker;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,13 +10,8 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HebrewFoodTest extends FoodFakerTest {
-    private Food food = getFaker().food();
-
-    @BeforeEach
-    final void before() {
-        food = getFaker().food();
-    }
+final class HebrewFoodTest extends FoodFakerTest {
+    private final Food food = getFaker().food();
 
     @Override
     protected FoodFaker getFaker() {

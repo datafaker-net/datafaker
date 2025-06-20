@@ -9,7 +9,7 @@ import java.util.Collection;
 
 class ComputerTest extends BaseFakerTest<BaseFaker> {
 
-    Computer computer = faker.computer();
+    private final Computer computer = faker.computer();
 
     @Test
     void testOperatingSystem() {

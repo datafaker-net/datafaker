@@ -1,6 +1,5 @@
 package net.datafaker.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -18,12 +17,7 @@ import static org.junit.jupiter.params.provider.Arguments.of;
 class FakeValuesTest {
 
     private static final String PATH = "address";
-    private FakeValues fakeValues;
-
-    @BeforeEach
-    void before() {
-        fakeValues = FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "address.yml", PATH));
-    }
+    private final FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "address.yml", PATH));
 
 /*
     Test case for for https://github.com/datafaker-net/datafaker/issues/574

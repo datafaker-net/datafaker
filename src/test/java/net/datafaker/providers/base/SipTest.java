@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SipTest extends BaseFakerTest<BaseFaker> {
 
-    Sip sip = faker.sip();
+    private final Sip sip = faker.sip();
 
     @Test
     void method_returnUpperCaseWithMinimum3Chars() {
