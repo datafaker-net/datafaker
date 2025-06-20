@@ -19,43 +19,6 @@ class FakeValuesTest {
     private static final String PATH = "address";
     private final FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(Locale.ENGLISH, "address.yml", PATH));
 
-/*
-    Test case for for https://github.com/datafaker-net/datafaker/issues/574
-    To test it need to change net.datafaker.service.FakeValues.loadValues to something from private
-    Powermock can not test it because it requires JUnit4
-    @Test
-    void testLoadValues() {
-        FakeValues fv = Mockito.spy(new FakeValues(Locale.ENGLISH));
-        ExecutorService service = new ForkJoinPool(2);
-        CountDownLatch latch = new CountDownLatch(2);
-        service.submit(() -> {
-            latch.countDown();
-            try {
-                latch.await(10, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            fv.get("key");
-        });
-        service.submit(() -> {
-            latch.countDown();
-            try {
-                latch.await(10, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            fv.get("key");
-        });
-        service.shutdown();
-        try {
-            service.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        verify(fv, times(1)).loadValues();
-    }
-*/
-
     @Test
     void getAValueReturnsAValue() {
         assertThat(fakeValues.get(PATH)).isNotNull();
