@@ -1,6 +1,8 @@
 package net.datafaker.script;
 
 import net.datafaker.providers.base.AbstractProvider;
+import net.datafaker.providers.base.BaseFakerTest;
+import net.datafaker.providers.base.ProviderRegistration;
 import net.datafaker.providers.entertainment.EntertainmentFakerTest;
 import net.datafaker.providers.entertainment.EntertainmentProviders;
 import net.datafaker.providers.videogame.VideoGameFakerTest;
@@ -20,19 +22,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.Objects.requireNonNull;
+
 class ProviderGenerator {
 
-    @SuppressWarnings("FieldCanBeLocal")
     private final ProviderType providerType = ProviderType.SHOW;
 
     public static void main(String[] args) throws FileNotFoundException {
         new ProviderGenerator().generateProvider();
     }
 
+    @SuppressWarnings("unchecked")
     void generateProvider() throws FileNotFoundException {
         File dir = new File("src/main/resources/en");
 
-        File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().contains("cowboy_bebop.yml"));
+        File[] files = requireNonNull(dir.listFiles(file -> file.getName().contains("cowboy_bebop.yml")));
 
         List<File> fileList = Arrays.asList(files);
         Collections.shuffle(fileList);
@@ -51,6 +55,7 @@ class ProviderGenerator {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void processFaker(File file, Map<String, Object> faker) {
         String key = (String) faker.keySet().toArray()[0];
         Map<String, Object> subject = (Map<String, Object>) faker.get(key);
@@ -151,10 +156,10 @@ enum ProviderType {
     VIDEO_GAME(VideoGameProviders.class, VideoGameFakerTest.class),
     ;
 
-    private final Class providerRegistryName;
-    private final Class testSuperclassName;
+    private final Class<? extends ProviderRegistration> providerRegistryName;
+    private final Class<? extends BaseFakerTest<? extends ProviderRegistration>> testSuperclassName;
 
-    ProviderType(Class providerRegistryName, Class testSuperclassName) {
+    ProviderType(Class<? extends ProviderRegistration> providerRegistryName, Class<? extends BaseFakerTest<? extends ProviderRegistration>> testSuperclassName) {
         this.providerRegistryName = providerRegistryName;
         this.testSuperclassName = testSuperclassName;
     }
