@@ -575,7 +575,7 @@ class SqlTest {
     void testWordTruncated() {
         BaseFaker faker = new BaseFaker(new Locale("test"),new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
-            field("Adress", () -> faker.address().country()),
+            field("Address", () -> faker.address().country()),
             field("Book", () -> faker.book().title())
         );
 
@@ -587,7 +587,7 @@ class SqlTest {
 
         String sql = transformer.generateStream(schema,3).collect(Collectors.joining(LINE_SEPARATOR));
 
-        String expected = "INSERT INTO \"MyTable\" (\"Adress\", \"Book\")" + LINE_SEPARATOR +
+        String expected = "INSERT INTO \"MyTable\" (\"Address\", \"Book\")" + LINE_SEPARATOR +
             "VALUES ('Cote d\\'Ivoire', 'All the King\\'s Men')," + LINE_SEPARATOR +
             "       ('Cote d\\'Ivoire', 'Blood\\'s a Rover')," + LINE_SEPARATOR +
             "       ('Cote d\\'Ivoire', 'Blood\\'s a Rover');";
