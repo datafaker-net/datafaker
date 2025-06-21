@@ -53,7 +53,7 @@ public class IrishIdNumber implements IdNumberGenerator {
         String digitsPpsn = faker.number().digits(7);
         int[] digits = digitsPpsn.chars().map(c -> Character.getNumericValue(c)).toArray();
 
-        String suffix = faker.bool().bool() ? faker.options().option(new String[]{"A", "B", "H", "W"}) : "";
+        String suffix = faker.bool().bool() ? faker.options().option("A", "B", "H", "W") : "";
         int sum = 0;
 
         for (int i = 0; i < 7; i++) {
@@ -66,7 +66,7 @@ public class IrishIdNumber implements IdNumberGenerator {
             int extraValue = switch (extraChar) {
                 case 'A', 'B', 'H' -> extraChar - 'A' + 1;
                 case 'W' -> 0;
-                default -> 0;
+                default -> throw new IllegalStateException("Unexpected suffix: " + suffix);
             };
             sum += extraValue * 9;
         }
