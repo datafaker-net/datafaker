@@ -14,6 +14,7 @@ import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.logging.LogManager.getLogManager;
 
 public class TestSetupExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
@@ -22,7 +23,7 @@ public class TestSetupExtension implements BeforeAllCallback, AfterAllCallback, 
 
   @Override
   public void beforeAll(ExtensionContext context) throws IOException, URISyntaxException {
-      String loggingConfig = new File(getClass().getResource("/logging.properties").toURI()).getAbsolutePath();
+      String loggingConfig = new File(requireNonNull(getClass().getResource("/logging.properties")).toURI()).getAbsolutePath();
       System.setProperty("java.util.logging.config.file", loggingConfig);
       getLogManager().readConfiguration();
 

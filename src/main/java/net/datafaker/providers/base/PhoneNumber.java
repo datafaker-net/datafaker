@@ -9,7 +9,6 @@ import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat.NAT
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberType.FIXED_LINE;
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberType.MOBILE;
 import static java.util.Locale.ROOT;
-import static java.util.Objects.requireNonNullElse;
 
 /**
  * @since 0.8.0
@@ -67,7 +66,7 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
     }
 
     private static String countryCodeIso2(Locale locale) {
-        String country = requireNonNullElse(locale.getCountry(), "");
+        String country = locale.getCountry();
         return switch (country) {
             case "" -> detectCountryByLanguage(locale.getLanguage());
             case "CAT" -> "ES";
