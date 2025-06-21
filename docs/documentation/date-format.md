@@ -7,9 +7,9 @@ Since 1.2.0 Datafaker supports specifying of date formats for dates and timestam
 
     ``` java 
     Faker faker = new Faker();
-    System.out.println(faker.timeAndDate().future(1, TimeUnit.HOURS, "YYYY MM.dd mm:hh:ss"));
-    System.out.println(faker.timeAndDate().past(1, TimeUnit.HOURS, "YYYY-MM-dd mm:hh:ss"));
-    System.out.println(faker.timeAndDate().birthday(1, 99, "YYYY/MM/dd"));
+    System.out.println(faker.timeAndDate().future(1, TimeUnit.HOURS, "yyyy MM.dd mm:hh:ss"));
+    System.out.println(faker.timeAndDate().past(1, TimeUnit.HOURS, "yyyy-MM-dd mm:hh:ss"));
+    System.out.println(faker.timeAndDate().birthday(1, 99, "yyyy/MM/dd"));
     ```
 
 And also this feature could be used in expressions like
