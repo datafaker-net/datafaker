@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,7 +17,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
@@ -31,8 +34,15 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
     @RepeatedTest(100)
     void testFutureDateWithBounds() {
         Instant now = Instant.now();
-        Instant future = timeAndDate.future(1, TimeUnit.SECONDS, now);
+        Instant future = timeAndDate.future(1, TimeUnit.SECONDS);
         assertThat(future).isBetween(now, now.plusSeconds(1));
+    }
+
+    @RepeatedTest(100)
+    void testFutureDateWithBoundsFromGivenMoment() {
+        Instant moment = Instant.now().minus(10, ChronoUnit.DAYS);
+        Instant future = timeAndDate.future(15, TimeUnit.MINUTES, moment);
+        assertThat(future).isBetween(moment, moment.plus(15, MINUTES));
     }
 
     @RepeatedTest(100)
@@ -88,10 +98,11 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
     void testBetweenWithMaskReturningString() {
         Instant now = Instant.now();
         Instant then = Instant.now().plusMillis(1000);
-
         String pattern = "yyyy MM.dd mm:hh:ss";
 
-        DateTimeFormatter.ofPattern(pattern).parse(timeAndDate.between(now, then, pattern));
+        String date = timeAndDate.between(now, then, pattern);
+
+        assertValidDate(date, pattern);
     }
 
     @Test
@@ -131,25 +142,25 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
     @Test
     void birthdayWithMask() {
         String pattern = "yyyy MM.dd";
-        DateTimeFormatter.ofPattern(pattern).parse(timeAndDate.birthday(1, 50, pattern));
+        String birthday = timeAndDate.birthday(1, 50, pattern);
+        assertValidDate(birthday, pattern);
     }
 
     @Test
     void futureWithMask() {
         String pattern = "yyyy MM.dd mm:hh:ss";
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
-        dateTimeFormatter.parse(timeAndDate.future(1, TimeUnit.HOURS, pattern));
-        dateTimeFormatter.parse(timeAndDate.future(20, 1, TimeUnit.HOURS, pattern));
-        dateTimeFormatter.parse(timeAndDate.future(20, TimeUnit.HOURS, Instant.now(), pattern));
+        assertValidDate(timeAndDate.future(1, TimeUnit.HOURS, pattern), pattern);
+        assertValidDate(timeAndDate.future(20, 1, TimeUnit.HOURS, pattern), pattern);
+        assertValidDate(timeAndDate.future(20, TimeUnit.HOURS, Instant.now(), pattern), pattern);
+        assertValidDate(timeAndDate.future(900, TimeUnit.DAYS, Instant.now(), pattern), pattern);
     }
 
     @Test
     void pastWithMask() {
         String pattern = "yyyy MM.dd mm:hh:ss";
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
-        dateTimeFormatter.parse(timeAndDate.past(1, TimeUnit.DAYS, pattern));
-        dateTimeFormatter.parse(timeAndDate.past(20, 1, TimeUnit.DAYS, pattern));
-        dateTimeFormatter.parse(timeAndDate.past(1, TimeUnit.DAYS, Instant.now(), pattern));
+        assertValidDate(timeAndDate.past(1, TimeUnit.DAYS, pattern), pattern);
+        assertValidDate(timeAndDate.past(20, 1, TimeUnit.DAYS, pattern), pattern);
+        assertValidDate(timeAndDate.past(1, TimeUnit.DAYS, Instant.now(), pattern), pattern);
     }
 
     @Test
@@ -232,5 +243,14 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
             Arguments.of(Period.of(1, 1, 3), Period.of(1, 1, 2)),
             Arguments.of(Period.of(1, 2, 1), Period.of(1, 1, 1))
         );
+    }
+
+    private void assertValidDate(String date, String pattern) {
+        assertThatCode(() -> parse(date, pattern)).doesNotThrowAnyException();
+    }
+
+    @CanIgnoreReturnValue
+    private static LocalDate parse(String date, String pattern) {
+        return DateTimeFormatter.ofPattern(pattern).parse(date).query(LocalDate::from);
     }
 }
