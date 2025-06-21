@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.stream.Stream;
 
+import static java.util.Objects.requireNonNull;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.ARRAY;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.INSERT_INTO;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.MAP;
@@ -104,7 +105,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private String addValues(IN input, Field<?, ? extends CharSequence>[] fields, Boolean isRoot) {
+    private String addValues(IN input, Field<?, ?>[] fields, Boolean isRoot) {
         StringJoiner result = new StringJoiner(", ");
         for (int i = 0; i < fields.length; i++) {
 
@@ -119,7 +120,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
             if (fields[i] instanceof SimpleField) {
                 //noinspection unchecked
-                Object value = ((SimpleField<Object, ? extends CharSequence>) fields[i]).transform(input);
+                Object value = ((SimpleField<Object, ?>) fields[i]).transform(input);
                 Class<?> clazz = value == null ? null : value.getClass();
                 if (value == null
                     || value instanceof Number
@@ -128,20 +129,22 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     result.add(String.valueOf(value));
                 } else if (clazz.isArray()) {
                     final Class<?> componentType = clazz.getComponentType();
-                    result.add(ARRAY.getValue(keywordCase) + dialect.getArrayStart() +
+                    SqlDialect sqlDialect = requireNonNull(dialect, "SQL dialect is unknown, cannot use ARRAY values in SQL");
+                    result.add(ARRAY.getValue(keywordCase) + sqlDialect.getArrayStart() +
                         (componentType.isPrimitive()
                             ? handlePrimitivesInArray(componentType, value)
-                            : handleObjectInArray(value)) + dialect.getArrayEnd());
-                } else if (value instanceof Map) {
-                    result.add(MAP.getValue(keywordCase) + "(" + handleObjectInMap(value) + ")");
-                } else if (value instanceof Collection) {
+                            : handleObjectInArray(value)) + sqlDialect.getArrayEnd());
+                } else if (value instanceof Map<?, ?> map) {
+                    result.add(MAP.getValue(keywordCase) + "(" + handleObjectInMap(map) + ")");
+                } else if (value instanceof Collection<?> collection) {
                     result.add(MULTISET.getValue(keywordCase) + "[" +
-                        handleObjectInCollection(value) + "]");
+                        handleObjectInCollection(collection) + "]");
                 } else {
                     result.add(handleObject(value));
                 }
-            } else if (fields[i] instanceof CompositeField) {
-                result.add(dialect.getCompositePrefix(keywordCase) + addValues(input, ((CompositeField) fields[i]).getFields(), false));
+            } else if (fields[i] instanceof CompositeField<?, ?> compositeField) {
+                SqlDialect sqlDialect = requireNonNull(dialect, "SQL dialect is unknown, cannot use composite prefix in SQL");
+                result.add(sqlDialect.getCompositePrefix(keywordCase) + addValues(input, compositeField.getFields(), false));
             } else {
                 throw new IllegalArgumentException(fields[i] + " not supported");
             }
@@ -162,9 +165,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return result.toString();
     }
 
-    private String handleObjectInCollection(Object value) {
+    private String handleObjectInCollection(Collection<?> collection) {
         StringBuilder result = new StringBuilder();
-        Collection collection = (Collection) value;
         int i = 0;
         for (Object elem : collection) {
             result.append(handleObject(elem));
@@ -176,11 +178,10 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return result.toString();
     }
 
-    private String handleObjectInMap(Object value) {
+    private String handleObjectInMap(Map<?, ?> map) {
         StringBuilder result = new StringBuilder();
-        Map<Object, Object> map = (Map<Object, Object>) value;
         int i = 0;
-        for (Map.Entry<Object, Object> entry : map.entrySet()) {
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
             result.append(handleObject(entry.getKey()));
             result.append(", ");
             result.append(handleObject(entry.getValue()));
@@ -203,11 +204,11 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     ? handlePrimitivesInArray(componentType, value)
                     : handleObjectInArray(value);
                 return ARRAY.getValue(keywordCase) + "[" + array + "]";
-            } else if (value instanceof Map) {
-                return MAP.getValue(keywordCase) + "(" + handleObjectInMap(value) + ")";
-            } else if (value instanceof Collection) {
+            } else if (value instanceof Map<?, ?> map) {
+                return MAP.getValue(keywordCase) + "(" + handleObjectInMap(map) + ")";
+            } else if (value instanceof Collection<?> collection) {
                 return MULTISET.getValue(keywordCase)
-                    + "[" + handleObjectInCollection(value) + "]";
+                    + "[" + handleObjectInCollection(collection) + "]";
             } else {
                 String strValue = value.toString();
                 final int length = strValue.length();
