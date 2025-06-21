@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class TimeTest extends BaseFakerTest<BaseFaker> {
@@ -105,15 +107,24 @@ public class TimeTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void futureWithMask() {
-        String pattern = "mm:hh:ss";
-        DateTimeFormatter.ofPattern(pattern).parse(faker.time().future(1, ChronoUnit.HOURS, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.time().future(20, 1, ChronoUnit.HOURS, pattern));
+        String pattern = "mm:HH:ss";
+        assertValidTime(faker.time().future(1, ChronoUnit.HOURS, pattern), pattern);
+        assertValidTime(faker.time().future(20, 2, ChronoUnit.HOURS, pattern), pattern);
     }
 
     @Test
     void pastWithMask() {
-        String pattern = "mm:hh:ss";
-        DateTimeFormatter.ofPattern(pattern).parse(faker.time().past(1, ChronoUnit.MINUTES, pattern));
-        DateTimeFormatter.ofPattern(pattern).parse(faker.time().past(20, 1, ChronoUnit.MILLIS, pattern));
+        String pattern = "mm:HH:ss";
+        assertValidTime(faker.time().past(1, ChronoUnit.MINUTES, pattern), pattern);
+        assertValidTime(faker.time().past(20, 1, ChronoUnit.MILLIS, pattern), pattern);
+    }
+
+    private void assertValidTime(String date, String pattern) {
+        assertThatCode(() -> parse(date, pattern)).doesNotThrowAnyException();
+    }
+
+    @CanIgnoreReturnValue
+    private static LocalTime parse(String date, String pattern) {
+        return DateTimeFormatter.ofPattern(pattern).parse(date).query(LocalTime::from);
     }
 }
