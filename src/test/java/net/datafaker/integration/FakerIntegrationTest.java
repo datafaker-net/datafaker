@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import static java.lang.Thread.currentThread;
+import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.reflections.ReflectionUtils.getAllMethods;
@@ -167,7 +168,7 @@ class FakerIntegrationTest {
         arguments.add(Arguments.of(null, new Random()));
         arguments.add(Arguments.of(null, null));
 
-        String[] ymlFiles = new File("./src/main/resources").list();
+        String[] ymlFiles = requireNonNull(new File("./src/main/resources").list());
         for (String ymlFileName : ymlFiles) {
             if (ymlFileName.endsWith(".yml") && !ymlFileName.startsWith("_")) {
                 String locale = substringBefore(ymlFileName, ".").replace("-", "_");

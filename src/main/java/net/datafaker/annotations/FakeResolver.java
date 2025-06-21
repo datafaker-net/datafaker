@@ -4,11 +4,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import net.datafaker.internal.helper.CopyOnWriteMap;
 import net.datafaker.transformations.JavaObjectTransformer;
 import net.datafaker.transformations.Schema;
+
+import static java.util.Objects.requireNonNull;
 
 public class FakeResolver<T> {
 
@@ -29,7 +30,7 @@ public class FakeResolver<T> {
     }
 
     public T generate(Schema<Object, ?> schema) {
-        if (Objects.isNull(schema)) {
+        if (schema == null) {
             return generateFromDefaultSchema();
         }
 
@@ -37,14 +38,10 @@ public class FakeResolver<T> {
     }
 
     private T generateFromDefaultSchema() {
-        Schema<Object, ?> useSchema = DEFAULT_SCHEMA_CACHE.get(clazz);
-        if (useSchema == null) {
-            checkFakeAnnotation(clazz);
-
-            FakeForSchema fakeForSchemaAnnotation = clazz.getAnnotation(FakeForSchema.class);
-            useSchema = getSchema(fakeForSchemaAnnotation.value());
-            DEFAULT_SCHEMA_CACHE.put(clazz, useSchema);
-        }
+        Schema<Object, ?> useSchema = DEFAULT_SCHEMA_CACHE.computeIfAbsent(clazz, (__) -> {
+            FakeForSchema fakeForSchemaAnnotation = checkFakeAnnotation(clazz);
+            return getSchema(fakeForSchemaAnnotation.value());
+        });
 
         return (T) JAVA_OBJECT_TRANSFORMER.apply(clazz, useSchema);
     }
@@ -74,11 +71,13 @@ public class FakeResolver<T> {
         }
     }
 
-    private void checkFakeAnnotation(Class<T> clazz) {
-        Objects.requireNonNull(clazz, "The class is null.");
+    private FakeForSchema checkFakeAnnotation(Class<T> clazz) {
+        requireNonNull(clazz, "The class is null.");
 
-        if (!clazz.isAnnotationPresent(FakeForSchema.class)) {
+        FakeForSchema annotation = clazz.getAnnotation(FakeForSchema.class);
+        if (annotation == null) {
             throw new RuntimeException("The class %s is not annotated with Fake".formatted(clazz.getSimpleName()));
         }
+        return annotation;
     }
 }
