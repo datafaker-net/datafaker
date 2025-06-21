@@ -86,7 +86,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
                 assertThat(person.lastName).isNotNull();
                 assertThat(person.firstName).isNotNull();
                 assertThat(person.registrationDate).isNotNull();
-                persons.add((Person)person);
+                persons.add(person);
             });
 
         assertThat(persons).hasSize(10);
@@ -125,7 +125,7 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
                 assertThat(person.lastName).isNotNull();
                 assertThat(person.firstName).isNotNull();
                 assertThat(person.registrationDate).isNotNull();
-                persons.add((Person)person);
+                persons.add(person);
             });
 
         assertThat(persons).hasSize(10);
