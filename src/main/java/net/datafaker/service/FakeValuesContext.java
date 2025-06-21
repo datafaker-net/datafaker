@@ -58,9 +58,9 @@ class FakeValuesContext {
 
     private static String getFilename(Locale locale) {
         String lang = language(locale);
-        if ("".equals(locale.getCountry())) {
+        if (locale.getCountry().isEmpty()) {
             return lang;
-        } else if ("".equals(locale.getLanguage())) {
+        } else if (locale.getLanguage().isEmpty()) {
             return "_" + locale.getCountry();
         } else {
             return lang + "-" + locale.getCountry();
