@@ -51,21 +51,13 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
             result = getObject(schema, result, recordConstructor);
         } else if (!hasParameterlessPublicConstructor(clazz)) {
-            Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.get(clazz);
-            if (primaryConstructor == null) {
-                primaryConstructor = clazz.getDeclaredConstructors()[0];
-                CLASS2CONSTRUCTOR.put(clazz, primaryConstructor);
-            }
+            Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> c.getDeclaredConstructors()[0]);
 
             result = getObject(schema, result, primaryConstructor);
         } else {
             if (result == null) {
                 try {
-                    Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.get(clazz);
-                    if (primaryConstructor == null) {
-                        primaryConstructor = clazz.getDeclaredConstructors()[0];
-                        CLASS2CONSTRUCTOR.put(clazz, primaryConstructor);
-                    }
+                    Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> c.getDeclaredConstructors()[0]);
                     result = primaryConstructor.newInstance();
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
