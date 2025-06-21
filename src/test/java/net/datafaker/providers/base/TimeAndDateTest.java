@@ -89,7 +89,7 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
         Instant now = Instant.now();
         Instant then = Instant.now().plusMillis(1000);
 
-        String pattern = "YYYY MM.dd mm:hh:ss";
+        String pattern = "yyyy MM.dd mm:hh:ss";
 
         DateTimeFormatter.ofPattern(pattern).parse(timeAndDate.between(now, then, pattern));
     }
@@ -130,13 +130,13 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void birthdayWithMask() {
-        String pattern = "YYYY MM.dd";
+        String pattern = "yyyy MM.dd";
         DateTimeFormatter.ofPattern(pattern).parse(timeAndDate.birthday(1, 50, pattern));
     }
 
     @Test
     void futureWithMask() {
-        String pattern = "YYYY MM.dd mm:hh:ss";
+        String pattern = "yyyy MM.dd mm:hh:ss";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
         dateTimeFormatter.parse(timeAndDate.future(1, TimeUnit.HOURS, pattern));
         dateTimeFormatter.parse(timeAndDate.future(20, 1, TimeUnit.HOURS, pattern));
@@ -145,7 +145,7 @@ class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
 
     @Test
     void pastWithMask() {
-        String pattern = "YYYY MM.dd mm:hh:ss";
+        String pattern = "yyyy MM.dd mm:hh:ss";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
         dateTimeFormatter.parse(timeAndDate.past(1, TimeUnit.DAYS, pattern));
         dateTimeFormatter.parse(timeAndDate.past(20, 1, TimeUnit.DAYS, pattern));

@@ -37,8 +37,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 @SuppressWarnings("removal")
 class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
-    private static final String DATE_PATTERN = "YYYY MM.dd";
-    private static final String DATE_TIME_PATTERN = "YYYY MM.dd mm:hh:ss";
+    private static final String DATE_PATTERN = "yyyy MM.dd";
+    private static final String DATE_TIME_PATTERN = "yyyy MM.dd mm:hh:ss";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
