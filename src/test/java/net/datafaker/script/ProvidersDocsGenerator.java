@@ -159,7 +159,7 @@ public class ProvidersDocsGenerator {
     }
 
     /**
-     * Searching through all providers {@link subTypes}, getting since tag, and building
+     * Searching through all providers {@link #subTypes}, getting since tag, and building
      * {@link TreeMap} with count of each since tag (version).
      * @return {@link TreeMap} with count of providers per each version
      */
