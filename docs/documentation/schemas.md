@@ -10,6 +10,7 @@ It also provides a set of ready to use transformers:
 * YAML
 * XML
 * Java Object
+* TOML
 
 ## Schema
 
@@ -526,3 +527,48 @@ Or you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Class<
         val faker = BaseFaker()
         val person = faker.populate(Person::class.java, Schema.of(field("name", Supplier { faker.superhero().name() })))
     ```
+
+
+## TOML transformation
+TOML transformation is similar to YAML and CSV.
+
+The following is an example on how to use it:
+
+=== "Java"
+
+    ``` java
+        final BaseFaker faker = new BaseFaker();
+
+        TomlTransformer<Object> transformer = new TomlTransformer<>();
+        Schema<Object, ?> schema = Schema.of(
+            field("name", () -> faker.name().firstName()),
+            field("lastname", () -> faker.name().lastName()),
+            field("phones", () -> Schema.of(
+                field("worknumbers", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get())
+                    .collect(Collectors.toList())),
+                field("cellphones", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get())
+                    .collect(Collectors.toList()))
+            )),
+            field("address", () -> Schema.of(
+                field("city", () -> faker.address().city()),
+                field("country", () -> faker.address().country()),
+                field("streetAddress", () -> faker.address().streetAddress())
+            ))
+        );
+
+        System.out.println(transformer.generate(schema, 1));
+    ```
+
+will generate toml with nested fields:
+
+```
+name = "Elaine"
+lastname = "King"
+[phones]
+worknumbers = [ "(806) 207-5920", "(505) 640-6195" ]
+cellphones = [ "(214) 287-6337", "(872) 940-4806", "(813) 294-1719" ]
+[address]
+city = "Lake Caitlin"
+country = "Mongolia"
+streetAddress = "5111 D'Amore Fall"
+```
