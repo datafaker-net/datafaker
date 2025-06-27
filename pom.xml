@@ -28,12 +28,12 @@
         <commons-lang3.version>3.17.0</commons-lang3.version>
         <commons-text.version>1.13.1</commons-text.version>
         <commons-validator.version>1.9.0</commons-validator.version>
-        <rgxgen.version>2.0</rgxgen.version>
+        <rgxgen.version>3.0</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <jbanking.version>4.2.0</jbanking.version>
-        <junit.version>5.12.2</junit.version>
-        <libphonenumber.version>9.0.4</libphonenumber.version>
+        <junit.version>5.13.0</junit.version>
+        <libphonenumber.version>9.0.6</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
@@ -45,16 +45,16 @@
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-        <mockito-core.version>5.17.0</mockito-core.version>
+        <mockito-core.version>5.18.0</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <javaparser.version>3.26.4</javaparser.version>
         <snakeyaml.version>2.4</snakeyaml.version>
-        <spotless-maven-plugin.version>2.44.4</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>2.44.5</spotless-maven-plugin.version>
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
         <surefire.argline>@{argLine} -Duser.language=TR -Duser.country=tr</surefire.argline>
-        <kotlin.version>2.1.20</kotlin.version>
+        <kotlin.version>2.1.21</kotlin.version>
     </properties>
     <licenses>
         <license>

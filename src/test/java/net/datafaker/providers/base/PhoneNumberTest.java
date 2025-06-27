@@ -48,7 +48,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
     void testPhone_CA(Locale locale) {
         String areaCode = "263|354|382|403|587|780|825|236|250|368|428|604|672|778|204|431|506|"
             + "709|782|902|226|249|289|343|365|416|437|519|548|613|647|705|807|905|367|"
-            + "418|438|450|468|474|514|579|581|584|683|742|753|819|873|306|639|867|879|942";
+            + "418|438|450|468|474|514|579|581|584|683|742|753|819|873|306|639|867|879|942|257";
         Pattern canadianPhone = Pattern.compile("((\\+1)?(\\(?(%s)\\)?)|(%s))[- .]\\d{3}[- .]\\d{4}".formatted(areaCode, areaCode));
         PhoneNumber phoneNumber = new BaseFaker(locale).phoneNumber();
         for (int i = 0; i < COUNT; i++) {

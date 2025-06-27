@@ -5,6 +5,7 @@ net.datafaker.idnumbers.ChineseIdNumber
 net.datafaker.idnumbers.EstonianIdNumber
 net.datafaker.idnumbers.FrenchIdNumber
 net.datafaker.idnumbers.GeorgianIdNumber
+net.datafaker.idnumbers.HungarianIdNumber
 net.datafaker.idnumbers.ItalianIdNumber
 net.datafaker.idnumbers.LatvianIdNumber
 net.datafaker.idnumbers.MacedonianIdNumber

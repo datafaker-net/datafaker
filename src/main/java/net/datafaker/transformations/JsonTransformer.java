@@ -121,14 +121,12 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         if (value == null) {
             sb.append("null");
         } else if (value instanceof Integer
-            || value instanceof Long
-            || value instanceof Short
-            || value instanceof BigInteger
-            || value instanceof Boolean
-            || (value instanceof Double
-            && BigDecimal.valueOf((Double) value).remainder(BigDecimal.ONE).doubleValue() == 0)
-            || (value instanceof BigDecimal
-            && ((BigDecimal) value).remainder(BigDecimal.ONE).doubleValue() == 0)) {
+                || value instanceof Long
+                || value instanceof Short
+                || value instanceof BigInteger
+                || value instanceof Boolean
+                || value instanceof Double
+                || value instanceof BigDecimal) {
             sb.append(value);
         } else {
             String val = String.valueOf(value);

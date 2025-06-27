@@ -204,7 +204,7 @@ class JsonTest {
             of(Schema.of(field("key", () -> "value")), "{\"key\": \"value\"}"),
             of(Schema.of(field("number", () -> 123)), "{\"number\": 123}"),
             of(Schema.of(field("number", () -> 123.0)), "{\"number\": 123.0}"),
-            of(Schema.of(field("number", () -> 123.123)), "{\"number\": \"123.123\"}"),
+            of(Schema.of(field("number", () -> 123.123)), "{\"number\": 123.123}"),
             of(Schema.of(field("boolean", () -> true)), "{\"boolean\": true}"),
             of(Schema.of(field("nullValue", () -> null)), "{\"nullValue\": null}"),
             of(

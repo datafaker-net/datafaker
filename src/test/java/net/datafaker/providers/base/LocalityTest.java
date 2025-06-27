@@ -8,6 +8,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.SplittableRandom;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -72,6 +74,19 @@ class LocalityTest extends BaseFakerTest<BaseFaker> {
     @Test
     void localeStringWithoutReplacement() {
         Random random = new Random();
+        // loop through all supported locales
+        for (int i = 0; i < 2; i++) {
+            Set<String> returnedLocales = IntStream.range(0, locality.allSupportedLocales().size())
+                .mapToObj(j -> locality.localeStringWithoutReplacement(random))
+                .collect(Collectors.toSet());
+
+            assertThat(locality.allSupportedLocales()).containsAll(returnedLocales);
+        }
+    }
+
+    @Test
+    void localeStringWithoutReplacementWithCustomRandomGenerator() {
+        RandomGenerator random = new SplittableRandom();
         // loop through all supported locales
         for (int i = 0; i < 2; i++) {
             Set<String> returnedLocales = IntStream.range(0, locality.allSupportedLocales().size())

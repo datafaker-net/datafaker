@@ -4,7 +4,6 @@ import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
 
-import java.util.Random;
 import java.util.regex.Pattern;
 
 import static net.datafaker.idnumbers.Utils.birthday;
@@ -43,29 +42,21 @@ public class IrishIdNumber implements IdNumberGenerator {
 
     @Override
     public String generateInvalid(final BaseProviders faker) {
-        // Generate 7 digits
-        Random random = new Random();
-        StringBuilder digits = new StringBuilder();
-        for (int i = 0; i < 7; i++) {
-            digits.append(random.nextInt(10));
-        }
-        // Append always invalid character (es: 'Z')
-        return digits.append('Z').toString();
+        // Generate 7 digits and Append always invalid character (es: 'Z')
+        return faker.number().digits(7) + "Z";
     }
 
     @Override
     public String generateValid(final BaseProviders faker) {
-        Random random = new Random();
         int[] weights = {8, 7, 6, 5, 4, 3, 2};
-        int[] digits = new int[7];
-        String[] allowedSuffixes = {"A", "B", "H", "W"};
-        boolean addSuffix = random.nextBoolean(); // 50% chance
-        String suffix = addSuffix ? allowedSuffixes[random.nextInt(allowedSuffixes.length)] : "";
+        // Generate 7 digits
+        String digitsPpsn = faker.number().digits(7);
+        int[] digits = digitsPpsn.chars().map(c -> Character.getNumericValue(c)).toArray();
+
+        String suffix = faker.bool().bool() ? faker.options().option(new String[]{"A", "B", "H", "W"}) : "";
         int sum = 0;
 
-        // Generate 7 digits
         for (int i = 0; i < 7; i++) {
-            digits[i] = random.nextInt(10); // 0–9
             sum += digits[i] * weights[i];
         }
 
@@ -80,22 +71,12 @@ public class IrishIdNumber implements IdNumberGenerator {
             sum += extraValue * 9;
         }
 
-        // Calculate checksum character for modulus 23
-        int remainder = sum % 23;
-        char checkChar = (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
-
         // Build the PPSN
-        StringBuilder ppsn = new StringBuilder();
-        for (int d : digits) {
-            ppsn.append(d);
-        }
-        ppsn.append(checkChar).append(suffix);
-
-        return ppsn.toString();
+        return digitsPpsn + calculateCheckSumCharacter(sum) + suffix;
     }
 
-    public boolean validateAndCheckModulo23(String ppsn) {
-       if (ppsn == null ||  !IRISH_PPSN.matcher(ppsn).matches()) {
+    boolean validateAndCheckModulo23(String ppsn) {
+       if (ppsn == null || !IRISH_PPSN.matcher(ppsn).matches()) {
            return false;
        }
         int sum = 0;
@@ -105,28 +86,36 @@ public class IrishIdNumber implements IdNumberGenerator {
             if (!Character.isDigit(c)) {
                 return false;
             }
-            sum += (c - '0') * weights[i];
+            sum += Character.getNumericValue(c) * weights[i];
         }
-        // if there is a suffic incude it in the checksum
+        // if there is a suffix incude it in the checksum
         if (ppsn.length() == 9) {
             char extraChar = ppsn.charAt(8);
             int extraValue = switch (extraChar) {
                 case 'A', 'B', 'H' -> extraChar - 'A' + 1;
                 case 'W' -> 0;
-                default -> -1; // Suffisso non valido
+                default -> -1; // Invalid suffix
             };
             if (extraValue == -1) return false;
             sum += extraValue * 9;
         }
-        char checkChar = ppsn.charAt(7);
-        int remainder = sum % 23;
-        char expectedCheckChar = (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
-        return checkChar == expectedCheckChar;
+        return ppsn.charAt(7) ==  calculateCheckSumCharacter(sum);
     }
 
     @Override
     public PersonIdNumber generateValid(BaseProviders faker, IdNumber.IdNumberRequest request) {
         return new PersonIdNumber(generateValid(faker), birthday(faker, request), gender(faker, request));
+    }
+
+    /**
+     * Calculates the checksum character for a given sum using the Modulo 23 algorithm.
+     *
+     * @param sum The weighted sum of the PPSN digits and optional suffix value.
+     * @return The checksum character.
+     */
+    private char calculateCheckSumCharacter(int sum){
+        int remainder = sum % 23;
+        return (remainder == 0) ? 'W' : (char) ('A' + remainder - 1);
     }
 }
 

@@ -11,5 +11,6 @@ public class IdNumberPatterns {
     public static final Pattern ITALIAN = Pattern.compile("[A-Z]{6}\\d{2}[ABCDEHLMPRST]\\d{2}[\\dA-Z]{5}");
     public static final Pattern POLISH = Pattern.compile("\\d{11}");
     public static final Pattern IRISH = Pattern.compile("\\d{7}[A-Z]{1,2}$");
+    public static final Pattern HUNGARIAN = Pattern.compile("[1-4]\\d{9}");
 
 }
