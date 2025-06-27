@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.List;
@@ -12,6 +13,7 @@ class VehicleTest extends BaseFakerTest<BaseFaker> {
     private static final String WORD_MATCH = "\\w+\\.?";
     private static final String WORDS_MATCH = "^[a-zA-Z\\d_/ -]*$";
     private static final String INTERNATIONAL_WORDS_MATCH = "\\P{Cc}+";
+    private static final String IRISH_VEHICLE_LICENCE_PLATE_REGEX = "^(\\\\d{2}-?(KK|kk|ww|WW|c|C|ce|CE|cn|CN|cw|CW|d|D|dl|DL|g|G|ke|KE|ky|KY|l|L|ld|LD|lh|LH|lk|LK|lm|LM|ls|LS|mh|MH|mn|MN|mo|MO|oy|OY|so|SO|rn|RN|tn|TN|ts|TS|w|W|wd|WD|wh|WH|wx|WX)-?\\\\d{1,4})$\n";
 
     @RepeatedTest(10)
     void testVin() {
@@ -151,5 +153,11 @@ class VehicleTest extends BaseFakerTest<BaseFaker> {
         BaseFaker test = new BaseFaker(Locale.CANADA);
         assertThat(test.vehicle().licensePlate("MB")).matches(WORDS_MATCH);
         assertThat(test.vehicle().licensePlate("ON")).matches(WORDS_MATCH);
+    }
+
+    @RepeatedTest(10)
+    void testLicensePlate_Ireland() {
+        Faker faker = new Faker(new Locale("en", "IE"));
+        assertThat(faker.vehicle().licensePlate()).matches(IRISH_VEHICLE_LICENCE_PLATE_REGEX);
     }
 }
