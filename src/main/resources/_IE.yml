@@ -16,10 +16,8 @@ _IE:
       country_code: ['353']
 
     vehicle:
-      license_plate_base_year: "2[0-9](1|2)"
+      license_plate_base_year: "#{number.number_between '18','29'}#{number.number_between '1','2'}"
       license_plate_base_county: [CN, CW, CE, C, DL, D, G, KY, KE, KK, LS, LM, LK, LD, LH, MO, MH, OY, RN, SO, TA, W, WD, WH, WX, WW]
-      license_plate_base_increment: ['####']
+      license_plate_base_increment: ['#', '##', '###', '####']
       license_plate:
-        - "#{vehicle.license_plate_base_year}-"
-        - "#{vehicle.license_plate_base_county}-"
-        - "#{vehicle.license_plate_base_increment}"
+        - "#{vehicle.license_plate_base_year}-#{vehicle.license_plate_base_county}-#{vehicle.license_plate_base_increment}"

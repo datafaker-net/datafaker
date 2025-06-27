@@ -13,7 +13,7 @@ class VehicleTest extends BaseFakerTest<BaseFaker> {
     private static final String WORD_MATCH = "\\w+\\.?";
     private static final String WORDS_MATCH = "^[a-zA-Z\\d_/ -]*$";
     private static final String INTERNATIONAL_WORDS_MATCH = "\\P{Cc}+";
-    private static final String IRISH_VEHICLE_LICENCE_PLATE_REGEX = "^(\\\\d{2}-?(KK|kk|ww|WW|c|C|ce|CE|cn|CN|cw|CW|d|D|dl|DL|g|G|ke|KE|ky|KY|l|L|ld|LD|lh|LH|lk|LK|lm|LM|ls|LS|mh|MH|mn|MN|mo|MO|oy|OY|so|SO|rn|RN|tn|TN|ts|TS|w|W|wd|WD|wh|WH|wx|WX)-?\\\\d{1,4})$\n";
+    private static final String IRISH_VEHICLE_LICENCE_PLATE_REGEX = "[0-9]{2}[1|2]-[A-Z]{1,2}-[0-9]{1,6}";
 
     @RepeatedTest(10)
     void testVin() {
