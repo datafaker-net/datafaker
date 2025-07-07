@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
@@ -6,8 +7,10 @@
     <version>2.4.3-SNAPSHOT</version>
     <name>Datafaker</name>
     <description>
-        This library is an improved fork of JavaFaker (as well as Ruby's stympy/faker gem and Perl's Data::Faker library)
-        that generates fake data. It's useful when you're developing a new project and need some pretty data for showcase.
+        This library is an improved fork of JavaFaker (as well as Ruby's stympy/faker gem and Perl's Data::Faker
+        library)
+        that generates fake data. It's useful when you're developing a new project and need some pretty data for
+        showcase.
     </description>
     <url>https://www.datafaker.net</url>
     <developers>
@@ -176,16 +179,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
     <build>
         <pluginManagement>
             <plugins>
@@ -215,6 +208,15 @@
         </pluginManagement>
         <plugins>
             <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.8.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <version>${maven-enforcer-plugin.version}</version>
@@ -240,22 +242,22 @@
                 <version>${spotless-maven-plugin.version}</version>
                 <configuration>
                     <java>
-                        <removeUnusedImports />
+                        <removeUnusedImports/>
                     </java>
                     <yaml>
-                       <includes>
-                           <include>src/main/resources/en/**/*.yml</include>
-                           <include>src/test/resources/**/*.yml</include>
-                       </includes>
-                       <jackson>
-                           <features>
-                               <ORDER_MAP_ENTRIES_BY_KEYS>true</ORDER_MAP_ENTRIES_BY_KEYS>
-                           </features>
-                           <yamlFeatures>
-                               <WRITE_DOC_START_MARKER>false</WRITE_DOC_START_MARKER>
-                               <SPLIT_LINES>false</SPLIT_LINES>
-                           </yamlFeatures>
-                       </jackson>
+                        <includes>
+                            <include>src/main/resources/en/**/*.yml</include>
+                            <include>src/test/resources/**/*.yml</include>
+                        </includes>
+                        <jackson>
+                            <features>
+                                <ORDER_MAP_ENTRIES_BY_KEYS>true</ORDER_MAP_ENTRIES_BY_KEYS>
+                            </features>
+                            <yamlFeatures>
+                                <WRITE_DOC_START_MARKER>false</WRITE_DOC_START_MARKER>
+                                <SPLIT_LINES>false</SPLIT_LINES>
+                            </yamlFeatures>
+                        </jackson>
                     </yaml>
                 </configuration>
                 <executions>
@@ -357,17 +359,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${nexus-staging-maven-plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
             </plugin>
             <!-- Attaching source to comply OSSRH -->
             <plugin>
