@@ -10,6 +10,8 @@ import net.datafaker.providers.base.AbstractProvider;
  *
  * @see <a href="https://github.com/paulofranklins2/">https://github.com/paulofranklins2/</a>
  * @see <a href="https://www.linkedin.com/in/paulofranklins2/">https://www.linkedin.com/in/paulofranklins/</a>
+ *
+ * @since 2.4.4
  */
 public class MartialArt extends AbstractProvider<SportProviders> {
 
