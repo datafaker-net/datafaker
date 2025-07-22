@@ -4,7 +4,6 @@ import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
 import net.datafaker.providers.base.PersonIdNumber.Gender;
-import net.datafaker.service.RandomService;
 
 import java.time.LocalDate;
 
@@ -42,7 +41,7 @@ public class SingaporeIdNumber implements IdNumberGenerator {
         return id.toString();
     }
 
-    private static final int[] CODE = {0, 2, 7, 6, 5, 4, 3, 2};
+    private static final int[] CODE = {2, 7, 6, 5, 4, 3, 2};
     private static final String FIN_LETTERS = "XWUTRQPNMLK";
     private static final String UIN_LETTERS = "JZIHGFEDCBA";
 
@@ -60,7 +59,7 @@ public class SingaporeIdNumber implements IdNumberGenerator {
     }
 
     private static PersonIdNumber generateValidIdNumber(BaseProviders faker, LocalDate birthDate, boolean citizen, Gender gender) {
-        int[] number = randomDigits(faker);
+        int[] number = faker.number().randomDigits(7);
         String idNumber = format(birthDate, citizen, number);
         return new PersonIdNumber(idNumber, birthDate, gender);
     }
@@ -87,15 +86,6 @@ public class SingaporeIdNumber implements IdNumberGenerator {
             case SINGAPOREAN_TWENTY_FIRST_CENTURY,
                  FOREIGNER_TWENTY_FIRST_CENTURY -> faker.timeAndDate().birthday(Math.max(0, now - 2099), now - 2000);
         };
-    }
-
-    private static int[] randomDigits(BaseProviders f) {
-        final RandomService random = f.random();
-        final int[] number = new int[7];
-        for (int i = 0; i < number.length; i++) {
-            number[i] = random.nextInt(0, 9);
-        }
-        return number;
     }
 
     static char centuryPrefixCitizen(LocalDate issueDate) {
