@@ -3,6 +3,8 @@ package net.datafaker.providers.base;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -38,6 +40,17 @@ class NumberTest extends BaseFakerTest<BaseFaker> {
             nums.add(value);
         }
         assertThat(nums).contains(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4, 8, 16, 25, 36})
+    void randomDigits(int length) {
+        final Number number = faker.number();
+        int[] value = number.randomDigits(length);
+        assertThat(value).hasSize(length);
+        for (int i = 0; i < length; i++) {
+            assertThat(value[i]).isLessThanOrEqualTo(9).isGreaterThanOrEqualTo(0);
+        }
     }
 
     @Test

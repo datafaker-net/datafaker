@@ -24,6 +24,17 @@ public class Number extends AbstractProvider<BaseProviders> {
     }
 
     /**
+     * Returns an array of random numbers from 0 to 9 (both inclusive) of given length
+     */
+    public int[] randomDigits(int length) {
+        int[] result = new int[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = randomDigit();
+        }
+        return result;
+    }
+
+    /**
      * Returns a random number from 1-9 (both inclusive)
      */
     public int randomDigitNotZero() {
