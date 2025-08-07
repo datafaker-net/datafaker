@@ -23,7 +23,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java-version: [ 17, 21, 24 ]
+        java-version: [ 17, 21, 25-ea ]
         runs-on: [ ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest ]
     name: Jdk ${{ matrix.java-version }}, os ${{ matrix.runs-on }}
     runs-on: ${{ matrix.runs-on }}
