@@ -24,13 +24,13 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public CharSequence apply(IN input, Schema<IN, ?> schema) {
-        Field<IN, ?>[] fields = schema.getFields();
+        var fields = schema.fields();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < fields.length; i++) {
+        for (int i = 0; i < fields.size(); i++) {
             //noinspection unchecked
-            SimpleField<Object, ?> f = (SimpleField<Object, ?>) fields[i];
+            SimpleField<Object, ?> f = (SimpleField<Object, ?>) fields.get(i);
             addLine(sb, f.transform(input));
-            if (i < fields.length - 1) {
+            if (i < fields.size() - 1) {
                 sb.append(separator);
             }
         }
@@ -85,9 +85,10 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private void generateHeader(Schema<?, ?> schema, StringBuilder sb, boolean insertSeparator) {
         if (withHeader) {
-            for (int i = 0; i < schema.getFields().length; i++) {
-                addLine(sb, schema.getFields()[i].getName());
-                if (i < schema.getFields().length - 1) {
+            var fields = schema.fields();
+            for (int i = 0; i < fields.size(); i++) {
+                addLine(sb, fields.get(i).getName());
+                if (i < fields.size() - 1) {
                     sb.append(separator);
                 }
             }

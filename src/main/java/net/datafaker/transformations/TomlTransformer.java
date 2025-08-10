@@ -56,9 +56,8 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
     }
 
     private void writeSchema(StringBuilder sb, IN input, Schema<IN, ?> schema, String pathPrefix) {
-        Field<IN, ?>[] fields = schema.getFields();
         Set<String> seen = new HashSet<>();
-        for (Field<IN, ?> f : fields) {
+        for (Field<IN, ?> f : schema.fields()) {
             String key = f.getName();
             if (!seen.add(key)) {
                 continue;

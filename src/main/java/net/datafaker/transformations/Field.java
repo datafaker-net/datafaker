@@ -2,8 +2,11 @@ package net.datafaker.transformations;
 
 import net.datafaker.providers.base.AbstractProvider;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static java.util.Arrays.asList;
 
 public interface Field<IN, OUT> {
     String getName();
@@ -24,6 +27,12 @@ public interface Field<IN, OUT> {
     static <MyObject extends AbstractProvider<?>, MyType>
     CompositeField<MyObject, MyType> compositeField(
         String name, Field<MyObject, MyType>... fields) {
+        return new CompositeField<>(name, asList(fields));
+    }
+
+    static <MyObject extends AbstractProvider<?>, MyType>
+    CompositeField<MyObject, MyType> compositeField(
+        String name, List<Field<MyObject, MyType>> fields) {
         return new CompositeField<>(name, fields);
     }
 
