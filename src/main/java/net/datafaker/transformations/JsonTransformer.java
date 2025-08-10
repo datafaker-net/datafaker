@@ -89,8 +89,8 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private void applyValue(IN input, StringBuilder sb, Object value) {
-        if (value instanceof Collection<?>) {
-            sb.append(generate(input, (Collection) value));
+        if (value instanceof Collection<?> collection) {
+            sb.append(generate(input, collection));
         } else if (value != null && value.getClass().isArray()) {
             sb.append(generate(input, Arrays.asList((Object[]) value)));
         } else {
@@ -98,7 +98,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private String generate(IN input, Collection<Object> collection) {
+    private String generate(IN input, Collection<?> collection) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         int i = 0;

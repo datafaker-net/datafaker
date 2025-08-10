@@ -52,7 +52,7 @@ It is also supported nested(composite) fields e.g.:
 
     ``` java
         Schema.of(
-            compositeField("key", new Field[]{field("key", () -> "value")}));
+            compositeField("key", field("key", () -> "value")));
     ```
 
 === "Kotlin"
@@ -63,7 +63,7 @@ It is also supported nested(composite) fields e.g.:
 
 ## CSV transformation
 
-CSV transformer could be build with help of `CsvTransformer.CsvTransformerBuilder` e.g.
+CSV transformer could be built with help of `CsvTransformer.CsvTransformerBuilder` e.g.
 
 === "Java"
 
@@ -285,7 +285,7 @@ INSERT INTO "MyTable" ("names_multiset") VALUES (MULTISET['hello']);
 === "Java"
 
     ``` java
-        schema.of(compositeField("row", new Field[]{field("name", () -> "2")});
+        schema.of(compositeField("row", field("name", () -> "2"));
     ```
 
 === "Kotlin"
@@ -314,7 +314,7 @@ The following schema:
             field("string", () -> "string"),
             field("array", () -> new int[]{1, 2, 3}),
             field("map", () -> Map.of("key", "value")),
-            compositeField("struct", new Field[]{field("name", () -> "2")})
+            compositeField("struct", field("name", () -> "2"))
         );
     ```
 === "Kotlin"

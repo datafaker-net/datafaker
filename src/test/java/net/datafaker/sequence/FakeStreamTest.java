@@ -273,12 +273,12 @@ class FakeStreamTest {
         FakeSequence<CompositeField<Address, String>> secondaryAddresses =
             faker.<CompositeField<Address, String>>collection()
                 .suppliers(() ->
-                    compositeField(null, new Field[]{
+                    compositeField(null,
                         field("country", () -> faker.address().country()),
                         field("city", () -> faker.address().city()),
                         field("zipcode", () -> faker.address().zipCode()),
                         field("streetAddress", () -> faker.address().streetAddress())
-                    })
+                    )
                 )
                 .maxLen(1)
                 .minLen(1)
@@ -291,12 +291,12 @@ class FakeStreamTest {
                 .minLen(limit)
                 .build(),
             Schema.<Name, Object>of(
-                compositeField("primaryAddress", new Field[]{
+                compositeField("primaryAddress",
                     field("country", () -> faker.address().country()),
                     field("city", () -> faker.address().city()),
                     field("zipcode", () -> faker.address().zipCode()),
                     field("streetAddress", () -> faker.address().streetAddress())
-                }),
+                ),
                 field("secondaryAddresses", secondaryAddresses::get),
                 field("phones", name -> faker.<String>collection().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(3).build().get())
             ));
@@ -350,7 +350,7 @@ class FakeStreamTest {
 
     @ParameterizedTest(name = "{index}: {0}")
     @MethodSource("inputForFilesCreatedTest")
-    void testCsvFilesCreated(final String testName, final Transformer transformer, final List<String> expected) {
+    void testCsvFilesCreated(final String format, final Transformer<Object, CharSequence> transformer, final List<String> expected) {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Name name = faker.name();
         Schema<Object, ?> schema = Schema.of(
@@ -368,6 +368,7 @@ class FakeStreamTest {
         }
 
         assertThat(Files.linesOf(csvFile, StandardCharsets.UTF_8))
+            .as(() -> format + " generator output")
             .containsAll(expected);
     }
 

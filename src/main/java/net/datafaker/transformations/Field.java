@@ -20,9 +20,10 @@ public interface Field<IN, OUT> {
         return new SimpleField<>(name, supplier);
     }
 
+    @SafeVarargs
     static <MyObject extends AbstractProvider<?>, MyType>
     CompositeField<MyObject, MyType> compositeField(
-        String name, Field<MyObject, MyType>[] fields) {
+        String name, Field<MyObject, MyType>... fields) {
         return new CompositeField<>(name, fields);
     }
 

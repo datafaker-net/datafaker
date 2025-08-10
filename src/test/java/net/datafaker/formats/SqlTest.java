@@ -439,14 +439,14 @@ class SqlTest {
                 "", "INSERT INTO \"MyTable\" (\"multiset_array\") VALUES (MULTISET[ARRAY[1, 2]]);"),
             of(Schema.of(field("array_multiset", () -> new Object[]{Set.of("value")})),
                 "", "INSERT INTO \"MyTable\" (\"array_multiset\") VALUES (ARRAY[MULTISET['value']]);"),
-            of(Schema.of(compositeField("row", new Field[]{field("name", () -> "2")})),
+            of(Schema.of(compositeField("row", field("name", () -> "2"))),
                 null, "INSERT INTO \"MyTable\" (\"row\") VALUES (ROW('2'));"),
             of(Schema.of(compositeField("row_row",
-                    new Field[]{field("name1", () -> "1"), compositeField("row", new Field[]{field("name", () -> "2")})})),
+                    field("name1", () -> "1"), compositeField("row", field("name", () -> "2")))),
                     null, "INSERT INTO \"MyTable\" (\"row_row\") VALUES (ROW('1', ROW('2')));"),
             of(Schema.of(compositeField("row_array",
-                    new Field[]{field("name1", () -> "1"),
-                        compositeField("row", new Field[]{field("name", () -> new int[]{1, 2, 3})})})),
+                    field("name1", () -> "1"),
+                    compositeField("row", field("name", () -> new int[]{1, 2, 3})))),
                 null, "INSERT INTO \"MyTable\" (\"row_array\") VALUES (ROW('1', ROW(ARRAY[1, 2, 3])));")
         );
     }
@@ -515,10 +515,10 @@ class SqlTest {
             of(Schema.of(field("maps", supplyBigMap)), null,
                 "INSERT INTO `MyTable` (`maps`) VALUES (MAP('k1', MAP('k1', 'v1'), 'k2', MAP('k1', 'v1')));"),
             of(Schema.of(
-                compositeField("struct_array", new Field[]{field("name1", () -> "1"), compositeField("struct", new Field[]{field("name", () -> new int[]{1, 2, 3})})})), null,
+                compositeField("struct_array", field("name1", () -> "1"), compositeField("struct", field("name", () -> new int[]{1, 2, 3})))), null,
                 "INSERT INTO `MyTable` (`struct_array`) VALUES (NAMED_STRUCT('name1', '1', 'struct', NAMED_STRUCT('name', ARRAY(1, 2, 3))));"),
             of(Schema.of(
-                compositeField("struct_struct", new Field[]{field("name1", () -> "1"), compositeField("struct", new Field[]{field("name", () -> "2")})})), null,
+                compositeField("struct_struct", field("name1", () -> "1"), compositeField("struct", field("name", () -> "2")))), null,
                 "INSERT INTO `MyTable` (`struct_struct`) VALUES (NAMED_STRUCT('name1', '1', 'struct', NAMED_STRUCT('name', '2')));")
         );
     }

@@ -231,12 +231,12 @@ class FakeCollectionTest {
         FakeSequence<CompositeField<Address, String>> secondaryAddresses =
             faker.<CompositeField<Address, String>>collection()
             .suppliers(() ->
-                compositeField(null, new Field[]{
+                compositeField(null,
                     field("country", () -> faker.address().country()),
                     field("city", () -> faker.address().city()),
                     field("zipcode", () -> faker.address().zipCode()),
                     field("streetAddress", () -> faker.address().streetAddress())
-                })
+                )
             )
             .maxLen(1)
             .minLen(1)

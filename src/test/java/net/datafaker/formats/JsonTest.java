@@ -3,7 +3,6 @@ package net.datafaker.formats;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.sequence.FakeSequence;
-import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import org.junit.jupiter.api.Test;
@@ -11,13 +10,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.AbstractMap;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -203,7 +198,7 @@ class JsonTest {
         return Stream.of(
             of(Schema.of(), "{}"),
             of(
-                Schema.of(compositeField("key", new Field[]{field("key", () -> "value")})),
+                Schema.of(compositeField("key", field("key", () -> "value"))),
                 "{\"key\": {\"key\": \"value\"}}"),
             of(Schema.of(field("key", () -> "value")), "{\"key\": \"value\"}"),
             of(Schema.of(field("number", () -> 123)), "{\"number\": 123}"),
@@ -228,7 +223,7 @@ class JsonTest {
             of(
                 Schema.of(
                     field("key", () -> "value"),
-                    compositeField("nested", new Field[]{field("nestedkey", () -> "nestedvalue")})),
+                    compositeField("nested", field("nestedkey", () -> "nestedvalue"))),
                 "{\"key\": \"value\", \"nested\": {\"nestedkey\": \"nestedvalue\"}}"));
     }
 
@@ -269,16 +264,12 @@ class JsonTest {
             Schema.of(
                 field("text", () -> "Mrs. Brian Braun"),
                 field("objectCollection", () -> List.of(
-                        compositeField(null, new Field[]{
-                                field("country", () -> "Denmark"),
-                                field("city", () -> "Port Angel")
-                            }
-                        ),
-                        compositeField(null, new Field[]{
-                                field("two", () -> "Denmark"),
-                                field("one", () -> "Port Angel")
-                            }
-                        )
+                        compositeField(null,
+                            field("country", () -> "Denmark"),
+                            field("city", () -> "Port Angel")),
+                        compositeField(null,
+                            field("two", () -> "Denmark"),
+                            field("one", () -> "Port Angel"))
                     )
                 )
             ), 1);
@@ -296,16 +287,12 @@ class JsonTest {
                 field("objectCollection", () -> List.of(
                         List.of(
                             List.of(
-                                compositeField(null, new Field[]{
-                                        field("country", () -> "Denmark"),
-                                        field("city", () -> "Port Angel")
-                                    }
-                                ),
-                                compositeField(null, new Field[]{
-                                        field("two", () -> "Denmark"),
-                                        field("one", () -> "Port Angel")
-                                    }
-                                )
+                                compositeField(null,
+                                    field("country", () -> "Denmark"),
+                                    field("city", () -> "Port Angel")),
+                                compositeField(null,
+                                    field("two", () -> "Denmark"),
+                                    field("one", () -> "Port Angel"))
                             )
                         )
                     )
@@ -313,20 +300,5 @@ class JsonTest {
             ), 1);
         assertThat(json).isEqualTo("{\"text\": \"Mrs. Brian Braun\", " +
             "\"objectCollection\": [[[{\"country\": \"Denmark\", \"city\": \"Port Angel\"}, {\"two\": \"Denmark\", \"one\": \"Port Angel\"}]]]}");
-    }
-
-    private static Map.Entry<Supplier<String>, Supplier<Object>> entry(
-        Supplier<String> key, Supplier<Object> value) {
-        return new AbstractMap.SimpleEntry<>(key, value);
-    }
-
-    @SafeVarargs
-    private static Map<Supplier<String>, Supplier<Object>> map(
-        Map.Entry<Supplier<String>, Supplier<Object>>... entries) {
-        Map<Supplier<String>, Supplier<Object>> map = new LinkedHashMap<>();
-        for (Map.Entry<Supplier<String>, Supplier<Object>> entry : entries) {
-            map.put(entry.getKey(), entry.getValue());
-        }
-        return map;
     }
 }

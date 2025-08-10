@@ -82,20 +82,20 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
-    private void addCollection(StringBuilder sb, Collection<Object> collection, String offset) {
+    private void addCollection(StringBuilder sb, Collection<?> collection, String offset) {
         for (Object value : collection) {
             value2String(value, sb, offset + "-");
             sb.append(System.lineSeparator());
         }
     }
     private void value2String(Object value, StringBuilder sb, String offset) {
-        if (value instanceof Schema) {
-            Field<IN, ?>[] fields = ((Schema<IN, ?>) value).getFields();
+        if (value instanceof Schema schema) {
+            Field<IN, ?>[] fields = schema.getFields();
             apply(sb, null, fields, offset);
-        } else if (value instanceof Collection) {
+        } else if (value instanceof Collection<?> collection) {
             sb.append(System.lineSeparator());
             offset += INDENTATION;
-            addCollection(sb, (Collection) value, offset);
+            addCollection(sb, collection, offset);
         } else if (value != null && value.getClass().isArray()) {
             sb.append(System.lineSeparator());
             offset += INDENTATION;
