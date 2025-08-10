@@ -3,7 +3,6 @@ package net.datafaker.formats;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.sequence.FakeStream;
-import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
 import net.datafaker.transformations.XmlTransformer;
@@ -37,16 +36,17 @@ class XmlTest {
             of(Schema.of((field("root", () -> "value"))), "<root>value</root>"),
             of(Schema.of(
                     compositeField("root",
-                        new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2")})),
+                        field("attribute1", () -> "value1"), field("attribute2", () -> "value2"))),
                 "<root attribute1=\"value1\" attribute2=\"value2\"/>"),
             of(Schema.of(
                     compositeField("root",
-                        new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2"), field(null, () -> "value"),})),
+                        field("attribute1", () -> "value1"), field("attribute2", () -> "value2"), field(null, () -> "value"))),
                 "<root attribute1=\"value1\" attribute2=\"value2\">value</root>"),
             of(Schema.of(
                     compositeField("root",
-                        new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2"),
-                            field(null, () -> List.of(field("child", () -> "value")))})),
+                        field("attribute1", () -> "value1"), field("attribute2", () -> "value2"),
+                        field(null, () -> List.of(field("child", () -> "value")))
+                    )),
                 "<root attribute1=\"value1\" attribute2=\"value2\"><child>value</child></root>"),
             of(Schema.of(field("root", () -> "<> value\"")), "<root>&lt;&gt; value&quot;</root>")
         );
@@ -65,16 +65,19 @@ class XmlTest {
             of(Schema.of((field("root", () -> "value"))), "<root>value</root>"),
             of(Schema.of(
                     compositeField("root",
-                        new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2")})),
+                        field("attribute1", () -> "value1"), field("attribute2", () -> "value2")
+                    )),
                 "<root attribute1=\"value1\" attribute2=\"value2\"/>"),
             of(Schema.of(
                     compositeField("root",
-                        new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2"), field(null, () -> "value"),})),
+                        field("attribute1", () -> "value1"), field("attribute2", () -> "value2"), field(null, () -> "value")
+                    )),
                 "<root attribute1=\"value1\" attribute2=\"value2\">value</root>"),
             of(Schema.of(
                     compositeField("root",
-                        new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2"),
-                            field(null, () -> List.of(field("child", () -> "value")))})),
+                        field("attribute1", () -> "value1"), field("attribute2", () -> "value2"),
+                        field(null, () -> List.of(field("child", () -> "value")))
+                    )),
                 "<root attribute1=\"value1\" attribute2=\"value2\">" + System.lineSeparator() + "    <child>value</child>" + System.lineSeparator() + "</root>"),
             of(Schema.of(field("root", () -> "<> value\"")), "<root>&lt;&gt; value&quot;</root>")
         );
@@ -138,20 +141,20 @@ class XmlTest {
             (FakeStream<Object>) faker.stream()
                 .suppliers(() ->
                     compositeField("address",
-                        new Field[]{
                             field("country", () -> faker.address().country()),
                             field("city", () -> faker.address().city()),
-                            field("streetAddress", () -> faker.address().streetAddress())}))
+                            field("streetAddress", () -> faker.address().streetAddress())
+                    ))
                 .maxLen(3).build();
 
         FakeStream<Object> persons =
             (FakeStream<Object>) faker.stream()
                 .suppliers(() ->
                     compositeField("person",
-                        new Field[]{
                             field("firstname", () -> faker.name().firstName()),
                             field("lastname", () -> faker.name().lastName()),
-                            field(null, () -> List.of(field("addresses", () -> address.get().collect(Collectors.toList()))))}))
+                            field(null, () -> List.of(field("addresses", () -> address.get().collect(Collectors.toList()))))
+                    ))
                 .maxLen(3).build();
 
         XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
