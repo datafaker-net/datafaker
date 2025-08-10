@@ -23,7 +23,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
     @Override
     public CharSequence apply(IN input, Schema<IN, ?> schema) {
         StringBuilder sb = new StringBuilder();
-        Arrays.stream(schema.getFields()).forEach(it -> apply(input, sb, it));
+        schema.fields().forEach(it -> apply(input, sb, it));
         return sb.toString();
     }
 
@@ -85,11 +85,11 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
 
         final String tag = xmlNode.getName().trim();
         sb.append("<").append(tag);
-        if (xmlNode instanceof CompositeField) {
-            Field<IN, ?>[] attrs = ((CompositeField) xmlNode).getFields();
+        if (xmlNode instanceof CompositeField compositeField) {
+            Collection<Field<IN, ?>> attrs = compositeField.fields();
             applyAttributes(input, sb, attrs);
 
-            xmlNode = Arrays.stream(attrs)
+            xmlNode = attrs.stream()
                 .filter(inField -> !isAttribute(inField.getName())).findFirst()
                 .orElse(null);
         }
@@ -131,7 +131,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
         return name != null;
     }
 
-    private void applyAttributes(IN input, StringBuilder sb, Field<IN, ?>[] attrs) {
+    private void applyAttributes(IN input, StringBuilder sb, Iterable<Field<IN, ?>> attrs) {
         for (Field<IN, ?> attr : attrs) {
             String name = attr.getName();
             if (isAttribute(name)) {
