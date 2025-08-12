@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class BaseFakerTest<T extends BaseFaker> {
 
-    protected T faker = getFaker();
+    protected final T faker = getFaker();
 
     @BeforeEach
     @SuppressWarnings("EmptyTryBlock")
@@ -30,10 +30,6 @@ public abstract class BaseFakerTest<T extends BaseFaker> {
     @SuppressWarnings("unchecked")
     protected T getFaker() {
         return (T) new BaseFaker();
-    }
-
-    protected void setFaker(T faker) {
-        this.faker = faker;
     }
 
     protected List<String> getBaseList(String key) {

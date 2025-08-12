@@ -1,16 +1,12 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 class MeasurementTest extends BaseFakerTest<BaseFaker> {
-
-    public static final String WORDS = "^[a-z ]+$";
 
     private static Collection<TestSpec> getProviderListTests(Measurement measurement) {
         return List.of(
@@ -34,14 +30,9 @@ class MeasurementTest extends BaseFakerTest<BaseFaker> {
     @Nested
     class MeasurementInGreekTest extends BaseFakerTest<BaseFaker> {
 
-        @BeforeAll
-        void setup() {
-            this.setFaker(new BaseFaker(new Locale("el", "GR")));
-        }
-
-        @AfterAll
-        void reset() {
-            this.setFaker(this.getFaker());
+        @Override
+        protected final BaseFaker getFaker() {
+            return new BaseFaker(new Locale("el", "GR"));
         }
 
         @Override

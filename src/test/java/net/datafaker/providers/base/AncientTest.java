@@ -1,11 +1,9 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 class AncientTest extends BaseFakerTest<BaseFaker> {
@@ -28,14 +26,9 @@ class AncientTest extends BaseFakerTest<BaseFaker> {
     @Nested
     class AncientInGreekTest extends BaseFakerTest<BaseFaker> {
 
-        @BeforeAll
-        void setup() {
-            this.setFaker(new BaseFaker(new Locale("el", "GR")));
-        }
-
-        @AfterAll
-        void reset() {
-            this.setFaker(this.getFaker());
+        @Override
+        protected BaseFaker getFaker() {
+            return new BaseFaker(new Locale("el", "GR"));
         }
 
         @Override

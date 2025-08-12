@@ -1,12 +1,10 @@
 package net.datafaker.providers.sport;
 
 import net.datafaker.providers.base.BaseFakerTest;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 class FootballTest extends SportFakerTest {
@@ -31,14 +29,9 @@ class FootballTest extends SportFakerTest {
     @Nested
     class FootballInGreekTest extends BaseFakerTest<SportFaker> {
 
-        @BeforeAll
-        void setup() {
-            this.setFaker(new SportFaker(new Locale("el", "GR")));
-        }
-
-        @AfterAll
-        void reset() {
-            this.setFaker(new SportFaker());
+        @Override
+        protected final SportFaker getFaker() {
+            return new SportFaker(new Locale("el", "GR"));
         }
 
         @Override
