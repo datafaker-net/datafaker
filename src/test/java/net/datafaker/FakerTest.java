@@ -142,7 +142,7 @@ class FakerTest {
     }
 
     @Test
-    void badExpressionCouldntCoerce() {
+    void badExpressionCouldNotCoerce() {
         assertThatThrownBy(() -> faker.expression("#{number.number_between 'x','10'}"))
             .isInstanceOf(RuntimeException.class);
     }

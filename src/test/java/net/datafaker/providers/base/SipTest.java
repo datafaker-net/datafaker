@@ -15,7 +15,7 @@ class SipTest {
     }
 
     @Test
-    void contentType_returnLowerCaseTwoWordsSepereatedBySlashMinimum3And4Chars() {
+    void contentType_returnLowerCaseTwoWordsSeparatedBySlashMinimum3And4Chars() {
         assertThat(sip.contentType()).matches("^[a-z]{4,}/+[a-z\\d-]{3,}$");
     }
 
@@ -37,27 +37,27 @@ class SipTest {
     }
 
     @Test
-    void successResponse_Codereturn3DigitIntBetween200And299() {
+    void successResponseCode_return3DigitIntBetween200And299() {
         assertThat(sip.successResponseCode()).isBetween(200, 300);
     }
 
     @Test
-    void redirectResponseCode_Codereturn3DigitIntBetween300And399() {
+    void redirectResponseCode_return3DigitIntBetween300And399() {
         assertThat(sip.redirectResponseCode()).isBetween(300, 400);
     }
 
     @Test
-    void clientErrorResponseCode_Codereturn3DigitIntBetween400And499() {
+    void clientErrorResponseCode_return3DigitIntBetween400And499() {
         assertThat(sip.clientErrorResponseCode()).isBetween(400, 500);
     }
 
     @Test
-    void serverErrorResponseCode_Codereturn3DigitIntBetween500And599() {
+    void serverErrorResponseCode_return3DigitIntBetween500And599() {
         assertThat(sip.serverErrorResponseCode()).isBetween(500, 600);
     }
 
     @Test
-    void globalErrorResponseCode_Codereturn3DigitIntBetween600And699() {
+    void globalErrorResponseCode_return3DigitIntBetween600And699() {
         assertThat(sip.globalErrorResponseCode()).isBetween(600, 700);
     }
 
