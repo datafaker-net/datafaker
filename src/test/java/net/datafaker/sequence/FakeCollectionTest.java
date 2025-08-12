@@ -1,6 +1,6 @@
 package net.datafaker.sequence;
 
-import net.datafaker.AbstractFakerTest;
+import net.datafaker.Faker;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
@@ -24,7 +24,9 @@ import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class FakeCollectionTest extends AbstractFakerTest {
+class FakeCollectionTest {
+    private final Faker faker = new Faker();
+
     @Test
     void generateCollection() {
         List<String> names = faker.<String>collection()

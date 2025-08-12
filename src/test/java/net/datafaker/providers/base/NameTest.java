@@ -1,7 +1,6 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -10,8 +9,8 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NameTest extends BaseFakerTest<BaseFaker> {
-
+class NameTest {
+    private final Faker faker = new Faker();
     private final Name name = faker.name();
 
     @Test
@@ -94,20 +93,10 @@ class NameTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Nested
-    class NameInGreekTest extends BaseFakerTest<BaseFaker> {
+    class NameInGreekTest {
 
-        private Name name;
-
-        @BeforeAll
-        void setup() {
-            this.setFaker(new BaseFaker(new Locale("el", "GR")));
-            this.name = faker.name();
-        }
-
-        @AfterAll
-        void reset() {
-            this.setFaker(this.getFaker());
-        }
+        private final Faker faker = new Faker(new Locale("el", "GR"));
+        private final Name name = faker.name();
 
         @RepeatedTest(10)
         void testName() {

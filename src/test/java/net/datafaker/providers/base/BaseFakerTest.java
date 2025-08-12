@@ -1,11 +1,8 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,35 +14,22 @@ import java.util.regex.Pattern;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class BaseFakerTest<T extends BaseFaker> {
+public abstract class BaseFakerTest<T extends BaseFaker> {
 
-    protected T faker = getFaker();
-
-    @BeforeEach
-    @SuppressWarnings("EmptyTryBlock")
-    final void resetMocks() throws Exception {
-        try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
-            // Need to reset all @Spy and @Mock fields
-            // because all test methods share the same test class instance due to @TestInstance(PER_CLASS)
-        }
-    }
+    protected final T faker = getFaker();
 
     @SuppressWarnings("unchecked")
     protected T getFaker() {
         return (T) new BaseFaker();
     }
 
-    protected void setFaker(T faker) {
-        this.faker = faker;
-    }
-
     protected List<String> getBaseList(String key) {
         return faker.fakeValuesService().fetchObject(key, faker.getContext());
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
+    @ParameterizedTest
     @MethodSource("providerListTest")
-    protected void testProviderList(TestSpec testSpec, TestInfo testInfo) {
+    protected void testProviderList(TestSpec testSpec) {
         // Given
         Set<String> actual = new HashSet<>(getBaseList(testSpec.key));
         // When
@@ -61,7 +45,7 @@ public class BaseFakerTest<T extends BaseFaker> {
         }
     }
 
-    @ParameterizedTest(allowZeroInvocations = true)
+    @ParameterizedTest
     @MethodSource("providerListTest")
     void testNoDuplications(TestSpec testSpec) {
         var terms = getBaseList(testSpec.key);
@@ -78,9 +62,7 @@ public class BaseFakerTest<T extends BaseFaker> {
             .isEmpty();
     }
 
-    protected Collection<TestSpec> providerListTest() {
-        return Set.of();
-    }
+    protected abstract Collection<TestSpec> providerListTest();
 
     protected static class TestSpec {
         private final Supplier<?> supplier;

@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,8 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class TimeAndDateTest extends BaseFakerTest<BaseFaker> {
-
+class TimeAndDateTest {
+    private final Faker faker = new Faker();
     private final TimeAndDate timeAndDate = faker.timeAndDate();
 
     @RepeatedTest(100)

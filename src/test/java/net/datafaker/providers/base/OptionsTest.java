@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -9,10 +10,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class OptionsTest extends BaseFakerTest<BaseFaker> {
+class OptionsTest {
 
     private final String[] options = {"A", "B", "C"};
-    private final Options opt = faker.options();
+    private final Options opt = new Faker().options();
 
     @Test
     void testOptionWithArray() {

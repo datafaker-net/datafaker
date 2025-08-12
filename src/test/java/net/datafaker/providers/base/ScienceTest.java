@@ -13,7 +13,16 @@ class ScienceTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return List.of(TestSpec.of(science::unit, "science.unit"));
+        return List.of(
+            TestSpec.of(science::element, "science.element"),
+            TestSpec.of(science::elementSymbol, "science.element_symbol"),
+            TestSpec.of(science::unit, "science.unit"),
+            TestSpec.of(science::scientist, "science.scientist"),
+            TestSpec.of(science::tool, "science.tool"),
+            TestSpec.of(science::quark, "science.particles.quarks"),
+            TestSpec.of(science::leptons, "science.particles.leptons"),
+            TestSpec.of(science::bosons, "science.particles.bosons")
+        );
     }
 
     @RepeatedTest(10)

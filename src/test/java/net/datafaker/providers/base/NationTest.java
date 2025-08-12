@@ -2,6 +2,9 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class NationTest extends BaseFakerTest<BaseFaker> {
@@ -40,5 +43,14 @@ class NationTest extends BaseFakerTest<BaseFaker> {
     @Test
     void isoCountry() {
         assertThat(nation.isoCountry()).matches("[A-Z]{2}");
+    }
+
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        return List.of(
+            TestSpec.of(nation::nationality, "nation.nationality"),
+            TestSpec.of(nation::language, "nation.language"),
+            TestSpec.of(nation::capitalCity, "nation.capital_city")
+        );
     }
 }

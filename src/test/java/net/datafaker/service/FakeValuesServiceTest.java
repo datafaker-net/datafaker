@@ -1,6 +1,6 @@
 package net.datafaker.service;
 
-import net.datafaker.AbstractFakerTest;
+import net.datafaker.Faker;
 import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
@@ -13,8 +13,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
-import org.mockito.Spy;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,76 +27,64 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-class FakeValuesServiceTest extends AbstractFakerTest {
+class FakeValuesServiceTest {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
         new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm:ss")
             .appendFraction(ChronoField.MILLI_OF_SECOND, 0, 3, true).toFormatter();
 
-    @Spy
-    private BaseFaker mockedFaker;
-
-    @Mock
-    private RandomService randomService;
-
-    @Spy
-    private FakeValuesService fakeValuesService;
-    private FakerContext context;
+    private final Faker faker = spy(new Faker(new Locale("test")));
+    private final FakerContext context = faker.getContext();
+    private final FakeValuesService fakeValuesService = new FakeValuesService();
 
     @BeforeEach
     final void before() {
-        // always return the first element
-        when(randomService.nextInt(anyInt())).thenReturn(0);
-        context = new FakerContext(new Locale("test"), randomService);
-        when(mockedFaker.getContext()).thenReturn(context);
         fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
     }
 
     @Test
     void fetchStringShouldReturnValue() {
-        assertThat(fakeValuesService.fetchString("property.dummy", mockedFaker.getContext())).isEqualTo("x");
+        assertThat(fakeValuesService.fetchString("property.dummy", context)).isIn("x", "y", "z");
     }
 
     @Test
     void fetchShouldReturnValue() {
-        assertThat(fakeValuesService.fetch("property.dummy", mockedFaker.getContext())).isEqualTo("x");
+        assertThat(fakeValuesService.fetch("property.dummy", context)).isIn("x", "y", "z");
     }
 
     @Test
     void fetchObjectShouldReturnValue() {
-        List<String> dummy = fakeValuesService.fetchObject("property.dummy", mockedFaker.getContext());
+        List<String> dummy = fakeValuesService.fetchObject("property.dummy", context);
         assertThat(dummy).isEqualTo(List.of("x", "y", "z"));
     }
 
     @Test
     void safeFetchShouldReturnValueInList() {
-        doReturn(0).when(randomService).nextInt(anyInt());
-        assertThat(fakeValuesService.safeFetch("property.dummy", mockedFaker.getContext(), null)).isEqualTo("x");
+        assertThat(fakeValuesService.safeFetch("property.dummy", context, null)).isIn("x", "y", "z");
     }
 
     @Test
     void safeFetchShouldReturnSimpleList() {
-        assertThat(fakeValuesService.safeFetch("property.simple", mockedFaker.getContext(), null)).isEqualTo("hello");
+        assertThat(fakeValuesService.safeFetch("property.simple", context, null)).isEqualTo("hello");
     }
 
     @Test
     void safeFetchShouldReturnEmptyStringWhenPropertyDoesntExist() {
-        assertThat(fakeValuesService.safeFetch("property.dummy2", mockedFaker.getContext(), "")).isEmpty();
+        assertThat(fakeValuesService.safeFetch("property.dummy2", context, "")).isEmpty();
     }
 
     @Test
     void bothify2Args() {
-        final DummyService dummy = mock(DummyService.class);
+        DummyService dummy = new DummyService();
 
         BaseFaker f = new BaseFaker();
 
@@ -108,29 +94,29 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void regexifyDirective() {
-        final DummyService dummy = mock(DummyService.class);
+        DummyService dummy = new DummyService();
 
-        String value = fakeValuesService.resolve("property.regexify1", dummy, mockedFaker, mockedFaker.getContext());
+        String value = fakeValuesService.resolve("property.regexify1", dummy, faker, context);
         assertThat(value).isIn("55", "44", "45", "54");
-        verify(mockedFaker).regexify("[45]{2}");
+        verify(faker).regexify("[45]{2}");
     }
 
     @Test
     void regexifySlashFormatDirective() {
-        final DummyService dummy = mock(DummyService.class);
+        DummyService dummy = new DummyService();
 
-        String value = fakeValuesService.resolve("property.regexify_slash_format", dummy, mockedFaker, mockedFaker.getContext());
+        String value = fakeValuesService.resolve("property.regexify_slash_format", dummy, faker, context);
         assertThat(value).isIn("55", "44", "45", "54");
-        verify(mockedFaker).regexify("[45]{2}");
+        verify(faker).regexify("[45]{2}");
     }
 
     @Test
     void regexifyDirective2() {
-        final DummyService dummy = mock(DummyService.class);
+        DummyService dummy = new DummyService();
 
-        String value = fakeValuesService.resolve("property.regexify_cell", dummy, mockedFaker, mockedFaker.getContext());
+        String value = fakeValuesService.resolve("property.regexify_cell", dummy, faker, context);
         assertThat(value).isIn("479", "459");
-        verify(mockedFaker).regexify("4[57]9");
+        verify(faker).regexify("4[57]9");
     }
 
     @Test
@@ -138,15 +124,13 @@ class FakeValuesServiceTest extends AbstractFakerTest {
         // #{hello} -> DummyService.hello
 
         // given
-        final DummyService dummy = mock(DummyService.class);
-        doReturn("Yo!").when(dummy).hello();
+        DummyService dummy = new DummyService("Yo!");
 
         // when
-        final String actual = fakeValuesService.resolve("property.simpleResolution", dummy, mockedFaker, mockedFaker.getContext());
+        final String actual = fakeValuesService.resolve("property.simpleResolution", dummy, faker, context);
 
         // then
         assertThat(actual).isEqualTo("Yo!");
-        verify(dummy).hello();
     }
 
     @Test
@@ -218,7 +202,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void testLocalesChainGetterRu() {
-        final FakerContext FVS = new FakerContext(new Locale("ru"), randomService);
+        final FakerContext FVS = new FakerContext(new Locale("ru"), new RandomService());
         final List<SingletonLocale> processedChain = FVS.localeChain(new Locale("ru"));
         final List<SingletonLocale> chain = FVS.getLocaleChain();
 
@@ -227,14 +211,14 @@ class FakeValuesServiceTest extends AbstractFakerTest {
 
     @Test
     void testFakerContextSetLocale() {
-        final FakerContext fakerContext = new FakerContext(new Locale("en"), randomService);
+        final FakerContext fakerContext = new FakerContext(new Locale("en"), new RandomService());
         fakerContext.setLocale(new Locale("uk"));
         assertThat(fakerContext.getLocale()).isEqualTo(new Locale("uk"));
     }
 
     @Test
     void testFakerContextSetRandomService() {
-        final FakerContext fakerContext = new FakerContext(Locale.US, randomService);
+        final FakerContext fakerContext = new FakerContext(Locale.US, new RandomService(new Random(42)));
         fakerContext.setRandomService(new RandomService());
         assertThat(fakerContext.getRandomService()).usingRecursiveComparison().isEqualTo(new RandomService());
     }
@@ -317,7 +301,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     @ParameterizedTest
     @ValueSource(strings = {"src/test/test.txt_null", "qwerty", "src"})
     void fileExpressionTestFailure(String filename) {
-        assertThatThrownBy(() -> fakeValuesService.fileExpression(Paths.get(filename), faker, faker.getContext()))
+        assertThatThrownBy(() -> fakeValuesService.fileExpression(Paths.get(filename), faker, context))
             .isInstanceOf(RuntimeException.class);
     }
 
@@ -325,7 +309,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
     void fileNoExpressionTest() throws IOException {
         Path tmpPath = Files.createTempFile("tmp", "file");
         assertThat(String.join("", Files.readAllLines(tmpPath)))
-            .isEqualTo(fakeValuesService.fileExpression(tmpPath, faker, faker.getContext()));
+            .isEqualTo(fakeValuesService.fileExpression(tmpPath, faker, context));
     }
 
     @Test
@@ -359,17 +343,23 @@ class FakeValuesServiceTest extends AbstractFakerTest {
         // #{hello} -> DummyService.hello
 
         // given
-        final DummyService dummy = mock(DummyService.class);
-        when(dummy.hello()).thenReturn("1").thenReturn("2");
+        final DummyService dummy = new DummyService("Hello", "Tere", "Labvakar");
 
         // when
-        final String actual = fakeValuesService.resolve("property.sameResolution", dummy, mockedFaker, mockedFaker.getContext());
+        final String actual = fakeValuesService.resolve("property.sameResolution", dummy, faker, context);
 
         // then
-        assertThat(actual).isEqualTo("1 2");
+        assertThat(actual).isEqualTo("Hello Tere");
     }
 
-    public static class DummyService {
+    private static class DummyService {
+        private final AtomicInteger counter = new AtomicInteger(0);
+        private final List<String> greetings;
+
+        private DummyService(String... greetings) {
+            this.greetings = List.of(greetings);
+        }
+
         public String firstName() {
             return "John";
         }
@@ -379,7 +369,7 @@ class FakeValuesServiceTest extends AbstractFakerTest {
         }
 
         public String hello() {
-            return "Hello";
+            return greetings.get(counter.getAndIncrement());
         }
     }
 }

@@ -3,8 +3,10 @@ package net.datafaker.providers.base;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,9 +17,11 @@ import java.util.stream.Stream;
 import static java.util.Locale.ROOT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PhoneNumberValidityFinderTest extends BaseFakerTest<BaseFaker> {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class PhoneNumberValidityFinderTest {
     private static final int COUNT = 100;
     private final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+    private final Faker faker = new Faker();
 
     @RepeatedTest(COUNT)
     void testAllCellPhoneForLocale() throws NumberParseException {

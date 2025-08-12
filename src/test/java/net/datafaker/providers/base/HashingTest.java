@@ -1,10 +1,12 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HashingTest extends BaseFakerTest<BaseFaker> {
+class HashingTest {
+    private final Faker faker = new Faker();
 
     @Test
     void testMd2() {

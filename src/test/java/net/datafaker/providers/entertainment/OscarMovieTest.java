@@ -1,14 +1,14 @@
 package net.datafaker.providers.entertainment;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Strings.isNullOrEmpty;
 
-class OscarMovieTest extends EntertainmentFakerTest {
-
-    private final OscarMovie oscarMovie = getFaker().oscarMovie();
+class OscarMovieTest {
+    private final OscarMovie oscarMovie = new Faker().oscarMovie();
 
     @RepeatedTest(10)
     void actor() {

@@ -1,6 +1,6 @@
 package net.datafaker.transformations;
 
-import net.datafaker.AbstractFakerTest;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -11,7 +11,7 @@ import java.util.Collection;
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JavaObjectTransformerTest extends AbstractFakerTest {
+public class JavaObjectTransformerTest {
 
     public static class Person {
         private String firstName;
@@ -22,6 +22,8 @@ public class JavaObjectTransformerTest extends AbstractFakerTest {
     }
 
     public record Client(String firstName, String lastName, String phoneNumber, Instant registrationDate, int id) { }
+
+    private final Faker faker = new Faker();
 
     @Test
     void javaObjectTest() {

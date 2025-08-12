@@ -8,6 +8,7 @@ import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import org.assertj.core.api.AbstractStringAssert;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -19,8 +20,11 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-class IdNumberTest extends BaseFakerTest<BaseFaker> {
+@TestInstance(PER_CLASS)
+class IdNumberTest {
+    private final Faker faker = new Faker();
 
     private static final Faker SWEDISH = new Faker(new Locale("sv", "SE"));
     private static final Faker SOUTH_AFRICA = new Faker(new Locale("en", "ZA"));

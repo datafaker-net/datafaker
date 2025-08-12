@@ -1,10 +1,12 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AzureTest extends BaseFakerTest<BaseFaker> {
+class AzureTest {
+    private final Faker faker = new Faker();
 
     @Test
     void testRegion() {
@@ -161,7 +163,7 @@ class AzureTest extends BaseFakerTest<BaseFaker> {
     void testLogAnalytics() {
         assertThat(faker.azure().logAnalytics()).matches("^log-[0-9a-f]{16}$");
     }
-    
+
     @Test
     void testSpringApps() {
         assertThat(faker.azure().springApps()).matches("^sa-[0-9a-f]{16}$");

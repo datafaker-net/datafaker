@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -19,15 +20,17 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class NumberTest extends BaseFakerTest<BaseFaker> {
+class NumberTest {
 
-    public static final int RANDOMIZATION_QUALITY_RANGE_END = 1000;
-    public static final int RANDOMIZATION_QUALITY_RANGE_STEP = 25;
+    private static final int RANDOMIZATION_QUALITY_RANGE_END = 1000;
+    private static final int RANDOMIZATION_QUALITY_RANGE_STEP = 25;
     private static final int RANDOMIZATION_QUALITY_RANGE_START = RANDOMIZATION_QUALITY_RANGE_STEP;
-    public static final int RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET = 1000;
+    private static final int RANDOMIZATION_TESTS_MAX_NUMBERS_TO_GET = 1000;
 
     private static final double INDIVIDUAL_RUN_GT_PERCENT_UNIQUE = 0.8;
-    final double percentRunsGtUniquePercentage = 0.90;
+    private final double percentRunsGtUniquePercentage = 0.90;
+
+    private final Faker faker = new Faker();
 
     @Test
     void testRandomDigit() {

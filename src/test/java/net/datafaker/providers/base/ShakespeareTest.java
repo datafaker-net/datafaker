@@ -1,12 +1,12 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ShakespeareTest extends BaseFakerTest<BaseFaker> {
-
-    private final Shakespeare shakespeare = faker.shakespeare();
+class ShakespeareTest {
+    private final Shakespeare shakespeare = new Faker().shakespeare();
 
     @Test
     void testHamletQuote() {

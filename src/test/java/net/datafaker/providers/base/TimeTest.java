@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +15,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class TimeTest extends BaseFakerTest<BaseFaker> {
+public class TimeTest {
 
     private static final Pattern RE_TIME_BETWEEN = Pattern.compile("[0-2][0-9]:[0-5][0-9]:[0-5][0-9]");
     private static final long NANOSECONDS_IN_DAY = 24L * 60 * 60 * 1000 * 1000_000L;
     private static final long NANOSECONDS_IN_MINUTE = 60 * 1000 * 1000_000L;
+    private final Faker faker = new Faker();
 
     @Test
     void testFutureTime() {

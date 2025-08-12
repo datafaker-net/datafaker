@@ -5,11 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
-import net.datafaker.AbstractFakerTest;
+class JsonTransformerTest{
 
-class JsonTransformerTest extends AbstractFakerTest{
+    private final Faker faker = new Faker();
 
     @Test
     void issue1556Double() {

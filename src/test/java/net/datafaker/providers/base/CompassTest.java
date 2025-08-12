@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import net.datafaker.providers.base.Compass.CompassPoint;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -7,7 +8,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CompassTest extends BaseFakerTest<BaseFaker> {
+public class CompassTest {
+    private final Faker faker = new Faker();
 
     @ParameterizedTest
     @EnumSource(CompassPoint.class)
