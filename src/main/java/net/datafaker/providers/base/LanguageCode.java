@@ -19,7 +19,6 @@ public class LanguageCode extends AbstractProvider<BaseProviders> {
      * @return a random 2-letter language code
      */
     public String iso639() {
-        int index = faker.random().nextInt(languages.length);
-        return languages[index];
+        return faker.options().option(languages);
     }
 }
