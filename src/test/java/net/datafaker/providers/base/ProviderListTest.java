@@ -32,9 +32,13 @@ public abstract class ProviderListTest<T extends BaseFaker> {
         // Then
         assertThat(item).as("Check item isn't empty").isNotEmpty();
         String collection = "\"" + testSpec.key + "\"";
-        assertThat(actual).as("Check actual list isn't empty and contains the item for the key " + collection).isNotEmpty()
-            .anyMatch(item::equals);
-        assertThat(actual).as("Actual should not have empty entries. " + collection).noneMatch(single -> single.isBlank());
+        assertThat(actual)
+            .as(() -> "Check actual list isn't empty and contains the item for the key " + collection)
+            .isNotEmpty()
+            .contains(item);
+        assertThat(actual)
+            .as(() -> "Actual should not have empty entries. " + collection)
+            .noneMatch(single -> single.isBlank());
         if (!testSpec.regex.isEmpty()) {
             assertThat(item).as("Check item matches regex").matches(Pattern.compile(testSpec.regex));
         }
@@ -54,7 +58,7 @@ public abstract class ProviderListTest<T extends BaseFaker> {
             }
         }
         assertThat(duplicates)
-            .as("Check no duplications in " + testSpec.key + " with terms " + terms)
+            .as(() -> "Check no duplications in " + testSpec.key + " with terms " + terms)
             .isEmpty();
     }
 
