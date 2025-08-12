@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LoremTest extends BaseFakerTest<BaseFaker> {
+class LoremTest extends BaseFakerTest {
 
     private final Lorem lorem = faker.lorem();
 

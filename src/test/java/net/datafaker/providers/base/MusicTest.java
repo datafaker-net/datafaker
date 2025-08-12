@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Collection;
 
-class MusicTest extends BaseFakerTest<BaseFaker> {
+class MusicTest extends BaseFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {

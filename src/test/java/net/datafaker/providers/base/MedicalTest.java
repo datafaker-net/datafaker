@@ -9,7 +9,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MedicalTest extends BaseFakerTest<BaseFaker> {
+class MedicalTest extends BaseFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {

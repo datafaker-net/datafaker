@@ -1,10 +1,13 @@
 package net.datafaker.providers.healthcare;
 
-import net.datafaker.providers.base.BaseFakerTest;
+import net.datafaker.providers.base.ProviderListTest;
 
-abstract class HealthcareFakerTest extends BaseFakerTest<HealthcareFaker> {
+abstract class HealthcareFakerTest extends ProviderListTest<HealthcareFaker> {
+
+    protected final HealthcareFaker faker = new HealthcareFaker();
+
     @Override
     protected final HealthcareFaker getFaker() {
-        return new HealthcareFaker();
+        return faker;
     }
 }

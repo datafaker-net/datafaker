@@ -6,7 +6,7 @@ import java.util.Collection;
 /**
  * @author Luka Obradovic (luka@vast.com)
  */
-class YodaTest extends BaseFakerTest<BaseFaker> {
+class YodaTest extends BaseFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {

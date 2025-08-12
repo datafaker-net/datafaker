@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Collection;
 
-class ComputerTest extends BaseFakerTest<BaseFaker> {
+class ComputerTest extends BaseFakerTest {
 
     private final Computer computer = faker.computer();
 

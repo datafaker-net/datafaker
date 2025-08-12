@@ -8,7 +8,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.util.List;
 import java.util.Collection;
 
-class DroneTest extends BaseFakerTest<BaseFaker> {
+class DroneTest extends BaseFakerTest {
 
     private final Drone drone = faker.drone();
 

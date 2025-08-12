@@ -2,12 +2,12 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import java.util.Collection;
-
-class ColorTest extends BaseFakerTest<BaseFaker> {
+class ColorTest extends BaseFakerTest {
 
     private final Color color = faker.color();
 

@@ -10,13 +10,13 @@ import static net.datafaker.providers.base.Planet.PlanetName.JUPITER;
 import static net.datafaker.providers.base.Planet.PlanetName.MARS;
 import static net.datafaker.providers.base.Planet.PlanetName.MERCURY;
 import static net.datafaker.providers.base.Planet.PlanetName.NEPTUNE;
+import static net.datafaker.providers.base.Planet.PlanetName.PLUTO;
 import static net.datafaker.providers.base.Planet.PlanetName.SATURN;
 import static net.datafaker.providers.base.Planet.PlanetName.URANUS;
 import static net.datafaker.providers.base.Planet.PlanetName.VENUS;
-import static net.datafaker.providers.base.Planet.PlanetName.PLUTO;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PlanetTest extends BaseFakerTest<BaseFaker> {
+class PlanetTest extends BaseFakerTest {
 
     private final Planet planet = faker.planet();
 
@@ -31,7 +31,7 @@ class PlanetTest extends BaseFakerTest<BaseFaker> {
         // PlanetName enum has 9 entries
         assertThat(Planet.PlanetName.values()).hasSize(9);
         // planet.yml has 9 names
-        assertThat(getBaseList("planet.name")).hasSize(9);
+        assertThat(getBaseList(faker, "planet.name")).hasSize(9);
     }
 
     @Test

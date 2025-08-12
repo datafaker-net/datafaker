@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Collection;
 
-class ScienceTest extends BaseFakerTest<BaseFaker> {
+class ScienceTest extends BaseFakerTest {
 
     private final Science science = faker.science();
 

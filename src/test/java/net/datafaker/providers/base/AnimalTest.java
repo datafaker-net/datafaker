@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Collection;
 
-class AnimalTest extends BaseFakerTest<BaseFaker> {
+class AnimalTest extends BaseFakerTest {
 
     private final Animal animal = faker.animal();
 

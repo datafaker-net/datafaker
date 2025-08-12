@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
-class AviationTest extends BaseFakerTest<BaseFaker> {
+class AviationTest extends BaseFakerTest {
 
     private final Aviation aviation = faker.aviation();
 

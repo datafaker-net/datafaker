@@ -4,7 +4,7 @@ package net.datafaker.providers.base;
 import java.util.List;
 import java.util.Collection;
 
-public class GarmentSizeTest extends BaseFakerTest<BaseFaker> {
+public class GarmentSizeTest extends BaseFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {

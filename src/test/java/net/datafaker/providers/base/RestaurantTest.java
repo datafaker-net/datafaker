@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Collection;
 
-class RestaurantTest extends BaseFakerTest<BaseFaker> {
+class RestaurantTest extends BaseFakerTest {
 
     private final Restaurant restaurant = faker.restaurant();
 

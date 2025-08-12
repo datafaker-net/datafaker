@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UniversityTest extends BaseFakerTest<BaseFaker> {
+class UniversityTest extends BaseFakerTest {
 
     private static final String UNIVERSITY_MATCHER = "[A-Za-z'() öèü\\-.]+";
     private final University university = faker.university();

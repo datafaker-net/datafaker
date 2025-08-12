@@ -1,10 +1,13 @@
 package net.datafaker.providers.entertainment;
 
-import net.datafaker.providers.base.BaseFakerTest;
+import net.datafaker.providers.base.ProviderListTest;
 
-public abstract class EntertainmentFakerTest extends BaseFakerTest<EntertainmentFaker> {
+public abstract class EntertainmentFakerTest extends ProviderListTest<EntertainmentFaker> {
+
+    protected final EntertainmentFaker faker = new EntertainmentFaker();
+
     @Override
     protected final EntertainmentFaker getFaker() {
-        return new EntertainmentFaker();
+        return faker;
     }
 }

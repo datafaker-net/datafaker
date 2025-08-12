@@ -3,18 +3,18 @@ package net.datafaker.providers.foods;
 import net.datafaker.providers.food.Tea;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TeaTest extends FoodFakerTest {
 
-    private final Tea tea = getFaker().tea();
+    private final Tea tea = faker.tea();
 
     @Test
     void testVariety() {
-        assertThat(faker.tea().variety()).matches("^(?:[A-Z]['.\\-a-z]+[\\s-])*[A-Z]['.\\-a-z]+$");
+        assertThat(tea.variety()).matches("^(?:[A-Z]['.\\-a-z]+[\\s-])*[A-Z]['.\\-a-z]+$");
     }
 
     @Override

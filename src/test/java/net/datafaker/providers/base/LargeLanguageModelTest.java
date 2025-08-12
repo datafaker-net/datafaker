@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import java.util.Collection;
 import java.util.List;
 
-class LargeLanguageModelTest extends BaseFakerTest<BaseFaker> {
+class LargeLanguageModelTest extends BaseFakerTest {
 
     private final LargeLanguageModel llm = faker.largeLanguageModel();
 

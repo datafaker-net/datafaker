@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
-class CompanyTest extends BaseFakerTest<BaseFaker> {
+class CompanyTest extends BaseFakerTest {
 
     public static final Pattern URL_PATTERN = Pattern.compile("(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)*([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])");
     public static final Pattern PHRASE_PATTERN = Pattern.compile("(\\w+[ /-]?){1,9}");

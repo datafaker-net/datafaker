@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import java.util.Collection;
 import java.util.List;
 
-class PronounsTest extends BaseFakerTest<BaseFaker> {
+class PronounsTest extends BaseFakerTest {
 
     private final Pronouns pronouns = faker.pronouns();
 

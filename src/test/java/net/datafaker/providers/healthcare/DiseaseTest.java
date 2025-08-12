@@ -22,7 +22,7 @@ class DiseaseTest extends HealthcareFakerTest {
     private final Disease disease = faker.disease();
 
     private final Set<String> allDiseases = Arrays.stream(Disease.DiseaseType.values())
-        .map((Disease.DiseaseType diseaseType) -> getBaseList(diseaseType.yamlKey))
+        .map((Disease.DiseaseType diseaseType) -> getBaseList(faker, diseaseType.yamlKey))
         .flatMap(Collection::stream)
         .collect(Collectors.toSet());
 

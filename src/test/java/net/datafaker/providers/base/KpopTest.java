@@ -4,7 +4,7 @@ package net.datafaker.providers.base;
 import java.util.List;
 import java.util.Collection;
 
-class KpopTest extends BaseFakerTest<BaseFaker> {
+class KpopTest extends BaseFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {

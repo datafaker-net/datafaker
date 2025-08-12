@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-class JobTest extends BaseFakerTest<BaseFaker> {
+class JobTest extends BaseFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
@@ -18,11 +18,13 @@ class JobTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Nested
-    class JobInGreekTest extends BaseFakerTest<BaseFaker> {
+    final class JobInGreekTest extends ProviderListTest<BaseFaker> {
+
+        private final BaseFaker faker = new BaseFaker(new Locale("el", "GR"));
 
         @Override
-        protected final BaseFaker getFaker() {
-            return new BaseFaker(new Locale("el", "GR"));
+        protected BaseFaker getFaker() {
+            return faker;
         }
 
         @Override
