@@ -18,15 +18,6 @@ public abstract class BaseFakerTest<T extends BaseFaker> {
 
     protected final T faker = getFaker();
 
-    @BeforeEach
-    @SuppressWarnings("EmptyTryBlock")
-    final void resetMocks() throws Exception {
-        try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
-            // Need to reset all @Spy and @Mock fields
-            // because all test methods share the same test class instance due to @TestInstance(PER_CLASS)
-        }
-    }
-
     @SuppressWarnings("unchecked")
     protected T getFaker() {
         return (T) new BaseFaker();

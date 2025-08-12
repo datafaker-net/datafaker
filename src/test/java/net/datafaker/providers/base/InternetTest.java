@@ -5,8 +5,6 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,12 +19,12 @@ import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 class InternetTest {
 
     public static final Pattern IPV6_HOST_ADDRESS = Pattern.compile("[0-9a-fA-F]{1,4}(:([0-9a-fA-F]{1,4})){1,7}");
-    @Spy
-    private BaseFaker mockedFaker;
+    private final Faker faker = new Faker();
 
     @RepeatedTest(100)
     void testUsername() {
@@ -40,10 +38,20 @@ class InternetTest {
 
     @Test
     void testUsernameWithSpaces() {
-        final Name name = Mockito.spy(new Name(mockedFaker));
-        doReturn("Compound Name").when(name).firstName();
-        doReturn(name).when(mockedFaker).name();
-        assertThat(mockedFaker.internet().username()).matches("^(\\w+)\\.(\\w+)$");
+        Name name = mock();
+        doReturn("Jin Quan").when(name).firstName();
+        doReturn("D'Artagnan").when(name).lastName();
+
+        BaseFaker mockedFaker = new BaseFaker() {
+            @Override
+            public Name name() {
+                return name;
+            }
+        };
+        assertThat(mockedFaker.internet().username())
+            .doesNotContain(" ", "'")
+            .matches("^(\\w+)\\.(\\w+)$")
+            .matches("^\\p{javaLowerCase}+\\.\\p{javaLowerCase}+$");
     }
 
     @Test
