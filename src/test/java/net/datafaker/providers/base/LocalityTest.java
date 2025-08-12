@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import static java.util.Locale.ROOT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LocalityTest extends BaseFakerTest<BaseFaker> {
+class LocalityTest {
     private final BaseFaker f = new Faker();
     private final Locality locality = f.locality();
 

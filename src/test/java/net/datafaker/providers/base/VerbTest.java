@@ -1,12 +1,16 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.TestInstance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VerbTest extends BaseFakerTest<BaseFaker> {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class VerbTest {
 
     public static final String WORDS = "[\\w-]+";
+    private final Faker faker = new Faker();
 
     @RepeatedTest(10)
     void testBase() {

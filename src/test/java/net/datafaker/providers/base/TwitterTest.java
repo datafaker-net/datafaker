@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -8,9 +9,10 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TwitterTest extends BaseFakerTest<BaseFaker> {
+class TwitterTest {
 
-    private final Twitter twitter = getFaker().twitter();
+    private final Twitter twitter = new Faker().twitter();
+
     @Test
     void testCreatedDateForward() {
         Date testDate = new Date();

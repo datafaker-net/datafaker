@@ -18,9 +18,11 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
+class PhoneNumberTest {
+    private final Faker faker = new Faker();
     private static final Faker ESTONIAN = new Faker(new Locale("et", "EE"));
     private static final Faker MOLDOVAN = new Faker(new Locale("ro", "MD"));
+
     /**
      * Number of phone numbers to generate during a test
      */
@@ -57,7 +59,7 @@ class PhoneNumberTest extends BaseFakerTest<BaseFaker> {
         }
     }
 
-    private Stream<Arguments> canadianLocales() {
+    private static Stream<Arguments> canadianLocales() {
         return Stream.of(
             Arguments.of(Locale.CANADA),
             Arguments.of(new Locale("ca", "CA"))

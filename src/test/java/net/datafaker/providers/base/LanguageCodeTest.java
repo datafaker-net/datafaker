@@ -1,10 +1,13 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LanguageCodeTest extends BaseFakerTest<BaseFaker> {
+class LanguageCodeTest {
+
+    private final Faker faker = new Faker();
 
     @Test
     void languageCodeISO639ShouldBe2LettersInLength() {

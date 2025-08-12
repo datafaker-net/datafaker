@@ -1,6 +1,5 @@
 package net.datafaker.service;
 
-import net.datafaker.AbstractFakerTest;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -18,8 +17,8 @@ import java.util.stream.Stream;
 
 import static net.datafaker.service.RandomServiceTest.Ring.DWARVES;
 import static net.datafaker.service.RandomServiceTest.Ring.ELVES;
-import static net.datafaker.service.RandomServiceTest.Ring.MEN;
 import static net.datafaker.service.RandomServiceTest.Ring.LORD;
+import static net.datafaker.service.RandomServiceTest.Ring.MEN;
 import static org.assertj.core.api.Assertions.allOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * @author pmiklos
  */
-class RandomServiceTest extends AbstractFakerTest {
+class RandomServiceTest {
 
     @ParameterizedTest
     @MethodSource("randomServiceProvider")

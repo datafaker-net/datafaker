@@ -1,13 +1,14 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SlackEmojiTest extends BaseFakerTest<BaseFaker> {
+class SlackEmojiTest {
 
     private static final String EMOTICON_REGEX = ":(?:[\\w-]+):";
-    private final SlackEmoji slackEmoji = faker.slackEmoji();
+    private final SlackEmoji slackEmoji = new Faker().slackEmoji();
 
     @Test
     void people() {

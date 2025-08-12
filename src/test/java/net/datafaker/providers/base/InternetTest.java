@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doReturn;
 
-class InternetTest extends BaseFakerTest<BaseFaker> {
+class InternetTest {
 
     public static final Pattern IPV6_HOST_ADDRESS = Pattern.compile("[0-9a-fA-F]{1,4}(:([0-9a-fA-F]{1,4})){1,7}");
     @Spy

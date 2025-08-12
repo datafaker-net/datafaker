@@ -1,15 +1,18 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCNPJValid;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CNPJTest extends BaseFakerTest<BaseFaker> {
+class CNPJTest {
+    private final Faker faker = new Faker(new Locale("pt_BR"));
 
     /**
      * A valid CNPJ is either a real number or a generated valid number.

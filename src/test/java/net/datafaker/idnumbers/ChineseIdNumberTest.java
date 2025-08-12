@@ -1,6 +1,5 @@
 package net.datafaker.idnumbers;
 
-import net.datafaker.AbstractFakerTest;
 import net.datafaker.providers.base.BaseFaker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +9,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ChineseIdNumberTest extends AbstractFakerTest {
+class ChineseIdNumberTest {
     private final BaseFaker faker = new BaseFaker(new Locale("zh", "CN"));
 
     @RepeatedTest(10)

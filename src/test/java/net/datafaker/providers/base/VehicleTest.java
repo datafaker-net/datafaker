@@ -8,12 +8,13 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VehicleTest extends BaseFakerTest<BaseFaker> {
+class VehicleTest {
 
     private static final String WORD_MATCH = "\\w+\\.?";
     private static final String WORDS_MATCH = "^[a-zA-Z\\d_/ -]*$";
     private static final String INTERNATIONAL_WORDS_MATCH = "\\P{Cc}+";
     private static final String IRISH_VEHICLE_LICENCE_PLATE_REGEX = "[0-9]{2}[1|2]-[A-Z]{1,2}-[0-9]{1,6}";
+    private final Faker faker = new Faker();
 
     @RepeatedTest(10)
     void testVin() {

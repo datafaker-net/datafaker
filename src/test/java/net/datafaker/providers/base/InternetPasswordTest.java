@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Matcher;
@@ -7,7 +8,8 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class InternetPasswordTest extends BaseFakerTest<BaseFaker> {
+class InternetPasswordTest {
+    private final Faker faker = new Faker();
 
     @Test
     void testPassword1000() {

@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PassportTest extends BaseFakerTest<BaseFaker> {
+class PassportTest {
 
     @RepeatedTest(10)
     void testDefaultLocale() {

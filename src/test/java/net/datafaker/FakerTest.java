@@ -30,7 +30,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.reflections.scanners.Scanners.SubTypes;
 
-class FakerTest extends AbstractFakerTest {
+class FakerTest {
+    private final Faker faker = new Faker();
 
     @Test
     void examplifyUppercaseLetters() {

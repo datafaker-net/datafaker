@@ -1,13 +1,14 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Strings.isNullOrEmpty;
 
-class MbtiTest extends BaseFakerTest<BaseFaker> {
+class MbtiTest {
 
-    private final Mbti mbti = faker.mbti();
+    private final Mbti mbti = new Faker().mbti();
 
     @Test
     void type() {

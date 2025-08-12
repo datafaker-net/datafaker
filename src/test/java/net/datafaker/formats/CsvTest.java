@@ -1,6 +1,5 @@
 package net.datafaker.formats;
 
-import net.datafaker.AbstractFakerTest;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.sequence.FakeSequence;
@@ -17,7 +16,7 @@ import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class CsvTest extends AbstractFakerTest {
+class CsvTest {
 
     @Test
     void csvTestNew() {

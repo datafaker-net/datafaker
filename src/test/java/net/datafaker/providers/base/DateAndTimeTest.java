@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -36,11 +37,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @author pmiklos
  */
 @SuppressWarnings("removal")
-class DateAndTimeTest extends BaseFakerTest<BaseFaker> {
+class DateAndTimeTest {
     private static final String DATE_PATTERN = "yyyy MM.dd";
     private static final String DATE_TIME_PATTERN = "yyyy MM.dd mm:hh:ss";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
+    private final Faker faker = new Faker();
 
     @Test
     void testFutureDate() {

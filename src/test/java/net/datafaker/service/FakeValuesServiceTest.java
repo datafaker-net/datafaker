@@ -1,6 +1,6 @@
 package net.datafaker.service;
 
-import net.datafaker.AbstractFakerTest;
+import net.datafaker.Faker;
 import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class FakeValuesServiceTest extends AbstractFakerTest {
+class FakeValuesServiceTest {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
         new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm:ss")

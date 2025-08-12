@@ -22,9 +22,10 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class AddressTest extends BaseFakerTest<BaseFaker> {
+class AddressTest {
 
-    private final char decimalSeparator = new DecimalFormatSymbols(getFaker().getContext().getLocale()).getDecimalSeparator();
+    private final Faker faker = new Faker();
+    private final char decimalSeparator = new DecimalFormatSymbols(faker.getContext().getLocale()).getDecimalSeparator();
     private static final Faker US_FAKER = new Faker(new Locale("en", "US"));
     private static final Faker NL_FAKER = new Faker(new Locale("nl", "NL"));
     private static final Faker BELGIAN_FAKER = new Faker(new Locale("nl", "BE"));
@@ -174,7 +175,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Test
-    void eircode_ireland() {
+    void eirCode_ireland() {
         BaseFaker f = new BaseFaker(new Locale("en", "IE"));
         assertThat(f.address().eircode()).isNotEmpty();
     }
@@ -197,7 +198,7 @@ class AddressTest extends BaseFakerTest<BaseFaker> {
         assertThat(localFaker.address().countyByZipCode("47732")).isNotEmpty();
     }
 
-    Collection<String> argentineZipCodesSource() {
+    static Collection<String> argentineZipCodesSource() {
         return Stream.generate(() -> new BaseFaker(Locale.forLanguageTag("es-AR")).address().zipCode())
             .distinct().limit(4025)
             .collect(Collectors.toSet());

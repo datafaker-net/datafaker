@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -7,8 +8,8 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DrivingLicenseTest extends BaseFakerTest<BaseFaker> {
-    private final DrivingLicense drivingLicense = getFaker().drivingLicense();
+public class DrivingLicenseTest {
+    private final DrivingLicense drivingLicense = new Faker().drivingLicense();
 
     private enum LicensePattern {
         AL("AL", "^\\d{6,8}$"),

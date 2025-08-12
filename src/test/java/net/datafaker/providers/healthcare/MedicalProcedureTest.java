@@ -4,9 +4,9 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MedicalProcedureTest extends HealthcareFakerTest {
+class MedicalProcedureTest {
 
-    private final MedicalProcedure medicalProcedure = getFaker().medicalProcedure();
+    private final MedicalProcedure medicalProcedure = new HealthcareFaker().medicalProcedure();
 
     @RepeatedTest(100)
     void testProcedureCodes() {

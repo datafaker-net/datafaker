@@ -1,12 +1,13 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SipTest extends BaseFakerTest<BaseFaker> {
+class SipTest {
 
-    private final Sip sip = faker.sip();
+    private final Sip sip = new Faker().sip();
 
     @Test
     void method_returnUpperCaseWithMinimum3Chars() {

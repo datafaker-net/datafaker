@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.regex.Pattern;
@@ -8,9 +9,10 @@ import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class CPFTest extends BaseFakerTest<BaseFaker> {
+class CPFTest {
 
     public static final Pattern CPF_EXPRESSION = Pattern.compile("(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)");
+    private final Faker faker = new Faker();
 
     /**
      * A valid CPF is either a real number or a generated valid number.

@@ -1,22 +1,15 @@
 package net.datafaker.providers.foods;
 
 import net.datafaker.providers.food.Food;
-import net.datafaker.providers.food.FoodFaker;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Collection;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class HebrewFoodTest extends FoodFakerTest {
     private final Food food = getFaker().food();
-
-    @Override
-    protected FoodFaker getFaker() {
-        return new FoodFaker(new Locale("he"));
-    }
 
     @Test
     void measurement() {

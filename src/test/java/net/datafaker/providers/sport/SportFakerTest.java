@@ -2,9 +2,9 @@ package net.datafaker.providers.sport;
 
 import net.datafaker.providers.base.BaseFakerTest;
 
-public class SportFakerTest extends BaseFakerTest<SportFaker> {
+abstract class SportFakerTest extends BaseFakerTest<SportFaker> {
     @Override
-    protected SportFaker getFaker() {
+    protected final SportFaker getFaker() {
         return new SportFaker();
     }
 }
