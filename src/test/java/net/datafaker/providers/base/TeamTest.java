@@ -24,8 +24,11 @@ class TeamTest extends BaseFakerTest<BaseFaker> {
 
     @Override
     protected Collection<TestSpec> providerListTest() {
-        return List.of(TestSpec.of(team::creature, "team.creature"),
-            TestSpec.of(team::sport, "team.sport", "(?:\\p{L}|\\s)+"));
+        return List.of(
+            TestSpec.of(team::creature, "team.creature"),
+            TestSpec.of(team::sport, "team.sport", "(?:\\p{L}|\\s)+"),
+            TestSpec.of(team::state, "address.state")
+        );
     }
 
     @Test

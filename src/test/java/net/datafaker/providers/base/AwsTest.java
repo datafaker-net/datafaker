@@ -58,7 +58,9 @@ class AwsTest extends BaseFakerTest<BaseFaker> {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Aws aws = faker.aws();
-        return List.of(TestSpec.of(aws::service, "aws.services"));
+        return List.of(
+            TestSpec.of(aws::region, "aws.regions"),
+            TestSpec.of(aws::service, "aws.services")
+        );
     }
-
 }
