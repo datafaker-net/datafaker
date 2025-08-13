@@ -5,7 +5,7 @@ _NO:
     address:
       country_code: ['NO']
       building_number: ["#", "##"]
-      postcode: ["####", "####", "####", "0###"]
+      postcode: ["####", "0###"]
 
     internet:
       domain_suffix: ["no", "com", "net", "org"]

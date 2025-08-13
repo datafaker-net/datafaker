@@ -22,10 +22,10 @@ en-NG:
                     Ebubechukwu, Miracle, Ekwueme, Onyinyechukwu, Isokun, Adesina, Mustapha, Ladega, Olumide, Kayode, Leonard, Adaobi, Uchechi, Mogbadunade, Oluwatosin,
                     Grace, Nojeem, Sekinat, Omolara, Chidinma, Maryjane, Ogunwande, Olubunmi, Agnes, Osuagwu, Elizabeth, Obianuju, Oyelude, Aminat, Odunayo, Peter,
                     Chibuike, Sylvester, Salami, Oluwaseyi, Agboola, Abodunrin, Isreal, Ademola, Akintade, Katherine, Oluwaseun, Aligbe, Isaac, Amaechi, Bello, Adewura,
-                    Latifat, Ehigiator, Kimberly, Onohinosen, Elebiyo, Ayomide, Elizabeth, Ndukwu, Ngozi, Clare, Ogunbanwo, Olufeyikemi, Okonkwo, Makuachukwu, Obiageli,
-                    Oladeji, Odunayo, Abiodun, Wilcox, Tamunoemi, Iyalla, Adegboye, Kayode, David, Akeem-omosanya, Muinat, Wuraola, Nwuzor, Christian, Akerele, Samuel,
-                    Sanusi, Olutola, Mutiat, Elizabeth, Adebayo, Habeeb, Temitope, Adegoke, Joshua, Omobolaji, Adewale, Adewunmi, Gbogboade, Adewale, Adeyemo, Funmilayo,
-                    Afunku, Oyinkansola, Maryam, Aigbiniode, Tolulope, Onose, Babalola, Olaoluwa, Yaqub, Nwogu, Chidozie, Emmanuel, Chibike, Agboola, Mukaram, Afolabi,
+                    Latifat, Ehigiator, Kimberly, Onohinosen, Elebiyo, Ndukwu, Ngozi, Clare, Ogunbanwo, Olufeyikemi, Okonkwo, Makuachukwu, Obiageli,
+                    Oladeji, Abiodun, Wilcox, Tamunoemi, Iyalla, Adegboye, Akeem-omosanya, Muinat, Wuraola, Nwuzor, Christian, Akerele, Samuel,
+                    Sanusi, Olutola, Mutiat, Adebayo, Habeeb, Temitope, Adegoke, Joshua, Omobolaji, Adewunmi, Gbogboade, Adeyemo, Funmilayo,
+                    Afunku, Oyinkansola, Maryam, Aigbiniode, Tolulope, Onose, Babalola, Olaoluwa, Yaqub, Nwogu, Chidozie, Chibike, Mukaram, Afolabi,
                     Gbadamosi, Saheed, Opeyemi, Jimoh, Jamiu, Babatunde, Motalo, Omobolanle, Sarah, Okunola, Oluwashina, Olasunkanmi-fasayo, Wasiu, Ayobami, Busari,
                     Segunmaru, Aderonke, Hanifat, Balogun, Sulaimon, Oladimeji, Oluwakemi
                   ]
@@ -35,10 +35,10 @@ en-NG:
       domain_suffix: [com.ng, com, ng, net, edu.ng, org, gov.ng, org.ng, biz, co]
     address:
       street_suffix: [
-                        Avenue, Branch, Bridge, Bypass, Road, Drive, Drive, Drives, Estate, Estates, Expressway, Extension, Falls, Flat, Flats, Freeway, Garden, Gardens,
-                        Gateway, Harbor, GRA, Highway, Island, Island, Junction, Roundabout, Toll Gate, Lake, Land, Landing, Industrial Layout, Lane, Lodge, Lodge, Mill, Mills, Mission,
-                        Mission, Motorway, Overpass, Park, Parkway, Pass, Path, Pike, Mall,  Plaza, Plaza, Port, Port, Ranch, River, Road, Road, Roads, Roads, Route, Square, Square,
-                        Station, Station, Street, Street, Streets, Terrace, Underpass, Union, Via, Ville, Walk, Way
+                        Avenue, Branch, Bridge, Bypass, Road, Drive, Drives, Estate, Estates, Expressway, Extension, Falls, Flat, Flats, Freeway, Garden, Gardens,
+                        Gateway, Harbor, GRA, Highway, Island, Junction, Roundabout, Toll Gate, Lake, Land, Landing, Industrial Layout, Lane, Lodge, Mill, Mills, Mission,
+                        Motorway, Overpass, Park, Parkway, Pass, Path, Pike, Mall, Plaza, Port, Ranch, River, Roads, Route, Square,
+                        Station, Street, Streets, Terrace, Underpass, Union, Via, Ville, Walk, Way
                       ]
       lga: [
               Abadam, Abaji, Abak, Abakaliki, Aba North, Aba South, Abeokuta North, Abeokuta South, Afijio, Afikpo North, Afikpo South, Agaie, Agatu, Agwara, Agege, Aguata,
