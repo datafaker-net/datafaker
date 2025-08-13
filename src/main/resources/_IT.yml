@@ -8,7 +8,7 @@ _IT:
 
     internet:
       free_email: [gmail.com, yahoo.com, hotmail.com, email.it, libero.it, yahoo.it]
-      domain_suffix: [com, com, com, net, org, it, it, it]
+      domain_suffix: [com, net, org, it]
 
     phone_number:
       country_code: ['39']

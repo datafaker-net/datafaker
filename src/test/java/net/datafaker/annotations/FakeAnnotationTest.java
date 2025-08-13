@@ -74,8 +74,8 @@ public class FakeAnnotationTest {
 
         assertThat(person).isNotNull();
         assertThat(person.name()).isEqualTo("Aztar Ivy");
-        assertThat(person.address()).isEqualTo("Am Buttermarkt 43b, Furkanheim, BE 36219");
-        assertThat(person.color()).isEqualTo("blau");
+        assertThat(person.address()).isEqualTo("Am Buttermarkt 43b, Furkanheim, BE 71304");
+        assertThat(person.color()).isEqualTo("aprikose");
     }
 
     @Test
