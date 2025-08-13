@@ -2,15 +2,15 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import java.util.Collection;
-
-class SpaceTest extends BaseFakerTest<BaseFaker> {
+class SpaceTest extends BaseFakerTest {
 
     private static final String SPACE_REGEX = "(?:\\w+ ?){2,3}";
-    
+
     @Override
     protected Collection<TestSpec> providerListTest() {
         Space space = faker.space();

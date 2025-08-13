@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import java.util.List;
 import java.util.Collection;
 
-class HipsterTest extends BaseFakerTest<BaseFaker> {
+class HipsterTest extends BaseFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {

@@ -9,7 +9,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GreekPhilosopherTest extends BaseFakerTest<BaseFaker> {
+final class GreekPhilosopherTest extends BaseFakerTest {
 
     @RepeatedTest(10)
     void testName() {
@@ -35,11 +35,12 @@ class GreekPhilosopherTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Nested
-    class GreekPhilosopherInGreekTest extends BaseFakerTest<BaseFaker> {
+    final class GreekPhilosopherInGreekTest extends ProviderListTest<BaseFaker> {
+        private final BaseFaker faker = new BaseFaker(new Locale("el", "GR"));
 
         @Override
-        protected final BaseFaker getFaker() {
-            return new BaseFaker(new Locale("el", "GR"));
+        protected BaseFaker getFaker() {
+            return faker;
         }
 
         @Override

@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AwsTest extends BaseFakerTest<BaseFaker> {
+class AwsTest extends BaseFakerTest {
 
     @Test
     void testAccountId() {

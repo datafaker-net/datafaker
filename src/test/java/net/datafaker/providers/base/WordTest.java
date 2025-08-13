@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import java.util.Collection;
 import java.util.List;
 
-class WordTest extends BaseFakerTest<BaseFaker> {
+class WordTest extends BaseFakerTest {
 
     private final Word word = faker.word();
 

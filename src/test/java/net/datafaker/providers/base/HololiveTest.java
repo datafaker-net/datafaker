@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HololiveTest extends BaseFakerTest<BaseFaker> {
+class HololiveTest extends BaseFakerTest {
 
     private static final BaseFaker JA_FAKER = new BaseFaker(new Locale("ja"));
 

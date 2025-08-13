@@ -16,7 +16,7 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-class RelationshipTest extends BaseFakerTest<BaseFaker> {
+class RelationshipTest extends BaseFakerTest {
 
     private final BaseFaker mockFaker = spy(new BaseFaker());
     private final FakeValuesService fakeValuesService = mock();

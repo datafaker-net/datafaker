@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Collection;
 
-class WeatherTest extends BaseFakerTest<BaseFaker> {
+class WeatherTest extends BaseFakerTest {
 
     private final Weather weather = faker.weather();
 

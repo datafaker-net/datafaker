@@ -1,9 +1,9 @@
 package net.datafaker.providers.base;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
-class RobinTest extends BaseFakerTest<BaseFaker> {
+class RobinTest extends BaseFakerTest {
 
     @Override
     protected Collection<TestSpec> providerListTest() {

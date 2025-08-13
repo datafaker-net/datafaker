@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TeamTest extends BaseFakerTest<BaseFaker> {
+class TeamTest extends BaseFakerTest {
 
     private final Team team = faker.team();
 

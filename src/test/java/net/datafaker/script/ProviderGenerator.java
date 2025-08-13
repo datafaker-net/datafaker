@@ -1,7 +1,7 @@
 package net.datafaker.script;
 
 import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseFakerTest;
+import net.datafaker.providers.base.ProviderListTest;
 import net.datafaker.providers.base.ProviderRegistration;
 import net.datafaker.providers.entertainment.EntertainmentFakerTest;
 import net.datafaker.providers.entertainment.EntertainmentProviders;
@@ -157,9 +157,9 @@ enum ProviderType {
     ;
 
     private final Class<? extends ProviderRegistration> providerRegistryName;
-    private final Class<? extends BaseFakerTest<? extends ProviderRegistration>> testSuperclassName;
+    private final Class<? extends ProviderListTest<? extends ProviderRegistration>> testSuperclassName;
 
-    ProviderType(Class<? extends ProviderRegistration> providerRegistryName, Class<? extends BaseFakerTest<? extends ProviderRegistration>> testSuperclassName) {
+    ProviderType(Class<? extends ProviderRegistration> providerRegistryName, Class<? extends ProviderListTest<? extends ProviderRegistration>> testSuperclassName) {
         this.providerRegistryName = providerRegistryName;
         this.testSuperclassName = testSuperclassName;
     }

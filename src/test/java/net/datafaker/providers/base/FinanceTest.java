@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Collection;
 import java.util.Set;
 
-class FinanceTest extends BaseFakerTest<BaseFaker> {
+class FinanceTest extends BaseFakerTest {
 
     private final Finance finance = faker.finance();
 

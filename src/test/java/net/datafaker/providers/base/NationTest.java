@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NationTest extends BaseFakerTest<BaseFaker> {
+class NationTest extends BaseFakerTest {
 
     private final Nation nation = faker.nation();
 

@@ -1,15 +1,15 @@
 package net.datafaker.providers.sport;
 
-import net.datafaker.providers.base.BaseFakerTest;
+import net.datafaker.providers.base.ProviderListTest;
 import org.junit.jupiter.api.Nested;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-class FootballTest extends SportFakerTest {
+final class FootballTest extends SportFakerTest {
 
-    private final Football football = getFaker().football();
+    private final Football football = faker.football();
 
     private static Collection<TestSpec> getProviderListTests(Football football) {
         return List.of(
@@ -27,11 +27,13 @@ class FootballTest extends SportFakerTest {
     }
 
     @Nested
-    class FootballInGreekTest extends BaseFakerTest<SportFaker> {
+    final class FootballInGreekTest extends ProviderListTest<SportFaker> {
+
+        private final SportFaker faker = new SportFaker(new Locale("el", "GR"));
 
         @Override
-        protected final SportFaker getFaker() {
-            return new SportFaker(new Locale("el", "GR"));
+        protected SportFaker getFaker() {
+            return faker;
         }
 
         @Override

@@ -8,7 +8,7 @@ import java.util.List;
 import static java.lang.Float.parseFloat;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CommerceTest extends BaseFakerTest<BaseFaker> {
+class CommerceTest extends BaseFakerTest {
 
     private static final String CAPITALIZED_WORD_REGEX = "[A-Z][a-z]+";
 

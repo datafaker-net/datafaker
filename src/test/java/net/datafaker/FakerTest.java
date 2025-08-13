@@ -381,12 +381,12 @@ class FakerTest {
                 }
                 if (m.isAnnotationPresent(Deterministic.class)) {
                     assertThat(set)
-                        .as("Class: " + ap.getClass().getName()
+                        .as(() -> "Class: " + ap.getClass().getName()
                             + ", method: " + m.getName() + " should have the same return value")
                         .hasSize(1);
                 } else {
                     assertThat(set)
-                        .as("Class: " + ap.getClass().getName()
+                        .as(() -> "Class: " + ap.getClass().getName()
                             + ", method: " + m.getName() + " should generate different return values")
                         .hasSizeGreaterThan(1);
                 }

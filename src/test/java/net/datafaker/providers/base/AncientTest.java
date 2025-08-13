@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-class AncientTest extends BaseFakerTest<BaseFaker> {
+class AncientTest extends BaseFakerTest {
 
     private static Collection<TestSpec> getProviderListTests(Ancient ancient) {
         return List.of(
@@ -24,11 +24,13 @@ class AncientTest extends BaseFakerTest<BaseFaker> {
     }
 
     @Nested
-    class AncientInGreekTest extends BaseFakerTest<BaseFaker> {
+    final class AncientInGreekTest extends ProviderListTest<BaseFaker> {
+
+        private final BaseFaker faker = new BaseFaker(new Locale("el", "GR"));
 
         @Override
         protected BaseFaker getFaker() {
-            return new BaseFaker(new Locale("el", "GR"));
+            return faker;
         }
 
         @Override

@@ -3,12 +3,12 @@ package net.datafaker.providers.base;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import java.util.Collection;
-
-class CountryTest extends BaseFakerTest<BaseFaker> {
+class CountryTest extends BaseFakerTest {
 
     private final Country country = faker.country();
 
