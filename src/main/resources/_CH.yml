@@ -3,7 +3,7 @@
 _CH:
   faker:
     address:
-      country_code: [CH, CH, CH, DE, AT, US, LI, US, HK, VN]
+      country_code: [CH, DE, AT, US, LI, HK, VN]
       postcode: ['1###', '2###', '3###', '4###', '5###', '6###', '7###', '8###', '9###']
       state_abbr: [ZH, BE, LU, UR, SZ, OW, NW, GL, ZG, FR, SO, BS, BL, SH, AR, AI, SG, GR, AG, TG, TI, VD, VS, NE, GE, JU]
       time_zone: [MEZ, Europe/Berlin, Central European Time, CET]

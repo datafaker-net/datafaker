@@ -4,7 +4,7 @@ _DE:
     address:
       country_code: [ 'DE' ]
       building_number: ['###', '##', '#', '##a', '##b', '##c']
-      postcode: ['#####', '#####']
+      postcode: ['#####']
       state_abbr: [BW, BY, BE, BB, HB, HH, HE, MV, NI, NW, RP, SL, SN, ST, SH, TH]
       time_zone: [MEZ, Europe/Berlin, Central European Time, CET]
 
