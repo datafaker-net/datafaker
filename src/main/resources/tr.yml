@@ -18,9 +18,6 @@ tr:
       name_with_middle:
         - "#{prefix} #{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
 
     address:
       city_prefix: ["Kuzey","Doğu","Batı","Güney","Yeni","Göl","Liman"]

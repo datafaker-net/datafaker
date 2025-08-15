@@ -26,12 +26,6 @@ de-AT:
         - "#{prefix} #{first_name} #{last_name}"
         - "#{first_name} #{nobility_title_prefix} #{last_name}"
         - "#{first_name} #{last_name}"
-        - "#{first_name} #{last_name}"
-        - "#{first_name} #{last_name}"
-        - "#{first_name} #{last_name}"
       name_with_middle:
         - "#{prefix} #{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"

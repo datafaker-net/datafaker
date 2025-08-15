@@ -45,15 +45,8 @@ it:
       name:
         - "#{prefix} #{first_name} #{last_name}"
         - "#{first_name} #{last_name}"
-        - "#{first_name} #{last_name}"
-        - "#{first_name} #{last_name}"
-        - "#{first_name} #{last_name}"
-        - "#{first_name} #{last_name}"
       name_with_middle:
         - "#{prefix} #{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"
     subscription:
       plans: ["Prova gratuita", "Basico", "Starter", "Essential", "Studente", "Bronze", "Standard", "Silver", "Gold", "Platinum", "Profesional", "Business", "Diamond", "Premium"]

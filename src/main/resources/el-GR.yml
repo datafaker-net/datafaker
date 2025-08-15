@@ -1990,7 +1990,6 @@ el-GR:
       - "#{seniority} #{position} για #{field}"
       - "#{seniority} #{position} στον τομέα #{field}"
       - "#{field} #{position}"
-      - "#{field} #{position}"
       - "#{seniority} #{position}"
     measurement:
       height:
@@ -4484,10 +4483,4 @@ el-GR:
       - "#{prefix} #{male_first_name} #{male_last_name}"
       - "#{prefix} #{female_first_name} #{female_last_name}"
       - "#{male_first_name} #{male_last_name}"
-      - "#{male_first_name} #{male_last_name}"
-      - "#{male_first_name} #{male_last_name}"
-      - "#{male_first_name} #{male_last_name}"
-      - "#{female_first_name} #{female_last_name}"
-      - "#{female_first_name} #{female_last_name}"
-      - "#{female_first_name} #{female_last_name}"
       - "#{female_first_name} #{female_last_name}"

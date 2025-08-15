@@ -114,14 +114,8 @@ hu:
         - "#{last_name}#{suffix} #{first_name}"
         - "#{nobility_title} #{last_name} #{first_name}"
         - "#{last_name} #{first_name}"
-        - "#{last_name} #{first_name}"
-        - "#{last_name} #{first_name}"
-        - "#{last_name} #{first_name}"
       name_with_middle:
         - "#{prefix} #{last_name} #{first_name} #{first_name}"
-        - "#{last_name} #{first_name} #{first_name}"
-        - "#{last_name} #{first_name} #{first_name}"
-        - "#{last_name} #{first_name} #{first_name}"
         - "#{last_name} #{first_name} #{first_name}"
 
     space:

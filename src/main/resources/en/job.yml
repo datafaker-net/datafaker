@@ -99,7 +99,5 @@ en:
       - "Doctorate"
       title:
       - "#{seniority} #{field} #{position}"
-      - "#{seniority} #{field} #{position}"
-      - "#{field} #{position}"
       - "#{field} #{position}"
       - "#{seniority} #{position}"
