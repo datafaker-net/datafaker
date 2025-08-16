@@ -60,9 +60,6 @@ es-MX:
         - "#{prefix} #{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name} #{suffix}"
         - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
 
     subscription:
       plans: ["Prueba gratuita", "Basico", "Starter", "Essential", "Estudiante", Bronze", "Standard", "Silver", "Gold", "Platinum", "Profesional", "Business", "Diamond", "Premium"]

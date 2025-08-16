@@ -49,9 +49,6 @@ nb-NO:
         - "#{prefix} #{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name} #{suffix}"
         - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
 
     hacker:
       adjective: [online,multiplattform,virtuell,digital,backend,frontend,åpen kilde,primær,blåtann,trådløs,nevral,mobil,optisk,sårbar,ondsinnet,utnyttbar,inntrengende,skjult,sofistikert,vedvarende,uforutsigbar,kybernetisk]
