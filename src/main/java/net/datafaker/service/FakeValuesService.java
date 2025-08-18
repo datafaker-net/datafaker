@@ -563,7 +563,7 @@ public class FakeValuesService {
         }
         Schema<String, String> schema = Schema.of(fields);
         return CsvTransformer.<String>builder().separator(delimiter).quote(quote).header(withHeader)
-            .build().generate(schema, limit + 1);
+            .build().generate(schema, limit);
     }
 
     /**
