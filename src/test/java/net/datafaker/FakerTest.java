@@ -189,8 +189,8 @@ class FakerTest {
         String csvFullExpression = faker.expression("#{csv ';','\"','false','" + limit + "','first_name','#{Name.first_name}','last_name','#{Name.last_name}'}");
         String csvShortExpression = faker.expression("#{csv '" + limit + "','first_name','#{Name.first_name}','last_name','#{Name.last_name}'}");
 
-        int numberOfLinesFull = 0;
-        int numberOfLinesShort = 0;
+        int numberOfLinesFull = csvFullExpression.isEmpty() ? 0 : 1;
+        int numberOfLinesShort = numberOfLinesFull;
         for (int i = 0; i < csvFullExpression.length(); i++) {
             if (csvFullExpression.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
                 numberOfLinesFull++;
