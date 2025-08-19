@@ -31,7 +31,7 @@
         <commons-lang3.version>3.18.0</commons-lang3.version>
         <commons-text.version>1.14.0</commons-text.version>
         <commons-validator.version>1.10.0</commons-validator.version>
-        <rgxgen.version>3.0</rgxgen.version>
+        <rgxgen.version>3.1</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <jbanking.version>4.2.0</jbanking.version>
