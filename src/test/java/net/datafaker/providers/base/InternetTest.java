@@ -39,8 +39,7 @@ class InternetTest {
     @Test
     void testUsernameWithSpaces() {
         Name name = mock();
-        doReturn("Jin Quan").when(name).firstName();
-        doReturn("D'Artagnan").when(name).lastName();
+        doReturn("Jin Quan D'Artagnan").when(name).name();
 
         BaseFaker mockedFaker = new BaseFaker() {
             @Override
@@ -422,5 +421,24 @@ class InternetTest {
     @Test
     void testSlugWithNull() {
         assertThat(faker.internet().slug(null, "_")).isNotNull();
+    }
+
+    @Test
+    void testToLocalPart() {
+        assertThat(faker.internet().toLocalPart(null)).isNull();
+        assertThat(faker.internet().toLocalPart("")).isEmpty();
+        assertThat(faker.internet().toLocalPart(" ")).isBlank();
+        assertThat(faker.internet().toLocalPart("  ")).isBlank();
+
+        assertThat(faker.internet().toLocalPart("Hal")).isEqualTo("hal");
+        assertThat(faker.internet().toLocalPart("T-800")).isEqualTo("t800");
+        assertThat(faker.internet().toLocalPart("John McClane")).isEqualTo("john.mcclane");
+        assertThat(faker.internet().toLocalPart("Tom Marvolo Riddle")).isEqualTo("tom.riddle");
+        
+        assertThat(faker.internet().toLocalPart("Dr. Emmett Brown")).isEqualTo("emmett.brown");
+        assertThat(faker.internet().toLocalPart("Dr. Henry Indiana Jones Jr.")).isEqualTo("henry.jones");
+
+        assertThat(faker.internet().toLocalPart("Jeanne d'Arc")).isEqualTo("jeanne.darc");
+        assertThat(faker.internet().toLocalPart("Jeanne d’Arc")).isEqualTo("jeanne.darc");
     }
 }
