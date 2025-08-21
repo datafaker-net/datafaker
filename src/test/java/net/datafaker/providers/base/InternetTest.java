@@ -39,7 +39,8 @@ class InternetTest {
     @Test
     void testUsernameWithSpaces() {
         Name name = mock();
-        doReturn("Jin Quan D'Artagnan").when(name).name();
+        doReturn("Jin Quan").when(name).firstName();
+        doReturn("D'Artagnan").when(name).lastName();
 
         BaseFaker mockedFaker = new BaseFaker() {
             @Override
@@ -60,9 +61,42 @@ class InternetTest {
     }
 
     @Test
-    void testEmailAddressWithLocalPartParameter() {
-        String emailAddress = faker.internet().emailAddress("john");
-        assertThat(emailAddress).startsWith("john@");
+    void testEmailAddressWithNameParameter() {
+        String username = faker.internet().username();
+        String emailAddress = faker.internet().emailAddress(username);
+        assertThat(emailAddress).startsWith(username + "@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Hal");
+        assertThat(emailAddress).startsWith("hal@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("T-800");
+        assertThat(emailAddress).startsWith("t800@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("John McClane");
+        assertThat(emailAddress).startsWith("john.mcclane@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Tom Marvolo Riddle");
+        assertThat(emailAddress).startsWith("tom.riddle@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+        
+        emailAddress = faker.internet().emailAddress("Dr. Emmett Brown");
+        assertThat(emailAddress).startsWith("emmett.brown@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Dr. Henry Indiana Jones Jr.");
+        assertThat(emailAddress).startsWith("henry.jones@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Jeanne d'Arc");
+        assertThat(emailAddress).startsWith("jeanne.darc@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Jeanne d’Arc");
+        assertThat(emailAddress).startsWith("jeanne.darc@");
         assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
     }
 
@@ -81,11 +115,11 @@ class InternetTest {
     }
 
     @Test
-    void testSafeEmailAddressWithLocalPartParameter() {
+    void testSafeEmailAddressWithNameParameter() {
         List<String> emails = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            String emailAddress = faker.internet().safeEmailAddress("john");
-            assertThat(emailAddress).startsWith("john@");
+            String emailAddress = faker.internet().safeEmailAddress("John McClane");
+            assertThat(emailAddress).startsWith("john.mcclane@");
             assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
             emails.add(emailAddress);
         }
@@ -96,13 +130,13 @@ class InternetTest {
     }
 
     @Test
-    void testEmailAddressDoesNotIncludeAccentsInTheLocalPart() {
+    void testEmailAddressDoesNotIncludeAccents() {
         String emailAddress = faker.internet().emailAddress("áéíóú");
         assertThat(emailAddress).startsWith("aeiou@");
     }
 
     @Test
-    void testSafeEmailAddressDoesNotIncludeAccentsInTheLocalPart() {
+    void testSafeEmailAddressDoesNotIncludeAccents() {
         String emailAddress = faker.internet().safeEmailAddress("áéíóú");
         assertThat(emailAddress).startsWith("aeiou@");
     }
@@ -421,24 +455,5 @@ class InternetTest {
     @Test
     void testSlugWithNull() {
         assertThat(faker.internet().slug(null, "_")).isNotNull();
-    }
-
-    @Test
-    void testToLocalPart() {
-        assertThat(faker.internet().toLocalPart(null)).isNull();
-        assertThat(faker.internet().toLocalPart("")).isEmpty();
-        assertThat(faker.internet().toLocalPart(" ")).isBlank();
-        assertThat(faker.internet().toLocalPart("  ")).isBlank();
-
-        assertThat(faker.internet().toLocalPart("Hal")).isEqualTo("hal");
-        assertThat(faker.internet().toLocalPart("T-800")).isEqualTo("t800");
-        assertThat(faker.internet().toLocalPart("John McClane")).isEqualTo("john.mcclane");
-        assertThat(faker.internet().toLocalPart("Tom Marvolo Riddle")).isEqualTo("tom.riddle");
-        
-        assertThat(faker.internet().toLocalPart("Dr. Emmett Brown")).isEqualTo("emmett.brown");
-        assertThat(faker.internet().toLocalPart("Dr. Henry Indiana Jones Jr.")).isEqualTo("henry.jones");
-
-        assertThat(faker.internet().toLocalPart("Jeanne d'Arc")).isEqualTo("jeanne.darc");
-        assertThat(faker.internet().toLocalPart("Jeanne d’Arc")).isEqualTo("jeanne.darc");
     }
 }

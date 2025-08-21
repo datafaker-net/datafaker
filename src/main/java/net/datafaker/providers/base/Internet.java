@@ -20,21 +20,20 @@ import java.util.regex.Pattern;
  */
 public class Internet extends AbstractProvider<BaseProviders> {
     private static final Pattern COLON = Pattern.compile(":");
-    private static final Pattern LOCALPART_PATTERN = Pattern.compile("[^a-z0-9]");
     private static final List<String> HTTP_SCHEMES = List.of("http://", "https://");
 
     protected Internet(BaseProviders faker) {
         super(faker);
     }
 
+
     /**
-     * A lowercase username composed of the first_name and last_name joined with a
-     * '.'. Some examples are:
+     * A lowercase username composed of the first_name and last_name joined with a '.'. Some examples are:
      * <ul>
-     * <li>(template) {@link Name#firstName()}.{@link Name#lastName()}</li>
-     * <li>jim.jones</li>
-     * <li>jason.leigh</li>
-     * <li>tracy.jordan</li>
+     *     <li>(template) {@link Name#firstName()}.{@link Name#lastName()}</li>
+     *     <li>jim.jones</li>
+     *     <li>jason.leigh</li>
+     *     <li>tracy.jordan</li>
      * </ul>
      *
      * @return a random two part username.
@@ -42,49 +41,58 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @see Name#lastName()
      */
     public String username() {
-        return toLocalPart(faker.name().name());
+        StringBuilder result = new StringBuilder();
+        final Name name = faker.name();
+        final String firstName = name.firstName().toLowerCase(faker.getContext().getLocale())
+            + "." + name.lastName().toLowerCase(faker.getContext().getLocale());
+        for (int i = 0; i < firstName.length(); i++) {
+            final char c = firstName.charAt(i);
+            if (c == '\'' || Character.isWhitespace(c)) {
+                continue;
+            }
+            result.append(c);
+        }
+        return result.toString();
     }
 
-    /**
-     * Converts a name to a local part (the part before the '@') of an email
-     * address.
-     * 
-     * Will use the first and last names of the provided name, ignoring middle
-     * names, and will remove any prefixes or suffixes that are defined in the
-     * faker's configuration.
-     *
-     * <p>
-     * Example usage:
-     * </p>
-     * 
-     * <pre>
-     * {@code
-     * System.out.println(faker.internet().toLocalPart(null)); // null
-     * System.out.println(faker.internet().toLocalPart("")); // ""
-     * System.out.println(faker.internet().toLocalPart(" ")); // " "
-     * System.out.println(faker.internet().toLocalPart("Hal")); // hal
-     * System.out.println(faker.internet().toLocalPart("John McClane")); // john.mcclane
-     * System.out.println(faker.internet().toLocalPart("Stephen Vincent Strange")); // stephen.strange
-     * System.out.println(faker.internet().toLocalPart("Dr. Henry Indiana Jones Jr.")); // henry.jones
-     * System.out.println(faker.internet().toLocalPart("Jeanne d'Arc")); // jeanne.darc
-     * }
-     * </pre>
-     * 
-     * @param name the name to convert
-     * @return the local part of the email address
-     * @since 2.4.5
-     * @see Internet#emailAddress(String)
-     */
-    public String toLocalPart(String name) {
-        if (name == null) {
-            return null;
-        }
+    public String emailAddress() {
+        return emailAddress(faker.internet().username());
+    }
 
-        if (name.isBlank()) {
-            return name;
-        }
+    public String emailAddress(String name) {
+        return emailAddress(toLocalPart(name), FakerIDN.toASCII(faker.resolve("internet.free_email")));
+    }
 
-        String[] parts = name.split(" ");
+    public String safeEmailAddress() {
+        return safeEmailAddress(faker.internet().username());
+    }
+
+    public String safeEmailAddress(String name) {
+        return emailAddress(toLocalPart(name), FakerIDN.toASCII(faker.resolve("internet.safe_email")));
+    }
+
+    private String emailAddress(String localPart, String domain) {
+        return String.join("", stripAccents(localPart), "@", domain);
+    }
+
+    public String emailSubject() {
+        return resolve("internet.email_subject");
+    }
+
+    public static final Pattern DIACRITICS_AND_FRIENDS
+        = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
+
+    private String stripAccents(String input) {
+        // strip accents from input
+        String str = Normalizer.normalize(input, Normalizer.Form.NFD);
+        str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
+        return str;
+    }
+
+    public static final Pattern LOCALPART = Pattern.compile("[^a-z0-9\\.]");
+
+    private String toLocalPart(String name) {
+        String[] parts = stripAccents(name).split(" ");
 
         Object prefixObj = faker.fakeValuesService().fetchObject("name.prefix", faker.getContext());
         final List<String> prefixList = (prefixObj instanceof List<?> list
@@ -104,48 +112,17 @@ public class Internet extends AbstractProvider<BaseProviders> {
             parts = Arrays.copyOfRange(parts, 0, parts.length - 1);
         }
 
-        if (parts.length < 2) {
-            return LOCALPART_PATTERN.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll("");
+        if (parts.length == 0) {
+            return LOCALPART.matcher(name.toLowerCase(faker.getContext().getLocale())).replaceAll("");
+        }
+
+        if (parts.length == 1) {
+            return LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll("");
         }
 
         return String.join(".",
-                LOCALPART_PATTERN.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll(""),
-                LOCALPART_PATTERN.matcher(parts[parts.length - 1].toLowerCase(faker.getContext().getLocale()))
-                        .replaceAll(""));
-    }
-
-    public String emailAddress() {
-        return emailAddress(faker.internet().username());
-    }
-
-    public String emailAddress(String localPart) {
-        return emailAddress(localPart, FakerIDN.toASCII(faker.resolve("internet.free_email")));
-    }
-
-    public String safeEmailAddress() {
-        return safeEmailAddress(faker.internet().username());
-    }
-
-    public String safeEmailAddress(String localPart) {
-        return emailAddress(localPart, FakerIDN.toASCII(faker.resolve("internet.safe_email")));
-    }
-
-    private String emailAddress(String localPart, String domain) {
-        return String.join("", stripAccents(localPart), "@", domain);
-    }
-
-    public String emailSubject() {
-        return resolve("internet.email_subject");
-    }
-
-    public static final Pattern DIACRITICS_AND_FRIENDS = Pattern
-            .compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
-
-    private String stripAccents(String input) {
-        // strip accents from input
-        String str = Normalizer.normalize(input, Normalizer.Form.NFD);
-        str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
-        return str;
+            LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll(""),
+            LOCALPART.matcher(parts[parts.length - 1].toLowerCase(faker.getContext().getLocale())).replaceAll(""));
     }
 
     public String domainName() {
@@ -154,7 +131,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
     public String domainWord() {
         return FakerIDN.toASCII(
-                faker.name().lastName().toLowerCase(faker.getContext().getLocale()).replace("'", ""));
+            faker.name().lastName().toLowerCase(faker.getContext().getLocale()).replace("'", ""));
     }
 
     public String domainSuffix() {
@@ -162,10 +139,8 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Returns a string representing a web URL, randomly including: http/https
-     * scheme, port, path
-     * elements (2 or none), file element (1 or none), params (2 or none), anchor (1
-     * or none).
+     * Returns a string representing a web URL, randomly including: http/https scheme, port, path
+     * elements (2 or none), file element (1 or none), params (2 or none), anchor (1 or none).
      *
      * @return a web URL
      * @since 2.0.0
@@ -173,38 +148,28 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public String url() {
         final byte[] bts = faker.random().nextRandomBytes(6);
         return url(bts[0] % 2 == 0, bts[1] % 2 == 0,
-                bts[2] % 2 == 0, bts[3] % 2 == 0,
-                bts[4] % 2 == 0, bts[5] % 2 == 0);
+            bts[2] % 2 == 0, bts[3] % 2 == 0,
+            bts[4] % 2 == 0, bts[5] % 2 == 0);
     }
 
     /**
-     * Returns a string representing a web URL, with various elements controlled by
-     * the caller.
+     * Returns a string representing a web URL, with various elements controlled by the caller.
      *
-     * @param schemeChoice if true will be random http or https, if false will be
-     *                     https
-     * @param portChoice   if true a random port will be included, if false no port
-     *                     will be included
-     * @param pathChoice   if true two random path elements will be included, if
-     *                     false no path elements will be included
-     * @param fileChoice   if true the path will end with a random word element
-     *                     instead of a slash, if false it will end with a slash
-     * @param paramsChoice if true two random name value pairs will be included, if
-     *                     false no params will be included
-     * @param anchorChoice if true a random anchor will be included, if false no
-     *                     anchor will be included
+     * @param schemeChoice if true will be random http or https, if false will be https
+     * @param portChoice   if true a random port will be included, if false no port will be included
+     * @param pathChoice   if true two random path elements will be included, if false no path elements will be included
+     * @param fileChoice   if true the path will end with a random word element instead of a slash, if false it will end with a slash
+     * @param paramsChoice if true two random name value pairs will be included, if false no params will be included
+     * @param anchorChoice if true a random anchor will be included, if false no anchor will be included
      * @return a web URL
      * @since 2.0.0
      */
-    public String url(boolean schemeChoice, boolean portChoice, boolean pathChoice, boolean fileChoice,
-            boolean paramsChoice, boolean anchorChoice) {
+    public String url(boolean schemeChoice, boolean portChoice, boolean pathChoice, boolean fileChoice, boolean paramsChoice, boolean anchorChoice) {
         String scheme = schemeChoice ? HTTP_SCHEMES.get(faker.random().nextInt(0, 1)) : "https://";
         String port = portChoice ? (":" + port()) : "";
         String path = pathChoice ? ("/" + slug(faker.lorem().words(2), "/")) : "/";
         String file = fileChoice ? faker.lorem().words(1).get(0) : "";
-        String params = paramsChoice
-                ? ("?" + slug(faker.lorem().words(2), "=") + "&" + slug(faker.lorem().words(2), "="))
-                : "";
+        String params = paramsChoice ? ("?" + slug(faker.lorem().words(2), "=") + "&" + slug(faker.lorem().words(2), "=")) : "";
         String anchor = anchorChoice ? ("#" + faker.lorem().words(1).get(0)) : "";
         return scheme + webdomain() + port + path + file + params + anchor;
     }
@@ -217,13 +182,15 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public String webdomain() {
         return String.join("",
-                "www", ".",
-                FakerIDN.toASCII(
-                        faker.name().firstName().toLowerCase(
-                                faker.getContext().getLocale()).replace("'", "") + "-" +
-                                domainWord()),
-                ".",
-                domainSuffix());
+            "www", ".",
+            FakerIDN.toASCII(
+                faker.name().firstName().toLowerCase(
+                    faker.getContext().getLocale()).replace("'", "") + "-" +
+                    domainWord()
+            ),
+            ".",
+            domainSuffix()
+        );
     }
 
     public String image() {
@@ -267,8 +234,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return password(minimumLength, maximumLength, includeUppercase, includeSpecial, true);
     }
 
-    public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial,
-            boolean includeDigit) {
+    public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
 
@@ -282,10 +248,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * <p>
-     * Returns a MAC address in the following format: 6-bytes in MM:MM:MM:SS:SS:SS
-     * format.
-     * </p>
+     * <p>Returns a MAC address in the following format: 6-bytes in MM:MM:MM:SS:SS:SS format.</p>
      *
      * @param prefix a prefix to put on the front of the address
      * @return a correctly formatted MAC address
@@ -293,8 +256,8 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public String macAddress(String prefix) {
         final String tmp = (prefix == null) ? "" : prefix;
         final int prefixLength = tmp.trim().isEmpty()
-                ? 0
-                : COLON.split(tmp).length;
+            ? 0
+            : COLON.split(tmp).length;
 
         final StringBuilder out = new StringBuilder(tmp);
         for (int i = 0; i < 6 - prefixLength; i++) {
@@ -329,8 +292,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @return an IPv4 address.
      */
     public InetAddress getIpV4Address() {
-        return inet4Address((byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2),
-                (byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2));
+        return inet4Address((byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2));
     }
 
     /**
@@ -344,14 +306,14 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @return a private IPV4 address
      */
     public InetAddress getPrivateIpV4Address() {
-        final Byte[] PRIVATE_FIRST_OCTET = { 10, 127, (byte) 169, (byte) 192, (byte) 172 };
-        final Byte[] PRIVATE_SECOND_OCTET_172 = { 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
+        final Byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
+        final Byte[] PRIVATE_SECOND_OCTET_172 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 
         final RandomService r = faker.random();
         byte first = random(PRIVATE_FIRST_OCTET),
-                second = (byte) r.nextInt(256),
-                third = (byte) r.nextInt(256),
-                fourth = (byte) r.nextInt(256);
+            second = (byte) r.nextInt(256),
+            third = (byte) r.nextInt(256),
+            fourth = (byte) r.nextInt(256);
 
         switch (first) {
             case (byte) 172 -> second = random(PRIVATE_SECOND_OCTET_172);
@@ -374,12 +336,12 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public InetAddress getPublicIpV4Address() {
         final RandomService r = faker.random();
 
-        final byte[] PRIVATE_FIRST_OCTET = { 10, 127, (byte) 169, (byte) 192, (byte) 172 };
+        final byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
 
         byte first = (byte) r.nextInt(256),
-                second = (byte) r.nextInt(256),
-                third = (byte) r.nextInt(256),
-                fourth = (byte) r.nextInt(256);
+            second = (byte) r.nextInt(256),
+            third = (byte) r.nextInt(256),
+            fourth = (byte) r.nextInt(256);
 
         while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
             first = (byte) r.nextInt(256);
@@ -392,14 +354,12 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public String ipV4Cidr() {
         return ipV4Address() +
-                '/' +
-                (faker.random().nextInt(31) + 1);
+            '/' +
+            (faker.random().nextInt(31) + 1);
     }
 
     /**
-     * <p>
-     * Returns an IPv6 address in hh:hh:hh:hh:hh:hh:hh:hh format.
-     * </p>
+     * <p>Returns an IPv6 address in hh:hh:hh:hh:hh:hh:hh:hh format.</p>
      *
      * @return a correctly formatted IPv6 address.
      */
@@ -408,9 +368,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * <p>
-     * Returns an IPv6 address in hh:hh:hh:hh:hh:hh:hh:hh format.
-     * </p>
+     * <p>Returns an IPv6 address in hh:hh:hh:hh:hh:hh:hh:hh format.</p>
      *
      * @return a IPV6 address.
      */
@@ -433,13 +391,12 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public String ipV6Cidr() {
         return ipV6Address() +
-                '/' +
-                (faker.random().nextInt(127) + 1);
+            '/' +
+            (faker.random().nextInt(127) + 1);
     }
 
     /**
-     * @return a slug using '_' as the word separator and two {@link Lorem} words as
-     *         the values
+     * @return a slug using '_' as the word separator and two {@link Lorem} words as the values
      */
     public String slug() {
         return slug(faker.lorem().words(2), "_");
@@ -452,11 +409,11 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     public String slug(List<String> wordsOrNull, String glueOrNull) {
         final String glue = glueOrNull == null
-                ? "_"
-                : glueOrNull;
+            ? "_"
+            : glueOrNull;
         final List<String> words = wordsOrNull == null
-                ? faker.lorem().words(2)
-                : wordsOrNull;
+            ? faker.lorem().words(2)
+            : wordsOrNull;
 
         final StringBuilder slug = new StringBuilder();
         for (int i = 0; i < words.size(); i++) {
@@ -471,8 +428,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     /**
      * Returns a UUID (type 3) as String.
      * Use this method (instead of {@link #uuid() uuid}) if you are
-     * using a constant random seed and require the same output for different faker
-     * instances. *
+     * using a constant random seed and require the same output for different faker instances.     *
      *
      * @return a uuid as string.
      */
@@ -501,13 +457,12 @@ public class Internet extends AbstractProvider<BaseProviders> {
         long leastSigBits = bb.getLong(8);
 
         // Set the version to 7 (bits 4-7 of the time_hi_and_version field)
-        mostSigBits &= ~(0xF000L); // clear version
-        mostSigBits |= 0x7000L; // set to version 7
+        mostSigBits &= ~(0xF000L);  // clear version
+        mostSigBits |= 0x7000L;     // set to version 7
 
-        // Set the variant to IETF variant (bits 6-7 of the clock_seq_hi_and_reserved
-        // field)
+        // Set the variant to IETF variant (bits 6-7 of the clock_seq_hi_and_reserved field)
         leastSigBits &= ~(0xC000000000000000L); // clear variant
-        leastSigBits |= 0x8000000000000000L; // set to IETF variant
+        leastSigBits |= 0x8000000000000000L;    // set to IETF variant
 
         return new UUID(mostSigBits, leastSigBits).toString();
     }
@@ -515,8 +470,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     /**
      * Returns a UUID (type 4) as String.
      * <p>
-     * This returns a repeatable version of a version 4 UUID, which is a bit against
-     * the idea of a version 4 UUID,
+     * This returns a repeatable version of a version 4 UUID, which is a bit against the idea of a version 4 UUID,
      * but this is a faker library, not a UUID library.
      *
      * @return a v4 uuid as string.
@@ -554,7 +508,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         OPERA("opera"),
         SAFARI("safari");
 
-        // Browser's name in corresponding yaml (internet.yml) file.
+        //Browser's name in corresponding yaml (internet.yml) file.
         private final String browserName;
 
         UserAgent(String browserName) {
@@ -595,7 +549,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         BAIDUSPIDER("baiduspider"),
         YANDEXBOT("yandexbot");
 
-        // Browser's name in corresponding yaml (internet.yml) file.
+        //Browser's name in corresponding yaml (internet.yml) file.
         private final String browserName;
 
         BotUserAgent(String browserName) {
@@ -616,10 +570,9 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
     private static InetAddress inet4Address(byte first, byte second, byte third, byte fourth) {
         try {
-            return Inet4Address.getByAddress(new byte[] { first, second, third, fourth });
+            return Inet4Address.getByAddress(new byte[]{first, second, third, fourth});
         } catch (UnknownHostException e) {
-            throw new RuntimeException(
-                    "Failed to create Inet4Address from %s %s %s %s".formatted(first, second, third, fourth), e);
+            throw new RuntimeException("Failed to create Inet4Address from %s %s %s %s".formatted(first, second, third, fourth), e);
         }
     }
 
