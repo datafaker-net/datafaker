@@ -1,10 +1,7 @@
 package net.datafaker.providers.base;
 
-import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -31,16 +28,7 @@ public class Nation extends AbstractProvider<BaseProviders> {
     }
 
     public String flag() {
-        @SuppressWarnings("unchecked")
-        List<Integer> flagInts = (List<Integer>) faker.fakeValuesService().fetch("nation.flag", faker.getContext());
-
-        ByteBuffer byteBuffer = MappedByteBuffer.allocate(flagInts.size());
-
-        for (Integer flagInt : flagInts) {
-            byteBuffer.put(flagInt.byteValue());
-        }
-
-        return new String(byteBuffer.array(), UTF8_CHARSET);
+        return resolve("nation.flag");
     }
 
     public String isoLanguage() {
