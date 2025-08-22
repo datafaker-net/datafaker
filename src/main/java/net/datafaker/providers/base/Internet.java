@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.text.Normalizer;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -58,16 +59,49 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return emailAddress(faker.internet().username());
     }
 
-    public String emailAddress(String localPart) {
-        return emailAddress(localPart, FakerIDN.toASCII(faker.resolve("internet.free_email")));
+    /**
+     * Returns an email address based on the provided name and a random domain (from "internet.free_email").
+     * <p>
+     * Example usage:
+     * </p>
+     * <pre>
+     * {@code
+     * faker.internet().emailAddress("Hal")); // hal@gmail.com
+     * faker.internet().emailAddress("John McClane")); // john.mcclane@yahoo.com
+     * faker.internet().emailAddress("Stephen Vincent Strange")); // stephen.strange@hotmail.com
+     * faker.internet().emailAddress("Dr. Henry Indiana Jones Jr.")); // henry.jones@gmail.com
+     * faker.internet().emailAddress("Jeanne d'Arc")); // jeanne.darc@yahoo.com
+     * }
+     * </pre>
+     *
+     * @param name The name to be used for generating the local part of the email address.
+     * @return A String representing an email address.
+     * @see Name#name()
+     * @see Name#nameWithMiddle()
+     */
+    public String emailAddress(String name) {
+        return emailAddress(toLocalPart(name), FakerIDN.toASCII(faker.resolve("internet.free_email")));
     }
 
     public String safeEmailAddress() {
         return safeEmailAddress(faker.internet().username());
     }
 
-    public String safeEmailAddress(String localPart) {
-        return emailAddress(localPart, FakerIDN.toASCII(faker.resolve("internet.safe_email")));
+    /**
+     * Returns an email address based on the provided name and a safe domain (from "internet.safe_email").
+     * <pre>
+     * {@code
+     * faker.internet().safeEmailAddress("John McClane")); // john.mcclane@example.com
+     * }
+     * </pre>
+     * @param name The name to be used for generating the local part of the email address.
+     * @return A String representing an email address.
+     * @see Name#name()
+     * @see Name#nameWithMiddle()
+     * @see #emailAddress(String)
+     */
+    public String safeEmailAddress(String name) {
+        return emailAddress(toLocalPart(name), FakerIDN.toASCII(faker.resolve("internet.safe_email")));
     }
 
     private String emailAddress(String localPart, String domain) {
@@ -86,6 +120,54 @@ public class Internet extends AbstractProvider<BaseProviders> {
         String str = Normalizer.normalize(input, Normalizer.Form.NFD);
         str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
         return str;
+    }
+
+    private static final Pattern LOCALPART = Pattern.compile("[^a-z0-9\\.]");
+
+    /**
+     * Converts a name to a local part (the part before the '@') of an email
+     * address.
+     * 
+     * Will use the first and last names of the provided name, ignoring middle
+     * names, and will remove any prefixes or suffixes that are defined in the
+     * faker's configuration.
+     * 
+     * @param name The name ({@link Name}) to be converted to a local part.
+     * @return A String representing the local part of an email address.
+     * @since 2.4.5
+     */
+    private String toLocalPart(String name) {
+        String[] parts = stripAccents(name).split(" ");
+
+        Object prefixObj = faker.fakeValuesService().fetchObject("name.prefix", faker.getContext());
+        final List<String> prefixList = (prefixObj instanceof List<?> list
+                && list.stream().allMatch(String.class::isInstance))
+                        ? list.stream().map(String.class::cast).toList()
+                        : Collections.emptyList();
+        if (prefixList.contains(parts[0])) {
+            parts = Arrays.copyOfRange(parts, 1, parts.length);
+        }
+
+        Object suffixObj = faker.fakeValuesService().fetchObject("name.suffix", faker.getContext());
+        final List<String> suffixList = (suffixObj instanceof List<?> list
+                && list.stream().allMatch(String.class::isInstance))
+                        ? list.stream().map(String.class::cast).toList()
+                        : Collections.emptyList();
+        if (suffixList.contains(parts[parts.length - 1])) {
+            parts = Arrays.copyOfRange(parts, 0, parts.length - 1);
+        }
+
+        if (parts.length == 0) {
+            return LOCALPART.matcher(name.toLowerCase(faker.getContext().getLocale())).replaceAll("");
+        }
+
+        if (parts.length == 1) {
+            return LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll("");
+        }
+
+        return String.join(".",
+            LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll(""),
+            LOCALPART.matcher(parts[parts.length - 1].toLowerCase(faker.getContext().getLocale())).replaceAll(""));
     }
 
     public String domainName() {

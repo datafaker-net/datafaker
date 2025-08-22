@@ -61,9 +61,42 @@ class InternetTest {
     }
 
     @Test
-    void testEmailAddressWithLocalPartParameter() {
-        String emailAddress = faker.internet().emailAddress("john");
-        assertThat(emailAddress).startsWith("john@");
+    void testEmailAddressWithNameParameter() {
+        String username = faker.internet().username();
+        String emailAddress = faker.internet().emailAddress(username);
+        assertThat(emailAddress).startsWith(username + "@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Hal");
+        assertThat(emailAddress).startsWith("hal@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("T-800");
+        assertThat(emailAddress).startsWith("t800@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("John McClane");
+        assertThat(emailAddress).startsWith("john.mcclane@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Tom Marvolo Riddle");
+        assertThat(emailAddress).startsWith("tom.riddle@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+        
+        emailAddress = faker.internet().emailAddress("Dr. Emmett Brown");
+        assertThat(emailAddress).startsWith("emmett.brown@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Dr. Henry Indiana Jones Jr.");
+        assertThat(emailAddress).startsWith("henry.jones@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Jeanne d'Arc");
+        assertThat(emailAddress).startsWith("jeanne.darc@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        emailAddress = faker.internet().emailAddress("Jeanne d’Arc");
+        assertThat(emailAddress).startsWith("jeanne.darc@");
         assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
     }
 
@@ -82,11 +115,11 @@ class InternetTest {
     }
 
     @Test
-    void testSafeEmailAddressWithLocalPartParameter() {
+    void testSafeEmailAddressWithNameParameter() {
         List<String> emails = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            String emailAddress = faker.internet().safeEmailAddress("john");
-            assertThat(emailAddress).startsWith("john@");
+            String emailAddress = faker.internet().safeEmailAddress("John McClane");
+            assertThat(emailAddress).startsWith("john.mcclane@");
             assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
             emails.add(emailAddress);
         }
