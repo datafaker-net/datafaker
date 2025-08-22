@@ -122,7 +122,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return str;
     }
 
-    public static final Pattern LOCALPART = Pattern.compile("[^a-z0-9\\.]");
+    private static final Pattern LOCALPART = Pattern.compile("[^a-z0-9\\.]");
 
     /**
      * Converts a name to a local part (the part before the '@') of an email
