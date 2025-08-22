@@ -115,13 +115,13 @@ class WeightedRandomSelectorTest {
     @ParameterizedTest
     @MethodSource("multipleElementsProvider")
     void testWeightedArrayElementWithMultipleElements(List<Map<String, Object>> items, Map<String, Integer> expectedCounts) {
-        WeightedRandomSelector selector = new WeightedRandomSelector(new Random());
+        WeightedRandomSelector selector = new WeightedRandomSelector(new EvenlyDistributedRandomGenerator(0, 1, ITERATIONS));
 
         Map<String, Integer> counts = countResults(selector, items);
 
         assertThat(counts.keySet()).containsExactlyInAnyOrderElementsOf(expectedCounts.keySet());
         for (String element : expectedCounts.keySet()) {
-            assertThat(counts.get(element)).isCloseTo(expectedCounts.get(element), withinPercentage(20));
+            assertThat(counts.get(element)).isCloseTo(expectedCounts.get(element), withinPercentage(1));
         }
     }
 
