@@ -137,6 +137,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(CPF.class, CPF::new);
     }
 
+    default Credential credential() {
+        return getProvider(Credential.class, Credential::new);
+    }
+
     default CryptoCoin cryptoCoin() {
         return getProvider(CryptoCoin.class, CryptoCoin::new);
     }
