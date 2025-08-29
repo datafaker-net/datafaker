@@ -139,6 +139,5 @@ class CredentialTest {
 
         uid = faker.credential().userId("");
         assertThat(uid).isEmpty();
-        System.out.println(uid);
     }
 }
