@@ -1,6 +1,7 @@
 net.datafaker.idnumbers.AlbanianIdNumber
 net.datafaker.idnumbers.AmericanIdNumber
 net.datafaker.idnumbers.BulgarianIdNumber
+net.datafaker.idnumbers.BrazilIdNumber
 net.datafaker.idnumbers.ChineseIdNumber
 net.datafaker.idnumbers.EstonianIdNumber
 net.datafaker.idnumbers.FrenchIdNumber

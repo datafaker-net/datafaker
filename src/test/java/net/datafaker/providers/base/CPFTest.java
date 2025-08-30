@@ -3,15 +3,13 @@ package net.datafaker.providers.base;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 
-import java.util.regex.Pattern;
-
+import static net.datafaker.helpers.IdNumberPatterns.BRAZILIAN;
 import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 class CPFTest {
 
-    public static final Pattern CPF_EXPRESSION = Pattern.compile("(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)");
     private final Faker faker = new Faker();
 
     /**
@@ -36,9 +34,9 @@ class CPFTest {
      */
     @RepeatedTest(100)
     void formattedCPF() {
-        assertThat(faker.cpf().valid()).matches(CPF_EXPRESSION);
-        assertThat(faker.cpf().valid(true)).matches(CPF_EXPRESSION);
-        assertThat(faker.cpf().invalid()).matches(CPF_EXPRESSION);
-        assertThat(faker.cpf().invalid(true)).matches(CPF_EXPRESSION);
+        assertThat(faker.cpf().valid()).matches(BRAZILIAN);
+        assertThat(faker.cpf().valid(true)).matches(BRAZILIAN);
+        assertThat(faker.cpf().invalid()).matches(BRAZILIAN);
+        assertThat(faker.cpf().invalid(true)).matches(BRAZILIAN);
     }
 }

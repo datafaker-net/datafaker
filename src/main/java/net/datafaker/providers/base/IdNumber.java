@@ -147,7 +147,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Generate a valid Chinese id number
+     * Generate a valid Portuguese ID number
      *
      * @deprecated Instead of calling this method directly, use faker with locale:
      * <pre>
@@ -202,6 +202,14 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     /**
      * Generates a valid PESEL number for a person of random gender and age between
      * 0 and 100.
+     *
+     * @deprecated Instead of calling this method directly, use faker with locale:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("pl", "PL"));
+     *   String idNumber = faker.idNumber().valid();
+     * }
+     * </pre>
      *
      * @return A valid PESEL number
      */
