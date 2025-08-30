@@ -77,6 +77,7 @@ public class EnFile {
         "cosmere.yml",
         "country.yml",
         "cowboy_bebop.yml",
+        "credential.yml",
         "cricket.yml",
         "crypto_coin.yml",
         "culture_series.yml",

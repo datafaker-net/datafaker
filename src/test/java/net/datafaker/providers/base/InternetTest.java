@@ -1,6 +1,8 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.Faker;
+import net.datafaker.service.FakeValuesService;
+
 import org.apache.commons.validator.routines.EmailValidator;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -20,6 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 class InternetTest {
 
@@ -97,6 +102,34 @@ class InternetTest {
 
         emailAddress = faker.internet().emailAddress("Jeanne d’Arc");
         assertThat(emailAddress).startsWith("jeanne.darc@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+    }
+
+    @Test
+    void testEmailAddressTypeSafety() {
+        Faker spyedFaker = spy();
+        FakeValuesService mockedFakeValuesService = mock();
+        
+        when(spyedFaker.fakeValuesService()).thenReturn(mockedFakeValuesService);
+        when(mockedFakeValuesService.fetchObject("name.prefix", spyedFaker.getContext()))
+            .thenReturn(Collections.emptySet());
+        when(mockedFakeValuesService.fetchObject("name.suffix", spyedFaker.getContext()))
+            .thenReturn(Collections.emptySet());
+
+        String emailAddress = spyedFaker.internet().emailAddress("John McClane");
+        assertThat(emailAddress).startsWith("john.mcclane@");
+        assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
+
+        List<Integer> wrongListType = new ArrayList<>();
+        wrongListType.add(1);
+
+        when(mockedFakeValuesService.fetchObject("name.prefix", spyedFaker.getContext()))
+            .thenReturn(wrongListType);
+        when(mockedFakeValuesService.fetchObject("name.suffix", spyedFaker.getContext()))
+            .thenReturn(wrongListType);
+
+        emailAddress = spyedFaker.internet().emailAddress("John McClane");
+        assertThat(emailAddress).startsWith("john.mcclane@");
         assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
     }
 
