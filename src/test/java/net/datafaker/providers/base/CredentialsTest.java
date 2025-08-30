@@ -12,12 +12,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-class CredentialTest {
+class CredentiasTest {
     private final BaseFaker faker = new BaseFaker();
 
     @RepeatedTest(100)
     void testUsername() {
-        assertThat(faker.credential().username()).matches("^(\\w+)\\.(\\w+)$");
+        assertThat(faker.credentials().username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
     @Test
@@ -32,7 +32,7 @@ class CredentialTest {
                 return name;
             }
         };
-        assertThat(mockedFaker.credential().username())
+        assertThat(mockedFaker.credentials().username())
             .doesNotContain(" ", "'")
             .matches("^(\\w+)\\.(\\w+)$")
             .matches("^\\p{javaLowerCase}+\\.\\p{javaLowerCase}+$");
@@ -40,22 +40,22 @@ class CredentialTest {
 
     @RepeatedTest(100)
     void testPassword() {
-        assertThat(faker.credential().password()).hasSizeBetween(8, 16).matches("^[a-z0-9]+$");
+        assertThat(faker.credentials().password()).hasSizeBetween(8, 16).matches("^[a-z0-9]+$");
     }
 
     @RepeatedTest(100)
     void testPasswordWithoutDigits() {
-        assertThat(faker.credential().password(false)).hasSizeBetween(8, 16).matches("^[a-z]+$");
+        assertThat(faker.credentials().password(false)).hasSizeBetween(8, 16).matches("^[a-z]+$");
     }
 
     @RepeatedTest(100)
     void testPasswordWithSpecificSize() {
-        assertThat(faker.credential().password(3, 7)).hasSizeBetween(3, 7).matches("^[a-z0-9]+$");
+        assertThat(faker.credentials().password(3, 7)).hasSizeBetween(3, 7).matches("^[a-z0-9]+$");
     }
 
     @RepeatedTest(100)
     void testPasswordWithSpecificSizeAndUppercase() {
-        assertThat(faker.credential().password(8, 16, true)).hasSizeBetween(8, 16).matches("^[a-zA-Z0-9]+$");
+        assertThat(faker.credentials().password(8, 16, true)).hasSizeBetween(8, 16).matches("^[a-zA-Z0-9]+$");
     }
 
     @Test
@@ -63,7 +63,7 @@ class CredentialTest {
         final Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
         final Pattern digitPattern = Pattern.compile("[0-9]");
         for (int i = 0; i < 1000; i++) {
-            String password = faker.credential().password(8, 16, true, true, true);
+            String password = faker.credentials().password(8, 16, true, true, true);
             Matcher specialCharacterMatcher = specialCharacterPattern.matcher(password);
             Matcher digitMatcher = digitPattern.matcher(password);
 
@@ -79,7 +79,7 @@ class CredentialTest {
     void passwordSpecial() {
         boolean check = true;
         for (int i = 0; i < 10; i++) {
-            String password = faker.credential().password(8, 16, true, true, true);
+            String password = faker.credentials().password(8, 16, true, true, true);
             Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
             Matcher specialCharacterMatcher = specialCharacterPattern.matcher(password);
             if (!specialCharacterMatcher.find()) {
@@ -95,7 +95,7 @@ class CredentialTest {
     void passwordMix() {
         boolean check = true;
         for (int i = 0; i < 10; i++) {
-            String password = faker.credential().password(8, 16, true, true, true);
+            String password = faker.credentials().password(8, 16, true, true, true);
             Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
             Matcher specialCharacterMatcher = specialCharacterPattern.matcher(password);
             Pattern digitPattern = Pattern.compile("[0-9]");
@@ -114,30 +114,31 @@ class CredentialTest {
 
     @Test
     void weakPassword() {
-        Object obj = faker.fakeValuesService().fetchObject("credential.weak_password", faker.getContext());
+        Object obj = faker.fakeValuesService().fetchObject("credentials.weak_password", faker.getContext());
         final List<String> list = (obj instanceof List<?> l
                 && l.stream().allMatch(String.class::isInstance))
                         ? l.stream().map(String.class::cast).toList()
                         : Collections.emptyList();
 
-        assertThat(faker.credential().weakPassword()).isIn(list);
+        assertThat(faker.credentials().weakPassword()).isIn(list);
     }
 
     @RepeatedTest(100)
     void testUserId() {
-        String uid = faker.credential().userId();
+        String uid = faker.credentials().userId();
         assertThat(uid).matches("^([A-Z]{1})?[0-9]{5,6}$");
     }
 
     @Test
     void userIdWithParameter() {
-        String uid = faker.credential().userId(null);
+        String uid = faker.credentials().userId(null);
         assertThat(uid).isNull();
 
-        uid = faker.credential().userId("*");
+        uid = faker.credentials().userId("*");
         assertThat(uid).isNull();
 
-        uid = faker.credential().userId("");
+        uid = faker.credentials().userId("");
         assertThat(uid).isEmpty();
+        System.out.println(uid);
     }
 }

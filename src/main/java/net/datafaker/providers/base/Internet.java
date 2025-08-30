@@ -261,7 +261,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credential#password()} instead.
+     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password()} instead.
      */
     @Deprecated(since = "2.4.5", forRemoval = true)
     public String password() {
@@ -269,7 +269,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credential#password(boolean)} instead.
+     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(boolean)} instead.
      */
     @Deprecated(since = "2.4.5", forRemoval = true)
     public String password(boolean includeDigit) {
@@ -277,7 +277,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credential#password(int, int)} instead.
+     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(int, int)} instead.
      */
     @Deprecated(since = "2.4.5", forRemoval = true)
     public String password(int minimumLength, int maximumLength) {
@@ -285,7 +285,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credential#password(int, int, boolean)} instead.
+     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean)} instead.
      */
     @Deprecated(since = "2.4.5", forRemoval = true)
     public String password(int minimumLength, int maximumLength, boolean includeUppercase) {
@@ -293,7 +293,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credential#password(int, int, boolean, boolean)} instead.
+     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean)} instead.
      */
     @Deprecated(since = "2.4.5", forRemoval = true)
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial) {
@@ -301,7 +301,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credential#password(int, int, boolean, boolean, boolean)} instead.
+     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean, boolean)} instead.
      */
     @Deprecated(since = "2.4.5", forRemoval = true)
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
