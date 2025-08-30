@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-class CredentiasTest {
+class CredentialsTest {
     private final BaseFaker faker = new BaseFaker();
 
     @RepeatedTest(100)
