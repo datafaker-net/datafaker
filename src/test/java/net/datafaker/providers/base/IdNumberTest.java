@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import static java.lang.Integer.parseInt;
 import static java.time.format.DateTimeFormatter.ofPattern;
+import static net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil.isCPFValid;
 import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -39,6 +40,7 @@ class IdNumberTest {
     private static final Faker FRENCH = new Faker(new Locale("fr", "FR"));
     private static final Faker ITALIAN = new Faker(new Locale("it", "IT"));
     private static final Faker HUNGARIAN = new Faker(new Locale("hu", "HU"));
+    private static final Faker BRAZILIAN = new Faker(new Locale("pt", "BR"));
 
     @Test
     void testValid() {
@@ -117,12 +119,26 @@ class IdNumberTest {
 
     @RepeatedTest(100)
     void estonianPersonalCode_valid() {
-        assertThatPin(ESTONIAN.idNumber().valid()).matches("[1-6][0-9]{10}");
+        assertThatPin(ESTONIAN.idNumber().valid()).matches(IdNumberPatterns.ESTONIAN);
     }
 
     @RepeatedTest(100)
     void estonianPersonalCode_invalid() {
-        assertThatPin(ESTONIAN.idNumber().invalid()).matches("[1-6][0-9]{10}");
+        assertThatPin(ESTONIAN.idNumber().invalid()).matches(IdNumberPatterns.ESTONIAN);
+    }
+
+    @RepeatedTest(100)
+    void brazilianPersonalCode_valid() {
+        String actual = BRAZILIAN.idNumber().valid();
+        assertThatPin(actual).matches(IdNumberPatterns.BRAZILIAN);
+        assertThat(isCPFValid(actual)).describedAs(() -> "Current value " + actual).isTrue();
+    }
+
+    @RepeatedTest(100)
+    void brazilianPersonalCode_invalid() {
+        String actual = BRAZILIAN.idNumber().invalid();
+        assertThatPin(actual).matches(IdNumberPatterns.BRAZILIAN);
+        assertThat(isCPFValid(actual)).describedAs(() -> "Current value " + actual).isFalse();
     }
 
     @RepeatedTest(100)

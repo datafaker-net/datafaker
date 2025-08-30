@@ -102,7 +102,6 @@ public final class IdNumberGeneratorPtBrUtil {
         int d1 = digit(calculateWeight(cnpjUnmask, 9, 4, cnpjPartialLength) + calculateWeight(cnpjUnmask, 5, 0, 4));
         int d2 = digit((d1 * 2) + calculateWeight(cnpjUnmask, 9, 5, cnpjPartialLength) + calculateWeight(cnpjUnmask, 6, 0, 5));
 
-
         final String other = d1 + "" + d2;
         return cnpjUnmask.regionMatches(cnpjPartialLength, other, 0, other.length());
     }
@@ -126,7 +125,7 @@ public final class IdNumberGeneratorPtBrUtil {
     }
 
 
-    public static int calculateWeight(final String num, final int weight, int start, int end) {
+    private static int calculateWeight(final String num, final int weight, int start, int end) {
         int sum = 0;
         int weightAux = weight;
 
@@ -136,12 +135,11 @@ public final class IdNumberGeneratorPtBrUtil {
         return sum;
     }
 
-    public static int digit(int verifyingDigit) {
+    private static int digit(int verifyingDigit) {
         int remainder = verifyingDigit % 11;
         if (remainder == 0 || remainder == 1)
             return 0;
         else
             return 11 - remainder;
     }
-
 }
