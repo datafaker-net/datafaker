@@ -8,12 +8,12 @@ import java.util.regex.PatternSyntaxException;
  * 
  * @since 2.4.5
  */
-public class Credential extends AbstractProvider<BaseProviders> {
+public class Credentials extends AbstractProvider<BaseProviders> {
 
     public static final int MIN_PASSWORD_LENGTH = 8;
     public static final int MAX_PASSWORD_LENGTH = 16;
 
-    protected Credential(BaseProviders faker) {
+    protected Credentials(BaseProviders faker) {
         super(faker);
     }
     
@@ -133,7 +133,7 @@ public class Credential extends AbstractProvider<BaseProviders> {
      * @return a random weak password.
      */
     public String weakPassword() {
-        return resolve("credential.weak_password");
+        return resolve("credentials.weak_password");
     }
 
     /**
@@ -143,7 +143,7 @@ public class Credential extends AbstractProvider<BaseProviders> {
      * @return A randomly generated user ID based on the regex or null if the regex is null or invalid
      */
     public String userId() {
-        return userId(resolve("credential.uid_pattern"));
+        return userId(resolve("credentials.uid_pattern"));
     }
 
     /**
