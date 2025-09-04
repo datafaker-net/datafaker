@@ -24,7 +24,6 @@ public class Finance extends AbstractProvider<BaseProviders> {
         AMERICAN_EXPRESS,
         DINERS_CLUB,
         JCB,
-        SOLO,
         DANKORT,
         FORBRUGSFORENINGEN,
         LASER,
