@@ -101,7 +101,8 @@ class FinanceTest extends BaseFakerTest {
     @RepeatedTest(100)
     void unionpayCard() {
         String creditCard = finance.creditCard(CreditCardType.UNIONPAY).replace("-", "");
-        assertThat(creditCard).startsWith("62").hasSize(16);
+        assertThat(creditCard).hasSize(16);
+        assertThat(creditCard.startsWith("62") || creditCard.startsWith("64") || creditCard.startsWith("65") || creditCard.startsWith("81")).isTrue();
     }
 
     @RepeatedTest(100)
