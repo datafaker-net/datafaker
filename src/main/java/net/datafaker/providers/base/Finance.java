@@ -69,6 +69,13 @@ public class Finance extends AbstractProvider<BaseProviders> {
         return countryCodeToBasicBankAccountNumberPattern.keySet();
     }
 
+    /**
+     * Generates a random credit card number of the specified type.
+     * The number will pass the LUHN check.
+     *
+     * @param creditCardType the type of credit card to generate (see {@link CreditCardType} for options)
+     * @return a valid credit card number of the specified type
+     */
     public String creditCard(CreditCardType creditCardType) {
         final String key = "finance.credit_card." + creditCardType.toString().toLowerCase(Locale.ROOT);
         String value = resolve(key);
@@ -103,6 +110,12 @@ public class Finance extends AbstractProvider<BaseProviders> {
         return res;
     }
 
+    /**
+     * Generate a random credit card number of a random type.
+     * The number will pass the LUHN check.
+     *
+     * @return a valid credit card number of a random type. Likely 16 digits, but could be 14-19.
+     */
     public String creditCard() {
         CreditCardType type = randomCreditCardType();
         return creditCard(type);
@@ -115,18 +128,35 @@ public class Finance extends AbstractProvider<BaseProviders> {
         return faker.regexify("([A-Z]){4}([A-Z]){2}([0-9A-Z]){2}([0-9A-Z]{3})?");
     }
 
+    /**
+     * Generates a random IBAN (International Bank Account Number).
+     * The country code is chosen randomly from the supported countries.
+     * The generated IBAN will pass the checksum test.
+     * @return a valid IBAN
+     */
     public String iban() {
         List<String> countryCodes = new ArrayList<>(countryCodeToBasicBankAccountNumberPattern.keySet());
         String randomCountryCode = countryCodes.get(faker.random().nextInt(countryCodes.size()));
         return iban(randomCountryCode);
     }
 
+    /**
+     * Generates an IBAN for the given country code.
+     * The generated IBAN will pass the checksum test.
+     * @param countryCode the 2-letter country code for the IBAN.
+     * @return a valid IBAN
+     */
     public String iban(String countryCode) {
         String basicBankAccountNumber = faker.regexify(countryCodeToBasicBankAccountNumberPattern.get(countryCode));
         String checkSum = calculateIbanChecksum(countryCode, basicBankAccountNumber);
         return countryCode + checkSum + basicBankAccountNumber;
     }
 
+    /**
+     * Generates a random US bank routing number of 9 characters.
+     * The number will pass the checksum test.
+     * @return a valid US bank routing number
+     */
     public String usRoutingNumber() {
         final int random = faker.random().nextInt(12) + 1;
         final String base =
