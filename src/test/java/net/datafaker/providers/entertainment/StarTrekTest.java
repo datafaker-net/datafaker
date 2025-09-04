@@ -15,7 +15,8 @@ class StarTrekTest extends EntertainmentFakerTest {
             TestSpec.of(starTrek::location, "star_trek.location"),
             TestSpec.of(starTrek::klingon, "star_trek.klingon"),
             TestSpec.of(starTrek::species, "star_trek.species"),
-            TestSpec.of(starTrek::villain, "star_trek.villain")
+            TestSpec.of(starTrek::villain, "star_trek.villain"),
+            TestSpec.of(starTrek::starship, "star_trek.starship")
         );
     }
 }
