@@ -10,7 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Stream;
 
 class FinanceTest extends BaseFakerTest {
 
@@ -101,11 +100,11 @@ class FinanceTest extends BaseFakerTest {
 
     @RepeatedTest(100)
     void unionpayCard() {
-        String[] startingDigits = {"62", "64", "65", "81"};
+        List<String> startingDigits = List.of("62", "64", "65", "81");
         String creditCard = finance.creditCard(CreditCardType.UNIONPAY).replace("-", "");
         assertThat(creditCard).hasSize(16);
-        assertThat(Stream.of(startingDigits).anyMatch(creditCard::startsWith))
-            .as(() -> "Expected UnionPay credit card number to begin with the correct digits (" + String.join(", ", startingDigits) + "), but received: " + creditCard)
+        assertThat(startingDigits.contains(creditCard.substring(0,2)))
+            .as(() -> "Expected UnionPay credit card number to begin with the correct digits " + startingDigits + ", but received: " + creditCard)
             .isTrue();
     }
 
