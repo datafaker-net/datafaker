@@ -100,9 +100,12 @@ class FinanceTest extends BaseFakerTest {
 
     @RepeatedTest(100)
     void unionpayCard() {
+        List<String> startingDigits = List.of("62", "64", "65", "81");
         String creditCard = finance.creditCard(CreditCardType.UNIONPAY).replace("-", "");
         assertThat(creditCard).hasSize(16);
-        assertThat(creditCard.startsWith("62") || creditCard.startsWith("64") || creditCard.startsWith("65") || creditCard.startsWith("81")).isTrue();
+        assertThat(startingDigits.contains(creditCard.substring(0,2)))
+            .as(() -> "Expected UnionPay credit card number to begin with the correct digits " + startingDigits + ", but received: " + creditCard)
+            .isTrue();
     }
 
     @RepeatedTest(100)
