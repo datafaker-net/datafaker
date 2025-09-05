@@ -245,10 +245,8 @@ class DateAndTimeTest {
         Duration generated = faker.date().duration(minValue, maxValue, unit);
         Duration min = Duration.of(minValue, DateAndTime.str2durationUnit(unit));
         Duration max = Duration.of(maxValue, DateAndTime.str2durationUnit(unit));
-        assertThat(min).as("Duration must be equal or greater than min value").isLessThanOrEqualTo(generated);
-        assertThat(max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated))
-            .as("Duration must be lower than max value")
-            .isTrue();
+        assertThat(generated).as("Duration must be >= min value").isGreaterThanOrEqualTo(min);
+        assertThat(generated).as("Duration must be < max value").isLessThan(max);
     }
 
     @Test
@@ -262,7 +260,11 @@ class DateAndTimeTest {
     void durationTest(long maxValue, String unit) {
         Duration generated = faker.date().duration(maxValue, unit);
         Duration max = Duration.of(maxValue, DateAndTime.str2durationUnit(unit));
-        assertThat(max.compareTo(generated) > 0 || maxValue == 0).as("Duration must be lower than max value").isTrue();
+        if (maxValue == 0) {
+            assertThat(generated).isEqualTo(Duration.ofMillis(0));
+        } else {
+            assertThat(generated).isLessThan(max);
+        }
     }
 
     @ParameterizedTest

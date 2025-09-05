@@ -181,11 +181,16 @@ class TimeAndDateTest {
         Duration generated = timeAndDate.duration(minValue, maxValue, unit);
         Duration min = Duration.of(minValue, unit);
         Duration max = Duration.of(maxValue, unit);
-        assertThat(min)
-            .as("Duration must be equal or greater than min value")
-            .isLessThanOrEqualTo(generated);
-        assertThat(max.compareTo(generated) > 0 || minValue >= maxValue && max.equals(generated))
-            .as(() -> "Duration (%s) must be lower than max value (%s) / min value (%s)".formatted(generated, max, min)).isTrue();
+        assertThat(generated).isGreaterThanOrEqualTo(min);
+        if (minValue >= maxValue) {
+            assertThat(generated)
+                .as(() -> "Duration (%s) must be equal to max value if min (%s) == max (%s)".formatted(generated, min, max))
+                .isEqualTo(max);
+        } else {
+            assertThat(generated)
+                .as(() -> "Duration (%s) must be lower than max value (%s) (min value: %s)".formatted(generated, max, min))
+                .isLessThan(max);
+        }
     }
 
     @ParameterizedTest
