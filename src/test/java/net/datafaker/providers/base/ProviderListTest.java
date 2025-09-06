@@ -30,7 +30,7 @@ public abstract class ProviderListTest<T extends BaseFaker> {
         // When
         String item = (String) testSpec.supplier.get();
         // Then
-        assertThat(item).as("Check item isn't empty").isNotEmpty();
+        assertThat(item).isNotEmpty();
         String collection = "\"" + testSpec.key + "\"";
         assertThat(actual)
             .as(() -> "Check actual list isn't empty and contains the item for the key " + collection)
@@ -40,7 +40,7 @@ public abstract class ProviderListTest<T extends BaseFaker> {
             .as(() -> "Actual should not have empty entries. " + collection)
             .noneMatch(single -> single.isBlank());
         if (!testSpec.regex.isEmpty()) {
-            assertThat(item).as("Check item matches regex").matches(Pattern.compile(testSpec.regex));
+            assertThat(item).matches(Pattern.compile(testSpec.regex));
         }
     }
 

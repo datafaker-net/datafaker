@@ -508,8 +508,7 @@ public class FakeValuesService {
             expression = key2Expression
                 .computeIfAbsent(context.getSingletonLocale(), (__) -> MAP_STRING_STRING_SUPPLIER.get())
                 .computeIfAbsent(key, (__) -> safeFetch(key, context, null));
-        }
-        else {
+        } else {
             expression = safeFetch(key, context, null);
         }
 

@@ -41,7 +41,7 @@ class UkLocalDirectivesTest {
         }
 
         assertThat(startsWithFemPrefix || startsWithMascPrefix)
-            .as("the streetname starts with a fem or masc prefix")
+            .as(() -> "the street name should start with a fem or masc prefix, but received: " + streetName)
             .isTrue();
     }
 }

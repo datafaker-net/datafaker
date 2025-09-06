@@ -208,20 +208,14 @@ class NumberTest {
 
     @Test
     void numberBetweenIntIntZeroMinMax() {
-        assertThat(faker.number().numberBetween(0, 0))
-            .as("Calling numberBetween with min==max yields min, with 0").isZero();
-        assertThat(faker.number().numberBetween(2, 2))
-            .as("Calling numberBetween with min==max yields min")
-            .isEqualTo(2);
+        assertThat(faker.number().numberBetween(0, 0)).isZero();
+        assertThat(faker.number().numberBetween(2, 2)).isEqualTo(2);
     }
 
     @Test
     void numberBetweenLongLongZeroMinMax() {
-        assertThat(faker.number().numberBetween(0L, 0L))
-            .as("Calling numberBetween with min==max yields min, with 0").isZero();
-        assertThat(faker.number().numberBetween(2L, 2L))
-            .as("Calling numberBetween with min==max yields min")
-            .isEqualTo(2);
+        assertThat(faker.number().numberBetween(0L, 0L)).isZero();
+        assertThat(faker.number().numberBetween(2L, 2L)).isEqualTo(2L);
     }
 
     /**
