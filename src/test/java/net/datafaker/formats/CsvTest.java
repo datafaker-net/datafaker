@@ -116,6 +116,7 @@ class CsvTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testCsvWithDifferentObjectsFunction() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
@@ -143,6 +144,7 @@ class CsvTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testCsvWithDifferentObjectsFunctionStream() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(

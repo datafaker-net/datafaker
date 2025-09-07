@@ -27,12 +27,12 @@ public class TestSetupExtension implements BeforeAllCallback, AfterAllCallback, 
       System.setProperty("java.util.logging.config.file", loggingConfig);
       getLogManager().readConfiguration();
 
-      Logger.getLogger(context.getDisplayName()).info(() -> "Starting tests (%s)".formatted(memory()));
+      Logger.getLogger(context.getDisplayName()).fine(() -> "Starting tests (%s)".formatted(memory()));
   }
 
   @Override
   public void afterAll(ExtensionContext context) {
-      Logger.getLogger(context.getDisplayName()).info(() -> "Finished tests - %s (%s)".formatted(verdict(context), memory()));
+      Logger.getLogger(context.getDisplayName()).fine(() -> "Finished tests - %s (%s)".formatted(verdict(context), memory()));
   }
 
   @Override
@@ -44,7 +44,7 @@ public class TestSetupExtension implements BeforeAllCallback, AfterAllCallback, 
 
     Thread.currentThread().setName("%s.%s#%d#".formatted(context.getRequiredTestClass().getSimpleName(), context.getRequiredTestMethod().getName(), testId));
 
-    Logger.getLogger(context.getRequiredTestClass().getName()).info(() -> "starting %s (%s)...".formatted(context.getDisplayName(), memory()));
+    Logger.getLogger(context.getRequiredTestClass().getName()).fine(() -> "starting %s (%s)...".formatted(context.getDisplayName(), memory()));
     ThreadLocalLogHandler.start();
   }
 
@@ -53,7 +53,7 @@ public class TestSetupExtension implements BeforeAllCallback, AfterAllCallback, 
       ThreadLocalLogHandler.finish(context.getExecutionException().isPresent());
 
       Logger.getLogger(context.getRequiredTestClass().getName())
-          .info(() -> "finished %s - %s (%s)".formatted(context.getDisplayName(), verdict(context), memory()));
+          .fine(() -> "finished %s - %s (%s)".formatted(context.getDisplayName(), verdict(context), memory()));
 
       String originalThreadName = context.getStore(namespace).remove("original-thread-name", String.class);
       Thread.currentThread().setName(originalThreadName);

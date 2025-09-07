@@ -73,6 +73,7 @@ class JsonTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testGenerateFromFakeSequenceCollectionWithoutComma() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
@@ -100,6 +101,7 @@ class JsonTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testGenerateFromFakeSequenceCollection() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
@@ -127,6 +129,7 @@ class JsonTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testGenerateFromFakeSequenceStream() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
@@ -151,6 +154,7 @@ class JsonTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testGenerateFromInfiniteFakeSequence() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
