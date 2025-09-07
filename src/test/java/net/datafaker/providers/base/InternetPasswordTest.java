@@ -12,6 +12,7 @@ class InternetPasswordTest {
     private final Faker faker = new Faker();
 
     @Test
+    @SuppressWarnings("removal")
     void testPassword1000() {
         final Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
         final Pattern digitPattern = Pattern.compile("[0-9]");
@@ -29,6 +30,7 @@ class InternetPasswordTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void passwordSpecial() {
         boolean check = true;
         for (int i = 0; i < 10; i++) {
@@ -45,6 +47,7 @@ class InternetPasswordTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void passwordMix() {
         boolean check = true;
         for (int i = 0; i < 10; i++) {

@@ -77,6 +77,7 @@ public class Name extends AbstractProvider<BaseProviders> {
      * @return a male 'given' name
      */
     @Deprecated(since = "2.4.3", forRemoval = true)
+    @SuppressWarnings("SpellCheckingInspection")
     public String malefirstName() {
         return maleFirstName();
     }
@@ -145,12 +146,13 @@ public class Name extends AbstractProvider<BaseProviders> {
      *     <li>tracy.jordan</li>
      * </ul>
      *
-     * @deprecated Use Internet.username() instead.
+     * @deprecated Use {@link Credentials#username()} instead.
      * @return a random two part username.
      * @see Name#firstName()
      * @see Name#lastName()
      */
-    @Deprecated
+    @Deprecated(since = "2.4.5", forRemoval = true)
+    @SuppressWarnings("removal")
     public String username() {
         return faker.internet().username();
     }

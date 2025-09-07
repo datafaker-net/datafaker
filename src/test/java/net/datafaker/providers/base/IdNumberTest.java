@@ -113,6 +113,7 @@ class IdNumberTest {
     }
 
     @RepeatedTest(100)
+    @SuppressWarnings("deprecation")
     void testPeselNumber() {
         assertThat(faker.idNumber().peselNumber()).matches("[0-9]{11}");
     }

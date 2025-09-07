@@ -19,6 +19,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  *
  * @since 2.3.0
  */
+@SuppressWarnings("removal")
 public class TimeAndDate extends AbstractProvider<BaseProviders> {
 
     static final int DEFAULT_MIN_AGE = 18;

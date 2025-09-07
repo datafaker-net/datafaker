@@ -27,16 +27,19 @@ class FinanceTest extends BaseFakerTest {
     }
 
     @RepeatedTest(10)
+    @SuppressWarnings("removal")
     void nasdaqTicker() {
         assertThat(finance.nasdaqTicker()).matches("[A-Z.-]+");
     }
 
     @RepeatedTest(10)
+    @SuppressWarnings("removal")
     void nyseTicker() {
         assertThat(finance.nyseTicker()).matches("[A-Z.-]+");
     }
 
     @Override
+    @SuppressWarnings("removal")
     protected Collection<TestSpec> providerListTest() {
         return List.of(TestSpec.of(finance::stockMarket, "finance.stock_market"));
     }

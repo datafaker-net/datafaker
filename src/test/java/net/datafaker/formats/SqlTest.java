@@ -36,7 +36,7 @@ class SqlTest {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
-            field("Password", integer -> faker.internet().password(integer, integer))
+            field("Password", integer -> faker.credentials().password(integer, integer))
         );
 
         SqlTransformer<Integer> transformer = SqlTransformer.<Integer>builder().build();
@@ -61,7 +61,7 @@ class SqlTest {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
-            field("Password", integer -> faker.internet().password(integer, integer))
+            field("Password", integer -> faker.credentials().password(integer, integer))
         );
 
         SqlTransformer<Integer> transformer = SqlTransformer.<Integer>builder()
@@ -105,7 +105,7 @@ class SqlTest {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
-            field("Password", integer -> faker.internet().password(integer, integer))
+            field("Password", integer -> faker.credentials().password(integer, integer))
         );
 
         SqlTransformer<Integer> transformer = SqlTransformer.<Integer>builder()
