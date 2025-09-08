@@ -14,6 +14,7 @@ class TwitterTest {
     private final Twitter twitter = new Faker().twitter();
 
     @Test
+    @SuppressWarnings("removal")
     void testCreatedDateForward() {
         Date testDate = new Date();
         Date constrainDate = new Date(testDate.getTime() + 3000000);
@@ -23,6 +24,7 @@ class TwitterTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testCreatedDateBackward() {
         Date testDate = new Date();
         Date constrainDate = new Date(testDate.getTime() - 3000000);

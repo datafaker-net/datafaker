@@ -213,6 +213,8 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      *
      * @return A valid PESEL number
      */
+    @Deprecated
+    @SuppressWarnings("DeprecatedIsStillUsed")
     public String peselNumber() {
         return peselNumber(faker.timeAndDate().birthday(0, 100), Gender.ANY);
     }
@@ -223,7 +225,16 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
      * @param birthDate Given birthdate
      * @param gender    Person's gender. Null value means {@link PolishIdNumber.Gender#ANY}
      * @return A valid PESEL number
+     *
+     * @deprecated Instead of calling this method directly, use faker with locale and age/gender parameters:
+     * <pre>
+     * {@code
+     *   Faker faker = new Faker(new Locale("pl", "PL"));
+     *   String idNumber = faker.idNumber().valid(new IdNumberRequest(minAge, maxAge, gender));
+     * }
+     * </pre>
      */
+    @Deprecated
     public String peselNumber(LocalDate birthDate, Gender gender) {
         return new PolishIdNumber().get(faker, birthDate, gender);
     }

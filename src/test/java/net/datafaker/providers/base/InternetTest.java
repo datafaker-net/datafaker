@@ -32,6 +32,7 @@ class InternetTest {
     private final Faker faker = new Faker();
 
     @RepeatedTest(100)
+    @SuppressWarnings("removal")
     void testUsername() {
         assertThat(faker.internet().username()).matches("^(\\w+)\\.(\\w+)$");
     }
@@ -42,6 +43,7 @@ class InternetTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testUsernameWithSpaces() {
         Name name = mock();
         doReturn("Jin Quan").when(name).firstName();
@@ -66,6 +68,7 @@ class InternetTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testEmailAddressWithNameParameter() {
         String username = faker.internet().username();
         String emailAddress = faker.internet().emailAddress(username);
@@ -87,7 +90,7 @@ class InternetTest {
         emailAddress = faker.internet().emailAddress("Tom Marvolo Riddle");
         assertThat(emailAddress).startsWith("tom.riddle@");
         assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
-        
+
         emailAddress = faker.internet().emailAddress("Dr. Emmett Brown");
         assertThat(emailAddress).startsWith("emmett.brown@");
         assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
@@ -109,7 +112,7 @@ class InternetTest {
     void testEmailAddressTypeSafety() {
         Faker spyedFaker = spy();
         FakeValuesService mockedFakeValuesService = mock();
-        
+
         when(spyedFaker.fakeValuesService()).thenReturn(mockedFakeValuesService);
         when(mockedFakeValuesService.fetchObject("name.prefix", spyedFaker.getContext()))
             .thenReturn(Collections.emptySet());
@@ -220,34 +223,40 @@ class InternetTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testPassword() {
         assertThat(faker.internet().password()).matches("[a-z\\d]{8,16}");
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testPasswordWithFixedLength() {
         String password = new BaseFaker().internet().password(32, 32, true, true, true);
         assertThat(password).hasSize(32);
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testPasswordIncludeDigit() {
         assertThat(faker.internet().password()).matches("[a-z\\d]{8,16}");
         assertThat(faker.internet().password(false)).matches("[a-z]{8,16}");
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testPasswordMinLengthMaxLength() {
         assertThat(faker.internet().password(10, 25)).matches("[a-z\\d]{10,25}");
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testPasswordMinLengthMaxLengthIncludeUpperCase() {
         assertThat(faker.internet().password(1, 2, false)).matches("[a-z\\d]{1,2}");
         assertThat(faker.internet().password(10, 25, true)).matches("[a-zA-Z\\d]{10,25}");
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testPasswordMinLengthMaxLengthIncludeUpperCaseIncludeSpecial() {
         assertThat(faker.internet().password(10, 25, false, false)).matches("[a-z\\d]{10,25}");
         assertThat(faker.internet().password(10, 25, false, true)).matches("[a-z\\d!@#$%^&*]{10,25}");
@@ -260,6 +269,7 @@ class InternetTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void shouldGenerateAPasswordWithMinAndMaxLength() {
         List<String> results = new ArrayList<>();
         for (int i = 0; i < 300; i++) {
@@ -274,6 +284,7 @@ class InternetTest {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void testPasswordMinLengthMaxLengthIncludeUpperCaseIncludeSpecialIncludeDigit() {
         assertThat(faker.internet().password(10, 25, false, false, false)).matches("[a-z]{10,25}");
         assertThat(faker.internet().password(10, 25, false, true, true)).matches("[a-z\\d!@#$%^&*]{10,25}");

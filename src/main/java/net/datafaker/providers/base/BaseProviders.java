@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.providers.healthcare.HealthcareFaker;
+
 /**
  * The interface to register providers for {@link BaseFaker}.
  */
@@ -149,10 +151,20 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(CultureSeries.class, CultureSeries::new);
     }
 
+    /**
+     * @deprecated Use {@link #money()} instead.
+     */
+    @Deprecated(since = "2.4.5", forRemoval = true)
+    @SuppressWarnings("removal")
     default Currency currency() {
         return getProvider(Currency.class, Currency::new);
     }
 
+    /**
+     * @deprecated Use {@link #timeAndDate()} instead.
+     */
+    @Deprecated(since = "2.4.5", forRemoval = true)
+    @SuppressWarnings("removal")
     default DateAndTime date() {
         return getProvider(DateAndTime.class, DateAndTime::new);
     }
@@ -325,6 +337,11 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Measurement.class, Measurement::new);
     }
 
+    /**
+     * Use {@link HealthcareFaker} instead
+     */
+    @Deprecated(since = "2.4.5", forRemoval = true)
+    @SuppressWarnings("removal")
     default Medical medical() {
         return getProvider(Medical.class, Medical::new);
     }

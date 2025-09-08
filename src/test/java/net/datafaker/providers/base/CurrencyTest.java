@@ -3,6 +3,7 @@ package net.datafaker.providers.base;
 import java.util.Collection;
 import java.util.List;
 
+@SuppressWarnings("removal")
 class CurrencyTest extends BaseFakerTest {
 
     @Override

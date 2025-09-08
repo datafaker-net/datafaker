@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("removal")
 class MedicalTest extends BaseFakerTest {
 
     @Override
