@@ -57,7 +57,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String emailAddress() {
-        return emailAddress(faker.internet().username());
+        return emailAddress(username());
     }
 
     /**
@@ -85,7 +85,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String safeEmailAddress() {
-        return safeEmailAddress(faker.internet().username());
+        return safeEmailAddress(username());
     }
 
     /**
@@ -128,11 +128,11 @@ public class Internet extends AbstractProvider<BaseProviders> {
     /**
      * Converts a name to a local part (the part before the '@') of an email
      * address.
-     * 
+     *
      * Will use the first and last names of the provided name, ignoring middle
      * names, and will remove any prefixes or suffixes that are defined in the
      * faker's configuration.
-     * 
+     *
      * @param name The name ({@link Name}) to be converted to a local part.
      * @return A String representing the local part of an email address.
      * @since 2.4.5
