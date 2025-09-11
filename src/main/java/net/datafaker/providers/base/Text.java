@@ -82,8 +82,7 @@ public class Text extends AbstractProvider<BaseProviders> {
             configMap.putIfAbsent(pojo, config);
         }
 
-
-        return faker.text().text(config);
+        return text(config);
     }
 
     public static final String EN_LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
