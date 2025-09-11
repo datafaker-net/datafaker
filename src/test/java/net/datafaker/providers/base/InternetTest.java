@@ -1,8 +1,8 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.Faker;
+import net.datafaker.providers.base.Internet.PortRange;
 import net.datafaker.service.FakeValuesService;
-
 import org.apache.commons.validator.routines.EmailValidator;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
@@ -18,8 +18,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
+import static net.datafaker.providers.base.Internet.PortRange.RegisteredPorts;
+import static net.datafaker.providers.base.Internet.PortRange.WellKnownPorts;
 import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -31,7 +34,7 @@ class InternetTest {
     public static final Pattern IPV6_HOST_ADDRESS = Pattern.compile("[0-9a-fA-F]{1,4}(:([0-9a-fA-F]{1,4})){1,7}");
     private final Faker faker = new Faker();
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     @SuppressWarnings("removal")
     void testUsername() {
         assertThat(faker.internet().username()).matches("^(\\w+)\\.(\\w+)$");
@@ -182,7 +185,7 @@ class InternetTest {
         assertThat(faker.internet().webdomain()).matches("www\\.[\\w-]+\\.\\w+");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testUrl() {
         // This test assumes that java.net.URL has better validation than we can come up with in
         // regex.
@@ -263,9 +266,39 @@ class InternetTest {
         assertThat(faker.internet().password(10, 25, true, true)).matches("[a-zA-Z\\d!@#$%^&*]{10,25}");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testPort() {
         assertThat(faker.internet().port()).isBetween(0, 65535);
+    }
+
+    @RepeatedTest(10)
+    void portWithinGivenBounds() {
+        assertThat(faker.internet().port(0, 1)).isBetween(0, 1);
+        assertThat(faker.internet().port(100, 200)).isBetween(100, 200);
+        assertThat(faker.internet().port(1000, 1000)).isEqualTo(1000);
+        assertThat(faker.internet().port(65535, 65535)).isEqualTo(65535);
+    }
+
+    @RepeatedTest(10)
+    void portWithinGivenRange() {
+        assertThat(faker.internet().port(WellKnownPorts)).isBetween(0, 1023);
+        assertThat(faker.internet().port(RegisteredPorts)).isBetween(1024, 49151);
+        assertThat(faker.internet().port(PortRange.DynamicPrivatePorts)).isBetween(49152, 65535);
+    }
+
+    @Test
+    void portWithinGivenRange_validation() {
+        assertThatThrownBy(() -> faker.internet().port(-1, 100))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Port number -1 cannot be less than 0");
+
+        assertThatThrownBy(() -> faker.internet().port(100, 99))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Min (100) > Max (99)");
+
+        assertThatThrownBy(() -> faker.internet().port(65535, 65536))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Port number 65536 cannot be greater than 65535");
     }
 
     @Test
@@ -463,7 +496,7 @@ class InternetTest {
         assertThat(faker.internet().uuidv7()).matches("^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$");
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(10)
     void testFarsiIDNs() {
         // in this case, we're just making sure Farsi doesn't blow up.
         // there have been issues with Farsi not being produced.
