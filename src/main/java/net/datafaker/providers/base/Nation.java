@@ -1,15 +1,13 @@
 package net.datafaker.providers.base;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 /**
  * @since 0.8.0
  */
 public class Nation extends AbstractProvider<BaseProviders> {
-
-    private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
+    private static final String[] isoLanguages = Locale.getISOLanguages();
+    private static final String[] isoCountries = Locale.getISOCountries();
 
     protected Nation(BaseProviders faker) {
         super(faker);
@@ -32,12 +30,10 @@ public class Nation extends AbstractProvider<BaseProviders> {
     }
 
     public String isoLanguage() {
-        String[] isoLangs = Locale.getISOLanguages();
-        return isoLangs[faker.random().nextInt(isoLangs.length)];
+        return faker.options().option(isoLanguages);
     }
 
     public String isoCountry() {
-        String[] isoCountries = Locale.getISOCountries();
-        return isoCountries[faker.random().nextInt(isoCountries.length)];
+        return faker.options().option(isoCountries);
     }
 }

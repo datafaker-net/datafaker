@@ -53,11 +53,11 @@ public class Sip extends AbstractProvider<BaseProviders> {
      * @return an RTP UDP 5 digit port int, e.g. 40002.
      */
     public int rtpPort() {
-        return portPool[faker.random().nextInt(portPool.length)];
+        return faker.options().option(portPool);
     }
 
     /**
-     * Proviosional code, the various response codes are listed in
+     * Provisional code, the various response codes are listed in
      * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a 3 digit SIP provision response code between 100 and 199 int, e.g. {@code 180}.
@@ -117,7 +117,7 @@ public class Sip extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Proviosional phrase, the various response phrases are listed in
+     * Provisional phrase, the various response phrases are listed in
      * <a href="https://en.wikipedia.org/wiki/List_of_SIP_response_codes">https://en.wikipedia.org/wiki/List_of_SIP_response_codes</a>.
      *
      * @return a SIP provisional response phrase String, e.g. {@code Ringing}.

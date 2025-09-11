@@ -134,8 +134,8 @@ public class Finance extends AbstractProvider<BaseProviders> {
      */
     public String iban() {
         List<String> countryCodes = new ArrayList<>(countryCodeToBasicBankAccountNumberPattern.keySet());
-        String randomCountryCode = countryCodes.get(faker.random().nextInt(countryCodes.size()));
-        return iban(randomCountryCode);
+        String countryCode = faker.options().nextElement(countryCodes);
+        return iban(countryCode);
     }
 
     /**
