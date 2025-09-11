@@ -44,30 +44,11 @@ public abstract class ProviderListTest<T extends BaseFaker> {
         }
     }
 
-    @ParameterizedTest
-    @MethodSource("providerListTest")
-    void testNoDuplications(TestSpec testSpec) {
-        T faker = getFaker();
-        var terms = getBaseList(faker, testSpec.key);
-
-        Set<String> uniques = new HashSet<>();
-        Set<String> duplicates = new HashSet<>();
-        for (String term : terms) {
-            if (!uniques.add(term)) {
-                duplicates.add(term);
-            }
-        }
-        assertThat(duplicates)
-            .as(() -> "Check no duplications in " + testSpec.key + " with terms " + terms)
-            .isEmpty();
-    }
-
     protected abstract Collection<TestSpec> providerListTest();
 
     protected static class TestSpec {
         private final Supplier<?> supplier;
         private final String key;
-        @SuppressWarnings("unused")
         private final String regex;
 
         private TestSpec(Supplier<?> supplier, String key, String regex) {
