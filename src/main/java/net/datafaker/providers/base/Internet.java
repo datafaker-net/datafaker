@@ -21,11 +21,12 @@ import java.util.regex.Pattern;
 public class Internet extends AbstractProvider<BaseProviders> {
     private static final Pattern COLON = Pattern.compile(":");
     private static final List<String> HTTP_SCHEMES = List.of("http://", "https://");
+    private static final int MIN_PORT_NUMBER = 0;
+    private static final int MAX_PORT_NUMBER = 65535;
 
     protected Internet(BaseProviders faker) {
         super(faker);
     }
-
 
     /**
      * A lowercase username composed of the first_name and last_name joined with a '.'. Some examples are:
@@ -128,11 +129,11 @@ public class Internet extends AbstractProvider<BaseProviders> {
     /**
      * Converts a name to a local part (the part before the '@') of an email
      * address.
-     * 
+     *
      * Will use the first and last names of the provided name, ignoring middle
      * names, and will remove any prefixes or suffixes that are defined in the
      * faker's configuration.
-     * 
+     *
      * @param name The name ({@link Name}) to be converted to a local part.
      * @return A String representing the local part of an email address.
      * @since 2.4.5
@@ -211,7 +212,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @since 2.0.0
      */
     public String url(boolean schemeChoice, boolean portChoice, boolean pathChoice, boolean fileChoice, boolean paramsChoice, boolean anchorChoice) {
-        String scheme = schemeChoice ? HTTP_SCHEMES.get(faker.random().nextInt(0, 1)) : "https://";
+        String scheme = schemeChoice ? faker.options().nextElement(HTTP_SCHEMES) : "https://";
         String port = portChoice ? (":" + port()) : "";
         String path = pathChoice ? ("/" + slug(faker.lorem().words(2), "/")) : "/";
         String file = fileChoice ? faker.lorem().words(1).get(0) : "";
@@ -314,7 +315,32 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @return a port number
      */
     public int port() {
-        return faker.random().nextInt(0, 65535);
+        return port(MIN_PORT_NUMBER, MAX_PORT_NUMBER);
+    }
+
+    /**
+     * Returns a port number within given range
+     *
+     * @param range either Well-Known Ports (0-1023), Registered Ports (1024-49151) or Dynamic/Private Ports (49152-65535)
+     * @return a port number
+     */
+    public int port(PortRange range) {
+        return port(range.from, range.to);
+    }
+
+    /**
+     * Returns a port number between {@code from} and {@code to} (inclusive)
+     *
+     * @param from minimum port number (must not be less than 0)
+     * @param to maximum port number (must not be greater than 65535)
+     * @return a port number within given range
+     */
+    public int port(int from, int to) {
+        if (from < MIN_PORT_NUMBER)
+            throw new IllegalArgumentException("Port number %s cannot be less than %s".formatted(from, MIN_PORT_NUMBER));
+        if (to > MAX_PORT_NUMBER)
+            throw new IllegalArgumentException("Port number %s cannot be greater than %s".formatted(to, MAX_PORT_NUMBER));
+        return faker.random().nextInt(from, to);
     }
 
     /**
@@ -651,6 +677,20 @@ public class Internet extends AbstractProvider<BaseProviders> {
             return Inet6Address.getByName(host);
         } catch (UnknownHostException e) {
             throw new RuntimeException("Failed to create Inet6Address from host '%s'".formatted(host), e);
+        }
+    }
+
+    public enum PortRange {
+        WellKnownPorts(0, 1023),
+        RegisteredPorts(1024, 49151),
+        DynamicPrivatePorts(49152, 65535);
+
+        private final int from;
+        private final int to;
+
+        PortRange(int from, int to) {
+            this.from = from;
+            this.to = to;
         }
     }
 }
