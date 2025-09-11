@@ -79,7 +79,7 @@ public class Shakespeare extends AbstractProvider<BaseProviders> {
     }
 
     private String randomElement(String[] values) {
-        return values[faker.random().nextInt(values.length)];
+        return faker.options().option(values);
     }
 
 }
