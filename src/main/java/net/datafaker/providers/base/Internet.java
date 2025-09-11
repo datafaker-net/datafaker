@@ -362,7 +362,12 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @return an IPv4 address.
      */
     public InetAddress getIpV4Address() {
-        return inet4Address((byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2), (byte) (faker.random().nextInt(254) + 2));
+        return inet4Address(
+            (byte) (faker.random().nextInt(254) + 2),
+            (byte) (faker.random().nextInt(254) + 2),
+            (byte) (faker.random().nextInt(254) + 2),
+            (byte) (faker.random().nextInt(254) + 2)
+        );
     }
 
     /**
