@@ -6,7 +6,7 @@ import java.util.regex.PatternSyntaxException;
 /**
  * Generates credentials such as usernames, uids and passwords.
  * 
- * @since 2.4.5
+ * @since 2.5.0
  */
 public class Credentials extends AbstractProvider<BaseProviders> {
 

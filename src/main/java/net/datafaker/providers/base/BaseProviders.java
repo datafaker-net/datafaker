@@ -154,7 +154,7 @@ public interface BaseProviders extends ProviderRegistration {
     /**
      * @deprecated Use {@link #money()} instead.
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     @SuppressWarnings("removal")
     default Currency currency() {
         return getProvider(Currency.class, Currency::new);
@@ -163,7 +163,7 @@ public interface BaseProviders extends ProviderRegistration {
     /**
      * @deprecated Use {@link #timeAndDate()} instead.
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     @SuppressWarnings("removal")
     default DateAndTime date() {
         return getProvider(DateAndTime.class, DateAndTime::new);
@@ -340,7 +340,7 @@ public interface BaseProviders extends ProviderRegistration {
     /**
      * Use {@link HealthcareFaker} instead
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     @SuppressWarnings("removal")
     default Medical medical() {
         return getProvider(Medical.class, Medical::new);
