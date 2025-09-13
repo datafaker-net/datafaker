@@ -151,7 +151,7 @@ public class Name extends AbstractProvider<BaseProviders> {
      * @see Name#firstName()
      * @see Name#lastName()
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     @SuppressWarnings("removal")
     public String username() {
         return faker.internet().username();

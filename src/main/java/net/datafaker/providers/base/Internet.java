@@ -41,7 +41,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @see Name#firstName()
      * @see Name#lastName()
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     public String username() {
         StringBuilder result = new StringBuilder();
         final Name name = faker.name();
@@ -136,7 +136,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      *
      * @param name The name ({@link Name}) to be converted to a local part.
      * @return A String representing the local part of an email address.
-     * @since 2.4.5
+     * @since 2.5.0
      */
     private String toLocalPart(String name) {
         String[] parts = stripAccents(name).split(" ");
@@ -262,49 +262,49 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password()} instead.
+     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password()} instead.
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     public String password() {
         return password(8, 16);
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(boolean)} instead.
+     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(boolean)} instead.
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     public String password(boolean includeDigit) {
         return password(8, 16, false, false, includeDigit);
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(int, int)} instead.
+     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int)} instead.
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     public String password(int minimumLength, int maximumLength) {
         return password(minimumLength, maximumLength, false);
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean)} instead.
+     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean)} instead.
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     public String password(int minimumLength, int maximumLength, boolean includeUppercase) {
         return password(minimumLength, maximumLength, includeUppercase, false);
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean)} instead.
+     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean)} instead.
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial) {
         return password(minimumLength, maximumLength, includeUppercase, includeSpecial, true);
     }
 
     /**
-     * @deprecated since 2.4.5. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean, boolean)} instead.
+     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean, boolean)} instead.
      */
-    @Deprecated(since = "2.4.5", forRemoval = true)
+    @Deprecated(since = "2.5.0", forRemoval = true)
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
