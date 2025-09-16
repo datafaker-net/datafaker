@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
 
+import static net.datafaker.providers.base.Text.DEFAULT_SPECIAL;
 import static net.datafaker.providers.base.Text.DIGITS;
 import static net.datafaker.providers.base.Text.EN_LOWERCASE;
 import static net.datafaker.providers.base.Text.EN_UPPERCASE;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TextTest {
+    private static final Pattern characterPattern = Pattern.compile("[A-Za-z]");
     private final Faker faker = new Faker();
 
     @Test
@@ -57,7 +59,8 @@ class TextTest {
                 .with(DIGITS, 1)
                 .throwIfLengthSmall(true)
                 .build()))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Min length (1) should be not smaller than number of required characters (3)");
     }
 
     @Test
@@ -99,11 +102,8 @@ class TextTest {
 
     @Test
     void testCharacter() {
-        final Pattern characterPattern = Pattern.compile("[A-Za-z]");
-        for (int i = 0; i < 100; i++) {
-            Character character = faker.text().character();
-            assertThat(character.toString()).matches(characterPattern);
-        }
+        Character character = faker.text().character();
+        assertThat(character.toString()).matches(characterPattern);
     }
 
     @RepeatedTest((100))
@@ -122,16 +122,83 @@ class TextTest {
     void testFixedLengthText() {
         for (int i = 0; i < 100; i++) {
             String text = faker.text().text(i);
-            assertThat(text).hasSize(i);
+            assertThat(text).hasSize(i).matches("[a-z]*");
         }
+    }
+
+    @RepeatedTest(10)
+    void testDefaultLengthText() {
+        String text = faker.text().text();
+        assertThat(text).hasSizeBetween(20, 80).matches("[a-z]{20,80}");
+    }
+
+    @RepeatedTest(10)
+    void upTo64LowerCase() {
+        assertThat(faker.text().text(1, 64, false, false, false)).matches("[a-z]{1,64}");
+        assertThat(faker.text().text(2, 64, false, false, false)).matches("[a-z]{2,64}");
+        assertThat(faker.text().text(64, 64, false, false, false)).matches("[a-z]{64}");
     }
 
     @Test
-    void testDefaultLengthText() {
-        for (int i = 0; i < 100; i++) {
-            String text = faker.text().text();
-            assertThat(text).hasSizeBetween(20, 80);
-        }
+    void zeroLength() {
+        assertThat(faker.text().text(0, 0, false, false, false)).isEqualTo("");
     }
 
+    @Test
+    void oneLowerCase() {
+        assertThat(faker.text().text(1, 1, false, false, false)).matches("[a-z]");
+        assertThat(faker.text().text(0, 1, false, false, false)).matches("[a-z]?");
+    }
+
+    @RepeatedTest(10)
+    void oneWithUpperCase() {
+        assertThat(faker.text().text(1, 1, true, false, false)).matches("[A-Z]");
+    }
+
+    @RepeatedTest(10)
+    void oneWithDigit() {
+        assertThat(faker.text().text(1, 1, false, false, true)).matches("[0-9]");
+    }
+
+    @RepeatedTest(10)
+    void oneWithSpecialSymbol() {
+        assertThat(faker.text().text(1, 1, false, true, false)).matches("[" + DEFAULT_SPECIAL + "]");
+    }
+
+    @RepeatedTest(10)
+    void twoWithUpperCaseAndDigit() {
+        assertThat(faker.text().text(2, 2, true, false, true)).matches("[A-Z0-9]{2}");
+    }
+
+    @RepeatedTest(10)
+    void twoWithLowerAndUpperCaseAndDigit() {
+        assertThat(faker.text().text(2, 2, true, false, true)).matches("[a-zA-Z0-9]{2}");
+        assertThat(faker.text().text(3, 3, true, true, true)).matches("[a-zA-Z0-9" + DEFAULT_SPECIAL + "]{3}");
+    }
+
+    @Test
+    void minLengthCannotBeGreaterThanMaxLength() {
+        assertThatThrownBy(() -> faker.text().text(22, 21, false, false, false))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Min length (22) should not be greater than max length (21)");
+
+        assertThatThrownBy(() -> faker.text().text(3, 2, true, true, true))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Min length (3) should not be greater than max length (2)");
+    }
+
+    @Test
+    void isNotEnoughLengthToContainAllRequiredSymbols() {
+        assertThatThrownBy(() -> faker.text().text(0, 0, true, false, false))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Minimum number of required characters (1) should not be greater than max length (0)");
+        assertThatThrownBy(() -> faker.text().text(1, 2, true, true, true))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Minimum number of required characters (3) should not be greater than max length (2)");
+    }
+
+    @RepeatedTest(10)
+    void minimumLengthIsNotEnoughToContainAllRequiredSymbols() {
+        assertThat(faker.text().text(1, 4, true, false, true)).matches("[a-zA-Z0-9]{2,4}");
+    }
 }
