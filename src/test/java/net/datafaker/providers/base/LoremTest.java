@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class LoremTest extends BaseFakerTest {
 
@@ -74,7 +75,9 @@ class LoremTest extends BaseFakerTest {
         assertThat(lorem.characters(2)).matches("[a-z\\d]{2}");
         assertThat(lorem.characters(500)).matches("[a-z\\d]{500}");
         assertThat(lorem.characters(0)).isEmpty();
-        assertThat(lorem.characters(-1)).isEmpty();
+        assertThatThrownBy(() -> lorem.characters(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Minimum number of required characters (0) should not be greater than max length (-1)");
     }
 
     @Test
@@ -84,7 +87,14 @@ class LoremTest extends BaseFakerTest {
         assertThat(lorem.characters(2, true)).matches("[a-zA-Z\\d]{2}");
         assertThat(lorem.characters(500, true)).matches("[a-zA-Z\\d]{500}");
         assertThat(lorem.characters(0, false)).isEmpty();
-        assertThat(lorem.characters(-1, true)).isEmpty();
+        assertThat(lorem.characters(1, true)).matches("[A-Z]");
+
+        assertThatThrownBy(() -> lorem.characters(-1, false))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Minimum number of required characters (0) should not be greater than max length (-1)");
+        assertThatThrownBy(() -> lorem.characters(0, true))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Minimum number of required characters (1) should not be greater than max length (0)");
     }
 
     @Test
@@ -109,11 +119,16 @@ class LoremTest extends BaseFakerTest {
 
     @Test
     void testFixedNumberOfCharactersEmpty() {
-        assertThat(lorem.characters(-1)).isEmpty();
         assertThat(lorem.characters(0)).isEmpty();
-
-        assertThat(lorem.characters(-1, true, true, true)).isEmpty();
         assertThat(lorem.characters(0, false, false, false)).isEmpty();
+
+        assertThatThrownBy(() -> lorem.characters(-1, true, true, true))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Minimum number of required characters (3) should not be greater than max length (-1)");
+
+        assertThatThrownBy(() -> lorem.characters(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Minimum number of required characters (0) should not be greater than max length (-1)");
     }
 
 
