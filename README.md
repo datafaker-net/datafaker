@@ -29,7 +29,7 @@ In the pom.xml, add the following fragment to the `dependencies` section:
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>2.4.4</version>
+    <version>2.5.0</version>
 </dependency>
 ```
 
@@ -37,12 +37,12 @@ For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:2.4.4'
+    implementation 'net.datafaker:datafaker:2.5.0'
 }
 
 ```
 
-You can also use the snapshot version (`2.4.5-SNAPSHOT`), which automatically gets published
+You can also use the snapshot version (`2.5.1-SNAPSHOT`), which automatically gets published
 after every push to the main branch of this repository. Binary repository URL for snapshots download is
 `https://s01.oss.sonatype.org/content/repositories/snapshots/`.
 
