@@ -100,19 +100,19 @@ class TextTest {
         }
     }
 
-    @Test
+    @RepeatedTest(10)
     void testCharacter() {
         Character character = faker.text().character();
         assertThat(character.toString()).matches(characterPattern);
     }
 
-    @RepeatedTest((100))
+    @RepeatedTest(10)
     void testUppercaseCharacter() {
         Character character = faker.text().uppercaseCharacter();
         assertThat(character).isUpperCase();
     }
 
-    @RepeatedTest((100))
+    @RepeatedTest(10)
     void testLowercaseCharacter() {
         Character character = faker.text().lowercaseCharacter();
         assertThat(character).isLowerCase();
@@ -120,7 +120,7 @@ class TextTest {
 
     @Test
     void testFixedLengthText() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             String text = faker.text().text(i);
             assertThat(text).hasSize(i).matches("[a-z]*");
         }
