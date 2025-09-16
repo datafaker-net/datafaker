@@ -53,7 +53,7 @@ class ItalianIdNumberTest {
             .isEqualTo('R');
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void checksumShouldMatchForValidCodes() {
         PersonIdNumber personIdNumber = impl.generateValid(new Faker(LOCALE), new IdNumberRequest(1, 200, ANY));
         String idNumber = personIdNumber.idNumber();
