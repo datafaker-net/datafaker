@@ -76,6 +76,15 @@ JShell
 ```
 # from project root folder
 jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
+```
+
+or JShell w/[JBang](https://www.jbang.dev/)
+```
+# can be run anywhere, no project root/download needed.
+jbang -i net.datafaker:datafaker:2.5.0
+```
+
+```
 |  Welcome to JShell -- Version 17.0.4
 |  For an introduction type: /help intro
 
