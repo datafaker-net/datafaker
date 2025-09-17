@@ -40,6 +40,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @return a random two part username.
      * @see Name#firstName()
      * @see Name#lastName()
+     * @deprecated Since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#username()} instead.
      */
     @Deprecated(since = "2.5.0", forRemoval = true)
     public String username() {
