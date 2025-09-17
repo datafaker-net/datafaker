@@ -81,7 +81,7 @@ jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
 or JShell w/[JBang](https://www.jbang.dev/)
 ```
 # can be run anywhere, no project root/download needed.
-jbang -i net.datafaker:datafaker:2.4.3 
+jbang -i net.datafaker:datafaker:2.5.0
 ```
 
 ```
