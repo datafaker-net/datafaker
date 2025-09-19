@@ -7,6 +7,9 @@ _PL:
       building_number: ['#####', '####', '###']
       postcode: ['##-###']
 
+    phone_number:
+      country_code: ['48']
+
     internet:
       free_email: [gmail.com, yahoo.com, hotmail.com]
       domain_suffix: [com, pl, com.pl, net, org]
