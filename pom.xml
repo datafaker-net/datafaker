@@ -27,7 +27,7 @@
         <additionalparam>-Xdoclint:none</additionalparam>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
-        <assertj-core.version>3.27.4</assertj-core.version>
+        <assertj-core.version>3.27.5</assertj-core.version>
         <commons-lang3.version>3.18.0</commons-lang3.version>
         <commons-text.version>1.14.0</commons-text.version>
         <commons-validator.version>1.10.0</commons-validator.version>
