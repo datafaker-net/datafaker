@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -28,9 +29,11 @@ import java.util.function.Supplier;
  * @author ren
  */
 public class BaseFaker implements BaseProviders {
+    private static final Predicate<Class<?>> EVERY_PROVIDER_ALLOWED = t -> true;
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
     private final Map<Class<?>, AbstractProvider<?>> providersCache = new IdentityHashMap<>();
+    private final Predicate<Class<?>> whiteListPredicate;
 
     public BaseFaker() {
         this(Locale.ENGLISH);
@@ -53,8 +56,13 @@ public class BaseFaker implements BaseProviders {
     }
 
     public BaseFaker(FakeValuesService fakeValuesService, FakerContext context) {
+        this(fakeValuesService, context, EVERY_PROVIDER_ALLOWED);
+    }
+
+    public BaseFaker(FakeValuesService fakeValuesService, FakerContext context, Predicate<Class<?>> whiteListPredicate) {
         this.fakeValuesService = fakeValuesService;
         this.context = context;
+        this.whiteListPredicate = whiteListPredicate == null ? EVERY_PROVIDER_ALLOWED : whiteListPredicate;
         fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
     }
 
@@ -335,8 +343,13 @@ public class BaseFaker implements BaseProviders {
     @SuppressWarnings("unchecked")
     public <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
         Class<AP> clazz, Function<PR, AP> valueSupplier) {
-        return (AP) providersCache.computeIfAbsent(clazz, (klass) -> valueSupplier.apply(getFaker()));
-    }
+            return (AP) providersCache.computeIfAbsent(clazz, (klass) -> {
+                if (whiteListPredicate.test(klass)) {
+                    return valueSupplier.apply(getFaker());
+                }
+                throw new RuntimeException("Provider '" + klass.getName() + "' is not in white list");
+            });
+        }
 
     /**
      * This method is not needed anymore, don't use it.

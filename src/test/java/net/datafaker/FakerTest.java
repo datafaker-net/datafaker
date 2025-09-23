@@ -3,6 +3,10 @@ package net.datafaker;
 import net.datafaker.annotations.Deterministic;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.Name;
+import net.datafaker.service.FakeValuesService;
+import net.datafaker.service.FakerContext;
+import net.datafaker.service.RandomService;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -27,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.reflections.scanners.Scanners.SubTypes;
 
@@ -392,5 +397,30 @@ class FakerTest {
                 }
             }
         }
+    }
+
+    @Test
+    void whitelistTest() {
+        final Faker fakerWithoutWhiteList = new Faker();
+        final Faker fakerWithEmptyWhiteList = new Faker(new FakeValuesService(), new FakerContext(Locale.ENGLISH, new RandomService()), c -> false);
+        final Faker fakerWithFullWhiteList = new Faker(new FakeValuesService(), new FakerContext(Locale.ENGLISH, new RandomService()), c -> true);
+        final Faker fakerWithWithoutNameInWhiteList = new Faker(new FakeValuesService(), new FakerContext(Locale.ENGLISH, new RandomService()), c -> c != Name.class);
+
+        assertThatThrownBy(() -> fakerWithEmptyWhiteList.expression("#{Address.country}"))
+            .hasRootCauseMessage("Provider 'net.datafaker.providers.base.Address' is not in white list");
+
+        assertThatNoException()
+            .isThrownBy(() -> fakerWithoutWhiteList.expression("#{Address.country}"));
+
+        assertThatNoException()
+            .isThrownBy(() -> fakerWithFullWhiteList.expression("#{Address.country}"));
+
+        assertThatNoException()
+            .isThrownBy(() -> fakerWithWithoutNameInWhiteList.expression("#{Address.country}"));
+
+
+        assertThatThrownBy(() -> fakerWithEmptyWhiteList.expression("#{Name.fullName}"))
+            .hasRootCauseMessage("Provider 'net.datafaker.providers.base.Name' is not in white list");
+
     }
 }

@@ -7,6 +7,7 @@ import net.datafaker.service.RandomService;
 
 import java.util.Locale;
 import java.util.Random;
+import java.util.function.Predicate;
 
 /**
  * @since 2.3.0
@@ -30,5 +31,9 @@ public class HealthcareFaker extends BaseFaker implements HealthcareProviders {
 
     public HealthcareFaker(FakeValuesService fakeValuesService, FakerContext context) {
         super(fakeValuesService, context);
+    }
+
+    public HealthcareFaker(FakeValuesService fakeValuesService, FakerContext context, Predicate<Class<?>> whiteListPredicate) {
+        super(fakeValuesService, context, whiteListPredicate);
     }
 }
