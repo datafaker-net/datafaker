@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -31,6 +32,7 @@ public class BaseFaker implements BaseProviders {
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
     private final Map<Class<?>, AbstractProvider<?>> providersCache = new IdentityHashMap<>();
+    private final Predicate<Class<?>> whiteListPredicate;
 
     public BaseFaker() {
         this(Locale.ENGLISH);
@@ -53,8 +55,13 @@ public class BaseFaker implements BaseProviders {
     }
 
     public BaseFaker(FakeValuesService fakeValuesService, FakerContext context) {
+        this(fakeValuesService, context, null);
+    }
+
+    public BaseFaker(FakeValuesService fakeValuesService, FakerContext context, Predicate<Class<?>> whiteListPredicate) {
         this.fakeValuesService = fakeValuesService;
         this.context = context;
+        this.whiteListPredicate = whiteListPredicate;
         fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
     }
 
@@ -335,7 +342,11 @@ public class BaseFaker implements BaseProviders {
     @SuppressWarnings("unchecked")
     public <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
         Class<AP> clazz, Function<PR, AP> valueSupplier) {
-        return (AP) providersCache.computeIfAbsent(clazz, (klass) -> valueSupplier.apply(getFaker()));
+        if (whiteListPredicate == null || whiteListPredicate.test(clazz)) {
+            return (AP) providersCache.computeIfAbsent(clazz, (klass) -> valueSupplier.apply(getFaker()));
+        }
+
+        throw new RuntimeException("Provider '" + clazz.getName() + "' is not in white list");
     }
 
     /**
