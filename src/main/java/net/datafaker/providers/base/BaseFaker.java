@@ -29,6 +29,7 @@ import java.util.function.Supplier;
  * @author ren
  */
 public class BaseFaker implements BaseProviders {
+    private static final Predicate<Class<?>> EVERY_PROVIDER_ALLOWED = t -> true;
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
     private final Map<Class<?>, AbstractProvider<?>> providersCache = new IdentityHashMap<>();
@@ -55,13 +56,13 @@ public class BaseFaker implements BaseProviders {
     }
 
     public BaseFaker(FakeValuesService fakeValuesService, FakerContext context) {
-        this(fakeValuesService, context, null);
+        this(fakeValuesService, context, EVERY_PROVIDER_ALLOWED);
     }
 
     public BaseFaker(FakeValuesService fakeValuesService, FakerContext context, Predicate<Class<?>> whiteListPredicate) {
         this.fakeValuesService = fakeValuesService;
         this.context = context;
-        this.whiteListPredicate = whiteListPredicate;
+        this.whiteListPredicate = whiteListPredicate == null ? EVERY_PROVIDER_ALLOWED : whiteListPredicate;
         fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
     }
 
@@ -343,7 +344,7 @@ public class BaseFaker implements BaseProviders {
     public <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
         Class<AP> clazz, Function<PR, AP> valueSupplier) {
             return (AP) providersCache.computeIfAbsent(clazz, (klass) -> {
-                if (whiteListPredicate == null || whiteListPredicate.test(klass)) {
+                if (whiteListPredicate.test(klass)) {
                     return valueSupplier.apply(getFaker());
                 }
                 throw new RuntimeException("Provider '" + klass.getName() + "' is not in white list");
