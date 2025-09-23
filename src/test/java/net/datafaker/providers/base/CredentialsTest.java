@@ -2,11 +2,16 @@ package net.datafaker.providers.base;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -20,22 +25,31 @@ class CredentialsTest {
         assertThat(faker.credentials().username()).matches("^(\\w+)\\.(\\w+)$");
     }
 
-    @Test
-    void testUsernameWithSpaces() {
+    @ParameterizedTest
+    @MethodSource("userNameWithSpacesProvider")
+    @SuppressWarnings("removal")
+    void testUsernameWithSpaces(String firstName, String lastName, String expected) {
+        Locale locale = new Locale("TR");
         Name name = mock();
-        doReturn("Jin Quan").when(name).firstName();
-        doReturn("D'Artagnan").when(name).lastName();
+        doReturn(firstName).when(name).firstName();
+        doReturn(lastName).when(name).lastName();
 
-        BaseFaker mockedFaker = new BaseFaker() {
+        BaseFaker mockedFaker = new BaseFaker(locale) {
             @Override
             public Name name() {
                 return name;
             }
         };
-        assertThat(mockedFaker.credentials().username())
-            .doesNotContain(" ", "'")
-            .matches("^(\\w+)\\.(\\w+)$")
-            .matches("^\\p{javaLowerCase}+\\.\\p{javaLowerCase}+$");
+
+        assertThat(mockedFaker.internet().username())
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> userNameWithSpacesProvider() {
+        return Stream.of(
+            Arguments.of("Jin Quan", "D'Artagnan", "jinquan.dartagnan"),
+            Arguments.of("Ivan Ivanov", "Другой Язык", "ıvanıvanov.другойязык")
+        );
     }
 
     @RepeatedTest(100)
