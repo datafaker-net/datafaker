@@ -342,12 +342,13 @@ public class BaseFaker implements BaseProviders {
     @SuppressWarnings("unchecked")
     public <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
         Class<AP> clazz, Function<PR, AP> valueSupplier) {
-        if (whiteListPredicate == null || whiteListPredicate.test(clazz)) {
-            return (AP) providersCache.computeIfAbsent(clazz, (klass) -> valueSupplier.apply(getFaker()));
+            return (AP) providersCache.computeIfAbsent(clazz, (klass) -> {
+                if (whiteListPredicate == null || whiteListPredicate.test(clazz)) {
+                    return valueSupplier.apply(getFaker());
+                }
+                throw new RuntimeException("Provider '" + clazz.getName() + "' is not in white list");
+            });
         }
-
-        throw new RuntimeException("Provider '" + clazz.getName() + "' is not in white list");
-    }
 
     /**
      * This method is not needed anymore, don't use it.
