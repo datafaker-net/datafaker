@@ -343,10 +343,10 @@ public class BaseFaker implements BaseProviders {
     public <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(
         Class<AP> clazz, Function<PR, AP> valueSupplier) {
             return (AP) providersCache.computeIfAbsent(clazz, (klass) -> {
-                if (whiteListPredicate == null || whiteListPredicate.test(clazz)) {
+                if (whiteListPredicate == null || whiteListPredicate.test(klass)) {
                     return valueSupplier.apply(getFaker());
                 }
-                throw new RuntimeException("Provider '" + clazz.getName() + "' is not in white list");
+                throw new RuntimeException("Provider '" + klass.getName() + "' is not in white list");
             });
         }
 
