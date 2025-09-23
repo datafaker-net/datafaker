@@ -44,18 +44,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      */
     @Deprecated(since = "2.5.0", forRemoval = true)
     public String username() {
-        StringBuilder result = new StringBuilder();
-        final Name name = faker.name();
-        final String firstName = name.firstName().toLowerCase(faker.getContext().getLocale())
-            + "." + name.lastName().toLowerCase(faker.getContext().getLocale());
-        for (int i = 0; i < firstName.length(); i++) {
-            final char c = firstName.charAt(i);
-            if (c == '\'' || Character.isWhitespace(c)) {
-                continue;
-            }
-            result.append(c);
-        }
-        return result.toString();
+        return faker.credentials().username();
     }
 
     public String emailAddress() {
