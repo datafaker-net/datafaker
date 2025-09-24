@@ -48,7 +48,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String emailAddress() {
-        return emailAddress(username());
+        return emailAddress(faker.credentials().username());
     }
 
     /**
@@ -76,7 +76,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     public String safeEmailAddress() {
-        return safeEmailAddress(username());
+        return safeEmailAddress(faker.credentials().username());
     }
 
     /**
