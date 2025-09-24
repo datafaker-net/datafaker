@@ -28,7 +28,7 @@
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
         <assertj-core.version>3.27.6</assertj-core.version>
-        <commons-lang3.version>3.18.0</commons-lang3.version>
+        <commons-lang3.version>3.19.0</commons-lang3.version>
         <commons-text.version>1.14.0</commons-text.version>
         <commons-validator.version>1.10.0</commons-validator.version>
         <rgxgen.version>3.1</rgxgen.version>
