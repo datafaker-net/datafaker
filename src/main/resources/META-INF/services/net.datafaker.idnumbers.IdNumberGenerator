@@ -12,6 +12,7 @@ net.datafaker.idnumbers.LatvianIdNumber
 net.datafaker.idnumbers.MacedonianIdNumber
 net.datafaker.idnumbers.MexicanIdNumber
 net.datafaker.idnumbers.MoldovanIdNumber
+net.datafaker.idnumbers.NorwegianIdNumber
 net.datafaker.idnumbers.PolishIdNumber
 net.datafaker.idnumbers.PortugueseIdNumber
 net.datafaker.idnumbers.RomanianIdNumber
