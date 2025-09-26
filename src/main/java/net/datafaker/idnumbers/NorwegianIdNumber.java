@@ -7,11 +7,7 @@ import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
-import static java.lang.Integer.parseInt;
 import static net.datafaker.idnumbers.Utils.birthday;
 import static net.datafaker.idnumbers.Utils.gender;
 
@@ -29,21 +25,13 @@ import static net.datafaker.idnumbers.Utils.gender;
  * <p>
  *     Example: 11077941012
  * </p>
+ *
  * @see <a href="https://www.skatteetaten.no/en/person/national-registry/identitetsnummer-og-elektronisk-id/fodselsnummer/">Overview</a>
  * @see <a href="https://taxid.pro/">Online generator</a>
  * @see <a href="https://www.oecd.org/content/dam/oecd/en/topics/policy-issue-focus/aeoi/norway-tin.pdf">More on centuries</a>
  */
 public class NorwegianIdNumber implements IdNumberGenerator {
     private static final DateTimeFormatter BIRTHDAY_FORMAT = DateTimeFormatter.ofPattern("ddMMyy");
-    private static final List<Map.Entry<Interval, Interval>> CENTURIES = Stream.of(
-            "1854-1899, 74-50",
-            "1940-1999, 99-90",
-            "1900-1999, 49-0",
-            "2000-2039, 99-50"
-        )
-        .map(s -> s.split(", "))
-        .map(array -> Map.entry(Interval.of(array[0]), Interval.of(array[1]).reverse()))
-        .toList();
 
     private static final int[] CHECKSUM_COEFFICIENTS_K1 = {3, 7, 6, 1, 8, 9, 4, 5, 2};
     private static final int[] CHECKSUM_COEFFICIENTS_K2 = {5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
@@ -73,20 +61,41 @@ public class NorwegianIdNumber implements IdNumberGenerator {
 
     String basePart(BaseProviders faker, LocalDate birthday, Gender gender) {
         String birthdayDigits = BIRTHDAY_FORMAT.format(birthday);
-
-        int sequenceNumber = CENTURIES
-            .stream()
-            .filter(e -> e.getKey().contains(birthday.getYear()))
-            .map(Map.Entry::getValue)
-            .map(interval -> faker.random().nextInt(interval.from, interval.to))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Birthday is not in range of supported in Norway"));
-
-        int genderDigit = gender == Gender.FEMALE
-            ? faker.options().option(0, 2, 4, 6, 8)
-            : faker.options().option(1, 3, 5, 7, 9);
+        int sequenceNumber = generateSequenceNumber(faker, birthday.getYear());
+        int genderDigit = genderDigit(faker, gender);
 
         return "%s%02d%s".formatted(birthdayDigits, sequenceNumber, genderDigit);
+    }
+
+    /**
+     * <ul>
+     * <li>born 1854-1899: allocated from series 749-500</li>
+     * <li>born 1900-1999: allocated from series 499-000</li>
+     * <li>born 1940-1999: also allocated from series 999-900</li>
+     * <li>born 2000-2039: allocated from series 999-500</li>
+     * </ul>
+     *
+     * @see <a href="https://www.oecd.org/content/dam/oecd/en/topics/policy-issue-focus/aeoi/norway-tin.pdf">TIN Structure</a>
+     */
+    private int generateSequenceNumber(BaseProviders faker, int year) {
+        if (year >= 1854 && year <= 1899) {
+            return faker.random().nextInt(50, 74);
+        } else if (year >= 1940 && year <= 1999) {
+            return faker.random().nextInt(90, 99);
+        } else if (year >= 1900 && year <= 1999) {
+            return faker.random().nextInt(0, 49);
+        } else if (year >= 2000 && year <= 2039) {
+            return faker.random().nextInt(50, 99);
+        } else {
+            throw new IllegalArgumentException("Birthday is not in range of supported in Norway");
+        }
+    }
+
+    private int genderDigit(BaseProviders faker, Gender gender) {
+        return switch (gender) {
+            case FEMALE -> faker.options().option(0, 2, 4, 6, 8);
+            case MALE -> faker.options().option(1, 3, 5, 7, 9);
+        };
     }
 
     /**
@@ -109,18 +118,4 @@ public class NorwegianIdNumber implements IdNumberGenerator {
         return (11 - checkSum % 11) % 10;
     }
 
-    private record Interval(int from, int to) {
-        public static Interval of(String string) {
-            String[] split = string.split("-");
-            return new Interval(parseInt(split[0]), parseInt(split[1]));
-        }
-
-        public boolean contains(int value) {
-            return value >= from && value <= to;
-        }
-
-        public Interval reverse() {
-            return new Interval(to, from);
-        }
-    }
 }
