@@ -37,7 +37,7 @@ public class TestSetupExtension implements BeforeAllCallback, AfterAllCallback, 
 
   @Override
   public void beforeEach(ExtensionContext context) {
-    TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kaohsiung"));
+    TimeZone.setDefault(TimeZone.getTimeZone("Asia/Bangkok"));
     long testId = counter.incrementAndGet();
     context.getStore(namespace).put("test-id", testId);
     context.getStore(namespace).put("original-thread-name", Thread.currentThread().getName());
@@ -58,7 +58,7 @@ public class TestSetupExtension implements BeforeAllCallback, AfterAllCallback, 
       String originalThreadName = context.getStore(namespace).remove("original-thread-name", String.class);
       Thread.currentThread().setName(originalThreadName);
       context.getStore(namespace).remove("test-id");
-      TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kaohsiung"));
+      TimeZone.setDefault(TimeZone.getTimeZone("Asia/Bangkok"));
   }
 
   private String verdict(ExtensionContext context) {
