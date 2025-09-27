@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -19,6 +20,7 @@ import static net.datafaker.idnumbers.Utils.randomGender;
  * <a href="https://en.wikipedia.org/wiki/National_identification_number#North_Macedonia">Intro</a>
  * <a href="https://en.wikipedia.org/wiki/Unique_Master_Citizen_Number">Specification</a>
  */
+@InternalApi
 public class MacedonianIdNumber implements IdNumberGenerator {
     private static final List<String> REGIONS = List.of("41", "42", "43", "44", "45", "46", "47", "48", "49");
 
@@ -82,6 +84,7 @@ public class MacedonianIdNumber implements IdNumberGenerator {
         return "%03d".formatted(ordinal);
     }
 
+    @InternalApi
     int checksum(String text) {
         int a = digitAt(text, 0);
         int b = digitAt(text, 1);

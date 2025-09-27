@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -15,6 +16,7 @@ import static net.datafaker.idnumbers.Utils.randomGender;
 /**
  * <a href="https://en.wikipedia.org/wiki/Unique_citizenship_number">Specification</a>
  */
+@InternalApi
 public class BulgarianIdNumber implements IdNumberGenerator {
     private static final int[] CHECKSUM_WEIGHTS = {2, 4, 8, 5, 10, 9, 7, 3, 6};
     private static final int[] EVEN_DIGITS = {0, 2, 4, 6, 8};
@@ -67,6 +69,7 @@ public class BulgarianIdNumber implements IdNumberGenerator {
         return faker.number().digits(2) + lastDigit;
     }
 
+    @InternalApi
     int checksum(String text) {
         int checksum = multiply(text, CHECKSUM_WEIGHTS);
         return (checksum % 11) % 10;

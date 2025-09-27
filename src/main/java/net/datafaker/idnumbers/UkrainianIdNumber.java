@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -16,6 +17,7 @@ import static net.datafaker.idnumbers.Utils.multiply;
  * where C is a control digit calculated from all the other 12 digits in the UNZR
  * <a href="https://blog.uaid.net.ua/ua-id-passport-outside/">algorithm to validate UNZR code</a>
  */
+@InternalApi
 public class UkrainianIdNumber implements IdNumberGenerator {
     private static final int[] CHECKSUM_WEIGHTS = {7, 3, 1, 7, 3, 1, 7, 3, 1, 7, 3, 1};
 

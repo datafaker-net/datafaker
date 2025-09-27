@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -23,6 +24,7 @@ import static net.datafaker.idnumbers.Utils.randomGender;
  * <p>
  * See <a href="https://en.wikipedia.org/wiki/National_identification_number#Hungary">Hungarian identification number</a>
  */
+@InternalApi
 public class HungarianIdNumber implements IdNumberGenerator {
 
     private static final DateTimeFormatter BIRTHDAY_FORMAT = DateTimeFormatter.ofPattern("yyMMdd");
@@ -62,6 +64,7 @@ public class HungarianIdNumber implements IdNumberGenerator {
             faker.number().digits(2);
     }
 
+    @InternalApi
     static int getCheckDigit(String basePart) {
         char[] numbers = basePart.toCharArray();
         int summ = 0;
@@ -72,6 +75,7 @@ public class HungarianIdNumber implements IdNumberGenerator {
         return summ % 11;
     }
 
+    @InternalApi
     static int firstDigit(int birthYear, PersonIdNumber.Gender gender) {
         return switch (gender) {
             case MALE -> isInRange(birthYear) ? 1 : 3;

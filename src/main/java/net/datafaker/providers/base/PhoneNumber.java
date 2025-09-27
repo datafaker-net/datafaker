@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.annotations.Deterministic;
 
 import java.util.Locale;
@@ -24,6 +25,7 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
     }
 
     @Deterministic
+    @InternalApi
     String countryCodeIso2() {
         return countryCodeIso2;
     }

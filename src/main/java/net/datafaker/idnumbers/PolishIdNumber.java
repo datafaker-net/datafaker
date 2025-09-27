@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.GenderRequest;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
@@ -18,6 +19,7 @@ import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
  * <a href="https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000510">https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000510</a> and the
  * description at <a href="https://en.wikipedia.org/wiki/PESEL">https://en.wikipedia.org/wiki/PESEL</a>
  */
+@InternalApi
 public class PolishIdNumber implements IdNumberGenerator {
 
     public static final int PESEL_LENGTH = 11;

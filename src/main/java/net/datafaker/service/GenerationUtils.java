@@ -1,5 +1,7 @@
 package net.datafaker.service;
 
+import net.datafaker.annotations.InternalApi;
+
 public class GenerationUtils {
     private static final char[] DIGITS = "0123456789".toCharArray();
 
@@ -17,6 +19,7 @@ public class GenerationUtils {
         return randomService.nextInt(TENS[amountOfDigits + 1]);
     }
 
+    @InternalApi
     static int generateAndSetNumber(int position, char[] target, char symbol, RandomService randomService) {
         int symbolCounter = 0;
         int generated = 0;

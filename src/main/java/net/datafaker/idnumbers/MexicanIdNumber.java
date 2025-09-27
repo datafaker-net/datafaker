@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.Options;
@@ -15,6 +16,7 @@ import static net.datafaker.idnumbers.Utils.birthday;
  * Implementation based on the definition at
  * <a href="https://en.wikipedia.org/wiki/Unique_Population_Registry_Code">https://en.wikipedia.org/wiki/Unique_Population_Registry_Code</a>
  */
+@InternalApi
 public class MexicanIdNumber implements IdNumberGenerator {
 
     @Override

@@ -6,6 +6,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberType;
 import com.google.i18n.phonenumbers.Phonemetadata;
 import com.google.i18n.phonenumbers.Phonenumber;
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 
@@ -29,6 +30,7 @@ class PhoneNumberGenerator {
         this.context = context;
     }
 
+    @InternalApi
     String randomPhoneNumber(String countryCodeIso2, PhoneNumberType type, PhoneNumberFormat format) {
         Phonenumber.PhoneNumber phoneNumber = randomPhoneNumber(countryCodeIso2, type);
         return libPhoneNumber.format(phoneNumber, format);

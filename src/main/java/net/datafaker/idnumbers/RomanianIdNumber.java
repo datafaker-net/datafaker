@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -19,6 +20,7 @@ import static net.datafaker.idnumbers.Utils.randomGender;
  *
  * <a href="https://en.wikipedia.org/wiki/Romanian_identity_card#CNP">Description</a>
  */
+@InternalApi
 public class RomanianIdNumber implements IdNumberGenerator {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
     private static final int[] CHECKSUM_WEIGHTS = {2, 7, 9, 1, 4, 6, 3, 5, 8, 2, 7, 9};
@@ -59,6 +61,7 @@ public class RomanianIdNumber implements IdNumberGenerator {
      * – 5 for male persons born between 2000-2099;
      * – 6 for female persons born between the years 2000-2099;
      */
+    @InternalApi
     int firstCharacter(LocalDate birthday, Gender gender) {
         int digit = switch (birthday.getYear() / 100) {
             case 18 -> 3;
@@ -73,6 +76,7 @@ public class RomanianIdNumber implements IdNumberGenerator {
         };
     }
 
+    @InternalApi
     String dateOfBirth(LocalDate birthday) {
         return DATE_TIME_FORMATTER.format(birthday);
     }
@@ -80,6 +84,7 @@ public class RomanianIdNumber implements IdNumberGenerator {
     /**
      * Character 8–9: 01–46 or 51 or 52
      */
+    @InternalApi
     String countyCode(BaseProviders faker) {
         int countyCode = faker.bool().bool() ?
             faker.number().numberBetween(1, 47) :
@@ -91,6 +96,7 @@ public class RomanianIdNumber implements IdNumberGenerator {
      * next 3 digits is a number between 001 and 999.
      * Each number is allocated only once per person per day.
      */
+    @InternalApi
     String sequenceNumber(BaseProviders faker) {
         return "%03d".formatted(faker.number().numberBetween(1, 1_000));
     }
@@ -101,6 +107,7 @@ public class RomanianIdNumber implements IdNumberGenerator {
      *
      * if the result is 10 then the digit is 1, otherwise is the result.
      */
+    @InternalApi
     int checksum(String basePart) {
         int result = multiply(basePart, CHECKSUM_WEIGHTS) % 11;
         return result == 10 ? 1 : result;

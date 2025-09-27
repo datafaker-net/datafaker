@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -16,6 +17,7 @@ import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
  * Algorithm is given from <a href="http://www.ngiam.net/NRIC/">http://www.ngiam.net/NRIC/</a>
  * See <a href="https://en.wikipedia.org/wiki/National_Registration_Identity_Card">...</a>
  */
+@InternalApi
 public class SingaporeIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {
@@ -78,6 +80,7 @@ public class SingaporeIdNumber implements IdNumberGenerator {
         return generateValidIdNumber(f, birthDate, citizen, randomGender(f)).idNumber();
     }
 
+    @InternalApi
     static LocalDate randomBirthDate(BaseProviders faker, Type type) {
         int now = LocalDate.now().getYear();
         return switch (type) {
@@ -88,11 +91,13 @@ public class SingaporeIdNumber implements IdNumberGenerator {
         };
     }
 
+    @InternalApi
     static char centuryPrefixCitizen(LocalDate issueDate) {
         int century = issueDate.getYear() / 100;
         return (char) ('A' + century - 1);
     }
 
+    @InternalApi
     static char centuryPrefixForeigner(LocalDate issueDate) {
         int century = issueDate.getYear() / 100;
         return (char) ('A' + century - 14);

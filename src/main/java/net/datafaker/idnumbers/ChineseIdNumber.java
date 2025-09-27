@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -16,6 +17,7 @@ import static net.datafaker.idnumbers.Utils.birthday;
  *
  * @author irakatz
  */
+@InternalApi
 public class ChineseIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {
@@ -57,6 +59,7 @@ public class ChineseIdNumber implements IdNumberGenerator {
         return new PersonIdNumber(idNumber(res), birthday, gender(faker, request));
     }
 
+    @InternalApi
     static String idNumber(char[] res) {
         int count = 0;
         count += (res[0] - '0') * 7;

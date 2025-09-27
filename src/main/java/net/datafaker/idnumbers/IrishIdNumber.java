@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -31,6 +32,7 @@ import static net.datafaker.idnumbers.Utils.gender;
  *   <li>{@link #validateAndCheckModulo23(String)} Validates a PPSN and checks its checksum</li>
  * </ul>
  */
+@InternalApi
 public class IrishIdNumber implements IdNumberGenerator {
 
     private static final Pattern IRISH_PPSN = Pattern.compile("\\d{7}[A-Z]{1,2}$");
@@ -75,6 +77,7 @@ public class IrishIdNumber implements IdNumberGenerator {
         return digitsPpsn + calculateCheckSumCharacter(sum) + suffix;
     }
 
+    @InternalApi
     boolean validateAndCheckModulo23(String ppsn) {
        if (ppsn == null || !IRISH_PPSN.matcher(ppsn).matches()) {
            return false;

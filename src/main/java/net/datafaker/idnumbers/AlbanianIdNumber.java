@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -16,6 +17,7 @@ import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
 /**
  * The Albanian Identity Number is a unique personal identification number of 10 characters in the format YYMMDDSSSC
  */
+@InternalApi
 public class AlbanianIdNumber implements IdNumberGenerator {
     private static final String FIRST_CHAR = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String CHECKSUM_CHAR = "WABCDEFGHIJKLMNOPQRSTUV";
@@ -41,14 +43,17 @@ public class AlbanianIdNumber implements IdNumberGenerator {
         return new PersonIdNumber(idNumber, birthDate, gender);
     }
 
+    @InternalApi
     String yy(int year) {
         return FIRST_CHAR.charAt((year - 1800) / 10) + String.valueOf(year % 10);
     }
 
+    @InternalApi
     String mm(int month, Gender gender) {
         return String.format("%02d", (gender == FEMALE ? 50 : 0) + month);
     }
 
+    @InternalApi
     String dd(int dayOfMonth) {
         return String.format("%02d", dayOfMonth);
     }
@@ -57,6 +62,7 @@ public class AlbanianIdNumber implements IdNumberGenerator {
         return faker.number().digits(3);
     }
 
+    @InternalApi
     char checksum(String text) {
         int checksum = checksumOfFirstChar(text.charAt(0));
         for (int i = 1; i < text.length(); i++) {
@@ -65,6 +71,7 @@ public class AlbanianIdNumber implements IdNumberGenerator {
         return CHECKSUM_CHAR.charAt(checksum % 23);
     }
 
+    @InternalApi
     int checksumOfFirstChar(char c) {
         return Character.isLetter(c) ? CHECKSUM_CHAR.indexOf(c) : digit(c);
     }

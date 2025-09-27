@@ -7,6 +7,7 @@ import static net.datafaker.idnumbers.Utils.gender;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -16,6 +17,7 @@ import net.datafaker.providers.base.PersonIdNumber;
  * <p>
  * See <a href="https://en.wikipedia.org/wiki/INSEE_code">INSEE code</a>.
  */
+@InternalApi
 public class FrenchIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {
@@ -61,6 +63,7 @@ public class FrenchIdNumber implements IdNumberGenerator {
         return faker.regexify("\\d{3}");
     }
 
+    @InternalApi
     String controlKey(String basePart) {
         long basePartLong = parseLong(basePart.replace("2A","19").replace("2B","18"));
         long controlKey = 97 - (basePartLong % 97);

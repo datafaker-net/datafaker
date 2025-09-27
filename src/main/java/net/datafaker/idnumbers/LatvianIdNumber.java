@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -14,6 +15,7 @@ import static net.datafaker.idnumbers.Utils.*;
  * Latvian personal identification number
  * See <a href="https://en.wikipedia.org/wiki/National_identification_number#Latvia">Latvian identification number</a>
  */
+@InternalApi
 public class LatvianIdNumber implements IdNumberGenerator {
     private static final DateTimeFormatter BIRTHDAY_FORMAT = DateTimeFormatter.ofPattern("ddMMyy");
     private static final int[] CHECKSUM_COEFFICIENTS = {1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
@@ -53,6 +55,7 @@ public class LatvianIdNumber implements IdNumberGenerator {
             faker.number().digits(3);
     }
 
+    @InternalApi
     static int centuryDigit(int birthYear) {
         return switch (birthYear / 100) {
             case 18 -> 0;
@@ -62,6 +65,7 @@ public class LatvianIdNumber implements IdNumberGenerator {
         };
     }
 
+    @InternalApi
     static int checksum(String numbers) {
         int checkSum = 0;
         numbers = numbers.replace("-", "");
@@ -73,5 +77,4 @@ public class LatvianIdNumber implements IdNumberGenerator {
 
         return ((1101 - checkSum) % 11) % 10;
     }
-
 }
