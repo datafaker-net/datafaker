@@ -1,5 +1,6 @@
 package net.datafaker.service;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.internal.helper.SingletonLocale;
 
 import java.net.URISyntaxException;
@@ -88,6 +89,7 @@ class FakeValuesContext {
         return filename;
     }
 
+    @InternalApi
     String getPath() {
         return path;
     }

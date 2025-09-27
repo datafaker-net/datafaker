@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -10,6 +11,7 @@ import static net.datafaker.idnumbers.Utils.gender;
 /**
  * Generates ID numbers for Georgian citizens and Residents
  */
+@InternalApi
 public class GeorgianIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {

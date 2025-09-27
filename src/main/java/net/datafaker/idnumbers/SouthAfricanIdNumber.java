@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -17,6 +18,7 @@ import static net.datafaker.idnumbers.Utils.birthday;
  * Implementation based on the definition at
  * <a href="https://en.wikipedia.org/wiki/South_African_identity_card">https://en.wikipedia.org/wiki/South_African_identity_card</a>
  */
+@InternalApi
 public class SouthAfricanIdNumber implements IdNumberGenerator {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
 
@@ -49,6 +51,7 @@ public class SouthAfricanIdNumber implements IdNumberGenerator {
         return new PersonIdNumber(basePart + calculateChecksum(basePart, 12), birthday, gender);
     }
 
+    @InternalApi
     static String sequentialNumber(BaseProviders f, Gender gender) {
         int number = switch (gender) {
             case FEMALE -> f.number().numberBetween(0, 5000);

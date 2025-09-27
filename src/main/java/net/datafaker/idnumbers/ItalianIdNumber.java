@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -21,6 +22,7 @@ import net.datafaker.providers.base.Text.TextSymbolsBuilder;
 /**
  * See <a href="https://codicefiscale.com/#calcolo-completato">Italian national id numbers</a>
  */
+@InternalApi
 public class ItalianIdNumber implements IdNumberGenerator {
 
     private static final String REGION_CODE_FIRST_LETTERS = "ABCDEFGHIJKLM";
@@ -92,6 +94,7 @@ public class ItalianIdNumber implements IdNumberGenerator {
      * @param name first name of last name, UPPER CASE!
      * @return 3 letters from the name
      */
+    @InternalApi
     String encodeName(String name) {
         String latinLetters = removeNonLatinLetters(name);
         IntStream consonants = latinLetters.chars().filter(c -> isConsonant(c));
@@ -127,6 +130,7 @@ public class ItalianIdNumber implements IdNumberGenerator {
         return valid.substring(0, valid.length() - 1) + '9';
     }
 
+    @InternalApi
     char checksum(String basePart) {
         int sum = 0;
         for (int i = 0; i < basePart.length(); i += 2) {

@@ -1,6 +1,8 @@
 package net.datafaker.providers.base;
 
 
+import net.datafaker.annotations.InternalApi;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -383,6 +385,7 @@ public class DateAndTime extends AbstractProvider<BaseProviders> {
      * @return converts unit to ChronoUnit.
      * @throws IllegalArgumentException if the {@code unit} is invalid.
      */
+    @InternalApi
     static ChronoUnit str2durationUnit(String unit) {
         if (unit == null || unit.trim().isEmpty()) {
             throw new IllegalArgumentException("Illegal duration unit '" + unit + "'");

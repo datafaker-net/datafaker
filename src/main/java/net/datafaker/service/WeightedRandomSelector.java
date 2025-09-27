@@ -1,5 +1,7 @@
 package net.datafaker.service;
 
+import net.datafaker.annotations.InternalApi;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -104,6 +106,7 @@ public record WeightedRandomSelector(Random random) {
         }
     }
 
+    @InternalApi
     static double[] preprocessItems(List<Map<String, Object>> items, Object[] values) {
         double[] cumulativeWeights = new double[items.size()];
 
@@ -123,6 +126,7 @@ public record WeightedRandomSelector(Random random) {
         return cumulativeWeights;
     }
 
+    @InternalApi
     static <T> T selectWeightedElement(double randomValue, double[] cumulativeWeights, Object[] values) {
         int index = Arrays.binarySearch(cumulativeWeights, randomValue);
         index = (index < 0) ? -index - 1 : index;

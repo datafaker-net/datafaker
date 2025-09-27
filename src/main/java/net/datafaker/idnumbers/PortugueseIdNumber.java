@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -16,6 +17,7 @@ import static net.datafaker.idnumbers.Utils.birthday;
  * See <a href="https://pt.wikipedia.org/wiki/N%C3%BAmero_de_identifica%C3%A7%C3%A3o_fiscal">Número de identificação fiscal</a>
  * and <a href="https://en.wikipedia.org/wiki/VAT_identification_number">VAT identification number</a>
  */
+@InternalApi
 public class PortugueseIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {

@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -18,6 +19,7 @@ import static net.datafaker.idnumbers.Utils.gender;
  * and the description at
  * <a href="https://en.wikipedia.org/wiki/Personal_identity_number_">https://en.wikipedia.org/wiki/Personal_identity_number_</a>(Sweden)
  */
+@InternalApi
 public class SwedenIdNumber implements IdNumberGenerator {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
     private static final DateTimeFormatter FULL_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -117,6 +119,7 @@ public class SwedenIdNumber implements IdNumberGenerator {
         return !reversed.equals(dateString);
     }
 
+    @InternalApi
     static String findYearBeginningFromSsn(String ssn) {
         char symbol = ssn.charAt(6);
         String yearEnd = ssn.substring(0, 2);
@@ -136,6 +139,7 @@ public class SwedenIdNumber implements IdNumberGenerator {
         throw new RuntimeException(errorMessage);
     }
 
+    @InternalApi
     static boolean isYearOver100YearsAgo(String year, LocalDate currentDate) {
         LocalDate hundredYearsAgo = currentDate.minusYears(100);
         return LocalDate.of(Integer.parseInt(year), 1, 1).isBefore(hundredYearsAgo);

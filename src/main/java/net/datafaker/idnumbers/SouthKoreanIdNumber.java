@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -17,6 +18,7 @@ import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
  * Implementation based on the description at
  * <a href="https://en.wikipedia.org/wiki/Resident_registration_number">Wikipedia - Resident registration number</a>
  */
+@InternalApi
 public class SouthKoreanIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {

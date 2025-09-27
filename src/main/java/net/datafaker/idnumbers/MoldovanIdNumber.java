@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -18,6 +19,7 @@ import static net.datafaker.idnumbers.Utils.randomGender;
  * <a href="https://taxid.pro/docs/countries/moldova">Overview</a>
  * <a href="https://taxid.pro/?example=moldova-tin-for-individuals">Online generator</a>
  */
+@InternalApi
 public class MoldovanIdNumber implements IdNumberGenerator {
 
     private static final int[] CHECKSUM_MASK = {7, 3, 1, 7, 3, 1, 7, 3, 1, 7, 3, 1};
@@ -74,6 +76,7 @@ public class MoldovanIdNumber implements IdNumberGenerator {
         return faker.number().digits(5);
     }
 
+    @InternalApi
     char checksum(String text) {
         int checksum = multiply(text, CHECKSUM_MASK);
         return (char) ('0' + checksum % 10);

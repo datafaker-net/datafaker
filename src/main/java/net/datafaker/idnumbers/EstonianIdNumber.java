@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -8,8 +9,8 @@ import net.datafaker.providers.base.PersonIdNumber.Gender;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.randomGender;
 
 /**
@@ -20,6 +21,7 @@ import static net.datafaker.idnumbers.Utils.randomGender;
  * <p>
  * and <a href="https://en.wikipedia.org/wiki/National_identification_number#Estonia">Estonian identification number</a>
  */
+@InternalApi
 public class EstonianIdNumber implements IdNumberGenerator {
     private static final DateTimeFormatter BIRTHDAY_FORMAT = DateTimeFormatter.ofPattern("yyMMdd");
     private static final int[] CHECKSUM_COEFFICIENTS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
@@ -52,6 +54,7 @@ public class EstonianIdNumber implements IdNumberGenerator {
             faker.number().digits(3);
     }
 
+    @InternalApi
     static int firstDigit(int birthYear, Gender gender) {
         int digit = switch (birthYear / 100) {
             case 18 -> 1;
@@ -66,6 +69,7 @@ public class EstonianIdNumber implements IdNumberGenerator {
         };
     }
 
+    @InternalApi
     static int checksum(String numbers) {
         int checksum = checksum(numbers, CHECKSUM_COEFFICIENTS);
         return checksum != 10 ? checksum : checksum(numbers, CHECKSUM_COEFFICIENTS2) % 10;

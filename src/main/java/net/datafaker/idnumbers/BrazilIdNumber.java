@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.idnumbers.pt.br.IdNumberGeneratorPtBrUtil;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
@@ -11,6 +12,7 @@ import static net.datafaker.idnumbers.Utils.gender;
 /**
  * Brazilian individual taxpayer number
  */
+@InternalApi
 public class BrazilIdNumber implements IdNumberGenerator {
     @Override
     public String countryCode() {

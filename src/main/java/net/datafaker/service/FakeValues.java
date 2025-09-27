@@ -1,5 +1,6 @@
 package net.datafaker.service;
 
+import net.datafaker.annotations.InternalApi;
 import net.datafaker.internal.helper.LazyEvaluated;
 import org.yaml.snakeyaml.Yaml;
 
@@ -25,6 +26,7 @@ public class FakeValues implements FakeValuesInterface {
         this.fakeValuesContext = fakeValuesContext;
     }
 
+    @InternalApi
     static FakeValues of(FakeValuesContext fakeValuesContext) {
         return FAKE_VALUES_MAP.computeIfAbsent(fakeValuesContext, FakeValues::new);
     }
@@ -125,6 +127,7 @@ public class FakeValues implements FakeValuesInterface {
         return (Map<String, Object>) map.get(key);
     }
 
+    @InternalApi
     Set<String> getPaths() {
         return fakeValuesContext.getPath() != null ?
             Set.of(fakeValuesContext.getPath()) :
@@ -135,6 +138,7 @@ public class FakeValues implements FakeValuesInterface {
         return map == null || map.isEmpty() ? null : map.keySet();
     }
 
+    @InternalApi
     Locale getLocale() {
         return fakeValuesContext.getLocale();
     }
