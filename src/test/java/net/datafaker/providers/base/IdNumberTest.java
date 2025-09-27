@@ -41,6 +41,7 @@ class IdNumberTest {
     private static final Faker ITALIAN = new Faker(new Locale("it", "IT"));
     private static final Faker HUNGARIAN = new Faker(new Locale("hu", "HU"));
     private static final Faker BRAZILIAN = new Faker(new Locale("pt", "BR"));
+    private static final Faker NORWEGIAN = new Faker(new Locale("no", "NO"));
 
     @Test
     void testValid() {
@@ -265,6 +266,16 @@ class IdNumberTest {
     @RepeatedTest(100)
     void hungarianIdNumber_invalid() {
         assertThatPin(HUNGARIAN.idNumber().invalid()).matches(IdNumberPatterns.HUNGARIAN);
+    }
+
+    @RepeatedTest(100)
+    void norwegianIdNumber_valid() {
+        assertThatPin(NORWEGIAN.idNumber().valid()).matches(IdNumberPatterns.NORWEGIAN);
+    }
+
+    @RepeatedTest(100)
+    void norwegianIdNumber_invalid() {
+        assertThatPin(NORWEGIAN.idNumber().invalid()).matches(IdNumberPatterns.NORWEGIAN);
     }
 
     private static AbstractStringAssert<?> assertThatPin(String pin) {
