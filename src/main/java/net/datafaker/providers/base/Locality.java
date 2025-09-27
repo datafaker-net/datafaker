@@ -46,7 +46,7 @@ public class Locality extends AbstractProvider<BaseProviders> {
 
     /**
      * @param fileMasks is not used anymore
-     * @deprecated Use {{@link #allSupportedLocales()}} instead
+     * @deprecated Use {@link #allSupportedLocales()} instead
      */
     @Deprecated
     @SuppressWarnings("unused")

@@ -43,7 +43,7 @@ public class MoldovanIdNumber implements IdNumberGenerator {
 
     private String basePart(BaseProviders faker, LocalDate birthday) {
         // IDNP: 2ГГГXXXYYYYYK
-        return firstDigit() + ГГГ(birthday) + XXX(faker) + YYYYY(faker);
+        return firstDigit() + yearDigits(birthday) + registrarOfficeCode(faker) + sequenceNumber(faker);
     }
 
     /**
@@ -56,21 +56,21 @@ public class MoldovanIdNumber implements IdNumberGenerator {
     /**
      * ГГГ- the last three digits of the IDNP award year
      */
-    private String ГГГ(LocalDate birthday) {
+    private String yearDigits(LocalDate birthday) {
         return "%03d".formatted(birthday.getYear() % 1000);
     }
 
     /**
      * XXX - code of the registrar's office
      */
-    private String XXX(BaseProviders faker) {
+    private String registrarOfficeCode(BaseProviders faker) {
         return faker.number().digits(3);
     }
 
     /**
      * YYYYY- the order number of the registration in the respective year in the respective office
      */
-    private String YYYYY(BaseProviders faker) {
+    private String sequenceNumber(BaseProviders faker) {
         return faker.number().digits(5);
     }
 

@@ -1,5 +1,6 @@
 package net.datafaker.idnumbers;
 
+import com.google.errorprone.annotations.RestrictedApi;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
@@ -59,6 +60,10 @@ public class NorwegianIdNumber implements IdNumberGenerator {
         return "%s%02d".formatted(basePart, invalidChecksum);
     }
 
+    @RestrictedApi(
+        explanation = "Not intended for end users",
+        allowedOnPath = ".*NorwegianIdNumber\\.java|.*NorwegianIdNumberTest\\.java"
+    )
     String basePart(BaseProviders faker, LocalDate birthday, Gender gender) {
         String birthdayDigits = BIRTHDAY_FORMAT.format(birthday);
         int sequenceNumber = generateSequenceNumber(faker, birthday.getYear());
@@ -102,6 +107,10 @@ public class NorwegianIdNumber implements IdNumberGenerator {
      * k1 = 11 - ((3 × d1 + 7 × d2 + 6 × m1 + 1 × m2 + 8 × å1 + 9 × å2 + 4 × i1 + 5 × i2 + 2 × i3) mod 11),
      * k2 = 11 - ((5 × d1 + 4 × d2 + 3 × m1 + 2 × m2 + 7 × å1 + 6 × å2 + 5 × i1 + 4 × i2 + 3 × i3 + 2 × k1) mod 11).
      */
+    @RestrictedApi(
+        explanation = "Not intended for end users",
+        allowedOnPath = ".*NorwegianIdNumber\\.java|.*NorwegianIdNumberTest\\.java"
+    )
     int checksum(String numbers) {
         int k1 = modulo11(numbers, CHECKSUM_COEFFICIENTS_K1);
         int k2 = modulo11(numbers + k1, CHECKSUM_COEFFICIENTS_K2);
@@ -117,5 +126,4 @@ public class NorwegianIdNumber implements IdNumberGenerator {
 
         return (11 - checkSum % 11) % 10;
     }
-
 }

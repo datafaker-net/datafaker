@@ -1,5 +1,6 @@
 package net.datafaker.service;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,23 +14,27 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import static java.lang.Double.MAX_VALUE;
+import static java.lang.Double.NaN;
+import static java.lang.Double.POSITIVE_INFINITY;
+import static java.util.Map.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.withinPercentage;
 
 class WeightedRandomSelectorTest {
 
-    public static final String WEIGHT_KEY = "weight";
-    public static final String VALUE_KEY = "value";
-    public static final String ELEMENT_1 = "Element1";
-    public static final String ELEMENT_2 = "Element2";
-    public static final String ELEMENT_3 = "Element3";
-    public static final String STRING_WEIGHT = "1.0";
-    public static final int ITERATIONS = 1000;
-    public static final double ELEMENT_1_WEIGHT = 1.0;
-    public static final double ELEMENT_2_WEIGHT = 2.0;
-    public static final double ELEMENT_3_WEIGHT = 3.0;
-    public static final double NEGATIVE_WEIGHT = -1.0;
+    private static final String WEIGHT_KEY = "weight";
+    private static final String VALUE_KEY = "value";
+    private static final String ELEMENT_1 = "Element1";
+    private static final String ELEMENT_2 = "Element2";
+    private static final String ELEMENT_3 = "Element3";
+    private static final String STRING_WEIGHT = "1.0";
+    private static final int ITERATIONS = 1000;
+    private static final double ELEMENT_1_WEIGHT = 1.0;
+    private static final double ELEMENT_2_WEIGHT = 2.0;
+    private static final double ELEMENT_3_WEIGHT = 3.0;
+    private static final double NEGATIVE_WEIGHT = -1.0;
 
     /**
      * Tests the constructor with a non-null Random instance.
@@ -83,9 +88,9 @@ class WeightedRandomSelectorTest {
     @MethodSource("selectWeightedElementProvider")
     void testSelectWeightedElement(double randomValue, String expectedElement) {
         List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
-            Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
+            valueWeight(ELEMENT_1, ELEMENT_1_WEIGHT),
+            valueWeight(ELEMENT_2, ELEMENT_2_WEIGHT),
+            valueWeight(ELEMENT_3, ELEMENT_3_WEIGHT)
         );
 
         Object[] values = new Object[items.size()];
@@ -98,12 +103,10 @@ class WeightedRandomSelectorTest {
     /**
      * Tests selection with a single element using parameterized tests.
      */
-    @ParameterizedTest
-    @MethodSource("weightedRandomSelectorProvider")
-    void testWeightedArrayElementWithSingleElement(WeightedRandomSelector selector) {
-        List<Map<String, Object>> items = List.of(
-            Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT)
-        );
+    @Test
+    void testWeightedArrayElementWithSingleElement() {
+        var selector = new WeightedRandomSelector(new Random());
+        var items = List.of(valueWeight(ELEMENT_1, ELEMENT_1_WEIGHT));
 
         String result = selector.select(items);
         assertThat(result).isEqualTo(ELEMENT_1);
@@ -137,61 +140,58 @@ class WeightedRandomSelectorTest {
             ),
             Arguments.of(
                 List.of(
-                    Map.of(VALUE_KEY, ELEMENT_1),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                    of(VALUE_KEY, ELEMENT_1),
+                    valueWeight(ELEMENT_2, ELEMENT_2_WEIGHT)
                 ),
                 "Each item must contain 'weight' and 'value' keys"
             ),
             Arguments.of(
                 List.of(
-                    Map.of(WEIGHT_KEY, ELEMENT_1_WEIGHT),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                    of(WEIGHT_KEY, ELEMENT_1_WEIGHT),
+                    valueWeight(ELEMENT_2, ELEMENT_2_WEIGHT)
                 ),
                 "Each item must contain 'weight' and 'value' keys"
             ),
             Arguments.of(
                 List.of(
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, STRING_WEIGHT),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                    valueWeight(ELEMENT_1, STRING_WEIGHT),
+                    valueWeight(ELEMENT_2, ELEMENT_2_WEIGHT)
                 ),
                 "Weight must be a non-null Double"
             ),
             Arguments.of(
                 Arrays.asList(
                     null,
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT)
+                    valueWeight(ELEMENT_1, ELEMENT_1_WEIGHT)
                 ),
                 "Item cannot be null"
             ),
             Arguments.of(
                 List.of(
-                    Map.of(),
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT)
+                    of(),
+                    valueWeight(ELEMENT_1, ELEMENT_1_WEIGHT)
                 ),
                 "Item cannot be empty"
             ),
             Arguments.of(
                 List.of(
-                    new HashMap<String, Object>() {{
-                        put(VALUE_KEY, null);
-                        put(WEIGHT_KEY, ELEMENT_1_WEIGHT);
-                    }}
+                    valueWeight(null, ELEMENT_1_WEIGHT)
                 ),
                 "Value cannot be null"
             ),
             Arguments.of(
                 List.of(
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.MAX_VALUE - 1),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, Double.MAX_VALUE - 1)
+                    valueWeight(ELEMENT_1, MAX_VALUE - 1),
+                    valueWeight(ELEMENT_2, MAX_VALUE - 1)
                 ),
                 "Sum of the weights exceeds Double.MAX_VALUE"
             ),
             Arguments.of(
                 List.of(
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-                    Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_1_WEIGHT)
+                    valueWeight(ELEMENT_1, ELEMENT_1_WEIGHT),
+                    valueWeight(ELEMENT_2, ELEMENT_1_WEIGHT),
+                    valueWeight(ELEMENT_2, ELEMENT_1_WEIGHT),
+                    valueWeight(ELEMENT_3, ELEMENT_1_WEIGHT)
                 ),
                 "Duplicate value found: Element2. Values must be unique."
             )
@@ -202,30 +202,30 @@ class WeightedRandomSelectorTest {
         return Stream.of(
             Arguments.of(
                 List.of(
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.NaN),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                    valueWeight(ELEMENT_1, NaN),
+                    valueWeight(ELEMENT_2, ELEMENT_2_WEIGHT)
                 ),
                 "Weight must be a non-negative number and cannot be NaN or infinite"
             ),
             Arguments.of(
                 List.of(
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, NEGATIVE_WEIGHT),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                    valueWeight(ELEMENT_1, NEGATIVE_WEIGHT),
+                    valueWeight(ELEMENT_2, ELEMENT_2_WEIGHT)
                 ),
                 "Weight must be a non-negative number and cannot be NaN or infinite"
             ),
             Arguments.of(
                 List.of(
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, Double.POSITIVE_INFINITY),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT)
+                    valueWeight(ELEMENT_1, POSITIVE_INFINITY),
+                    valueWeight(ELEMENT_2, ELEMENT_2_WEIGHT)
                 ),
                 "Weight must be a non-negative number and cannot be NaN or infinite"
             ),
             Arguments.of(
                 List.of(
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, 0.0),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, 0.0),
-                    Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, 0.0)
+                    valueWeight(ELEMENT_1, 0.0),
+                    valueWeight(ELEMENT_2, 0.0),
+                    valueWeight(ELEMENT_3, 0.0)
                 ),
                 "The total weight must be greater than 0. At least one item must have a positive weight"
             )
@@ -247,9 +247,9 @@ class WeightedRandomSelectorTest {
         return Stream.of(
             Arguments.of(
                 List.of(
-                    Map.of(VALUE_KEY, ELEMENT_1, WEIGHT_KEY, ELEMENT_1_WEIGHT),
-                    Map.of(VALUE_KEY, ELEMENT_2, WEIGHT_KEY, ELEMENT_2_WEIGHT),
-                    Map.of(VALUE_KEY, ELEMENT_3, WEIGHT_KEY, ELEMENT_3_WEIGHT)
+                    valueWeight(ELEMENT_1, ELEMENT_1_WEIGHT),
+                    valueWeight(ELEMENT_2, ELEMENT_2_WEIGHT),
+                    valueWeight(ELEMENT_3, ELEMENT_3_WEIGHT)
                 ),
                 Map.of(
                     ELEMENT_1, (int) (ITERATIONS * ELEMENT_1_WEIGHT / (ELEMENT_1_WEIGHT + ELEMENT_2_WEIGHT + ELEMENT_3_WEIGHT)),
@@ -269,7 +269,10 @@ class WeightedRandomSelectorTest {
         return counts;
     }
 
-    private static Stream<WeightedRandomSelector> weightedRandomSelectorProvider() {
-        return Stream.of(new WeightedRandomSelector(new Random()));
+    private static Map<String, Object> valueWeight(@Nullable String value, Object weight) {
+        Map<String, Object> result = new HashMap<>(2);
+        result.put(VALUE_KEY, value);
+        result.put(WEIGHT_KEY, weight);
+        return result;
     }
 }
