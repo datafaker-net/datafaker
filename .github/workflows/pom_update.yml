@@ -32,7 +32,7 @@ jobs:
         # Increment the version
         ./mvnw build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT
         git add pom.xml
-        # Get the new version
+        # Get the next version
         NEXT_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
         echo $NEXT_VERSION
         # Replace version in README.md look for >, : (greater than, colon) followed by "2" period number period number (ex: 2.4.2) and replace it with the same leading char and current version
