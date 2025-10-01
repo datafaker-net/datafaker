@@ -61,7 +61,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
                     if (primaryConstructor != null) {
                         result = primaryConstructor.newInstance();
                     } else {
-                        throw new RuntimeException("Failed to local a parameterless constructor for class " + clazz.getName());
+                        throw new RuntimeException("Failed to locate a parameterless public constructor for class " + clazz.getName());
                     }
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
