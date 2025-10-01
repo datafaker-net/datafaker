@@ -57,8 +57,12 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
         } else {
             if (result == null) {
                 try {
-                    Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> c.getDeclaredConstructors()[0]);
-                    result = primaryConstructor.newInstance();
+                    Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> getParameterlessPublicConstructor(c).orElse(null));
+                    if (primaryConstructor != null) {
+                        result = primaryConstructor.newInstance();
+                    } else {
+                        throw new RuntimeException("Failed to local a parameterless constructor for class " + clazz.getName());
+                    }
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
@@ -167,11 +171,12 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
     }
 
     private boolean hasParameterlessPublicConstructor(Class<?> clazz) {
-        for (Constructor<?> constructor : clazz.getConstructors()) {
-            if (constructor.getParameterCount() == 0) {
-                return true;
-            }
-        }
-        return false;
+        return getParameterlessPublicConstructor(clazz).isPresent();
+    }
+
+    private Optional<Constructor<?>> getParameterlessPublicConstructor(Class<?> clazz) {
+        return Arrays.stream(clazz.getConstructors())
+            .filter(constructor -> constructor.getParameterCount() == 0)
+            .findFirst();
     }
 }
