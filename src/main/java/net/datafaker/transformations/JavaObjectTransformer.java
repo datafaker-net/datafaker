@@ -5,6 +5,7 @@ import net.datafaker.sequence.FakeSequence;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.RecordComponent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,14 +52,22 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
             result = getObject(schema, result, recordConstructor);
         } else if (!hasParameterlessPublicConstructor(clazz)) {
-            Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> c.getDeclaredConstructors()[0]);
+            Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> getAnyPublicConstructor(c).orElse(null));
+
+            if (primaryConstructor == null) {
+                throw new RuntimeException("Failed to initialize class " + clazz.getName() + ", no appropriate public constructor found");
+            }
 
             result = getObject(schema, result, primaryConstructor);
         } else {
             if (result == null) {
                 try {
-                    Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> c.getDeclaredConstructors()[0]);
-                    result = primaryConstructor.newInstance();
+                    Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> getParameterlessPublicConstructor(c).orElse(null));
+                    if (primaryConstructor != null) {
+                        result = primaryConstructor.newInstance();
+                    } else {
+                        throw new RuntimeException("Failed to locate a parameterless public constructor for class " + clazz.getName());
+                    }
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
@@ -167,11 +176,19 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
     }
 
     private boolean hasParameterlessPublicConstructor(Class<?> clazz) {
-        for (Constructor<?> constructor : clazz.getConstructors()) {
-            if (constructor.getParameterCount() == 0) {
-                return true;
-            }
-        }
-        return false;
+        return getParameterlessPublicConstructor(clazz).isPresent();
+    }
+
+    private Optional<Constructor<?>> getParameterlessPublicConstructor(Class<?> clazz) {
+        return Arrays.stream(clazz.getConstructors())
+            .filter(constructor -> constructor.getParameterCount() == 0)
+            .filter(constructor -> Modifier.isPublic(constructor.getModifiers()))
+            .findFirst();
+    }
+
+    private Optional<Constructor<?>> getAnyPublicConstructor(Class<?> clazz) {
+        return Arrays.stream(clazz.getConstructors())
+            .filter(constructor -> Modifier.isPublic(constructor.getModifiers()))
+            .findFirst();
     }
 }
