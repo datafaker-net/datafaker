@@ -5,6 +5,7 @@ import net.datafaker.sequence.FakeSequence;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.RecordComponent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +52,11 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
             result = getObject(schema, result, recordConstructor);
         } else if (!hasParameterlessPublicConstructor(clazz)) {
-            Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> c.getDeclaredConstructors()[0]);
+            Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> getAnyPublicConstructor(c).orElse(null));
+
+            if (primaryConstructor == null) {
+                throw new RuntimeException("Failed to initialize class " + clazz.getName() + ", no appropriate public constructor found");
+            }
 
             result = getObject(schema, result, primaryConstructor);
         } else {
@@ -177,6 +182,13 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
     private Optional<Constructor<?>> getParameterlessPublicConstructor(Class<?> clazz) {
         return Arrays.stream(clazz.getConstructors())
             .filter(constructor -> constructor.getParameterCount() == 0)
+            .filter(constructor -> Modifier.isPublic(constructor.getModifiers()))
+            .findFirst();
+    }
+
+    private Optional<Constructor<?>> getAnyPublicConstructor(Class<?> clazz) {
+        return Arrays.stream(clazz.getConstructors())
+            .filter(constructor -> Modifier.isPublic(constructor.getModifiers()))
             .findFirst();
     }
 }
