@@ -20,7 +20,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        echo "BRANCH=pom-snapshot-updt" >> $GITHUB_ENV
+        echo "BRANCH=version-updts" >> $GITHUB_ENV
     - name: Build PR
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,6 +40,6 @@ jobs:
         # Replace snapshot version in README.md look for "2" period number period number hyphen SNAPSHOT (ex: 2.4.2-SNAPSHOT) and replace it with the next version
         sed -i -E 's/2\.[0-9]\.[0-9]-SNAPSHOT/'"$NEXT_VERSION"-SNAPSHOT'/g' README.md
         git add README.md
-        git commit -m "Update README and pom versions" -m "A release just completed, this PR updates the versions in pom.xml and README.md" --signoff
+        git commit -m "Released Datafaker $RELEASED_VERSION" -m "A release just completed, this PR updates the versions in pom.xml and README.md" --signoff
         git push --set-upstream origin $BRANCH --force
         gh pr create --fill
