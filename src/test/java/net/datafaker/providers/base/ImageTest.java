@@ -6,7 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static net.datafaker.assertions.ImageAssertions.assertThatImage;
+import static net.datafaker.providers.base.Image.ImageType.BMP;
+import static net.datafaker.providers.base.Image.ImageType.GIF;
+import static net.datafaker.providers.base.Image.ImageType.JPEG;
+import static net.datafaker.providers.base.Image.ImageType.PNG;
+import static net.datafaker.providers.base.Image.ImageType.SVG;
+import static net.datafaker.providers.base.Image.ImageType.TIFF;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class ImageTest {
@@ -14,37 +21,37 @@ class ImageTest {
 
     @Test
     void bmp() {
-        assertThat(faker.image().base64BMP()).startsWith("data:image/bmp;base64,");
+        assertThatImage(faker.image().base64BMP()).is(BMP, 256, 256);
     }
 
     @Test
     void gif() {
-        assertThat(faker.image().base64GIF()).startsWith("data:image/gif;base64,");
+        assertThatImage(faker.image().base64GIF()).is(GIF, 256, 256);
     }
 
     @Test
     void png() {
-        assertThat(faker.image().base64PNG()).startsWith("data:image/png;base64,");
+        assertThatImage(faker.image().base64PNG()).is(PNG, 256, 256);
     }
 
     @Test
     void jpg() {
-        assertThat(faker.image().base64JPG()).startsWith("data:image/jpeg;base64,");
+        assertThatImage(faker.image().base64JPG()).is(JPEG, 256, 256);
     }
 
     @Test
     void jpeg() {
-        assertThat(faker.image().base64JPEG()).startsWith("data:image/jpeg;base64,");
+        assertThatImage(faker.image().base64JPEG()).is(JPEG, 256, 256);
     }
 
     @Test
     void svg() {
-        assertThat(faker.image().base64SVG()).startsWith("data:image/svg+xml;base64,");
+        assertThatImage(faker.image().base64SVG()).is(SVG, 256, 256);
     }
 
     @Test
     void tiff() {
-        assertThat(faker.image().base64TIFF()).startsWith("data:image/tiff;base64,");
+        assertThatImage(faker.image().base64TIFF()).is(TIFF, 256, 256);
     }
 
     @ParameterizedTest
@@ -52,18 +59,13 @@ class ImageTest {
     void base64(ImageType imageType) {
         String base64Image = faker.image().base64(new Image.Base64ImageRuleConfig(imageType, 1000, 1000));
 
-        assertThat(base64Image)
-            .startsWith("data:" + imageType.getMimeType() + ";base64,");
-        assertThat(base64Image.substring(base64Image.indexOf(",") + 1))
-            .isNotBlank()
-            .isBase64();
+        assertThatImage(base64Image).is(imageType, 1000, 1000);
     }
 
     @Test
-    void defaultBuilder() {
-        String image = faker.image().base64(Image.ImageBuilder.builder()
-            .build());
-        assertThat(image).startsWith("data:image/");
+    void defaultBuilder_generatesPngImage() {
+        String image = faker.image().base64(Image.ImageBuilder.builder().build());
+        assertThatImage(image).is(PNG, 256, 256);
     }
 
     @Test
@@ -71,7 +73,7 @@ class ImageTest {
         String gif = faker.image().base64(Image.ImageBuilder.builder()
             .type(ImageType.GIF)
             .build());
-        assertThat(gif).startsWith("data:image/gif;base64,");
+        assertThatImage(gif).is(GIF, 256, 256);
     }
 
     @Test
@@ -79,10 +81,10 @@ class ImageTest {
         String tiny = faker.image().base64(Image.ImageBuilder.builder()
             .height(1)
             .width(1)
-            .type(ImageType.PNG)
+            .type(PNG)
             .build());
 
-        assertThat(tiny).startsWith("data:image/png;base64,");
+        assertThatImage(tiny).is(PNG, 1, 1);
     }
 
     @Test
@@ -92,12 +94,12 @@ class ImageTest {
             .width(2000)
             .type(ImageType.BMP)
             .build());
-        assertThat(large).startsWith("data:image/bmp;base64,");
+        assertThatImage(large).is(BMP, 2000, 1000);
     }
 
     @Test
     void shouldErrorOnIllegalType() {
-        assertThatIllegalArgumentException().isThrownBy(() -> Image.ImageBuilder.builder().type(null).build());
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> Image.ImageBuilder.builder().type(null).build());
     }
 
     @Test

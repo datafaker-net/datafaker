@@ -2,14 +2,15 @@ package net.datafaker.providers.base;
 
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
 import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 
 import static java.awt.Color.WHITE;
+import static java.util.Objects.requireNonNull;
 import static net.datafaker.providers.base.Image.ImageType.BMP;
 import static net.datafaker.providers.base.Image.ImageType.GIF;
 import static net.datafaker.providers.base.Image.ImageType.JPEG;
@@ -106,11 +107,7 @@ public class Image extends AbstractProvider<BaseProviders> {
         }
 
         public ImageBuilder type(ImageType imageType) {
-            if(imageType == null) {
-                throw new IllegalArgumentException("Type cannot be null");
-            }
-
-            this.imageType = imageType;
+            this.imageType = requireNonNull(imageType, "Image type cannot be null");
             return this;
         }
 
