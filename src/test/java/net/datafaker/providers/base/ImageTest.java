@@ -21,37 +21,37 @@ class ImageTest {
 
     @Test
     void bmp() {
-        assertThatImage(faker.image().base64BMP()).is(BMP, 256, 256);
+        assertThatImage(faker.image().base64BMP()).is(BMP);
     }
 
     @Test
     void gif() {
-        assertThatImage(faker.image().base64GIF()).is(GIF, 256, 256);
+        assertThatImage(faker.image().base64GIF()).is(GIF);
     }
 
     @Test
     void png() {
-        assertThatImage(faker.image().base64PNG()).is(PNG, 256, 256);
+        assertThatImage(faker.image().base64PNG()).is(PNG);
     }
 
     @Test
     void jpg() {
-        assertThatImage(faker.image().base64JPG()).is(JPEG, 256, 256);
+        assertThatImage(faker.image().base64JPG()).is(JPEG);
     }
 
     @Test
     void jpeg() {
-        assertThatImage(faker.image().base64JPEG()).is(JPEG, 256, 256);
+        assertThatImage(faker.image().base64JPEG()).is(JPEG);
     }
 
     @Test
     void svg() {
-        assertThatImage(faker.image().base64SVG()).is(SVG, 256, 256);
+        assertThatImage(faker.image().base64SVG()).is(SVG);
     }
 
     @Test
     void tiff() {
-        assertThatImage(faker.image().base64TIFF()).is(TIFF, 256, 256);
+        assertThatImage(faker.image().base64TIFF()).is(TIFF);
     }
 
     @ParameterizedTest
@@ -65,7 +65,7 @@ class ImageTest {
     @Test
     void defaultBuilder_generatesPngImage() {
         String image = faker.image().base64(Image.ImageBuilder.builder().build());
-        assertThatImage(image).is(PNG, 256, 256);
+        assertThatImage(image).is(PNG);
     }
 
     @Test
@@ -73,7 +73,7 @@ class ImageTest {
         String gif = faker.image().base64(Image.ImageBuilder.builder()
             .type(ImageType.GIF)
             .build());
-        assertThatImage(gif).is(GIF, 256, 256);
+        assertThatImage(gif).is(GIF);
     }
 
     @Test
