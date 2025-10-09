@@ -26,6 +26,10 @@ public class ImageAssert extends AbstractAssert<ImageAssert, ImageData> {
         super(actual, ImageAssert.class);
     }
 
+    public ImageAssert is(ImageType type) {
+        return is(type, 256, 256);
+    }
+
     public ImageAssert is(ImageType type, int width, int height) {
         assertImageDataUrl(type);
         return switch (type) {
@@ -65,7 +69,7 @@ public class ImageAssert extends AbstractAssert<ImageAssert, ImageData> {
         byte[] bytes = Base64.getDecoder().decode(content);
         try {
             String xml = new String(bytes);
-            assertThat(xml).matches("<svg xmlns=\".+\" width=\"256\" height=\"256\">.*");
+            assertThat(xml).matches("<svg xmlns=\".+\" width=\"256\" height=\"256\">.*</svg>");
 
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = builder.parse(new ByteArrayInputStream(bytes));
