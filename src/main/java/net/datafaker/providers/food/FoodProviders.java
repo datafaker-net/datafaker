@@ -19,6 +19,10 @@ public interface FoodProviders extends ProviderRegistration {
         return getProvider(Food.class, Food::new);
     }
 
+    default IceCream iceCream() {
+        return getProvider(IceCream.class, IceCream::new);
+    }
+
     default Tea tea() {
         return getProvider(Tea.class, Tea::new);
     }
