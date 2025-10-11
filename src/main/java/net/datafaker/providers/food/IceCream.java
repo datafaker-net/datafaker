@@ -3,7 +3,7 @@ package net.datafaker.providers.food;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
- * @since 2.5.2
+ * @since 2.5.3
  */
 public class IceCream extends AbstractProvider<FoodProviders> {
 
