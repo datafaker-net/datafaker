@@ -267,6 +267,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Ancient
 * Animal
 * App
+* Apple
 * Appliance
 * Aqua Teen Hunger Force
 * Artist

@@ -30,6 +30,7 @@ public class EnFile {
         "ancient.yml",
         "animal.yml",
         "app.yml",
+        "apple.yml",
         "appliance.yml",
         "aqua_teen_hunger_force.yml",
         "artist.yml",
