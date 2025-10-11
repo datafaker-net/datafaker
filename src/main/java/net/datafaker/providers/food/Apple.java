@@ -4,7 +4,7 @@ import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.BaseProviders;
 
 /**
- * @since 2.5.2
+ * @since 2.5.3
  */
 public class Apple extends AbstractProvider<BaseProviders> {
 
