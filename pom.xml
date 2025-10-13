@@ -33,7 +33,7 @@
         <commons-validator.version>1.10.0</commons-validator.version>
         <rgxgen.version>3.1</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <jbanking.version>4.2.0</jbanking.version>
         <junit.version>6.0.0</junit.version>
         <libphonenumber.version>9.0.16</libphonenumber.version>
