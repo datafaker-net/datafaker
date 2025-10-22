@@ -119,6 +119,10 @@ public interface EntertainmentProviders extends ProviderRegistration {
         return getProvider(GratefulDead.class, GratefulDead::new);
     }
 
+    default GravityFalls gravityFalls() {
+        return getProvider(GravityFalls.class, GravityFalls::new);
+    }
+
     default HarryPotter harryPotter() {
         return getProvider(HarryPotter.class, HarryPotter::new);
     }
