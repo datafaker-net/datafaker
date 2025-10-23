@@ -12392,6 +12392,10 @@
           "parameterTypes": []
         },
         {
+          "name": "gravityFalls",
+          "parameterTypes": []
+        },
+        {
           "name": "harryPotter",
           "parameterTypes": []
         },
@@ -12920,6 +12924,20 @@
     },
     {
       "type": "net.datafaker.providers.entertainment.GratefulDeadTest",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "providerListTest",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "net.datafaker.providers.entertainment.GravityFallsTest",
       "allDeclaredFields": true,
       "methods": [
         {
@@ -19911,6 +19929,9 @@
     },
     {
       "glob": "en/grateful_dead.yml"
+    },
+    {
+      "glob": "en/gravity_falls.yml"
     },
     {
       "glob": "en/greek_philosophers.yml"

@@ -356,6 +356,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Gender
 * Ghostbusters
 * Grateful Dead
+* Gravity Falls
 * Greek Philosopher
 * Hacker
 * Harry Potter
