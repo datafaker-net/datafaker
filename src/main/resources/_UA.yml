@@ -18,3 +18,51 @@ _UA:
 
     phone_number:
       country_code: ['380']
+
+    vehicle:
+      state_abbr: [ AA, KA,   # Kyiv city
+                    AB, KB,  # Vinnytsia
+                    AC, KC,  # Volyn
+                    AE, KE,  # Dnipropetrovsk
+                    AH, KH,  # Donetsk
+                    AI, KI,  # Kyiv region
+                    AK, KK,  # Crimea
+                    AM, KM,  # Zhytomyr
+                    AO, KO,  # Zakarpattia
+                    AP, KP,  # Zaporizhzhia
+                    AT, KT,  # Ivano-Frankivsk
+                    AX, KX,  # Kharkiv
+                    BA, HA,  # Kirovohrad
+                    BB, HB,  # Luhansk
+                    BC, HC,  # Lviv
+                    BE, HE,  # Mykolaiv
+                    BH, HH,  # Odesa
+                    BI, HI,  # Poltava
+                    BK, HK,  # Rivne
+                    BM, HM,  # Sumy
+                    BO, HO,  # Ternopil
+                    BT, HT,  # Kherson
+                    BX, HX,  # Khmelnytskyi
+                    CA, IA,  # Cherkasy
+                    CB, IB,  # Chernihiv
+                    CE, IE,  # Chernivtsi
+                    CH, IH ]  # Chernihiv
+
+      license_plate: "#{vehicle.state_abbr}####??"
+
+      fuel_types:
+        - "Бензин"          # Petrol/Gasoline
+        - "Дизель"          # Diesel
+        - "Газ"             # LPG (Liquefied Petroleum Gas)
+        - "Бензин/Газ"      # Dual fuel (Petrol + Gas)
+        - "Гібрид"          # Hybrid
+        - "Електро"         # Electric
+        - "Етанол"          # Ethanol
+        - "Водень"          # Hydrogen
+
+      transmissions:
+        - "Механічна"       # Manual
+        - "Автоматична"     # Automatic
+        - "Роботизована"    # Automated Manual / Robotized
+        - "Варіатор"        # CVT (Continuously Variable Transmission)
+        - "Типтронік"       # Tiptronic (semi-automatic mode)
