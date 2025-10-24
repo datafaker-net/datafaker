@@ -57,7 +57,7 @@ jobs:
         if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
         run: cd datafaker_gen && ./mvnw clean install -Ddatafaker.version=${{ steps.version-extract.outputs.release_version }} -DskipBigQueryIntegrationTests=true
       - name: 'Upload test results'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: test-report-${{matrix.runs-on}}-${{matrix.java-version}}
