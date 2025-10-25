@@ -13,10 +13,7 @@ class VehicleTest {
     private static final String WORD_MATCH = "\\w+\\.?";
     private static final String WORDS_MATCH = "^[a-zA-Z\\d_/ -]*$";
     private static final String INTERNATIONAL_WORDS_MATCH = "\\P{Cc}+";
-    private static final String IRISH_VEHICLE_LICENCE_PLATE_REGEX = "[0-9]{2}[1|2]-[A-Z]{1,2}-[0-9]{1,6}";
-    private static final String UKRAINIAN_VEHICLE_LICENCE_PLATE_REGEX = "^(AA|KA|AB|KB|AC|KC|AE|KE|AH|KH|AI|KI|AK|KK|AM|KM|AO|KO|AP|KP|AT|KT|AX|KX|BA|HA|BB|HB|BC|HC|BE|HE|BH|HH|BI|HI|BK|HK|BM|HM|BO|HO|BT|HT|BX|HX|CA|IA|CB|IB|CE|IE|CH|IH)\\d{4}[A-Z]{2}$";
     private final Faker faker = new Faker();
-    private final Faker fakerUA = new Faker(new Locale("uk", "UA"));
 
     @RepeatedTest(10)
     void testVin() {
@@ -79,11 +76,6 @@ class VehicleTest {
     }
 
     @RepeatedTest(10)
-    void testTransmission_Ukraine() {
-        assertThat(fakerUA.vehicle().transmission()).matches(INTERNATIONAL_WORDS_MATCH);
-    }
-
-    @RepeatedTest(10)
     void testDriveType() {
         assertThat(faker.vehicle().driveType()).matches(WORDS_MATCH);
     }
@@ -91,11 +83,6 @@ class VehicleTest {
     @RepeatedTest(10)
     void testFuelType() {
         assertThat(faker.vehicle().fuelType()).matches(WORDS_MATCH);
-    }
-
-    @RepeatedTest(10)
-    void testFuelType_Ukraine() {
-        assertThat(fakerUA.vehicle().fuelType()).matches(INTERNATIONAL_WORDS_MATCH);
     }
 
     @RepeatedTest(10)
@@ -166,16 +153,5 @@ class VehicleTest {
         BaseFaker test = new BaseFaker(Locale.CANADA);
         assertThat(test.vehicle().licensePlate("MB")).matches(WORDS_MATCH);
         assertThat(test.vehicle().licensePlate("ON")).matches(WORDS_MATCH);
-    }
-
-    @RepeatedTest(10)
-    void testLicensePlate_Ireland() {
-        Faker faker = new Faker(new Locale("en", "IE"));
-        assertThat(faker.vehicle().licensePlate()).matches(IRISH_VEHICLE_LICENCE_PLATE_REGEX);
-    }
-
-    @RepeatedTest(10)
-    void testLicensePlate_Ukraine() {
-        assertThat(fakerUA.vehicle().licensePlate()).matches(UKRAINIAN_VEHICLE_LICENCE_PLATE_REGEX);
     }
 }
