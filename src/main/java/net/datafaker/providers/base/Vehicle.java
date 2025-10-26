@@ -116,7 +116,7 @@ public class Vehicle extends AbstractProvider<BaseProviders> {
     }
 
     public String licensePlate() {
-        return faker.bothify(faker.resolve("vehicle.license_plate"));
+        return faker.bothify(faker.resolve("vehicle.license_plate")).toUpperCase(Locale.ROOT);
     }
 
     public String licensePlate(String stateAbbreviation) {
