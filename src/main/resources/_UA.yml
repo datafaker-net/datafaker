@@ -49,20 +49,3 @@ _UA:
                     CH, IH ]  # Chernihiv
 
       license_plate: "#{vehicle.state_abbr}####??"
-
-      fuel_types:
-        - "Бензин"          # Petrol/Gasoline
-        - "Дизель"          # Diesel
-        - "Газ"             # LPG (Liquefied Petroleum Gas)
-        - "Бензин/Газ"      # Dual fuel (Petrol + Gas)
-        - "Гібрид"          # Hybrid
-        - "Електро"         # Electric
-        - "Етанол"          # Ethanol
-        - "Водень"          # Hydrogen
-
-      transmissions:
-        - "Механічна"       # Manual
-        - "Автоматична"     # Automatic
-        - "Роботизована"    # Automated Manual / Robotized
-        - "Варіатор"        # CVT (Continuously Variable Transmission)
-        - "Типтронік"       # Tiptronic (semi-automatic mode)
