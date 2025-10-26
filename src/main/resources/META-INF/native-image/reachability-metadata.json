@@ -14965,6 +14965,10 @@
       "type": "net.datafaker.providers.food.FoodProviders",
       "methods": [
         {
+          "name": "apple",
+          "parameterTypes": []
+        },
+        {
           "name": "beer",
           "parameterTypes": []
         },
@@ -14978,6 +14982,10 @@
         },
         {
           "name": "food",
+          "parameterTypes": []
+        },
+        {
+          "name": "iceCream",
           "parameterTypes": []
         },
         {

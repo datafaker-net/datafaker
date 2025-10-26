@@ -10,6 +10,12 @@ The release process is now driven by GitHub Releases:
 4. Set the release title (can be the same as the tag)
 5. Add a description of the changes (optional - will be enhanced by automated changelog)
 6. Click "Publish release"
+7. Update documentation:
+   - At least files
+     * `docs/releases/current.version.md`
+     * `docs/releases/next.version-SNAPSHOT.md`
+     * `mkdocs.yml`
+   - And probably file `docs/documentation/providers.md` (if new providers have been added)
 
 The automated workflow will:
 1. Extract the version from the tag
