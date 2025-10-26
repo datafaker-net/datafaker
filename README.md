@@ -29,7 +29,7 @@ In the pom.xml, add the following fragment to the `dependencies` section:
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>2.5.2</version>
+    <version>2.5.3</version>
 </dependency>
 ```
 
@@ -37,12 +37,12 @@ For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:2.5.2'
+    implementation 'net.datafaker:datafaker:2.5.3'
 }
 
 ```
 
-You can also use the snapshot version (`2.5.3-SNAPSHOT`), which automatically gets published
+You can also use the snapshot version (`2.5.4-SNAPSHOT`), which automatically gets published
 after every push to the main branch of this repository. Binary repository URL for snapshots download is
 `https://central.sonatype.com/repository/maven-snapshots/`.
 
@@ -81,7 +81,7 @@ jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
 or JShell w/[JBang](https://www.jbang.dev/)
 ```
 # can be run anywhere, no project root/download needed.
-jbang -i net.datafaker:datafaker:2.5.2
+jbang -i net.datafaker:datafaker:2.5.3
 ```
 
 ```
