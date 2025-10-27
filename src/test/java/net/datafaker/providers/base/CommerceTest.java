@@ -15,6 +15,7 @@ class CommerceTest extends BaseFakerTest {
     private static final String PROMOTION_CODE_REGEX = CAPITALIZED_WORD_REGEX + "(-" + CAPITALIZED_WORD_REGEX + ")*";
 
     private final Commerce commerce = faker.commerce();
+    private final String[] commerceProductName = commerce.productName().split(" ");
 
     @Test
     void testDepartment() {
@@ -30,7 +31,10 @@ class CommerceTest extends BaseFakerTest {
     protected Collection<TestSpec> providerListTest() {
         return List.of(TestSpec.of(commerce::material, "commerce.product_name.material"),
             TestSpec.of(commerce::brand, "commerce.brand"),
-            TestSpec.of(commerce::vendor, "commerce.vendor"));
+            TestSpec.of(commerce::vendor, "commerce.vendor"),
+            TestSpec.of(() -> commerceProductName[0], "commerce.product_name.adjective"),
+            TestSpec.of(() -> commerceProductName[1], "commerce.product_name.material"),
+            TestSpec.of(() -> commerceProductName[2], "commerce.product_name.product"));
     }
 
     @Test
