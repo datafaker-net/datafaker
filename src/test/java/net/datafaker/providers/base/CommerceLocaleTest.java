@@ -13,12 +13,10 @@ public class CommerceLocaleTest extends BaseFakerLocaleTest {
 
     @Override
     protected Stream<Arguments> localeProviderListTest() {
-
         return Stream.of(
             arguments(TestSpec.of(commerceUA::material, "commerce.product_name.material"), fakerUA),
             arguments(TestSpec.of(() -> commerceProductNameUA[0], "commerce.product_name.adjective"), fakerUA),
             arguments(TestSpec.of(() -> commerceProductNameUA[1], "commerce.product_name.material"), fakerUA),
-            arguments(TestSpec.of(() -> commerceProductNameUA[2], "commerce.product_name.product"), fakerUA)
-            );
+            arguments(TestSpec.of(() -> commerceProductNameUA[2], "commerce.product_name.product"), fakerUA));
     }
 }
