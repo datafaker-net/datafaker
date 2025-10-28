@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import static java.lang.Float.parseFloat;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,7 +16,6 @@ class CommerceTest extends BaseFakerTest {
     private static final String PROMOTION_CODE_REGEX = CAPITALIZED_WORD_REGEX + "(-" + CAPITALIZED_WORD_REGEX + ")*";
 
     private final Commerce commerce = faker.commerce();
-    private final String[] commerceProductName = commerce.productName().split(" ");
 
     @Test
     void testDepartment() {
@@ -27,14 +27,27 @@ class CommerceTest extends BaseFakerTest {
         assertThat(commerce.productName()).matches("(\\w+ ?){3,4}");
     }
 
+    @Test
+    void productNameConsistsOf_adjective_material_and_productType() {
+        BaseFaker faker = new BaseFaker(new Locale("test"));
+        assertThat(faker.commerce().productName()).isIn(
+            "Silver Linings Playbook",
+            "Silver Linings Train",
+            "Silver Iron Playbook",
+            "Silver Iron Train",
+            "Silent Linings Playbook",
+            "Silent Linings Train",
+            "Silent Iron Playbook",
+            "Silent Iron Train"
+        );
+    }
+
     @Override
     protected Collection<TestSpec> providerListTest() {
         return List.of(TestSpec.of(commerce::material, "commerce.product_name.material"),
             TestSpec.of(commerce::brand, "commerce.brand"),
-            TestSpec.of(commerce::vendor, "commerce.vendor"),
-            TestSpec.of(() -> commerceProductName[0], "commerce.product_name.adjective"),
-            TestSpec.of(() -> commerceProductName[1], "commerce.product_name.material"),
-            TestSpec.of(() -> commerceProductName[2], "commerce.product_name.product"));
+            TestSpec.of(commerce::vendor, "commerce.vendor")
+        );
     }
 
     @Test
