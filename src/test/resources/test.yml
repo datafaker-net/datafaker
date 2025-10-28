@@ -56,3 +56,14 @@ test:
       - 12.34
       valid-boolean:
       - true
+    commerce:
+      product_name:
+        adjective:
+        - "Silver"
+        - "Silent"
+        material:
+        - "Linings"
+        - "Iron"
+        product:
+        - "Playbook"
+        - "Train"
