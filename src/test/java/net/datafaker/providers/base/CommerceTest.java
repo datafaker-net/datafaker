@@ -15,7 +15,6 @@ class CommerceTest extends BaseFakerTest {
     private static final String PROMOTION_CODE_REGEX = CAPITALIZED_WORD_REGEX + "(-" + CAPITALIZED_WORD_REGEX + ")*";
 
     private final Commerce commerce = faker.commerce();
-    private final String[] commerceProductName = commerce.productName().split(" ");
 
     @Test
     void testDepartment() {
@@ -24,17 +23,49 @@ class CommerceTest extends BaseFakerTest {
 
     @Test
     void testProductName() {
-        assertThat(commerce.productName()).matches("(\\w+ ?){3,4}");
+        String name = commerce.productName();
+        String[] commerceProductName = name.split(" ");
+
+        if (commerceProductName.length == 3) {
+            testProviderList(TestSpec.of(() -> commerceProductName[0], "commerce.product_name.adjective"));
+            testProviderList(TestSpec.of(() -> commerceProductName[1], "commerce.product_name.material"));
+            testProviderList(TestSpec.of(() -> commerceProductName[2], "commerce.product_name.product"));
+        } else {
+            List<String> adjectives = faker.fakeValuesService().fetchObject("commerce.product_name.adjective", faker.getContext());
+            List<String> materials = faker.fakeValuesService().fetchObject("commerce.product_name.material", faker.getContext());
+            List<String> products = faker.fakeValuesService().fetchObject("commerce.product_name.product", faker.getContext());
+
+            // Step 1: find which adjective the name starts with
+            String adjective = adjectives.stream()
+                .filter(name::startsWith)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Adjective not found in: " + name));
+
+            // Step 2: remove it and trim remaining
+            String remaining = name.substring(adjective.length()).trim();
+
+            // Step 3: find which material the remainder starts with
+            String material = materials.stream()
+                .filter(remaining::startsWith)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Material not found in: " + name));
+
+            // Step 4: remaining should now be the product
+            String product = remaining.substring(material.length()).trim();
+
+            // Step 5: verify product is from correct list
+            assertThat(products).contains(product);
+
+            // Step 6: verify the full composition
+            assertThat(name).isEqualTo(String.join(" ", adjective, material, product));
+        }
     }
 
     @Override
     protected Collection<TestSpec> providerListTest() {
         return List.of(TestSpec.of(commerce::material, "commerce.product_name.material"),
             TestSpec.of(commerce::brand, "commerce.brand"),
-            TestSpec.of(commerce::vendor, "commerce.vendor"),
-            TestSpec.of(() -> commerceProductName[0], "commerce.product_name.adjective"),
-            TestSpec.of(() -> commerceProductName[1], "commerce.product_name.material"),
-            TestSpec.of(() -> commerceProductName[2], "commerce.product_name.product"));
+            TestSpec.of(commerce::vendor, "commerce.vendor"));
     }
 
     @Test
