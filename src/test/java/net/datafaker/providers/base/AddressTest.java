@@ -31,6 +31,7 @@ class AddressTest {
     private static final Faker BELGIAN_FAKER = new Faker(new Locale("nl", "BE"));
     private static final Faker RU_FAKER = new Faker(new Locale("ru", "RU"));
     private static final Faker AU_FAKER = new Faker(new Locale("en", "AU"));
+    private static final Faker IE_FAKER = new Faker(new Locale("en", "IE"));
     private static final Pattern CYRILLIC_LETTERS = Pattern.compile(".*[а-яА-Я].*");
 
     private static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
@@ -329,6 +330,15 @@ class AddressTest {
     void australiaAddress() {
         assertThat(AU_FAKER.address().fullAddress()).matches("(Unit|[0-9]).+, [A-Z].+, [A-Z]{2,3} [0-9]{4}");
     }
+
+    @RepeatedTest(10)
+    void irishAddress() {
+        String regex = "(?:.+, [A-Z].+, Co\\. [A-Z].+)|" +
+            "(?:.+, Dublin D[A-Z0-9]{2,3})|" +
+            "(?:.+, [A-Z].+, (?:Ireland|Republic of Ireland))";
+        assertThat(IE_FAKER.address().fullAddress()).matches(regex);
+    }
+
     @RepeatedTest(10)
     void testCityCnSuffix() {
         assertThat(new Faker(Locale.CHINA).address().citySuffix()).matches("[\\u4e00-\\u9fa5]{1,7}(?:省|自治区)");

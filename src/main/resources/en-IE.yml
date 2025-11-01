@@ -7,5 +7,53 @@ en-IE:
         - "#{first_name} #{last_name} #{last_name}"
     address:
       county: [Galway, Leitrim, Mayo, Roscommon, Sligo, Donegal, Cavan, Monaghan, Clare, Cork, Kerry, Limerick, Tipperary, Waterford, Carlow, Dublin, Kildare, Kilkenny, Laois, Longford, Louth, Meath, Offaly, Westmeath, Wexford, Wicklow]
+      city: [Dublin, Cork, Limerick, Galway, Waterford, Kilkenny, Sligo, Killarney, Athlone, Drogheda]
+      town_by_county:
+        Carlow: Tullow
+        Cavan: Bailieborough
+        Clare: Ennis
+        Cork: Mallow
+        Donegal: Letterkenny
+        Dublin: Swords
+        Galway: Tuam
+        Kerry: Tralee
+        Kildare: Naas
+        Kilkenny: Thomastown
+        Laois: Portlaoise
+        Leitrim: Carrick-on-Shannon
+        Limerick: Newcastle West
+        Longford: Longford
+        Louth: Dundalk
+        Mayo: Castlebar
+        Meath: Navan
+        Monaghan: Monaghan
+        Offaly: Tullamore
+        Roscommon: Roscommon
+        Sligo: Sligo
+        Tipperary: Clonmel
+        Waterford: Dungarvan
+        Westmeath: Mullingar
+        Wexford: Enniscorthy
+        Wicklow: Bray
+      # Dublin postal districts (non-Eircode)
       dublin-postcode: [D01, D02, D03, D04, DO5, D06, D07, D08, D09, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20, D21, D22, D23, D24, D6W]
+      # House/building number patterns (used by Address.buildingNumber)
+      building_number: ["#", "##", "###", "####"]
+      # Secondary address lines common in IE
+      secondary_address: ["Apt ##", "Flat #", "Unit #", "Floor #", "Suite ###"]
+      # Common Irish street types
+      street_suffix: [Street, Road, Avenue, Lane, Drive, Park, Terrace, Grove, Close, Quay, Place, Square, Crescent, Court, Hill, View, Way, Parade, Rise, Walk]
+      # Street names assembled similarly to it.yml
+      street_name:
+        - "#{street_suffix} #{Name.first_name}"
+        - "#{street_suffix} #{Name.last_name}"
+      # Street address with and without secondary component
+      street_address:
+        - "#{street_name} #{building_number}"
+        - "#{street_name} #{building_number}, #{secondary_address}"
+      # Full address templates, inspired by it.yml and Irish formatting
+      full_address:
+        - "#{street_address}, #{city}, Co. #{county}"
+        - "#{street_address}, Dublin #{dublin-postcode}"
+        - "#{street_address}, #{city}, #{default_country}"
       default_country: [Ireland, Republic of Ireland]
