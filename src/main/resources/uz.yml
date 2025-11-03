@@ -112,7 +112,6 @@ uz:
         - "#{Address.city_name}#{suffix}#{suffix}#{suffix} #{prefix}"
 
     commerce:
-      color: [ "qizil", "yashil", "ko‘k", "sariq", "qip-qizil", "yalpiz rangi", "yashil-ko‘k", "oq", "qora", "to‘q sariq", "pushti", "kulrang", "qizil-jigarrang", "siyohrang", "biryuza", "sariq-jigarrang", "osmon ko‘k", "to‘q sariq-pushti", "to‘q siyohrang", "orxideya rangi", "zaytun rangi", "binafsha", "limon rangi", "krem rangi", "ko‘k-siyohrang", "oltin", "qizil-binafsha", "moviy", "lazur", "lola rangi", "kumush" ]
       department: [ "Kitoblar", "Filmlar", "Musiqa", "O‘yinlar", "Elektronika", "Kompyuterlar", "Uy", "Bog‘ va asboblar", "Oziq-ovqat", "Salomatlik", "Go‘zallik", "O‘yinchoqlar", "Bolalar uchun", "Chaqaloqlar uchun", "Kiyim-kechak", "Poyabzal", "Zargarlik buyumlari", "Sport", "Turizm", "Avtomobil uchun", "Sanoat" ]
       product_name:
         adjective: [ "Kichik", "Qulay", "Qo‘pol", "Aqlli", "Muhtasham", "Ajoyib", "Hayoliy", "Amaliy", "Yaltirab turgan", "Hayratlanarli", "Katta", "Qoniqarli", "Sinergik", "Og‘ir", "Yengil", "Aerodinamik", "Mustahkam" ]
