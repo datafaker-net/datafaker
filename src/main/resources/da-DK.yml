@@ -51,8 +51,10 @@ da-DK:
         - "#{first_name} #{last_name} #{last_name}"
         - "#{first_name} #{last_name} #{last_name}"
 
+    color:
+      name: [ hvid, sølv, grå, sort, rød, grøn, blå, gul, lilla, guld, brun, rosa ]
+
     commerce:
-      color: [hvid, sølv, grå, sort, rød, grøn, blå, gul, lilla, guld, brun, rosa]
       department: ["Bøger", "Film", "Musik", "Spil", "Elektronik", "Computere", "Hus", "Have", "Værktøj", "Fødevarer", "Helse", "Skønhed", "Legetøj", "Tøj", "Sko", "Smykker", "Sport"]
       product_name:
         adjective: [Lille, Ergonomisk, Robust, Intelligent, Sød, Utrolig, Fantastisk, Praktisk, Slank, Fed, Enorm, Enkel, Tung, Let, Multianvendelig, Udholdende]
