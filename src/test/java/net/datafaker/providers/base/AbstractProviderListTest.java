@@ -1,7 +1,11 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.Faker;
+import net.datafaker.internal.helper.LazyEvaluated;
+
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -15,27 +19,41 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @param <T> the type of BaseFaker being tested
  */
 public abstract class AbstractProviderListTest<T extends BaseFaker> {
+    private static final LazyEvaluated<List<Locale>> locales = new LazyEvaluated<>(() ->
+        new Faker().locality().allSupportedLocales().stream()
+            .map(locale -> new Locale(locale))
+            .toList());
+
+    private static final LazyEvaluated<List<BaseFaker>> fakers = new LazyEvaluated<>(() ->
+        locales.get().stream()
+            .map(locale -> new BaseFaker(locale))
+            .toList());
+
+    protected List<BaseFaker> internationalFakers() {
+        return fakers.get();
+    }
+
     protected List<String> getBaseList(T faker, String key) {
         return faker.fakeValuesService().fetchObject(key, faker.getContext());
     }
 
     protected void testProviderList(ProviderListTest.TestSpec testSpec, T faker) {
         // Given
-        Set<String> actual = new HashSet<>(getBaseList(faker, testSpec.key));
+        Set<String> expected = new HashSet<>(getBaseList(faker, testSpec.key));
         // When
-        String item = (String) testSpec.supplier.get();
+        String actual = (String) testSpec.supplier.get();
         // Then
-        assertThat(item).isNotEmpty();
+        assertThat(actual).isNotEmpty();
         String collection = "\"" + testSpec.key + "\"";
-        assertThat(actual)
-            .as(() -> "Check actual list isn't empty and contains the item for the key " + collection)
+        assertThat(expected)
+            .as(() -> "Check expected list isn't empty and contains the actual for the key " + collection)
             .isNotEmpty()
-            .contains(item);
-        assertThat(actual)
+            .contains(actual);
+        assertThat(expected)
             .as(() -> "Actual should not have empty entries. " + collection)
             .noneMatch(String::isBlank);
         if (!testSpec.regex.isEmpty()) {
-            assertThat(item).matches(Pattern.compile(testSpec.regex));
+            assertThat(actual).matches(Pattern.compile(testSpec.regex));
         }
     }
 

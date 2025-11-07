@@ -6,17 +6,18 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-public class CommerceLocaleTest extends BaseFakerLocaleTest {
-
-    private final Commerce commerceUA = fakerUA.commerce();
-    private final String[] commerceProductNameUA = commerceUA.productName().split(" ");
+public class CommerceLocaleTest extends ProviderListLocaleTest {
 
     @Override
     protected Stream<Arguments> localeProviderListTest() {
-        return Stream.of(
-            arguments(TestSpec.of(commerceUA::material, "commerce.product_name.material"), fakerUA),
-            arguments(TestSpec.of(() -> commerceProductNameUA[0], "commerce.product_name.adjective"), fakerUA),
-            arguments(TestSpec.of(() -> commerceProductNameUA[1], "commerce.product_name.material"), fakerUA),
-            arguments(TestSpec.of(() -> commerceProductNameUA[2], "commerce.product_name.product"), fakerUA));
+        return internationalFakers().stream().flatMap(faker -> {
+                Commerce commerce = faker.commerce();
+                return Stream.of(
+                    arguments(TestSpec.of(commerce::material, "commerce.product_name.material", "[\\p{L}\\p{M}\\p{Pi}\\p{Pf}]{2,}"), faker),
+                    arguments(TestSpec.of(commerce::brand, "commerce.brand", "\\w{2,}"), faker),
+                    arguments(TestSpec.of(commerce::vendor, "commerce.vendor", "[\\w\\s]{6,}"), faker)
+                );
+            }
+        );
     }
 }
