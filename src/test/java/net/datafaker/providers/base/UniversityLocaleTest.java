@@ -6,15 +6,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-public class UniversityLocaleTest extends BaseFakerLocaleTest {
-    private final University universityUA = fakerUA.university();
-    private final University universityUZ = fakerUZ.university();
+public class UniversityLocaleTest extends ProviderListLocaleTest {
 
     @Override
     protected Stream<Arguments> localeProviderListTest() {
-        return Stream.of(
-            arguments(TestSpec.of(universityUA::name, "university.name"), fakerUA),
-            arguments(TestSpec.of(universityUZ::name, "university.name"), fakerUZ)
-        );
+        return Stream.of(fakerUA, fakerUZ, fakerNZ)
+            .map(faker -> arguments(TestSpec.of(() -> faker.university().name(), "university.name", ".{15,120}"), faker));
     }
 }

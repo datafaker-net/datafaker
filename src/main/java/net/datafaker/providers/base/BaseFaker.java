@@ -436,6 +436,6 @@ public class BaseFaker implements BaseProviders {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
+        return getClass().getSimpleName() + "." + getContext().getLocale();
     }
 }
