@@ -62,6 +62,15 @@ en:
       - "Hera Syndulla"
       - "Rose Tico"
       - "Vice Admiral Holdo"
+      - "Din Djarin"
+      - "Grogu"
+      - "Cara Dune"
+      - "Greef Karga"
+      - "Bo-Katan Kryze"
+      - "Moff Gideon"
+      - "The Armorer"
+      - "Kuill"
+      - "Paz Vizsla"
       call_squadrons:
       - "Rogue"
       - "Red"
@@ -107,6 +116,7 @@ en:
       - "Vulture Droid"
       - "BB-9E"
       - "K-2SO"
+      - "IG-11"
       planets:
       - "Alderaan"
       - "Ahch-To"
@@ -197,6 +207,7 @@ en:
       - "TIE Silencer"
       - "Resistance Bomber"
       - "Resistance Ski Speeder"
+      - "Razor Crest"
       wookiee_words:
       - "wyaaaaaa"
       - "ruh"
@@ -508,6 +519,11 @@ en:
         - "grand_moff_tarkin"
         greedo:
         - "greedo"
+        grogu:
+        - "the asset"
+        - "the child"
+        - "baby yoda"
+        - "grogu"
         han_solo:
         - "han"
         - "solo"
