@@ -289,6 +289,10 @@ en:
         - "He is as clumsy as he is stupid."
         - "You may use any methods necessary, but I want them alive. No disintegrations!"
         - "You have failed me for the last time, Admiral."
+        din_djarin:
+        - "This is the way."
+        - "I can bring you in warm, or I can bring you in cold."
+        - "Wherever I go, he goes."
         emperor_palpatine:
         - "Only at the end do you realize the power of the Dark Side."
         - "Oh, I'm afraid the deflector shield will be quite operational when your friends arrive."
@@ -490,6 +494,13 @@ en:
         - "vader"
         - "darth vader"
         - "darth_vader"
+        din_djarin:
+        - "the mandalorian"
+        - "mando"
+        - "the mando"
+        - "din djarin"
+        - "djarin"
+        - "din_djarin"
         emperor_palpatine:
         - "the emperor"
         - "sheev palpatine"
