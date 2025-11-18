@@ -409,6 +409,8 @@ en:
         - "Then our worst fears have been realized. We must move quickly if the Jedi Order is to survive."
         maz_kanata:
         - "I assume you need something. Desperately."
+        moff_gideon:
+        - "You have something I want."
         obi_wan_kenobi:
         - "An elegant weapon for a more civilized age."
         - "You don’t need to see his identification. These aren’t the droids you’re looking for."
@@ -600,6 +602,10 @@ en:
         - "maz"
         - "maz kanata"
         - "maz_kanata"
+        moff_gideon:
+        - "gideon"
+        - "moff gideon"
+        - "moff_gideon"
         obi_wan_kenobi:
         - "obi kenobi"
         - "ben"

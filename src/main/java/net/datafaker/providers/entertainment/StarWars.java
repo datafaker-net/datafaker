@@ -11,7 +11,7 @@ public class StarWars extends AbstractProvider<EntertainmentProviders> {
         "bendu", "boba_fett", "c_3po", "count_dooku", "darth_caedus", "darth_vader", "din_djarin", "emperor_palpatine", "finn",
         "general_hux", "grand_admiral_thrawn", "grand_moff_tarkin", "greedo", "grogu", "han_solo", "jabba_the_hutt",
         "jar_jar_binks", "k_2so", "kuiil", "kylo_ren", "lando_calrissian", "leia_organa", "luke_skywalker", "mace_windu",
-        "maz_kanata", "obi_wan_kenobi", "padme_amidala", "qui_gon_jinn", "rey", "shmi_skywalker", "yoda"};
+        "maz_kanata", "moff_gideon", "obi_wan_kenobi", "padme_amidala", "qui_gon_jinn", "rey", "shmi_skywalker", "yoda"};
 
     protected StarWars(EntertainmentProviders faker) {
         super(faker);
