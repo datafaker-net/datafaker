@@ -293,6 +293,8 @@ en:
         - "This is the way."
         - "I can bring you in warm, or I can bring you in cold."
         - "Wherever I go, he goes."
+        - "Stop touching things."
+        - "Don't play with your food."
         emperor_palpatine:
         - "Only at the end do you realize the power of the Dark Side."
         - "Oh, I'm afraid the deflector shield will be quite operational when your friends arrive."
@@ -330,6 +332,8 @@ en:
         - "Boompa kom bok nee aht am bompah. (He may only take your ship.)"
         - "Nuklee numaa (that's the idea.)"
         - "Ches ko ba tuta creesta crenko ya kolska! (This is something I've been looking forward to for a long time.)"
+        grogu:
+        - "Patu"
         han_solo:
         - "It's the ship that made the Kessel Run in less than 12 parsecs."
         - "She may not look like much, but she's got it where it counts, kid."
