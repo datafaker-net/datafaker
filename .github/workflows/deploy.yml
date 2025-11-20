@@ -11,7 +11,7 @@ jobs:
           echo -n "$GPG_SIGNING_KEY" | gpg --import --no-tty --batch --yes
         env:
           GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: 'main'
       - name: Set up Maven Central Repository
