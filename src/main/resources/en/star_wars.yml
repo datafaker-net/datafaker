@@ -62,6 +62,15 @@ en:
       - "Hera Syndulla"
       - "Rose Tico"
       - "Vice Admiral Holdo"
+      - "Din Djarin"
+      - "Grogu"
+      - "Cara Dune"
+      - "Greef Karga"
+      - "Bo-Katan Kryze"
+      - "Moff Gideon"
+      - "The Armorer"
+      - "Kuiil"
+      - "Paz Vizsla"
       call_squadrons:
       - "Rogue"
       - "Red"
@@ -107,6 +116,7 @@ en:
       - "Vulture Droid"
       - "BB-9E"
       - "K-2SO"
+      - "IG-11"
       planets:
       - "Alderaan"
       - "Ahch-To"
@@ -197,6 +207,7 @@ en:
       - "TIE Silencer"
       - "Resistance Bomber"
       - "Resistance Ski Speeder"
+      - "Razor Crest"
       wookiee_words:
       - "wyaaaaaa"
       - "ruh"
@@ -278,6 +289,12 @@ en:
         - "He is as clumsy as he is stupid."
         - "You may use any methods necessary, but I want them alive. No disintegrations!"
         - "You have failed me for the last time, Admiral."
+        din_djarin:
+        - "This is the way."
+        - "I can bring you in warm, or I can bring you in cold."
+        - "Wherever I go, he goes."
+        - "Stop touching things."
+        - "Don't play with your food."
         emperor_palpatine:
         - "Only at the end do you realize the power of the Dark Side."
         - "Oh, I'm afraid the deflector shield will be quite operational when your friends arrive."
@@ -315,6 +332,8 @@ en:
         - "Boompa kom bok nee aht am bompah. (He may only take your ship.)"
         - "Nuklee numaa (that's the idea.)"
         - "Ches ko ba tuta creesta crenko ya kolska! (This is something I've been looking forward to for a long time.)"
+        grogu:
+        - "Patu"
         han_solo:
         - "It's the ship that made the Kessel Run in less than 12 parsecs."
         - "She may not look like much, but she's got it where it counts, kid."
@@ -359,6 +378,8 @@ en:
         - "Mesa day startin pretty okee-day with a brisky morning munchy, then BOOM! Gettin very scared and grabbin that Jedi and POW! Mesa here! Mesa gettin' very very scared!"
         k_2so:
         - "I have a bad feeling about..."
+        kuiil:
+        - "I have spoken."
         kylo_ren:
         - "You need a teacher. I can show you the ways of the Force."
         - "Show me again, grandfather, and I will finish what you started."
@@ -392,6 +413,8 @@ en:
         - "Then our worst fears have been realized. We must move quickly if the Jedi Order is to survive."
         maz_kanata:
         - "I assume you need something. Desperately."
+        moff_gideon:
+        - "You have something I want."
         obi_wan_kenobi:
         - "An elegant weapon for a more civilized age."
         - "You don’t need to see his identification. These aren’t the droids you’re looking for."
@@ -479,6 +502,13 @@ en:
         - "vader"
         - "darth vader"
         - "darth_vader"
+        din_djarin:
+        - "the mandalorian"
+        - "mando"
+        - "the mando"
+        - "din djarin"
+        - "djarin"
+        - "din_djarin"
         emperor_palpatine:
         - "the emperor"
         - "sheev palpatine"
@@ -508,6 +538,11 @@ en:
         - "grand_moff_tarkin"
         greedo:
         - "greedo"
+        grogu:
+        - "the asset"
+        - "the child"
+        - "baby yoda"
+        - "grogu"
         han_solo:
         - "han"
         - "solo"
@@ -531,6 +566,8 @@ en:
         - "k-2so"
         - "k-2s0"
         - "k_2so"
+        kuiil:
+        - "kuiil"
         kylo_ren:
         - "kylo"
         - "kylo ren"
@@ -569,6 +606,10 @@ en:
         - "maz"
         - "maz kanata"
         - "maz_kanata"
+        moff_gideon:
+        - "gideon"
+        - "moff gideon"
+        - "moff_gideon"
         obi_wan_kenobi:
         - "obi kenobi"
         - "ben"
