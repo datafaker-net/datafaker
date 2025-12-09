@@ -38,7 +38,7 @@ jobs:
       - name: Build with Maven
         run: ./mvnw $mvn_options install -PnoGpg --file pom.xml
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5.5.1
+        uses: codecov/codecov-action@v5.5.2
         if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
