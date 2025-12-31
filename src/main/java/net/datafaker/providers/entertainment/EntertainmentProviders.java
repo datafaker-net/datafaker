@@ -23,6 +23,10 @@ public interface EntertainmentProviders extends ProviderRegistration {
         return getProvider(BigBangTheory.class, BigBangTheory::new);
     }
 
+    default Bluey bluey() {
+        return getProvider(Bluey.class, Bluey::new);
+    }
+
     default Boardgame boardgame() {
         return getProvider(Boardgame.class, Boardgame::new);
     }

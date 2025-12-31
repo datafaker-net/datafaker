@@ -47,6 +47,7 @@ public class EnFile {
         "beer.yml",
         "big_bang_theory.yml",
         "blood_type.yml",
+        "bluey.yml",
         "boardgame.yml",
         "bojack_horseman.yml",
         "book.yml",
