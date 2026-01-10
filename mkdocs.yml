@@ -73,6 +73,7 @@ markdown_extensions:
 
 plugins:
   - search
+  - allscreenshots-og-screenshot
   - macros
   - minify:
       minify_html: true
