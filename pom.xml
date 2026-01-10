@@ -550,5 +550,23 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Profile to generate native-image reachability metadata by running tests with the GraalVM agent -->
+        <profile>
+            <id>native-image-agent</id>
+            <properties>
+                <native.image.agent.output.dir>${project.basedir}/src/main/resources/META-INF/native-image</native.image.agent.output.dir>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <argLine>${surefire.argline} -agentlib:native-image-agent=config-output-dir=${native.image.agent.output.dir}</argLine>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>
