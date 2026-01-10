@@ -17,3 +17,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+## Third-party services
+
+Social images for this documentation are generated using [Allscreenshots.com](https://allscreenshots.com).
