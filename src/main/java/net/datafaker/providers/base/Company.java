@@ -80,7 +80,7 @@ public class Company extends AbstractProvider<BaseProviders> {
         for (int i = 0; i < res.length; i++) {
             final char c = res[i];
             switch (c) {
-                case '.', ',', '\'', ' ', ']' -> offset++;
+                case '.', ',', '\'', ' ', ']', '&' -> offset++;
                 default -> res[i - offset] = res[i];
             }
         }
