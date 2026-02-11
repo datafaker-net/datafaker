@@ -4,6 +4,9 @@
 
 The release process is now driven by GitHub Releases:
 
+> [!CAUTION]
+> In general datafaker releases should increment the minor portion of the semver, in 2.x.y the x should be incremented.
+
 1. Go to the [Releases page](https://github.com/datafaker-net/datafaker/releases) of the repository
 2. Click on "Draft a new release"
 3. Create a new tag in the format `2.x.y` (where x and y are the minor and patch version numbers)

@@ -10,7 +10,7 @@ repo_url: https://github.com/datafaker-net/datafaker
 edit_uri: "edit/main/docs"
 
 # Copyright
-copyright: Copyright &copy; 2016 - 2025 Erik Pragt
+copyright: Copyright &copy; 2016 - 2026 Erik Pragt
 
 theme:
   name: material
@@ -81,8 +81,8 @@ plugins:
 # Customization
 extra:
   datafaker:
-    version: 2.5.2
-    snapshot: 2.5.3-SNAPSHOT
+    version: 2.5.4
+    snapshot: 2.6.0-SNAPSHOT
 
 # Page tree
 nav:
@@ -113,6 +113,7 @@ nav:
 #      - How to upgrade: upgrade.md
   - Releases:
     - 2.6.0-SNAPSHOT: releases/2.6.0-SNAPSHOT.md
+    - 2.5.4: releases/2.5.4.md
     - 2.5.3: releases/2.5.3.md
     - 2.5.2: releases/2.5.2.md
     - 2.5.1: releases/2.5.1.md
