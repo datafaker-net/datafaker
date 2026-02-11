@@ -1,0 +1,945 @@
+{
+  "resources":{
+  "includes":[{
+    "pattern":"\\QMETA-INF/services/net.datafaker.idnumbers.IdNumberGenerator\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.apache.maven.surefire.spi.MasterProcessChannelProcessorFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.junit.jupiter.api.extension.Extension\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.junit.platform.engine.TestEngine\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.junit.platform.launcher.TestExecutionListener\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.slf4j.spi.SLF4JServiceProvider\\E"
+  }, {
+    "pattern":"\\Q_AL.yml\\E"
+  }, {
+    "pattern":"\\Q_AM.yml\\E"
+  }, {
+    "pattern":"\\Q_AR.yml\\E"
+  }, {
+    "pattern":"\\Q_AT.yml\\E"
+  }, {
+    "pattern":"\\Q_AU.yml\\E"
+  }, {
+    "pattern":"\\Q_BE.yml\\E"
+  }, {
+    "pattern":"\\Q_BG.yml\\E"
+  }, {
+    "pattern":"\\Q_BR.yml\\E"
+  }, {
+    "pattern":"\\Q_BY.yml\\E"
+  }, {
+    "pattern":"\\Q_CA.yml\\E"
+  }, {
+    "pattern":"\\Q_CH.yml\\E"
+  }, {
+    "pattern":"\\Q_CN.yml\\E"
+  }, {
+    "pattern":"\\Q_CZ.yml\\E"
+  }, {
+    "pattern":"\\Q_DE.yml\\E"
+  }, {
+    "pattern":"\\Q_DK.yml\\E"
+  }, {
+    "pattern":"\\Q_EE.yml\\E"
+  }, {
+    "pattern":"\\Q_ES.yml\\E"
+  }, {
+    "pattern":"\\Q_FI.yml\\E"
+  }, {
+    "pattern":"\\Q_FR.yml\\E"
+  }, {
+    "pattern":"\\Q_GB.yml\\E"
+  }, {
+    "pattern":"\\Q_GE.yml\\E"
+  }, {
+    "pattern":"\\Q_HR.yml\\E"
+  }, {
+    "pattern":"\\Q_HU.yml\\E"
+  }, {
+    "pattern":"\\Q_ID.yml\\E"
+  }, {
+    "pattern":"\\Q_IE.yml\\E"
+  }, {
+    "pattern":"\\Q_IL.yml\\E"
+  }, {
+    "pattern":"\\Q_IN.yml\\E"
+  }, {
+    "pattern":"\\Q_IT.yml\\E"
+  }, {
+    "pattern":"\\Q_JP.yml\\E"
+  }, {
+    "pattern":"\\Q_KR.yml\\E"
+  }, {
+    "pattern":"\\Q_LV.yml\\E"
+  }, {
+    "pattern":"\\Q_MD.yml\\E"
+  }, {
+    "pattern":"\\Q_MK.yml\\E"
+  }, {
+    "pattern":"\\Q_MX.yml\\E"
+  }, {
+    "pattern":"\\Q_NL.yml\\E"
+  }, {
+    "pattern":"\\Q_NO.yml\\E"
+  }, {
+    "pattern":"\\Q_PL.yml\\E"
+  }, {
+    "pattern":"\\Q_PT.yml\\E"
+  }, {
+    "pattern":"\\Q_PY.yml\\E"
+  }, {
+    "pattern":"\\Q_RU.yml\\E"
+  }, {
+    "pattern":"\\Q_SE.yml\\E"
+  }, {
+    "pattern":"\\Q_SK.yml\\E"
+  }, {
+    "pattern":"\\Q_TH.yml\\E"
+  }, {
+    "pattern":"\\Q_TR.yml\\E"
+  }, {
+    "pattern":"\\Q_TW.yml\\E"
+  }, {
+    "pattern":"\\Q_UA.yml\\E"
+  }, {
+    "pattern":"\\Q_US.yml\\E"
+  }, {
+    "pattern":"\\Q_UZ.yml\\E"
+  }, {
+    "pattern":"\\Q_VN.yml\\E"
+  }, {
+    "pattern":"\\Qar.yml\\E"
+  }, {
+    "pattern":"\\Qbe.yml\\E"
+  }, {
+    "pattern":"\\Qbg.yml\\E"
+  }, {
+    "pattern":"\\Qby.yml\\E"
+  }, {
+    "pattern":"\\Qca-CAT.yml\\E"
+  }, {
+    "pattern":"\\Qca.yml\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_AG\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_AI\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_AL\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_AM\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_AR\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_AS\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_AT\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_AU\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_BB\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_BE\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_BG\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_BM\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_BR\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_BS\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_BY\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_CA\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_CH\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_CN\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_CZ\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_DE\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_DK\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_DM\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_DO\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_EE\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_ES\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_ET\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_FI\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_FR\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_GB\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_GD\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_GE\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_GR\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_GU\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_HR\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_HU\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_ID\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_IE\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_IL\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_IN\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_IT\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_JM\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_JP\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_KN\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_KR\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_KY\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_LC\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_LV\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_MD\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_MK\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_MP\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_MS\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_MX\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_NG\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_NL\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_NO\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_NP\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_NZ\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_PH\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_PK\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_PL\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_PR\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_PT\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_PY\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_RU\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_SE\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_SG\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_SK\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_SV\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_SX\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_TC\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_TH\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_TR\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_TT\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_TW\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_UA\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_UG\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_US\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_UZ\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_VC\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_VG\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_VI\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_VN\\E"
+  }, {
+    "pattern":"\\Qcom/google/i18n/phonenumbers/data/PhoneNumberMetadataProto_ZA\\E"
+  }, {
+    "pattern":"\\Qcs-CZ.yml\\E"
+  }, {
+    "pattern":"\\Qcs.yml\\E"
+  }, {
+    "pattern":"\\Qda-DK.yml\\E"
+  }, {
+    "pattern":"\\Qde-AT.yml\\E"
+  }, {
+    "pattern":"\\Qde-CH.yml\\E"
+  }, {
+    "pattern":"\\Qde.yml\\E"
+  }, {
+    "pattern":"\\Qel-GR.yml\\E"
+  }, {
+    "pattern":"\\Qen-AU.yml\\E"
+  }, {
+    "pattern":"\\Qen-BORK.yml\\E"
+  }, {
+    "pattern":"\\Qen-CA.yml\\E"
+  }, {
+    "pattern":"\\Qen-GB.yml\\E"
+  }, {
+    "pattern":"\\Qen-IE.yml\\E"
+  }, {
+    "pattern":"\\Qen-IN.yml\\E"
+  }, {
+    "pattern":"\\Qen-MD.yml\\E"
+  }, {
+    "pattern":"\\Qen-MS.yml\\E"
+  }, {
+    "pattern":"\\Qen-NEP.yml\\E"
+  }, {
+    "pattern":"\\Qen-NG.yml\\E"
+  }, {
+    "pattern":"\\Qen-NZ.yml\\E"
+  }, {
+    "pattern":"\\Qen-PAK.yml\\E"
+  }, {
+    "pattern":"\\Qen-PH.yml\\E"
+  }, {
+    "pattern":"\\Qen-PK.yml\\E"
+  }, {
+    "pattern":"\\Qen-SG.yml\\E"
+  }, {
+    "pattern":"\\Qen-UG.yml\\E"
+  }, {
+    "pattern":"\\Qen-US.yml\\E"
+  }, {
+    "pattern":"\\Qen-ZA.yml\\E"
+  }, {
+    "pattern":"\\Qen/address.yml\\E"
+  }, {
+    "pattern":"\\Qen/ancient.yml\\E"
+  }, {
+    "pattern":"\\Qen/animal.yml\\E"
+  }, {
+    "pattern":"\\Qen/app.yml\\E"
+  }, {
+    "pattern":"\\Qen/apple.yml\\E"
+  }, {
+    "pattern":"\\Qen/appliance.yml\\E"
+  }, {
+    "pattern":"\\Qen/aqua_teen_hunger_force.yml\\E"
+  }, {
+    "pattern":"\\Qen/artist.yml\\E"
+  }, {
+    "pattern":"\\Qen/australia.yml\\E"
+  }, {
+    "pattern":"\\Qen/aviation.yml\\E"
+  }, {
+    "pattern":"\\Qen/aws.yml\\E"
+  }, {
+    "pattern":"\\Qen/azure.yml\\E"
+  }, {
+    "pattern":"\\Qen/babylon5.yml\\E"
+  }, {
+    "pattern":"\\Qen/back_to_the_future.yml\\E"
+  }, {
+    "pattern":"\\Qen/barcode.yml\\E"
+  }, {
+    "pattern":"\\Qen/baseball.yml\\E"
+  }, {
+    "pattern":"\\Qen/basketball.yml\\E"
+  }, {
+    "pattern":"\\Qen/battlefield1.yml\\E"
+  }, {
+    "pattern":"\\Qen/beer.yml\\E"
+  }, {
+    "pattern":"\\Qen/big_bang_theory.yml\\E"
+  }, {
+    "pattern":"\\Qen/blood_type.yml\\E"
+  }, {
+    "pattern":"\\Qen/boardgame.yml\\E"
+  }, {
+    "pattern":"\\Qen/bojack_horseman.yml\\E"
+  }, {
+    "pattern":"\\Qen/book.yml\\E"
+  }, {
+    "pattern":"\\Qen/bossa_nova.yml\\E"
+  }, {
+    "pattern":"\\Qen/brand.yml\\E"
+  }, {
+    "pattern":"\\Qen/breaking_bad.yml\\E"
+  }, {
+    "pattern":"\\Qen/brooklyn_nine_nine.yml\\E"
+  }, {
+    "pattern":"\\Qen/buffy.yml\\E"
+  }, {
+    "pattern":"\\Qen/business.yml\\E"
+  }, {
+    "pattern":"\\Qen/camera.yml\\E"
+  }, {
+    "pattern":"\\Qen/cannabis.yml\\E"
+  }, {
+    "pattern":"\\Qen/care_provider.yml\\E"
+  }, {
+    "pattern":"\\Qen/cat.yml\\E"
+  }, {
+    "pattern":"\\Qen/chess.yml\\E"
+  }, {
+    "pattern":"\\Qen/chiquito.yml\\E"
+  }, {
+    "pattern":"\\Qen/chuck_norris.yml\\E"
+  }, {
+    "pattern":"\\Qen/clash_of_clans.yml\\E"
+  }, {
+    "pattern":"\\Qen/code.yml\\E"
+  }, {
+    "pattern":"\\Qen/coffee.yml\\E"
+  }, {
+    "pattern":"\\Qen/coin.yml\\E"
+  }, {
+    "pattern":"\\Qen/color.yml\\E"
+  }, {
+    "pattern":"\\Qen/commerce.yml\\E"
+  }, {
+    "pattern":"\\Qen/community.yml\\E"
+  }, {
+    "pattern":"\\Qen/company.yml\\E"
+  }, {
+    "pattern":"\\Qen/compass.yml\\E"
+  }, {
+    "pattern":"\\Qen/computer.yml\\E"
+  }, {
+    "pattern":"\\Qen/construction.yml\\E"
+  }, {
+    "pattern":"\\Qen/control.yml\\E"
+  }, {
+    "pattern":"\\Qen/cosmere.yml\\E"
+  }, {
+    "pattern":"\\Qen/country.yml\\E"
+  }, {
+    "pattern":"\\Qen/cowboy_bebop.yml\\E"
+  }, {
+    "pattern":"\\Qen/credentials.yml\\E"
+  }, {
+    "pattern":"\\Qen/cricket.yml\\E"
+  }, {
+    "pattern":"\\Qen/crypto_coin.yml\\E"
+  }, {
+    "pattern":"\\Qen/culture_series.yml\\E"
+  }, {
+    "pattern":"\\Qen/currency.yml\\E"
+  }, {
+    "pattern":"\\Qen/dark_souls.yml\\E"
+  }, {
+    "pattern":"\\Qen/dc_comics.yml\\E"
+  }, {
+    "pattern":"\\Qen/demographic.yml\\E"
+  }, {
+    "pattern":"\\Qen/departed.yml\\E"
+  }, {
+    "pattern":"\\Qen/dessert.yml\\E"
+  }, {
+    "pattern":"\\Qen/detective_conan.yml\\E"
+  }, {
+    "pattern":"\\Qen/device.yml\\E"
+  }, {
+    "pattern":"\\Qen/disease.yml\\E"
+  }, {
+    "pattern":"\\Qen/dnd.yml\\E"
+  }, {
+    "pattern":"\\Qen/dog.yml\\E"
+  }, {
+    "pattern":"\\Qen/domain.yml\\E"
+  }, {
+    "pattern":"\\Qen/doraemon.yml\\E"
+  }, {
+    "pattern":"\\Qen/dota2.yml\\E"
+  }, {
+    "pattern":"\\Qen/dr_who.yml\\E"
+  }, {
+    "pattern":"\\Qen/dragon_ball.yml\\E"
+  }, {
+    "pattern":"\\Qen/driving_license.yml\\E"
+  }, {
+    "pattern":"\\Qen/drone.yml\\E"
+  }, {
+    "pattern":"\\Qen/dumb_and_dumber.yml\\E"
+  }, {
+    "pattern":"\\Qen/dune.yml\\E"
+  }, {
+    "pattern":"\\Qen/educator.yml\\E"
+  }, {
+    "pattern":"\\Qen/elden_ring.yml\\E"
+  }, {
+    "pattern":"\\Qen/elder_scrolls.yml\\E"
+  }, {
+    "pattern":"\\Qen/electrical_components.yml\\E"
+  }, {
+    "pattern":"\\Qen/emoji.yml\\E"
+  }, {
+    "pattern":"\\Qen/englandfootball.yml\\E"
+  }, {
+    "pattern":"\\Qen/esport.yml\\E"
+  }, {
+    "pattern":"\\Qen/fallout.yml\\E"
+  }, {
+    "pattern":"\\Qen/family_guy.yml\\E"
+  }, {
+    "pattern":"\\Qen/famous_last_words.yml\\E"
+  }, {
+    "pattern":"\\Qen/file.yml\\E"
+  }, {
+    "pattern":"\\Qen/final_fantasy_xiv.yml\\E"
+  }, {
+    "pattern":"\\Qen/final_space.yml\\E"
+  }, {
+    "pattern":"\\Qen/finance.yml\\E"
+  }, {
+    "pattern":"\\Qen/financial_terms.yml\\E"
+  }, {
+    "pattern":"\\Qen/fma_brotherhood.yml\\E"
+  }, {
+    "pattern":"\\Qen/food.yml\\E"
+  }, {
+    "pattern":"\\Qen/football.yml\\E"
+  }, {
+    "pattern":"\\Qen/formula1.yml\\E"
+  }, {
+    "pattern":"\\Qen/fresh_prince_of_bel_air.yml\\E"
+  }, {
+    "pattern":"\\Qen/friends.yml\\E"
+  }, {
+    "pattern":"\\Qen/funny_name.yml\\E"
+  }, {
+    "pattern":"\\Qen/futurama.yml\\E"
+  }, {
+    "pattern":"\\Qen/game_of_thrones.yml\\E"
+  }, {
+    "pattern":"\\Qen/garments_sizes.yml\\E"
+  }, {
+    "pattern":"\\Qen/gender.yml\\E"
+  }, {
+    "pattern":"\\Qen/ghostbusters.yml\\E"
+  }, {
+    "pattern":"\\Qen/grateful_dead.yml\\E"
+  }, {
+    "pattern":"\\Qen/gravity_falls.yml\\E"
+  }, {
+    "pattern":"\\Qen/greek_philosophers.yml\\E"
+  }, {
+    "pattern":"\\Qen/hacker.yml\\E"
+  }, {
+    "pattern":"\\Qen/half_life.yml\\E"
+  }, {
+    "pattern":"\\Qen/harry_potter.yml\\E"
+  }, {
+    "pattern":"\\Qen/hearthstone.yml\\E"
+  }, {
+    "pattern":"\\Qen/heroes_of_the_storm.yml\\E"
+  }, {
+    "pattern":"\\Qen/hey_arnold.yml\\E"
+  }, {
+    "pattern":"\\Qen/hipster.yml\\E"
+  }, {
+    "pattern":"\\Qen/hitchhikers_guide_to_the_galaxy.yml\\E"
+  }, {
+    "pattern":"\\Qen/hobbit.yml\\E"
+  }, {
+    "pattern":"\\Qen/hobby.yml\\E"
+  }, {
+    "pattern":"\\Qen/hololive.yml\\E"
+  }, {
+    "pattern":"\\Qen/horse.yml\\E"
+  }, {
+    "pattern":"\\Qen/house.yml\\E"
+  }, {
+    "pattern":"\\Qen/how_i_met_your_mother.yml\\E"
+  }, {
+    "pattern":"\\Qen/how_to_train_your_dragon.yml\\E"
+  }, {
+    "pattern":"\\Qen/ice_cream.yml\\E"
+  }, {
+    "pattern":"\\Qen/id_number.yml\\E"
+  }, {
+    "pattern":"\\Qen/industry_segments.yml\\E"
+  }, {
+    "pattern":"\\Qen/internet.yml\\E"
+  }, {
+    "pattern":"\\Qen/job.yml\\E"
+  }, {
+    "pattern":"\\Qen/joke.yml\\E"
+  }, {
+    "pattern":"\\Qen/kaamelott.yml\\E"
+  }, {
+    "pattern":"\\Qen/kpop.yml\\E"
+  }, {
+    "pattern":"\\Qen/largelanguagemodel.yml\\E"
+  }, {
+    "pattern":"\\Qen/league_of_legends.yml\\E"
+  }, {
+    "pattern":"\\Qen/lebowski.yml\\E"
+  }, {
+    "pattern":"\\Qen/location.yml\\E"
+  }, {
+    "pattern":"\\Qen/lord_of_the_rings.yml\\E"
+  }, {
+    "pattern":"\\Qen/lorem.yml\\E"
+  }, {
+    "pattern":"\\Qen/marketing.yml\\E"
+  }, {
+    "pattern":"\\Qen/martial_art.yml\\E"
+  }, {
+    "pattern":"\\Qen/marvel_snap.yml\\E"
+  }, {
+    "pattern":"\\Qen/mass_effect.yml\\E"
+  }, {
+    "pattern":"\\Qen/matz.yml\\E"
+  }, {
+    "pattern":"\\Qen/mbti.yml\\E"
+  }, {
+    "pattern":"\\Qen/measurement.yml\\E"
+  }, {
+    "pattern":"\\Qen/medical.yml\\E"
+  }, {
+    "pattern":"\\Qen/medical_procedure.yml\\E"
+  }, {
+    "pattern":"\\Qen/medication.yml\\E"
+  }, {
+    "pattern":"\\Qen/military.yml\\E"
+  }, {
+    "pattern":"\\Qen/minecraft.yml\\E"
+  }, {
+    "pattern":"\\Qen/money_heist.yml\\E"
+  }, {
+    "pattern":"\\Qen/mood.yml\\E"
+  }, {
+    "pattern":"\\Qen/mountain.yml\\E"
+  }, {
+    "pattern":"\\Qen/mountaineering.yml\\E"
+  }, {
+    "pattern":"\\Qen/movie.yml\\E"
+  }, {
+    "pattern":"\\Qen/music.yml\\E"
+  }, {
+    "pattern":"\\Qen/myst.yml\\E"
+  }, {
+    "pattern":"\\Qen/name.yml\\E"
+  }, {
+    "pattern":"\\Qen/naruto.yml\\E"
+  }, {
+    "pattern":"\\Qen/nation.yml\\E"
+  }, {
+    "pattern":"\\Qen/nato_phonetic_alphabet.yml\\E"
+  }, {
+    "pattern":"\\Qen/new_girl.yml\\E"
+  }, {
+    "pattern":"\\Qen/nigeria.yml\\E"
+  }, {
+    "pattern":"\\Qen/observation.yml\\E"
+  }, {
+    "pattern":"\\Qen/olympic_sport.yml\\E"
+  }, {
+    "pattern":"\\Qen/one_piece.yml\\E"
+  }, {
+    "pattern":"\\Qen/oscar_movie.yml\\E"
+  }, {
+    "pattern":"\\Qen/overwatch.yml\\E"
+  }, {
+    "pattern":"\\Qen/passport.yml\\E"
+  }, {
+    "pattern":"\\Qen/photography.yml\\E"
+  }, {
+    "pattern":"\\Qen/planet.yml\\E"
+  }, {
+    "pattern":"\\Qen/pokemon.yml\\E"
+  }, {
+    "pattern":"\\Qen/princess_bride.yml\\E"
+  }, {
+    "pattern":"\\Qen/programming_language.yml\\E"
+  }, {
+    "pattern":"\\Qen/pronouns.yml\\E"
+  }, {
+    "pattern":"\\Qen/red_dead_redemption2.yml\\E"
+  }, {
+    "pattern":"\\Qen/relationship.yml\\E"
+  }, {
+    "pattern":"\\Qen/resident_evil.yml\\E"
+  }, {
+    "pattern":"\\Qen/restaurant.yml\\E"
+  }, {
+    "pattern":"\\Qen/rick_and_morty.yml\\E"
+  }, {
+    "pattern":"\\Qen/robin.yml\\E"
+  }, {
+    "pattern":"\\Qen/rock_band.yml\\E"
+  }, {
+    "pattern":"\\Qen/rupaul.yml\\E"
+  }, {
+    "pattern":"\\Qen/science.yml\\E"
+  }, {
+    "pattern":"\\Qen/seinfeld.yml\\E"
+  }, {
+    "pattern":"\\Qen/severance.yml\\E"
+  }, {
+    "pattern":"\\Qen/show.yml\\E"
+  }, {
+    "pattern":"\\Qen/silicon_valley.yml\\E"
+  }, {
+    "pattern":"\\Qen/simpsons.yml\\E"
+  }, {
+    "pattern":"\\Qen/sip.yml\\E"
+  }, {
+    "pattern":"\\Qen/size.yml\\E"
+  }, {
+    "pattern":"\\Qen/slack_emoji.yml\\E"
+  }, {
+    "pattern":"\\Qen/sonic_the_hedgehog.yml\\E"
+  }, {
+    "pattern":"\\Qen/soul_knight.yml\\E"
+  }, {
+    "pattern":"\\Qen/south_park.yml\\E"
+  }, {
+    "pattern":"\\Qen/space.yml\\E"
+  }, {
+    "pattern":"\\Qen/spongebob.yml\\E"
+  }, {
+    "pattern":"\\Qen/star_trek.yml\\E"
+  }, {
+    "pattern":"\\Qen/star_wars.yml\\E"
+  }, {
+    "pattern":"\\Qen/starcraft.yml\\E"
+  }, {
+    "pattern":"\\Qen/stargate.yml\\E"
+  }, {
+    "pattern":"\\Qen/stock.yml\\E"
+  }, {
+    "pattern":"\\Qen/stranger_things.yml\\E"
+  }, {
+    "pattern":"\\Qen/street_fighter.yml\\E"
+  }, {
+    "pattern":"\\Qen/studio_ghibli.yml\\E"
+  }, {
+    "pattern":"\\Qen/subscription.yml\\E"
+  }, {
+    "pattern":"\\Qen/suits.yml\\E"
+  }, {
+    "pattern":"\\Qen/super_mario.yml\\E"
+  }, {
+    "pattern":"\\Qen/super_smash_bros.yml\\E"
+  }, {
+    "pattern":"\\Qen/superhero.yml\\E"
+  }, {
+    "pattern":"\\Qen/supernatural.yml\\E"
+  }, {
+    "pattern":"\\Qen/sword_art_online.yml\\E"
+  }, {
+    "pattern":"\\Qen/tea.yml\\E"
+  }, {
+    "pattern":"\\Qen/team.yml\\E"
+  }, {
+    "pattern":"\\Qen/the_expanse.yml\\E"
+  }, {
+    "pattern":"\\Qen/the_it_crowd.yml\\E"
+  }, {
+    "pattern":"\\Qen/the_kingkiller_chronicle.yml\\E"
+  }, {
+    "pattern":"\\Qen/the_room.yml\\E"
+  }, {
+    "pattern":"\\Qen/the_thick_of_it.yml\\E"
+  }, {
+    "pattern":"\\Qen/the_venture_bros.yml\\E"
+  }, {
+    "pattern":"\\Qen/tire.yml\\E"
+  }, {
+    "pattern":"\\Qen/touhou.yml\\E"
+  }, {
+    "pattern":"\\Qen/transport.yml\\E"
+  }, {
+    "pattern":"\\Qen/tron.yml\\E"
+  }, {
+    "pattern":"\\Qen/twin_peaks.yml\\E"
+  }, {
+    "pattern":"\\Qen/twitter.yml\\E"
+  }, {
+    "pattern":"\\Qen/university.yml\\E"
+  }, {
+    "pattern":"\\Qen/v_for_vendetta.yml\\E"
+  }, {
+    "pattern":"\\Qen/vehicle.yml\\E"
+  }, {
+    "pattern":"\\Qen/verbs.yml\\E"
+  }, {
+    "pattern":"\\Qen/video_game.yml\\E"
+  }, {
+    "pattern":"\\Qen/volleyball.yml\\E"
+  }, {
+    "pattern":"\\Qen/warhammer_fantasy.yml\\E"
+  }, {
+    "pattern":"\\Qen/weather.yml\\E"
+  }, {
+    "pattern":"\\Qen/witcher.yml\\E"
+  }, {
+    "pattern":"\\Qen/words.yml\\E"
+  }, {
+    "pattern":"\\Qen/world_of_warcraft.yml\\E"
+  }, {
+    "pattern":"\\Qen/yoda.yml\\E"
+  }, {
+    "pattern":"\\Qen/zelda.yml\\E"
+  }, {
+    "pattern":"\\Qen/zodiac.yml\\E"
+  }, {
+    "pattern":"\\Qes-AR.yml\\E"
+  }, {
+    "pattern":"\\Qes-MX.yml\\E"
+  }, {
+    "pattern":"\\Qes-PY.yml\\E"
+  }, {
+    "pattern":"\\Qes.yml\\E"
+  }, {
+    "pattern":"\\Qet.yml\\E"
+  }, {
+    "pattern":"\\Qfa.yml\\E"
+  }, {
+    "pattern":"\\Qfi-FI.yml\\E"
+  }, {
+    "pattern":"\\Qfr-CA.yml\\E"
+  }, {
+    "pattern":"\\Qfr-CH.yml\\E"
+  }, {
+    "pattern":"\\Qfr.yml\\E"
+  }, {
+    "pattern":"\\Qhe.yml\\E"
+  }, {
+    "pattern":"\\Qhr.yml\\E"
+  }, {
+    "pattern":"\\Qhu.yml\\E"
+  }, {
+    "pattern":"\\Qhy.yml\\E"
+  }, {
+    "pattern":"\\Qid-ID.yml\\E"
+  }, {
+    "pattern":"\\Qid.yml\\E"
+  }, {
+    "pattern":"\\Qit.yml\\E"
+  }, {
+    "pattern":"\\Qja.yml\\E"
+  }, {
+    "pattern":"\\Qjunit-platform.properties\\E"
+  }, {
+    "pattern":"\\Qka.yml\\E"
+  }, {
+    "pattern":"\\Qko.yml\\E"
+  }, {
+    "pattern":"\\Qlogging.properties\\E"
+  }, {
+    "pattern":"\\Qlv.yml\\E"
+  }, {
+    "pattern":"\\Qmk.yml\\E"
+  }, {
+    "pattern":"\\Qnb-NO.yml\\E"
+  }, {
+    "pattern":"\\Qnet/datafaker/providers\\E"
+  }, {
+    "pattern":"\\Qnl-BE.yml\\E"
+  }, {
+    "pattern":"\\Qnl.yml\\E"
+  }, {
+    "pattern":"\\Qno-NO.yml\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice$ForEquals.class\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice$ForHashCode.class\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice$ForStatic.class\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice.class\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/inject-MockMethodDispatcher.raw\\E"
+  }, {
+    "pattern":"\\Qpl.yml\\E"
+  }, {
+    "pattern":"\\Qpt-BR.yml\\E"
+  }, {
+    "pattern":"\\Qpt.yml\\E"
+  }, {
+    "pattern":"\\Qro-MD.yml\\E"
+  }, {
+    "pattern":"\\Qru-MD.yml\\E"
+  }, {
+    "pattern":"\\Qru.yml\\E"
+  }, {
+    "pattern":"\\Qsk.yml\\E"
+  }, {
+    "pattern":"\\Qsq.yml\\E"
+  }, {
+    "pattern":"\\Qsv-SE.yml\\E"
+  }, {
+    "pattern":"\\Qsv.yml\\E"
+  }, {
+    "pattern":"\\Qta-IN.yml\\E"
+  }, {
+    "pattern":"\\Qta.yml\\E"
+  }, {
+    "pattern":"\\Qtest.yml\\E"
+  }, {
+    "pattern":"\\Qth.yml\\E"
+  }, {
+    "pattern":"\\Qtr.yml\\E"
+  }, {
+    "pattern":"\\Quk.yml\\E"
+  }, {
+    "pattern":"\\Quz.yml\\E"
+  }, {
+    "pattern":"\\Qvi.yml\\E"
+  }, {
+    "pattern":"\\Qzh-CN.yml\\E"
+  }, {
+    "pattern":"\\Qzh-TW.yml\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/util/currency.data\\E"
+  }, {
+    "pattern":"java.base:\\Qjdk/internal/icu/impl/data/icudt67b/nfc.nrm\\E"
+  }, {
+    "pattern":"java.base:\\Qjdk/internal/icu/impl/data/icudt67b/nfkc.nrm\\E"
+  }, {
+    "pattern":"java.base:\\Qjdk/internal/icu/impl/data/icudt67b/ubidi.icu\\E"
+  }, {
+    "pattern":"java.base:\\Qjdk/internal/icu/impl/data/icudt67b/uprops.icu\\E"
+  }, {
+    "pattern":"java.base:\\Qsun/net/idn/uidna.spp\\E"
+  }, {
+    "pattern":"jdk.jfr:\\Qjdk/jfr/internal/types/metadata.bin\\E"
+  }]},
+  "bundles":[{
+    "name":"sun.awt.resources.awt",
+    "classNames":["sun.awt.resources.awt"]
+  }, {
+    "name":"sun.awt.resources.awtosx",
+    "classNames":["sun.awt.resources.awtosx"]
+  }]
+}
