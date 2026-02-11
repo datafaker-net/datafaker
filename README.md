@@ -29,7 +29,7 @@ In the pom.xml, add the following fragment to the `dependencies` section:
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>2.5.3</version>
+    <version>2.5.4</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:2.5.3'
+    implementation 'net.datafaker:datafaker:2.5.4'
 }
 
 ```
@@ -81,7 +81,7 @@ jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
 or JShell w/[JBang](https://www.jbang.dev/)
 ```
 # can be run anywhere, no project root/download needed.
-jbang -i net.datafaker:datafaker:2.5.3
+jbang -i net.datafaker:datafaker:2.5.4
 ```
 
 ```
