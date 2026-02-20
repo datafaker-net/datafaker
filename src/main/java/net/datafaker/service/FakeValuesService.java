@@ -14,6 +14,7 @@ import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -45,6 +46,8 @@ import static java.util.Locale.ROOT;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.SEVERE;
+import static net.datafaker.internal.helper.JavaNames.toJavaNames;
+import static net.datafaker.internal.helper.WordUtils.capitalizeWords;
 import static net.datafaker.transformations.Field.field;
 
 public class FakeValuesService {
@@ -56,7 +59,7 @@ public class FakeValuesService {
     public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> new CopyOnWriteMap<>(() -> new WeakHashMap<>());
 
     private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new CopyOnWriteMap<>(IdentityHashMap::new);
-    public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.get(Locale.ENGLISH);
+    public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.getRequired(Locale.ENGLISH);
 
     private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new CopyOnWriteMap<>(IdentityHashMap::new);
     private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new CopyOnWriteMap<>(IdentityHashMap::new);
@@ -100,7 +103,7 @@ public class FakeValuesService {
      * @param path   path to a file with YAML structure
      * @throws IllegalArgumentException in case of invalid path
      */
-    public void addPath(Locale locale, Path path) {
+    public void addPath(Locale locale, @Nullable Path path) {
         requireNonNull(locale);
         if (path == null || Files.notExists(path) || Files.isDirectory(path) || !Files.isReadable(path)) {
             throw new IllegalArgumentException("Path should be an existing readable file: \"%s\"".formatted(path));
@@ -120,10 +123,8 @@ public class FakeValuesService {
      * @throws IllegalArgumentException in case of invalid url
      */
     public void addUrl(Locale locale, URL url) {
-        requireNonNull(locale);
-        if (url == null) {
-            throw new IllegalArgumentException("url should be an existing readable file");
-        }
+        requireNonNull(locale, "locale is required");
+        requireNonNull(url, "url should be an existing readable file");
         final FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(locale, url));
         final SingletonLocale sLocale = SingletonLocale.get(locale);
         fakeValuesInterfaceMap.merge(sLocale, fakeValues,
@@ -138,6 +139,7 @@ public class FakeValuesService {
     /**
      * Fetch a random value from an array item specified by the key
      */
+    @Nullable
     public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
         final Object o = fetchObject(key, context);
@@ -158,6 +160,7 @@ public class FakeValuesService {
     /**
      * Same as {@link #fetch(String, FakerContext)} but casts the result to a String
      */
+    @Nullable
     public String fetchString(String key, FakerContext context) {
         return (String) fetch(key, context);
     }
@@ -165,6 +168,7 @@ public class FakeValuesService {
     private record SafeFetchResolver(FakeValuesService service, String simpleDirective, FakerContext context)
         implements ValueResolver {
 
+        @Nullable
         @Override
         public Object resolve() {
             return service.safeFetch(simpleDirective, context, null);
@@ -187,8 +191,9 @@ public class FakeValuesService {
      * @param defaultIfNull the value to return if the fetched value is null
      * @return see above
      */
+    @Nullable
     @SuppressWarnings("unchecked")
-    public String safeFetch(String key, FakerContext context, String defaultIfNull) {
+    public String safeFetch(String key, FakerContext context, @Nullable String defaultIfNull) {
         Object o = fetchObject(key, context);
         String str;
         if (o == null) return defaultIfNull;
@@ -213,6 +218,7 @@ public class FakeValuesService {
      * @param key key contains path to an object. Path segment is separated by
      *            dot. E.g. name.first_name
      */
+    @Nullable
     @SuppressWarnings("unchecked")
     public <T> T fetchObject(String key, FakerContext context) {
         Object result = null;
@@ -446,7 +452,7 @@ public class FakeValuesService {
      * <p>
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
-    public String resolve(String key, Object current, final ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
+    public String resolve(String key, Object current, @Nullable ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
         String expression;
         if (root == null) {
             expression = key2Expression
@@ -457,7 +463,7 @@ public class FakeValuesService {
         }
 
         if (expression == null) {
-            throw new RuntimeException(exceptionMessage.get());
+            throw new IllegalArgumentException(exceptionMessage.get());
         }
 
         return resolveExpression(expression, current, root, context);
@@ -562,7 +568,7 @@ public class FakeValuesService {
      * Recursive templates are supported.  if "#{x}" resolves to "#{Address.streetName}" then "#{x}" resolves to
      * {@link BaseFaker#address()}'s {@link Address#streetName()}.
      */
-    protected String resolveExpression(String expression, Object current, ProviderRegistration root, FakerContext context) {
+    protected String resolveExpression(String expression, @Nullable Object current, @Nullable ProviderRegistration root, FakerContext context) {
         // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
         if (!expression.contains("}")) {
             return expression;
@@ -1133,14 +1139,16 @@ public class FakeValuesService {
         }
     }
 
-    private record RegExpContext(ProviderRegistration root, FakerContext context, ValueResolver resolver) {
+    private record RegExpContext(@Nullable ProviderRegistration root, FakerContext context, ValueResolver resolver) {
     }
 
     private interface ValueResolver {
+        @Nullable
         Object resolve();
     }
 
-    private record ConstantResolver(String value) implements ValueResolver {
+    private record ConstantResolver(@Nullable String value) implements ValueResolver {
+        @Nullable
         @Override
         public Object resolve() {
             return value;

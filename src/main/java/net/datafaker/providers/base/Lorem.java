@@ -1,9 +1,9 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.internal.helper.WordUtils;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.datafaker.internal.helper.WordUtils.capitalizeWords;
 
 
 /**
@@ -113,9 +113,9 @@ public class Lorem extends AbstractProvider<BaseProviders> {
     public String sentence(int wordCount, int randomWordsToAdd) {
         int numberOfWordsToAdd = randomWordsToAdd == 0 ? 0 : faker.random().nextInt(randomWordsToAdd);
         final int totalWordCount = wordCount + numberOfWordsToAdd;
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(wordCount * 9);
         if (totalWordCount > 0) {
-            sb.append(WordUtils.capitalize(word()));
+            sb.append(capitalizeWords(word()));
         }
         for (int i = 1; i < totalWordCount; i++) {
             sb.append(" ").append(word());

@@ -1,18 +1,21 @@
 package net.datafaker.service;
 
 import net.datafaker.internal.helper.SingletonLocale;
+import org.jspecify.annotations.Nullable;
 
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
 class FakeValuesContext {
     private final SingletonLocale singletonLocale;
-    private final String filename;
+    private @Nullable final String filename;
     private final int filenameHashCode;
-    private final String path;
-    private final URL url;
+    private @Nullable final String path;
+    private @Nullable final URL url;
     private final int urlHashCode;
 
     private FakeValuesContext(Locale locale) {
@@ -27,8 +30,8 @@ class FakeValuesContext {
         this(locale, filename, path, null);
     }
 
-    private FakeValuesContext(Locale locale, String filename, String path, URL url) {
-        this.singletonLocale = SingletonLocale.get(locale);
+    private FakeValuesContext(Locale locale, @Nullable String filename, @Nullable String path, @Nullable URL url) {
+        this.singletonLocale = requireNonNull(SingletonLocale.get(locale), () -> "Unsupported locale " + locale);
         this.filename = filename;
         this.path = path;
         this.url = url;
@@ -84,14 +87,17 @@ class FakeValuesContext {
         return singletonLocale.getLocale();
     }
 
+    @Nullable
     public String getFilename() {
         return filename;
     }
 
+    @Nullable
     String getPath() {
         return path;
     }
 
+    @Nullable
     public URL getUrl() {
         return url;
     }
@@ -111,7 +117,7 @@ class FakeValuesContext {
 
     @Override
     public int hashCode() {
-        int result = singletonLocale == null ? 0 : singletonLocale.hashCode();
+        int result = singletonLocale.hashCode();
         result = 31 * result + filenameHashCode;
         result = 31 * result + (path == null ? 0 : path.hashCode());
         result = 31 * result + urlHashCode;

@@ -1,7 +1,12 @@
 package net.datafaker.providers.base;
 
+import org.jspecify.annotations.Nullable;
+
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import static java.util.logging.Level.WARNING;
 
 /**
  * Generates credentials such as usernames, uids and passwords.
@@ -12,6 +17,7 @@ public class Credentials extends AbstractProvider<BaseProviders> {
 
     public static final int MIN_PASSWORD_LENGTH = 8;
     public static final int MAX_PASSWORD_LENGTH = 16;
+    private static final Logger log = Logger.getLogger(Credentials.class.getName());
 
     protected Credentials(BaseProviders faker) {
         super(faker);
@@ -142,6 +148,7 @@ public class Credentials extends AbstractProvider<BaseProviders> {
      *
      * @return A randomly generated user ID based on the regex or null if the regex is null or invalid
      */
+    @Nullable
     public String userId() {
         return userId(resolve("credentials.uid_pattern"));
     }
@@ -153,7 +160,8 @@ public class Credentials extends AbstractProvider<BaseProviders> {
      * @param regex The regex pattern to generate the user ID
      * @return A randomly generated user ID based on the regex or null if the regex is null or invalid
      */
-    public String userId(String regex) {
+    @Nullable
+    public String userId(@Nullable String regex) {
         if(regex == null) {
             return null;
         }
@@ -161,6 +169,7 @@ public class Credentials extends AbstractProvider<BaseProviders> {
         try {
             Pattern.compile(regex);
         } catch (PatternSyntaxException e) {
+            log.log(WARNING, e, () -> "Invalid regex pattern: " + regex);
             return null;
         }
 

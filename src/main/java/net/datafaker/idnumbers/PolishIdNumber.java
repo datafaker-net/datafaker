@@ -4,6 +4,7 @@ import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.GenderRequest;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
+import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
 
@@ -52,7 +53,7 @@ public class PolishIdNumber implements IdNumberGenerator {
         return get(faker, birthDate, gender);
     }
 
-    private static PersonIdNumber.Gender pickGender(BaseProviders faker, Gender requestedGender) {
+    private static PersonIdNumber.Gender pickGender(BaseProviders faker, @Nullable Gender requestedGender) {
         return requestedGender == null ? randomGender(faker) :
             switch (requestedGender) {
                 case ANY -> randomGender(faker);

@@ -1,6 +1,7 @@
 package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
+import org.jspecify.annotations.Nullable;
 
 public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
     public static final String DEFAULT_SEPARATOR = ";";
@@ -58,7 +59,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
-    private void addLine(StringBuilder sb, Object transform) {
+    private void addLine(StringBuilder sb, @Nullable Object transform) {
         if (transform instanceof CharSequence charSequence) {
             addCharSequence(sb, charSequence);
         } else {

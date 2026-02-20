@@ -1,5 +1,7 @@
 package net.datafaker.transformations.sql;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -111,17 +113,17 @@ public enum SqlDialect {
         return unquotedCasing;
     }
 
-    public static String getFirstRow(SqlDialect dialect, Supplier<String> input, Supplier<String> input2, SqlTransformer.Case keywordCase) {
+    public static String getFirstRow(@Nullable SqlDialect dialect, Supplier<String> input, Supplier<String> input2, SqlTransformer.Case keywordCase) {
         return dialect == null
             ? DEFAULT_FIRST_ROW.apply(input, input2, keywordCase) : dialect.batchFirstRow.apply(input, input2, keywordCase);
     }
 
-    public static String getOtherRow(SqlDialect dialect, Supplier<String> input, Supplier<String> input2, SqlTransformer.Case keywordCase) {
+    public static String getOtherRow(@Nullable SqlDialect dialect, Supplier<String> input, Supplier<String> input2, SqlTransformer.Case keywordCase) {
         return dialect == null
             ? DEFAULT_OTHER_ROWS.apply(input, input2, keywordCase) : dialect.batchOtherRows.apply(input, input2, keywordCase);
     }
 
-    public static String getLastRowSuffix(SqlDialect dialect, SqlTransformer.Case caze) {
+    public static String getLastRowSuffix(@Nullable SqlDialect dialect, SqlTransformer.Case caze) {
         return dialect == null ? "" : dialect.lastBatchRow.apply(caze);
     }
 

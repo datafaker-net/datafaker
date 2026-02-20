@@ -1,6 +1,7 @@
 package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
+import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -89,7 +90,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         return ",";
     }
 
-    private void applyValue(IN input, StringBuilder sb, Object value) {
+    private void applyValue(IN input, StringBuilder sb, @Nullable Object value) {
         if (value instanceof Collection<?> collection) {
             sb.append(generate(input, (Collection<Object>) collection));
         } else if (value != null && value.getClass().isArray()) {
@@ -99,7 +100,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private String generate(IN input, Collection<Object> collection) {
+    private String generate(IN input, Collection<?> collection) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         int i = 0;
@@ -108,7 +109,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
                 sb.append(", ");
             }
             i++;
-            if (value instanceof CompositeField compositeField) {
+            if (value instanceof CompositeField<?, ?> compositeField) {
                 sb.append(apply(input, compositeField));
             } else {
                 applyValue(input, sb, value);
@@ -118,7 +119,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
-    private static void value2String(Object value, StringBuilder sb) {
+    private static void value2String(@Nullable Object value, StringBuilder sb) {
         if (value == null) {
             sb.append("null");
         } else if (value instanceof Integer

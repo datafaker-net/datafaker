@@ -1,5 +1,7 @@
 package net.datafaker.internal.helper;
 
+import org.jspecify.annotations.Nullable;
+
 import static java.lang.Character.isLetter;
 import static java.lang.Character.toLowerCase;
 import static java.lang.Character.toUpperCase;
@@ -8,7 +10,8 @@ import static net.datafaker.internal.helper.JavaNames.Transform.TO_LOWER;
 import static net.datafaker.internal.helper.JavaNames.Transform.TO_UPPER;
 
 public class JavaNames {
-    public static String toJavaNames(String string, boolean isMethod) {
+    @Nullable
+    public static String toJavaNames(@Nullable String string, boolean isMethod) {
         if (string == null || string.isEmpty()) return string;
 
         int length = string.length();

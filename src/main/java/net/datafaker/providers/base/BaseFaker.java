@@ -8,6 +8,7 @@ import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
 import net.datafaker.transformations.Schema;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -49,7 +50,7 @@ public class BaseFaker implements BaseProviders {
         this(Locale.ENGLISH, random);
     }
 
-    public BaseFaker(Locale locale, Random random) {
+    public BaseFaker(Locale locale, @Nullable Random random) {
         this(locale, new RandomService(random));
     }
 
@@ -61,7 +62,7 @@ public class BaseFaker implements BaseProviders {
         this(fakeValuesService, context, EVERY_PROVIDER_ALLOWED);
     }
 
-    public BaseFaker(FakeValuesService fakeValuesService, FakerContext context, Predicate<Class<?>> whiteListPredicate) {
+    public BaseFaker(FakeValuesService fakeValuesService, FakerContext context, @Nullable Predicate<Class<?>> whiteListPredicate) {
         this.fakeValuesService = fakeValuesService;
         this.context = context;
         this.whiteListPredicate = whiteListPredicate == null ? EVERY_PROVIDER_ALLOWED : whiteListPredicate;
@@ -432,7 +433,8 @@ public class BaseFaker implements BaseProviders {
         return (B) this;
     }
 
-    public static Method getMethod(AbstractProvider<?> ap, String methodName) {
+    @Nullable
+    public static Method getMethod(@Nullable AbstractProvider<?> ap, String methodName) {
         return ap == null ? null : ObjectMethods.getMethodByName(ap, methodName);
     }
 

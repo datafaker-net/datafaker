@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.service.RandomService;
+import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -100,7 +101,7 @@ public class Twitter extends AbstractProvider<BaseProviders> {
      * @param wordMaxLength     each word should be in range of the word max length.
      * @return a new fake text for the Twitter.
      */
-    public String text(String[] keywords, int sentenceMaxLength, int wordMaxLength) {
+    public String text(String @Nullable [] keywords, int sentenceMaxLength, int wordMaxLength) {
         if (wordMaxLength <= 2) {
             LOGGER.warning("Word length less than 2 is dangerous. Exceptions can be raised.");
         }

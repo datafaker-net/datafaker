@@ -1,52 +1,53 @@
 package net.datafaker.transformations;
 
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static java.util.Objects.requireNonNull;
+
 public class SimpleField<MyObject, MyType> implements Field<MyObject, MyType> {
-    private final String name;
-    private final Function<MyObject, MyType> transform;
-    private final Supplier<MyType> supplier;
+    private final @Nullable String name;
+    private final @Nullable Function<MyObject, MyType> transform;
+    private final @Nullable Supplier<MyType> supplier;
 
-    protected SimpleField(String name, Function<MyObject, MyType> transform) {
-        this(name, transform, null);
-    }
-
-    protected SimpleField(String name, Supplier<MyType> supplier) {
-        this(name, null, supplier);
-    }
-
-    private SimpleField(String name, Function<MyObject, MyType> transform, Supplier<MyType> supplier) {
+    protected SimpleField(@Nullable String name, Function<MyObject, MyType> transform) {
         this.name = name;
-        this.transform = transform;
-        this.supplier = supplier;
-        if (this.transform == null && this.supplier == null) {
-            throw new IllegalArgumentException("Either transform or supplier should be non-null");
-        }
+        this.transform = requireNonNull(transform);
+        this.supplier = null;
     }
 
+    protected SimpleField(@Nullable String name, Supplier<MyType> supplier) {
+        this.name = name;
+        this.transform = null;
+        this.supplier = requireNonNull(supplier);
+    }
+
+    @Nullable
     @Override
     public String getName() {
         return name;
     }
 
+    @Nullable
     @Override
-    public MyType transform(MyObject input) {
+    public MyType transform(@Nullable MyObject input) {
         if (transform == null) {
-            return supplier.get();
+            return requireNonNull(supplier).get();
         }
-        if (input == null) {
-            throw new IllegalArgumentException("Input could be null only if suppliers are defined");
-        }
+        requireNonNull(input, "Input could be null only if suppliers are defined");
         return transform.apply(input);
     }
 
+    @Nullable
     public Function<MyObject, MyType> getTransform() {
         return transform;
     }
 
+    @Nullable
     public Supplier<MyType> getSupplier() {
         return supplier;
     }
