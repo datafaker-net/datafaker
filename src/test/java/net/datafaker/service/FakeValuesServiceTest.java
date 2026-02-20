@@ -210,6 +210,7 @@ class FakeValuesServiceTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void testFakerContextSetLocale() {
         final FakerContext fakerContext = new FakerContext(new Locale("en"), new RandomService());
         fakerContext.setLocale(new Locale("uk"));

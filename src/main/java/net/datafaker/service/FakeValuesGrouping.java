@@ -1,13 +1,15 @@
 package net.datafaker.service;
 
 import net.datafaker.service.files.EnFile;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+
+import static java.util.Collections.emptyList;
 
 public final class FakeValuesGrouping implements FakeValuesInterface {
     private static final FakeValuesGrouping ENGLISH_FAKE_VALUE_GROUPING = new FakeValuesGrouping();
@@ -38,16 +40,18 @@ public final class FakeValuesGrouping implements FakeValuesInterface {
         }
     }
 
+    @Nullable
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public Map get(String key) {
-        Map result = null;
-        for (FakeValuesInterface fakeValues : fakeValues.getOrDefault(key, Collections.emptyList())) {
+    public Map<String, Object> get(String key) {
+        Map<String, Object> result = null;
+        for (FakeValuesInterface fakeValues : fakeValues.getOrDefault(key, emptyList())) {
             if (result == null) {
                 result = fakeValues.get(key);
             } else {
-                final Map newResult = fakeValues.get(key);
-                result.putAll(newResult);
+                Map<String, Object> newResult = fakeValues.get(key);
+                if (newResult != null) {
+                    result.putAll(newResult);
+                }
             }
         }
         return result;

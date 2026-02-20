@@ -64,12 +64,12 @@ public class HungarianIdNumber implements IdNumberGenerator {
 
     static int getCheckDigit(String basePart) {
         char[] numbers = basePart.toCharArray();
-        int summ = 0;
+        int sum = 0;
         for (int i = 0; i < numbers.length; i++) {
-            summ += getNumericValue(numbers[i]) * (i + 1);
+            sum += getNumericValue(numbers[i]) * (i + 1);
         }
 
-        return summ % 11;
+        return sum % 11;
     }
 
     static int firstDigit(int birthYear, PersonIdNumber.Gender gender) {

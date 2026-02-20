@@ -1,6 +1,7 @@
 package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Iterator;
 
@@ -60,7 +61,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
-    private void addLine(StringBuilder sb, Object transform) {
+    private void addLine(StringBuilder sb, @Nullable Object transform) {
         if (transform instanceof CharSequence) {
             addCharSequence(sb, (CharSequence) transform);
         } else {

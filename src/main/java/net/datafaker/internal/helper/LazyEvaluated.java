@@ -1,8 +1,13 @@
 package net.datafaker.internal.helper;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.function.Supplier;
 
+import static java.util.Objects.requireNonNull;
+
 public class LazyEvaluated<T> {
+    @Nullable
     private volatile T value;
     private final Supplier<T> supplier;
 
@@ -18,6 +23,6 @@ public class LazyEvaluated<T> {
                 }
             }
         }
-        return value;
+        return requireNonNull(value, "Null value not allowed");
     }
 }
