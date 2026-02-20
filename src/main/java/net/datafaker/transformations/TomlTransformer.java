@@ -1,13 +1,19 @@
 package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
+import org.jspecify.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public class TomlTransformer<IN> implements Transformer<IN, String> {
     @Override
-    public String apply(IN input, Schema<IN, ?> schema) {
+    public String apply(@Nullable IN input, @Nullable Schema<IN, ?> schema) {
         if (schema == null) {
             return "";
         }
@@ -55,9 +61,9 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
         return "";
     }
 
-    private void writeSchema(StringBuilder sb, IN input, Schema<IN, ?> schema, String pathPrefix) {
+    private void writeSchema(StringBuilder sb, @Nullable IN input, Schema<IN, ?> schema, String pathPrefix) {
         Field<IN, ?>[] fields = schema.getFields();
-        Set<String> seen = new HashSet<>();
+        Set<@Nullable String> seen = new HashSet<>();
         for (Field<IN, ?> f : fields) {
             String key = f.getName();
             if (!seen.add(key)) {
@@ -68,7 +74,7 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
         }
     }
 
-    private void writeValue(StringBuilder sb, String key, String pathPrefix, Object val) {
+    private void writeValue(StringBuilder sb, @Nullable String key, String pathPrefix, @Nullable Object val) {
         String fullPath = pathPrefix.isEmpty() ? key : pathPrefix + "." + key;
 
         if (val instanceof Schema<?, ?> nested) {

@@ -322,7 +322,7 @@ class CsvTest {
                 .header(false).separator(" : ")
                 .build()
                 .generate(schema, 1))
-            .isInstanceOf(IllegalArgumentException.class)
+            .isInstanceOf(NullPointerException.class)
             .hasMessageContaining("Input could be null only if suppliers are defined");
     }
 }

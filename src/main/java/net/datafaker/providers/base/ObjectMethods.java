@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import org.jspecify.annotations.Nullable;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.IdentityHashMap;
@@ -44,11 +46,13 @@ public class ObjectMethods {
         return METHODS_BY_NAME.computeIfAbsent(object.getClass(), ObjectMethods::scanMethodsByName).get(methodName);
     }
 
+    @Nullable
     private static Method getMethodByReturnType(Object object, String returnTypeSimpleName) {
         return METHODS_BY_RETURN_TYPE.computeIfAbsent(object.getClass(), ObjectMethods::scanMethodsByReturnType).get(returnTypeSimpleName);
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     public static <T> T executeMethodByReturnType(Object object, String returnTypeSimpleName) {
         try {
             Method method = getMethodByReturnType(object, returnTypeSimpleName);

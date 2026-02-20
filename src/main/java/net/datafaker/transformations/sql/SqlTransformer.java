@@ -7,6 +7,7 @@ import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
 import net.datafaker.transformations.Transformer;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,20 +35,20 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private final char openSqlIdentifier;
     private final char closeSqlIdentifier;
     private final String tableName;
-    private final String schemaName;
+    private final @Nullable String schemaName;
 
     private final boolean withBatchMode;
     private final int batchSize;
     private final Case keywordCase;
     private final boolean forceSqlQuoteIdentifierUsage;
 
-    private final SqlDialect dialect;
+    private final @Nullable SqlDialect dialect;
 
     public static <IN> SqlTransformer.SqlTransformerBuilder<IN> builder() {
         return new SqlTransformer.SqlTransformerBuilder<>();
     }
 
-    private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier,
+    private SqlTransformer(String schemaName, String tableName, char quote, @Nullable SqlDialect dialect, String sqlIdentifier,
                            Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
         this.schemaName = schemaName;
         this.quote = quote;
@@ -194,7 +195,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return result.toString();
     }
 
-    private String handleObject(Object value) {
+    private String handleObject(@Nullable Object value) {
         if (value == null) {
             return NULL.getValue(keywordCase);
         } else {
@@ -307,7 +308,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return result.toString();
     }
 
-    private void appendNameToQuery(StringBuilder sb, String name) {
+    private void appendNameToQuery(StringBuilder sb, @Nullable String name) {
         if (name == null || name.isEmpty()) return;
         boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(name);
 
@@ -375,7 +376,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         throw new UnsupportedOperationException("Not supported for SQL transformer. Use generate or generateStream instead to create SQL statements.");
     }
 
-    private String generateBatchModeStatements(Schema<IN, ?> schema, List<IN> inputs, int limit) {
+    private String generateBatchModeStatements(Schema<IN, ?> schema, @Nullable List<IN> inputs, int limit) {
         StringBuilder sb = new StringBuilder();
         limit = inputs != null ? Math.min(limit, inputs.size()) : limit;
         for (int i = 0; i < limit; i++) {
@@ -452,9 +453,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         private int batchSize = -1; // no limit
         private Case keywordCase = Case.UPPERCASE;
         private boolean forceSqlQuoteIdentifierUsage = false;
-
-
-        private SqlDialect dialect;
+        private @Nullable SqlDialect dialect;
 
         public SqlTransformerBuilder<IN> dialect(SqlDialect dialect) {
             this.dialect = dialect;

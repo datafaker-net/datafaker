@@ -71,6 +71,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * If size is zero then an empty subset will be returned.
      * If size is larger than a unique set from options then all options will be returned.
      */
+    @SuppressWarnings("unchecked")
     public final <E> Set<E> subset(int size, E... options) {
         if (size < 0) {
             throw new IllegalArgumentException("size should be not negative: " + size);

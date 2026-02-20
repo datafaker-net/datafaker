@@ -8,6 +8,7 @@ import java.util.Map;
 import net.datafaker.internal.helper.CopyOnWriteMap;
 import net.datafaker.transformations.JavaObjectTransformer;
 import net.datafaker.transformations.Schema;
+import org.jspecify.annotations.Nullable;
 
 import static java.util.Objects.requireNonNull;
 
@@ -24,12 +25,14 @@ public class FakeResolver<T> {
         this.clazz = clazz;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> FakeResolver<T> of(Class<T> clazz) {
         var fakeFactory = CLASS_2_FAKE_RESOLVER.computeIfAbsent(clazz, k -> new FakeResolver<>(clazz));
         return (FakeResolver<T>) fakeFactory;
     }
 
-    public T generate(Schema<Object, ?> schema) {
+    @SuppressWarnings("unchecked")
+    public T generate(@Nullable Schema<Object, ?> schema) {
         if (schema == null) {
             return generateFromDefaultSchema();
         }
@@ -37,6 +40,7 @@ public class FakeResolver<T> {
         return (T) JAVA_OBJECT_TRANSFORMER.apply(clazz, schema);
     }
 
+    @SuppressWarnings("unchecked")
     private T generateFromDefaultSchema() {
         Schema<Object, ?> useSchema = DEFAULT_SCHEMA_CACHE.computeIfAbsent(clazz, (__) -> {
             FakeForSchema fakeForSchemaAnnotation = checkFakeAnnotation(clazz);
@@ -46,28 +50,27 @@ public class FakeResolver<T> {
         return (T) JAVA_OBJECT_TRANSFORMER.apply(clazz, useSchema);
     }
 
+    @SuppressWarnings("unchecked")
     private Schema<Object, T> getSchema(String pathToSchema) {
-        if (pathToSchema != null) {
-            try {
-                // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
-                final int sharpIndex = pathToSchema.indexOf("#");
-                final Class<?> classToCall;
-                final String methodName;
-                if (sharpIndex >= 0) {
-                    classToCall = Class.forName(pathToSchema.substring(0, sharpIndex));
-                    methodName = pathToSchema.substring(sharpIndex + 1);
-                } else {
-                    classToCall = this.clazz.getEnclosingClass();
-                    methodName = pathToSchema;
-                }
-                Method myStaticMethod = classToCall.getMethod(methodName);
-                myStaticMethod.setAccessible(true);
-                return (Schema<Object, T>) myStaticMethod.invoke(null);
-            } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException(e);
+        requireNonNull(pathToSchema, "The path to the schema is empty.");
+
+        try {
+            // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
+            final int sharpIndex = pathToSchema.indexOf("#");
+            final Class<?> classToCall;
+            final String methodName;
+            if (sharpIndex >= 0) {
+                classToCall = Class.forName(pathToSchema.substring(0, sharpIndex));
+                methodName = pathToSchema.substring(sharpIndex + 1);
+            } else {
+                classToCall = this.clazz.getEnclosingClass();
+                methodName = pathToSchema;
             }
-        } else {
-            throw new IllegalArgumentException("The path to the schema is empty.");
+            Method myStaticMethod = classToCall.getMethod(methodName);
+            myStaticMethod.setAccessible(true);
+            return (Schema<Object, T>) myStaticMethod.invoke(null);
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 

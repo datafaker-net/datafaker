@@ -2,6 +2,7 @@ package net.datafaker.providers.base;
 
 import net.datafaker.internal.helper.FakerIDN;
 import net.datafaker.service.RandomService;
+import org.jspecify.annotations.Nullable;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -339,7 +340,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @param prefix a prefix to put on the front of the address
      * @return a correctly formatted MAC address
      */
-    public String macAddress(String prefix) {
+    public String macAddress(@Nullable String prefix) {
         final String tmp = (prefix == null) ? "" : prefix;
         final int prefixLength = tmp.trim().isEmpty()
             ? 0
@@ -498,7 +499,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @param glueOrNull  if null, "_"
      * @return a slug string combining wordsOrNull with glueOrNull (ex. x_y)
      */
-    public String slug(List<String> wordsOrNull, String glueOrNull) {
+    public String slug(@Nullable List<String> wordsOrNull, @Nullable String glueOrNull) {
         final String glue = glueOrNull == null
             ? "_"
             : glueOrNull;
@@ -575,7 +576,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return src[faker.random().nextInt(src.length)];
     }
 
-    public String userAgent(UserAgent userAgent) {
+    public String userAgent(@Nullable UserAgent userAgent) {
         UserAgent agent = userAgent;
 
         if (agent == null) {
@@ -618,7 +619,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         }
     }
 
-    public String botUserAgent(BotUserAgent vendor) {
+    public String botUserAgent(@Nullable BotUserAgent vendor) {
         BotUserAgent agent = vendor;
 
         if (agent == null) {
@@ -648,9 +649,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         }
 
         private static BotUserAgent any(BaseProviders faker) {
-            BotUserAgent[] agents = BotUserAgent.values();
-            int randomIndex = (int) (faker.random().nextDouble() * agents.length);
-            return agents[randomIndex];
+            return faker.random().nextEnum(BotUserAgent.class);
         }
 
         @Override
