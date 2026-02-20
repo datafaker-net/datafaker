@@ -146,11 +146,11 @@ public class Credentials extends AbstractProvider<BaseProviders> {
      * Generates a user ID based on the regex pattern defined in the resource file.
      * If the regex is null or invalid, it returns null.
      *
-     * @return A randomly generated user ID based on the regex or null if the regex is null or invalid
+     * @return A randomly generated user ID
      */
-    @Nullable
     public String userId() {
-        return userId(resolve("credentials.uid_pattern"));
+        String regex = resolve("credentials.uid_pattern");
+        return faker.regexify(regex);
     }
 
     /**
