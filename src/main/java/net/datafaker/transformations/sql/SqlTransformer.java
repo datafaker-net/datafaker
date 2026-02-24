@@ -78,12 +78,12 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public CharSequence apply(IN input, Schema<IN, ?> schema) {
+    public CharSequence apply(@Nullable IN input, Schema<IN, ?> schema) {
         return apply(input, schema, 0);
     }
 
     @Override
-    public CharSequence apply(IN input, Schema<IN, ?> schema, long rowId) {
+    public CharSequence apply(@Nullable IN input, Schema<IN, ?> schema, long rowId) {
         //noinspection unchecked
         Field<?, ? extends CharSequence>[] fields = (Field<?, ? extends CharSequence>[]) schema.getFields();
         if (fields.length == 0) {
@@ -106,7 +106,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private String addValues(IN input, Field<?, ?>[] fields, Boolean isRoot) {
+    private String addValues(@Nullable IN input, Field<?, ?>[] fields, Boolean isRoot) {
         StringJoiner result = new StringJoiner(", ");
         for (int i = 0; i < fields.length; i++) {
 
@@ -433,7 +433,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private String generateSeparatedStatements(Schema<IN, ?> schema, List<IN> inputs, int limit) {
+    private String generateSeparatedStatements(Schema<IN, ?> schema, @Nullable List<IN> inputs, int limit) {
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
         limit = inputs != null ? Math.min(limit, inputs.size()) : limit;
         for (int i = 0; i < limit; i++) {
