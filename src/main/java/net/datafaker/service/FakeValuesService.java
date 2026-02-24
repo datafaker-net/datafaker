@@ -106,8 +106,9 @@ public class FakeValuesService {
      * @param path   path to a file with YAML structure
      * @throws IllegalArgumentException in case of invalid path
      */
-    public void addPath(Locale locale, @Nullable Path path) {
+    public void addPath(Locale locale, Path path) {
         requireNonNull(locale);
+        //noinspection ConstantValue
         if (path == null || Files.notExists(path) || Files.isDirectory(path) || !Files.isReadable(path)) {
             throw new IllegalArgumentException("Path should be an existing readable file: \"%s\"".formatted(path));
         }
