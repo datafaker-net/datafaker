@@ -30,7 +30,19 @@ public class SingletonLocale {
     }
 
     public static SingletonLocale getRequired(Locale locale) {
-        return LOCALE2SINGLETON_LOCALE.computeIfAbsent(locale, (__) -> new SingletonLocale(locale));
+        SingletonLocale res = LOCALE2SINGLETON_LOCALE.get(locale);
+        if (res != null) {
+            return res;
+        }
+        synchronized (SingletonLocale.class) {
+            res = LOCALE2SINGLETON_LOCALE.get(locale);
+            if (res != null) {
+                return res;
+            }
+            res = new SingletonLocale(locale);
+            LOCALE2SINGLETON_LOCALE.put(locale, res);
+            return res;
+        }
     }
 
     public Locale getLocale() {
