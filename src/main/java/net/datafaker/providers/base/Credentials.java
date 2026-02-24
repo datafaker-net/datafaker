@@ -144,7 +144,6 @@ public class Credentials extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a user ID based on the regex pattern defined in the resource file.
-     * If the regex is null or invalid, it returns null.
      *
      * @return A randomly generated user ID
      */
