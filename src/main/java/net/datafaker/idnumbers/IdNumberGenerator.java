@@ -27,7 +27,7 @@ public interface IdNumberGenerator {
     String generateInvalid(BaseProviders faker);
 
     /**
-     * Generates a valid ID number for given country corresponding to given criteria (age range, gender etc.)
+     * Generates a valid ID number for given country corresponding to given criterias (age range, gender etc.)
      *
      * @return PersonIdNumber containing a valid combination of ID, Birthday and Gender.
      * In countries where ID number doesn't contain gender and/or birthday, the latter values are just random.
