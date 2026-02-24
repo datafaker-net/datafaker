@@ -70,15 +70,18 @@ class CustomFakerTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     void addNullExistingPath() {
         assertThatThrownBy(() -> new BaseFaker().addPath(Locale.ENGLISH, null))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Path should be an existing readable file: \"null\"");
     }
 
     @Test
     void addNonExistingPath() {
         assertThatThrownBy(() -> new BaseFaker().addPath(Locale.ENGLISH, Paths.get("non-existing-file")))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Path should be an existing readable file: \"non-existing-file\"");
     }
 
     @RepeatedTest(10)
