@@ -5,6 +5,7 @@ import com.github.javaparser.ast.comments.CommentsCollection;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.google.common.base.Strings;
 import net.datafaker.providers.base.AbstractProvider;
+import org.jspecify.annotations.Nullable;
 import org.reflections.Reflections;
 
 import java.io.BufferedWriter;
@@ -191,10 +192,10 @@ public class ProvidersDocsGenerator {
         SINCE("Since", 7, Pattern.compile("@since\\s+\\d\\.\\d+\\.\\d"), comment -> comment.group().substring("@since".length()).trim());
         private final String columnName;
         private final int length;
-        private final Pattern pattern2extract;
-        private final Function<Matcher, String> extractor;
+        private final @Nullable Pattern pattern2extract;
+        private final @Nullable Function<Matcher, String> extractor;
 
-        Column(String columnName, int length, Pattern pattern2extract, Function<Matcher, String> extractor) {
+        Column(String columnName, int length, @Nullable Pattern pattern2extract, @Nullable Function<Matcher, String> extractor) {
             this.columnName = columnName;
             this.length = length;
             this.pattern2extract = pattern2extract;

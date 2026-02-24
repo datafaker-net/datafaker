@@ -1,6 +1,7 @@
 package net.datafaker.service;
 
 import net.datafaker.internal.helper.LazyEvaluated;
+import org.jspecify.annotations.Nullable;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -29,11 +30,13 @@ public class FakeValues implements FakeValuesInterface {
         return FAKE_VALUES_MAP.computeIfAbsent(fakeValuesContext, FakeValues::new);
     }
 
+    @Nullable
     @Override
     public Map<String, Object> get(String key) {
         return getMap(values.get(), key);
     }
 
+    @Nullable
     private Map<String, Object> loadFromUrl() {
         final URL url = fakeValuesContext.getUrl();
         if (url == null) {
@@ -81,7 +84,7 @@ public class FakeValues implements FakeValuesInterface {
         return emptyMap();
     }
 
-    private void enrichMapWithJavaNames(Map<String, Object> result) {
+    private void enrichMapWithJavaNames(@Nullable Map<String, Object> result) {
         if (result != null) {
             Map<String, Object> map = null;
             for (Map.Entry<String, Object> entry : result.entrySet()) {
@@ -110,7 +113,8 @@ public class FakeValues implements FakeValuesInterface {
         }
     }
 
-    private Map<String, Object> readFromStream(InputStream stream) {
+    @Nullable
+    private Map<String, Object> readFromStream(@Nullable InputStream stream) {
         if (stream == null) return null;
         final Map<String, Object> valuesMap = new Yaml().loadAs(stream, Map.class);
         Map<String, Object> localeBased = getMap(valuesMap, fakeValuesContext.getLocale().getLanguage());
@@ -120,18 +124,21 @@ public class FakeValues implements FakeValuesInterface {
         return getMap(localeBased, "faker");
     }
 
+    @Nullable
     @SuppressWarnings("unchecked")
     private static Map<String, Object> getMap(Map<String, Object> map, String key) {
         return (Map<String, Object>) map.get(key);
     }
 
+    @Nullable
     Set<String> getPaths() {
         return fakeValuesContext.getPath() != null ?
             Set.of(fakeValuesContext.getPath()) :
             keysOf(values.get());
     }
 
-    private static Set<String> keysOf(Map<String, ?> map) {
+    @Nullable
+    private static Set<String> keysOf(@Nullable Map<String, ?> map) {
         return map == null || map.isEmpty() ? null : map.keySet();
     }
 

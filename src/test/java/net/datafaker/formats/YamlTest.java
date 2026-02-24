@@ -4,6 +4,7 @@ import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.YamlTransformer;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,7 +42,7 @@ class YamlTest {
             of(Schema.of(field("number", () -> BigDecimal.valueOf(123.123))), "number: 123.123" + System.lineSeparator()),
             of(Schema.of(field("boolean", () -> true)), "boolean: true" + System.lineSeparator()),
             of(Schema.of(field("nullValue", () -> null)), "nullValue: null" + System.lineSeparator()),
-            of(Schema.of(field("array", () -> new String[]{null, "test", "123"})),
+            of(Schema.of(field("array", () -> new @Nullable String[]{null, "test", "123"})),
                 "array:" + System.lineSeparator()
                     + "  - null" + System.lineSeparator()
                     + "  - test" + System.lineSeparator()

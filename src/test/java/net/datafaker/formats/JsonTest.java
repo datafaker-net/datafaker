@@ -6,6 +6,7 @@ import net.datafaker.sequence.FakeSequence;
 import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -212,7 +213,7 @@ class JsonTest {
             of(Schema.of(field("boolean", () -> true)), "{\"boolean\": true}"),
             of(Schema.of(field("nullValue", () -> null)), "{\"nullValue\": null}"),
             of(
-                Schema.of(field("array", () -> new String[]{null, "test", "123"})),
+                Schema.of(field("array", () -> new @Nullable String[]{null, "test", "123"})),
                 "{\"array\": [null, \"test\", \"123\"]}"),
             of(
                 Schema.of(field("array", () -> new Integer[]{123, 456, 789})),

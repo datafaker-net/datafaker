@@ -108,7 +108,7 @@ public final class IdNumberGeneratorPtBrUtil {
 
     /**
      * Return true if the CPF is valid
-     * A valid CPF is unique and have a algorithm to validate it
+     * A valid CPF is unique and have an algorithm to validate it
      * <p>
      * CPF generator could generate a valid or invalid because, sometimes, we need to test a
      * registration with invalid number

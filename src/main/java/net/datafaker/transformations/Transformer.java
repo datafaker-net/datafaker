@@ -1,5 +1,7 @@
 package net.datafaker.transformations;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -8,9 +10,9 @@ import java.util.stream.Stream;
 public interface Transformer<IN, OUT> {
     String LINE_SEPARATOR = System.lineSeparator();
 
-    OUT apply(IN input, Schema<IN, ?> schema);
+    OUT apply(@Nullable IN input, Schema<IN, ?> schema);
 
-    default OUT apply(IN input, Schema<IN, ?> schema, long rowId) {
+    default OUT apply(@Nullable IN input, Schema<IN, ?> schema, long rowId) {
         // ignore rowId by default
         return apply(input, schema);
     }
