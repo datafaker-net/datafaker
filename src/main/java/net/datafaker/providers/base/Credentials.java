@@ -149,8 +149,7 @@ public class Credentials extends AbstractProvider<BaseProviders> {
      * @return A randomly generated user ID
      */
     public String userId() {
-        String regex = resolve("credentials.uid_pattern");
-        return faker.regexify(regex);
+        return faker.regexify(resolve("credentials.uid_pattern"));
     }
 
     /**
