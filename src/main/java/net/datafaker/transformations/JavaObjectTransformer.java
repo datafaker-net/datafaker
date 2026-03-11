@@ -1,6 +1,7 @@
 package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
+import org.jspecify.annotations.Nullable;
 
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
@@ -26,10 +27,10 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
     @Override
     public Object apply(Object input, Schema<Object, ?> schema) {
-        Class clazz;
+        Class<?> clazz;
         Object result = null;
         if (input instanceof Class) {
-            clazz = (Class) input;
+            clazz = (Class<?>) input;
         } else {
             clazz = input.getClass();
             result = input;
@@ -119,7 +120,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
         return collection;
     }
 
-    public JavaObjectTransformer from(Class input) {
+    public JavaObjectTransformer from(Class<?> input) {
         sourceClazz = Optional.of(input);
         return this;
     }
@@ -163,7 +164,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
     private Object getObject(Schema<Object, ?> schema, Object result, Constructor<?> recordConstructor) {
         final Field<Object, ?>[] fields = schema.getFields();
-        final Object[] values = new Object[fields.length];
+        final @Nullable Object[] values = new Object[fields.length];
         for (int i = 0; i < fields.length; i++) {
             values[i] = fields[i].transform(result);
         }

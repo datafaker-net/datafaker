@@ -6,6 +6,7 @@ import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.App;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -74,7 +75,7 @@ class FakerIntegrationTest {
         }
     }
 
-    private Faker init(Locale locale, Random random) {
+    private Faker init(@Nullable Locale locale, @Nullable Random random) {
         if (locale != null && random != null) {
             return new Faker(locale, random);
         } else if (locale != null) {
@@ -88,7 +89,7 @@ class FakerIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("dataParameters")
-    void testAllFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
+    void testAllFakerMethodsThatReturnStrings(@Nullable Locale locale, @Nullable Random random) throws Exception {
         log.fine(() -> "  (%s, %s)".formatted(locale, random));
         final Faker faker = init(locale, random);
 

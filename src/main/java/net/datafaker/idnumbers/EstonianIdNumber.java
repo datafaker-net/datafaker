@@ -13,7 +13,7 @@ import static net.datafaker.idnumbers.Utils.birthday;
 import static net.datafaker.idnumbers.Utils.randomGender;
 
 /**
- * Estonian personal identification number ("Isikukood" in estonian)
+ * Estonian personal identification number ("Isikukood" in Estonian)
  * <p>
  * The number is 11 digits, with modulus 11 checksum digit.
  * There is fixed list of valid first digits to signify gender and birth century
