@@ -69,14 +69,14 @@ class AddressTest {
 
     @Test
     void testStreetAddressStartsWithNumber() {
-        final String streetAddressNumber = faker.address().streetAddress();
-        assertThat(streetAddressNumber).matches("[0-9]+ .+");
+        final String streetAddress = faker.address().streetAddress();
+        assertThat(streetAddress).matches("[0-9]+ .+");
     }
 
     @Test
-    void testStreetAddressIsANumber() {
+    void testStreetAddressNumberIsANumberGreaterZero() {
         final String streetAddressNumber = faker.address().streetAddressNumber();
-        assertThat(streetAddressNumber).matches("[0-9]+");
+        assertThat(streetAddressNumber).matches("[1-9][0-9]*");
     }
 
     @Test
