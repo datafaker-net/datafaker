@@ -40,14 +40,18 @@ public class Address extends AbstractProvider<BaseProviders> {
      * @return a String representing a standard zip code
      */
     public String zipCode() {
-        return faker.bothify(resolve("address.postcode"));
+        return resolvePostcode();
     }
 
     public String postcode() {
-        return faker.bothify(resolve("address.postcode"));
+        return resolvePostcode();
     }
 
     public String eircode() {
+        return resolvePostcode();
+    }
+
+    private String resolvePostcode() {
         return faker.bothify(resolve("address.postcode"));
     }
 
@@ -106,14 +110,20 @@ public class Address extends AbstractProvider<BaseProviders> {
      * @return Returns the latitude, a number between -90 to 90.
      */
     public String latitude() {
-        return String.format(faker.getContext().getLocale(), "%.8f", (faker.random().nextDouble() * 180) - 90);
+        final double latitudeRange = 180d;
+        final double latitudeOffset = 90d;
+        return String.format(faker.getContext().getLocale(), "%.8f", 
+            (faker.random().nextDouble() * latitudeRange) - latitudeOffset);
     }
 
     /**
      * @return Returns the longitude, a number between -180 and 180
      */
     public String longitude() {
-        return String.format(faker.getContext().getLocale(), "%.8f", (faker.random().nextDouble() * 360) - 180);
+        final double longitudeRange = 360d;
+        final double longitudeOffset = 180d;
+        return String.format(faker.getContext().getLocale(), "%.8f", 
+            (faker.random().nextDouble() * longitudeRange) - longitudeOffset);
     }
 
     /**
