@@ -43,8 +43,14 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private final SqlDialect dialect;
 
-    public static <IN> SqlTransformer.SqlTransformerBuilder<IN> builder() {
-        return new SqlTransformer.SqlTransformerBuilder<>();
+    public static <IN> SqlTransformerBuilder<IN> builder() {
+        return new SqlTransformerBuilder<>();
+    }
+
+    static <IN> SqlTransformer<IN> create(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier,
+                       Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
+    return new SqlTransformer<>(schemaName, tableName, quote, dialect, sqlIdentifier,
+        casing, withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
     }
 
     private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier,
@@ -65,15 +71,24 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private boolean isSqlQuoteIdentifierRequiredFor(String name) {
         if (forceSqlQuoteIdentifierUsage) return true;
         for (int i = 0; i < name.length(); i++) {
-            if (casing == Casing.TO_UPPER && Character.isLowerCase(name.charAt(i))
-                || casing == Casing.TO_LOWER && Character.isUpperCase(name.charAt(i))
-                || name.charAt(i) == openSqlIdentifier
-                || name.charAt(i) == closeSqlIdentifier
-                || name.charAt(i) == DEFAULT_CATALOG_SEPARATOR) {
+            char currentChar = name.charAt(i);
+            if (requiresQuotingForCasing(currentChar)
+                ||containsSpecialCharacter(currentChar)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean requiresQuotingForCasing(char c) {
+    return casing == Casing.TO_UPPER && Character.isLowerCase(c)
+        || casing == Casing.TO_LOWER && Character.isUpperCase(c);
+    }
+
+    private boolean containsSpecialCharacter(char c) {
+    return c == openSqlIdentifier
+        || c == closeSqlIdentifier
+        || c == DEFAULT_CATALOG_SEPARATOR;
     }
 
     @Override
@@ -442,89 +457,27 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return data.toString();
     }
 
-    public static class SqlTransformerBuilder<IN> {
-        private char quote = DEFAULT_QUOTE;
-        private String sqlQuoteIdentifier = DEFAULT_SQL_IDENTIFIER;
-        private String tableName = "MyTable";
-        private String schemaName = "";
-        private Casing casing = Casing.TO_UPPER;
-        private boolean withBatchMode = false;
-        private int batchSize = -1; // no limit
-        private Case keywordCase = Case.UPPERCASE;
-        private boolean forceSqlQuoteIdentifierUsage = false;
-
-
-        private SqlDialect dialect;
-
-        public SqlTransformerBuilder<IN> dialect(SqlDialect dialect) {
-            this.dialect = dialect;
-            return this;
-        }
-
-        public SqlTransformerBuilder<IN> casing(Casing casing) {
-            this.casing = casing;
-            this.dialect = null;
-            return this;
-        }
-
-        public SqlTransformerBuilder<IN> quote(char quote) {
-            this.quote = quote;
-            return this;
-        }
-
-        public SqlTransformerBuilder<IN> sqlQuoteIdentifier(String sqlQuoteIdentifier) {
-            this.sqlQuoteIdentifier = sqlQuoteIdentifier;
-            this.dialect = null;
-            return this;
-        }
-
-        public SqlTransformerBuilder<IN> tableName(String tableName) {
-            this.tableName = tableName;
-            return this;
-        }
-
-        public SqlTransformerBuilder<IN> schemaName(String schemaName) {
-            this.schemaName = schemaName;
-            return this;
-        }
-
-        public SqlTransformerBuilder<IN> batch() {
-            this.withBatchMode = true;
-            return this;
-        }
-
-        public SqlTransformerBuilder<IN> batch(int batchSize) {
-            this.batchSize = batchSize;
-            this.withBatchMode = true;
-            return this;
-        }
-
-        public SqlTransformerBuilder<IN> keywordCase(Case caze) {
-            this.keywordCase = caze;
-            return this;
-        }
-
-        public SqlTransformerBuilder<IN> forceUseSqlQuoteIdentifier() {
-            this.forceSqlQuoteIdentifierUsage = true;
-            return this;
-        }
-
-        public SqlTransformer<IN> build() {
-            if (dialect == null) {
-                return new SqlTransformer<>(
-                    schemaName, tableName, quote, null, sqlQuoteIdentifier, casing, withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
-            } else {
-                return new SqlTransformer<>(
-                    schemaName, tableName, quote, dialect, dialect.getSqlQuoteIdentifier(), dialect.getUnquotedCasing(),
-                    withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
-            }
-        }
-    }
-
     public enum Case {
-        CAPITAL,
-        LOWERCASE,
-        UPPERCASE
+        UPPERCASE {
+            @Override
+            public String apply(String upper, String lower, String capital) {
+                return upper;
+            }
+        },
+        LOWERCASE {
+            @Override
+            public String apply(String upper, String lower, String capital) {
+                return lower;
+            }
+        },
+        CAPITAL {
+            @Override
+            public String apply(String upper, String lower, String capital) {
+                return capital;
+            }
+        };
+
+        public abstract String apply(String upper, String lower, String capital);
     }
 
     enum SQLKeyWords {
@@ -539,6 +492,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         ROW("ROW", "row", "Row"),
         SELECT_1_FROM_DUAL("SELECT 1 FROM dual", "select 1 from dual", "Select 1 From dual"),
         VALUES("VALUES", "values", "Values");
+
         private final String upperCaseValue;
         private final String lowerCaseValue;
         private final String capitalValue;
@@ -550,11 +504,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         public String getValue(Case caze) {
-            return switch (caze) {
-                case UPPERCASE -> upperCaseValue;
-                case LOWERCASE -> lowerCaseValue;
-                case CAPITAL -> capitalValue;
-            };
+            return caze.apply(upperCaseValue, lowerCaseValue, capitalValue);
         }
     }
 }
