@@ -49,8 +49,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     static <IN> SqlTransformer<IN> create(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier,
                        Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
-    return new SqlTransformer<>(schemaName, tableName, quote, dialect, sqlIdentifier,
-        casing, withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
+        return new SqlTransformer<>(schemaName, tableName, quote, dialect, sqlIdentifier,
+            casing, withBatchMode, batchSize, keywordCase, forceSqlQuoteIdentifierUsage);
     }
 
     private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier,
@@ -73,7 +73,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         for (int i = 0; i < name.length(); i++) {
             char currentChar = name.charAt(i);
             if (requiresQuotingForCasing(currentChar)
-                ||containsSpecialCharacter(currentChar)) {
+                || containsSpecialCharacter(currentChar)) {
                 return true;
             }
         }
@@ -81,14 +81,14 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private boolean requiresQuotingForCasing(char c) {
-    return casing == Casing.TO_UPPER && Character.isLowerCase(c)
-        || casing == Casing.TO_LOWER && Character.isUpperCase(c);
+        return casing == Casing.TO_UPPER && Character.isLowerCase(c)
+            || casing == Casing.TO_LOWER && Character.isUpperCase(c);
     }
 
     private boolean containsSpecialCharacter(char c) {
-    return c == openSqlIdentifier
-        || c == closeSqlIdentifier
-        || c == DEFAULT_CATALOG_SEPARATOR;
+        return c == openSqlIdentifier
+            || c == closeSqlIdentifier
+            || c == DEFAULT_CATALOG_SEPARATOR;
     }
 
     @Override
@@ -506,5 +506,12 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         public String getValue(Case caze) {
             return caze.apply(upperCaseValue, lowerCaseValue, capitalValue);
         }
+    }
+
+    /**
+     * @deprecated Use {@link SqlTransformerBuilder} instead.
+     */
+    @Deprecated
+    public static class SqlTransformerBuilder<IN> extends net.datafaker.transformations.sql.SqlTransformerBuilder<IN> {
     }
 }
