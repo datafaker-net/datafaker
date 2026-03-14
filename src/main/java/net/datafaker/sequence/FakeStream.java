@@ -19,13 +19,19 @@ public class FakeStream<T> extends FakeSequence<T> {
             return Stream.generate(this::singleton);
         }
 
-        int size = randomService.nextInt(minLength, maxLength);
+        int size = getRandomService().nextInt(getMinLength(), getMaxLength());
         return Stream.generate(this::singleton).limit(size);
     }
 
     @Override
     public boolean isInfinite() {
-        return maxLength < 0;
+        return getMaxLength() < 0;
+    }
+
+    @Override
+    public String toString() {
+        return "FakeStream{minLength=%d, maxLength=%d, nullRate=%s}"
+            .formatted(getMinLength(), getMaxLength(), getNullRate());
     }
 
     @Override
@@ -65,8 +71,4 @@ public class FakeStream<T> extends FakeSequence<T> {
         }
     }
 
-    @Override
-    public String toString() {
-        return "FakeStream{minLength=%d, maxLength=%d, nullRate=%s}".formatted(minLength, maxLength, nullRate);
-    }
 }

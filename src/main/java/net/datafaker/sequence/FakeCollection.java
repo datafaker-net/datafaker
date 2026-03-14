@@ -17,7 +17,7 @@ public class FakeCollection<T> extends FakeSequence<T> {
     @Override
     @SuppressWarnings("unchecked")
     public List<T> get() {
-        int size = randomService.nextInt(minLength, maxLength);
+        int size = getRandomService().nextInt(getMinLength(), getMaxLength());
         List<T> result = new ArrayList<>(size);
         while (result.size() < size) {
             result.add(singleton());

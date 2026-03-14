@@ -7,11 +7,11 @@ import java.util.*;
 import java.util.function.Supplier;
 
 public abstract class FakeSequence<T> implements Iterable<T> {
-    protected final RandomService randomService;
-    protected final List<Supplier<T>> suppliers;
-    protected final double nullRate;
-    protected final int minLength;
-    protected final int maxLength;
+    private final RandomService randomService;
+    private final List<Supplier<T>> suppliers;
+    private final double nullRate;
+    private final int minLength;
+    private final int maxLength;
 
     protected FakeSequence(List<Supplier<T>> suppliers, int minLength, int maxLength, RandomService randomService, double nullRate) {
         this.suppliers = suppliers;
@@ -21,6 +21,26 @@ public abstract class FakeSequence<T> implements Iterable<T> {
         this.nullRate = nullRate;
     }
 
+    protected RandomService getRandomService() {
+        return randomService;
+    }
+
+    protected List<Supplier<T>> getSuppliers() {
+        return suppliers;
+    }
+
+    protected double getNullRate() {
+        return nullRate;
+    }
+
+    protected int getMinLength() {
+        return minLength;
+    }
+
+    protected int getMaxLength() {
+        return maxLength;
+    }
+
     public abstract <Sequence> Sequence get();
 
     public boolean isInfinite() {
@@ -28,8 +48,8 @@ public abstract class FakeSequence<T> implements Iterable<T> {
     }
 
     public T singleton() {
-        if (nullRate == 0d || randomService.nextDouble() >= nullRate) {
-            return suppliers.get(randomService.nextInt(suppliers.size())).get();
+        if (getNullRate() == 0d || getRandomService().nextDouble() >= getNullRate()) {
+            return getSuppliers().get(getRandomService().nextInt(getSuppliers().size())).get();
         }
         return null;
     }
