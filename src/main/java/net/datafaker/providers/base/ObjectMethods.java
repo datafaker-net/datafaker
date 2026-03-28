@@ -7,11 +7,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static java.util.Collections.synchronizedMap;
 import static java.util.stream.Collectors.toMap;
 
 public class ObjectMethods {
-    private static final Map<Class<?>, Map<String, Method>> METHODS_BY_NAME = new IdentityHashMap<>();
-    private static final Map<Class<?>, Map<String, Method>> METHODS_BY_RETURN_TYPE = new IdentityHashMap<>();
+    private static final Map<Class<?>, Map<String, Method>> METHODS_BY_NAME = synchronizedMap(new IdentityHashMap<>());
+    private static final Map<Class<?>, Map<String, Method>> METHODS_BY_RETURN_TYPE = synchronizedMap(new IdentityHashMap<>());
     private static final Set<String> IGNORED_METHODS = Set.of("equals", "hashCode", "toString", "Builder", "stream");
 
     private static synchronized Map<String, Method> scanMethodsByName(Class<?> clazz) {
