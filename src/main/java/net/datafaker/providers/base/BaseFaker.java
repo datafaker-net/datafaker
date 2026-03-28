@@ -22,6 +22,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import static java.util.Collections.synchronizedMap;
+
 /**
  * Provides utility methods for generating fake strings, such as names, phone
  * numbers, addresses. generate random strings with given patterns
@@ -32,7 +34,7 @@ public class BaseFaker implements BaseProviders {
     private static final Predicate<Class<?>> EVERY_PROVIDER_ALLOWED = t -> true;
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
-    private final Map<Class<?>, AbstractProvider<?>> providersCache = new IdentityHashMap<>();
+    private final Map<Class<?>, AbstractProvider<?>> providersCache = synchronizedMap(new IdentityHashMap<>());
     private final Predicate<Class<?>> whiteListPredicate;
 
     public BaseFaker() {

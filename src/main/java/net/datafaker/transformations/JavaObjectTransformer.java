@@ -18,9 +18,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Collections.synchronizedMap;
+
 public class JavaObjectTransformer implements Transformer<Object, Object> {
-    private static final Map<Schema<Object, ?>, Consumer<Object>> SCHEMA2CONSUMER = new IdentityHashMap<>();
-    private static final Map<Class<?>, Constructor<?>> CLASS2CONSTRUCTOR = new IdentityHashMap<>();
+    private static final Map<Schema<Object, ?>, Consumer<Object>> SCHEMA2CONSUMER = synchronizedMap(new IdentityHashMap<>());
+    private static final Map<Class<?>, Constructor<?>> CLASS2CONSTRUCTOR = synchronizedMap(new IdentityHashMap<>());
 
     private Optional<Object> sourceClazz = Optional.empty();
 

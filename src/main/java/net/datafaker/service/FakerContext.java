@@ -20,7 +20,7 @@ public class FakerContext {
     private static final Pattern LOCALE = Pattern.compile("[-_]");
     private static final Map<SingletonLocale, List<SingletonLocale>> LOCALE_2_LOCALES_CHAIN = new IdentityHashMap<>();
     private static final Map<SingletonLocale, SingletonLocale> STRING_LOCALE_HASH_MAP = new IdentityHashMap<>();
-    public static final List<SingletonLocale> DEFAULT_SINGLETON_LOCALE_LIST = List.of(DEFAULT_LOCALE);
+    private static final List<SingletonLocale> DEFAULT_SINGLETON_LOCALE_LIST = List.of(DEFAULT_LOCALE);
     private static final Map<String, String> LANGUAGE_DEFAULT_COUNTRY = Map.ofEntries(
         Map.entry("be", "BY"),
         Map.entry("cs", "CZ"),
