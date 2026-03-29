@@ -46,6 +46,13 @@ class PhoneNumberValidityFinderTest {
         assertThat(util.isValidNumber(parsedNumber)).isTrue();
     }
 
+    @Test
+    void testLanguageOnlyPersianLocaleUsesIran() {
+        BaseFaker localFaker = new BaseFaker(new Locale("fa"));
+
+        assertThat(localFaker.phoneNumber().countryCodeIso2()).isEqualTo("IR");
+    }
+
     @ParameterizedTest
     @MethodSource("allSupportedLocales")
     void testAllPhoneNumbers(Locale supportedLocale) throws NumberParseException {

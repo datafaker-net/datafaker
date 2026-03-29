@@ -95,7 +95,7 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
             case "hy" -> "AM"; // Armenia
             case "uk" -> "UA"; // Ukraine
             case "ja" -> "JP"; // Japan
-            case "fa" -> "FR"; // France
+            case "fa" -> "IR"; // Iran
             case "ka" -> "GE"; // Georgia
             case "sq" -> "AL"; // Albania
             case "cs" -> "CZ"; // Czech Republic
