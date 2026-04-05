@@ -3701,6 +3701,10 @@
           "parameterTypes": []
         },
         {
+          "name": "fingerprint",
+          "parameterTypes": []
+        },
+        {
           "name": "funnyName",
           "parameterTypes": []
         },
@@ -6472,6 +6476,41 @@
         {
           "name": "defaults",
           "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "net.datafaker.providers.base.Fingerprint",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "net.datafaker.providers.base.BaseProviders"
+          ]
+        },
+        {
+          "name": "png",
+          "parameterTypes": []
+        },
+        {
+          "name": "png",
+          "parameterTypes": [
+            "int",
+            "int",
+            "net.datafaker.providers.base.Fingerprint$PatternType"
+          ]
+        },
+        {
+          "name": "base64",
+          "parameterTypes": []
+        },
+        {
+          "name": "base64",
+          "parameterTypes": [
+            "int",
+            "int",
+            "net.datafaker.providers.base.Fingerprint$PatternType"
+          ]
         }
       ]
     },

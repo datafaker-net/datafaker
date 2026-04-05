@@ -345,6 +345,7 @@ The list below is not complete and shows only a part of available providers. To 
 * File
 * Final Space
 * Finance
+* Fingerprint
 * Food
 * Formula 1 (:racing_car:)
 * Friends

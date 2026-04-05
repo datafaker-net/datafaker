@@ -233,6 +233,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(FinancialTerms.class, FinancialTerms::new);
     }
 
+    default Fingerprint fingerprint() {
+        return getProvider(Fingerprint.class, Fingerprint::new);
+    }
+
     default FunnyName funnyName() {
         return getProvider(FunnyName.class, FunnyName::new);
     }
