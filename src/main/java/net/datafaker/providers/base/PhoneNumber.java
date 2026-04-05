@@ -80,29 +80,48 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
     /**
      * A hack to detect country when only a language is given.
      * <p>
-     *     It's not correct because most languages are used in multiple countries.
-     *     If users need to generate random phone number, they should create locale with country,
-     *     e.g. {@code new Locale("ta_IN")}, and not just {@code new Locale("ta")}.
+     * It's not correct because most languages are used in multiple countries.
+     * If users need to generate random phone number, they should create locale with country,
+     * e.g. {@code new Locale("ta_IN")}, and not just {@code new Locale("ta")}.
      * </p>
      * <p>
-     *     We keep this mapping here just for backward compatibility.
+     * We keep this mapping here just for backward compatibility.
      * </p>
      */
     private static String detectCountryByLanguage(String language) {
         return switch (language) {
-            case "en" -> "US"; // it has been used by default for English
-            case "test" -> "US"; // What the hell is "test" language?
-            case "hy" -> "AM"; // Armenia
-            case "uk" -> "UA"; // Ukraine
-            case "ja" -> "JP"; // Japan
-            case "fa" -> "IR"; // Iran
-            case "ka" -> "GE"; // Georgia
-            case "sq" -> "AL"; // Albania
-            case "cs" -> "CZ"; // Czech Republic
+            case "af" -> "ZA"; // Afrikaans language -> South Africa
+            case "ar" -> "SA"; // Arabic language -> Saudi Arabia (SA)
+            case "am" -> "ET"; // Amharic language -> Ethiopia (ET)
             case "be" -> "BY"; // Belarus
-            case "ko" -> "KR"; // Korea
+            case "bn" -> "BD"; // Bengali language -> Bangladesh (BD)
+            case "bs" -> "BA"; // Bosnian language -> Bosnia & Herzegovina (BA)
+            case "ca" -> "ES"; // Catalan language -> Spain (ES)
+            case "cy" -> "GB"; // Welsh language -> United Kingdom (GB)
+            case "cs" -> "CZ"; // Czech Republic
+            case "el" -> "GR"; // Greece
+            case "et" -> "EE"; // Estonian language -> Estonia (EE)
+            case "en" -> "US"; // it has been used by default for English
+            case "eu" -> "ES"; // Basque (Basque Country | Spain)
+            case "fa" -> "IR"; // Persian language (Farsi) -> Iran (IR)
+            case "ga" -> "IE"; // Irish/Gaelic language -> Ireland (IE)
+            case "gl" -> "ES"; // Galician (Spain)
             case "he" -> "IL"; // Israel
+            case "hi" -> "IN"; // Hindi language -> India
+            case "hy" -> "AM"; // Armenia
+            case "ja" -> "JP"; // Japan
+            case "ka" -> "GE"; // Georgia
+            case "km" -> "KH"; // Khmer language -> Cambodia (KH)
+            case "ko" -> "KR"; // Korea
+            case "mo" -> "MD"; // Moldavian language -> Moldova
+            case "sq" -> "AL"; // Albania
+            case "sw" -> "TZ"; // Swahili language -> Tanzania (TZ)
+            case "ug" -> "CN"; // Uyghur language -> China (CN)
+            case "ur" -> "PK"; // Urdu language -> Pakistan (PK)
             case "ta" -> "IN"; // Tamil language -> India (though, Tamil is used in multiple countries)
+            case "test" -> "US"; // What the hell is "test" language?
+            case "uk" -> "UA"; // Ukraine
+            case "zh" -> "CN"; // Chinese language -> China (CN)
             default -> language.toUpperCase(ROOT);
         };
     }
