@@ -209,6 +209,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(ElectricalComponents.class, ElectricalComponents::new);
     }
 
+    default Emergency emergency() {
+        return getProvider(Emergency.class, Emergency::new);
+    }
+
     default Emoji emoji() {
         return getProvider(Emoji.class, Emoji::new);
     }
