@@ -100,6 +100,8 @@ class AviationTest extends BaseFakerTest {
             TestSpec.of(aviation::specialTypeDesignator, "aviation.aircraft_type_special_designator"),
             TestSpec.of(aviation::engineType, "aviation.engine_type"),
             TestSpec.of(aviation::flightStatus, "aviation.flight_status"),
-            TestSpec.of(aviation::airline, "aviation.airline"));
+            TestSpec.of(aviation::airline, "aviation.airline"),
+            TestSpec.of(aviation::uldType, "aviation.uld_type"),
+            TestSpec.of(aviation::uldCode, "aviation.uld_code"));
     }
 }

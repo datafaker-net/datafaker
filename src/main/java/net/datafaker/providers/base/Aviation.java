@@ -191,5 +191,29 @@ public class Aviation extends AbstractProvider<BaseProviders> {
     public String airline() {
         return resolve("aviation.airline");
     }
+
+    /**
+     * Returns an ULD type.
+     * ULD stands for Unit Load Device (pallet or container).
+     * Sources: <a href="https://en.wikipedia.org/wiki/Unit_load_device">Unit load device</a>
+     * and <a href="https://www.boeing.com/resources/boeingdotcom/company/about_bca/pdf/CargoPalletsContainers.pdf">Pallets and containers</a>
+     *
+     * @return A randomly selected ULD type.
+     */
+    public String uldType() {
+        return resolve("aviation.uld_type");
+    }
+
+    /**
+     * Returns an ULD IATA code(prefix).
+     * ULD stands for Unit Load Device (pallet or container).
+     * Sources: <a href="https://en.wikipedia.org/wiki/Unit_load_device">Unit load device</a>
+     * and <a href="https://www.boeing.com/resources/boeingdotcom/company/about_bca/pdf/CargoPalletsContainers.pdf">Pallets and containers</a>
+     *
+     * @return A randomly selected ULD type.
+     */
+    public String uldCode() {
+        return resolve("aviation.uld_code");
+    }
 }
 
