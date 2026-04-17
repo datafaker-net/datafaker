@@ -18,7 +18,7 @@ class CheeseTest extends FoodFakerTest {
             TestSpec.of(cheese::type, "cheese.type"),
             TestSpec.of(cheese::texture, "cheese.texture"),
             TestSpec.of(cheese::milk, "cheese.milk"),
-            TestSpec.of(cheese::colour, "cheese.colour"),
+            TestSpec.of(cheese::color, "cheese.color"),
             TestSpec.of(cheese::name, "cheese.name")
         );
     }
@@ -29,7 +29,7 @@ class CheeseTest extends FoodFakerTest {
         assertThat(wedge.name()).isNotEmpty();
         assertThat(wedge.type()).isNotEmpty();
         assertThat(wedge.texture()).isNotEmpty();
-        assertThat(wedge.colour()).isNotEmpty();
+        assertThat(wedge.color()).isNotEmpty();
         assertThat(wedge.milk()).isNotEmpty();
     }
 }

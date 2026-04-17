@@ -3,7 +3,7 @@ package net.datafaker.providers.food;
 import net.datafaker.providers.base.AbstractProvider;
 
 /**
- * Generates cheese-related fake data: type, texture, milk, colour, name.
+ * Generates cheese-related fake data: type, texture, milk, color, name.
  * <p>
  * Data source:
  * <a href="https://www.cheese.com">cheese.com</a>
@@ -29,8 +29,8 @@ public class Cheese extends AbstractProvider<FoodProviders> {
         return resolve("cheese.milk");
     }
 
-    public String colour() {
-        return resolve("cheese.colour");
+    public String color() {
+        return resolve("cheese.color");
     }
 
     public String name() {
@@ -39,11 +39,11 @@ public class Cheese extends AbstractProvider<FoodProviders> {
 
     /**
      * @return a complete wedge of cheese case bundling {@link #name()},
-     * {@link #type()}, {@link #texture()}, {@link #colour()}, and {@link #milk()}.
+     * {@link #type()}, {@link #texture()}, {@link #color()}, and {@link #milk()}.
      */
     public Wedge wedge() {
-        return new Wedge(name(), type(), texture(), colour(), milk());
+        return new Wedge(name(), type(), texture(), color(), milk());
     }
 
-    public record Wedge(String name, String type, String texture, String colour, String milk) { }
+    public record Wedge(String name, String type, String texture, String color, String milk) { }
 }
