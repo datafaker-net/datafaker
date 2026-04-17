@@ -299,6 +299,7 @@ The list below is not complete and shows only a part of available providers. To 
 * CPF ([Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number))
 * Camera
 * Cat
+* Cheese
 * Chuck Norris
 * Clash of Clans
 * Code
@@ -336,6 +337,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Elden Ring
 * Elder Scrolls
 * Electrical Components
+* Emergency
 * Emoji
 * England Football
 * Esports

@@ -63,6 +63,7 @@ public class EnFile {
         "clash_of_clans.yml",
         "control.yml",
         "chiquito.yml",
+        "cheese.yml",
         "chess.yml",
         "code.yml",
         "coffee.yml",
