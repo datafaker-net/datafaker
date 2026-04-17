@@ -337,7 +337,6 @@ The list below is not complete and shows only a part of available providers. To 
 * Elden Ring
 * Elder Scrolls
 * Electrical Components
-* Emergency
 * Emoji
 * England Football
 * Esports
