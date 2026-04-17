@@ -562,7 +562,7 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <argLine>${surefire.argline} -agentlib:native-image-agent=config-output-dir=${native.image.agent.output.dir}</argLine>
+                            <argLine>${surefire.argline} -agentlib:native-image-agent=config-merge-dir=${native.image.agent.output.dir}</argLine>
                         </configuration>
                     </plugin>
                 </plugins>

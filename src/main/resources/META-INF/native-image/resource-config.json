@@ -3,14 +3,6 @@
   "includes":[{
     "pattern":"\\QMETA-INF/services/net.datafaker.idnumbers.IdNumberGenerator\\E"
   }, {
-    "pattern":"\\QMETA-INF/services/org.apache.maven.surefire.spi.MasterProcessChannelProcessorFactory\\E"
-  }, {
-    "pattern":"\\QMETA-INF/services/org.junit.jupiter.api.extension.Extension\\E"
-  }, {
-    "pattern":"\\QMETA-INF/services/org.junit.platform.engine.TestEngine\\E"
-  }, {
-    "pattern":"\\QMETA-INF/services/org.junit.platform.launcher.TestExecutionListener\\E"
-  }, {
     "pattern":"\\QMETA-INF/services/org.slf4j.spi.SLF4JServiceProvider\\E"
   }, {
     "pattern":"\\Q_AL.yml\\E"
@@ -871,16 +863,6 @@
   }, {
     "pattern":"\\Qno-NO.yml\\E"
   }, {
-    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice$ForEquals.class\\E"
-  }, {
-    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice$ForHashCode.class\\E"
-  }, {
-    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice$ForStatic.class\\E"
-  }, {
-    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice.class\\E"
-  }, {
-    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/inject-MockMethodDispatcher.raw\\E"
-  }, {
     "pattern":"\\Qpl.yml\\E"
   }, {
     "pattern":"\\Qpt-BR.yml\\E"
@@ -904,8 +886,6 @@
     "pattern":"\\Qta-IN.yml\\E"
   }, {
     "pattern":"\\Qta.yml\\E"
-  }, {
-    "pattern":"\\Qtest.yml\\E"
   }, {
     "pattern":"\\Qth.yml\\E"
   }, {
@@ -934,12 +914,5 @@
     "pattern":"java.base:\\Qsun/net/idn/uidna.spp\\E"
   }, {
     "pattern":"jdk.jfr:\\Qjdk/jfr/internal/types/metadata.bin\\E"
-  }]},
-  "bundles":[{
-    "name":"sun.awt.resources.awt",
-    "classNames":["sun.awt.resources.awt"]
-  }, {
-    "name":"sun.awt.resources.awtosx",
-    "classNames":["sun.awt.resources.awtosx"]
-  }]
+  }]}
 }
