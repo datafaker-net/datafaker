@@ -59,7 +59,7 @@ public class Cheese extends AbstractProvider<FoodProviders> {
     /**
      * @return a complete wedge of cheese case bundling {@link #name()},
      * {@link #type()}, {@link #producer()}, {@link #texture()}, {@link #color()},
-     * {@link #milk(), {@link #rind(), {@link #rindEdibility(), and {@link #packaging ()}.
+     * {@link #milk()}, {@link #rind()}, {@link #rindEdibility()}, and {@link #packaging()}.
      */
     public Wedge wedge() {
         return new Wedge(name(), type(), producer(), texture(), color(), milk(), rind(), rindEdibility(), packaging());
