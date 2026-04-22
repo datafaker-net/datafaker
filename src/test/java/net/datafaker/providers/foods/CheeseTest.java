@@ -19,7 +19,11 @@ class CheeseTest extends FoodFakerTest {
             TestSpec.of(cheese::texture, "cheese.texture"),
             TestSpec.of(cheese::milk, "cheese.milk"),
             TestSpec.of(cheese::color, "cheese.color"),
-            TestSpec.of(cheese::name, "cheese.name")
+            TestSpec.of(cheese::name, "cheese.name"),
+            TestSpec.of(cheese::producer, "cheese.producer"),
+            TestSpec.of(cheese::rind, "cheese.rind"),
+            TestSpec.of(cheese::rindEdibility, "cheese.rind_edibility"),
+            TestSpec.of(cheese::packaging, "cheese.packaging")
         );
     }
 
@@ -27,9 +31,13 @@ class CheeseTest extends FoodFakerTest {
     void shouldReturnCheeseWedge() {
         Cheese.Wedge wedge = cheese.wedge();
         assertThat(wedge.name()).isNotEmpty();
+        assertThat(wedge.producer()).isNotEmpty();
         assertThat(wedge.type()).isNotEmpty();
         assertThat(wedge.texture()).isNotEmpty();
         assertThat(wedge.color()).isNotEmpty();
         assertThat(wedge.milk()).isNotEmpty();
+        assertThat(wedge.rind()).isNotEmpty();
+        assertThat(wedge.rindEdibility()).isNotEmpty();
+        assertThat(wedge.packaging()).isNotEmpty();
     }
 }
