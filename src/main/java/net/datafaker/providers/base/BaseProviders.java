@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import com.project.data.faker.datafaker.src.main.java.net.datafaker.providers.base.Tormenta;
 import net.datafaker.providers.healthcare.HealthcareFaker;
 
 /**
@@ -489,11 +490,12 @@ public interface BaseProviders extends ProviderRegistration {
     default Tire tire() {
         return getProvider(Tire.class, Tire::new);
     }
-
+    default Tormenta tormenta(){
+        return getProvider(Tormenta.class, Tormenta::new);
+    }
     default Transport transport() {
         return getProvider(Transport.class, Transport::new);
     }
-
     default Twitter twitter() {
         return getProvider(Twitter.class, Twitter::new);
     }
