@@ -1,9 +1,7 @@
 package net.datafaker.providers.base;
 import net.datafaker.providers.base.AbstractProviderListTest.TestSpec;
 
-import net.datafaker.providers.base.Tormenta;
 
-import net.datafaker.providers.base.BaseFakerTest;
 
 import java.util.List;
 import java.util.Collection;

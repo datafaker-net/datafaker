@@ -58,7 +58,6 @@ public interface EntertainmentProviders extends ProviderRegistration {
     default CowboyBebop cowboyBebop() {
         return getProvider(CowboyBebop.class, CowboyBebop::new);
     }
-
     default Departed departed() {
         return getProvider(Departed.class, Departed::new);
     }

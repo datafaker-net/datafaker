@@ -1,4 +1,7 @@
-package net.datafaker.providers.base;
+package com.project.data.faker.datafaker.src.test.java.net.datafaker.providers.base;
+
+import net.datafaker.providers.base.BaseFakerTest;
+import net.datafaker.providers.base.DungeonsAndDragons;
 
 import java.util.List;
 import java.util.Collection;

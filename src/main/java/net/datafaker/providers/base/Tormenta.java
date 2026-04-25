@@ -1,7 +1,5 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.providers.base.AbstractProvider;
-import net.datafaker.providers.base.BaseProviders;
 
 /**
  *Tormenta is a famous Brazilian RPG created in 1999 by Marcelo Cassaro,
