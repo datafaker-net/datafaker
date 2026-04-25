@@ -1,4 +1,0 @@
-en-US:
-  faker:
-    address:
-      default_country: [United States, United States of America, USA]
