@@ -1,0 +1,12 @@
+en-PH:
+  faker:
+    internet:
+      domain_suffix: [com, ph, com.ph]
+      free_email: [yahoo.com, gmail.com, aol.com]
+    name:
+      male_first_name: [Michael, Christian, Jeffrey, Jayson, Richard, Ryan, Jonathan, Joseph, Alvin, Marvin, Joel, Christopher, Julius, Angelo, Emmanuel]
+      female_first_name: [Michelle, Jennifer, Catherine, Mary Grace, Angelica, Maricel, Rowena, Joan, Jocelyn, Mary Ann, Jessica, Arlene, Melanie, Mary Jane, Janice, Rosemarie, Christine, Marjorie, Analyn, Josephine]
+      first_name:
+        - "#{male_first_name}"
+        - "#{female_first_name}"
+      last_name: [Garcia, Reyes, Cruz, Mendoza, Ramos, Bautista, Gonzales, Flores, Fernandez, Villanueva, Lopez, Perez, Castillo, Francisco, Rodriguez, Santiago, Diaz]

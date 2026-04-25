@@ -1,0 +1,4 @@
+en:
+  faker:
+    insectsfromfile:
+      bees: ['Bumblebee', 'Euglossine bee', 'Honeybee', 'Carpenter bee', 'Leaf-cutter bee', 'Mining bee']

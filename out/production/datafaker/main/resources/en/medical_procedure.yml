@@ -1,0 +1,5 @@
+en:
+  faker:
+    healthcare:
+      medical_procedure:
+        icd10: "[a-hj-np-zA-HJ-NP-Z0-9]{7}"

@@ -1,0 +1,39 @@
+en:
+  faker:
+    games:
+      marvel_snap:
+        characters:
+        - "Black Cat"
+        - "Demon"
+        - "Kazar"
+        - "Hellcow"
+        - "Sword master"
+        - "Winter Soldier"
+        - "Ironman"
+        - "Captain America"
+        zones:
+        - "Bifrost"
+        - "Dark Dimension"
+        - "Ego"
+        - "Bar With No Name"
+        - "Kamar-Taj"
+        - "Limbo"
+        - "Mindscape"
+        - "Savage Land"
+        - "Ruins"
+        events:
+        - "Vibranium Forge"
+        - "Warriors of Wakanda"
+        - "Symbiote Invasion"
+        rank:
+        - "Recruit"
+        - "Agent"
+        - "Iron"
+        - "Bronze"
+        - "Silver"
+        - "Gold"
+        - "Platinum"
+        - "Diamond"
+        - "Vibranium"
+        - "Omega"
+        - "Galactic"

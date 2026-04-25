@@ -1,0 +1,28 @@
+en:
+  faker:
+    transport:
+      type:
+      - "Car"
+      - "Bus"
+      - "Subway"
+      - "Taxi"
+      - "Walk"
+      - "Rail"
+      - "Train"
+      - "Truck"
+      - "Aircraft"
+      - "Tram"
+      - "Maritime"
+      - "Bicycle"
+      - "Light rail"
+      - "Aeroplane"
+      - "Boat"
+      - "Helicopter"
+      - "Ferry"
+      - "Bullet train"
+      - "Vehicle"
+      - "Active transport"
+      - "Cruise ship"
+      - "Sailboat"
+      - "Pipeline transport"
+      - "Air cargo"

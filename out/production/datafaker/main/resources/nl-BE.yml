@@ -1,0 +1,7 @@
+# Dutch / Belgium
+nl-BE:
+  faker:
+    address:
+      # https://onzetaal.nl/taalloket/afkortingen-van-provincienamen
+      state: [ "Antwerpen", "Henegouwen", "Luik", "Limburg", "Luxemburg", "Namen", "Oost-Vlaanderen", "Vlaams-Brabant", "Waals-Brabant", "West-Vlaanderen" ]
+      default_country: [ "België" ]

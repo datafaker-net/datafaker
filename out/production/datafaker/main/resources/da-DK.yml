@@ -1,0 +1,64 @@
+# Danish / Denmark
+da-DK:
+  faker:
+    address:
+      city_prefix: [Nord, Birke, Ny, Frederiks, Lille, Vær, Ring, Støv, Sven, Munke, Kerte, Horn, Aa, Bør, Otte, Had, Vi, Rud, Bro, Vide, Jyde, Lange]
+      city_suffix: [by, hus, borg, holm, bjerg, lund, bro, bæk, løse, slev, rød, å, sør, skov, slet, værk, strup, købing, sted, sten, kro, toft, ring, vig, bo]
+      country: [Rusland, Canada, Kina, USA, Brasilien, Australien, Indien, Argentina, Kasakhstan, Algeriet, Den Demokratiske Republik Congo, Danmark, Færøerne, Grønland, Saudi-Arabien, Mexico, Indonesien, Sudan, Libyen, Iran, Mongoliet, Peru, Chad, Niger, Angola, Mali, Sydafrika, Colombia, Etiopien, Bolivia, Mauretanien, Egypten, Tanzania, Nigeria, Venezuela, Namibia, Pakistan, Mocambique, Tyrkiet, Chile, Zambia, Marokko, Vestsahara, Burma, Afghanistan, Somalia, Den Centralafrikanske Republik, Sydsudan, Ukraine, Botswana, Madagaskar, Kenya, Frankrig, Fransk Guyana, Yemen, Thailand, Spanien, Turkmenistan, Cameroun, Papua Ny Guinea, Sverige, Usbekistan, Irak, Paraguay, Zimbabwe, Japan, Tyskland, Congo, Finland, Malaysia, Vietnam, Norge, Svalbard, Jan Mayen, Elfenbenskysten, Polen, Italien, Filippinerne, Ecuador, Burkina Faso, Nya Zealand, Gabon, Guinea, Storbritannien, Ghana, Rumænien, Laos, Uganda, Guyana, Oman, Hviderusland, Kirgisistan, Senegal, Syrien, Cambodja, Uruguay, Tunesien, Surinam, Nepal, Bangladesh, Tadsjikistan, Grækenland, Nicaragua, Eritrea, Nordkorea, Malawi, Benin, Honduras, Liberia, Bulgarien, Cuba, Guatemala, Island, Sydkorea, Ungarn, Portugal, Jordan, Serbien, Aserbajdsjan, Østrig, De Forenede Arabiske Emirater, Tjekkiet, Panama, Sierra Leone, Irland, Georgien, Sri Lanka, Litauen, Letland, Togo, Kroatien, Bosnien og Hercegovina, Costa Rica, Slovakiet, Den Dominikanske republik, Bhutan, Estland, Nederlænderne, Schweiz, Guinea-Bissau, Taiwan, Moldova, Belgien, Lesotho, Armenien, Albanien, Salomonøerne, Ækvatorialguinea, Burundi, Haiti, Rwanda, Makedonien, Djibouti, Belize, Israel, El Salvador, Slovenien, Fiji, Kuwait, Swaziland, Østtimor, Montenegro, Bahamas, Vanuatu, Qatar, Gambia, Jamaica, Kosovo, Libanon, Cypern, Brunei, Trinidad og Tobago, Kap Verde, Samoa, Luxembourg, Comorerne, Mauritius, São Tomé og Principe, Kiribati, Dominica, Tonga, Mikronesien, Singapore, Bahrain, Saint Lucia, Andorra, Palau, Seychellerne, Antigua og Barbuda, Barbados, Saint Vincent og Grenadinerne, Grenada, Malta, Maldiverne, Saint Kitts og Nevis, Marshalløerne, Liechtenstein, San Marino, Tuvalu, Nauru, Monaco, Vatikanstaten]
+      common_street_suffix: [vej, gade]
+      street_prefix: [Vester, Øster, Nørre, Over, Under]
+      street_root: [Lærke, Birke, Vinkel, Vibe, Mølle, Ring, Skole, Skov, Ny, Ege, Sol, Industri, Kirke, Park, Strand, Eng]
+      street_suffix: [vej, gade, gyde, allé]
+      state: [Region Nordjylland, Region Midtjylland, Region Syddanmark, Region Hovedstaden, Region Sjælland]
+      city:
+        - "#{city_prefix}#{city_suffix}"
+      street_name:
+        - "#{street_root}#{street_suffix}"
+        - "#{street_prefix} #{street_root}#{street_suffix}"
+        - "#{Name.first_name}#{common_street_suffix}"
+        - "#{Name.last_name}#{common_street_suffix}"
+      secondary_address: ['Hus ###', '# TH.', '#TV.', '# MF.', '# ST.']
+      street_address:
+        - "#{street_name} #{building_number}"
+      default_country: [Danmark]
+
+    company:
+      suffix: ["A/S", "ApS", "I/S", "IVS", "Holding", "SMBA", "K/S", "SPW"]
+      name:
+        - "#{Name.last_name} #{suffix}"
+        - "#{Name.last_name}-#{Name.last_name}"
+        - "#{Name.last_name}, #{Name.last_name} #{suffix}"
+
+    name:
+      female_first_name: [ "Agnes", "Amalia", "Anna", "Anneliese", "Annika", "Anthonia", "Antonella", "Antonia", "Antonina", "Antonine", "Asta", "Astrid", "Aud", "Aurora", "Birgit", "Bodil", "Carina", "Carlotta", "Carol", "Caroline", "Cecilie", "Charlot", "Charlotta", "Charlotte", "Clara", "Dagmar", "Dora", "Dorrit", "Dorte", "Ebba", "Elsa", "Else", "Elsebeth", "Emma", "Erika", "Frida", "Gerda", "Gitte", "Greta", "Grete", "Gurli", "Heidi", "Helena", "Helene", "Helga", "Helle", "Hilda", "Hilde", "Hulda", "Ida", "Inga", "Ingeborg", "Inger", "Ingrid", "Ivalu", "Janne", "Judith", "Jytte", "Kaja", "Kalla", "Karen", "Karin", "Karli", "Karlina", "Karola", "Karolin", "Karolina", "Katja", "Kerstin", "Kirsten", "Kirsti", "Kristi", "Kristin", "Kristina", "Lene", "Lina", "Line", "Lone", "Lotte", "Lotti", "Louise", "Lærke", "Maibritt", "Margit", "Maria", "Marianne", "Marie", "Minna", "Monika", "Natalie", "Nela", "Nettie", "Nikoletta", "Nina", "Paula", "Pernille", "Rikke", "Rita", "Selma", "Signe", "Siv", "Solveig", "Stine", "Susanne", "Tara", "Tona", "Tone", "Tonje", "Tove", "Ulla", "Ulrikke", "Valborg", "Valerie", "Vibeke", "Yvonne" ]
+      male_first_name: [ "Aage", "Abraham", "Adam", "Adolf", "Adrian", "Aksel", "Albert", "Alexander", "Alf", "Alfred", "Anders", "Andreas", "Anker", "Anthon", "Anthoni", "Anthonius", "Anton", "Antonius", "Antons", "Antony", "Arne", "Arthur", "Asbjørn", "Asger", "Asser", "August", "Axel", "Baldur", "Bent", "Bernhard", "Bjarke", "Bjarne", "Bjorn", "Bo", "Børge", "Calle", "Carl", "Christian", "Dag", "Daniel", "David", "Ebbe", "Edvard", "Edvin", "Egon", "Eiler", "Ejnar", "Eldar", "Eli", "Elias", "Eric", "Erik", "Erling", "Esben", "Evald", "Felix", "Flemming", "Folke", "Frants", "Fredrik", "Frode", "Georg", "Gert", "Gregers", "Gustav", "Hakon", "Hans", "Harald", "Harold", "Heine", "Helge", "Helmuth", "Herluf", "Herman", "Hilbert", "Holger", "Ib", "Irnes", "Jacob", "Jakob", "Jannik", "Janus", "Jarl", "Jens", "Jeppe", "Jesper", "Joakim", "Johan", "Johannes", "Jonas", "Jonathan", "Josef", "Jørgen", "Jørn", "Kai", "Kaj", "Karel", "Karl", "Karli", "Karol", "Kasper", "Kjeld", "Klaus", "Klavs", "Knut", "Kristian", "Kurt", "Lars", "Lasse", "Laurits", "Lauritz", "Leif", "Lennart", "Linus", "Lothar", "Ludvig", "Lukas", "Mads", "Malte", "Marcus", "Martin", "Matias", "Matthias", "Mattias", "Mikkel", "Mogens", "Morten", "Nicolaj", "Niels", "Nikolaj", "Norbert", "Odin", "Olaf", "Ole", "Oliver", "Orla", "Oscar", "Ossian", "Osvald", "Otto", "Ove", "Peer", "Per", "Philip", "Poul", "Povl", "Preben", "Ragnar", "Ralph", "Rasmus", "Robert", "Rolf", "Rudolph", "Rune", "Samuel", "Sebastian", "Sigurd", "Sigvald", "Simon", "Stefan", "Sten", "Stig", "Sven", "Svend", "Sylvester", "Søren", "Tage", "Thaddeus", "Theodor", "Theodore", "Thomas", "Thony", "Thor", "Thorkild", "Thorvald", "Tobias", "Toke", "Tonnes", "Torben", "Torbjörn", "Torkild", "Uffe", "Ulrik", "Vagn", "Vermund", "Viggo", "Vilhelm", "Vincent", "Walter", "Werner" ]
+      first_name:
+        - "#{female_first_name}"
+        - "#{male_first_name}"
+      last_name: [ "Aabech", "Aaboe", "Aabye", "Aaen", "Aaes", "Aagesen", "Aakjaer", "Aamund", "Aarestrup", "Abildgaard", "Abrahamsen", "Agger", "Aistrup", "Albertsen", "Albæk", "Amberg", "Ancher", "Andersen", "Anderson", "Andrae", "Andreasen", "Andresen", "Ankersen", "Antonsen", "Arneson", "Asmussen", "Baekgaard", "Bang", "Barfod", "Barfoed", "Bech", "Beck", "Bendixen", "Bendtsen", "Bergh", "Berntsen", "Bertelsen", "Berthelsen", "Bille", "Binger", "Bisgaard", "Bjelland", "Bjerg", "Bjerre", "Bjur", "Blaudzun", "Blegvad", "Blom", "Boserup", "Boye", "Brasch", "Brink", "Bruun", "Brøgger", "Buckhøj", "Bukh", "Burrau", "Børresen", "Carlsen", "Carstensen", "Christensen", "Christiansen", "Christoffersen", "Christophersen", "Clausen", "Cortsen", "Dahl", "Dahlerup", "Dalby", "Dalgaard", "Dam", "Damgaard", "Danielsen", "Daugaard", "Davidsen", "Dinesen", "Drachmann", "Due", "Ebbesen", "Egede", "Ejstrup", "Elgaard", "Eliassen", "Ellegaard", "Ellemann", "Erichsen", "Eriksen", "Eskildsen", "Espersen", "Fallesen", "Forchhammer", "Foss", "Frandsen", "Frederiksen", "Friis", "Fønss", "Gabrielsen", "Gadegaard", "Gammelgaard", "Gejl", "Gemzøe", "Gjessing", "Gleie", "Gotfredsen", "Gregersen", "Grøn", "Guldbrandsen", "Gundersen", "Gustavsen", "Gylling", "Hagen", "Hambro", "Hansen", "Hartvig", "Haslund", "Hassing", "Hastrup", "Haugaard", "Hein", "Hejlsberg", "Hemmingsen", "Henningsen", "Henriksen", "Hermansen", "Hertel", "Hjortshøj", "Holm", "Holst", "Holstein", "Holt", "Hom", "Hosbond", "Hougaard", "Huitfeldt", "Hvidt", "Hviid", "Hyldgaard", "Hyllested", "Hækkerup", "Hænning", "Højgaard", "Ibsen", "Ilsø", "Ipsen", "Iversen", "Jacobsen", "Jakobsen", "Jensdatter", "Jensen", "Jeppesen", "Jepsen", "Jespersen", "Jessen", "Johansen", "Jorgensen", "Jurgensen", "Kaas", "Karlsen", "Kierkegaard", "Kiærskou", "Kjeldsen", "Kjer", "Kjerulf", "Kjær", "Kjærgaard", "Klausen", "Klitgaard", "Knudsen", "Koppel", "Krab", "Kristiansen", "Kristoffersen", "Kvint", "Lang", "Langgaard", "Larsen", "Lassen", "Lauge", "Lauridsen", "Lauring", "Lauritsen", "Laursen", "Leth", "Lidegaard", "Lind", "Lindegaard", "Lorck", "Ludvigsen", "Lumbye", "Lund", "Lunde", "Lynggaard", "Løvenkrands", "Lütken", "Madsen", "Malling", "Manniche", "Marcussen", "Mark", "Martinsen", "Mathiasen", "Mathiesen", "Matthiessen", "Meldgaard", "Methling", "Michaelsen", "Michelsen", "Mikkelsen", "Mogensen", "Mortensen", "Munch", "Møller", "Nansen", "Neergaard", "Nellemose", "Nielsen", "Nissen", "Norin", "Nygaard", "Nørgaard", "Olesen", "Olsen", "Ottesen", "Overgaard-Nielsen", "Pallesen", "Paulsen", "Pedersen", "Persen", "Petersen", "Poulsen", "Povlsen", "Quist", "Qvist", "Qvistgaard", "Rasch", "Rask", "Rasmussen", "Rathsack", "Refshauge", "Rigby", "Riis", "Rohtez", "Rommedahl", "Rosenberg", "Rønnow", "Saabye", "Salling", "Salomonsen", "Samuelsen", "Schjoldager", "Schousboe", "Schriver", "Schrøder", "Sehested", "Simonsen", "Skau", "Skov", "Skovbjerg", "Smed", "Sommer", "Sorensen", "Sparre", "Spellerberg", "Steen", "Steensen", "Steenstrup", "Steffensen", "Stensen", "Stromberg", "Strøm", "Stuckenberg", "Suhr", "Sunesen", "Svejstrup", "Svendsen", "Søby", "Sølvhøj", "Søndergaard", "Sørensen", "Theil", "Therkildsen", "Thiessen", "Tholstrup", "Thomassen", "Thomsen", "Thorup", "Thrane", "Thybo", "Thøgersen", "Tillmann", "Toft", "Tofte", "Toksvig", "Torkelsen", "Torp", "Tougaard", "Trolle", "Uhre", "Utzon", "Vermund", "Verner", "Vestergaard", "Villadsen", "Waering", "Wamberg", "Warkentin", "Werfel", "Wessel", "Westergaard", "Wieth", "Willumsen", "Worsøe", "Zahle", "Ørnskov", "Ørskov", "Østergaard" ]
+      prefix: ["Dr.", "Prof.", "Cand.mag.", "Cand.jur."]
+      title:
+        descriptor: [Leder, Senior, Fremtid, Produkt, National, Regional, Distrikt, Central, Global, Kunde, Investor, Dynamic, International, Legacy, Forward, Intern, HR, Direktør, Rektor]
+        level: [Solutions, Program, Brand, Sikkerhed, Research, Marketing, Directives, Implementering, Integration, Funktionalitet, Respons, Paradigme, Taktik, Identitet, Markeder, Gruppe, Division, Applikationer, Optimering, Operationer, Infrastruktur, Intranet, Kommunikation, Web, Branding, Kvalitet, Kontrol, Mobilitet, Regnskab, Data, Kreativ, Konfiguration, Interaktioner, Faktorer, Anvendelighed, Metrik]
+        job: [Supervisor, Officer, Manager, Ingeniør, Specialist, Direktør, Koordinator, Administrator, Arkitekt, Analytiker, Designer, Planner, Tekniker, Udvikler, Producer, Konsultant, Assistant, Agent, Tillidsrepræsentant, Strateg]
+      name:
+        - "#{first_name} #{last_name}"
+        - "#{prefix} #{first_name} #{last_name}"
+      name_with_middle:
+        - "#{prefix} #{first_name} #{last_name} #{last_name}"
+        - "#{first_name} #{last_name} #{last_name}"
+        - "#{first_name} #{last_name} #{last_name}"
+        - "#{first_name} #{last_name} #{last_name}"
+        - "#{first_name} #{last_name} #{last_name}"
+
+    color:
+      name: [ hvid, sølv, grå, sort, rød, grøn, blå, gul, lilla, guld, brun, rosa ]
+
+    commerce:
+      department: ["Bøger", "Film", "Musik", "Spil", "Elektronik", "Computere", "Hus", "Have", "Værktøj", "Fødevarer", "Helse", "Skønhed", "Legetøj", "Tøj", "Sko", "Smykker", "Sport"]
+      product_name:
+        adjective: [Lille, Ergonomisk, Robust, Intelligent, Sød, Utrolig, Fantastisk, Praktisk, Slank, Fed, Enorm, Enkel, Tung, Let, Multianvendelig, Udholdende]
+        material: [Stål, Metal, Træ, Beton, Plastic, Bomuld, Granit, Gummi, Latex, Læder, Silke, Uld, Ruskind, Linned, Marmor, Jern, Bronze, Kobber, Messing, Aluminium, Papir]
+        product: [Stol, Bil, Computer, Buks, Trøje, Bord, Hat, Tallerken, Kniv, Flaske, Jakke, Lampe, Tastatur, Taske, Bænk, Ur, Pung]
+      name:
+        - "#{Address.city} #{suffix}"

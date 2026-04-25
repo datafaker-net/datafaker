@@ -1,0 +1,19 @@
+# coding: utf-8
+# Portugal
+_PT:
+  faker:
+    address:
+      country_code: ['PT']
+      building_number: ["#####", "####", "###"]
+      postcode: ["####"]
+
+    internet:
+      free_email: [gmail.com, yahoo.com, hotmail.com, live.com, bol.com.br]
+      domain_suffix: [pt, com, biz, info, net, org]
+
+    id_number:
+      valid: "#{IDNumber.valid_pt_nif}"
+      invalid: "#{IDNumber.invalid_pt_nif}"
+
+    phone_number:
+      country_code: ['351']

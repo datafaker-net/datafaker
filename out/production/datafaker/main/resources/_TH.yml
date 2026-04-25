@@ -1,0 +1,12 @@
+# encoding: utf-8
+# Thailand
+_TH:
+  faker:
+    address:
+      default_country_code: ["TH"]
+
+    internet:
+      domain_suffix: [co.th, net, io, com, org]
+
+    phone_number:
+      country_code: ['66']

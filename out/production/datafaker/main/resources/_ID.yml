@@ -1,0 +1,10 @@
+# Indonesia
+_ID:
+  faker:
+    address:
+      country_code: ['ID']
+      postcode: ['#####']
+      building_number: ['##']
+
+    phone_number:
+      country_code: ['62']

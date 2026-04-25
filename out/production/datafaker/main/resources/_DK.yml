@@ -1,0 +1,17 @@
+# encoding: utf-8
+# Denmark
+_DK:
+  faker:
+    address:
+      country_code: [ 'DK' ]
+      postcode: ['####']
+      building_number: ['###', '##', '#']
+
+    internet:
+      domain_suffix: [dk, nu, com]
+
+    passport:
+      valid: "[0-9]{9}"
+
+    phone_number:
+      country_code: ['45']

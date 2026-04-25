@@ -1,0 +1,14 @@
+# coding: utf-8
+# Uzbekistan
+_UZ:
+  faker:
+    address:
+      country_code: [ 'UZ' ]
+      building_number: ['#####', '####', '###', '##', '#']
+      postcode: ['######']
+
+    passport:
+      valid: "AA[0-9]{7}"
+
+    phone_number:
+      country_code: ['998']

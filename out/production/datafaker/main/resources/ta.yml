@@ -1,0 +1,17 @@
+# encoding: utf-8
+# Tamil language (Spoken predominantly by Tamils in India, Sri Lanka, Malaysia, and Singapore)
+
+ta:
+  faker:
+    name:
+      tamil_male_name: [ஆதவன், அஜய், அகில், அத்வைத், அர்னிஷ், சரண், தீரஜ், ஹேமந்த், இனியன், கருண், ரிதுல், உலகன், சர்வேஷ், ரித்விக், வாயுன், தமன், சஸ்வின், லிகித், ஜகன், குகன்]
+      tamil_female_name: [ஆதர்ஷினி, ஆதியா, ஆஹ்னா, ஆமால், அர்பனா, பவிகா, தீப்தி, தருணா, தீஷா, திஷா, தன்வி, இனியா, ஜெயந்திகா, கயல்விழி, ரித்யா, வெண்பா, யாழினி, ஓவியா, வெண்ணிலா, ஊர்மிகா]
+      male_first_name:
+        - "#{tamil_male_name}"
+      female_first_name:
+        - "#{tamil_female_name}"
+      name:
+        - "#{male_first_name}"
+        - "#{female_first_name}"
+      name_with_middle:
+        - "#{first_name} #{first_name} #{first_name}"

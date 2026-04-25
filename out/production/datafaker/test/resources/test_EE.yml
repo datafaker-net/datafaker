@@ -1,0 +1,7 @@
+test_EE:
+  faker:
+    unique:
+      first-same-locale-value:
+      - "theSameValue"
+      second-same-locale-value:
+      - "theSameValue"

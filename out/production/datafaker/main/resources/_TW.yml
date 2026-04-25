@@ -1,0 +1,10 @@
+# coding: utf-8
+# Taiwan
+_TW:
+  faker:
+    address:
+      building_number: ['###', '##', '#']
+      postcode: ['#####']
+
+    phone_number:
+      country_code: ['886']
