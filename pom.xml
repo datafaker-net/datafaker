@@ -34,7 +34,7 @@
         <rgxgen.version>3.1</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-        <jbanking.version>4.3.0</jbanking.version>
+        <iban-commons.version>1.8.5</iban-commons.version>
         <junit.version>6.0.3</junit.version>
         <libphonenumber.version>9.0.29</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
@@ -87,6 +87,11 @@
             <groupId>com.googlecode.libphonenumber</groupId>
             <artifactId>libphonenumber</artifactId>
             <version>${libphonenumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.speedbanking</groupId>
+            <artifactId>iban-commons</artifactId>
+            <version>${iban-commons.version}</version>
         </dependency>
 
         <!-- Test dependencies -->
@@ -142,12 +147,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito-core.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>fr.marcwrobel</groupId>
-            <artifactId>jbanking</artifactId>
-            <version>${jbanking.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

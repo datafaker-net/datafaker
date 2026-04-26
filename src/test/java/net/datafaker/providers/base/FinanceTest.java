@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import de.speedbanking.iban.IbanValidator;
 import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ class FinanceTest extends BaseFakerTest {
         Set<String> ibanCountryCodes = Finance.ibanSupportedCountries();
         for (String givenCountryCode : ibanCountryCodes) {
             final String iban = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
-            assertThat(iban).isNotBlank();
+            assertThat(de.speedbanking.iban.Iban.isValid(iban)).isTrue();
         }
     }
 
@@ -86,7 +87,7 @@ class FinanceTest extends BaseFakerTest {
         final String givenCountryCode = "CR";
         final BaseFaker faker = new BaseFaker();
         final String ibanFaker = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
-        assertThat(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker)).isTrue();
+        assertThat(de.speedbanking.iban.Iban.isValid(ibanFaker)).isTrue();
     }
 
     @RepeatedTest(100)
