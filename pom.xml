@@ -33,8 +33,8 @@
         <commons-validator.version>1.10.1</commons-validator.version>
         <rgxgen.version>3.1</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
+        <iban-commons.version>1.8.6</iban-commons.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-        <jbanking.version>4.3.0</jbanking.version>
         <junit.version>6.0.3</junit.version>
         <libphonenumber.version>9.0.29</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
@@ -145,10 +145,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>fr.marcwrobel</groupId>
-            <artifactId>jbanking</artifactId>
-            <version>${jbanking.version}</version>
-            <scope>test</scope>
+            <groupId>de.speedbanking</groupId>
+            <artifactId>iban-commons-junit</artifactId>
+            <version>${iban-commons.version}</version>
+           <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-validator</groupId>

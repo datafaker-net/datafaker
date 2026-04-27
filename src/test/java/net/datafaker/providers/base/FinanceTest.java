@@ -1,14 +1,19 @@
 package net.datafaker.providers.base;
 
+import static de.speedbanking.bic.junit.jupiter.api.BicAssertions.assertThatBicIsValid;
+import static de.speedbanking.iban.junit.jupiter.api.IbanAssertions.assertThatIbanIsValid;
+import static de.speedbanking.iban.junit.jupiter.api.IbanAssertions.assertThatIbanOf;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import de.speedbanking.iban.Iban;
+import de.speedbanking.iban.IbanRegistry;
+import net.datafaker.providers.base.Finance.CreditCardType;
 import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import static net.datafaker.providers.base.Finance.*;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 class FinanceTest extends BaseFakerTest {
@@ -44,32 +49,44 @@ class FinanceTest extends BaseFakerTest {
         return List.of(TestSpec.of(finance::stockMarket, "finance.stock_market"));
     }
 
-    @Test
+    @RepeatedTest(100)
     void bic() {
-        assertThat(finance.bic()).matches("([A-Z]){4}([A-Z]){2}([0-9A-Z]){2}([0-9A-Z]{3})?");
+        assertThatBicIsValid(finance.bic());
     }
 
     @RepeatedTest(100)
     void iban() {
-        assertThat(finance.iban()).matches("[A-Z]{2}[A-Z0-9]{13,31}");
+        String iban = finance.iban();
+        assertThatIbanIsValid(iban);
+        assertThat(Finance.ibanSupportedCountries()).contains(Iban.of(iban).getCountryCode());
     }
 
     @Test
     void ibanWithCountryCode() {
-        assertThat(finance.iban("DE")).matches("DE\\d{20}");
+        assertThatIbanOf(finance.iban("DE"))
+            .hasCountryCode("DE")
+            .hasCountryName("Germany")
+            .hasLength(IbanRegistry.DE.getIbanLength())
+            .matches("DE\\d{20}");
     }
 
     @Test
     void ibanCountryCodes() {
-        assertThat(Finance.ibanSupportedCountries()).isNotEmpty().hasSizeGreaterThan(70);
-    }
+        assertThat(Finance.ibanSupportedCountries()).isNotEmpty().hasSizeGreaterThan(100);
+        Finance.ibanSupportedCountries().forEach(c ->
+            assertThat(IbanRegistry.getByCode(c))
+                .as("IbanRegistry should contain entry for country code '%s'", c)
+                .isNotNull());
+        }
 
     @Test
     void ibanWithAllCountryCodes() {
         Set<String> ibanCountryCodes = Finance.ibanSupportedCountries();
         for (String givenCountryCode : ibanCountryCodes) {
             final String iban = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
-            assertThat(iban).isNotBlank();
+            assertThatIbanOf(iban)
+                .hasCountryCode(givenCountryCode)
+                .hasLength(IbanRegistry.getByCode(givenCountryCode).getIbanLength());
         }
     }
 
@@ -86,7 +103,10 @@ class FinanceTest extends BaseFakerTest {
         final String givenCountryCode = "CR";
         final BaseFaker faker = new BaseFaker();
         final String ibanFaker = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
-        assertThat(fr.marcwrobel.jbanking.iban.Iban.isValid(ibanFaker)).isTrue();
+        assertThatIbanOf(ibanFaker)
+            .hasCountryCode(givenCountryCode)
+            .hasCountryName("Costa Rica")
+            .hasLength(IbanRegistry.CR.getIbanLength());
     }
 
     @RepeatedTest(100)
@@ -106,9 +126,9 @@ class FinanceTest extends BaseFakerTest {
         List<String> startingDigits = List.of("62", "64", "65", "81");
         String creditCard = finance.creditCard(CreditCardType.UNIONPAY).replace("-", "");
         assertThat(creditCard).hasSize(16);
-        assertThat(startingDigits.contains(creditCard.substring(0,2)))
-            .as(() -> "Expected UnionPay credit card number to begin with the correct digits " + startingDigits + ", but received: " + creditCard)
-            .isTrue();
+        assertThat(startingDigits)
+            .as("UnionPay card '%s' should start with one of %s", creditCard, startingDigits)
+            .anyMatch(prefix -> creditCard.startsWith(prefix));
     }
 
     @RepeatedTest(100)
