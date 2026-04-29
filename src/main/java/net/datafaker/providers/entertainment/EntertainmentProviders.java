@@ -62,7 +62,6 @@ public interface EntertainmentProviders extends ProviderRegistration {
     default Departed departed() {
         return getProvider(Departed.class, Departed::new);
     }
-
     default DetectiveConan detectiveConan() {
         return getProvider(DetectiveConan.class, DetectiveConan::new);
     }
@@ -106,7 +105,6 @@ public interface EntertainmentProviders extends ProviderRegistration {
     default FullmetalAlchemist fullMetalAlchemist() {
         return getProvider(FullmetalAlchemist.class, FullmetalAlchemist::new);
     }
-
     default Futurama futurama() {
         return getProvider(Futurama.class, Futurama::new);
     }

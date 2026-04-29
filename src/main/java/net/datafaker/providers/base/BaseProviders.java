@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+
 import net.datafaker.providers.healthcare.HealthcareFaker;
 
 /**
@@ -488,6 +489,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Tire tire() {
         return getProvider(Tire.class, Tire::new);
+    }
+
+    default Tormenta tormenta(){
+        return getProvider(Tormenta.class, Tormenta::new);
     }
 
     default Transport transport() {

@@ -452,6 +452,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Touhou
 * Tron
 * Twin Peaks
+* Tormenta
 * Twitter
 * University
 * Vehicle
