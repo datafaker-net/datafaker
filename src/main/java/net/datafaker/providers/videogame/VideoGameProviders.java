@@ -107,6 +107,10 @@ public interface VideoGameProviders extends ProviderRegistration {
         return getProvider(SuperSmashBros.class, SuperSmashBros::new);
     }
 
+    default Tormenta tormenta() {
+        return getProvider(Tormenta.class, Tormenta::new);
+    }
+
     default Touhou touhou() {
         return getProvider(Touhou.class, Touhou::new);
     }
