@@ -287,6 +287,7 @@ public class EnFile {
         new EnFile("super_mario.yml", "games"),
         new EnFile("super_smash_bros.yml", "games"),
         new EnFile("street_fighter.yml", "games"),
+        new EnFile("tormenta.yml", "games"),
         new EnFile("witcher.yml", "games"),
         new EnFile("warhammer_fantasy.yml", "games"),
         new EnFile("world_of_warcraft.yml", "games"),
