@@ -136,39 +136,41 @@ public class FakeValues implements FakeValuesInterface {
     private static void rewriteList(List<Object> list, String providerKey) {
         final String capitalizedProvider = WordUtils.capitalize(providerKey);
         for (int i = 0; i < list.size(); i++) {
-            Object item = list.get(i);
-            if (!(item instanceof String itemStr)) {
+            Object itemValue = list.get(i);
+            if (!(itemValue instanceof String item)) {
                 break;
             }
-            final int itemStrLength = itemStr.length();
-            if (itemStrLength < 2) {
+            final int itemLength = item.length();
+            if (itemLength < 2) {
                 break;
             }
             int j = 0;
             StringBuilder sb = null;
             int start = 0;
-            while (j < itemStrLength) {
+            while (j < itemLength) {
                 char c;
-                while (j < itemStrLength - 2 && (itemStr.charAt(j) != '#' || itemStr.charAt(j + 1) != '{')) j++;
+                while (j < itemLength - 2 && !(item.charAt(j) == '#' && item.charAt(j + 1) == '{')) {
+                    j++;
+                }
                 int startWord = j + 2;
                 boolean letterOrDigitOnly = true;
                 j = startWord;
-                while (j < itemStrLength && (c = itemStr.charAt(j)) != '}') {
+                while (j < itemLength && (c = item.charAt(j)) != '}') {
                     letterOrDigitOnly &= Character.isLetter(c) || Character.isDigit(c) || c == '_';
                     j++;
                 }
-                if (start < itemStrLength && startWord < itemStrLength && letterOrDigitOnly) {
+                if (start < itemLength && startWord < itemLength && letterOrDigitOnly) {
                     if (sb == null) {
                         sb = new StringBuilder();
                     }
-                    sb.append(itemStr, start, startWord);
-                    sb.append(capitalizedProvider).append(".").append(toJavaNames(itemStr.substring(startWord, j), true)).append("}");
+                    sb.append(item, start, startWord);
+                    sb.append(capitalizedProvider).append(".").append(toJavaNames(item.substring(startWord, j), true)).append("}");
                     start = j + 1;
                 }
             }
             if (sb != null) {
-                if (start < itemStrLength) {
-                    sb.append(itemStr, start, itemStrLength);
+                if (start < itemLength) {
+                    sb.append(item, start, itemLength);
                 }
                 list.set(i, sb.toString());
             }
