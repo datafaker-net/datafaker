@@ -936,8 +936,8 @@ public class FakeValuesService {
         });
 
         Collection<Method> methods = classMethodsMap.getOrDefault(name, emptyList());
-        if (methods == null) {
-            LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), null));
+        if (methods.isEmpty()) {
+            LOG.fine(() -> "Didn't find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
             return null;
         }
         LOG.fine(() -> "Found accessor named %s on %s in cache: %s".formatted(accessorName, clazz.getSimpleName(), methods));
@@ -956,7 +956,7 @@ public class FakeValuesService {
         if (mostRestrictive != null) {
             return new MethodAndCoercedArgs(mostRestrictive, coercedArgumentsForMostRestrictive);
         }
-        LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
+        LOG.fine(() -> "Didn't find accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
         return null;
     }
 
