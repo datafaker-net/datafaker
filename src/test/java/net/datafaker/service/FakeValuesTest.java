@@ -11,7 +11,6 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -103,85 +102,58 @@ class FakeValuesTest {
     @Nested
     @SuppressWarnings("unchecked")
     class PrefixUnqualifiedExpressions {
-        @Test
-        void rewritesSimpleUnqualifiedExpressionInList() {
-            List<String> list = mutableList("#{first_name}");
 
-            FakeValues.prefixUnqualifiedExpressions(list, "name");
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("listCases")
+        void rewritesListItems(String description, List<String> input, String providerName, List<String> expected) {
+            List<String> list = new ArrayList<>(input);
 
-            assertThat(list).containsExactly("#{Name.firstName}");
+            FakeValues.prefixUnqualifiedExpressions(list, providerName);
+
+            assertThat(list).containsExactlyElementsOf(expected);
         }
 
-        @Test
-        void rewritesMultipleExpressionsInsideOneString() {
-            List<String> list = mutableList("#{first_name} #{last_name}");
-
-            FakeValues.prefixUnqualifiedExpressions(list, "name");
-
-            assertThat(list).containsExactly("#{Name.firstName} #{Name.lastName}");
-        }
-
-        @Test
-        void convertsSnakeCaseKeyToCamelCaseMethodName() {
-            List<String> list = mutableList("#{some_long_yaml_key}");
-
-            FakeValues.prefixUnqualifiedExpressions(list, "p");
-
-            assertThat(list).containsExactly("#{P.someLongYamlKey}");
-        }
-
-        @Test
-        void capitalizesProviderName() {
-            List<String> list = mutableList("#{x}");
-
-            FakeValues.prefixUnqualifiedExpressions(list, "myProvider");
-
-            assertThat(list).containsExactly("#{MyProvider.x}");
-        }
-
-        @Test
-        void leavesAlreadyQualifiedExpressionsUntouched() {
-            // The dot inside the {...} disqualifies the expression from rewriting.
-            List<String> list = mutableList("#{Name.firstName}");
-
-            FakeValues.prefixUnqualifiedExpressions(list, "address");
-
-            assertThat(list).containsExactly("#{Name.firstName}");
-        }
-
-        @Test
-        void leavesExpressionsWithArgumentsUntouched() {
-            // The space and quotes inside the {...} disqualify the expression from rewriting.
-            List<String> list = mutableList("#{numerify '#-####'}");
-
-            FakeValues.prefixUnqualifiedExpressions(list, "code");
-
-            assertThat(list).containsExactly("#{numerify '#-####'}");
-        }
-
-        @Test
-        void leavesPlainStringsUntouched() {
-            List<String> list = mutableList("Aaron", "Bob", "Charlie");
-
-            FakeValues.prefixUnqualifiedExpressions(list, "name");
-
-            assertThat(list).containsExactly("Aaron", "Bob", "Charlie");
-        }
-
-        @Test
-        void rewritesUnqualifiedAndPreservesQualifiedInTheSameString() {
-            // Mixed expression: "#{city_prefix}" gets prefixed, "#{Name.firstName}" stays as is.
-            List<String> list = mutableList("#{city_prefix} #{Name.firstName}#{city_suffix}");
-
-            FakeValues.prefixUnqualifiedExpressions(list, "address");
-
-            assertThat(list).containsExactly("#{Address.cityPrefix} #{Name.firstName}#{Address.citySuffix}");
+        static Stream<Arguments> listCases() {
+            return Stream.of(
+                of("rewrites simple unqualified expression in list",
+                    List.of("#{first_name}"), "name",
+                    List.of("#{Name.firstName}")),
+                of("rewrites multiple expressions inside one string",
+                    List.of("#{first_name} #{last_name}"), "name",
+                    List.of("#{Name.firstName} #{Name.lastName}")),
+                of("converts snake_case key to camelCase method name",
+                    List.of("#{some_long_yaml_key}"), "p",
+                    List.of("#{P.someLongYamlKey}")),
+                of("capitalizes provider name",
+                    List.of("#{x}"), "myProvider",
+                    List.of("#{MyProvider.x}")),
+                // The dot inside the {...} disqualifies the expression from rewriting.
+                of("leaves already-qualified expressions untouched",
+                    List.of("#{Name.firstName}"), "address",
+                    List.of("#{Name.firstName}")),
+                // The space and quotes inside the {...} disqualify the expression from rewriting.
+                of("leaves expressions with arguments untouched",
+                    List.of("#{numerify '#-####'}"), "code",
+                    List.of("#{numerify '#-####'}")),
+                of("leaves plain strings untouched",
+                    List.of("Aaron", "Bob", "Charlie"), "name",
+                    List.of("Aaron", "Bob", "Charlie")),
+                // Mixed expression: "#{city_prefix}" gets prefixed, "#{Name.firstName}" stays as is.
+                of("rewrites unqualified and preserves qualified in the same string",
+                    List.of("#{city_prefix} #{Name.firstName}#{city_suffix}"), "address",
+                    List.of("#{Address.cityPrefix} #{Name.firstName}#{Address.citySuffix}")),
+                // The exact scenario from issue #1477 — name.first_name is a list of two
+                // unqualified delegations to sibling YAML keys.
+                of("rewrites name.first_name redirect list (issue #1477)",
+                    List.of("#{female_first_name}", "#{male_first_name}"), "name",
+                    List.of("#{Name.femaleFirstName}", "#{Name.maleFirstName}"))
+            );
         }
 
         @Test
         void recursesIntoNestedMapsAndRewritesListsAtAnyDepth() {
             Map<String, Object> inner = new LinkedHashMap<>();
-            inner.put("title", mutableList("#{first_name}"));
+            inner.put("title", new ArrayList<>(List.of("#{first_name}")));
             Map<String, Object> middle = new LinkedHashMap<>();
             middle.put("nested", inner);
             Map<String, Object> root = new LinkedHashMap<>();
@@ -198,29 +170,13 @@ class FakeValuesTest {
             // Only items inside Lists are rewritten. A bare String value in a Map is left alone.
             Map<String, Object> map = new HashMap<>();
             map.put("scalar", "#{first_name}");
-            map.put("list", mutableList("#{first_name}"));
+            map.put("list", new ArrayList<>(List.of("#{first_name}")));
 
             FakeValues.prefixUnqualifiedExpressions(map, "name");
 
             assertThat(map.get("scalar")).isEqualTo("#{first_name}");
-            @SuppressWarnings("unchecked")
             List<Object> rewrittenList = (List<Object>) map.get("list");
             assertThat(rewrittenList).containsExactly("#{Name.firstName}");
-        }
-
-        @Test
-        void rewritesNameFirstNameRedirectList_issue1477() {
-            // The exact scenario from issue #1477 — name.first_name is a list of two
-            // unqualified delegations to sibling YAML keys.
-            List<String> list = mutableList("#{female_first_name}", "#{male_first_name}");
-
-            FakeValues.prefixUnqualifiedExpressions(list, "name");
-
-            assertThat(list).containsExactly("#{Name.femaleFirstName}", "#{Name.maleFirstName}");
-        }
-
-        private static List<String> mutableList(String... items) {
-            return new ArrayList<>(Arrays.asList(items));
         }
     }
 
