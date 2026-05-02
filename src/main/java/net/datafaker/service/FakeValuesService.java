@@ -3,7 +3,6 @@ package net.datafaker.service;
 import com.github.curiousoddman.rgxgen.RgxGen;
 import net.datafaker.internal.helper.CopyOnWriteMap;
 import net.datafaker.internal.helper.SingletonLocale;
-import net.datafaker.internal.helper.WordUtils;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
@@ -49,7 +48,6 @@ import static java.util.Locale.ROOT;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.SEVERE;
-import static net.datafaker.internal.helper.JavaNames.toJavaNames;
 import static net.datafaker.transformations.Field.field;
 
 public class FakeValuesService {
@@ -273,46 +271,6 @@ public class FakeValuesService {
             key2fetchedObject
                 .computeIfAbsent(local2Add, (__) -> MAP_STRING_OBJECT_SUPPLIER.get())
                 .computeIfAbsent(key, (__) -> valueToCache);
-        }
-        if (result instanceof List list) {
-            for (int i = 0; i < list.size(); i++) {
-                Object item = list.get(i);
-                if (!(item instanceof String itemStr)) {
-                    break;
-                }
-                final int itemStrLength = itemStr.length();
-                if (itemStrLength < 2) {
-                    break;
-                }
-                int j = 0;
-                StringBuilder sb = null;
-                int start = 0;
-                while (j < itemStrLength) {
-                    char c;
-                    while (j < itemStrLength - 2 && ((itemStr.charAt(j)) != '#' || itemStr.charAt(j + 1) != '{')) j++;
-                    int startWord = j + 2;
-                    boolean letterOrDigitOnly = true;
-                    j = startWord;
-                    while (j < itemStrLength && (c = itemStr.charAt(j)) != '}') {
-                        letterOrDigitOnly &= Character.isLetter(c) || Character.isDigit(c) || c == '_';
-                        j++;
-                    }
-                    if (start < itemStrLength&&  startWord < itemStrLength && letterOrDigitOnly) {
-                        if (sb == null) {
-                            sb = new StringBuilder();
-                        }
-                        sb.append(itemStr, start, startWord);
-                        sb.append(WordUtils.capitalize(path[0])).append(".").append(toJavaNames(itemStr.substring(startWord, j), true)).append("}");
-                        start = j + 1;
-                    }
-                }
-                if (sb != null) {
-                    if (start < itemStrLength) {
-                        sb.append(itemStr, start, itemStrLength);
-                    }
-                    list.set(i, sb.toString());
-                }
-            }
         }
         return (T) result;
     }
