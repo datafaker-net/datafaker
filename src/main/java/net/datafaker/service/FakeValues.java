@@ -1,12 +1,14 @@
 package net.datafaker.service;
 
 import net.datafaker.internal.helper.LazyEvaluated;
+import net.datafaker.internal.helper.WordUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -40,7 +42,9 @@ public class FakeValues implements FakeValuesInterface {
             return null;
         }
         try (InputStream stream = url.openStream()) {
-            return readFromStream(stream);
+            Map<String, Object> result = readFromStream(stream);
+            enrichMapWithJavaNames(result);
+            return result;
         } catch (IOException e) {
             throw new RuntimeException("Failed to read fake values from %s".formatted(url), e);
         }
@@ -90,6 +94,7 @@ public class FakeValues implements FakeValuesInterface {
                 if (entry.getValue() instanceof Map) {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> entryMap = (Map<String, Object>) entry.getValue();
+                    prefixUnqualifiedExpressions(entryMap, key);
                     Map<String, Object> nestedMap = new HashMap<>(entryMap.size());
                     for (Map.Entry<String, Object> e: entryMap.entrySet()) {
                         nestedMap.put(toJavaNames(e.getKey(), true), e.getValue());
@@ -106,6 +111,68 @@ public class FakeValues implements FakeValuesInterface {
             }
             if (map != null) {
                 result.putAll(map);
+            }
+        }
+    }
+
+    /**
+     * Rewrites unqualified expressions like {@code #{first_name}} inside string lists under a
+     * provider section into qualified ones like {@code #{Name.firstName}}. The provider name comes
+     * from the top-level YAML key (e.g. {@code name}, {@code address}). Doing this once at load
+     * time avoids racy in-place mutation of cached lists during concurrent fetches.
+     */
+    static void prefixUnqualifiedExpressions(Object node, String providerKey) {
+        if (node instanceof Map<?, ?> nested) {
+            for (Object v : nested.values()) {
+                prefixUnqualifiedExpressions(v, providerKey);
+            }
+        } else if (node instanceof List<?> rawList) {
+            @SuppressWarnings("unchecked")
+            List<Object> list = (List<Object>) rawList;
+            rewriteList(list, providerKey);
+        }
+    }
+
+    private static void rewriteList(List<Object> list, String providerKey) {
+        final String capitalizedProvider = WordUtils.capitalize(providerKey);
+        for (int i = 0; i < list.size(); i++) {
+            Object itemValue = list.get(i);
+            if (!(itemValue instanceof String item)) {
+                break;
+            }
+            final int itemLength = item.length();
+            if (itemLength < 2) {
+                break;
+            }
+            int j = 0;
+            StringBuilder sb = null;
+            int start = 0;
+            while (j < itemLength) {
+                char c;
+                while (j < itemLength - 2 && !(item.charAt(j) == '#' && item.charAt(j + 1) == '{')) {
+                    j++;
+                }
+                int startWord = j + 2;
+                boolean letterOrDigitOnly = true;
+                j = startWord;
+                while (j < itemLength && (c = item.charAt(j)) != '}') {
+                    letterOrDigitOnly &= Character.isLetter(c) || Character.isDigit(c) || c == '_';
+                    j++;
+                }
+                if (start < itemLength && startWord < itemLength && letterOrDigitOnly) {
+                    if (sb == null) {
+                        sb = new StringBuilder();
+                    }
+                    sb.append(item, start, startWord);
+                    sb.append(capitalizedProvider).append(".").append(toJavaNames(item.substring(startWord, j), true)).append("}");
+                    start = j + 1;
+                }
+            }
+            if (sb != null) {
+                if (start < itemLength) {
+                    sb.append(item, start, itemLength);
+                }
+                list.set(i, sb.toString());
             }
         }
     }

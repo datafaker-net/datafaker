@@ -11,3 +11,4 @@ target
 bin/
 site
 .mvn/wrapper/maven-wrapper.jar
+/.claude/settings.local.json
