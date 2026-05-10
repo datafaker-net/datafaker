@@ -115,7 +115,7 @@ class WeightedRandomSelectorTest {
     @ParameterizedTest
     @MethodSource("multipleElementsProvider")
     void testWeightedArrayElementWithMultipleElements(List<Map<String, Object>> items, Map<String, Integer> expectedCounts) {
-        WeightedRandomSelector selector = new WeightedRandomSelector(new EvenlyDistributedRandomGenerator(0, 1, ITERATIONS));
+        WeightedRandomSelector selector = new WeightedRandomSelector(new EvenlyDistributedRandomDoubleGenerator(0, 1, ITERATIONS));
 
         Map<String, Integer> counts = countResults(selector, items);
 
