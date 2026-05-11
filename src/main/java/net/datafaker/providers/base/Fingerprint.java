@@ -84,7 +84,7 @@ public class Fingerprint extends AbstractProvider<BaseProviders> {
         double ridgePeriod = 11.0 + faker.random().nextDouble(-2.0, 3.0);
         double ridgeFraction = 0.42 + faker.random().nextDouble(-0.04, 0.06);
 
-        // Pattern-specific parameters
+        // Global pattern parameters (drive the overall shape – spiral / loop / arch)
         double spiralFactor = 0.5 + faker.random().nextDouble(0.0, 0.5);
         double loopAmplitude = height * (0.18 + faker.random().nextDouble(0.0, 0.10));
         double loopSigma = Math.min(width, height) * (0.28 + faker.random().nextDouble(0.0, 0.12));
@@ -107,6 +107,26 @@ public class Fingerprint extends AbstractProvider<BaseProviders> {
         double maskB = height * 0.46;
         double fadeZone = 0.13;   // fraction of mask radius used for edge fade
 
+        // Minutiae: random ridge endings (+) and bifurcations (−) scattered
+        // across the print. Each is a Gaussian phase bump with peak height
+        // ridgePeriod/2, which produces a half-period local shift — exactly
+        // the topological change a real ending or bifurcation creates.
+        int numMinutiae = 18 + faker.random().nextInt(0, 18);
+        double minutiaSigma = ridgePeriod * 0.85;
+        double twoSigmaMinSq = 2 * minutiaSigma * minutiaSigma;
+        double minutiaCutoffSq = 9 * minutiaSigma * minutiaSigma;   // ≈3σ
+        double[][] minutiae = new double[numMinutiae][3];
+        for (int i = 0; i < numMinutiae; i++) {
+            double rx, ry;
+            do {
+                rx = faker.random().nextDouble(-0.40, 0.40);
+                ry = faker.random().nextDouble(-0.42, 0.42);
+            } while (rx * rx / 0.16 + ry * ry / 0.18 > 0.85);   // stay within mask
+            minutiae[i][0] = width * 0.5 + rx * width;
+            minutiae[i][1] = height * 0.5 + ry * height;
+            minutiae[i][2] = (faker.random().nextBoolean() ? 1.0 : -1.0) * ridgePeriod * 0.5;
+        }
+
         // Ink tones
         int ridgeGray = faker.random().nextInt(25, 65);
         int valleyGray = faker.random().nextInt(195, 235);
@@ -122,15 +142,17 @@ public class Fingerprint extends AbstractProvider<BaseProviders> {
                     noiseY += noiseAmp[i] * Math.sin(y * f + x * f * 0.6 + phasesY[i]);
                 }
 
-                double dx = x + noiseX - cx;
-                double dy = y + noiseY - cy;
+                double px = x + noiseX;
+                double py = y + noiseY;
+                double dx = px - cx;
+                double dy = py - cy;
                 double r = Math.sqrt(dx * dx + dy * dy);
 
-                // Ridge value – periodic over ridgePeriod
+                // Global ridge value – periodic over ridgePeriod
                 double ridgeVal = switch (patternType) {
                     case WHORL -> {
                         // Spiral: angle controls how much the ridges rotate
-                        double theta = Math.atan2(dy, dx); // −PI … PI
+                        double theta = Math.atan2(dy, dx);
                         yield r + spiralFactor * ridgePeriod * theta / Math.PI;
                     }
                     case LOOP -> {
@@ -145,6 +167,18 @@ public class Fingerprint extends AbstractProvider<BaseProviders> {
                         yield dy + arch;
                     }
                 };
+
+                // Minutiae: localised half-period phase bumps create ridge
+                // endings and bifurcations, the small features that give real
+                // fingerprints their characteristic broken-up appearance.
+                for (double[] m : minutiae) {
+                    double dxm = px - m[0];
+                    double dym = py - m[1];
+                    double rm2 = dxm * dxm + dym * dym;
+                    if (rm2 < minutiaCutoffSq) {
+                        ridgeVal += m[2] * Math.exp(-rm2 / twoSigmaMinSq);
+                    }
+                }
 
                 double mod = ((ridgeVal % ridgePeriod) + ridgePeriod) % ridgePeriod;
                 boolean isRidge = mod < ridgePeriod * ridgeFraction;
