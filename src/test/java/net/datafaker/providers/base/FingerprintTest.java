@@ -4,6 +4,8 @@ import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,6 +18,7 @@ import java.util.Random;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FingerprintTest {
+    private static final Logger log = LoggerFactory.getLogger(FingerprintTest.class);
 
     private final Faker faker = new Faker();
 
@@ -76,7 +79,9 @@ class FingerprintTest {
 
         File folder = new File("target/surefire-reports");
         folder.mkdirs();
-        ImageIO.write(image, "png", new File(folder, "fingerprint-" + pattern + ".png"));
+        File output = new File(folder, "fingerprint-" + pattern + ".png");
+        ImageIO.write(image, "png", output);
+        log.info("Generated fingerprint for {} pattern: {}", pattern, output.getAbsolutePath());
     }
 
     @Test
