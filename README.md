@@ -499,8 +499,8 @@ In the example above,
 * ar (Arabic)
 * be_BY (Belarusian)
 * bg_BG (Bulgarian)
-* ca (Catalan)
-* ca-CAT (language: Catalan, country: Catalonia)
+* ca_CA (Canada)
+* ca-CAT
 * cs_CZ (Czech republic)
 * da-DK (language: Danish, country: Denmark)
 * de (German)
