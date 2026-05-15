@@ -163,22 +163,22 @@ Schema<Name, String> fromScratch =
         field("lastname", () -> faker.name().lastName()));
 System.out.println(transformer.generate(fromScratch, 2));
 // POSSIBLE OUTPUT
-// "first_name" ; "last_name"
-// "Kimberely" ; "Considine"
-// "Mariela" ; "Krajcik"
+// "firstName","lastname"
+// "Kimberely","Considine"
+// "Mariela","Krajcik"
 // ----------------------
 // Schema for transformations
 Schema<Name, String> schemaForTransformations =
     Schema.of(field("firstName", Name::firstName),
         field("lastname", Name::lastName));
-// Here we pass a collection of Name objects and extract first and lastnames from each element
+// Here we pass a collection of Name objects and extract first and last names from each element
 System.out.println(
     transformer.generate(
         faker.collection(faker::name).maxLen(2).generate(), schemaForTransformations));
 // POSSIBLE OUTPUT
-// "first_name" ; "last_name"
-// "Kimberely" ; "Considine"
-// "Mariela" ; "Krajcik"
+// "firstName","lastname"
+// "Kimberely","Considine"
+// "Mariela","Krajcik"
 ```
 
 #### JShell
@@ -208,7 +208,7 @@ jshell> Schema fromScratch =
 fromScratch ==> net.datafaker.transformations.Schema@306a30c7
 
 jshell> CsvTransformer<Name> transformer =
-   ...>     CsvTransformer.<Name>builder().header(false).separator(",").build();
+   ...>     CsvTransformer.<Name>builder().header(true).separator(",").build();
 transformer ==> net.datafaker.transformations.CsvTransformer@506c589e
 
 jshell> System.out.println(transformer.generate(fromScratch, 2));
@@ -439,8 +439,9 @@ The list below is not complete and shows only a part of available providers. To 
 * Slack Emoji
 * Soul Knight
 * Space
-* StarCraft
-* StarTrek
+* Star Craft
+* Star Trek
+* Star Wars
 * Stock
 * Studio Ghibli
 * Subscription
@@ -448,12 +449,18 @@ The list below is not complete and shows only a part of available providers. To 
 * Superhero
 * Tea
 * Team
+* The Expanse
 * The IT Crowd
+* The Kingkiller Chronicle
+* The Matrix
+* The Room
+* The Thick Of It
+* The Venture Bros
 * Time
+* Tormenta
 * Touhou
 * Tron
 * Twin Peaks
-* Tormenta
 * Twitter
 * University
 * Vehicle
@@ -468,32 +475,32 @@ Usage with Locales
 -----
 
 ```java
-Faker faker = new Faker(new Locale("lang", "COUNTRY"));
+Faker faker = new Faker(Locale.of("lang", "COUNTRY"));
 ```
 
 For example:
 
 ```java
-String californiaZipCode = new Faker(new Locale("en", "US")).address().zipCodeByState("CA");
-String albanianIdNumber = new Faker(new Locale("sq", "AL")).idNumber().valid();
-String moldovanPhone = new Faker(new Locale("ru", "MD")).phoneNumber().cellPhone();
+String californiaZipCode = new Faker(Locale.of("en", "US")).address().zipCodeByState("CA");
+String albanianIdNumber = new Faker(Locale.of("sq", "AL")).idNumber().valid();
+String moldovanPhone = new Faker(Locale.of("ru", "MD")).phoneNumber().cellPhone();
 ```
 
 Note that most of the data depends on language,
 but some data depends purely on country (personal ID and phone numbers).
 In the example above,
 * "en", "sq", "ru" are language codes (English, Albanian and Russian), and
-* "US", "AL", "MD" are country codes (USA, Albanian and Moldova)
+* "US", "AL", "MD" are country codes (USA, Albania and Moldova)
 
 <details>
 <summary>Supported Locales</summary>
 
 -----
-* ar (Armenian)
+* ar (Arabic)
 * be_BY (Belarusian)
 * bg_BG (Bulgarian)
-* ca_CA (Canada)
-* ca-CAT
+* ca (Catalan)
+* ca-CAT (language: Catalan, country: Catalonia)
 * cs_CZ (Czech republic)
 * da-DK (language: Danish, country: Denmark)
 * de (German)
