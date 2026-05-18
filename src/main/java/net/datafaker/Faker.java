@@ -42,4 +42,17 @@ public class Faker extends BaseFaker implements BaseProviders, SportProviders, F
     public Faker(FakeValuesService fakeValuesService, FakerContext context, Predicate<Class<?>> whiteListPredicate) {
         super(fakeValuesService, context, whiteListPredicate);
     }
+
+    /**
+     * Creates a {@link Faker} backed by a shared {@link FakeValuesService}.
+     * Use in multi-threaded scenarios where all threads share one service per locale
+     * and each supplies its own {@link Random} to avoid redundant YAML loading.
+     *
+     * @param sharedService a pre-initialized service, e.g. from {@link FakeValuesService#getShared(Locale)}
+     * @param locale        locale for this Faker instance
+     * @param random        per-thread random source
+     */
+    public static Faker withSharedService(FakeValuesService sharedService, Locale locale, Random random) {
+        return new Faker(sharedService, new FakerContext(locale, new RandomService(random)));
+    }
 }

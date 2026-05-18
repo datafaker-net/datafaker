@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,7 +84,18 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
+    private static final ConcurrentHashMap<Locale, FakeValuesService> SHARED_INSTANCES = new ConcurrentHashMap<>();
+
     private final Map<RegExpContext, ValueResolver> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
+
+    /**
+     * Returns a lazily-initialized per-locale singleton. Safe to share across threads:
+     * all mutable instance state uses idempotent copy-on-write caches.
+     */
+    public static FakeValuesService getShared(Locale locale) {
+        return SHARED_INSTANCES.computeIfAbsent(locale, l -> new FakeValuesService());
+    }
+
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
