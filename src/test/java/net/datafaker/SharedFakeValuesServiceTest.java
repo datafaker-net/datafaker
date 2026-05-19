@@ -14,6 +14,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SharedFakeValuesServiceTest {
 
@@ -63,6 +64,16 @@ class SharedFakeValuesServiceTest {
         for (Future<Void> f : futures) {
             f.get();
         }
+    }
+
+    @Test
+    void sharedInstanceRejectsAddPathAndAddUrl() throws Exception {
+        FakeValuesService shared = FakeValuesService.getShared(Locale.GERMAN);
+        assertThatThrownBy(() -> shared.addPath(Locale.GERMAN, java.nio.file.Path.of("nonexistent.yml")))
+                .isInstanceOf(UnsupportedOperationException.class);
+        java.net.URL url = new java.net.URI("file:///nonexistent.yml").toURL();
+        assertThatThrownBy(() -> shared.addUrl(Locale.GERMAN, url))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 
     @Test
