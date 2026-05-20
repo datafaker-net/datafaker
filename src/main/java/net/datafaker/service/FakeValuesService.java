@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,7 +82,32 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
+    private static final ConcurrentHashMap<Locale, FakeValuesService> SHARED_INSTANCES = new ConcurrentHashMap<>();
+
+    private volatile boolean shared = false;
+
     private final Map<RegExpContext, ValueResolver> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
+
+    /**
+     * Returns a lazily-initialized per-locale singleton safe to share across threads.
+     * <p>
+     * The {@code locale} is used as a cache-partition key: all callers passing the same
+     * locale receive the same instance. Locale-specific YAML data is loaded lazily the
+     * first time a Faker backed by this service is constructed, so there is no need to
+     * pre-warm the instance.
+     * <p>
+     * Shared instances are read-only: {@link #addPath} and {@link #addUrl} will throw
+     * {@link UnsupportedOperationException}. Mixing locales — e.g. passing
+     * {@code getShared(Locale.ENGLISH)} to
+     * {@link net.datafaker.Faker#withSharedService(FakeValuesService, Locale, Random)}
+     * with a different locale — is unsupported.
+     */
+    public static FakeValuesService getShared(Locale locale) {
+        FakeValuesService svc = SHARED_INSTANCES.computeIfAbsent(locale, l -> new FakeValuesService());
+        svc.shared = true;
+        return svc;
+    }
+
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
@@ -101,9 +127,11 @@ public class FakeValuesService {
      *
      * @param locale the locale for which a path is going to be added.
      * @param path   path to a file with YAML structure
-     * @throws IllegalArgumentException in case of invalid path
+     * @throws IllegalArgumentException      in case of invalid path
+     * @throws UnsupportedOperationException if called on a shared instance obtained via {@link #getShared(Locale)}
      */
     public void addPath(Locale locale, Path path) {
+        if (shared) throw new UnsupportedOperationException("addPath cannot be called on a shared FakeValuesService");
         requireNonNull(locale);
         if (path == null || Files.notExists(path) || Files.isDirectory(path) || !Files.isReadable(path)) {
             throw new IllegalArgumentException("Path should be an existing readable file: \"%s\"".formatted(path));
@@ -120,9 +148,11 @@ public class FakeValuesService {
      *
      * @param locale  the locale for which an url is going to be added.
      * @param url     url of a file with YAML structure
-     * @throws IllegalArgumentException in case of invalid url
+     * @throws IllegalArgumentException      in case of invalid url
+     * @throws UnsupportedOperationException if called on a shared instance obtained via {@link #getShared(Locale)}
      */
     public void addUrl(Locale locale, URL url) {
+        if (shared) throw new UnsupportedOperationException("addUrl cannot be called on a shared FakeValuesService");
         requireNonNull(locale);
         if (url == null) {
             throw new IllegalArgumentException("url should be an existing readable file");
