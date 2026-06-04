@@ -1246,11 +1246,13 @@ public class FakeValuesService {
     private record RootCoercedResolver(MethodAndCoercedArgs accessor) implements ValueResolver {
         @Override
         public Object resolve(ProviderRegistration root, FakerContext context) {
+            if (root == null) return null;
             return invokeCoerced(accessor, root);
         }
 
         @Override
         public ValueResolver materialize(ProviderRegistration root) {
+            if (root == null) return this;
             return new InstanceCoercedResolver(accessor, root);
         }
     }
@@ -1259,11 +1261,13 @@ public class FakeValuesService {
     private record NamedProviderCoercedResolver(String providerName, MethodAndCoercedArgs accessor) implements ValueResolver {
         @Override
         public Object resolve(ProviderRegistration root, FakerContext context) {
+            if (root == null) return null;
             return invokeCoerced(accessor, root.getProvider(providerName));
         }
 
         @Override
         public ValueResolver materialize(ProviderRegistration root) {
+            if (root == null) return this;
             return new InstanceCoercedResolver(accessor, root.getProvider(providerName));
         }
     }
@@ -1272,6 +1276,7 @@ public class FakeValuesService {
     private record ChainedCoercedResolver(MethodAndCoercedArgs fakerAccessor, MethodAndCoercedArgs accessor) implements ValueResolver {
         @Override
         public Object resolve(ProviderRegistration root, FakerContext context) {
+            if (root == null) return null;
             try {
                 return invokeCoerced(accessor, fakerAccessor.invoke(root));
             } catch (InvocationTargetException | IllegalAccessException e) {
@@ -1281,6 +1286,7 @@ public class FakeValuesService {
 
         @Override
         public ValueResolver materialize(ProviderRegistration root) {
+            if (root == null) return this;
             try {
                 return new InstanceCoercedResolver(accessor, fakerAccessor.invoke(root));
             } catch (InvocationTargetException | IllegalAccessException e) {
