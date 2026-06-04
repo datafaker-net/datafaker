@@ -612,8 +612,8 @@ public class FakeValuesService {
                 // L1: static recipe hit — materialize once, store in L2
                 final ValueResolver recipe = RECIPE_MAP.get(cacheKey);
                 if (recipe != null) {
-                    final ValueResolver materialized = recipe.materialize(root);
-                    instanceMap.put(expr, materialized);
+                    final ValueResolver materialized = root != null ? recipe.materialize(root) : recipe;
+                    if (root != null) instanceMap.put(expr, materialized);
                     resolved = materialized.resolve(root, context);
                 } else {
                     // Both miss: full discovery
@@ -627,7 +627,7 @@ public class FakeValuesService {
                     resolved = resolveExpression(directive, args, current, root, context, cacheKey);
                     // resolveExpression stored recipe in RECIPE_MAP if cacheable; materialize for L2
                     final ValueResolver stored = RECIPE_MAP.get(cacheKey);
-                    if (stored != null) {
+                    if (stored != null && root != null) {
                         instanceMap.put(expr, stored.materialize(root));
                     }
                 }
@@ -1225,11 +1225,13 @@ public class FakeValuesService {
     private record ProviderMethodResolver(String providerName, Method method, Object[] args) implements ValueResolver {
         @Override
         public Object resolve(ProviderRegistration root, FakerContext context) {
+            if (root == null) return null;
             return new InstanceMethodResolver(root.getProvider(providerName), method, args).resolve(root, context);
         }
 
         @Override
         public ValueResolver materialize(ProviderRegistration root) {
+            if (root == null) return this;
             return new InstanceMethodResolver(root.getProvider(providerName), method, args);
         }
 
