@@ -37,7 +37,10 @@ class SharedFakeValuesServiceTest {
             }));
         }
         pool.shutdown();
-        assertThat(pool.awaitTermination(120, TimeUnit.SECONDS)).isTrue();
+        if (!pool.awaitTermination(120, TimeUnit.SECONDS)) {
+            pool.shutdownNow();
+            throw new AssertionError("Thread pool did not terminate within timeout");
+        }
         for (Future<Void> f : futures) {
             f.get();
         }
@@ -63,7 +66,10 @@ class SharedFakeValuesServiceTest {
             }));
         }
         pool.shutdown();
-        assertThat(pool.awaitTermination(60, TimeUnit.SECONDS)).isTrue();
+        if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+            pool.shutdownNow();
+            throw new AssertionError("Thread pool did not terminate within timeout");
+        }
         for (Future<Void> f : futures) {
             f.get();
         }

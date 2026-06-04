@@ -81,7 +81,12 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
-    /** L1: static recipe cache — context-free resolvers shared across all Fakers with same locale. */
+    /**
+     * L1: static recipe cache — context-free resolvers shared across all Fakers with same locale.
+     * Growth is bounded in practice by unique YAML expressions × locales. User-supplied dynamic
+     * expressions via {@code faker.expression()} carry the same theoretical unbounded-growth exposure
+     * as the other static string caches in this class (NAME_2_YAML, EXPRESSION_2_SPLITTED, etc.).
+     */
     private static final Map<CacheKey, ValueResolver> RECIPE_MAP = new CopyOnWriteMap<>(HashMap::new);
 
     /** L2: per-instance materialized cache — resolvers pre-bound to this Faker's providers for fast repeated calls. */
@@ -179,6 +184,7 @@ public class FakeValuesService {
 
         @Override
         public Object resolve(ProviderRegistration root, FakerContext context) {
+            if (root == null) return null;
             return root.fakeValuesService().safeFetch(simpleDirective, context, null);
         }
 
@@ -759,7 +765,7 @@ public class FakeValuesService {
                 }
                 res.add(resolveFromMethodOn(current, directive, args, root));
             }
-            if (dotIndex > 0) {
+            if (dotIndex > 0 && root != null) {
                 String providerClassName = directive.substring(0, dotIndex);
                 String methodName = directive.substring(dotIndex + 1);
                 AbstractProvider<?> ap = root.getProvider(providerClassName);
@@ -889,7 +895,7 @@ public class FakeValuesService {
         if (obj instanceof ProviderRegistration) {
             return new RootCoercedResolver(accessor);
         }
-        if (obj instanceof AbstractProvider) {
+        if (obj instanceof AbstractProvider && root != null) {
             String providerName = obj.getClass().getSimpleName();
             Object registered = root.getProvider(providerName);
             if (registered != null && registered.getClass() == obj.getClass()) {
@@ -967,8 +973,8 @@ public class FakeValuesService {
         });
 
         Collection<Method> methods = classMethodsMap.getOrDefault(name, emptyList());
-        if (methods == null) {
-            LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), null));
+        if (methods.isEmpty()) {
+            LOG.fine(() -> "Didn't find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
             return null;
         }
         LOG.fine(() -> "Found accessor named %s on %s in cache: %s".formatted(accessorName, clazz.getSimpleName(), methods));
@@ -987,7 +993,7 @@ public class FakeValuesService {
         if (mostRestrictive != null) {
             return new MethodAndCoercedArgs(mostRestrictive, coercedArgumentsForMostRestrictive);
         }
-        LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
+        LOG.fine(() -> "Didn't find accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
         return null;
     }
 
