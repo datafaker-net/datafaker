@@ -618,8 +618,8 @@ public class FakeValuesService {
                     while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
                     final String arguments = j == length ? "" : expr.substring(j);
                     final String[] args = splitArguments(arguments);
-                    resolved = resExp(directive, args, current, root, context, cacheKey);
-                    // resExp stored recipe in RECIPE_MAP if cacheable; materialize for L2
+                    resolved = resolveExpression(directive, args, current, root, context, cacheKey);
+                    // resolveExpression stored recipe in RECIPE_MAP if cacheable; materialize for L2
                     final ValueResolver stored = RECIPE_MAP.get(cacheKey);
                     if (stored != null) {
                         instanceMap.put(expr, stored.materialize(root));
@@ -699,9 +699,9 @@ public class FakeValuesService {
         });
     }
 
-    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, CacheKey cacheKey) {
+    private Object resolveExpression(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, CacheKey cacheKey) {
         Object res = resolveExpression(directive, args, current, root, context);
-        LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, cacheKey: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, cacheKey, res));
+        LOG.fine(() -> "resolveExpression(%s [%s]) current: %s, root: %s, context: %s, cacheKey: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, cacheKey, res));
         if (res instanceof CharSequence) {
             if (((CharSequence) res).isEmpty()) {
                 RECIPE_MAP.put(cacheKey, EMPTY_STRING);
