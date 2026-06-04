@@ -66,7 +66,7 @@ public class FakeValuesService {
 
     private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
 
-    private final Map<String, RgxGen> expression2generex = new CopyOnWriteMap<>(WeakHashMap::new);
+    private static final Map<String, RgxGen> expression2generex = new CopyOnWriteMap<>(WeakHashMap::new);
     private final CopyOnWriteMap<SingletonLocale, Map<String, String>> key2Expression = new CopyOnWriteMap<>(IdentityHashMap::new);
     private static final Map<String, String[]> ARGS_2_SPLITTED_ARGS = new CopyOnWriteMap<>(WeakHashMap::new);
 
@@ -81,7 +81,12 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
-    private final Map<RegExpContext, ValueResolver> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
+    /** L1: static recipe cache — context-free resolvers shared across all Fakers with same locale. */
+    private static final Map<CacheKey, ValueResolver> RECIPE_MAP = new CopyOnWriteMap<>(HashMap::new);
+
+    /** L2: per-instance materialized cache — resolvers pre-bound to this Faker's providers for fast repeated calls. */
+    private final Map<String, ValueResolver> instanceMap = new CopyOnWriteMap<>(HashMap::new);
+
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
@@ -165,23 +170,21 @@ public class FakeValuesService {
         return (String) fetch(key, context);
     }
 
-    private class SafeFetchResolver implements ValueResolver {
+    private static class SafeFetchResolver implements ValueResolver {
         private final String simpleDirective;
-        private final FakerContext context;
 
-        private SafeFetchResolver(String simpleDirective, FakerContext context) {
+        private SafeFetchResolver(String simpleDirective) {
             this.simpleDirective = simpleDirective;
-            this.context = context;
         }
 
         @Override
-        public Object resolve() {
-            return safeFetch(simpleDirective, context, null);
+        public Object resolve(ProviderRegistration root, FakerContext context) {
+            return root.fakeValuesService().safeFetch(simpleDirective, context, null);
         }
 
         @Override
         public String toString() {
-            return "%s[simpleDirective=%s, context=%s]".formatted(getClass().getSimpleName(), simpleDirective, context);
+            return "%s[simpleDirective=%s]".formatted(getClass().getSimpleName(), simpleDirective);
         }
     }
 
@@ -593,20 +596,35 @@ public class FakeValuesService {
                 }
                 continue;
             }
-            final RegExpContext regExpContext = new RegExpContext(expr, root, context);
-            final ValueResolver val = REGEXP2SUPPLIER_MAP.get(regExpContext);
             final Object resolved;
-            if (val != null) {
-                resolved = val.resolve();
+            // L2: per-instance hit — fast, provider already bound
+            final ValueResolver fast = instanceMap.get(expr);
+            if (fast != null) {
+                resolved = fast.resolve(root, context);
             } else {
-                int j = 0;
-                final int length = expr.length();
-                while (j < length && !Character.isWhitespace(expr.charAt(j))) j++;
-                String directive = expr.substring(0, j);
-                while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
-                final String arguments = j == length ? "" : expr.substring(j);
-                final String[] args = splitArguments(arguments);
-                resolved = resExp(directive, args, current, root, context, regExpContext);
+                final CacheKey cacheKey = new CacheKey(expr, context.getSingletonLocale());
+                // L1: static recipe hit — materialize once, store in L2
+                final ValueResolver recipe = RECIPE_MAP.get(cacheKey);
+                if (recipe != null) {
+                    final ValueResolver materialized = recipe.materialize(root);
+                    instanceMap.put(expr, materialized);
+                    resolved = materialized.resolve(root, context);
+                } else {
+                    // Both miss: full discovery
+                    int j = 0;
+                    final int length = expr.length();
+                    while (j < length && !Character.isWhitespace(expr.charAt(j))) j++;
+                    String directive = expr.substring(0, j);
+                    while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
+                    final String arguments = j == length ? "" : expr.substring(j);
+                    final String[] args = splitArguments(arguments);
+                    resolved = resExp(directive, args, current, root, context, cacheKey);
+                    // resExp stored recipe in RECIPE_MAP if cacheable; materialize for L2
+                    final ValueResolver stored = RECIPE_MAP.get(cacheKey);
+                    if (stored != null) {
+                        instanceMap.put(expr, stored.materialize(root));
+                    }
+                }
             }
             if (resolved == null) {
                 throw new RuntimeException("Unable to resolve #{" + expr + "} directive for FakerContext " + context + ".");
@@ -681,12 +699,12 @@ public class FakeValuesService {
         });
     }
 
-    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
+    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, CacheKey cacheKey) {
         Object res = resolveExpression(directive, args, current, root, context);
-        LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, regExpContext: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, regExpContext, res));
+        LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, cacheKey: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, cacheKey, res));
         if (res instanceof CharSequence) {
             if (((CharSequence) res).isEmpty()) {
-                REGEXP2SUPPLIER_MAP.put(regExpContext, EMPTY_STRING);
+                RECIPE_MAP.put(cacheKey, EMPTY_STRING);
             }
             return res;
         }
@@ -696,11 +714,13 @@ public class FakeValuesService {
                 Object valueResolver = it.next();
                 Object value;
                 if (valueResolver instanceof ValueResolver resolver) {
-                    value = resolver.resolve();
+                    value = resolver.resolve(root, context);
                     if (value == null) {
                         it.remove();
                     } else {
-                        REGEXP2SUPPLIER_MAP.put(regExpContext, resolver);
+                        if (resolver.cacheable()) {
+                            RECIPE_MAP.put(cacheKey, resolver);
+                        }
                         return value;
                     }
                 }
@@ -733,11 +753,11 @@ public class FakeValuesService {
                 if (current instanceof AbstractProvider) {
                     final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
                     if (method != null) {
-                        res.add(new MethodResolver(method, current, args));
+                        res.add(new ProviderMethodResolver(current.getClass().getSimpleName(), method, args));
                         return res;
                     }
                 }
-                res.add(resolveFromMethodOn(current, directive, args));
+                res.add(resolveFromMethodOn(current, directive, args, root));
             }
             if (dotIndex > 0) {
                 String providerClassName = directive.substring(0, dotIndex);
@@ -745,7 +765,7 @@ public class FakeValuesService {
                 AbstractProvider<?> ap = root.getProvider(providerClassName);
                 Method method = ap == null ? null : ObjectMethods.getMethodByName(ap, methodName);
                 if (method != null) {
-                    res.add(new MethodResolver(method, ap, args));
+                    res.add(new ProviderMethodResolver(providerClassName, method, args));
                     return res;
                 }
             }
@@ -758,12 +778,12 @@ public class FakeValuesService {
         // car.wheel will be looked up in the YAML file.
         // It's only "simple" if there aren't args
         if (args.length == 0) {
-            res.add(new SafeFetchResolver(simpleDirective, context));
+            res.add(new SafeFetchResolver(simpleDirective));
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
         if (dotIndex == -1 && root != null && (current == null || root.getClass() != current.getClass())) {
-            res.add(resolveFromMethodOn(root, directive, args));
+            res.add(resolveFromMethodOn(root, directive, args, root));
         }
 
         // Resolve Faker Object method references like #{ClassName.method_name}
@@ -778,7 +798,7 @@ public class FakeValuesService {
         // class.method_name (lowercase)
         if (dotIndex >= 0) {
             final String key = javaNameToYamlName(simpleDirective);
-            res.add(new SafeFetchResolver(key, context));
+            res.add(new SafeFetchResolver(key));
         }
 
         return res;
@@ -860,12 +880,23 @@ public class FakeValuesService {
      * {@link Name} then this method would return {@link Name#firstName()}.  Returns null if the directive is nested
      * (i.e. has a '.') or the method doesn't exist on the <em>obj</em> object.
      */
-    private ValueResolver resolveFromMethodOn(Object obj, String directive, String[] args) {
+    private ValueResolver resolveFromMethodOn(Object obj, String directive, String[] args, ProviderRegistration root) {
         if (obj == null) {
             return null;
         }
         final MethodAndCoercedArgs accessor = retrieveMethodAccessor(obj, directive, args);
-        return accessor == null ? NULL_VALUE : new MethodAndCoercedArgsResolver(accessor, obj);
+        if (accessor == null) return NULL_VALUE;
+        if (obj instanceof ProviderRegistration) {
+            return new RootCoercedResolver(accessor);
+        }
+        if (obj instanceof AbstractProvider) {
+            String providerName = obj.getClass().getSimpleName();
+            Object registered = root.getProvider(providerName);
+            if (registered != null && registered.getClass() == obj.getClass()) {
+                return new NamedProviderCoercedResolver(providerName, accessor);
+            }
+        }
+        return new InstanceCoercedResolver(accessor, obj);
     }
 
     /**
@@ -896,7 +927,7 @@ public class FakeValuesService {
                 return NULL_VALUE;
             }
 
-            return new MethodAndCoercedArgsResolver(accessor, objectWithMethodToInvoke);
+            return new ChainedCoercedResolver(fakerAccessor, accessor);
         } catch (InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException("Failed to resolve faker object and method for %s (dotIndex=%s, args=%s)"
                 .formatted(key, dotIndex, Arrays.toString(args)), e);
@@ -936,8 +967,8 @@ public class FakeValuesService {
         });
 
         Collection<Method> methods = classMethodsMap.getOrDefault(name, emptyList());
-        if (methods.isEmpty()) {
-            LOG.fine(() -> "Didn't find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
+        if (methods == null) {
+            LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), null));
             return null;
         }
         LOG.fine(() -> "Found accessor named %s on %s in cache: %s".formatted(accessorName, clazz.getSimpleName(), methods));
@@ -956,7 +987,7 @@ public class FakeValuesService {
         if (mostRestrictive != null) {
             return new MethodAndCoercedArgs(mostRestrictive, coercedArgumentsForMostRestrictive);
         }
-        LOG.fine(() -> "Didn't find accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
+        LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
         return null;
     }
 
@@ -1148,16 +1179,19 @@ public class FakeValuesService {
         }
     }
 
-    private record RegExpContext(String exp, ProviderRegistration root, FakerContext context) {
+    private record CacheKey(String exp, SingletonLocale locale) {
     }
 
     private interface ValueResolver {
-        Object resolve();
+        Object resolve(ProviderRegistration root, FakerContext context);
+        default boolean cacheable() { return true; }
+        /** Produce a fast per-instance resolver with provider pre-bound. Default: self (already fast or context-dependent). */
+        default ValueResolver materialize(ProviderRegistration root) { return this; }
     }
 
     private record ConstantResolver(String value) implements ValueResolver {
         @Override
-        public Object resolve() {
+        public Object resolve(ProviderRegistration root, FakerContext context) {
             return value;
         }
     }
@@ -1165,36 +1199,104 @@ public class FakeValuesService {
     private static final ConstantResolver EMPTY_STRING = new ConstantResolver("");
     private static final ConstantResolver NULL_VALUE = new ConstantResolver(null);
 
-    private record MethodResolver(Method method, Object current, Object[] args) implements ValueResolver {
+    /** L2: fast resolver — method pre-bound to a specific provider instance. Never stored in L1. */
+    private record InstanceMethodResolver(Object provider, Method method, Object[] args) implements ValueResolver {
         @Override
-        public Object resolve() {
+        public Object resolve(ProviderRegistration root, FakerContext context) {
             try {
-                return method.invoke(current);
+                return method.invoke(provider);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to call method %s.%s() on %s (args: %s)".formatted(
-                    method.getDeclaringClass().getName(), method.getName(), current, Arrays.toString(args)), e);
+                    method.getDeclaringClass().getName(), method.getName(), provider, Arrays.toString(args)), e);
             }
+        }
+
+        @Override
+        public boolean cacheable() { return false; }
+    }
+
+    /** L1 recipe: resolves a no-arg method on a named provider looked up from root at call time. */
+    private record ProviderMethodResolver(String providerName, Method method, Object[] args) implements ValueResolver {
+        @Override
+        public Object resolve(ProviderRegistration root, FakerContext context) {
+            return new InstanceMethodResolver(root.getProvider(providerName), method, args).resolve(root, context);
+        }
+
+        @Override
+        public ValueResolver materialize(ProviderRegistration root) {
+            return new InstanceMethodResolver(root.getProvider(providerName), method, args);
         }
 
         @Override
         public String toString() {
-            return "%s[method=%s.%s(), current=%s, args=%s]".formatted(getClass().getSimpleName(),
-                method.getDeclaringClass().getSimpleName(), method.getName(), current, Arrays.toString(args));
+            return "%s[provider=%s, method=%s.%s(), args=%s]".formatted(getClass().getSimpleName(),
+                providerName, method.getDeclaringClass().getSimpleName(), method.getName(), Arrays.toString(args));
         }
     }
 
-    private record MethodAndCoercedArgsResolver(MethodAndCoercedArgs accessor, Object obj) implements ValueResolver {
+    /** L1 recipe: resolves a coerced-args method directly on the root ProviderRegistration. */
+    private record RootCoercedResolver(MethodAndCoercedArgs accessor) implements ValueResolver {
         @Override
-        public Object resolve() {
-            return invokeAndToString(accessor, obj);
+        public Object resolve(ProviderRegistration root, FakerContext context) {
+            return invokeCoerced(accessor, root);
         }
 
-        private static Object invokeAndToString(MethodAndCoercedArgs accessor, Object objectWithMethodToInvoke) {
+        @Override
+        public ValueResolver materialize(ProviderRegistration root) {
+            return new InstanceCoercedResolver(accessor, root);
+        }
+    }
+
+    /** L1 recipe: resolves a coerced-args method on a named provider looked up from root at call time. */
+    private record NamedProviderCoercedResolver(String providerName, MethodAndCoercedArgs accessor) implements ValueResolver {
+        @Override
+        public Object resolve(ProviderRegistration root, FakerContext context) {
+            return invokeCoerced(accessor, root.getProvider(providerName));
+        }
+
+        @Override
+        public ValueResolver materialize(ProviderRegistration root) {
+            return new InstanceCoercedResolver(accessor, root.getProvider(providerName));
+        }
+    }
+
+    /** L1 recipe: two-step chain — invokes fakerAccessor on root to get provider, then accessor on it. */
+    private record ChainedCoercedResolver(MethodAndCoercedArgs fakerAccessor, MethodAndCoercedArgs accessor) implements ValueResolver {
+        @Override
+        public Object resolve(ProviderRegistration root, FakerContext context) {
             try {
-                return accessor.invoke(objectWithMethodToInvoke);
+                return invokeCoerced(accessor, fakerAccessor.invoke(root));
             } catch (InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException("Failed to invoke %s on %s".formatted(accessor, objectWithMethodToInvoke), unwrap(e));
+                throw new RuntimeException("Failed to invoke chained resolver on %s".formatted(root), unwrap(e));
             }
+        }
+
+        @Override
+        public ValueResolver materialize(ProviderRegistration root) {
+            try {
+                return new InstanceCoercedResolver(accessor, fakerAccessor.invoke(root));
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException("Failed to materialize chained resolver on %s".formatted(root), unwrap(e));
+            }
+        }
+    }
+
+    /** L2: fast resolver — coerced method pre-bound to a specific instance. Also used for non-registered providers (never in L1). */
+    private record InstanceCoercedResolver(MethodAndCoercedArgs accessor, Object instance) implements ValueResolver {
+        @Override
+        public Object resolve(ProviderRegistration root, FakerContext context) {
+            return invokeCoerced(accessor, instance);
+        }
+
+        @Override
+        public boolean cacheable() { return false; }
+    }
+
+    private static Object invokeCoerced(MethodAndCoercedArgs accessor, Object target) {
+        try {
+            return accessor.invoke(target);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to invoke %s on %s".formatted(accessor, target), unwrap(e));
         }
     }
 
