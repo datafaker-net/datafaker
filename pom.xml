@@ -34,7 +34,7 @@
         <rgxgen.version>3.1</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
         <iban-commons.version>1.8.7</iban-commons.version>
-        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <junit.version>6.1.0</junit.version>
         <libphonenumber.version>9.0.32</libphonenumber.version>
         <maven.compiler.source>17</maven.compiler.source>
