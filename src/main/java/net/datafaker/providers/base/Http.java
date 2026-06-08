@@ -6,7 +6,7 @@ import java.util.List;
  * Faker for HTTP-related data: status codes and reason phrases, request/response headers,
  * content types, user agents, HTTP methods and versions, transfer encodings, and response bodies.
  *
- * @since 2.4.0
+ * @since 2.6.0
  */
 public class Http extends AbstractProvider<BaseProviders> {
 
