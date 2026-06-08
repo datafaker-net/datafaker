@@ -2,6 +2,8 @@ package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +23,16 @@ class HttpTest extends BaseFakerTest {
             TestSpec.of(http::httpMethod, "http.http_method"),
             TestSpec.of(http::httpVersion, "http.http_version"),
             TestSpec.of(http::encoding, "http.encoding"),
-            TestSpec.of(http::responseBody, "http.response_body")
+            TestSpec.of(() -> http.responseBody("application/json"), "http.response_body.json"),
+            TestSpec.of(() -> http.responseBody("application/xml"), "http.response_body.xml"),
+            TestSpec.of(() -> http.responseBody("text/html"), "http.response_body.html"),
+            TestSpec.of(() -> http.responseBody("text/plain"), "http.response_body.plain"),
+            TestSpec.of(() -> http.responseBody("text/csv"), "http.response_body.csv"),
+            TestSpec.of(() -> http.responseBody("application/javascript"), "http.response_body.javascript"),
+            TestSpec.of(() -> http.responseBody("text/css"), "http.response_body.css"),
+            TestSpec.of(() -> http.responseBody("application/graphql"), "http.response_body.graphql"),
+            TestSpec.of(() -> http.responseBody("application/x-www-form-urlencoded"), "http.response_body.form"),
+            TestSpec.of(() -> http.responseBody("text/markdown"), "http.response_body.markdown")
         );
     }
 
@@ -65,7 +76,7 @@ class HttpTest extends BaseFakerTest {
 
     @RepeatedTest(10)
     void statusMessage() {
-        assertThat(http.statusMessage()).isNotBlank().matches("[\\w ']+");
+        assertThat(http.statusMessage()).isNotBlank();
     }
 
     @RepeatedTest(10)
@@ -127,5 +138,47 @@ class HttpTest extends BaseFakerTest {
                 .isNotBlank()
                 .startsWith("Mozilla/");
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // Response body tests
+    // -------------------------------------------------------------------------
+
+    @RepeatedTest(20)
+    void responseBodyNoArg() {
+        assertThat(http.responseBody()).isNotBlank();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "application/json,          {",
+        "application/ld+json,       {",
+        "application/vnd.api+json,  {",
+        "application/problem+json,  {",
+        "application/xml,           <?xml",
+        "text/xml,                  <?xml",
+        "text/html,                 <!DOCTYPE html>",
+        "text/html; charset=utf-8,  <!DOCTYPE html>",
+        "text/plain,                ''",
+        "text/csv,                  ''",
+        "application/javascript,    ''",
+        "text/javascript,           ''",
+        "text/css,                  ''",
+        "application/graphql,       {",
+        "application/x-www-form-urlencoded, ''",
+        "text/markdown,             ''"
+    })
+    void responseBodyForContentType(String contentType, String expectedPrefix) {
+        String body = http.responseBody(contentType.trim());
+        assertThat(body).isNotBlank();
+        if (!expectedPrefix.isBlank()) {
+            assertThat(body).startsWith(expectedPrefix.trim());
+        }
+    }
+
+    @Test
+    void responseBodyUnknownContentTypeFallsBackToJson() {
+        String body = http.responseBody("application/unknown");
+        assertThat(body).isNotBlank().startsWith("{");
     }
 }

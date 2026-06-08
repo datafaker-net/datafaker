@@ -14,6 +14,10 @@ public class Http extends AbstractProvider<BaseProviders> {
         "informational", "successful", "redirect", "client_error", "server_error"
     );
 
+    private static final List<String> ALL_BODY_TYPES = List.of(
+        "json", "xml", "html", "plain", "csv", "javascript", "css", "graphql", "form", "markdown"
+    );
+
     protected Http(BaseProviders faker) {
         super(faker);
     }
@@ -165,9 +169,48 @@ public class Http extends AbstractProvider<BaseProviders> {
     // Response body
     // -------------------------------------------------------------------------
 
-    /** Returns a random JSON response body string, covering both success and error scenarios. */
+    /**
+     * Returns a random response body string from any supported content type.
+     *
+     * @see #responseBody(String)
+     */
     public String responseBody() {
-        return resolve("http.response_body");
+        return resolve("http.response_body." + faker.options().nextElement(ALL_BODY_TYPES));
+    }
+
+    /**
+     * Returns a response body appropriate for the given MIME content type.
+     * Supported types: {@code application/json}, {@code application/xml}, {@code text/html},
+     * {@code text/plain}, {@code text/csv}, {@code application/javascript}, {@code text/css},
+     * {@code application/graphql}, {@code application/x-www-form-urlencoded}, {@code text/markdown}.
+     * Content-type parameters (e.g. {@code ; charset=utf-8}) are ignored.
+     * Unrecognised types fall back to {@code application/json}.
+     *
+     * @param contentType a MIME content type string
+     */
+    public String responseBody(String contentType) {
+        return resolve("http.response_body." + contentTypeToBodyKey(contentType));
+    }
+
+    private static String contentTypeToBodyKey(String contentType) {
+        String normalized = contentType.contains(";")
+            ? contentType.substring(0, contentType.indexOf(';')).trim().toLowerCase()
+            : contentType.trim().toLowerCase();
+        return switch (normalized) {
+            case "application/json", "application/ld+json",
+                 "application/vnd.api+json", "application/problem+json",
+                 "application/jwt" -> "json";
+            case "application/xml", "text/xml" -> "xml";
+            case "text/html" -> "html";
+            case "text/plain" -> "plain";
+            case "text/csv" -> "csv";
+            case "application/javascript", "text/javascript" -> "javascript";
+            case "text/css" -> "css";
+            case "application/graphql" -> "graphql";
+            case "application/x-www-form-urlencoded" -> "form";
+            case "text/markdown" -> "markdown";
+            default -> "json";
+        };
     }
 
     // -------------------------------------------------------------------------
