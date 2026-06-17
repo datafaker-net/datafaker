@@ -281,6 +281,7 @@ public class ProvidersDocsGenerator {
             - Base (Providers of everyday data)
             - Entertainment (Providers for movies, shows, books)
             - Food (Providers for different types of food)
+            - Healthcare (Providers for different types of disease, medication, procedure, etc)
             - Sport (Providers for different types of sport)
             - Videogame (Video game providers)
             """);
