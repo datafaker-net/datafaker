@@ -41,7 +41,7 @@ class ReleaseNotesGeneratorTest {
     }
 
     @Test
-    void generateStripsIssueHashFromBullets() {
+    void generateEscapesIssueHashInBullets() {
         String result = ReleaseNotesGenerator.generate(
             TEMPLATE,
             "2.7.0",
@@ -49,8 +49,8 @@ class ReleaseNotesGeneratorTest {
             List.of("* #1756 generate airport codes", "- #42 answer")
         );
 
-        assertTrue(result.contains("* 1756 generate airport codes"));
-        assertTrue(result.contains("- 42 answer"));
+        assertTrue(result.contains("* \\#1756 generate airport codes"));
+        assertTrue(result.contains("- \\#42 answer"));
     }
 
     @Test
@@ -112,6 +112,24 @@ class ReleaseNotesGeneratorTest {
 
             ## New contributors
             """));
+    }
+
+    @Test
+    void generateStripsLeadingWhitespaceFromTemplateLines() {
+        List<String> indentedTemplate = List.of(
+            " # Datafaker X.Y.Z (dd-mm-yyyy)",
+            "",
+            ReleaseNotesGenerator.WHATS_CHANGED
+        );
+
+        String result = ReleaseNotesGenerator.generate(
+            indentedTemplate,
+            "2.7.0",
+            "18-06-2026",
+            List.of("* Fix bug")
+        );
+
+        assertTrue(result.startsWith("# Datafaker 2.7.0 (18-06-2026)\n"));
     }
 
     @Test
