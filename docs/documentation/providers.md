@@ -1,4 +1,4 @@
-# Fake Data Providers
+# Fake data providers
 
 #### Provider groups:
 

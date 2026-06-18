@@ -74,30 +74,13 @@ jobs:
           echo "ERROR: $RELEASE_MD already exists; refusing to overwrite."
           exit 1
         fi
-        cp docs/releases/.RELEASE-template.md "$RELEASE_MD"
-        sed -i "s/X\.Y\.Z/$RELEASED_VERSION/" "$RELEASE_MD"
-        sed -i "s/dd-mm-yyyy/$TODAY/" "$RELEASE_MD"
-
-        # Write release body to temp file (safer for complex markdown)
         RELEASE_BODY_FILE=$(mktemp)
         echo "$RELEASE_BODY" > "$RELEASE_BODY_FILE"
-
-        # Insert body and strip # from bullets
-        awk -v bodyfile="$RELEASE_BODY_FILE" '
-          /## What'\''s Changed/ {
-              print
-              print ""
-              while ((getline line < bodyfile) > 0) {
-                  if (line ~ /^[[:space:]]*[-*][[:space:]]*#[0-9]/)
-                      sub(/#/, "", line)
-                  print line
-              }
-              close(bodyfile)
-              next
-          }
-          { print }
-        ' "$RELEASE_MD" > "$RELEASE_MD.tmp" && mv "$RELEASE_MD.tmp" "$RELEASE_MD"
-
+        ./mvnw test-compile exec:java \
+          -Dexec.mainClass="net.datafaker.script.ReleaseNotesGenerator" \
+          -Dexec.classpathScope=test \
+          -Dexec.args="${RELEASED_VERSION} ${TODAY} docs/releases/.RELEASE-template.md ${RELEASE_MD} ${RELEASE_BODY_FILE}" \
+          -q
         rm -f "$RELEASE_BODY_FILE"
         git add "$RELEASE_MD"
 
@@ -112,24 +95,14 @@ jobs:
         sed -i "s/dd-mm-yyyy/$TODAY/" "$SNAPSHOT_MD"
         git add "$SNAPSHOT_MD"
 
-        # Update mkdocs.yml
+        # Update mkdocs.yml version metadata and Releases navigation
         sed -i '/datafaker:/,/^[^ ]/{s/^\( *version: \).*/\1'"$RELEASED_VERSION"'/}' mkdocs.yml
         sed -i '/datafaker:/,/^[^ ]/{s/^\( *snapshot: \).*/\1'"${NEXT_VERSION}-SNAPSHOT"'/}' mkdocs.yml
-
-        # Add to Releases navigation
-        awk -v rel="$RELEASED_VERSION" -v snap="${NEXT_VERSION}-SNAPSHOT" '
-          $0 ~ ("- " snap ":") { found_snap=1 }
-          $0 ~ ("- " rel ":") { found_rel=1 }
-          /Releases:/ { print; in_releases=1; next }
-           in_releases && /^[[:space:]]*-[[:space:]]*[0-9]/ {
-              if (!added) {
-                if (!found_snap) print "    - " snap ": releases/" snap ".md"
-                if (!found_rel)  print "    - " rel ": releases/" rel ".md"
-                added=1
-              }
-          }
-          { print }
-        ' mkdocs.yml > mkdocs.yml.tmp && mv mkdocs.yml.tmp mkdocs.yml
+        ./mvnw test-compile exec:java \
+          -Dexec.mainClass="net.datafaker.script.MkdocsReleaseNavUpdater" \
+          -Dexec.classpathScope=test \
+          -Dexec.args="${RELEASED_VERSION} ${NEXT_VERSION}-SNAPSHOT mkdocs.yml" \
+          -q
         git add mkdocs.yml
 
         git commit -m "Released Datafaker $RELEASED_VERSION" \

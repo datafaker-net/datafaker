@@ -3,7 +3,7 @@
 This page is trying to go through some performance metrics and see how better/worse Datafaker is in compare with Java
 Faker and other similar projects.
 
-## Hardware & Software
+## Hardware & software
 
 All the tests are done with help of JMH at Fedora 36 for different JDKs (mentioned in tables below).
 The laptop has 32Gb of RAM, AMD Ryzen 7 PRO 5850U with Radeon Graphics.
@@ -37,7 +37,7 @@ Ok, let's start with the similar test here. Similar, because we are going to use
 If applicable we try to execute same tests we did for previous section. So let's start with the original test from
 Kotlin Faker
 
-### Original Kotlin Faker Test
+### Original Kotlin Faker test
 
 (for different libs there should be different classes, for more details look in the code):
 `net.datafaker.benchmark.kotlinfakerbenchmark`
@@ -277,7 +277,7 @@ for parsed args.
 It makes sense to keep in mind that these tests do not cover all possible use cases and could be considered only as a
 starting point for analysis.
 
-## More Fun
+## More fun
 
 There is an [issue](https://github.com/DiUS/java-faker/issues/663) in Java Faker about generation of 100M of objects.
 Of course, the task could be solved with concurrent generation in multiple threads.

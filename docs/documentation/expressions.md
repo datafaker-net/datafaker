@@ -64,7 +64,7 @@ Faker faker = new Faker();
 faker.expression("#{options.option 'ABC','2','5','$'}"); // could give $
 faker.expression("#{options.option '23','2','5','$','%','*'}"); // could give *
 ```
-## Csv
+## CSV
 This is available since 1.4.0
 
 The expression will return generated csv based on input parameters
@@ -78,7 +78,7 @@ faker.expression("#{csv ' ### ','\"','false','3','name_column','#{Name.first_nam
 // "Sybil" ### "Connelly"
 ```
 
-## Json
+## JSON
 This is available since 1.4.0
 
 The expression will return generated json based on input parameters

@@ -92,7 +92,7 @@ This will return a random insect name but based on the provided weights
 Driver ant
 ```
 
-## Custom provider using Yaml file
+## Custom provider using YAML file
 
 In case you have a large set of data to load, it might be better to use a Yaml file.
 
@@ -101,7 +101,7 @@ To create a custom provider of data fom a file, you'll need to do the following 
 * Create a custom provider of data
 * Create your own custom faker which extends `Faker` and register custom provider
 
-### Yaml provider
+### YAML provider
 
 First, create the custom provider which loads the data from a file:
 
