@@ -21,7 +21,6 @@ public record WeightedRandomSelector(Random random) {
     /**
      * Returns a weighted random element from the given list, where each element is represented as a Map
      * containing a weight and the corresponding value.
-     * <p>
      *
      * @param items A list of maps, where each map contains:
      *              - weight: A Double representing the weight of the element, influencing its selection probability.
