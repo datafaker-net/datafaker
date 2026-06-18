@@ -1,4 +1,4 @@
-# Formats (This is DEPRECATED functionality! Please have a look at Transformation Schemas instead)
+# Formats (This is DEPRECATED functionality! Please have a look at Transformation schemas instead)
 
 Since version 1.2.0 of Datafaker it's possible to export generated data to a file format of your choice.
 

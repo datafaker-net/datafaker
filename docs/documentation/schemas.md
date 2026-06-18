@@ -161,7 +161,7 @@ Example of JSON generation:
 
 To use composite fields it should be defined on `Schema` level and nothing more.
 
-## SQL Transformation
+## SQL transformation
 
 Note: right now only `INSERT` is supported. 
 
@@ -383,7 +383,7 @@ address:
   streetAddress: 6510 Duncan Landing
 ```
 
-## Java Object transformation
+## Java object transformation
 
 Java Object transformer could be built with help of JavaObjectTransformer. 
 
@@ -443,7 +443,7 @@ Then you should provide a schema for the class.
 
 will generate object with fields populated with random values based on specified suppliers.
 
-### Populating Java Object with predefined Schema
+### Populating Java object with predefined schema
 
 You can use predefined schema to populate Java Object or default schema for the class.
 Schema should be declared as a static method with return type `Schema<Object, ?>`.

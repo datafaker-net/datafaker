@@ -1,4 +1,4 @@
-# Unique Values
+# Unique values
 
 ## Values from YAML files
 

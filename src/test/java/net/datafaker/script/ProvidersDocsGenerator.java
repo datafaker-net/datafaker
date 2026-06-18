@@ -274,7 +274,7 @@ public class ProvidersDocsGenerator {
     }
 
     private enum TextBlock {
-        HEADER("# Fake Data Providers\n"),
+        HEADER("# Fake data providers\n"),
         GROUP_DESCRIPTIONS("""
 
             #### Provider groups:
