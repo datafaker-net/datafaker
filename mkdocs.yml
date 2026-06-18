@@ -79,9 +79,9 @@ plugins:
       minify_html: true
 
 # Files to exclude from the built site
-exclude_docs:
-  - releases/.RELEASE-template.md
-  - releases/.SNAPSHOT-template.md
+exclude_docs: |
+  releases/.RELEASE-template.md
+  releases/.SNAPSHOT-template.md
 
 # Customization
 extra:
