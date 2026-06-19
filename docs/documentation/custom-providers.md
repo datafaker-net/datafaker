@@ -76,7 +76,7 @@ This will print something like the following:
 Wasp
 ```
 
-**Usafe of weigted random selector is in the POC stage and is currently available only for custom hardcoded providers.**
+> **Usage of weigted random selector is in the POC stage and is currently available only for custom hardcoded providers.**
 
 To use a random selector based on weights, you can do the following:
 
