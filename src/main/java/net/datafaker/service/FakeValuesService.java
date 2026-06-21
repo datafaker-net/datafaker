@@ -81,7 +81,7 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
-    private final Map<RegExpContext, ValueResolver> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
+    private final Map<String, RegExpContext> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
@@ -593,11 +593,10 @@ public class FakeValuesService {
                 }
                 continue;
             }
-            final RegExpContext regExpContext = new RegExpContext(expr, root, context);
-            final ValueResolver val = REGEXP2SUPPLIER_MAP.get(regExpContext);
+            final RegExpContext cachedRegExpContext = REGEXP2SUPPLIER_MAP.get(expr);
             final Object resolved;
-            if (val != null) {
-                resolved = val.resolve();
+            if (cachedRegExpContext != null && cachedRegExpContext.root() == root && cachedRegExpContext.context() == context) {
+                resolved = cachedRegExpContext.resolver().resolve();
             } else {
                 int j = 0;
                 final int length = expr.length();
@@ -606,7 +605,7 @@ public class FakeValuesService {
                 while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
                 final String arguments = j == length ? "" : expr.substring(j);
                 final String[] args = splitArguments(arguments);
-                resolved = resExp(directive, args, current, root, context, regExpContext);
+                resolved = resExp(directive, args, current, root, context, expr);
             }
             if (resolved == null) {
                 throw new RuntimeException("Unable to resolve #{" + expr + "} directive for FakerContext " + context + ".");
@@ -681,12 +680,12 @@ public class FakeValuesService {
         });
     }
 
-    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
+    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, String expr) {
         Object res = resolveExpression(directive, args, current, root, context);
-        LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, regExpContext: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, regExpContext, res));
+        LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, expr: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, expr, res));
         if (res instanceof CharSequence) {
             if (((CharSequence) res).isEmpty()) {
-                REGEXP2SUPPLIER_MAP.put(regExpContext, EMPTY_STRING);
+                REGEXP2SUPPLIER_MAP.put(expr, new RegExpContext(root, context, EMPTY_STRING));
             }
             return res;
         }
@@ -700,7 +699,7 @@ public class FakeValuesService {
                     if (value == null) {
                         it.remove();
                     } else {
-                        REGEXP2SUPPLIER_MAP.put(regExpContext, resolver);
+                        REGEXP2SUPPLIER_MAP.put(expr, new RegExpContext(root, context, resolver));
                         return value;
                     }
                 }
@@ -1148,7 +1147,7 @@ public class FakeValuesService {
         }
     }
 
-    private record RegExpContext(String exp, ProviderRegistration root, FakerContext context) {
+    private record RegExpContext(ProviderRegistration root, FakerContext context, ValueResolver resolver) {
     }
 
     private interface ValueResolver {
