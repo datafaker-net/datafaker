@@ -81,7 +81,7 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
-    private final Map<String, RegExpContext> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
+    private final Map<String, RegExpContext> regexp2SupplierMap = new CopyOnWriteMap<>(HashMap::new);
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
@@ -593,7 +593,7 @@ public class FakeValuesService {
                 }
                 continue;
             }
-            final RegExpContext cachedRegExpContext = REGEXP2SUPPLIER_MAP.get(expr);
+            final RegExpContext cachedRegExpContext = regexp2SupplierMap.get(expr);
             final Object resolved;
             if (cachedRegExpContext != null && cachedRegExpContext.root() == root && cachedRegExpContext.context() == context) {
                 resolved = cachedRegExpContext.resolver().resolve();
@@ -685,7 +685,7 @@ public class FakeValuesService {
         LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, expr: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, expr, res));
         if (res instanceof CharSequence) {
             if (((CharSequence) res).isEmpty()) {
-                REGEXP2SUPPLIER_MAP.put(expr, new RegExpContext(root, context, EMPTY_STRING));
+                regexp2SupplierMap.put(expr, new RegExpContext(root, context, EMPTY_STRING));
             }
             return res;
         }
@@ -699,7 +699,7 @@ public class FakeValuesService {
                     if (value == null) {
                         it.remove();
                     } else {
-                        REGEXP2SUPPLIER_MAP.put(expr, new RegExpContext(root, context, resolver));
+                        regexp2SupplierMap.put(expr, new RegExpContext(root, context, resolver));
                         return value;
                     }
                 }
