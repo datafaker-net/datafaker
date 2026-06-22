@@ -9,7 +9,7 @@ First and foremost thanks to anyone who contributes, very much appreciated.
 - If you're not sure about the change, raise an issue and have a discussion before spending time coding it up.
 - Try and make one logical change per PR. That is not make many changes in one PR. Submit multiple PRs instead.
 - Starting with Datafaker 2.x, Java 17 is our target version. If you need anything older than that, we recommend using the 1.x versions of Datafaker instead.
-  > **Note**: that while the 1.x is stable and free of known bugs, this branch won't receive future updates.
+  > **Note**: While 1.x is stable and functional, it is not intended that that version of the code recieve any further updates.
 
 ## Building
 
