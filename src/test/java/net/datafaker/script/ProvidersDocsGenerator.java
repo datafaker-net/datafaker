@@ -74,7 +74,7 @@ public class ProvidersDocsGenerator {
         System.out.println("Providers without '@since' tag: " + fakersWithoutSinceTag);
     }
 
-    private String extractGroupName(Class<?> clazz) {
+    private static String extractGroupName(Class<?> clazz) {
         // `packageName` should be such format: net.datafaker.providers.<groupName> (e.g. base, sport, movie)
         String packageName = clazz.getPackage().getName();
         // And just splitting by '.' we're getting groupName (e.g. base, sport, movie)
@@ -143,7 +143,7 @@ public class ProvidersDocsGenerator {
         Map<String, Integer> providersPerVersion = extractProvidersPerVersion();
 
         StringBuilder sb = new StringBuilder()
-            .append("\nNumber of providers per Datafaker version\n")
+            .append("\nNumber of providers per Datafaker version:\n")
             .append("\n| Version | Number of new providers | Total number of providers |")
             .append("\n|---------|-------------------------|---------------------------|\n");
 
@@ -180,7 +180,7 @@ public class ProvidersDocsGenerator {
         return providersPerVersion;
     }
 
-    private String formatGroupName(String groupName) {
+    private static String formatGroupName(String groupName) {
         return Character.toUpperCase(groupName.charAt(0)) + groupName.substring(1);
     }
 

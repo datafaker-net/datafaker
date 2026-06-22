@@ -7,7 +7,7 @@ constructor.
 
 === "Java"
 
-    ``` java
+    ```java
     import net.datafaker.Faker;
     
     Faker faker = new Faker();
@@ -17,7 +17,7 @@ constructor.
 
 === "Kotlin"
 
-    ```
+    ```kotlin
     import net.datafaker.Faker
     
     val faker = Faker()
@@ -29,11 +29,11 @@ This will instantiate a Faker using the English locale.
 
 ## Different locale
 
-To use Datafaker with a different locale, you can supply on in the constructor as such:
+To use Datafaker with a different locale, you can supply one in the constructor as such:
 
 === "Java"
 
-    ``` java
+    ```java
     Faker faker = new Faker(new Locale("nl"));
 
     String name = faker.name().fullName(); // Chelan Klijnsma
@@ -41,7 +41,7 @@ To use Datafaker with a different locale, you can supply on in the constructor a
 
 === "Kotlin"
 
-    ``` kotlin
+    ```kotlin
     val faker = Faker(Locale("nl"))
 
     val name = faker.name().fullName() // Chelan Klijnsma
@@ -59,10 +59,9 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
 1 hoog Gritlaan 52, Margiesmeer, OK 1083 VE
 ```
 
-
 === "Java"
 
-    ``` java 
+    ```java 
     Faker faker1 = new Faker(new Locale("nl"));
     Faker faker2 = new Faker(new Locale("ar"));
 
@@ -76,7 +75,7 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
 
 === "Kotlin"
 
-    ``` kotlin
+    ```kotlin
     val faker1 = Faker(Locale("nl"))
     val faker2 = Faker(Locale("ar"))
 
@@ -97,13 +96,13 @@ which can be handy for generating results multiple times.
 
 === "Java"
 
-    ``` java
+    ```java
     Faker faker = new Faker(new Random(0));
     ```
 
 === "Kotlin"
 
-    ``` kotlin
+    ```kotlin
     val faker = Faker(Random(0))
     ```
 

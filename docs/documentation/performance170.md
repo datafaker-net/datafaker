@@ -35,7 +35,7 @@ So, it looks like the only test which were done is checking `Faker.name().name()
 
 Ok, let's start with the similar test here. Similar, because we are going to use JMH which was not used in their test.
 If applicable we try to execute same tests we did for previous section. So let's start with the original test from
-Kotlin Faker
+Kotlin Faker.
 
 ### Original Kotlin Faker test
 
@@ -67,7 +67,7 @@ Kotlin Faker
 ### Initialization
 
 It's worth to measure since initially during initialization of Faker object it requires to
-initialise all the providers objects and read all the yaml files for providers.
+initialize all the providers objects and read all the yaml files for providers.
 
 Tests for initialization could be found at `net.datafaker.benchmark.initialization`
 Initialization:
@@ -95,7 +95,7 @@ Initialization:
 
 Performance of simple method calls like `fullname`, `firstname`, `address`.
 
-Tests could be found at `net.datafaker.benchmark.simplemethods`
+Tests could be found at `net.datafaker.benchmark.simplemethods`.
 
 #### Firstname:
 
@@ -165,7 +165,7 @@ Tests could be found at `net.datafaker.benchmark.simplemethods`
 From one side Kotlin Faker and JFairy do not support expressions, from the other side Kotlin Faker supports
 numerify/bothify/letterify and regexify operations.
 
-So, the tests are done based on [Kotlin Faker's doc page](https://serpro69.github.io/kotlin-faker/wiki/extras/#random-strings-from-templates)
+So, the tests are done based on [Kotlin Faker's doc page](https://serpro69.github.io/kotlin-faker/wiki/extras/#random-strings-from-templates).
 
 #### Numerify:
 
