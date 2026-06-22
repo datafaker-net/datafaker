@@ -33,7 +33,7 @@ public class RandomService {
         return random.nextInt(maxExclusive);
     }
 
-    public Integer nextInt(int minInclusive, int maxInclusive) {
+    public int nextInt(int minInclusive, int maxInclusive) {
         if (minInclusive > maxInclusive)
             throw new IllegalArgumentException("Min (%s) > Max (%s)".formatted(minInclusive, maxInclusive));
         if (maxInclusive + 1 < 0)
