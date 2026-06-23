@@ -321,12 +321,6 @@ en:
         - "{\"data\":{\"createUser\":{\"id\":\"42\",\"name\":\"New User\",\"createdAt\":\"2024-01-15T10:00:00Z\"}}}"
         - "{\"data\":null,\"errors\":[{\"message\":\"Not found\",\"locations\":[{\"line\":1,\"column\":1}],\"path\":[\"user\"]}]}"
         - "{\"data\":null,\"errors\":[{\"message\":\"Unauthorized\",\"extensions\":{\"code\":\"UNAUTHENTICATED\"}}]}"
-        form:
-        - "name=John+Doe&email=john%40example.com&status=active"
-        - "username=admin&password=secret&remember=true"
-        - "id=42&action=update&value=hello+world"
-        - "grant_type=authorization_code&code=abc123&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback"
-        - "query=search+term&page=1&per_page=20&sort=asc"
         markdown:
         - "# Hello World\n\nThis is a sample response.\n"
         - "## Success\n\n> Resource created with ID: 42\n"

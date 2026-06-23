@@ -14,17 +14,13 @@ public class Http extends AbstractProvider<BaseProviders> {
         "informational", "successful", "redirect", "client_error", "server_error"
     );
 
-    private static final List<String> ALL_BODY_TYPES = List.of(
-        "json", "xml", "html", "plain", "csv", "javascript", "css", "graphql", "form", "markdown"
+    private static final List<String> TEXT_BODY_TYPES = List.of(
+        "json", "xml", "html", "plain", "csv", "javascript", "css", "graphql", "markdown"
     );
 
     protected Http(BaseProviders faker) {
         super(faker);
     }
-
-    // -------------------------------------------------------------------------
-    // Status codes — return int
-    // -------------------------------------------------------------------------
 
     /** Returns a random valid HTTP status code from any category (1xx–5xx). */
     public int statusCode() {
@@ -56,10 +52,6 @@ public class Http extends AbstractProvider<BaseProviders> {
         return parseCode(resolve("http.status_code.server_error"));
     }
 
-    // -------------------------------------------------------------------------
-    // Status reason phrases — return String
-    // -------------------------------------------------------------------------
-
     /** Returns the reason phrase for a random HTTP status code (e.g. {@code "OK"}, {@code "Not Found"}). */
     public String statusMessage() {
         return parseReason(randomStatusEntry());
@@ -90,18 +82,10 @@ public class Http extends AbstractProvider<BaseProviders> {
         return parseReason(resolve("http.status_code.server_error"));
     }
 
-    // -------------------------------------------------------------------------
-    // Combined code + reason — return String like "200 OK"
-    // -------------------------------------------------------------------------
-
     /** Returns a random status code and reason phrase, e.g. {@code "200 OK"} or {@code "404 Not Found"}. */
     public String statusCodeWithReason() {
         return randomStatusEntry();
     }
-
-    // -------------------------------------------------------------------------
-    // Headers
-    // -------------------------------------------------------------------------
 
     /** Returns a random HTTP request header name (e.g. {@code "Content-Type"}, {@code "Authorization"}). */
     public String requestHeader() {
@@ -113,18 +97,10 @@ public class Http extends AbstractProvider<BaseProviders> {
         return resolve("http.response_header");
     }
 
-    // -------------------------------------------------------------------------
-    // Content type / MIME
-    // -------------------------------------------------------------------------
-
     /** Returns a random MIME content type (e.g. {@code "application/json"}, {@code "text/html; charset=utf-8"}). */
     public String contentType() {
         return resolve("http.content_type");
     }
-
-    // -------------------------------------------------------------------------
-    // User agents
-    // -------------------------------------------------------------------------
 
     /** Returns a random browser user agent string from any supported browser. */
     public String userAgent() {
@@ -146,10 +122,6 @@ public class Http extends AbstractProvider<BaseProviders> {
         return resolve("http.user_agent.mobile");
     }
 
-    // -------------------------------------------------------------------------
-    // Methods, versions, encoding
-    // -------------------------------------------------------------------------
-
     /** Returns a random HTTP method (e.g. {@code "GET"}, {@code "POST"}, {@code "DELETE"}). */
     public String httpMethod() {
         return resolve("http.http_method");
@@ -165,24 +137,20 @@ public class Http extends AbstractProvider<BaseProviders> {
         return resolve("http.encoding");
     }
 
-    // -------------------------------------------------------------------------
-    // Response body
-    // -------------------------------------------------------------------------
-
     /**
      * Returns a random response body string from any supported content type.
      *
      * @see #responseBody(String)
      */
     public String responseBody() {
-        return resolve("http.response_body." + faker.options().nextElement(ALL_BODY_TYPES));
+        return resolve("http.response_body." + faker.options().nextElement(TEXT_BODY_TYPES));
     }
 
     /**
      * Returns a response body appropriate for the given MIME content type.
      * Supported types: {@code application/json}, {@code application/xml}, {@code text/html},
      * {@code text/plain}, {@code text/csv}, {@code application/javascript}, {@code text/css},
-     * {@code application/graphql}, {@code application/x-www-form-urlencoded}, {@code text/markdown}.
+     * {@code application/graphql}, {@code text/markdown}.
      * Content-type parameters (e.g. {@code ; charset=utf-8}) are ignored.
      * Unrecognised types fall back to {@code application/json}.
      *
@@ -207,15 +175,10 @@ public class Http extends AbstractProvider<BaseProviders> {
             case "application/javascript", "text/javascript" -> "javascript";
             case "text/css" -> "css";
             case "application/graphql" -> "graphql";
-            case "application/x-www-form-urlencoded" -> "form";
             case "text/markdown" -> "markdown";
             default -> "json";
         };
     }
-
-    // -------------------------------------------------------------------------
-    // Internal helpers
-    // -------------------------------------------------------------------------
 
     private String randomStatusEntry() {
         String category = faker.options().nextElement(ALL_STATUS_CATEGORIES);
@@ -229,10 +192,6 @@ public class Http extends AbstractProvider<BaseProviders> {
     private static String parseReason(String statusEntry) {
         return statusEntry.substring(statusEntry.indexOf(' ') + 1);
     }
-
-    // -------------------------------------------------------------------------
-    // Enums
-    // -------------------------------------------------------------------------
 
     public enum Browser {
         CHROME("chrome"),

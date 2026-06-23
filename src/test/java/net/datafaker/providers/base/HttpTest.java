@@ -31,14 +31,9 @@ class HttpTest extends BaseFakerTest {
             TestSpec.of(() -> http.responseBody("application/javascript"), "http.response_body.javascript"),
             TestSpec.of(() -> http.responseBody("text/css"), "http.response_body.css"),
             TestSpec.of(() -> http.responseBody("application/graphql"), "http.response_body.graphql"),
-            TestSpec.of(() -> http.responseBody("application/x-www-form-urlencoded"), "http.response_body.form"),
             TestSpec.of(() -> http.responseBody("text/markdown"), "http.response_body.markdown")
         );
     }
-
-    // -------------------------------------------------------------------------
-    // Status code range tests
-    // -------------------------------------------------------------------------
 
     @RepeatedTest(20)
     void statusCode() {
@@ -70,10 +65,6 @@ class HttpTest extends BaseFakerTest {
         assertThat(http.serverError()).isBetween(500, 599);
     }
 
-    // -------------------------------------------------------------------------
-    // Status reason phrase tests
-    // -------------------------------------------------------------------------
-
     @RepeatedTest(10)
     void statusMessage() {
         assertThat(http.statusMessage()).isNotBlank();
@@ -104,10 +95,6 @@ class HttpTest extends BaseFakerTest {
         assertThat(http.serverErrorMessage()).isNotBlank();
     }
 
-    // -------------------------------------------------------------------------
-    // Combined code + reason
-    // -------------------------------------------------------------------------
-
     @RepeatedTest(10)
     void statusCodeWithReason() {
         String entry = http.statusCodeWithReason();
@@ -115,10 +102,6 @@ class HttpTest extends BaseFakerTest {
         int code = Integer.parseInt(entry.substring(0, 3));
         assertThat(code).isBetween(100, 599);
     }
-
-    // -------------------------------------------------------------------------
-    // User agent tests
-    // -------------------------------------------------------------------------
 
     @RepeatedTest(10)
     void userAgent() {
@@ -139,10 +122,6 @@ class HttpTest extends BaseFakerTest {
                 .startsWith("Mozilla/");
         }
     }
-
-    // -------------------------------------------------------------------------
-    // Response body tests
-    // -------------------------------------------------------------------------
 
     @RepeatedTest(20)
     void responseBodyNoArg() {
@@ -165,7 +144,6 @@ class HttpTest extends BaseFakerTest {
         "text/javascript,           ''",
         "text/css,                  ''",
         "application/graphql,       {",
-        "application/x-www-form-urlencoded, ''",
         "text/markdown,             ''"
     })
     void responseBodyForContentType(String contentType, String expectedPrefix) {
