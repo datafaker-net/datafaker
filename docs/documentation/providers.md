@@ -9,7 +9,7 @@
 - Sport (Providers for different types of sport)
 - Videogame (Video game providers)
 
-Number of providers per Datafaker version
+Number of providers per Datafaker version:
 
 | Version | Number of new providers | Total number of providers |
 |---------|-------------------------|---------------------------|

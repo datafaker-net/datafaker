@@ -15,7 +15,7 @@ attributes using randomly generated data in the following way:
 
 === "Java"
 
-    ``` java
+    ```java
     public static void main(String[] args) {
         Faker faker = new Faker();
 
@@ -87,7 +87,7 @@ In case you only want to generate XML elements, without any attributes, that pos
 
 === "Java"
 
-    ``` java
+    ```java
     Faker faker = new Faker();
     Collection<Xml.XmlNode> address = faker.<Xml.XmlNode>collection()
             .suppliers(() -> new Xml.XmlNode("address",
