@@ -9,7 +9,7 @@
   {% if nav_item.children %}
     {% if "navigation.sections" in features and level == 1 + (
       "navigation.tabs" in features
-    ) %}
+    ) and nav_item.title not in ["2.x", "1.x"] %}
       {% set class = class ~ " md-nav__item--section" %}
     {% endif %}
     <li class="{{ class }} md-nav__item--nested">

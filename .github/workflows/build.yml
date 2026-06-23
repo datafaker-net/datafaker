@@ -23,12 +23,12 @@ jobs:
   build:
     strategy:
       matrix:
-        java-version: [ 17, 21, 25-ea ]
+        java-version: [ 17, 21, 25, 26 ]
         runs-on: [ ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest ]
     name: Jdk ${{ matrix.java-version }}, os ${{ matrix.runs-on }}
     runs-on: ${{ matrix.runs-on }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v5
         with:
@@ -37,6 +37,9 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: ./mvnw $mvn_options install -PnoGpg --file pom.xml
+      - name: Run ProvidersDocsGenerator
+        if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream }}
+        run: ./mvnw $mvn_options exec:java -Dexec.mainClass="net.datafaker.script.ProvidersDocsGenerator" -Dexec.classpathScope=test -PnoGpg --file pom.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7.0.0
         if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
@@ -48,7 +51,7 @@ jobs:
           echo "release_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
       - name: 'Download downstream project'
         if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: datafaker-net/datafaker-gen
           fetch-depth: 1

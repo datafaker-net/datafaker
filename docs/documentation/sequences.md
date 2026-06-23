@@ -14,7 +14,7 @@ For example, the following code will generate a list/stream of first and last na
 
 === "List"
 
-    ``` java 
+    ```java 
     List<String> names = 
         faker.collection(
                 () -> faker.name().firstName(), 
@@ -25,7 +25,7 @@ For example, the following code will generate a list/stream of first and last na
 
 === "Stream"
 
-    ``` java 
+    ```java 
     Stream<String> names = 
         faker.stream(
                 () -> faker.name().firstName(), 
@@ -38,7 +38,7 @@ A list/stream can also contain different types:
 
 === "List"
 
-    ``` java 
+    ```java 
     List<Object> objects =
         faker.<Object>collection(
                 () -> faker.name().firstName(),
@@ -49,7 +49,7 @@ A list/stream can also contain different types:
 
 === "Stream"
 
-    ``` java 
+    ```java 
     Stream<Object> objects =
         faker.<Object>stream(
                 () -> faker.name().firstName(),
@@ -63,7 +63,7 @@ By default, it's value is 0, i.e. no null values will be generated.
 
 === "List"
 
-    ``` java 
+    ```java 
     List<Object> objects =
         faker.<Object>collection(
                 () -> faker.name().firstName(),
@@ -75,7 +75,7 @@ By default, it's value is 0, i.e. no null values will be generated.
 
 === "Stream"
 
-    ``` java 
+    ```java 
     Stream<Object> objects =
         faker.<Object>stream(
                 () -> faker.name().firstName(),
@@ -90,7 +90,7 @@ To generate a collection/stream with only about 30% values of null, `nullRate(0.
 
 === "List"
 
-    ``` java 
+    ```java 
     List<Object> objects =
         faker.<Object>collection(
                 () -> faker.name().firstName(),
@@ -102,7 +102,7 @@ To generate a collection/stream with only about 30% values of null, `nullRate(0.
 
 === "Stream"
 
-    ``` java 
+    ```java 
     Stream<Object> objects =
         faker.<Object>stream(
                 () -> faker.name().firstName(),
@@ -116,7 +116,7 @@ FakeSequence also supports generation of an infinite stream:
 
 === "Java"
 
-    ``` java 
+    ```java 
     Stream<Object> objects =
         faker.<Object>stream(
                 () -> faker.name().firstName(),
@@ -129,7 +129,7 @@ FakeStreams based on FakeSequence API:
 
 === "Java"
 
-    ``` java 
+    ```java 
     FakeSequence<Object> fakeSequence = faker.<Object>stream(
                 () -> faker.name().firstName(),
                 () -> faker.random().nextInt(100))
@@ -142,7 +142,7 @@ For FakeCollection this function will always return false:
 
 === "Java"
 
-    ``` java 
+    ```java 
     FakeSequence<Object> fakeSequence = faker.<Object>collection(
                 () -> faker.name().firstName(),
                 () -> faker.random().nextInt(100))
