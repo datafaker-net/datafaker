@@ -1,7 +1,6 @@
 # Fake data providers
 
 #### Provider groups:
-
 - Base (Providers of everyday data)
 - Entertainment (Providers for movies, shows, books)
 - Food (Providers for different types of food)
@@ -34,9 +33,9 @@ Number of providers per Datafaker version:
 | 2.4.4 | 2 | 252 |
 | 2.5.0 | 1 | 253 |
 | 2.5.3 | 3 | 256 |
-| 2.6.0 | 6 | 262 |
+| 2.6.0 | 7 | 263 |
 
-Datafaker comes with a total of 262 data providers:
+Datafaker comes with a total of 263 data providers:
 
 | Name                                                                                        | Description                                                                                                                        | Group                                            | Since |
 |---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|-------|
@@ -96,7 +95,7 @@ Datafaker comes with a total of 262 data providers:
 |[Construction](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Construction.html)|                                                                                                                                    | Base                                             | 1.5.0 |
 |[Control](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/Control.html)| Control is an action-adventure game developed by Remedy Entertainment and published by 505 Games.                                  | Videogame                                        | 1.7.0 |
 |[Cosmere](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Cosmere.html)| The cosmere is a fictional shared universe where several of Brandon Sanderson's books take place.                                  | Base                                             | 1.7.0 |
-|[Country](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Country.html)|                                                                                                                                    | Base                                             | 0.8.0 |
+|[Country](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Country.html)| Provides methods for generating country-related data such as names, codes, capitals, and flags.                                    | Base                                             | 0.8.0 |
 |[Cowboy Bebop](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/CowboyBebop.html)| Cowboy Bebop is a Japanese neo-noir science fiction anime television series, which originally ran from 1998 to 1999.               | Entertainment                                    | 1.8.0 |
 |[Credentials](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Credentials.html)| Generates credentials such as usernames, uids and passwords.                                                                       | Base                                             | 2.5.0 |
 |[Cricket](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/sport/Cricket.html)|                                                                                                                                    | Sport                                            | 1.7.0 |
@@ -173,6 +172,7 @@ Datafaker comes with a total of 262 data providers:
 |[House](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/House.html)|                                                                                                                                    | Base                                             | 1.5.0 |
 |[How IMet Your Mother](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/HowIMetYourMother.html)|                                                                                                                                    | Entertainment                                    | 0.8.0 |
 |[How To Train Your Dragon](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/HowToTrainYourDragon.html)|How to Train Your Dragon is a 2010 American computer-animated action fantasy film loosely based on the 2003 book of the same name by Cressida Cowell.| Entertainment                                    | 1.8.0 |
+|[Http](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Http.html)| Faker for HTTP-related data: status codes and reason phrases, request/response headers,                                            | Base                                             | 2.6.0 |
 |[Ice Cream](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/food/IceCream.html)|                                                                                                                                    | Food                                             | 2.5.3 |
 |[Id Number](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/IdNumber.html)|                                                                                                                                    | Base                                             | 0.8.0 |
 |[Image](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Image.html)| Generates base64 encoded raster and vector images.                                                                                 | Base                                             | 2.3.0 |
