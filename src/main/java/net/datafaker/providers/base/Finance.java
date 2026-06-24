@@ -120,16 +120,24 @@ public class Finance extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Generates a random Business Identifier Code (BIC).
-     * The country code is retrieved from the {@link Country} provider to ensure consistency.
+     * Generates a random Business Identifier Code (BIC) compliant with ISO 9362.
      * <p>
-     * A BIC consists of 8 or 11 characters: 4 letters (bank), 2 letters (ISO country code),
-     * 2 characters (location), and an optional 3-character branch code (whereas {@code XXX} refers to Head Office).
+     * The BIC is guaranteed to consist of <strong>uppercase letters</strong> and digits only.
+     * The embedded two-letter country code is retrieved from the {@link Country} provider
+     * and converted to uppercase to ensure structural validity.
+     * <p>
+     * A BIC consists of either 8 or 11 characters structured as follows:
+     * <ul>
+     *   <li>4 letters: Institution code (bank)</li>
+     *   <li>2 letters: ISO 3166-1 alpha-2 country code</li>
+     *   <li>2 characters: Location code (letters or digits)</li>
+     *   <li>Optional 3 characters: Branch code (letters or digits, where {@code XXX} refers to the head office)</li>
+     * </ul>
      *
      * @return a valid-formatted BIC
      */
     public String bic() {
-        String countryCode = faker.country().countryCode2();
+        String countryCode = faker.country().countryCode2().toUpperCase(Locale.ROOT);
         String regex = String.format("[A-Z]{4}%s[0-9A-Z]{2}(?:[0-9A-Z]{3})?", countryCode);
         return faker.regexify(regex);
     }
