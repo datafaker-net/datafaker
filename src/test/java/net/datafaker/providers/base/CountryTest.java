@@ -1,12 +1,17 @@
 package net.datafaker.providers.base;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.net.URL;
 import java.util.Collection;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class CountryTest extends BaseFakerTest {
 
@@ -14,8 +19,19 @@ class CountryTest extends BaseFakerTest {
 
     @RepeatedTest(10)
     void testFlag() {
-        String flag = country.flag();
-        assertThat(flag).matches("^https://flags.fmcdn\\.net/data/flags/w580/[a-zA-Z0-9_]+\\.png$");
+        assertThat(country.flag()).matches("^https://flagcdn\\.com/w580/[a-z]{2}+\\.png$");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"w580", "w320", "h80", "32x24"})
+    void testFlagWithSizeProducesValidUrl(String size) {
+        assertThatNoException().isThrownBy(() -> new URL(country.flag(size, Country.ImageFormat.PNG)));
+    }
+
+    @ParameterizedTest
+    @EnumSource(Country.ImageFormat.class)
+    void testFlagWithFormatProducesValidUrl(Country.ImageFormat format) {
+        assertThatNoException().isThrownBy(() -> new URL(country.flag("w320", format)));
     }
 
     @Test
