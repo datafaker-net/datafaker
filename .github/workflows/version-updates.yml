@@ -1,3 +1,5 @@
+name: Release Follow-up Version Updates
+
 on:
   workflow_run:
     workflows:

@@ -22,6 +22,10 @@ import java.util.regex.Pattern;
  *   <li>output path {@code docs/releases/{RELEASED_VERSION}.md} (must not already exist)</li>
  * </ul>
  *
+ * <p>Strips a leading {@code ## What's Changed} heading from the GitHub release body when
+ * present, so it is not duplicated under the template's {@code ## What's changed} heading.
+ * Leading and trailing blank lines around the body are trimmed.
+ *
  * <p>Strips {@code #} from bullet lines like {@code * #1234 ...} so issue numbers are not
  * treated as markdown headings.
  *
@@ -31,6 +35,8 @@ public final class ReleaseNotesGenerator {
 
     static final String WHATS_CHANGED = "## What's changed";
     private static final Pattern ISSUE_HASH_BULLET = Pattern.compile("^(\\s*[-*]\\s*)#(\\d+)");
+    private static final Pattern WHATS_CHANGED_HEADING =
+            Pattern.compile("^#{1,2}\\s+What's\\s+changed\\s*$", Pattern.CASE_INSENSITIVE);
 
     private ReleaseNotesGenerator() {
     }
@@ -52,18 +58,48 @@ public final class ReleaseNotesGenerator {
 
     static String generate(List<String> templateLines, String version, String date, List<String> bodyLines) {
         List<String> out = new ArrayList<>(templateLines.size() + bodyLines.size());
+        List<String> preparedBody = prepareBodyLines(bodyLines);
         boolean inserted = false;
         for (String line : templateLines) {
             out.add(line.replace("X.Y.Z", version).replace("dd-mm-yyyy", date));
             if (!inserted && WHATS_CHANGED.equals(out.get(out.size() - 1))) {
-                out.add("");
-                for (String bodyLine : bodyLines) {
-                    out.add(stripIssueHash(bodyLine));
+                if (!preparedBody.isEmpty()) {
+                    out.add("");
+                    for (String bodyLine : preparedBody) {
+                        out.add(stripIssueHash(bodyLine));
+                    }
                 }
                 inserted = true;
             }
         }
         return String.join("\n", out) + "\n";
+    }
+
+    static List<String> prepareBodyLines(List<String> bodyLines) {
+        List<String> lines = new ArrayList<>(bodyLines);
+        trimLeadingBlankLines(lines);
+        if (!lines.isEmpty() && isWhatsChangedHeading(lines.get(0))) {
+            lines.remove(0);
+            trimLeadingBlankLines(lines);
+        }
+        trimTrailingBlankLines(lines);
+        return lines;
+    }
+
+    static boolean isWhatsChangedHeading(String line) {
+        return WHATS_CHANGED_HEADING.matcher(line.trim()).matches();
+    }
+
+    private static void trimLeadingBlankLines(List<String> lines) {
+        while (!lines.isEmpty() && lines.get(0).isBlank()) {
+            lines.remove(0);
+        }
+    }
+
+    private static void trimTrailingBlankLines(List<String> lines) {
+        while (!lines.isEmpty() && lines.get(lines.size() - 1).isBlank()) {
+            lines.remove(lines.size() - 1);
+        }
     }
 
     static String stripIssueHash(String line) {

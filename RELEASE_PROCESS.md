@@ -13,19 +13,21 @@ The release process is now driven by GitHub Releases:
 4. Set the release title (can be the same as the tag)
 5. Add a description of the changes (optional - will be enhanced by automated changelog)
 6. Click "Publish release"
-7. Update documentation:
-   - At least files
-     * `docs/releases/current.version.md`
-     * `docs/releases/next.version-SNAPSHOT.md`
-     * `mkdocs.yml`
-   - And probably file `docs/documentation/providers.md` (if new providers have been added)
 
-The automated workflow will:
+The automated workflow will then:
 1. Extract the version from the tag
 2. Update the Maven project version
 3. Build and deploy to Maven Central
 4. Generate a changelog and add it to the release notes
-5. Create a PR to update the pom.xml to the next SNAPSHOT version
+
+Followed by a separate job which will:
+1. Create a PR to update the pom.xml to the next SNAPSHOT version
+2. Update documentation:
+   - At least files
+     * `docs/releases/current.version.md`
+     * `docs/releases/next.version-SNAPSHOT.md`
+     * `mkdocs.yml` (see also [`material/README.md`](material/README.md) for docs site / theme dependency updates)
+     * `docs/documentation/providers.md`
 
 ## Requirements
 
