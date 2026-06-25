@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ReleaseNotesGeneratorTest {
@@ -63,6 +64,54 @@ class ReleaseNotesGeneratorTest {
 
         assertTrue(result.contains("## Not a bullet"));
         assertTrue(result.contains("* no hash here"));
+    }
+
+    @Test
+    void generateStripsDuplicateWhatsChangedHeading() {
+        String result = ReleaseNotesGenerator.generate(
+            TEMPLATE,
+            "2.7.0",
+            "24-06-2026",
+            List.of(
+                "## What's Changed",
+                "",
+                "* Fix bug",
+                "* Add feature"
+            )
+        );
+
+        assertTrue(result.contains("""
+            ## What's changed
+
+            * Fix bug
+            * Add feature
+            """));
+        assertFalse(result.contains("What's Changed"));
+    }
+
+    @Test
+    void generateStripsLeadingAndTrailingBlankLinesFromBody() {
+        String result = ReleaseNotesGenerator.generate(
+            TEMPLATE,
+            "2.7.0",
+            "24-06-2026",
+            List.of(
+                "",
+                "## What's Changed",
+                "",
+                "",
+                "* Fix bug",
+                ""
+            )
+        );
+
+        assertTrue(result.contains("""
+            ## What's changed
+
+            * Fix bug
+
+            ## New contributors
+            """));
     }
 
     @Test
