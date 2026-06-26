@@ -89,8 +89,13 @@ public class FakeValuesService {
      */
     private static final Map<CacheKey, ValueResolver> RECIPE_MAP = new CopyOnWriteMap<>(HashMap::new);
 
-    /** L2: per-instance materialized cache — resolvers pre-bound to this Faker's providers for fast repeated calls. */
-    private final Map<String, ValueResolver> instanceMap = new CopyOnWriteMap<>(HashMap::new);
+    /**
+     * L2: per-instance materialized cache — resolvers pre-bound to a root's providers for fast repeated calls.
+     * Each entry records the root/context it was materialized for; a hit is reused only when both identities
+     * match the current call, so a FakeValuesService shared across Fakers (different root/context) never serves
+     * a resolver bound to the wrong root. On mismatch the entry is recomputed and overwritten.
+     */
+    private final Map<String, L2Entry> instanceMap = new CopyOnWriteMap<>(HashMap::new);
 
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
@@ -603,17 +608,17 @@ public class FakeValuesService {
                 continue;
             }
             final Object resolved;
-            // L2: per-instance hit — fast, provider already bound
-            final ValueResolver fast = instanceMap.get(expr);
-            if (fast != null) {
-                resolved = fast.resolve(root, context);
+            // L2: per-instance hit — fast, provider already bound. Reused only when bound to the same root/context.
+            final L2Entry fast = instanceMap.get(expr);
+            if (fast != null && fast.root() == root && fast.context() == context) {
+                resolved = fast.resolver().resolve(root, context);
             } else {
                 final CacheKey cacheKey = new CacheKey(expr, context.getSingletonLocale());
                 // L1: static recipe hit — materialize once, store in L2
                 final ValueResolver recipe = RECIPE_MAP.get(cacheKey);
                 if (recipe != null) {
                     final ValueResolver materialized = root != null ? recipe.materialize(root) : recipe;
-                    if (root != null) instanceMap.put(expr, materialized);
+                    if (root != null) instanceMap.put(expr, new L2Entry(root, context, materialized));
                     resolved = materialized.resolve(root, context);
                 } else {
                     // Both miss: full discovery
@@ -628,7 +633,7 @@ public class FakeValuesService {
                     // resolveExpression stored recipe in RECIPE_MAP if cacheable; materialize for L2
                     final ValueResolver stored = RECIPE_MAP.get(cacheKey);
                     if (stored != null && root != null) {
-                        instanceMap.put(expr, stored.materialize(root));
+                        instanceMap.put(expr, new L2Entry(root, context, stored.materialize(root)));
                     }
                 }
             }
@@ -1186,6 +1191,10 @@ public class FakeValuesService {
     }
 
     private record CacheKey(String exp, SingletonLocale locale) {
+    }
+
+    /** L2 entry — a materialized resolver tied to the root/context it was bound to; identity-checked on reuse. */
+    private record L2Entry(ProviderRegistration root, FakerContext context, ValueResolver resolver) {
     }
 
     private interface ValueResolver {

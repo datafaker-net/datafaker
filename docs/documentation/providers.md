@@ -1,14 +1,14 @@
-# Fake Data Providers
+# Fake data providers
 
 #### Provider groups:
-
 - Base (Providers of everyday data)
 - Entertainment (Providers for movies, shows, books)
 - Food (Providers for different types of food)
+- Healthcare (Providers for different types of disease, medication, procedure, etc)
 - Sport (Providers for different types of sport)
 - Videogame (Video game providers)
 
-Number of providers per Datafaker version
+Number of providers per Datafaker version:
 
 | Version | Number of new providers | Total number of providers |
 |---------|-------------------------|---------------------------|
@@ -33,9 +33,9 @@ Number of providers per Datafaker version
 | 2.4.4 | 2 | 252 |
 | 2.5.0 | 1 | 253 |
 | 2.5.3 | 3 | 256 |
-| 2.6.0 | 2 | 258 |
+| 2.6.0 | 7 | 263 |
 
-Datafaker comes with a total of 258 data providers:
+Datafaker comes with a total of 263 data providers:
 
 | Name                                                                                        | Description                                                                                                                        | Group                                            | Since |
 |---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|-------|
@@ -78,6 +78,7 @@ Datafaker comes with a total of 258 data providers:
 |[Cannabis](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Cannabis.html)|                                                                                                                                    | Base                                             | 1.5.0 |
 |[Care Provider](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/healthcare/CareProvider.html)|                                                                                                                                    | Healthcare                                       | 2.3.0 |
 |[Cat](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Cat.html)|                                                                                                                                    | Base                                             | 0.8.0 |
+|[Cheese](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/food/Cheese.html)| Generates cheese-related fake data: type, texture, milk, color, name etc.                                                          | Food                                             | 2.6.0 |
 |[Chess](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/sport/Chess.html)|                                                                                                                                    | Sport                                            | 1.8.0 |
 |[Chiquito](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Chiquito.html)|                                                                                                                                    | Base                                             | 1.6.0 |
 |[Chuck Norris](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/ChuckNorris.html)|                                                                                                                                    | Entertainment                                    | 0.8.0 |
@@ -94,7 +95,7 @@ Datafaker comes with a total of 258 data providers:
 |[Construction](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Construction.html)|                                                                                                                                    | Base                                             | 1.5.0 |
 |[Control](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/Control.html)| Control is an action-adventure game developed by Remedy Entertainment and published by 505 Games.                                  | Videogame                                        | 1.7.0 |
 |[Cosmere](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Cosmere.html)| The cosmere is a fictional shared universe where several of Brandon Sanderson's books take place.                                  | Base                                             | 1.7.0 |
-|[Country](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Country.html)|                                                                                                                                    | Base                                             | 0.8.0 |
+|[Country](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Country.html)| Provides methods for generating country-related data such as names, codes, capitals, and flags.                                    | Base                                             | 0.8.0 |
 |[Cowboy Bebop](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/CowboyBebop.html)| Cowboy Bebop is a Japanese neo-noir science fiction anime television series, which originally ran from 1998 to 1999.               | Entertainment                                    | 1.8.0 |
 |[Credentials](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Credentials.html)| Generates credentials such as usernames, uids and passwords.                                                                       | Base                                             | 2.5.0 |
 |[Cricket](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/sport/Cricket.html)|                                                                                                                                    | Sport                                            | 1.7.0 |
@@ -104,6 +105,7 @@ Datafaker comes with a total of 258 data providers:
 |[Dark Souls](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/DarkSouls.html)|Dark Souls is a series of action role-playing games created by Hidetaka Miyazaki of FromSoftware and published by Bandai Namco Entertainment.| Videogame                                        | 1.5.0 |
 |[Date And Time](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/DateAndTime.html)| A generator of random dates.                                                                                                       | Base                                             | 0.8.0 |
 |[Dc Comics](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/DcComics.html)|                                                                                                                                    | Base                                             | 1.5.0 |
+|[Death Note](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/DeathNote.html)| Death Note is a Japanese manga series written by Tsugumi Ohba and illustrated by Takeshi Obata.                                    | Entertainment                                    | 2.6.0 |
 |[Demographic](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Demographic.html)|                                                                                                                                    | Base                                             | 0.8.0 |
 |[Departed](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/Departed.html)|                                                                                                                                    | Entertainment                                    | 1.5.0 |
 |[Dessert](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/food/Dessert.html)|                                                                                                                                    | Food                                             | 0.9.0 |
@@ -125,6 +127,7 @@ Datafaker comes with a total of 258 data providers:
 |[Elden Ring](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/EldenRing.html)| Elden Ring is a 2022 action role-playing game developed by FromSoftware and published by Bandai Namco Entertainment.               | Videogame                                        | 1.4.0 |
 |[Elder Scrolls](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/ElderScrolls.html)|The Elder Scrolls is a series of action role-playing video games primarily developed by Bethesda Game Studios and published by Bethesda Softworks.| Videogame                                        | 0.8.0 |
 |[Electrical Components](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/ElectricalComponents.html)|                                                                                                                                    | Base                                             | 1.4.0 |
+|[Emergency](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Emergency.html)| Generates emergency-related fake data: the nature of an emergency                                                                  | Base                                             | 2.6.0 |
 |[Emoji](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Emoji.html)| Emojis picked from <a href="http://unicode.org/Public/emoji/1.0/emoji-data.txt">Emoji 1.0</a>.                                     | Base                                             | 1.7.0 |
 |[England Foot Ball](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/sport/EnglandFootBall.html)|                                                                                                                                    | Sport                                            | 0.9.0 |
 |[Esports](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/Esports.html)| Esports, short for electronic sports, is a form of competition using video games.                                                  | Videogame                                        | 0.8.0 |
@@ -169,6 +172,7 @@ Datafaker comes with a total of 258 data providers:
 |[House](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/House.html)|                                                                                                                                    | Base                                             | 1.5.0 |
 |[How IMet Your Mother](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/HowIMetYourMother.html)|                                                                                                                                    | Entertainment                                    | 0.8.0 |
 |[How To Train Your Dragon](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/HowToTrainYourDragon.html)|How to Train Your Dragon is a 2010 American computer-animated action fantasy film loosely based on the 2003 book of the same name by Cressida Cowell.| Entertainment                                    | 1.8.0 |
+|[Http](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Http.html)| Faker for HTTP-related data: status codes and reason phrases, request/response headers,                                            | Base                                             | 2.6.0 |
 |[Ice Cream](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/food/IceCream.html)|                                                                                                                                    | Food                                             | 2.5.3 |
 |[Id Number](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/IdNumber.html)|                                                                                                                                    | Base                                             | 0.8.0 |
 |[Image](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Image.html)| Generates base64 encoded raster and vector images.                                                                                 | Base                                             | 2.3.0 |
@@ -277,6 +281,7 @@ Datafaker comes with a total of 258 data providers:
 |[Time](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Time.html)|                                                                                                                                    | Base                                             | 1.4.0 |
 |[Time And Date](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/TimeAndDate.html)| A generator of random times and dates.                                                                                             | Base                                             | 2.3.0 |
 |[Tire](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Tire.html)| Sources:                                                                                                                           | Base                                             | 2.0.2 |
+|[Tormenta](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/Tormenta.html)| Tormenta is a famous Brazilian RPG created in 1999 by Marcelo Cassaro,                                                             | Videogame                                        | 2.6.0 |
 |[Touhou](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/Touhou.html)|The Touhou Project, also known simply as Touhou, is a bullet hell shoot 'em up video game series created by one-man independent Japanese doujin soft developer Team Shanghai Alice.| Videogame                                        | 0.9.0 |
 |[Transport](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Transport.html)| Provides different kind of transport.                                                                                              | Base                                             | 2.0.0 |
 |[Tron](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/Tron.html)| Tron is a 1982 American science fiction action-adventure film.                                                                     | Entertainment                                    | 1.4.0 |

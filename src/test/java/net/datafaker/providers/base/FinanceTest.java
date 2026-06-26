@@ -1,8 +1,8 @@
 package net.datafaker.providers.base;
 
 import static de.speedbanking.bic.junit.jupiter.api.BicAssertions.assertThatBicIsValid;
+import static de.speedbanking.iban.junit.jupiter.api.IbanAssertions.assertThatIban;
 import static de.speedbanking.iban.junit.jupiter.api.IbanAssertions.assertThatIbanIsValid;
-import static de.speedbanking.iban.junit.jupiter.api.IbanAssertions.assertThatIbanOf;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.speedbanking.iban.Iban;
@@ -64,8 +64,7 @@ class FinanceTest extends BaseFakerTest {
     @Test
     void ibanWithCountryCode() {
         String ibanDe = finance.iban("DE");
-        assertThatIbanIsValid(ibanDe);
-        assertThatIbanOf(ibanDe)
+        assertThatIban(ibanDe)
             .hasCountryCode("DE")
             .hasLength(IbanRegistry.DE.getIbanLength())
             .matches("DE\\d{20}");
@@ -85,8 +84,7 @@ class FinanceTest extends BaseFakerTest {
         Set<String> ibanCountryCodes = Finance.ibanSupportedCountries();
         for (String givenCountryCode : ibanCountryCodes) {
             final String iban = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
-            assertThatIbanIsValid(iban);
-            assertThatIbanOf(iban)
+            assertThatIban(iban)
                 .hasCountryCode(givenCountryCode)
                 .hasLength(IbanRegistry.getByCode(givenCountryCode).getIbanLength());
         }
@@ -105,8 +103,7 @@ class FinanceTest extends BaseFakerTest {
         final String givenCountryCode = "CR";
         final BaseFaker faker = new BaseFaker();
         final String ibanFaker = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
-        assertThatIbanIsValid(ibanFaker);
-        assertThatIbanOf(ibanFaker)
+        assertThatIban(ibanFaker)
             .hasCountryCode(givenCountryCode)
             .hasLength(IbanRegistry.CR.getIbanLength());
     }

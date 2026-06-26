@@ -59,6 +59,10 @@ public interface EntertainmentProviders extends ProviderRegistration {
         return getProvider(CowboyBebop.class, CowboyBebop::new);
     }
 
+    default DeathNote deathNote() {
+        return getProvider(DeathNote.class, DeathNote::new);
+    }
+
     default Departed departed() {
         return getProvider(Departed.class, Departed::new);
     }

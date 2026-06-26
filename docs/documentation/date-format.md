@@ -5,18 +5,18 @@ Since 1.2.0 Datafaker supports specifying of date formats for dates and timestam
 
 === "Java"
 
-    ``` java 
+    ```java
     Faker faker = new Faker();
     System.out.println(faker.timeAndDate().future(1, TimeUnit.HOURS, "yyyy MM.dd mm:hh:ss"));
     System.out.println(faker.timeAndDate().past(1, TimeUnit.HOURS, "yyyy-MM-dd mm:hh:ss"));
     System.out.println(faker.timeAndDate().birthday(1, 99, "yyyy/MM/dd"));
     ```
 
-And also this feature could be used in expressions like
+This feature could also be used in expressions like:
 
 === "Java"
 
-    ``` java 
+    ```java
     faker.expression("#{date.past '15','SECONDS','dd/MM/yyyy hh:mm:ss'}");
     ```
 

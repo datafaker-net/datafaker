@@ -1,3 +1,5 @@
+name: Release Follow-up Version Updates
+
 on:
   workflow_run:
     workflows:
@@ -15,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
     - name: Set up Git
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -26,20 +28,87 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git checkout -b $BRANCH
-        # Get the current version
-        RELEASED_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout  | sed 's/-SNAPSHOT$//')
-        echo $RELEASED_VERSION
-        # Increment the MINOR version
+
+        # Derive released version from the latest GitHub release tag (canonical source of truth)
+        RELEASE_TAG=$(gh release list --limit 1 --json tagName -q '.[0].tagName')
+        echo "Release tag: $RELEASE_TAG"
+        RELEASED_VERSION="${RELEASE_TAG#v}"
+        echo "Released version: $RELEASED_VERSION"
+
+        RELEASE_BODY=$(gh release view "$RELEASE_TAG" --json body -q '.body' || { echo "WARNING: could not fetch release notes for tag '$RELEASE_TAG'; using placeholder." >&2; echo "Release notes coming soon."; })
+
+        TODAY=$(date +"%d-%m-%Y")
+        # Maven version bump to next snapshot
         ./mvnw build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0-SNAPSHOT
         git add pom.xml
         # Get the next version
         NEXT_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
         echo $NEXT_VERSION
-        # Replace version in README.md look for >, : (greater than, colon) followed by "2" period number period number (ex: 2.4.2) and replace it with the same leading char and current version
-        sed -i -E 's/([\>\:]{1})2\.[0-9]\.[0-9]/\1'"$RELEASED_VERSION"'/g' README.md
-        # Replace snapshot version in README.md look for "2" period number period number hyphen SNAPSHOT (ex: 2.4.2-SNAPSHOT) and replace it with the next version
-        sed -i -E 's/2\.[0-9]\.[0-9]-SNAPSHOT/'"$NEXT_VERSION"-SNAPSHOT'/g' README.md
+        # Replace version in README.md
+        sed -i -E 's/([>:])2\.[0-9]+\.[0-9]+/\1'"$RELEASED_VERSION"'/g' README.md
+        # Replace snapshot version in README.md
+        sed -i -E 's/[0-9]+\.[0-9]+\.[0-9]+-SNAPSHOT/'"$NEXT_VERSION"-SNAPSHOT'/g' README.md
         git add README.md
-        git commit -m "Released Datafaker $RELEASED_VERSION" -m "A release just completed, this PR updates the versions in pom.xml and README.md" --signoff
+
+        # Generate Providers Documentation
+        echo "Generating providers documentation..."
+        ./mvnw compile test-compile exec:java \
+          -Dexec.mainClass="net.datafaker.script.ProvidersDocsGenerator" \
+          -Dexec.classpathScope=test \
+          -q
+
+        # Copy generated file to docs directory
+        GENERATED_FILE="target/test-classes/providers.md"
+        TARGET_DOCS_FILE="docs/documentation/providers.md"
+
+        if [ -f "$GENERATED_FILE" ]; then
+          cp "$GENERATED_FILE" "$TARGET_DOCS_FILE"
+          git add "$TARGET_DOCS_FILE"
+          echo "Successfully generated and staged providers.md"
+        else
+          echo "ERROR: providers.md was not generated at $GENERATED_FILE"
+          exit 1
+        fi
+
+        # Release notes using template + cleanup
+        RELEASE_MD="docs/releases/${RELEASED_VERSION}.md"
+        if [ -f "$RELEASE_MD" ]; then
+          echo "ERROR: $RELEASE_MD already exists; refusing to overwrite."
+          exit 1
+        fi
+        RELEASE_BODY_FILE=$(mktemp)
+        echo "$RELEASE_BODY" > "$RELEASE_BODY_FILE"
+        ./mvnw test-compile exec:java \
+          -Dexec.mainClass="net.datafaker.script.ReleaseNotesGenerator" \
+          -Dexec.classpathScope=test \
+          -Dexec.args="${RELEASED_VERSION} ${TODAY} docs/releases/.RELEASE-template.md ${RELEASE_MD} ${RELEASE_BODY_FILE}" \
+          -q
+        rm -f "$RELEASE_BODY_FILE"
+        git add "$RELEASE_MD"
+
+        # Snapshot using template
+        SNAPSHOT_MD="docs/releases/${NEXT_VERSION}-SNAPSHOT.md"
+        if [ -f "$SNAPSHOT_MD" ]; then
+          echo "ERROR: $SNAPSHOT_MD already exists; refusing to overwrite."
+          exit 1
+        fi
+        cp docs/releases/.SNAPSHOT-template.md "$SNAPSHOT_MD"
+        sed -i "s/X\.Y\.Z-SNAPSHOT/${NEXT_VERSION}-SNAPSHOT/" "$SNAPSHOT_MD"
+        sed -i "s/dd-mm-yyyy/$TODAY/" "$SNAPSHOT_MD"
+        git add "$SNAPSHOT_MD"
+
+        # Update mkdocs.yml version metadata and Releases navigation
+        sed -i '/datafaker:/,/^[^ ]/{s/^\( *version: \).*/\1'"$RELEASED_VERSION"'/}' mkdocs.yml
+        sed -i '/datafaker:/,/^[^ ]/{s/^\( *snapshot: \).*/\1'"${NEXT_VERSION}-SNAPSHOT"'/}' mkdocs.yml
+        ./mvnw test-compile exec:java \
+          -Dexec.mainClass="net.datafaker.script.MkdocsReleaseNavUpdater" \
+          -Dexec.classpathScope=test \
+          -Dexec.args="${RELEASED_VERSION} ${NEXT_VERSION}-SNAPSHOT mkdocs.yml" \
+          -q
+        git add mkdocs.yml
+
+        git commit -m "Released Datafaker $RELEASED_VERSION" \
+                   -m "Updates versions, providers docs, release notes and MkDocs config." --signoff
+
         git push --set-upstream origin $BRANCH --force
         gh pr create --fill

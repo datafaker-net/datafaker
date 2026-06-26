@@ -1,5 +1,8 @@
 package net.datafaker;
 
+import net.datafaker.service.FakeValuesService;
+import net.datafaker.service.FakerContext;
+import net.datafaker.service.RandomService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -72,6 +75,27 @@ class SharedFakeValuesServiceTest {
         }
         for (Future<Void> f : futures) {
             f.get();
+        }
+    }
+
+    @Test
+    void sharedServiceAcrossRootsKeepsPerRootDeterminism() {
+        // One FakeValuesService driven by two different Faker roots with different contexts (seeds).
+        // The L2 cache is keyed by expression only, so it must verify root/context identity on a hit;
+        // otherwise root B would reuse a resolver bound to root A's providers and read A's random stream.
+        FakeValuesService shared = new FakeValuesService();
+        Faker a = new Faker(shared, new FakerContext(Locale.ENGLISH, new RandomService(new Random(42))));
+        Faker b = new Faker(shared, new FakerContext(Locale.ENGLISH, new RandomService(new Random(99))));
+
+        // References: independent Fakers (own service) with the same seeds and the same call sequence.
+        Faker refA = new Faker(Locale.ENGLISH, new Random(42));
+        Faker refB = new Faker(Locale.ENGLISH, new Random(99));
+
+        String expr = "#{Name.first_name} #{Name.last_name}";
+        for (int i = 0; i < 200; i++) {
+            // Interleave A and B on the shared service; each root must stay on its own random stream.
+            assertThat(a.expression(expr)).isEqualTo(refA.expression(expr));
+            assertThat(b.expression(expr)).isEqualTo(refB.expression(expr));
         }
     }
 

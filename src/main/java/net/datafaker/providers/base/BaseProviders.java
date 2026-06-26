@@ -285,6 +285,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(House.class, House::new);
     }
 
+    default Http http() {
+        return getProvider(Http.class, Http::new);
+    }
+
     default IdNumber idNumber() {
         return getProvider(IdNumber.class, IdNumber::new);
     }
