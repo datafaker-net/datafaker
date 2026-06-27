@@ -3,9 +3,9 @@ package net.datafaker.service;
 import net.datafaker.service.files.EnFile;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -42,7 +42,7 @@ public final class FakeValuesGrouping implements FakeValuesInterface {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Map get(String key) {
         Map result = null;
-        for (FakeValuesInterface fakeValues : fakeValues.getOrDefault(key, Collections.emptyList())) {
+        for (FakeValuesInterface fakeValues : fakeValues.getOrDefault(key, List.of())) {
             if (result == null) {
                 result = fakeValues.get(key);
             } else {

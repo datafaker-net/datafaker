@@ -42,8 +42,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
 import static java.util.Locale.ROOT;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINE;
@@ -264,7 +262,7 @@ public class FakeValuesService {
         }
         if (local2Add != null) {
             Object valueToCache = result;
-            Object curResult = key2fetchedObject.getOrDefault(local2Add, emptyMap()).get(key);
+            Object curResult = key2fetchedObject.getOrDefault(local2Add, Map.of()).get(key);
             if (curResult != null) {
                 return (T) result; // Strange... Why return result, not curResult?
             }
@@ -925,7 +923,7 @@ public class FakeValuesService {
         Map<String, Collection<Method>> classMethodsMap = CLASS_2_METHODS_CACHE.computeIfAbsent(clazz, (__) -> {
             Method[] classMethods = clazz.getMethods();
             Map<String, Collection<Method>> methodMap =
-                classMethods.length == 0 ? emptyMap() : new HashMap<>(classMethods.length);
+                classMethods.length == 0 ? Map.of() : new HashMap<>(classMethods.length);
             for (Method m : classMethods) {
                 String key = m.getName().toLowerCase(ROOT);
                 methodMap.computeIfAbsent(key, k -> new ArrayList<>()).add(m);
@@ -934,7 +932,7 @@ public class FakeValuesService {
             return methodMap;
         });
 
-        Collection<Method> methods = classMethodsMap.getOrDefault(name, emptyList());
+        Collection<Method> methods = classMethodsMap.getOrDefault(name, List.of());
         if (methods.isEmpty()) {
             LOG.fine(() -> "Didn't find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
             return null;

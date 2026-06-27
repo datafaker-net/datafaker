@@ -10,7 +10,6 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.text.Normalizer;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -135,7 +134,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         final List<String> prefixList = (prefixObj instanceof List<?> list
                 && list.stream().allMatch(String.class::isInstance))
                         ? list.stream().map(String.class::cast).toList()
-                        : Collections.emptyList();
+                        : List.of();
         if (prefixList.contains(parts[0])) {
             parts = Arrays.copyOfRange(parts, 1, parts.length);
         }
@@ -144,7 +143,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         final List<String> suffixList = (suffixObj instanceof List<?> list
                 && list.stream().allMatch(String.class::isInstance))
                         ? list.stream().map(String.class::cast).toList()
-                        : Collections.emptyList();
+                        : List.of();
         if (suffixList.contains(parts[parts.length - 1])) {
             parts = Arrays.copyOfRange(parts, 0, parts.length - 1);
         }

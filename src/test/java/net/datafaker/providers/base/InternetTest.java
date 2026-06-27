@@ -13,8 +13,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.Locale;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -129,9 +129,9 @@ class InternetTest {
 
         when(spyedFaker.fakeValuesService()).thenReturn(mockedFakeValuesService);
         when(mockedFakeValuesService.fetchObject("name.prefix", spyedFaker.getContext()))
-            .thenReturn(Collections.emptySet());
+            .thenReturn(Set.of());
         when(mockedFakeValuesService.fetchObject("name.suffix", spyedFaker.getContext()))
-            .thenReturn(Collections.emptySet());
+            .thenReturn(Set.of());
 
         String emailAddress = spyedFaker.internet().emailAddress("John McClane");
         assertThat(emailAddress).startsWith("john.mcclane@");

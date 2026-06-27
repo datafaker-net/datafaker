@@ -15,7 +15,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static java.util.Collections.emptyMap;
 import static net.datafaker.internal.helper.JavaNames.toJavaNames;
 
 public class FakeValues implements FakeValuesInterface {
@@ -82,7 +81,7 @@ public class FakeValues implements FakeValuesInterface {
                 return result;
             }
         }
-        return emptyMap();
+        return Map.of();
     }
 
     private void enrichMapWithJavaNames(Map<String, Object> result) {

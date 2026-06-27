@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -132,7 +131,7 @@ class CredentialsTest {
         final List<String> list = (obj instanceof List<?> l
                 && l.stream().allMatch(String.class::isInstance))
                         ? l.stream().map(String.class::cast).toList()
-                        : Collections.emptyList();
+                        : List.of();
 
         assertThat(faker.credentials().weakPassword()).isIn(list);
     }

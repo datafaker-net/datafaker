@@ -271,13 +271,13 @@ INSERT INTO "MyTable" ("ints") VALUES (ARRAY[1, 2, 3]);
 === "Java"
 
     ```java
-    Schema.of(field("names_multiset", () -> Collections.singleton("hello")));
+    Schema.of(field("names_multiset", () -> Set.of("hello")));
     ```
 
 === "Kotlin"
 
     ```kotlin
-    val schema: Schema<String, Set<String>> = Schema.of(field("names_multiset", Supplier { Collections.singleton("hello") } ))
+    val schema: Schema<String, Set<String>> = Schema.of(field("names_multiset", Supplier { Set.of("hello") } ))
     ```
 
 will lead to
