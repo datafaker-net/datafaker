@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.annotations.Deterministic;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -154,5 +155,104 @@ class CustomFakerTest {
         assertThat(insectCounts.values().stream().mapToInt(f -> f).sum()).as(() -> "Insects: " + insectCounts).isEqualTo(count);
         assertThat(insectCounts.get("Driver ant")).as(() -> "Insects: " + insectCounts).isGreaterThan(insectCounts.get("Fire ant"));
         assertThat(insectCounts.get("Fire ant")).as(() -> "Insects: " + insectCounts).isGreaterThan(insectCounts.get("Harvester ant"));
+    }
+
+    public static final class HolderA {
+        public static final class WidgetCustomTestFaker extends AbstractProvider<BaseProviders> {
+            public WidgetCustomTestFaker(BaseProviders faker) {
+                super(faker);
+            }
+
+            @Deterministic
+            public String value() {
+                return "A-widget";
+            }
+        }
+    }
+
+    public static final class HolderB {
+        public static final class WidgetCustomTestFaker extends AbstractProvider<BaseProviders> {
+            public WidgetCustomTestFaker(BaseProviders faker) {
+                super(faker);
+            }
+
+            @Deterministic
+            public String value() {
+                return "B-widget";
+            }
+        }
+    }
+
+    public static final class FakerA extends BaseFaker {
+        public FakerA() {
+            super(Locale.ENGLISH);
+        }
+
+        public HolderA.WidgetCustomTestFaker widget() {
+            return getProvider(HolderA.WidgetCustomTestFaker.class, HolderA.WidgetCustomTestFaker::new);
+        }
+    }
+
+    public static final class FakerB extends BaseFaker {
+        public FakerB() {
+            super(Locale.ENGLISH);
+        }
+
+        public HolderB.WidgetCustomTestFaker widget() {
+            return getProvider(HolderB.WidgetCustomTestFaker.class, HolderB.WidgetCustomTestFaker::new);
+        }
+    }
+
+    public static final class HolderG {
+        public static final class GizmoCustomTestFaker extends AbstractProvider<BaseProviders> {
+            public GizmoCustomTestFaker(BaseProviders faker) {
+                super(faker);
+            }
+
+            @Deterministic
+            public String value() {
+                return "G-value";
+            }
+        }
+    }
+
+    public static final class FakerG extends BaseFaker {
+        public FakerG() {
+            super(Locale.ENGLISH);
+        }
+
+        public HolderG.GizmoCustomTestFaker gizmo() {
+            return getProvider(HolderG.GizmoCustomTestFaker.class, HolderG.GizmoCustomTestFaker::new);
+        }
+    }
+
+    @Test
+    void recipeMustNotLeakAcrossRootsWithSameSimpleProviderName() {
+        // Need for multiple iteration because of possible cache issues
+        for (int i = 0; i < 100; i++) {
+            FakerA a = new FakerA();
+            FakerB b = new FakerB();
+
+            // Sanity: each faker resolves its own provider correctly in isolation.
+            assertThat(a.expression("#{Widget.value}")).isEqualTo("A-widget"); // populates static recipe
+
+            // HolderA.Widget#value against a HolderB.Widget instance.
+            assertThat(b.expression("#{Widget.value}")).isEqualTo("B-widget");
+        }
+    }
+
+    @Test
+    void recipeMustNotNpeWhenOtherRootLacksTheProvider() {
+        // Need for multiple iteration because of possible cache issues
+        for (int i = 0; i < 100; i++) {
+            FakerG withGizmo = new FakerG();
+            BaseFaker plain = new BaseFaker(Locale.ENGLISH);
+
+            assertThat(withGizmo.expression("#{Gizmo.value}")).isEqualTo("G-value"); // populates static recipe
+
+            assertThatThrownBy(() -> plain.expression("#{Gizmo.value}"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Unable to resolve");
+        }
     }
 }
