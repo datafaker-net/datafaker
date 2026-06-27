@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.annotations.Deterministic;
+import net.datafaker.internal.helper.LuhnCheckDigit;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -79,14 +80,8 @@ public class Finance extends AbstractProvider<BaseProviders> {
         String value = resolve(key);
         final String template = faker.numerify(value);
 
-        int[] digits = template.chars().filter(Character::isDigit).boxed().mapToInt(t -> t - '0').toArray();
-        int luhnSum = 0;
-        int multiplier = 1;
-        for (int i = digits.length - 1; i >= 0; i--) {
-            multiplier = (multiplier == 2 ? 1 : 2);
-            luhnSum += sumOfDigits(digits[i] * multiplier);
-        }
-        int luhnDigit = (10 - (luhnSum % 10)) % 10;
+        int luhnDigit = LuhnCheckDigit.calculate(template);
+
         StringBuilder res = new StringBuilder(template.length());
         for (int i = 0; i < template.length(); i++) {
             final char c = template.charAt(i);
@@ -97,15 +92,6 @@ public class Finance extends AbstractProvider<BaseProviders> {
             }
         }
         return res.toString().trim();
-    }
-
-    private int sumOfDigits(int value) {
-        int res = 0;
-        while (value > 0) {
-            res += value % 10;
-            value /= 10;
-        }
-        return res;
     }
 
     /**
