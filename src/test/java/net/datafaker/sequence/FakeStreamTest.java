@@ -28,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
@@ -101,7 +100,7 @@ class FakeStreamTest {
         List<Supplier<String>> suppliers = List.of(() -> faker.name().firstName(), () -> faker.name().lastName());
         Stream<String> stream = faker.stream(suppliers).len(3).generate();
 
-        assertThat(stream.collect(Collectors.toList())).hasSize(3);
+        assertThat(stream.toList()).hasSize(3);
     }
 
     @Test
@@ -115,7 +114,7 @@ class FakeStreamTest {
             .maxLen(20)
             .generate();
 
-        List<String> namesList = names.collect(Collectors.toList());
+        List<String> namesList = names.toList();
         assertThat(namesList).hasSize(14);
         assertThat(namesList.get(0)).isEqualTo("Flor");
         assertThat(namesList.get(1)).isEqualTo("Brian");

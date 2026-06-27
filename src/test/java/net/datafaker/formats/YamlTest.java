@@ -15,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -99,7 +98,7 @@ class YamlTest {
     void generateFromFakeSequenceWithCollection(int limit) {
         final BaseFaker faker = new BaseFaker();
         Schema<Name, List<String>> schema = Schema.of(field("firstNames", name -> IntStream.rangeClosed(1, limit)
-            .mapToObj(it -> name.firstName()).collect(Collectors.toList())));
+            .mapToObj(it -> name.firstName()).toList()));
 
         YamlTransformer<Name> transformer = new YamlTransformer<>();
         String yaml =

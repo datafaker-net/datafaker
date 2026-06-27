@@ -14,7 +14,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static net.datafaker.transformations.Field.compositeField;
@@ -120,12 +119,12 @@ class XmlTest {
                         () -> List.of(
                             field("firstname", () -> faker.name().firstName()),
                             field("lastname", () -> faker.name().lastName()),
-                            field("addresses", () -> address.get().collect(Collectors.toList())))))
+                            field("addresses", () -> address.get().toList()))))
                 .maxLen(3).build();
 
 
         XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
-        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().collect(Collectors.toList()))), 1).toString();
+        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().toList())), 1).toString();
         assertThat(xml).isNotEmpty();
         int numberOfLines = getNumberOfLines(xml);
         assertThat(numberOfLines).isEqualTo(65);
@@ -151,11 +150,11 @@ class XmlTest {
                         new Field[]{
                             field("firstname", () -> faker.name().firstName()),
                             field("lastname", () -> faker.name().lastName()),
-                            field(null, () -> List.of(field("addresses", () -> address.get().collect(Collectors.toList()))))}))
+                            field(null, () -> List.of(field("addresses", () -> address.get().toList())))}))
                 .maxLen(3).build();
 
         XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
-        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().collect(Collectors.toList()))), 1).toString();
+        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().toList())), 1).toString();
         assertThat(xml).isNotEmpty();
         int numberOfLines = getNumberOfLines(xml);
         assertThat(numberOfLines).isEqualTo(23);

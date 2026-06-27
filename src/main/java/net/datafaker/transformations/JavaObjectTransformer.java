@@ -150,7 +150,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
     @Override
     public Collection<Object> generate(Schema<Object, ?> schema, int limit) {
-        return this.generateStream(schema, limit).collect(Collectors.toList());
+        return this.generateStream(schema, limit).toList();
     }
 
     @Override

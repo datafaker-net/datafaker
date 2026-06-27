@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.Integer.parseInt;
@@ -161,7 +160,7 @@ class InternetTest {
         }
         final String safeDomain = faker.internet().resolve("internet.safe_email");
 
-        assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).collect(Collectors.toList()))
+        assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).toList())
             .isNotEmpty();
     }
 
@@ -176,7 +175,7 @@ class InternetTest {
         }
         final String safeDomain = faker.internet().resolve("internet.safe_email");
 
-        assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).collect(Collectors.toList()))
+        assertThat(emails.stream().filter(t -> t.endsWith("@" + safeDomain)).toList())
             .isNotEmpty();
     }
 

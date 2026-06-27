@@ -356,9 +356,9 @@ The following is an example on how to use it:
         field("lastname", () -> faker.name().lastName()),
         field("phones", () -> Schema.of(
             field("worknumbers", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get())
-                .collect(Collectors.toList())),
+                .toList()),
             field("cellphones", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get())
-                .collect(Collectors.toList()))
+                .toList())
         )),
         field("address", () -> Schema.of(
             field("city", () -> faker.address().city()),
@@ -549,9 +549,9 @@ The following is an example on how to use it:
         field("lastname", () -> faker.name().lastName()),
         field("phones", () -> Schema.of(
             field("worknumbers", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get())
-                .collect(Collectors.toList())),
+                .toList()),
             field("cellphones", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get())
-                .collect(Collectors.toList()))
+                .toList())
         )),
         field("address", () -> Schema.of(
             field("city", () -> faker.address().city()),
