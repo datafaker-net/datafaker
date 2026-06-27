@@ -2,8 +2,9 @@ package net.datafaker.providers.base;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import net.datafaker.junit.FakerSource;
 import org.apache.commons.validator.routines.ISINValidator;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.params.ParameterizedTest;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,13 +23,14 @@ class StockTest extends BaseFakerTest {
                 TestSpec.of(stock::exchanges, "stock.exchanges"));
     }
 
-    @RepeatedTest(100)
-    void isin() {
-        assertThat(faker.stock().isin())
+    @ParameterizedTest(name = "[{index}] {0}")
+    @FakerSource(code = "stock#isin", repeat = 100)
+    void isin(String isin) {
+        assertThat(isin)
             .matches("^[A-Z]{2}[0-9A-Z]{9}[0-9]$")
-            .satisfies(isin -> assertThat(ISIN_VALIDATOR.isValid(isin))
-            .as("ISIN %s should be valid according to %s", isin, ISIN_VALIDATOR.getClass().getName())
-            .isTrue());
+            .satisfies(i -> assertThat(ISIN_VALIDATOR.isValid(i))
+                .as("ISIN %s should be valid according to %s", i, ISIN_VALIDATOR.getClass().getName())
+                .isTrue());
     }
 
 }
