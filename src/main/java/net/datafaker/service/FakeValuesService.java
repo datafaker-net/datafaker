@@ -142,8 +142,8 @@ public class FakeValuesService {
     public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
         final Object o = fetchObject(key, context);
-        if (o instanceof List) {
-            valuesArray = (List<?>) o;
+        if (o instanceof List<?> list) {
+            valuesArray = list;
             final int size = valuesArray.size();
             if (size == 0) {
                 return null;
@@ -193,8 +193,8 @@ public class FakeValuesService {
         Object o = fetchObject(key, context);
         String str;
         if (o == null) return defaultIfNull;
-        if (o instanceof List) {
-            final List<String> values = (List<String>) o;
+        if (o instanceof List<?> list) {
+            final List<String> values = (List<String>) list;
             final int size = values.size();
             return switch (size) {
                 case 0 -> defaultIfNull;
@@ -237,8 +237,8 @@ public class FakeValuesService {
             Object currentValue = fakeValuesInterfaceMap.get(sLocale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
-                if (currentValue instanceof Map) {
-                    currentValue = ((Map<?, ?>) currentValue).get(currentPath);
+                if (currentValue instanceof Map<?, ?> map) {
+                    currentValue = map.get(currentPath);
                 } else {
                     currentValue = ((FakeValuesInterface) currentValue).get(currentPath);
                 }
@@ -670,14 +670,14 @@ public class FakeValuesService {
     private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, String expr) {
         Object res = resolveExpression(directive, args, current, root, context);
         LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, expr: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, expr, res));
-        if (res instanceof CharSequence) {
-            if (((CharSequence) res).isEmpty()) {
+        if (res instanceof CharSequence charSequence) {
+            if (charSequence.isEmpty()) {
                 regexp2SupplierMap.put(expr, new RegExpContext(root, context, EMPTY_STRING));
             }
             return res;
         }
-        if (res instanceof List) {
-            Iterator<ValueResolver> it = ((List<ValueResolver>) res).iterator();
+        if (res instanceof List<?> list) {
+            Iterator<ValueResolver> it = ((List<ValueResolver>) list).iterator();
             while (it.hasNext()) {
                 Object valueResolver = it.next();
                 Object value;
@@ -716,8 +716,8 @@ public class FakeValuesService {
             // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
             // #{ssn_valid} on IdNumber
             if (dotIndex == -1) {
-                if (current instanceof AbstractProvider) {
-                    final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
+                if (current instanceof AbstractProvider<?> provider) {
+                    final Method method = BaseFaker.getMethod(provider, directive);
                     if (method != null) {
                         res.add(new MethodResolver(method, current, args));
                         return res;

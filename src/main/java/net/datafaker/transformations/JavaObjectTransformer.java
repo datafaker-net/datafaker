@@ -28,10 +28,10 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
     @Override
     public Object apply(Object input, Schema<Object, ?> schema) {
-        Class clazz;
+        Class<?> clazz;
         Object result = null;
-        if (input instanceof Class) {
-            clazz = (Class) input;
+        if (input instanceof Class<?> inputClass) {
+            clazz = inputClass;
         } else {
             clazz = input.getClass();
             result = input;

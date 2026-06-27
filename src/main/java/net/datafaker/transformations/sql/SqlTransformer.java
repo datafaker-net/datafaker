@@ -118,9 +118,9 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                 }
             }
 
-            if (fields[i] instanceof SimpleField) {
+            if (fields[i] instanceof SimpleField<?, ?> simpleField) {
                 //noinspection unchecked
-                Object value = ((SimpleField<Object, ?>) fields[i]).transform(input);
+                Object value = ((SimpleField<Object, ?>) simpleField).transform(input);
                 Class<?> clazz = value == null ? null : value.getClass();
                 if (value == null
                     || value instanceof Number

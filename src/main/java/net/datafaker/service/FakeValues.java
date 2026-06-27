@@ -90,9 +90,9 @@ public class FakeValues implements FakeValuesInterface {
             for (Map.Entry<String, Object> entry : result.entrySet()) {
                 final String key = entry.getKey();
                 Object value = entry.getValue();
-                if (entry.getValue() instanceof Map) {
+                if (value instanceof Map<?, ?> rawMap) {
                     @SuppressWarnings("unchecked")
-                    Map<String, Object> entryMap = (Map<String, Object>) entry.getValue();
+                    Map<String, Object> entryMap = (Map<String, Object>) rawMap;
                     prefixUnqualifiedExpressions(entryMap, key);
                     Map<String, Object> nestedMap = new HashMap<>(entryMap.size());
                     for (Map.Entry<String, Object> e: entryMap.entrySet()) {

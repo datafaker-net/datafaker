@@ -27,12 +27,12 @@ public final class FakeValuesGrouping implements FakeValuesInterface {
     }
 
     public void add(FakeValuesInterface fakeValue) {
-        if (fakeValue instanceof FakeValues) {
-            ((FakeValues) fakeValue).getPaths().forEach(p ->
+        if (fakeValue instanceof FakeValues values) {
+            values.getPaths().forEach(p ->
             fakeValues.computeIfAbsent(p, key -> new HashSet<>())
                 .add(fakeValue));
-        } else if (fakeValue instanceof FakeValuesGrouping) {
-            fakeValues.putAll(((FakeValuesGrouping) fakeValue).fakeValues);
+        } else if (fakeValue instanceof FakeValuesGrouping grouping) {
+            fakeValues.putAll(grouping.fakeValues);
         } else {
             throw new RuntimeException(fakeValues.getClass().getName() + " not supported (please raise an issue)");
         }

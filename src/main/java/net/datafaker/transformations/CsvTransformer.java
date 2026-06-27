@@ -61,8 +61,8 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private void addLine(StringBuilder sb, Object transform) {
-        if (transform instanceof CharSequence) {
-            addCharSequence(sb, (CharSequence) transform);
+        if (transform instanceof CharSequence charSequence) {
+            addCharSequence(sb, charSequence);
         } else {
             sb.append(transform);
         }

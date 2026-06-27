@@ -85,8 +85,8 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
 
         final String tag = xmlNode.getName().trim();
         sb.append("<").append(tag);
-        if (xmlNode instanceof CompositeField) {
-            Field<IN, ?>[] attrs = ((CompositeField) xmlNode).getFields();
+        if (xmlNode instanceof CompositeField compositeField) {
+            Field<IN, ?>[] attrs = compositeField.getFields();
             applyAttributes(input, sb, attrs);
 
             xmlNode = Arrays.stream(attrs)
@@ -120,8 +120,8 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
                 sb.append("</").append(tag).append(">");
             }
 
-        } else if (xmlNodeValue instanceof String) {
-            applyValue(sb, tag, (String) xmlNodeValue);
+        } else if (xmlNodeValue instanceof String stringValue) {
+            applyValue(sb, tag, stringValue);
         } else if (xmlNodeValue == null) {
             applyValue(sb, tag, null);
         }
