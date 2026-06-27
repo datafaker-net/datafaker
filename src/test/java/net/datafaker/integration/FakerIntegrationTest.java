@@ -93,7 +93,7 @@ class FakerIntegrationTest {
         final Faker faker = init(locale, random);
 
         Method[] methods = faker.getClass().getMethods();
-        for (Method provider : methods) {
+        for (var provider : methods) {
             if (AbstractProvider.class.isAssignableFrom(provider.getReturnType()) && provider.getParameterCount() == 0) {
                 log.fine(() -> "    (%s), method: %s.%s()".formatted(locale, provider.getDeclaringClass().getSimpleName(), provider.getName()));
 
@@ -111,7 +111,7 @@ class FakerIntegrationTest {
             withReturnType(String.class),
             withParametersCount(0));
 
-        for (Method method : methodsThatReturnStrings) {
+        for (var method : methodsThatReturnStrings) {
             if (isExcepted(provider, method, locale)) {
                 continue;
             }
@@ -169,7 +169,7 @@ class FakerIntegrationTest {
         arguments.add(Arguments.of(null, null));
 
         String[] ymlFiles = requireNonNull(new File("./src/main/resources").list());
-        for (String ymlFileName : ymlFiles) {
+        for (var ymlFileName : ymlFiles) {
             if (ymlFileName.endsWith(".yml") && !ymlFileName.startsWith("_")) {
                 String locale = substringBefore(ymlFileName, ".").replace("-", "_");
                 arguments.add(Arguments.of(new Locale(locale), null));

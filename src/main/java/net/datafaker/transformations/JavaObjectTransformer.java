@@ -78,7 +78,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
             Consumer<Object> consumer = SCHEMA2CONSUMER.get(schema);
             if (consumer == null) {
                 final Field<Object, ?>[] fields = schema.getFields();
-                final Map<String, java.lang.reflect.Field> name2ClassField = Stream.of(clazz.getDeclaredFields()).collect(
+                var name2ClassField = Stream.of(clazz.getDeclaredFields()).collect(
                     Collectors.toMap(java.lang.reflect.Field::getName, Function.identity()));
                 final java.lang.reflect.Field[] rFields = new java.lang.reflect.Field[fields.length];
                 for (int i = 0; i < fields.length; i++) {

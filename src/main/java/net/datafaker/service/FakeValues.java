@@ -40,7 +40,7 @@ public class FakeValues implements FakeValuesInterface {
         if (url == null) {
             return null;
         }
-        try (InputStream stream = url.openStream()) {
+        try (var stream = url.openStream()) {
             Map<String, Object> result = readFromStream(stream);
             enrichMapWithJavaNames(result);
             return result;
@@ -63,12 +63,12 @@ public class FakeValues implements FakeValuesInterface {
                 "/" + locale.getLanguage() + ".yml"};
 
         for (String path : paths) {
-            try (InputStream stream = getClass().getResourceAsStream(path)) {
+            try (var stream = getClass().getResourceAsStream(path)) {
                 if (stream != null) {
                     result = readFromStream(stream);
                     enrichMapWithJavaNames(result);
                 } else {
-                    try (InputStream stream2 = getClass().getClassLoader().getResourceAsStream(path)) {
+                    try (var stream2 = getClass().getClassLoader().getResourceAsStream(path)) {
                         result = readFromStream(stream2);
                         enrichMapWithJavaNames(result);
                     }
@@ -87,7 +87,7 @@ public class FakeValues implements FakeValuesInterface {
     private void enrichMapWithJavaNames(Map<String, Object> result) {
         if (result != null) {
             Map<String, Object> map = null;
-            for (Map.Entry<String, Object> entry : result.entrySet()) {
+            for (var entry : result.entrySet()) {
                 final String key = entry.getKey();
                 Object value = entry.getValue();
                 if (value instanceof Map<?, ?> rawMap) {
@@ -95,7 +95,7 @@ public class FakeValues implements FakeValuesInterface {
                     Map<String, Object> entryMap = (Map<String, Object>) rawMap;
                     prefixUnqualifiedExpressions(entryMap, key);
                     Map<String, Object> nestedMap = new HashMap<>(entryMap.size());
-                    for (Map.Entry<String, Object> e: entryMap.entrySet()) {
+                    for (var e : entryMap.entrySet()) {
                         nestedMap.put(toJavaNames(e.getKey(), true), e.getValue());
                     }
                     entryMap.putAll(nestedMap);

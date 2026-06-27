@@ -30,7 +30,7 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
-        for (IN in : input) {
+        for (var in : input) {
             data.add(apply(in, schema));
         }
 

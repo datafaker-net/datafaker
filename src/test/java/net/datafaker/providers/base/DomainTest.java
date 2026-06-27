@@ -16,7 +16,7 @@ class DomainTest {
     @Test
     void testFirstLevelDomain() {
         String[] components = faker.domain().firstLevelDomain("example").split("\\.");
-        for (String str : components) {
+        for (var str : components) {
             assert (!str.isEmpty());
         }
     }
@@ -30,7 +30,7 @@ class DomainTest {
     @Test
     void testSecondLevelDomain() {
         String[] components = faker.domain().secondLevelDomain("example").split("\\.");
-        for (String str : components) {
+        for (var str : components) {
             assert (!str.isEmpty());
         }
     }
@@ -45,7 +45,7 @@ class DomainTest {
     @Test
     void testFullDomain() {
         String[] components = faker.domain().fullDomain("example").split("\\.");
-        for (String str : components) {
+        for (var str : components) {
             assert (!str.isEmpty());
         }
     }
@@ -59,7 +59,7 @@ class DomainTest {
     @Test
     void testValidDomain() {
         String[] components = faker.domain().validDomain("example").split("\\.");
-        for (String str : components) {
+        for (var str : components) {
             assert (!str.isEmpty());
         }
     }

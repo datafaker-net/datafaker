@@ -372,7 +372,7 @@ class FakerTest {
                      IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
-            for (Method m : methods) {
+            for (var m : methods) {
                 final var set = new HashSet<>();
                 try {
                     int currentSize = 0;

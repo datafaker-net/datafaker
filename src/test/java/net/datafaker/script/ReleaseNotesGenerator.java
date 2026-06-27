@@ -60,12 +60,12 @@ public final class ReleaseNotesGenerator {
         List<String> out = new ArrayList<>(templateLines.size() + bodyLines.size());
         List<String> preparedBody = prepareBodyLines(bodyLines);
         boolean inserted = false;
-        for (String line : templateLines) {
+        for (var line : templateLines) {
             out.add(line.replace("X.Y.Z", version).replace("dd-mm-yyyy", date));
             if (!inserted && WHATS_CHANGED.equals(out.get(out.size() - 1))) {
                 if (!preparedBody.isEmpty()) {
                     out.add("");
-                    for (String bodyLine : preparedBody) {
+                    for (var bodyLine : preparedBody) {
                         out.add(stripIssueHash(bodyLine));
                     }
                 }

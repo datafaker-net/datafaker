@@ -521,7 +521,7 @@ class InternetTest {
     @Test
     void testUserAgent() {
         Internet.UserAgent[] agents = Internet.UserAgent.values();
-        for (Internet.UserAgent agent : agents) {
+        for (var agent : agents) {
             assertThat(faker.internet().userAgent(agent)).isNotEmpty();
         }
 
@@ -532,7 +532,7 @@ class InternetTest {
     @Test
     void testBotUserAgent() {
         Internet.BotUserAgent[] agents = Internet.BotUserAgent.values();
-        for (Internet.BotUserAgent agent : agents) {
+        for (var agent : agents) {
             assertThat(faker.internet().botUserAgent(agent)).isNotEmpty();
         }
 

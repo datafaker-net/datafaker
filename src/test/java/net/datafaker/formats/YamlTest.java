@@ -119,7 +119,7 @@ class YamlTest {
     @SafeVarargs
     private static Map<Supplier<String>, Supplier<Object>> map(Map.Entry<Supplier<String>, Supplier<Object>>... entries) {
         Map<Supplier<String>, Supplier<Object>> map = new LinkedHashMap<>();
-        for (Map.Entry<Supplier<String>, Supplier<Object>> entry : entries) {
+        for (var entry : entries) {
             map.put(entry.getKey(), entry.getValue());
         }
         return map;

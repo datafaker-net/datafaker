@@ -318,7 +318,7 @@ class FakeStreamTest {
             .build();
 
         int count = 0;
-        for (String digit : digits) {
+        for (var digit : digits) {
             assertThat(digit).matches("\\d");
             count++;
         }
@@ -336,7 +336,7 @@ class FakeStreamTest {
 
         int count = 0;
         int amountOfElementsToTake = 1_000;
-        for (String digit : digits) {
+        for (var digit : digits) {
             assertThat(digit).matches("\\d");
             count++;
             if (count == amountOfElementsToTake) {
@@ -360,7 +360,7 @@ class FakeStreamTest {
         File csvFile = Files.newTemporaryFile();
         assertThat(csvFile).exists().isEmpty();
 
-        try (BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(csvFile))) {
+        try (var fos = new BufferedOutputStream(new FileOutputStream(csvFile))) {
             transformer.writeToOutputStream(fos, schema, 2);
         } catch (IOException e) {
             throw new RuntimeException(e);

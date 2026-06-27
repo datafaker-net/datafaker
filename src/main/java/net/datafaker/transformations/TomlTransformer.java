@@ -27,7 +27,7 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
             throw new IllegalArgumentException("The sequence should be finite of size: " + fs);
         }
         StringJoiner joiner = new StringJoiner(LINE_SEPARATOR);
-        for (IN in : input) {
+        for (var in : input) {
             joiner.add(apply(in, schema));
         }
         return joiner.toString();

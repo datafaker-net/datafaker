@@ -56,7 +56,7 @@ public final class MkdocsReleaseNavUpdater {
 
         List<String> out = new ArrayList<>(lines.size() + 2);
         boolean inReleases = false;
-        for (String line : lines) {
+        for (var line : lines) {
             if (RELEASES_HEADER.matcher(line).matches()) {
                 out.add(line);
                 inReleases = true;
@@ -89,7 +89,7 @@ public final class MkdocsReleaseNavUpdater {
 
     private static String findPreviousStable(List<String> lines, String releasedVersion) {
         boolean inReleases = false;
-        for (String line : lines) {
+        for (var line : lines) {
             if (RELEASES_HEADER.matcher(line).matches()) {
                 inReleases = true;
                 continue;

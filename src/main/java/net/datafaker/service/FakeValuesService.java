@@ -31,7 +31,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -677,7 +676,7 @@ public class FakeValuesService {
             return res;
         }
         if (res instanceof List<?> list) {
-            Iterator<ValueResolver> it = ((List<ValueResolver>) list).iterator();
+            var it = ((List<ValueResolver>) list).iterator();
             while (it.hasNext()) {
                 Object valueResolver = it.next();
                 Object value;
@@ -909,7 +908,7 @@ public class FakeValuesService {
         LOG.fine(() -> "Find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
         String name = removeUnderscoreChars(accessorName);
 
-        Map<String, Collection<Method>> classMethodsMap = CLASS_2_METHODS_CACHE.computeIfAbsent(clazz, (__) -> {
+        var classMethodsMap = CLASS_2_METHODS_CACHE.computeIfAbsent(clazz, (__) -> {
             Method[] classMethods = clazz.getMethods();
             Map<String, Collection<Method>> methodMap =
                 classMethods.length == 0 ? Map.of() : new HashMap<>(classMethods.length);

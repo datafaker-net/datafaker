@@ -119,7 +119,7 @@ class WeightedRandomSelectorTest {
         Map<String, Integer> counts = countResults(selector, items);
 
         assertThat(counts.keySet()).containsExactlyInAnyOrderElementsOf(expectedCounts.keySet());
-        for (String element : expectedCounts.keySet()) {
+        for (var element : expectedCounts.keySet()) {
             assertThat(counts.get(element)).isCloseTo(expectedCounts.get(element), withinPercentage(1));
         }
     }

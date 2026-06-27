@@ -181,7 +181,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private String handleObjectInMap(Map<?, ?> map) {
         StringBuilder result = new StringBuilder();
         int i = 0;
-        for (Map.Entry<?, ?> entry : map.entrySet()) {
+        for (var entry : map.entrySet()) {
             result.append(handleObject(entry.getKey()));
             result.append(", ");
             result.append(handleObject(entry.getValue()));

@@ -141,7 +141,7 @@ public class Text extends AbstractProvider<BaseProviders> {
         private static char[][] buildTextKeys(Map<String, Integer> map) {
             char[][] textKeys = new char[map.size()][];
             int i = 0;
-            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            for (var entry : map.entrySet()) {
                 textKeys[i++] = entry.getKey().toCharArray();
             }
             return textKeys;
@@ -150,7 +150,7 @@ public class Text extends AbstractProvider<BaseProviders> {
         private static int[] buildRequired(Map<String, Integer> map) {
             int[] required = new int[map.size()];
             int i = 0;
-            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            for (var entry : map.entrySet()) {
                 required[i++] = entry.getValue();
             }
             return required;
