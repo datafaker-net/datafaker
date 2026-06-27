@@ -7,37 +7,18 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
 
-class FakeValuesContext {
-    private final SingletonLocale singletonLocale;
-    private final String filename;
-    private final int filenameHashCode;
-    private final String path;
-    private final URL url;
-    private final int urlHashCode;
+record FakeValuesContext(SingletonLocale singletonLocale, String filename, String path, URL url) {
 
     private FakeValuesContext(Locale locale) {
-        this(locale, getFilename(locale), getFilename(locale), null);
+        this(SingletonLocale.get(locale), getFilename(locale), getFilename(locale), null);
     }
 
     private FakeValuesContext(Locale locale, URL url) {
-        this(locale, getFilename(locale), null, url);
+        this(SingletonLocale.get(locale), getFilename(locale), null, url);
     }
 
     private FakeValuesContext(Locale locale, String filename, String path) {
-        this(locale, filename, path, null);
-    }
-
-    private FakeValuesContext(Locale locale, String filename, String path, URL url) {
-        this.singletonLocale = SingletonLocale.get(locale);
-        this.filename = filename;
-        this.path = path;
-        this.url = url;
-        this.filenameHashCode = filename == null ? 0 : filename.hashCode();
-        try {
-            this.urlHashCode = url == null ? 0 : url.toURI().hashCode();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Invalid url: \"%s\"".formatted(url), e);
-        }
+        this(SingletonLocale.get(locale), filename, path, null);
     }
 
     public static FakeValuesContext of(Locale locale) {
@@ -53,7 +34,7 @@ class FakeValuesContext {
     }
 
     public static FakeValuesContext of(Locale locale, String filename, String path, URL url) {
-        return new FakeValuesContext(locale, filename, path, url);
+        return new FakeValuesContext(SingletonLocale.get(locale), filename, path, url);
     }
 
     private static String getFilename(Locale locale) {
@@ -80,11 +61,11 @@ class FakeValuesContext {
         };
     }
 
-    public Locale getLocale() {
+    Locale getLocale() {
         return singletonLocale.getLocale();
     }
 
-    public String getFilename() {
+    String getFilename() {
         return filename;
     }
 
@@ -92,30 +73,42 @@ class FakeValuesContext {
         return path;
     }
 
-    public URL getUrl() {
+    URL getUrl() {
         return url;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FakeValuesContext that = (FakeValuesContext) o;
-
-        if (!Objects.equals(singletonLocale, that.singletonLocale)) return false;
-        if (!Objects.equals(filename, that.filename)) return false;
-        if (!Objects.equals(path, that.path)) return false;
-        return Objects.equals(url, that.url);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FakeValuesContext that)) {
+            return false;
+        }
+        return Objects.equals(singletonLocale, that.singletonLocale)
+            && Objects.equals(filename, that.filename)
+            && Objects.equals(path, that.path)
+            && Objects.equals(url, that.url);
     }
 
     @Override
     public int hashCode() {
         int result = singletonLocale == null ? 0 : singletonLocale.hashCode();
-        result = 31 * result + filenameHashCode;
+        result = 31 * result + (filename == null ? 0 : filename.hashCode());
         result = 31 * result + (path == null ? 0 : path.hashCode());
-        result = 31 * result + urlHashCode;
+        result = 31 * result + urlHashCode(url);
         return result;
+    }
+
+    private static int urlHashCode(URL url) {
+        if (url == null) {
+            return 0;
+        }
+        try {
+            return url.toURI().hashCode();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Invalid url: \"%s\"".formatted(url), e);
+        }
     }
 
     @Override

@@ -121,27 +121,39 @@ public class Text extends AbstractProvider<BaseProviders> {
         super(faker);
     }
 
-    public static class TextRuleConfig {
-        private final char[][] textKeys;
-        private final int[] required;
-        private final int fixedNumberOfCharacters;
-
-        private final int numberOfRequiredSymbols;
-
+    public record TextRuleConfig(
+        char[][] textKeys,
+        int[] required,
+        int fixedNumberOfCharacters,
+        int numberOfRequiredSymbols
+    ) {
         private TextRuleConfig(int fixedNumberOfCharacters, Map<String, Integer> map, int numberOfRequiredSymbols) {
+            this(
+                buildTextKeys(map),
+                buildRequired(map),
+                fixedNumberOfCharacters,
+                numberOfRequiredSymbols
+            );
             assert numberOfRequiredSymbols >= 0;
             assert fixedNumberOfCharacters >= numberOfRequiredSymbols;
+        }
 
-            this.fixedNumberOfCharacters = fixedNumberOfCharacters;
-            this.numberOfRequiredSymbols = numberOfRequiredSymbols;
-            this.textKeys = new char[map.size()][];
-            this.required = new int[map.size()];
+        private static char[][] buildTextKeys(Map<String, Integer> map) {
+            char[][] textKeys = new char[map.size()][];
             int i = 0;
-            for (Map.Entry<String, Integer> entry: map.entrySet()) {
-                textKeys[i] = entry.getKey().toCharArray();
-                required[i] = entry.getValue();
-                i++;
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                textKeys[i++] = entry.getKey().toCharArray();
             }
+            return textKeys;
+        }
+
+        private static int[] buildRequired(Map<String, Integer> map) {
+            int[] required = new int[map.size()];
+            int i = 0;
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                required[i++] = entry.getValue();
+            }
+            return required;
         }
 
         public int getFixedNumberOfCharacters() {
@@ -151,7 +163,6 @@ public class Text extends AbstractProvider<BaseProviders> {
         public int getNumberOfRequiredSymbols() {
             return numberOfRequiredSymbols;
         }
-
     }
 
     public static class TextSymbolsBuilder {
@@ -238,8 +249,8 @@ public class Text extends AbstractProvider<BaseProviders> {
         char[] buffer = new char[fixedNumberOfCharacters];
         int idx = 0;
         int maxDiffSymbols = 0;
-        for (int i = 0; i < textRuleConfig.textKeys.length; i++) {
-            maxDiffSymbols += textRuleConfig.textKeys[i].length;
+        for (int i = 0; i < textRuleConfig.textKeys().length; i++) {
+            maxDiffSymbols += textRuleConfig.textKeys()[i].length;
         }
         // 256 is a length of byte value range
         if (maxDiffSymbols <= 256) {
@@ -248,13 +259,13 @@ public class Text extends AbstractProvider<BaseProviders> {
                 fixedNumberOfCharacters, numberOfRequiredSymbols);
         }
         int numberOfRequired = 0;
-        int[] required = Arrays.copyOf(textRuleConfig.required, textRuleConfig.required.length);
+        int[] required = Arrays.copyOf(textRuleConfig.required(), textRuleConfig.required().length);
         while (idx < buffer.length) {
             if (numberOfRequiredSymbols > numberOfRequired
                 && numberOfRequiredSymbols - numberOfRequired == buffer.length - idx) {
-                for (int j = 0; j < textRuleConfig.textKeys.length; j++) {
+                for (int j = 0; j < textRuleConfig.textKeys().length; j++) {
                     while (required[j] > 0) {
-                        buffer[idx++] = textRuleConfig.textKeys[j][faker.random().nextInt(textRuleConfig.textKeys[j].length)];
+                        buffer[idx++] = textRuleConfig.textKeys()[j][faker.random().nextInt(textRuleConfig.textKeys()[j].length)];
                         numberOfRequired++;
                         required[j]--;
                     }
@@ -266,7 +277,7 @@ public class Text extends AbstractProvider<BaseProviders> {
                     numberOfRequired++;
                     required[index]--;
                 }
-                buffer[idx++] = textRuleConfig.textKeys[index][faker.random().nextInt(textRuleConfig.textKeys[index].length)];
+                buffer[idx++] = textRuleConfig.textKeys()[index][faker.random().nextInt(textRuleConfig.textKeys()[index].length)];
             }
         }
         return String.valueOf(buffer);
@@ -278,25 +289,25 @@ public class Text extends AbstractProvider<BaseProviders> {
         int idx = 0;
         int bytesCounter = 0;
         int numberOfRequired = 0;
-        int[] required = Arrays.copyOf(textRuleConfig.required, textRuleConfig.required.length);
+        int[] required = Arrays.copyOf(textRuleConfig.required(), textRuleConfig.required().length);
         while (idx < buffer.length) {
             if (numberOfRequiredSymbols > numberOfRequired
                 && numberOfRequiredSymbols - numberOfRequired == buffer.length - idx) {
-                for (int j = 0; j < textRuleConfig.textKeys.length; j++) {
+                for (int j = 0; j < textRuleConfig.textKeys().length; j++) {
                     while (required[j] > 0) {
-                        buffer[idx++] = textRuleConfig.textKeys[j][((char) (bytes[bytesCounter++])) % textRuleConfig.textKeys[j].length];
+                        buffer[idx++] = textRuleConfig.textKeys()[j][((char) (bytes[bytesCounter++])) % textRuleConfig.textKeys()[j].length];
                         numberOfRequired++;
                         required[j]--;
                     }
                     if (idx == buffer.length) break;
                 }
             } else {
-                int index = ((char) (bytes[bytesCounter++])) % textRuleConfig.textKeys.length;
+                int index = ((char) (bytes[bytesCounter++])) % textRuleConfig.textKeys().length;
                 if (required[index] > 0) {
                     numberOfRequired++;
                     required[index]--;
                 }
-                buffer[idx++] = textRuleConfig.textKeys[index][((char) bytes[bytesCounter++]) % textRuleConfig.textKeys[index].length];
+                buffer[idx++] = textRuleConfig.textKeys()[index][((char) bytes[bytesCounter++]) % textRuleConfig.textKeys()[index].length];
             }
         }
         return String.valueOf(buffer);

@@ -163,23 +163,12 @@ public class FakeValuesService {
         return (String) fetch(key, context);
     }
 
-    private class SafeFetchResolver implements ValueResolver {
-        private final String simpleDirective;
-        private final FakerContext context;
-
-        private SafeFetchResolver(String simpleDirective, FakerContext context) {
-            this.simpleDirective = simpleDirective;
-            this.context = context;
-        }
+    private record SafeFetchResolver(FakeValuesService service, String simpleDirective, FakerContext context)
+        implements ValueResolver {
 
         @Override
         public Object resolve() {
-            return safeFetch(simpleDirective, context, null);
-        }
-
-        @Override
-        public String toString() {
-            return "%s[simpleDirective=%s, context=%s]".formatted(getClass().getSimpleName(), simpleDirective, context);
+            return service.safeFetch(simpleDirective, context, null);
         }
     }
 
@@ -755,7 +744,7 @@ public class FakeValuesService {
         // car.wheel will be looked up in the YAML file.
         // It's only "simple" if there aren't args
         if (args.length == 0) {
-            res.add(new SafeFetchResolver(simpleDirective, context));
+            res.add(new SafeFetchResolver(this, simpleDirective, context));
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
@@ -775,7 +764,7 @@ public class FakeValuesService {
         // class.method_name (lowercase)
         if (dotIndex >= 0) {
             final String key = javaNameToYamlName(simpleDirective);
-            res.add(new SafeFetchResolver(key, context));
+            res.add(new SafeFetchResolver(this, key, context));
         }
 
         return res;

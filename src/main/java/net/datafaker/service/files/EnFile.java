@@ -3,18 +3,11 @@ package net.datafaker.service.files;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class EnFile {
+public record EnFile(String file, String path) {
     private static final String YML = ".yml";
-    private final String file;
-    private final String path;
 
     private EnFile(String file) {
         this(file, file.endsWith(YML) ? file.substring(0, file.length() - YML.length()) : file);
-    }
-
-    private EnFile(String file, String path) {
-        this.file = file;
-        this.path = path;
     }
 
     public String getFile() {
