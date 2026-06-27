@@ -143,10 +143,13 @@ public class ProvidersDocsGenerator {
     private String providersPerVersionTable() {
         Map<String, Integer> providersPerVersion = extractProvidersPerVersion();
 
-        StringBuilder sb = new StringBuilder()
-            .append("\nNumber of providers per Datafaker version:\n")
-            .append("\n| Version | Number of new providers | Total number of providers |")
-            .append("\n|---------|-------------------------|---------------------------|\n");
+        StringBuilder sb = new StringBuilder("""
+            
+            Number of providers per Datafaker version:
+            
+            | Version | Number of new providers | Total number of providers |
+            |---------|-------------------------|---------------------------|
+            """);
 
         int cumulativeCountOfProvidersPerVersion = 0;
         for (var entry : providersPerVersion.entrySet()) {

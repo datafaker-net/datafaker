@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Random;
 
+import static net.datafaker.TestStrings.linesTrimTrailing;
 import static net.datafaker.transformations.Field.field;
 import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -84,9 +85,10 @@ class CsvTest {
 
         String csv = transformer.generate(schema, 1);
 
-        String expected =
-            "\"values\",\"title\"" + LINE_SEPARATOR
-                + "\"1,2,3\",\"The \"\"fabulous\"\" artist\"";
+        String expected = linesTrimTrailing("""
+            "values","title"
+            "1,2,3","The ""fabulous"" artist"
+            """);
 
         assertThat(csv).isEqualTo(expected);
     }
@@ -105,12 +107,13 @@ class CsvTest {
 
         String csv = transformer.generate(schema, 4);
 
-        String expected =
-            "\"Number\",\"Bool\",\"String\",\"Text\"" + LINE_SEPARATOR
-                + "3,false,\"Flor\",\"The, \"\"fabulous\"\" artist'\"" + LINE_SEPARATOR
-                + "6,true,\"Stephnie\",\"The, \"\"fabulous\"\" artist'\"" + LINE_SEPARATOR
-                + "1,false,\"Edythe\",\"The, \"\"fabulous\"\" artist'\"" + LINE_SEPARATOR
-                + "1,true,\"Dwight\",\"The, \"\"fabulous\"\" artist'\"";
+        String expected = linesTrimTrailing("""
+            "Number","Bool","String","Text"
+            3,false,"Flor","The, ""fabulous"" artist'"
+            6,true,"Stephnie","The, ""fabulous"" artist'"
+            1,false,"Edythe","The, ""fabulous"" artist'"
+            1,true,"Dwight","The, ""fabulous"" artist'"
+            """);
 
         assertThat(csv).isEqualTo(expected);
     }
@@ -132,13 +135,14 @@ class CsvTest {
             .build();
         String csv = transformer.generate(fakeSequence, schema);
 
-        String expected =
-            "\"Number\",\"Password\"" + LINE_SEPARATOR
-                + "3,\"nf3\"" + LINE_SEPARATOR
-                + "6,\"4b0v69\"" + LINE_SEPARATOR
-                + "7,\"00827v2\"" + LINE_SEPARATOR
-                + "1,\"5\"" + LINE_SEPARATOR
-                + "3,\"p6x\"";
+        String expected = linesTrimTrailing("""
+            "Number","Password"
+            3,"nf3"
+            6,"4b0v69"
+            7,"00827v2"
+            1,"5"
+            3,"p6x"
+            """);
 
         assertThat(csv).isEqualTo(expected);
     }
@@ -161,11 +165,12 @@ class CsvTest {
 
         String csv = transformer.generate(fakeSequence, schema);
 
-        String expected =
-            "\"Number\",\"Password\"" + LINE_SEPARATOR
-                + "3,\"0p4\"" + LINE_SEPARATOR
-                + "8,\"714487nf\"" + LINE_SEPARATOR
-                + "5,\"0v691\"";
+        String expected = linesTrimTrailing("""
+            "Number","Password"
+            3,"0p4"
+            8,"714487nf"
+            5,"0v691"
+            """);
 
         assertThat(csv).isEqualTo(expected);
     }

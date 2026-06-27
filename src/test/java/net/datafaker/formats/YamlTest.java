@@ -18,6 +18,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static net.datafaker.TestStrings.lines;
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
@@ -34,40 +35,66 @@ class YamlTest {
     private static Stream<Arguments> generateTestSchema() {
         return Stream.of(
             of(Schema.of(), ""),
-            of(Schema.of(field("key", () -> "value")), "key: value" + System.lineSeparator()),
-            of(Schema.of(field("number", () -> 123)), "number: 123" + System.lineSeparator()),
-            of(Schema.of(field("number", () -> BigDecimal.valueOf(123.0))), "number: 123.0" + System.lineSeparator()),
-            of(Schema.of(field("number", () -> BigDecimal.valueOf(123.123))), "number: 123.123" + System.lineSeparator()),
-            of(Schema.of(field("boolean", () -> true)), "boolean: true" + System.lineSeparator()),
-            of(Schema.of(field("nullValue", () -> null)), "nullValue: null" + System.lineSeparator()),
-            of(Schema.of(field("array", () -> new String[]{null, "test", "123"})),
-                "array:" + System.lineSeparator()
-                    + "  - null" + System.lineSeparator()
-                    + "  - test" + System.lineSeparator()
-                    + "  - 123" + System.lineSeparator()),
-            of(Schema.of(field("array", () -> new Integer[]{123, 456, 789})),
-                "array:" + System.lineSeparator()
-                    + "  - 123" + System.lineSeparator()
-                    + "  - 456" + System.lineSeparator()
-                    + "  - 789" + System.lineSeparator()),
-            of(Schema.of(field("array", () -> new Object[]{"test", 456, true})),
-                "array:" + System.lineSeparator()
-                    + "  - test" + System.lineSeparator()
-                    + "  - 456" + System.lineSeparator()
-                    + "  - true" + System.lineSeparator()),
-            of(Schema.of(field("emptyarray", () -> new Long[]{})), "emptyarray:" + System.lineSeparator()),
-            of(Schema.of(field("emptyarray", Collections::emptyList)), "emptyarray:" + System.lineSeparator()),
+            of(Schema.of(field("key", () -> "value")), lines("""
+                key: value
+                """)),
+            of(Schema.of(field("number", () -> 123)), lines("""
+                number: 123
+                """)),
+            of(Schema.of(field("number", () -> BigDecimal.valueOf(123.0))), lines("""
+                number: 123.0
+                """)),
+            of(Schema.of(field("number", () -> BigDecimal.valueOf(123.123))), lines("""
+                number: 123.123
+                """)),
+            of(Schema.of(field("boolean", () -> true)), lines("""
+                boolean: true
+                """)),
+            of(Schema.of(field("nullValue", () -> null)), lines("""
+                nullValue: null
+                """)),
+            of(Schema.of(field("array", () -> new String[]{null, "test", "123"})), lines("""
+                array:
+                  - null
+                  - test
+                  - 123
+                """)),
+            of(Schema.of(field("array", () -> new Integer[]{123, 456, 789})), lines("""
+                array:
+                  - 123
+                  - 456
+                  - 789
+                """)),
+            of(Schema.of(field("array", () -> new Object[]{"test", 456, true})), lines("""
+                array:
+                  - test
+                  - 456
+                  - true
+                """)),
+            of(Schema.of(field("emptyarray", () -> new Long[]{})), lines("""
+                emptyarray:
+                """)),
+            of(Schema.of(field("emptyarray", Collections::emptyList)), lines("""
+                emptyarray:
+                """)),
             of(Schema.of(field("key", () -> "value"),
                     field("nested", () -> Schema.of(field("nestedkey", () -> "nestedvalue")))),
-                "key: value" + System.lineSeparator() + "nested:" + System.lineSeparator() + "  nestedkey: nestedvalue" + System.lineSeparator()),
+                lines("""
+                    key: value
+                    nested:
+                      nestedkey: nestedvalue
+                    """)),
             of(Schema.of(field("key", () -> "value"),
                     field("nested",
                         () -> Schema.of(field("nestedkey", () -> "nestedvalue"),
                             field("nested2", () -> Schema.of(field("nestedkey2", () -> "nestedvalue2")))))),
-                "key: value" + System.lineSeparator()
-                    + "nested:" + System.lineSeparator() + "  nestedkey: nestedvalue" + System.lineSeparator()
-                    + "  nested2:" + System.lineSeparator()
-                    + "    nestedkey2: nestedvalue2" + System.lineSeparator())
+                lines("""
+                    key: value
+                    nested:
+                      nestedkey: nestedvalue
+                      nested2:
+                        nestedkey2: nestedvalue2
+                    """))
         );
     }
 

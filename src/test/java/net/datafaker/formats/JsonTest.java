@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static net.datafaker.TestStrings.linesTrimTrailing;
 import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
 import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
@@ -40,18 +41,20 @@ class JsonTest {
         JsonTransformer<Object> transformer = JsonTransformer.builder().build();
         Stream<CharSequence> json = transformer.generateStream(schema, 10);
         String output = json.collect(Collectors.joining(LINE_SEPARATOR));
-        assertThat(output).isEqualTo("[" + LINE_SEPARATOR +
-            "{\"Text\": \"Willis\", \"Bool\": false}," + LINE_SEPARATOR +
-            "{\"Text\": \"Carlena\", \"Bool\": true}," + LINE_SEPARATOR +
-            "{\"Text\": \"Stephnie\", \"Bool\": true}," + LINE_SEPARATOR +
-            "{\"Text\": \"Rutha\", \"Bool\": true}," + LINE_SEPARATOR +
-            "{\"Text\": \"Armand\", \"Bool\": true}," + LINE_SEPARATOR +
-            "{\"Text\": \"Margot\", \"Bool\": false}," + LINE_SEPARATOR +
-            "{\"Text\": \"Patrick\", \"Bool\": false}," + LINE_SEPARATOR +
-            "{\"Text\": \"Alphonse\", \"Bool\": false}," + LINE_SEPARATOR +
-            "{\"Text\": \"Louisa\", \"Bool\": true}," + LINE_SEPARATOR +
-            "{\"Text\": \"Caryn\", \"Bool\": false}" + LINE_SEPARATOR +
-            "]");
+        assertThat(output).isEqualTo(linesTrimTrailing("""
+            [
+            {"Text": "Willis", "Bool": false},
+            {"Text": "Carlena", "Bool": true},
+            {"Text": "Stephnie", "Bool": true},
+            {"Text": "Rutha", "Bool": true},
+            {"Text": "Armand", "Bool": true},
+            {"Text": "Margot", "Bool": false},
+            {"Text": "Patrick", "Bool": false},
+            {"Text": "Alphonse", "Bool": false},
+            {"Text": "Louisa", "Bool": true},
+            {"Text": "Caryn", "Bool": false}
+            ]
+            """));
     }
 
     @Test
@@ -64,10 +67,12 @@ class JsonTest {
 
         JsonTransformer<Object> transformer = JsonTransformer.builder().build();
         String json = transformer.generate(schema, 2);
-        String expected = "[" + LINE_SEPARATOR +
-            "{\"Text\": \"Willis\", \"Bool\": false}," + LINE_SEPARATOR +
-            "{\"Text\": \"Carlena\", \"Bool\": true}" + LINE_SEPARATOR +
-            "]";
+        String expected = linesTrimTrailing("""
+            [
+            {"Text": "Willis", "Bool": false},
+            {"Text": "Carlena", "Bool": true}
+            ]
+            """);
 
         assertThat(json).isEqualTo(expected);
     }
@@ -89,13 +94,15 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = "[" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"nf3\"}" + LINE_SEPARATOR +
-            "{\"Number\": 6, \"Password\": \"4b0v69\"}" + LINE_SEPARATOR +
-            "{\"Number\": 7, \"Password\": \"00827v2\"}" + LINE_SEPARATOR +
-            "{\"Number\": 1, \"Password\": \"5\"}" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"p6x\"}" + LINE_SEPARATOR +
-            "]";
+        String expected = linesTrimTrailing("""
+            [
+            {"Number": 3, "Password": "nf3"}
+            {"Number": 6, "Password": "4b0v69"}
+            {"Number": 7, "Password": "00827v2"}
+            {"Number": 1, "Password": "5"}
+            {"Number": 3, "Password": "p6x"}
+            ]
+            """);
 
         assertThat(json).isEqualTo(expected);
     }
@@ -117,13 +124,15 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = "[" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"nf3\"}," + LINE_SEPARATOR +
-            "{\"Number\": 6, \"Password\": \"4b0v69\"}," + LINE_SEPARATOR +
-            "{\"Number\": 7, \"Password\": \"00827v2\"}," + LINE_SEPARATOR +
-            "{\"Number\": 1, \"Password\": \"5\"}," + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"p6x\"}" + LINE_SEPARATOR +
-            "]";
+        String expected = linesTrimTrailing("""
+            [
+            {"Number": 3, "Password": "nf3"},
+            {"Number": 6, "Password": "4b0v69"},
+            {"Number": 7, "Password": "00827v2"},
+            {"Number": 1, "Password": "5"},
+            {"Number": 3, "Password": "p6x"}
+            ]
+            """);
 
         assertThat(json).isEqualTo(expected);
     }
@@ -145,10 +154,12 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = "[" + LINE_SEPARATOR +
-            "{\"Number\": 3, \"Password\": \"0p4\"}" + LINE_SEPARATOR +
-            "{\"Number\": 8, \"Password\": \"714487nf\"}" + LINE_SEPARATOR +
-            "]";
+        String expected = linesTrimTrailing("""
+            [
+            {"Number": 3, "Password": "0p4"}
+            {"Number": 8, "Password": "714487nf"}
+            ]
+            """);
 
         assertThat(json).isEqualTo(expected);
     }
@@ -282,8 +293,8 @@ class JsonTest {
                     )
                 )
             ), 1);
-        assertThat(json).isEqualTo("{\"text\": \"Mrs. Brian Braun\", " +
-            "\"objectCollection\": [{\"country\": \"Denmark\", \"city\": \"Port Angel\"}, {\"two\": \"Denmark\", \"one\": \"Port Angel\"}]}");
+        assertThat(json).isEqualTo("""
+            {"text": "Mrs. Brian Braun", "objectCollection": [{"country": "Denmark", "city": "Port Angel"}, {"two": "Denmark", "one": "Port Angel"}]}""");
     }
 
     @Test
@@ -311,8 +322,8 @@ class JsonTest {
                     )
                 )
             ), 1);
-        assertThat(json).isEqualTo("{\"text\": \"Mrs. Brian Braun\", " +
-            "\"objectCollection\": [[[{\"country\": \"Denmark\", \"city\": \"Port Angel\"}, {\"two\": \"Denmark\", \"one\": \"Port Angel\"}]]]}");
+        assertThat(json).isEqualTo("""
+            {"text": "Mrs. Brian Braun", "objectCollection": [[[{"country": "Denmark", "city": "Port Angel"}, {"two": "Denmark", "one": "Port Angel"}]]]}""");
     }
 
     private static Map.Entry<Supplier<String>, Supplier<Object>> entry(
