@@ -13,3 +13,4 @@ site
 .venv-docs
 .mvn/wrapper/maven-wrapper.jar
 /.claude/settings.local.json
+.spotless-index-file

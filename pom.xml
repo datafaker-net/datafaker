@@ -323,6 +323,10 @@
                             </yamlFeatures>
                         </jackson>
                     </yaml>
+                    <upToDateChecking>
+                        <enabled>true</enabled>
+                        <indexFile>${project.basedir}/.spotless-index-file</indexFile>
+                    </upToDateChecking>
                 </configuration>
                 <executions>
                     <execution>
