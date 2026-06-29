@@ -26,7 +26,6 @@ class CredentialsTest {
 
     @ParameterizedTest
     @MethodSource("userNameWithSpacesProvider")
-    @SuppressWarnings("removal")
     void testUsernameWithSpaces(String firstName, String lastName, String expected) {
         Locale locale = new Locale("TR");
         Name name = mock();
@@ -40,7 +39,7 @@ class CredentialsTest {
             }
         };
 
-        assertThat(mockedFaker.internet().username())
+        assertThat(mockedFaker.credentials().username())
             .isEqualTo(expected);
     }
 

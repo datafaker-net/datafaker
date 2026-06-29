@@ -76,12 +76,11 @@ class JsonTest {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void testGenerateFromFakeSequenceCollectionWithoutComma() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
-            field("Password", integer -> faker.internet().password(integer, integer))
+            field("Password", integer -> faker.credentials().password(integer, integer))
         );
 
         JsonTransformer<Integer> transformer = JsonTransformer.<Integer>builder().withCommaBetweenObjects(false).build();
@@ -105,12 +104,11 @@ class JsonTest {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void testGenerateFromFakeSequenceCollection() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
-            field("Password", integer -> faker.internet().password(integer, integer))
+            field("Password", integer -> faker.credentials().password(integer, integer))
         );
 
         JsonTransformer<Integer> transformer = JsonTransformer.<Integer>builder().build();
@@ -134,12 +132,11 @@ class JsonTest {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void testGenerateFromFakeSequenceStream() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
-            field("Password", integer -> faker.internet().password(integer, integer))
+            field("Password", integer -> faker.credentials().password(integer, integer))
         );
 
         JsonTransformer<Integer> transformer = JsonTransformer.<Integer>builder().withCommaBetweenObjects(false).build();
@@ -160,12 +157,11 @@ class JsonTest {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void testGenerateFromInfiniteFakeSequence() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
-            field("Password", integer -> faker.internet().password(integer, integer))
+            field("Password", integer -> faker.credentials().password(integer, integer))
         );
 
         JsonTransformer<Integer> transformer = JsonTransformer.<Integer>builder().build();
