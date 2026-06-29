@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static net.datafaker.TestStrings.linesTrimTrailing;
+import static net.datafaker.TestStrings.lines;
 import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
 import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
@@ -41,7 +41,7 @@ class JsonTest {
         JsonTransformer<Object> transformer = JsonTransformer.builder().build();
         Stream<CharSequence> json = transformer.generateStream(schema, 10);
         String output = json.collect(Collectors.joining(LINE_SEPARATOR));
-        assertThat(output).isEqualTo(linesTrimTrailing("""
+        assertThat(output).isEqualTo(lines("""
             [
             {"Text": "Willis", "Bool": false},
             {"Text": "Carlena", "Bool": true},
@@ -53,8 +53,7 @@ class JsonTest {
             {"Text": "Alphonse", "Bool": false},
             {"Text": "Louisa", "Bool": true},
             {"Text": "Caryn", "Bool": false}
-            ]
-            """));
+            ]"""));
     }
 
     @Test
@@ -67,12 +66,11 @@ class JsonTest {
 
         JsonTransformer<Object> transformer = JsonTransformer.builder().build();
         String json = transformer.generate(schema, 2);
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             [
             {"Text": "Willis", "Bool": false},
             {"Text": "Carlena", "Bool": true}
-            ]
-            """);
+            ]""");
 
         assertThat(json).isEqualTo(expected);
     }
@@ -94,15 +92,14 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             [
             {"Number": 3, "Password": "nf3"}
             {"Number": 6, "Password": "4b0v69"}
             {"Number": 7, "Password": "00827v2"}
             {"Number": 1, "Password": "5"}
             {"Number": 3, "Password": "p6x"}
-            ]
-            """);
+            ]""");
 
         assertThat(json).isEqualTo(expected);
     }
@@ -124,15 +121,14 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             [
             {"Number": 3, "Password": "nf3"},
             {"Number": 6, "Password": "4b0v69"},
             {"Number": 7, "Password": "00827v2"},
             {"Number": 1, "Password": "5"},
             {"Number": 3, "Password": "p6x"}
-            ]
-            """);
+            ]""");
 
         assertThat(json).isEqualTo(expected);
     }
@@ -154,12 +150,11 @@ class JsonTest {
 
         String json = transformer.generate(fakeSequence, schema);
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             [
             {"Number": 3, "Password": "0p4"}
             {"Number": 8, "Password": "714487nf"}
-            ]
-            """);
+            ]""");
 
         assertThat(json).isEqualTo(expected);
     }

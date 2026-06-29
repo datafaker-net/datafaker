@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static net.datafaker.TestStrings.linesTrimTrailing;
+import static net.datafaker.TestStrings.lines;
 import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
 import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
@@ -48,13 +48,12 @@ class SqlTest {
 
         String sql = transformer.generate(fakeSequence, schema);
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             INSERT INTO "MyTable" ("Number", "Password") VALUES (3, 'nf3');
             INSERT INTO "MyTable" ("Number", "Password") VALUES (6, '4b0v69');
             INSERT INTO "MyTable" ("Number", "Password") VALUES (7, '00827v2');
             INSERT INTO "MyTable" ("Number", "Password") VALUES (1, '5');
-            INSERT INTO "MyTable" ("Number", "Password") VALUES (3, 'p6x');
-            """);
+            INSERT INTO "MyTable" ("Number", "Password") VALUES (3, 'p6x');""");
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -77,14 +76,13 @@ class SqlTest {
 
         String sql = transformer.generate(fakeSequence, schema);
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             INSERT INTO "MyTable" ("Number", "Password")
             VALUES (3, 'nf3'),
                    (6, '4b0v69'),
                    (7, '00827v2'),
                    (1, '5'),
-                   (3, 'p6x');
-            """);
+                   (3, 'p6x');""");
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -135,10 +133,9 @@ class SqlTest {
         SqlTransformer<Object> transformer = SqlTransformer.builder().build();
         String sql = transformer.generate(schema, 2);
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             INSERT INTO "MyTable" ("Text", "Bool") VALUES ('Willis', false);
-            INSERT INTO "MyTable" ("Text", "Bool") VALUES ('Carlena', true);
-            """);
+            INSERT INTO "MyTable" ("Text", "Bool") VALUES ('Carlena', true);""");
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -156,11 +153,10 @@ class SqlTest {
             .build();
         String sql = transformer.generate(schema, 2);
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             INSERT INTO "MyTable" ("Text", "Bool")
             VALUES ('Willis', false),
-                   ('Carlena', true);
-            """);
+                   ('Carlena', true);""");
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -179,11 +175,10 @@ class SqlTest {
             .build();
         String sql = forceQuotedTransformer.generate(schema, 2);
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             INSERT INTO "MY_TABLE" ("TEXT", "BOOL")
             VALUES ('Willis', false),
-                   ('Carlena', true);
-            """);
+                   ('Carlena', true);""");
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -568,14 +563,13 @@ class SqlTest {
                 .generateStream(schema, 4)
                 .collect(Collectors.joining(LINE_SEPARATOR));
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             INSERT INTO "MyTable" ("Number", "Password")
             VALUES ('6', '09fd4007-40ba-39df-8cb1-65926bf7b8a9'),
                    ('8', '96c19757-1f18-3051-9acb-f56f0b5555ae'),
                    ('2', '8a4a0365-cd39-33c1-a52a-279b1076cf2d');
             INSERT INTO "MyTable" ("Number", "Password")
-            VALUES ('6', 'e807efdd-b6db-319d-8342-a044274d3417');
-            """);
+            VALUES ('6', 'e807efdd-b6db-319d-8342-a044274d3417');""");
 
         assertThat(sql).isEqualTo(expected);
     }
@@ -596,12 +590,11 @@ class SqlTest {
 
         String sql = transformer.generateStream(schema,3).collect(Collectors.joining(LINE_SEPARATOR));
 
-        String expected = linesTrimTrailing("""
+        String expected = lines("""
             INSERT INTO "MyTable" ("Address", "Book")
             VALUES ('Cote d\\'Ivoire', 'All the King\\'s Men'),
                    ('Cote d\\'Ivoire', 'Blood\\'s a Rover'),
-                   ('Cote d\\'Ivoire', 'Blood\\'s a Rover');
-            """);
+                   ('Cote d\\'Ivoire', 'Blood\\'s a Rover');""");
 
         assertThat(sql).isEqualTo(expected);
     }

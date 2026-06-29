@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static net.datafaker.TestStrings.linesTrimTrailing;
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
@@ -30,6 +29,7 @@ class TomlTest {
     }
 
     private static Stream<Arguments> generateTestSchema() {
+        String sep = System.lineSeparator();
         return Stream.of(
             of(Schema.of(), ""),
             of(Schema.of(field("key", () -> "value")), "key = \"value\""),
@@ -49,11 +49,9 @@ class TomlTest {
             of(Schema.of(
                 field("key", () -> "value"),
                 field("nested", () -> Schema.of(field("nestedkey", () -> "nestedvalue")))
-            ), linesTrimTrailing("""
-                key = "value"
-                [nested]
-                nestedkey = "nestedvalue"
-                """)),
+            ), "key = \"value\"" + sep +
+                "[nested]" + sep +
+                "nestedkey = \"nestedvalue\""),
             of(Schema.of(
                 field("key", () -> "value"),
                 field("nested", () -> Schema.of(
@@ -62,32 +60,26 @@ class TomlTest {
                         field("nestedkey2", () -> "nestedvalue2")
                     ))
                 ))
-            ), linesTrimTrailing("""
-                key = "value"
-                [nested]
-                nestedkey = "nestedvalue"
-                [nested.nested2]
-                nestedkey2 = "nestedvalue2"
-                """)),
+            ), "key = \"value\"" + sep +
+                "[nested]" + sep +
+                "nestedkey = \"nestedvalue\"" + sep +
+                "[nested.nested2]" + sep +
+                "nestedkey2 = \"nestedvalue2\""),
             of(Schema.of(
                 field("parent", () -> Schema.of(
                     field("numbers", () -> new Integer[]{1, 2})
                 ))
-            ), linesTrimTrailing("""
-                [parent]
-                numbers = [ 1, 2 ]
-                """)),
+            ), "[parent]" + sep +
+                "numbers = [ 1, 2 ]"),
             of(Schema.of(
                 field("items", () -> List.of(
                     Schema.of(field("id", () -> 1)),
                     Schema.of(field("id", () -> 2))
                 ))
-            ), linesTrimTrailing("""
-                [[items]]
-                id = 1
-                [[items]]
-                id = 2
-                """))
+            ), "[[items]]" + sep +
+                "id = 1" + sep +
+                "[[items]]" + sep +
+                "id = 2")
         );
     }
 

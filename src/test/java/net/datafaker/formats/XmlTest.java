@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static net.datafaker.TestStrings.linesTrimTrailing;
+import static net.datafaker.TestStrings.lines;
 import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,11 +75,10 @@ class XmlTest {
                     compositeField("root",
                         new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2"),
                             field(null, () -> List.of(field("child", () -> "value")))})),
-                linesTrimTrailing("""
+                lines("""
                     <root attribute1="value1" attribute2="value2">
                         <child>value</child>
-                    </root>
-                    """)),
+                    </root>""")),
             of(Schema.of(field("root", () -> "<> value\"")), "<root>&lt;&gt; value&quot;</root>")
         );
     }
