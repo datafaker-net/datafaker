@@ -61,6 +61,8 @@
         <javaparser.version>3.28.2</javaparser.version>
         <snakeyaml.version>2.6</snakeyaml.version>
         <spotless-maven-plugin.version>3.8.0</spotless-maven-plugin.version>
+        <!-- Empty means scan all, non empty value will be passed from CI -->
+        <spotless.ratchetFrom></spotless.ratchetFrom>
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
         <surefire.argline>@{argLine} -Duser.language=TR -Duser.country=tr</surefire.argline>
@@ -327,6 +329,7 @@
                         <enabled>true</enabled>
                         <indexFile>${project.basedir}/.spotless-index-file</indexFile>
                     </upToDateChecking>
+                    <ratchetFrom>${spotless.ratchetFrom}</ratchetFrom>
                 </configuration>
                 <executions>
                     <execution>
