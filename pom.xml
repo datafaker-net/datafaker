@@ -38,8 +38,8 @@
         <junit.version>6.1.1</junit.version>
         <libphonenumber.version>9.0.33</libphonenumber.version>
 
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <releaseJavaVersion>17</releaseJavaVersion>
+        <buildJavaVersion>17</buildJavaVersion>
 
         <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
@@ -202,8 +202,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
+                        <release>${releaseJavaVersion}</release>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -244,9 +243,12 @@
                             <goal>enforce</goal>
                         </goals>
                         <configuration>
+                            <requireMavenVersion>
+                                <version>[3.6,)</version>
+                            </requireMavenVersion>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>${maven.compiler.source}</version>
+                                    <version>[${buildJavaVersion},)</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
