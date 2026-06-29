@@ -24,7 +24,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <additionalparam>-Xdoclint:none</additionalparam>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
         <assertj-core.version>3.27.7</assertj-core.version>
@@ -37,8 +36,11 @@
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <junit.version>6.1.1</junit.version>
         <libphonenumber.version>9.0.33</libphonenumber.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+
+        <releaseJavaVersion>17</releaseJavaVersion>
+        <buildJavaVersion>17</buildJavaVersion>
+
+        <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
         <maven-failsafe-plugin.version>3.5.6</maven-failsafe-plugin.version>
@@ -48,8 +50,10 @@
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
+        <moditect-maven-plugin.version>1.3.0.Final</moditect-maven-plugin.version>
         <mockito-core.version>5.23.0</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
+        <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
         <slf4j.version>2.0.18</slf4j.version>
         <javaparser.version>3.28.2</javaparser.version>
@@ -188,6 +192,9 @@
         </dependency>
     </dependencies>
     <build>
+
+        <defaultGoal>clean verify</defaultGoal>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -195,8 +202,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
+                        <release>${releaseJavaVersion}</release>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -212,13 +218,28 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions-maven-plugin.version}</version>
+                    <configuration>
+                        <ruleSet>
+                            <ignoreVersions>
+                                <ignoreVersion>
+                                    <type>regex</type>
+                                    <version>.*(?i)(alpha|beta|rc|cr|preview|milestone|[mb][0-9]+).*</version>
+                                </ignoreVersion>
+                            </ignoreVersions>
+                        </ruleSet>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.11.0</version>
+                <version>${central-publishing-maven-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
@@ -237,9 +258,12 @@
                             <goal>enforce</goal>
                         </goals>
                         <configuration>
+                            <requireMavenVersion>
+                                <version>[3.6,)</version>
+                            </requireMavenVersion>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>${maven.compiler.source}</version>
+                                    <version>[${buildJavaVersion},)</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
@@ -353,7 +377,7 @@
             <plugin>
                 <groupId>org.moditect</groupId>
                 <artifactId>moditect-maven-plugin</artifactId>
-                <version>1.3.0.Final</version>
+                <version>${moditect-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>add-module-infos</id>
