@@ -37,14 +37,14 @@ public abstract class AbstractProviderListTest<T extends BaseFaker> {
         return faker.fakeValuesService().fetchObject(key, faker.getContext());
     }
 
-    protected void testProviderList(ProviderListTest.TestSpec testSpec, T faker) {
+    protected void testProviderList(TestSpec testSpec, T faker) {
         // Given
-        Set<String> expected = new HashSet<>(getBaseList(faker, testSpec.key));
+        Set<String> expected = new HashSet<>(getBaseList(faker, testSpec.key()));
         // When
-        String actual = (String) testSpec.supplier.get();
+        String actual = (String) testSpec.supplier().get();
         // Then
         assertThat(actual).isNotEmpty();
-        String collection = "\"" + testSpec.key + "\"";
+        String collection = "\"" + testSpec.key() + "\"";
         assertThat(expected)
             .as(() -> "Check expected list isn't empty and contains the actual for the key " + collection)
             .isNotEmpty()
@@ -52,22 +52,12 @@ public abstract class AbstractProviderListTest<T extends BaseFaker> {
         assertThat(expected)
             .as(() -> "Actual should not have empty entries. " + collection)
             .noneMatch(String::isBlank);
-        if (!testSpec.regex.isEmpty()) {
-            assertThat(actual).matches(Pattern.compile(testSpec.regex));
+        if (!testSpec.regex().isEmpty()) {
+            assertThat(actual).matches(Pattern.compile(testSpec.regex()));
         }
     }
 
-    protected static class TestSpec {
-        private final Supplier<?> supplier;
-        private final String key;
-        private final String regex;
-
-        private TestSpec(Supplier<?> supplier, String key, String regex) {
-            this.supplier = supplier;
-            this.key = key;
-            this.regex = regex;
-        }
-
+    protected record TestSpec(Supplier<?> supplier, String key, String regex) {
         public static TestSpec of(Supplier<?> supplier, String key) {
             return new TestSpec(supplier, key, "");
         }

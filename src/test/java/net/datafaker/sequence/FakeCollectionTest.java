@@ -34,7 +34,7 @@ class FakeCollectionTest {
             .minLen(3)
             .maxLen(5).build().get();
         assertThat(names).hasSizeBetween(3, 5);
-        for (String name : names) {
+        for (var name : names) {
             assertThat(name).matches("[a-zA-Z']+");
         }
     }
@@ -45,7 +45,7 @@ class FakeCollectionTest {
             .collection(() -> faker.number().digit())
             .len(3, 10).generate();
         assertThat(digits).hasSizeBetween(3, 10);
-        for (String digit : digits) {
+        for (var digit : digits) {
             assertThat(digit).matches("\\d");
         }
     }
@@ -94,7 +94,7 @@ class FakeCollectionTest {
             .collection(() -> faker.number().digit())
             .len(5).generate();
         assertThat(digits).hasSize(5);
-        for (String digit : digits) {
+        for (var digit : digits) {
             assertThat(digit).matches("\\d");
         }
     }
@@ -107,7 +107,7 @@ class FakeCollectionTest {
             .minLen(3)
             .maxLen(5).build().get();
         assertThat(names).hasSizeBetween(3, 5);
-        for (String name : names) {
+        for (var name : names) {
             assertThat(name).isNull();
         }
     }
@@ -155,7 +155,7 @@ class FakeCollectionTest {
             .suppliers(() -> faker.name().firstName(), () -> faker.random().nextInt(100))
             .maxLen(5).build().get();
         assertThat(objects).hasSize(5);
-        for (Object object : objects) {
+        for (var object : objects) {
             assertThat(object).isInstanceOfAny(Integer.class, String.class);
         }
     }
@@ -284,7 +284,7 @@ class FakeCollectionTest {
             .build();
 
         int count = 0;
-        for (String digit : digits) {
+        for (var digit : digits) {
             assertThat(digit).matches("\\d");
             count++;
         }

@@ -42,7 +42,7 @@ public class ThreadLocalLogHandler extends Handler {
             List<LogRecord> threadLogs = logs.get();
             if (!threadLogs.isEmpty()) {
                 consoleHandler.publish(summaryLog(threadLogs));
-                for (LogRecord log : threadLogs) {
+                for (var log : threadLogs) {
                     consoleHandler.publish(log);
                 }
             }

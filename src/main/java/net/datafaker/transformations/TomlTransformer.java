@@ -2,6 +2,7 @@ package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
             throw new IllegalArgumentException("The sequence should be finite of size: " + fs);
         }
         StringJoiner joiner = new StringJoiner(LINE_SEPARATOR);
-        for (IN in : input) {
+        for (var in : input) {
             joiner.add(apply(in, schema));
         }
         return joiner.toString();
@@ -105,14 +106,14 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
     }
 
     private void handleArray(StringBuilder sb, String key, Object array) {
-        int length = java.lang.reflect.Array.getLength(array);
+        int length = Array.getLength(array);
         if (length == 0) {
             sb.append(key).append(" = []").append(LINE_SEPARATOR);
             return;
         }
         List<Object> list = new ArrayList<>(length);
         for (int i = 0; i < length; i++) {
-            list.add(java.lang.reflect.Array.get(array, i));
+            list.add(Array.get(array, i));
         }
         String joined = list.stream().map(this::value2String).collect(Collectors.joining(", "));
         sb.append(key).append(" = [ ").append(joined).append(" ]").append(LINE_SEPARATOR);

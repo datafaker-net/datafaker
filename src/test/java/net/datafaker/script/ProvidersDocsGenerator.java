@@ -48,7 +48,7 @@ public class ProvidersDocsGenerator {
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
         providersDocsGenerator.initSubtypes();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DESTINATION_PLACE_OF_PROVIDERS_FILE))) {
+        try (var writer = new BufferedWriter(new FileWriter(DESTINATION_PLACE_OF_PROVIDERS_FILE))) {
             providersDocsGenerator.constructHeaderInProvidersFile(writer);
             providersDocsGenerator.generateProvidersDocs(writer);
             writer.flush();
@@ -67,7 +67,7 @@ public class ProvidersDocsGenerator {
     }
 
     void generateProvidersDocs(BufferedWriter writer) throws IOException {
-        for (Class<?> clazz : subTypes) {
+        for (var clazz : subTypes) {
             String groupName = extractGroupName(clazz);
             String comment = extractCommentFromJavadoc("src/main/java/net/datafaker/providers/" + groupName + "/" + clazz.getSimpleName() + ".java");
             writer.write(Column.generateRow(' ', clazz.getSimpleName(), comment, formatGroupName(groupName)));
@@ -143,13 +143,16 @@ public class ProvidersDocsGenerator {
     private String providersPerVersionTable() {
         Map<String, Integer> providersPerVersion = extractProvidersPerVersion();
 
-        StringBuilder sb = new StringBuilder()
-            .append("\nNumber of providers per Datafaker version:\n")
-            .append("\n| Version | Number of new providers | Total number of providers |")
-            .append("\n|---------|-------------------------|---------------------------|\n");
+        StringBuilder sb = new StringBuilder("""
+            
+            Number of providers per Datafaker version:
+            
+            | Version | Number of new providers | Total number of providers |
+            |---------|-------------------------|---------------------------|
+            """);
 
         int cumulativeCountOfProvidersPerVersion = 0;
-        for (Map.Entry<String, Integer> entry : providersPerVersion.entrySet()) {
+        for (var entry : providersPerVersion.entrySet()) {
             cumulativeCountOfProvidersPerVersion += entry.getValue();
             sb.append("| ").append(entry.getKey()).append(" | ")
                 .append(entry.getValue().toString()).append(" | ")
@@ -167,7 +170,7 @@ public class ProvidersDocsGenerator {
     private Map<String, Integer> extractProvidersPerVersion() {
         Map<String, Integer> providersPerVersion = new TreeMap<>(Comparator.naturalOrder());
 
-        for (Class<?> clazz : subTypes) {
+        for (var clazz : subTypes) {
             String groupName = extractGroupName(clazz);
             String comment = extractCommentFromJavadoc("src/main/java/net/datafaker/providers/" + groupName + "/" + clazz.getSimpleName() + ".java");
             String sinceTag = Column.SINCE.getValue(comment);

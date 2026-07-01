@@ -81,7 +81,7 @@ class FinanceTest extends BaseFakerTest {
     @Test
     void ibanWithAllCountryCodes() {
         Set<String> ibanCountryCodes = Finance.ibanSupportedCountries();
-        for (String givenCountryCode : ibanCountryCodes) {
+        for (var givenCountryCode : ibanCountryCodes) {
             final String iban = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
             assertThatIban(iban)
                 .hasCountryCode(givenCountryCode)

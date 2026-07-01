@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -32,8 +31,10 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         for (int i = 0; i < fields.length; i++) {
             value2String((fields[i].getName()), sb);
             sb.append(": ");
-            if (fields[i] instanceof CompositeField) {
-                sb.append(apply(input, (CompositeField) fields[i], i));
+            if (fields[i] instanceof CompositeField compositeField) {
+                sb.append(apply(input, compositeField, i));
+            } else if (fields[i] instanceof SimpleField simpleField) {
+                applyValue(input, sb, simpleField.transform(input));
             } else {
                 applyValue(input, sb, ((SimpleField) fields[i]).transform(input));
             }
@@ -52,7 +53,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
-        Iterator<IN> iterator = input.iterator();
+        var iterator = input.iterator();
         while (iterator.hasNext()) {
             data.add(apply(iterator.next(), schema) + (commaBetweenObjects && iterator.hasNext() ? "," : ""));
         }
@@ -89,8 +90,8 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private void applyValue(IN input, StringBuilder sb, Object value) {
-        if (value instanceof Collection<?>) {
-            sb.append(generate(input, (Collection) value));
+        if (value instanceof Collection<?> collection) {
+            sb.append(generate(input, (Collection<Object>) collection));
         } else if (value != null && value.getClass().isArray()) {
             sb.append(generate(input, Arrays.asList((Object[]) value)));
         } else {
@@ -107,8 +108,8 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
                 sb.append(", ");
             }
             i++;
-            if (value instanceof CompositeField<?, ?>) {
-                sb.append(apply(input, ((CompositeField) value)));
+            if (value instanceof CompositeField compositeField) {
+                sb.append(apply(input, compositeField));
             } else {
                 applyValue(input, sb, value);
             }

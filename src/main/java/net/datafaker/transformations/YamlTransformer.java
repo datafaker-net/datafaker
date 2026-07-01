@@ -30,7 +30,7 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
-        for (IN in : input) {
+        for (var in : input) {
             data.add(apply(in, schema));
         }
 
@@ -89,13 +89,13 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
     private void value2String(Object value, StringBuilder sb, String offset) {
-        if (value instanceof Schema) {
-            Field<IN, ?>[] fields = ((Schema<IN, ?>) value).getFields();
+        if (value instanceof Schema schemaValue) {
+            Field<IN, ?>[] fields = schemaValue.getFields();
             apply(sb, null, fields, offset);
-        } else if (value instanceof Collection) {
+        } else if (value instanceof Collection<?> collection) {
             sb.append(System.lineSeparator());
             offset += INDENTATION;
-            addCollection(sb, (Collection) value, offset);
+            addCollection(sb, (Collection<Object>) collection, offset);
         } else if (value != null && value.getClass().isArray()) {
             sb.append(System.lineSeparator());
             offset += INDENTATION;

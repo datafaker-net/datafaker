@@ -6,7 +6,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,7 +119,7 @@ class WeightedRandomSelectorTest {
         Map<String, Integer> counts = countResults(selector, items);
 
         assertThat(counts.keySet()).containsExactlyInAnyOrderElementsOf(expectedCounts.keySet());
-        for (String element : expectedCounts.keySet()) {
+        for (var element : expectedCounts.keySet()) {
             assertThat(counts.get(element)).isCloseTo(expectedCounts.get(element), withinPercentage(1));
         }
     }
@@ -132,7 +131,7 @@ class WeightedRandomSelectorTest {
                 "Input list cannot be null"
             ),
             Arguments.of(
-                Collections.emptyList(),
+                List.of(),
                 "Input list cannot be empty"
             ),
             Arguments.of(

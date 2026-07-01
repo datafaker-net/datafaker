@@ -1,6 +1,5 @@
 package net.datafaker.providers.base;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,7 +75,7 @@ public class Options extends AbstractProvider<BaseProviders> {
             throw new IllegalArgumentException("size should be not negative: " + size);
         }
         if (size == 0) {
-            return Collections.emptySet();
+            return Set.of();
         }
         List<E> opts = Stream.of(options).distinct().collect(Collectors.toList());
         if (size >= opts.size()) {
@@ -119,7 +118,7 @@ public class Options extends AbstractProvider<BaseProviders> {
             throw new IllegalArgumentException("size should be not negative: " + size);
         }
         if (size == 0) {
-            return Collections.emptySet();
+            return Set.of();
         }
         List<String> opts = Stream.of(options).distinct().collect(Collectors.toList());
         if (size >= opts.size()) {

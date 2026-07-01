@@ -33,10 +33,10 @@ class UkLocalDirectivesTest {
         boolean startsWithMascPrefix = false;
         boolean startsWithFemPrefix = false;
 
-        for (String mascPrefix : masc) {
+        for (var mascPrefix : masc) {
             startsWithMascPrefix |= streetName.startsWith(mascPrefix);
         }
-        for (String femPrefix : fem) {
+        for (var femPrefix : fem) {
             startsWithFemPrefix |= streetName.startsWith(femPrefix);
         }
 

@@ -391,7 +391,7 @@ class NumberTest {
             map.merge(r, 1, Integer::sum);
         }
 
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+        for (var entry : map.entrySet()) {
             int count = entry.getValue();
             assertThat((mean - count) / mean).isLessThan(0.2);
         }
@@ -417,7 +417,7 @@ class NumberTest {
             map.merge(r, 1, Integer::sum);
         }
 
-        for (Map.Entry<Long, Integer> entry : map.entrySet()) {
+        for (var entry : map.entrySet()) {
             int count = entry.getValue();
             assertThat(Math.abs(mean - count) / mean)
                 .as(() -> "Entry: %s, all numbers: %s".formatted(entry, map))
