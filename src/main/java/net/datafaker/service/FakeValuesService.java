@@ -578,7 +578,6 @@ public class FakeValuesService {
      * {@link BaseFaker#address()}'s {@link Address#streetName()}.
      */
     protected String resolveExpression(String expression, Object current, ProviderRegistration root, FakerContext context) {
-        // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
         if (!expression.contains("}")) {
             return expression;
         }
