@@ -28,10 +28,10 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
     @Override
     public Object apply(Object input, Schema<Object, ?> schema) {
-        Class clazz;
+        Class<?> clazz;
         Object result = null;
-        if (input instanceof Class) {
-            clazz = (Class) input;
+        if (input instanceof Class<?> inputClass) {
+            clazz = inputClass;
         } else {
             clazz = input.getClass();
             result = input;
@@ -129,12 +129,12 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
     /**
      * The output is tied to provided Class source.
      * An empty source will output an empty stream.
-     *
+     * <p>
      * Configure available input with {@link #from(Class source)}.
      */
     @Override
     public Stream<Object> generateStream(final Schema<Object, ?> schema, long limit) {
-        if(sourceClazz.isEmpty())
+        if (sourceClazz.isEmpty())
             return Stream.empty();
         else
             return Stream
