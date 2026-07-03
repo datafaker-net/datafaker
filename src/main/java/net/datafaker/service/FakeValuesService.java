@@ -82,7 +82,6 @@ public class FakeValuesService {
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
     private final Map<String, RegExpContext> regexp2SupplierMap = new CopyOnWriteMap<>(HashMap::new);
-
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
@@ -119,8 +118,8 @@ public class FakeValuesService {
     /**
      * Allows adding urls of files with custom data. Data should be in YAML format.
      *
-     * @param locale the locale for which an url is going to be added.
-     * @param url    url of a file with YAML structure
+     * @param locale  the locale for which an url is going to be added.
+     * @param url     url of a file with YAML structure
      * @throws IllegalArgumentException in case of invalid url
      */
     public void addUrl(Locale locale, URL url) {
@@ -945,10 +944,10 @@ public class FakeValuesService {
             if (current.getParameterCount() == args.length || current.getParameterCount() < args.length && current.isVarArgs()) {
                 final Object[] coercedArguments = args.length == 0 ? EMPTY_ARRAY : coerceArguments(current, args);
                 if (coercedArguments != null && rightIsMostRestrictive(mostRestrictive, current)) {
-                    mostRestrictive = current;
-                    coercedArgumentsForMostRestrictive = coercedArguments;
+                        mostRestrictive = current;
+                        coercedArgumentsForMostRestrictive = coercedArguments;
+                    }
                 }
-            }
         }
         if (mostRestrictive != null) {
             return new MethodAndCoercedArgs(mostRestrictive, coercedArgumentsForMostRestrictive);
@@ -980,7 +979,7 @@ public class FakeValuesService {
                 return true;
             }
             if (parameterTypes1[j].isPrimitive()) {
-                for (Class<?> primitive : PRIMITIVES) {
+                for (Class<?> primitive: PRIMITIVES) {
                     if (primitive == parameterTypes1[j]) {
                         return false;
                     } else if (primitive == parameterTypes2[j]) {

@@ -51,20 +51,17 @@ public class IrishIdNumber implements IdNumberGenerator {
         // Generate 7 digits
         String digitsPpsn = faker.number().digits(7);
 
-        String suffix = faker.bool().bool()
-            ? faker.options().option("A", "B", "H", "W")
-            : "";
+        String suffix = faker.bool().bool() ? faker.options().option("A", "B", "H", "W") : "";
 
         int weightedSum = calculateWeightedSum(digitsPpsn, suffix);
 
         // Build the PPSN
         return digitsPpsn + calculateCheckSumCharacter(weightedSum) + suffix;
     }
+
     private int calculateWeightedSum(String digitsPpsn, String suffix) {
         int[] weights = {8, 7, 6, 5, 4, 3, 2};
-        int[] digits = digitsPpsn.chars()
-            .map(Character::getNumericValue)
-            .toArray();
+        int[] digits = digitsPpsn.chars().map(c -> Character.getNumericValue(c)).toArray();
 
         int sum = 0;
 
@@ -75,15 +72,11 @@ public class IrishIdNumber implements IdNumberGenerator {
         // If we have suffix include it in the checksum
         if (!suffix.isEmpty()) {
             char extraChar = suffix.charAt(0);
-
             int extraValue = switch (extraChar) {
                 case 'A', 'B', 'H' -> extraChar - 'A' + 1;
                 case 'W' -> 0;
-                default -> throw new IllegalStateException(
-                    "Unexpected suffix: " + suffix
-                );
+                default -> throw new IllegalStateException("Unexpected suffix: " + suffix);
             };
-
             sum += extraValue * 9;
         }
 

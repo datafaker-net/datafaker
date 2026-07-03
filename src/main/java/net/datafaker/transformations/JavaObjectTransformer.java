@@ -129,12 +129,12 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
     /**
      * The output is tied to provided Class source.
      * An empty source will output an empty stream.
-     * <p>
+     *
      * Configure available input with {@link #from(Class source)}.
      */
     @Override
     public Stream<Object> generateStream(final Schema<Object, ?> schema, long limit) {
-        if (sourceClazz.isEmpty())
+        if(sourceClazz.isEmpty())
             return Stream.empty();
         else
             return Stream
