@@ -17,14 +17,15 @@ import java.util.regex.Pattern;
  *   <li>derived {@code RELEASED_VERSION} from the latest GitHub release tag</li>
  *   <li>bumped {@code pom.xml} and derived {@code NEXT_VERSION} for the next snapshot</li>
  *   <li>created {@code docs/releases/{RELEASED_VERSION}.md} and
- *       {@code docs/releases/{NEXT_VERSION}-SNAPSHOT.md}</li>
+ *       {@code docs/releases/{NEXT_VERSION}-SNAPSHOT.md} (repo only; excluded from the
+ *       published site via {@code exclude_docs} in {@code mkdocs.yml})</li>
  *   <li>updated {@code extra.datafaker.version} and {@code extra.datafaker.snapshot} in
  *       {@code mkdocs.yml}</li>
  * </ul>
  *
  * <p>Expects {@code mkdocs.yml} to use the grouped Releases nav layout ({@code 2.x} section,
- * top-level snapshot + latest stable entries). Nav links point at {@code releases/{version}.md}
- * files that the workflow creates in the same run.
+ * top-level latest stable entry). Snapshot release notes are kept in {@code docs/releases/} for
+ * the workflow but are not linked in nav or published to the site.
  *
  * <p>Usage: {@code MkdocsReleaseNavUpdater <released> <nextSnapshot> <mkdocs.yml>}
  */
@@ -60,9 +61,6 @@ public final class MkdocsReleaseNavUpdater {
             if (RELEASES_HEADER.matcher(line).matches()) {
                 out.add(line);
                 inReleases = true;
-                if (!containsLine(lines, topLevelEntry(nextSnapshot))) {
-                    out.add(topLevelEntry(nextSnapshot));
-                }
                 if (!containsLine(lines, topLevelEntry(releasedVersion))) {
                     out.add(topLevelEntry(releasedVersion));
                 }
