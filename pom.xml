@@ -258,13 +258,27 @@
                             <goal>enforce</goal>
                         </goals>
                         <configuration>
-                            <requireMavenVersion>
-                                <version>[3.6,)</version>
-                            </requireMavenVersion>
                             <rules>
+                                <requireMavenVersion>
+                                    <!-- https://maven.apache.org/docs/history.html -->
+                                    <version>[3.9,)</version>
+                                </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>[${buildJavaVersion},)</version>
                                 </requireJavaVersion>
+                                <requirePluginVersions>
+                                    <message>Best practice is to always define Maven plugin versions</message>
+                                    <banTimestamps>true</banTimestamps>
+
+                                    <unCheckedPluginList>
+                                        org.apache.maven.plugins:maven-clean-plugin,
+                                        org.apache.maven.plugins:maven-dependency-plugin,
+                                        org.apache.maven.plugins:maven-deploy-plugin,
+                                        org.apache.maven.plugins:maven-install-plugin,
+                                        org.apache.maven.plugins:maven-resources-plugin,
+                                        org.apache.maven.plugins:maven-site-plugin
+                                    </unCheckedPluginList>
+                                </requirePluginVersions>
                             </rules>
                         </configuration>
                     </execution>
