@@ -36,6 +36,8 @@
         <jbanking.version>4.3.0</jbanking.version>
         <junit.version>6.1.1</junit.version>
         <libphonenumber.version>9.0.34</libphonenumber.version>
+        <jspecify.version>1.0.0</jspecify.version>
+        <error_prone.version>2.42.0</error_prone.version>
 
         <releaseJavaVersion>17</releaseJavaVersion>
         <buildJavaVersion>17</buildJavaVersion>
@@ -91,6 +93,20 @@
             <groupId>com.googlecode.libphonenumber</groupId>
             <artifactId>libphonenumber</artifactId>
             <version>${libphonenumber.version}</version>
+        </dependency>
+
+        <!-- Annotations for nullability etc. -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <version>${jspecify.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.errorprone</groupId>
+            <artifactId>error_prone_annotations</artifactId>
+            <version>${error_prone.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Test dependencies -->

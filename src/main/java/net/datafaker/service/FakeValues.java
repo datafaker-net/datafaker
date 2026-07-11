@@ -1,7 +1,7 @@
 package net.datafaker.service;
 
 import net.datafaker.internal.helper.LazyEvaluated;
-import net.datafaker.internal.helper.WordUtils;
+import org.jspecify.annotations.Nullable;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static net.datafaker.internal.helper.JavaNames.toJavaNames;
+import static net.datafaker.internal.helper.WordUtils.capitalizeWords;
 
 public class FakeValues implements FakeValuesInterface {
     private static final Map<FakeValuesContext, FakeValues> FAKE_VALUES_MAP = new ConcurrentHashMap<>();
@@ -30,11 +31,13 @@ public class FakeValues implements FakeValuesInterface {
         return FAKE_VALUES_MAP.computeIfAbsent(fakeValuesContext, FakeValues::new);
     }
 
+    @Nullable
     @Override
     public Map<String, Object> get(String key) {
         return getMap(values.get(), key);
     }
 
+    @Nullable
     private Map<String, Object> loadFromUrl() {
         final URL url = fakeValuesContext.getUrl();
         if (url == null) {
@@ -84,7 +87,7 @@ public class FakeValues implements FakeValuesInterface {
         return Map.of();
     }
 
-    private void enrichMapWithJavaNames(Map<String, Object> result) {
+    private void enrichMapWithJavaNames(@Nullable Map<String, Object> result) {
         if (result != null) {
             Map<String, Object> map = null;
             for (var entry : result.entrySet()) {
@@ -133,7 +136,7 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     private static void rewriteList(List<Object> list, String providerKey) {
-        final String capitalizedProvider = WordUtils.capitalize(providerKey);
+        final String capitalizedProvider = capitalizeWords(providerKey);
         for (int i = 0; i < list.size(); i++) {
             Object itemValue = list.get(i);
             if (!(itemValue instanceof String item)) {
@@ -176,7 +179,8 @@ public class FakeValues implements FakeValuesInterface {
         }
     }
 
-    private Map<String, Object> readFromStream(InputStream stream) {
+    @Nullable
+    private Map<String, Object> readFromStream(@Nullable InputStream stream) {
         if (stream == null) return null;
         final Map<String, Object> valuesMap = new Yaml().loadAs(stream, Map.class);
         Map<String, Object> localeBased = getMap(valuesMap, fakeValuesContext.getLocale().getLanguage());
@@ -186,18 +190,21 @@ public class FakeValues implements FakeValuesInterface {
         return getMap(localeBased, "faker");
     }
 
+    @Nullable
     @SuppressWarnings("unchecked")
     private static Map<String, Object> getMap(Map<String, Object> map, String key) {
         return (Map<String, Object>) map.get(key);
     }
 
+    @Nullable
     Set<String> getPaths() {
         return fakeValuesContext.getPath() != null ?
             Set.of(fakeValuesContext.getPath()) :
             keysOf(values.get());
     }
 
-    private static Set<String> keysOf(Map<String, ?> map) {
+    @Nullable
+    private static Set<String> keysOf(@Nullable Map<String, ?> map) {
         return map == null || map.isEmpty() ? null : map.keySet();
     }
 

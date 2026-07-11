@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 import net.datafaker.sequence.FakeSequence;
+import org.jspecify.annotations.Nullable;
 
 public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
 
@@ -21,7 +22,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public CharSequence apply(IN input, Schema<IN, ?> schema) {
+    public CharSequence apply(@Nullable IN input, Schema<IN, ?> schema) {
         StringBuilder sb = new StringBuilder();
         Arrays.stream(schema.getFields()).forEach(it -> apply(input, sb, it));
         return sb.toString();
@@ -77,7 +78,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private void apply(IN input, StringBuilder sb, Field<IN, ?> xmlNode) {
+    private void apply(@Nullable IN input, StringBuilder sb, Field<IN, ?> xmlNode) {
 
         if (pretty && tagIndex > 0) {
             sb.append(System.lineSeparator()).append(offset(tagIndex));
@@ -97,7 +98,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
         applyTag(input, sb, xmlNode, tag);
     }
 
-    private void applyTag(IN input, StringBuilder sb, Field<IN, ?> field, String tag) {
+    private void applyTag(@Nullable IN input, StringBuilder sb, @Nullable Field<IN, ?> field, String tag) {
         if (field == null ) {
             applyValue(sb, tag, null);
             return;
@@ -127,7 +128,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private boolean isAttribute(String name) {
+    private boolean isAttribute(@Nullable String name) {
         return name != null;
     }
 
@@ -141,7 +142,7 @@ public class XmlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private void applyValue(StringBuilder sb, String tag, String xmlNodeValue) {
+    private void applyValue(StringBuilder sb, String tag, @Nullable String xmlNodeValue) {
         if (xmlNodeValue != null) {
             sb.append(">");
             sb.append(escape(xmlNodeValue));

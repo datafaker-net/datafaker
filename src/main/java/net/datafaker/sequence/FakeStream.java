@@ -1,6 +1,7 @@
 package net.datafaker.sequence;
 
 import net.datafaker.service.RandomService;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +15,7 @@ public class FakeStream<T> extends FakeSequence<T> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Stream<T> get() {
+    public Stream<@Nullable T> get() {
         if (isInfinite()) {
             return Stream.generate(this::singleton);
         }
@@ -29,7 +30,7 @@ public class FakeStream<T> extends FakeSequence<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<@Nullable T> iterator() {
         return get().iterator();
     }
 

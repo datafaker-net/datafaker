@@ -4,6 +4,7 @@ import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.YamlTransformer;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -53,7 +54,7 @@ class YamlTest {
             of(Schema.of(field("nullValue", () -> null)), lines("""
                 nullValue: null
                 """)),
-            of(Schema.of(field("array", () -> new String[]{null, "test", "123"})), lines("""
+            of(Schema.of(field("array", () -> new @Nullable String[]{null, "test", "123"})), lines("""
                 array:
                   - null
                   - test

@@ -1,8 +1,12 @@
 package net.datafaker.service;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Objects;
 import java.util.Random;
 import java.util.random.RandomGenerator;
+
+import static java.util.Objects.requireNonNullElse;
 
 public class RandomService {
     private static final char[] HEX_UP = "0123456789ABCDEF".toCharArray();
@@ -20,8 +24,8 @@ public class RandomService {
     /**
      * @param random If null is passed in, a default Random is assigned
      */
-    public RandomService(RandomGenerator random) {
-        this.random = random != null ? random : SHARED_RANDOM;
+    public RandomService(@Nullable RandomGenerator random) {
+        this.random = requireNonNullElse(random, SHARED_RANDOM);
     }
 
     @SuppressWarnings("unused")
@@ -158,7 +162,7 @@ public class RandomService {
     @Override
     public int hashCode() {
         if (random == SHARED_RANDOM) return 1;
-        return random != null ? random.hashCode() : 0;
+        return random.hashCode();
     }
 
     @Override

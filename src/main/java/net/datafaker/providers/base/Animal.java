@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.internal.helper.WordUtils;
+import static net.datafaker.internal.helper.WordUtils.capitalizeWords;
 
 /**
  * @since 0.8.0
@@ -20,7 +20,7 @@ public class Animal extends AbstractProvider<BaseProviders> {
     }
 
     public String genus() {
-        return WordUtils.capitalize(faker.resolve("creature.animal.genus"));
+        return capitalizeWords(faker.resolve("creature.animal.genus"));
     }
 
     public String species() {
