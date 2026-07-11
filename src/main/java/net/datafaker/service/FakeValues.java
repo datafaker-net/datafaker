@@ -1,7 +1,6 @@
 package net.datafaker.service;
 
 import net.datafaker.internal.helper.LazyEvaluated;
-import net.datafaker.internal.helper.WordUtils;
 import org.jspecify.annotations.Nullable;
 import org.yaml.snakeyaml.Yaml;
 
@@ -17,6 +16,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static net.datafaker.internal.helper.JavaNames.toJavaNames;
+import static net.datafaker.internal.helper.WordUtils.capitalizeWords;
 
 public class FakeValues implements FakeValuesInterface {
     private static final Map<FakeValuesContext, FakeValues> FAKE_VALUES_MAP = new ConcurrentHashMap<>();
@@ -136,7 +136,7 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     private static void rewriteList(List<Object> list, String providerKey) {
-        final String capitalizedProvider = WordUtils.capitalize(providerKey);
+        final String capitalizedProvider = capitalizeWords(providerKey);
         for (int i = 0; i < list.size(); i++) {
             Object itemValue = list.get(i);
             if (!(itemValue instanceof String item)) {

@@ -25,7 +25,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public String apply(IN input, Schema<IN, ?> schema) {
+    public String apply(@Nullable IN input, Schema<IN, ?> schema) {
         Field<?, ?>[] fields = schema.getFields();
         StringBuilder sb = new StringBuilder();
         sb.append("{");
@@ -90,7 +90,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         return ",";
     }
 
-    private void applyValue(IN input, StringBuilder sb, @Nullable Object value) {
+    private void applyValue(@Nullable IN input, StringBuilder sb, @Nullable Object value) {
         if (value instanceof Collection<?> collection) {
             sb.append(generate(input, (Collection<Object>) collection));
         } else if (value != null && value.getClass().isArray()) {
@@ -100,7 +100,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private String generate(IN input, Collection<?> collection) {
+    private String generate(@Nullable IN input, Collection<Object> collection) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         int i = 0;
@@ -109,7 +109,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
                 sb.append(", ");
             }
             i++;
-            if (value instanceof CompositeField<?, ?> compositeField) {
+            if (value instanceof CompositeField compositeField) {
                 sb.append(apply(input, compositeField));
             } else {
                 applyValue(input, sb, value);

@@ -36,6 +36,8 @@
         <jbanking.version>4.3.0</jbanking.version>
         <junit.version>6.1.1</junit.version>
         <libphonenumber.version>9.0.34</libphonenumber.version>
+        <jspecify.version>1.0.0</jspecify.version>
+        <error_prone.version>2.42.0</error_prone.version>
 
         <releaseJavaVersion>17</releaseJavaVersion>
         <buildJavaVersion>17</buildJavaVersion>

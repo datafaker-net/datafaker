@@ -46,8 +46,6 @@ import static java.util.Locale.ROOT;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.SEVERE;
-import static net.datafaker.internal.helper.JavaNames.toJavaNames;
-import static net.datafaker.internal.helper.WordUtils.capitalizeWords;
 import static net.datafaker.transformations.Field.field;
 
 public class FakeValuesService {
