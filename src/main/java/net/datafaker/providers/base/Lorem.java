@@ -113,7 +113,7 @@ public class Lorem extends AbstractProvider<BaseProviders> {
     public String sentence(int wordCount, int randomWordsToAdd) {
         int numberOfWordsToAdd = randomWordsToAdd == 0 ? 0 : faker.random().nextInt(randomWordsToAdd);
         final int totalWordCount = wordCount + numberOfWordsToAdd;
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(totalWordCount * 8);
         if (totalWordCount > 0) {
             sb.append(capitalizeWords(word()));
         }
