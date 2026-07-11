@@ -54,10 +54,11 @@ public class Barcode extends AbstractProvider<BaseProviders> {
         int i = 0;
         while (number > 0) {
             i++;
+            int digit = (int) (number % 10);
             if (i % 2 == 1) {
-                odd += number % 10;
+                odd += digit;
             } else {
-                even += number % 10;
+                even += digit;
             }
 
             number /= 10;
