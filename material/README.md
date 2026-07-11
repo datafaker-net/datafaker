@@ -53,7 +53,7 @@ mkdocs build --strict
 1. Read the [Material upgrade guide](https://squidfunk.github.io/mkdocs-material/upgrade/) for the target version.
 2. Bump the pin in `requirements-docs.txt` (e.g. `mkdocs-material==9.7.6` → next release).
 3. Run `pip install -r requirements-docs.txt && mkdocs build --strict`.
-4. Review `theme.features` in [`mkdocs.yml`](../mkdocs.yml) — many behaviors are opt-in since Material 9.x (`content.code.copy`, `content.action.edit`, `navigation.footer`, etc.). Keep `navigation.sections` disabled unless you verify that **Releases → 2.x / 1.x** sidebar groups still collapse after re-enabling it (Material 9 treats section items as always expanded).
+4. Review `theme.features` in [`mkdocs.yml`](../mkdocs.yml) — many behaviors are opt-in since Material 9.x (`content.code.copy`, `content.action.edit`, `navigation.footer`, etc.). Keep `navigation.sections` disabled unless you verify that **Releases → 3.x / 2.x / 1.x** sidebar groups still collapse after re-enabling it (Material 9 treats section items as always expanded).
 5. Visually test: homepage hero, search, edit link, footer navigation, **release nav collapse**, mobile layout.
 6. If templates break, fix `material/overrides/` and `docs/stylesheets/extra.css` only. Compare with [upstream overrides](https://github.com/squidfunk/mkdocs-material/tree/master/material/overrides). Do **not** re-vendor the theme.
 7. Update this README if the workflow or layout changes.

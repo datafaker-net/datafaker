@@ -40,7 +40,7 @@ public class Stock extends AbstractProvider<BaseProviders> {
      * and a single check digit calculated using the Luhn algorithm via {@link LuhnCheckDigit}.
      *
      * @return a valid-formatted ISIN
-     * @since 2.8.0
+     * @since 3.0.0
      */
     public String isin() {
         String countryCode = faker.country().countryCode2().toUpperCase(Locale.ROOT);

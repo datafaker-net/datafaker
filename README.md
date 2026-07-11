@@ -42,7 +42,7 @@ dependencies {
 
 ```
 
-You can also use the snapshot version (`2.8.0-SNAPSHOT`), which automatically gets published
+You can also use the snapshot version (`3.0.0-SNAPSHOT`), which automatically gets published
 after every push to the main branch of this repository. Binary repository URL for snapshots download is
 `https://central.sonatype.com/repository/maven-snapshots/`.
 
