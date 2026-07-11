@@ -539,7 +539,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>${maven.compiler.target}</jvmTarget>
+                    <jvmTarget>${releaseJavaVersion}</jvmTarget>
                 </configuration>
             </plugin>
             <plugin>
