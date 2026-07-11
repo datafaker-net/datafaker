@@ -1,0 +1,6 @@
+mkdocs>=1.6,<2
+mkdocs-material==9.7.6
+pymdown-extensions>=10.2
+mkdocs-minify-plugin>=0.7
+mkdocs-macros-plugin
+mkdocs-allscreenshots-og-screenshot

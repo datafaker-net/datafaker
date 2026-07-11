@@ -115,7 +115,7 @@ class HttpTest extends BaseFakerTest {
 
     @Test
     void userAgentForAllBrowsers() {
-        for (Http.Browser browser : Http.Browser.values()) {
+        for (var browser : Http.Browser.values()) {
             assertThat(http.userAgent(browser))
                 .as("User agent for browser %s", browser)
                 .isNotBlank()

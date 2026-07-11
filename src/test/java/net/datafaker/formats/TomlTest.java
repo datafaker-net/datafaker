@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -112,7 +111,7 @@ class TomlTest {
         final BaseFaker faker = new BaseFaker();
         Schema<Name, List<String>> schema = Schema.of(field("firstNames", name -> IntStream.rangeClosed(1, limit)
             .mapToObj(it -> name.firstName())
-            .collect(Collectors.toList())));
+            .toList()));
 
         TomlTransformer<Name> transformer = new TomlTransformer<>();
 

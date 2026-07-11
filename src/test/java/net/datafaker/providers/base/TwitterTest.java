@@ -79,9 +79,9 @@ class TwitterTest {
         String text = twitter.text(keywords, sentenceMaxLength, wordMaxLength);
         String[] textwords = text.split(" ");
         boolean flag = true;
-        for (String keyword : keywords) {
+        for (var keyword : keywords) {
             boolean tmpFlag = false;
-            for (String textword : textwords) {
+            for (var textword : textwords) {
                 if (keyword.equals(textword)) {
                     tmpFlag = true;
                     break;

@@ -27,7 +27,6 @@ class MkdocsReleaseNavUpdaterTest {
         assertEquals(List.of(
             "nav:",
             "  - Releases:",
-            "    - 2.8.0-SNAPSHOT: releases/2.8.0-SNAPSHOT.md",
             "    - 2.7.0: releases/2.7.0.md",
             "    - 2.x:",
             "      - 2.6.0: releases/2.6.0.md",
@@ -35,6 +34,7 @@ class MkdocsReleaseNavUpdaterTest {
             "  - In the news: in-the-media/links.md"
         ), updated);
         assertFalse(updated.contains("    - 2.7.0-SNAPSHOT: releases/2.7.0-SNAPSHOT.md"));
+        assertFalse(updated.contains("    - 2.8.0-SNAPSHOT: releases/2.8.0-SNAPSHOT.md"));
     }
 
     @Test
@@ -56,9 +56,9 @@ class MkdocsReleaseNavUpdaterTest {
 
         List<String> updated = MkdocsReleaseNavUpdater.updateNav(nav, "2.7.0", "2.8.0-SNAPSHOT");
 
-        assertTrue(updated.contains("    - 2.8.0-SNAPSHOT: releases/2.8.0-SNAPSHOT.md"));
         assertTrue(updated.contains("    - 2.7.0: releases/2.7.0.md"));
         assertFalse(updated.contains("    - 2.7.0-SNAPSHOT: releases/2.7.0-SNAPSHOT.md"));
+        assertFalse(updated.contains("    - 2.8.0-SNAPSHOT: releases/2.8.0-SNAPSHOT.md"));
         assertEquals("      - 2.5.4: releases/2.5.4.md", updated.get(updated.indexOf("    - 2.x:") + 1));
     }
 }

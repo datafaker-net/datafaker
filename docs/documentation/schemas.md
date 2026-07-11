@@ -271,13 +271,13 @@ INSERT INTO "MyTable" ("ints") VALUES (ARRAY[1, 2, 3]);
 === "Java"
 
     ```java
-    Schema.of(field("names_multiset", () -> Collections.singleton("hello")));
+    Schema.of(field("names_multiset", () -> Set.of("hello")));
     ```
 
 === "Kotlin"
 
     ```kotlin
-    val schema: Schema<String, Set<String>> = Schema.of(field("names_multiset", Supplier { Collections.singleton("hello") } ))
+    val schema: Schema<String, Set<String>> = Schema.of(field("names_multiset", Supplier { Set.of("hello") } ))
     ```
 
 will lead to
@@ -356,9 +356,9 @@ The following is an example on how to use it:
         field("lastname", () -> faker.name().lastName()),
         field("phones", () -> Schema.of(
             field("worknumbers", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get())
-                .collect(Collectors.toList())),
+                .toList()),
             field("cellphones", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get())
-                .collect(Collectors.toList()))
+                .toList())
         )),
         field("address", () -> Schema.of(
             field("city", () -> faker.address().city()),
@@ -549,9 +549,9 @@ The following is an example on how to use it:
         field("lastname", () -> faker.name().lastName()),
         field("phones", () -> Schema.of(
             field("worknumbers", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().phoneNumber()).maxLen(2).build().get())
-                .collect(Collectors.toList())),
+                .toList()),
             field("cellphones", () -> ((Stream<?>) faker.<String>stream().suppliers(() -> faker.phoneNumber().cellPhone()).maxLen(3).build().get())
-                .collect(Collectors.toList()))
+                .toList())
         )),
         field("address", () -> Schema.of(
             field("city", () -> faker.address().city()),

@@ -31,7 +31,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -42,8 +41,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
 import static java.util.Locale.ROOT;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINE;
@@ -144,8 +141,8 @@ public class FakeValuesService {
     public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
         final Object o = fetchObject(key, context);
-        if (o instanceof List) {
-            valuesArray = (List<?>) o;
+        if (o instanceof List<?> list) {
+            valuesArray = list;
             final int size = valuesArray.size();
             if (size == 0) {
                 return null;
@@ -165,23 +162,12 @@ public class FakeValuesService {
         return (String) fetch(key, context);
     }
 
-    private class SafeFetchResolver implements ValueResolver {
-        private final String simpleDirective;
-        private final FakerContext context;
-
-        private SafeFetchResolver(String simpleDirective, FakerContext context) {
-            this.simpleDirective = simpleDirective;
-            this.context = context;
-        }
+    private record SafeFetchResolver(FakeValuesService service, String simpleDirective, FakerContext context)
+        implements ValueResolver {
 
         @Override
         public Object resolve() {
-            return safeFetch(simpleDirective, context, null);
-        }
-
-        @Override
-        public String toString() {
-            return "%s[simpleDirective=%s, context=%s]".formatted(getClass().getSimpleName(), simpleDirective, context);
+            return service.safeFetch(simpleDirective, context, null);
         }
     }
 
@@ -206,8 +192,8 @@ public class FakeValuesService {
         Object o = fetchObject(key, context);
         String str;
         if (o == null) return defaultIfNull;
-        if (o instanceof List) {
-            final List<String> values = (List<String>) o;
+        if (o instanceof List<?> list) {
+            final List<String> values = (List<String>) list;
             final int size = values.size();
             return switch (size) {
                 case 0 -> defaultIfNull;
@@ -250,8 +236,8 @@ public class FakeValuesService {
             Object currentValue = fakeValuesInterfaceMap.get(sLocale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
-                if (currentValue instanceof Map) {
-                    currentValue = ((Map<?, ?>) currentValue).get(currentPath);
+                if (currentValue instanceof Map<?, ?> map) {
+                    currentValue = map.get(currentPath);
                 } else {
                     currentValue = ((FakeValuesInterface) currentValue).get(currentPath);
                 }
@@ -264,7 +250,7 @@ public class FakeValuesService {
         }
         if (local2Add != null) {
             Object valueToCache = result;
-            Object curResult = key2fetchedObject.getOrDefault(local2Add, emptyMap()).get(key);
+            Object curResult = key2fetchedObject.getOrDefault(local2Add, Map.of()).get(key);
             if (curResult != null) {
                 return (T) result; // Strange... Why return result, not curResult?
             }
@@ -683,14 +669,14 @@ public class FakeValuesService {
     private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, String expr) {
         Object res = resolveExpression(directive, args, current, root, context);
         LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, expr: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, expr, res));
-        if (res instanceof CharSequence) {
-            if (((CharSequence) res).isEmpty()) {
+        if (res instanceof CharSequence charSequence) {
+            if (charSequence.isEmpty()) {
                 regexp2SupplierMap.put(expr, new RegExpContext(root, context, EMPTY_STRING));
             }
             return res;
         }
-        if (res instanceof List) {
-            Iterator<ValueResolver> it = ((List<ValueResolver>) res).iterator();
+        if (res instanceof List<?> list) {
+            var it = ((List<ValueResolver>) list).iterator();
             while (it.hasNext()) {
                 Object valueResolver = it.next();
                 Object value;
@@ -729,8 +715,8 @@ public class FakeValuesService {
             // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
             // #{ssn_valid} on IdNumber
             if (dotIndex == -1) {
-                if (current instanceof AbstractProvider) {
-                    final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
+                if (current instanceof AbstractProvider<?> provider) {
+                    final Method method = BaseFaker.getMethod(provider, directive);
                     if (method != null) {
                         res.add(new MethodResolver(method, current, args));
                         return res;
@@ -757,7 +743,7 @@ public class FakeValuesService {
         // car.wheel will be looked up in the YAML file.
         // It's only "simple" if there aren't args
         if (args.length == 0) {
-            res.add(new SafeFetchResolver(simpleDirective, context));
+            res.add(new SafeFetchResolver(this, simpleDirective, context));
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
@@ -777,7 +763,7 @@ public class FakeValuesService {
         // class.method_name (lowercase)
         if (dotIndex >= 0) {
             final String key = javaNameToYamlName(simpleDirective);
-            res.add(new SafeFetchResolver(key, context));
+            res.add(new SafeFetchResolver(this, key, context));
         }
 
         return res;
@@ -922,10 +908,10 @@ public class FakeValuesService {
         LOG.fine(() -> "Find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
         String name = removeUnderscoreChars(accessorName);
 
-        Map<String, Collection<Method>> classMethodsMap = CLASS_2_METHODS_CACHE.computeIfAbsent(clazz, (__) -> {
+        var classMethodsMap = CLASS_2_METHODS_CACHE.computeIfAbsent(clazz, (__) -> {
             Method[] classMethods = clazz.getMethods();
             Map<String, Collection<Method>> methodMap =
-                classMethods.length == 0 ? emptyMap() : new HashMap<>(classMethods.length);
+                classMethods.length == 0 ? Map.of() : new HashMap<>(classMethods.length);
             for (Method m : classMethods) {
                 String key = m.getName().toLowerCase(ROOT);
                 methodMap.computeIfAbsent(key, k -> new ArrayList<>()).add(m);
@@ -934,7 +920,7 @@ public class FakeValuesService {
             return methodMap;
         });
 
-        Collection<Method> methods = classMethodsMap.getOrDefault(name, emptyList());
+        Collection<Method> methods = classMethodsMap.getOrDefault(name, List.of());
         if (methods.isEmpty()) {
             LOG.fine(() -> "Didn't find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
             return null;

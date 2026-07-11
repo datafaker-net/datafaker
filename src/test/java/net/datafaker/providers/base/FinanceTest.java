@@ -7,13 +7,16 @@ import fr.marcwrobel.jbanking.checkdigit.IbanCheckDigit;
 import fr.marcwrobel.jbanking.iban.BbanStructure;
 import fr.marcwrobel.jbanking.iban.Iban;
 import net.datafaker.providers.base.Finance.CreditCardType;
-import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
+import org.apache.commons.validator.routines.CreditCardValidator;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.Collection;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,18 +25,13 @@ class FinanceTest extends BaseFakerTest {
     private static final Set<String> JBANKING_SUPPORTED_COUNTRY_CODES = Arrays.stream(BbanStructure.values())
         .map(Enum::name)
         .collect(Collectors.toUnmodifiableSet());
+    private static final CreditCardValidator CREDIT_CARD_VALIDATOR = CreditCardValidator.genericCreditCardValidator();
 
     private final Finance finance = faker.finance();
 
     @RepeatedTest(100)
     void creditCard() {
-        final String creditCard = finance.creditCard();
-        assertCardLuhnDigit(creditCard);
-    }
-
-    private void assertCardLuhnDigit(String creditCard) {
-        final String creditCardStripped = creditCard.replace("-", "");
-        assertThat(LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(creditCardStripped)).isTrue();
+        assertThatCreditCardIsValid(finance.creditCard().replace("-", ""), null, CREDIT_CARD_VALIDATOR);
     }
 
     @RepeatedTest(10)
@@ -82,18 +80,17 @@ class FinanceTest extends BaseFakerTest {
     @Test
     void ibanWithAllCountryCodes() {
         Set<String> ibanCountryCodes = Finance.ibanSupportedCountries();
-        for (String givenCountryCode : ibanCountryCodes) {
+        for (var givenCountryCode : ibanCountryCodes) {
             final String iban = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
             assertIbanIsValid(iban, givenCountryCode);
         }
     }
 
-    @Test
-    void creditCardWithType() {
-        for (CreditCardType type : CreditCardType.values()) {
-            final String creditCard = finance.creditCard(type);
-            assertCardLuhnDigit(creditCard);
-        }
+    @ParameterizedTest(name = "[{index}] {0}")
+    @EnumSource(CreditCardType.class)
+    void creditCardWithType(CreditCardType type) {
+        String cc = finance.creditCard(type).replace("-", "");
+        assertThatCreditCardIsValid(cc, type, CREDIT_CARD_VALIDATOR);
     }
 
     @Test
@@ -120,19 +117,21 @@ class FinanceTest extends BaseFakerTest {
     void visaCard() {
         String creditCard = finance.creditCard(CreditCardType.VISA).replace("-", "");
         assertThat(creditCard).startsWith("4").hasSize(16);
+        assertThatCreditCardIsValid(creditCard, CreditCardType.VISA, CREDIT_CARD_VALIDATOR);
     }
 
     @RepeatedTest(100)
     void discoverCard() {
         String creditCard = finance.creditCard(CreditCardType.DISCOVER).replace("-", "");
         assertThat(creditCard).startsWith("6").hasSize(16);
+        assertThatCreditCardIsValid(creditCard, CreditCardType.DISCOVER, CREDIT_CARD_VALIDATOR);
     }
 
     @RepeatedTest(100)
     void unionpayCard() {
         List<String> startingDigits = List.of("62", "64", "65", "81");
         String creditCard = finance.creditCard(CreditCardType.UNIONPAY).replace("-", "");
-        assertThat(creditCard).hasSize(16);
+        assertThatCreditCardIsValid(creditCard, CreditCardType.UNIONPAY, CreditCardValidator.genericCreditCardValidator(16));
         assertThat(startingDigits)
             .as("UnionPay card '%s' should start with one of %s", creditCard, startingDigits)
             .anyMatch(prefix -> creditCard.startsWith(prefix));
@@ -151,4 +150,22 @@ class FinanceTest extends BaseFakerTest {
         }
         assertThat(check % 10).isZero();
     }
+
+    /**
+     * Asserts that the given credit card number is valid according to the specified validator.
+     *
+     * @param creditCard the card number to validate
+     * @param type the expected card type, or {@code null} if unspecified
+     * @param creditCardValidator the validator instance used for verification
+     */
+    private void assertThatCreditCardIsValid(String creditCard, CreditCardType type, CreditCardValidator creditCardValidator) {
+        assertThat(creditCard)
+            .satisfies(cc -> {
+                assertThat(creditCardValidator.isValid(cc))
+                    .as("Credit card %s (%s) should be valid according to %s",
+                        cc, Objects.requireNonNullElse(type, "unspecified"), creditCardValidator.getClass().getName())
+                    .isTrue();
+            });
+    }
+
 }

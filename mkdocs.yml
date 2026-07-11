@@ -15,15 +15,34 @@ copyright: Copyright &copy; 2016 - 2026 Erik Pragt
 theme:
   name: material
   custom_dir: material
+  favicon: assets/images/favicon.png
   language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
   features:
     - content.code.annotate
+    - content.code.copy
+    - content.action.edit
     # - content.tabs.link
     # - header.autohide
     # - navigation.expand
     - navigation.indexes
     # - navigation.instant
-    - navigation.sections
+    - navigation.footer
+    # - navigation.sections  # disabled: prevents collapsible 2.x/1.x release groups in Material 9
     - navigation.tabs
     # - navigation.tabs.sticky
     - navigation.top
@@ -32,6 +51,9 @@ theme:
     - search.share
     - search.suggest
     # - toc.integrate
+
+extra_css:
+  - stylesheets/extra.css
 
 # Extensions
 markdown_extensions:
@@ -82,6 +104,7 @@ plugins:
 exclude_docs: |
   releases/.RELEASE-template.md
   releases/.SNAPSHOT-template.md
+  releases/*-SNAPSHOT.md
 
 # Customization
 extra:
@@ -95,7 +118,7 @@ nav:
   - Documentation:
     - Getting started: documentation/getting-started.md
     - Basic usage: documentation/usage.md
-    - Data Providers:
+    - Data providers:
       - All providers: documentation/providers.md
       - Custom providers: documentation/custom-providers.md
     - Advanced usage:
@@ -109,7 +132,7 @@ nav:
     - Performance:
       - Datafaker 1.4.0: documentation/performance140.md
       - Datafaker 1.7.0: documentation/performance170.md
-    - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/2.5.2/datafaker-2.5.2-javadoc.jar/!/index.html'
+    - Javadoc: 'https://javadoc.io/doc/net.datafaker/datafaker/latest/index.html'
     - Contributing: documentation/contributing.md
     - First time contributor: documentation/first-time-contributor.md
     - License: documentation/license.md

@@ -63,7 +63,7 @@ public class FakerRepeatabilityIntegrationTest {
         List<Method> providerList = Arrays.asList(methods);
         providerList.sort(Comparator.comparing(Method::getName));
 
-        for (Method provider : providerList) {
+        for (var provider : providerList) {
 
             if (AbstractProvider.class.isAssignableFrom(provider.getReturnType()) && provider.getParameterCount() == 0) {
                 AbstractProvider providerImpl = (AbstractProvider) provider.invoke(faker);
@@ -73,7 +73,7 @@ public class FakerRepeatabilityIntegrationTest {
                 List<Method> generatorMethodList = Arrays.asList(generatorMethods);
                 generatorMethodList.sort(Comparator.comparing(Method::getName));
 
-                for (Method generatorMethod : generatorMethodList) {
+                for (var generatorMethod : generatorMethodList) {
 
                     if (!Instant.class.isAssignableFrom(generatorMethod.getReturnType()) &&
                         !byte[].class.isAssignableFrom(generatorMethod.getReturnType())

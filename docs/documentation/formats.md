@@ -22,7 +22,7 @@ attributes using randomly generated data in the following way:
         Collection<Xml.XmlNode> address = faker.<Xml.XmlNode>collection()
                 .suppliers(() -> new Xml.XmlNode("address",
                         map(entry("country", faker.address().country()),
-                                entry("city", faker.address().city()), entry("streetAddress", faker.address().streetAddress())), Collections.emptyList()))
+                                entry("city", faker.address().city()), entry("streetAddress", faker.address().streetAddress())), List.of()))
                 .maxLen(3).build().get();
 
         Collection<Xml.XmlNode> persons = faker.<Xml.XmlNode>collection()

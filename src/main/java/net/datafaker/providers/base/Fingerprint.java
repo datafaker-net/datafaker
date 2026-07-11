@@ -65,7 +65,7 @@ public class Fingerprint extends AbstractProvider<BaseProviders> {
     }
 
     private byte[] encodePng(BufferedImage image) {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+        try (var baos = new ByteArrayOutputStream()) {
             ImageIO.write(image, "PNG", baos);
             return baos.toByteArray();
         } catch (IOException e) {

@@ -26,8 +26,8 @@ import java.util.regex.Pattern;
  * present, so it is not duplicated under the template's {@code ## What's changed} heading.
  * Leading and trailing blank lines around the body are trimmed.
  *
- * <p>Strips {@code #} from bullet lines like {@code * #1234 ...} so issue numbers are not
- * treated as markdown headings.
+ * <p>Escapes {@code #} in bullet lines like {@code * #1234 ...} as {@code \#1234} so issue
+ * numbers are not treated as markdown headings.
  *
  * <p>Usage: {@code ReleaseNotesGenerator <version> <date> <template> <output> <body>}
  */
@@ -60,13 +60,14 @@ public final class ReleaseNotesGenerator {
         List<String> out = new ArrayList<>(templateLines.size() + bodyLines.size());
         List<String> preparedBody = prepareBodyLines(bodyLines);
         boolean inserted = false;
-        for (String line : templateLines) {
-            out.add(line.replace("X.Y.Z", version).replace("dd-mm-yyyy", date));
-            if (!inserted && WHATS_CHANGED.equals(out.get(out.size() - 1))) {
+        for (var line : templateLines) {
+            var rendered = line.replace("X.Y.Z", version).replace("dd-mm-yyyy", date).stripLeading();
+            out.add(rendered);
+            if (!inserted && WHATS_CHANGED.equals(rendered)) {
                 if (!preparedBody.isEmpty()) {
                     out.add("");
-                    for (String bodyLine : preparedBody) {
-                        out.add(stripIssueHash(bodyLine));
+                    for (var bodyLine : preparedBody) {
+                        out.add(escapeIssueHashInBullet(bodyLine));
                     }
                 }
                 inserted = true;
@@ -102,8 +103,8 @@ public final class ReleaseNotesGenerator {
         }
     }
 
-    static String stripIssueHash(String line) {
+    static String escapeIssueHashInBullet(String line) {
         Matcher matcher = ISSUE_HASH_BULLET.matcher(line);
-        return matcher.find() ? matcher.replaceFirst("$1$2") : line;
+        return matcher.find() ? matcher.replaceFirst("$1\\\\#$2") : line;
     }
 }

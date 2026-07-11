@@ -5,6 +5,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    if: github.repository == 'datafaker-net/datafaker'
     steps:
       - name: Configure GPG Key
         run: |

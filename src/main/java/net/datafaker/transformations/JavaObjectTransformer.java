@@ -4,6 +4,7 @@ import net.datafaker.sequence.FakeSequence;
 
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.RecordComponent;
@@ -28,10 +29,10 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
     @Override
     public Object apply(Object input, Schema<Object, ?> schema) {
-        Class clazz;
+        Class<?> clazz;
         Object result = null;
-        if (input instanceof Class) {
-            clazz = (Class) input;
+        if (input instanceof Class<?> inputClass) {
+            clazz = inputClass;
         } else {
             clazz = input.getClass();
             result = input;
@@ -77,10 +78,10 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
             Consumer<Object> consumer = SCHEMA2CONSUMER.get(schema);
             if (consumer == null) {
-                final Field<Object, ?>[] fields = schema.getFields();
-                final Map<String, java.lang.reflect.Field> name2ClassField = Stream.of(clazz.getDeclaredFields()).collect(
-                    Collectors.toMap(java.lang.reflect.Field::getName, Function.identity()));
-                final java.lang.reflect.Field[] rFields = new java.lang.reflect.Field[fields.length];
+                final net.datafaker.transformations.Field<Object, ?>[] fields = schema.getFields();
+                final Map<String, Field> name2ClassField = Stream.of(clazz.getDeclaredFields()).collect(
+                    Collectors.toMap(Field::getName, Function.identity()));
+                final Field[] rFields = new Field[fields.length];
                 for (int i = 0; i < fields.length; i++) {
                     rFields[i] = name2ClassField.get(fields[i].getName());
                     rFields[i].setAccessible(true);
@@ -150,7 +151,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
 
     @Override
     public Collection<Object> generate(Schema<Object, ?> schema, int limit) {
-        return this.generateStream(schema, limit).collect(Collectors.toList());
+        return this.generateStream(schema, limit).toList();
     }
 
     @Override
@@ -164,7 +165,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
     }
 
     private Object getObject(Schema<Object, ?> schema, Object result, Constructor<?> recordConstructor) {
-        final Field<Object, ?>[] fields = schema.getFields();
+        final net.datafaker.transformations.Field<Object, ?>[] fields = schema.getFields();
         final Object[] values = new Object[fields.length];
         for (int i = 0; i < fields.length; i++) {
             values[i] = fields[i].transform(result);
