@@ -220,8 +220,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
      *         is the corresponding BBAN regular expression
      */
     private static Map<String, String> createCountryCodeToBasicBankAccountNumberPatternMap() {
-        // source: - https://www.swift.com/standards/data-standards/iban, version 101
-        //         - de.speedbanking:iban-commons de.speedbanking.iban.tool.DatafakerFinanceIbanGenerator
+        // source: https://www.swift.com/standards/data-standards/iban, version 101
         Map<String, String> ibanFormats = new LinkedHashMap<>();
         ibanFormats.put("AD", "[0-9]{8}[0-9A-Z]{12}");            // 🇦🇩 Andorra                  : 4!n4!n12!c
         ibanFormats.put("AE", "[0-9]{19}");                       // 🇦🇪 United Arab Emirates     : 3!n16!n

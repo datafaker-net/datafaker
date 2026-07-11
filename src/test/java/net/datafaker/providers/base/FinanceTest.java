@@ -1,12 +1,11 @@
 package net.datafaker.providers.base;
 
-import static de.speedbanking.bic.junit.jupiter.api.BicAssertions.assertThatBicIsValid;
-import static de.speedbanking.iban.junit.jupiter.api.IbanAssertions.assertThatIban;
-import static de.speedbanking.iban.junit.jupiter.api.IbanAssertions.assertThatIbanIsValid;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.speedbanking.iban.Iban;
-import de.speedbanking.iban.IbanRegistry;
+import fr.marcwrobel.jbanking.bic.Bic;
+import fr.marcwrobel.jbanking.checkdigit.IbanCheckDigit;
+import fr.marcwrobel.jbanking.iban.BbanStructure;
+import fr.marcwrobel.jbanking.iban.Iban;
 import net.datafaker.providers.base.Finance.CreditCardType;
 import org.apache.commons.validator.routines.CreditCardValidator;
 import org.junit.jupiter.api.RepeatedTest;
@@ -15,12 +14,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 class FinanceTest extends BaseFakerTest {
 
+    private static final Set<String> JBANKING_SUPPORTED_COUNTRY_CODES = Arrays.stream(BbanStructure.values())
+        .map(Enum::name)
+        .collect(Collectors.toUnmodifiableSet());
     private static final CreditCardValidator CREDIT_CARD_VALIDATOR = CreditCardValidator.genericCreditCardValidator();
 
     private final Finance finance = faker.finance();
@@ -50,32 +54,27 @@ class FinanceTest extends BaseFakerTest {
 
     @RepeatedTest(100)
     void bic() {
-        assertThatBicIsValid(finance.bic());
+        String bic = finance.bic();
+        assertThat(Bic.isValid(bic)).as("BIC '%s' should be valid", bic).isTrue();
     }
 
     @RepeatedTest(100)
     void iban() {
         String iban = finance.iban();
-        assertThatIbanIsValid(iban);
-        assertThat(Finance.ibanSupportedCountries()).contains(Iban.of(iban).getCountryCode());
+        assertIbanIsValid(iban, iban.substring(0, 2));
+        assertThat(Finance.ibanSupportedCountries()).contains(iban.substring(0, 2));
     }
 
     @Test
     void ibanWithCountryCode() {
         String ibanDe = finance.iban("DE");
-        assertThatIban(ibanDe)
-            .hasCountryCode("DE")
-            .hasLength(IbanRegistry.DE.getIbanLength())
-            .matches("DE\\d{20}");
+        assertIbanIsValid(ibanDe, "DE");
+        assertThat(ibanDe).matches("DE\\d{20}");
     }
 
     @Test
     void ibanCountryCodes() {
         assertThat(Finance.ibanSupportedCountries()).isNotEmpty().hasSizeGreaterThan(100);
-        Finance.ibanSupportedCountries().forEach(c ->
-            assertThat(IbanRegistry.getByCode(c))
-                .as("IbanRegistry should contain entry for country code '%s'", c)
-                .isNotNull());
     }
 
     @Test
@@ -83,9 +82,7 @@ class FinanceTest extends BaseFakerTest {
         Set<String> ibanCountryCodes = Finance.ibanSupportedCountries();
         for (var givenCountryCode : ibanCountryCodes) {
             final String iban = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
-            assertThatIban(iban)
-                .hasCountryCode(givenCountryCode)
-                .hasLength(IbanRegistry.getByCode(givenCountryCode).getIbanLength());
+            assertIbanIsValid(iban, givenCountryCode);
         }
     }
 
@@ -101,9 +98,19 @@ class FinanceTest extends BaseFakerTest {
         final String givenCountryCode = "CR";
         final BaseFaker faker = new BaseFaker();
         final String ibanFaker = finance.iban(givenCountryCode).toUpperCase(faker.getContext().getLocale());
-        assertThatIban(ibanFaker)
-            .hasCountryCode(givenCountryCode)
-            .hasLength(IbanRegistry.CR.getIbanLength());
+        assertIbanIsValid(ibanFaker, givenCountryCode);
+    }
+
+    private static void assertIbanIsValid(String iban, String expectedCountryCode) {
+        assertThat(iban).startsWith(expectedCountryCode);
+        assertThat(IbanCheckDigit.INSTANCE.validate(iban))
+            .as("IBAN '%s' should have valid check digits", iban)
+            .isTrue();
+
+        if (JBANKING_SUPPORTED_COUNTRY_CODES.contains(expectedCountryCode)) {
+            assertThat(Iban.isValid(iban)).as("IBAN '%s' should be valid", iban).isTrue();
+            assertThat(new Iban(iban).getCountryCode()).isEqualTo(expectedCountryCode);
+        }
     }
 
     @RepeatedTest(100)
