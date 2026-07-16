@@ -3,7 +3,7 @@ package net.datafaker.internal.helper;
 /**
  * Calculates the check digit using the Luhn algorithm (Modulus 10).
  *
- * @since 2.8.0
+ * @since 3.0.0
  */
 public final class LuhnCheckDigit {
 

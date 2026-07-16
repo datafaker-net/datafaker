@@ -86,6 +86,12 @@ jobs:
         rm -f "$RELEASE_BODY_FILE"
         git add "$RELEASE_MD"
 
+        # Remove draft notes for the release that just shipped
+        RELEASED_SNAPSHOT_MD="docs/releases/${RELEASED_VERSION}-SNAPSHOT.md"
+        if [ -f "$RELEASED_SNAPSHOT_MD" ]; then
+          git rm "$RELEASED_SNAPSHOT_MD"
+        fi
+
         # Snapshot using template
         SNAPSHOT_MD="docs/releases/${NEXT_VERSION}-SNAPSHOT.md"
         if [ -f "$SNAPSHOT_MD" ]; then

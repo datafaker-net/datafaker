@@ -9,7 +9,7 @@ The release process is now driven by GitHub Releases:
 
 1. Go to the [Releases page](https://github.com/datafaker-net/datafaker/releases) of the repository
 2. Click on "Draft a new release"
-3. Create a new tag in the format `2.x.y` (where x and y are the minor and patch version numbers)
+3. Create a new tag in the format `x.y.z` (semver `MAJOR.MINOR.PATCH`; e.g. `2.7.1` for a 2.x patch
 4. Set the release title (can be the same as the tag)
 5. Add a description of the changes (optional - will be enhanced by automated changelog)
 6. Click "Publish release"
@@ -25,13 +25,15 @@ Followed by a separate job which will:
 2. Update documentation:
    - At least files
      * `docs/releases/current.version.md`
-     * `docs/releases/next.version-SNAPSHOT.md`
+     * `docs/releases/next.version-SNAPSHOT.md` (repo only; excluded from the docs site)
      * `mkdocs.yml` (see also [`material/README.md`](material/README.md) for docs site / theme dependency updates)
      * `docs/documentation/providers.md`
 
+Snapshot release notes (`docs/releases/{version}-SNAPSHOT.md`) are optional draft pads between releases: excluded from the site and not linked in the Releases nav. The post-release workflow deletes `docs/releases/{released}-SNAPSHOT.md` when that version ships, then creates a fresh `docs/releases/{next}-SNAPSHOT.md` from the template. Stable releases appear at the top of the nav; older releases roll into `{major}.x` sections (e.g. `3.x`, `2.x`).
+
 ## Requirements
 
-- The tag must follow semver format: `2.x.y` (where x and y are numeric)
+- The tag must follow semver format: `x.y.z` (where x, y, and z are numeric)
 - GitHub Release creation permissions are required to trigger the workflow
 - All required secrets must be configured in the repository settings
 
