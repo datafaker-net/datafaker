@@ -181,7 +181,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      */
     public <E> E nextElement(Collection<E> collection) throws IllegalArgumentException {
         return collection.stream()
-        .skip(faker.random().nextInt(collection.size()))
-        .findFirst().orElseThrow(() -> new IllegalArgumentException("Collection is empty"));
+            .skip(faker.random().nextInt(collection.size()))
+            .findFirst().orElseThrow(() -> new IllegalArgumentException("Collection is empty"));
     }
 }
