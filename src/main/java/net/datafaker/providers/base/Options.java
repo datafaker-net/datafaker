@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -167,5 +168,20 @@ public class Options extends AbstractProvider<BaseProviders> {
      */
     public <E> E nextElement(List<E> list) {
         return list.get(faker.random().nextInt(list.size()));
+    }
+
+    /**
+     * Returns a random element from a collection.
+     *
+     * @param collection The collection to take a random element from.
+     * @param <E>        The type of the elements in the collection.
+     * @return A randomly selected element from the collection.
+     * @throws IllegalArgumentException if the collection is empty.
+     * @since 3.0.0
+     */
+    public <E> E nextElement(Collection<E> collection) throws IllegalArgumentException {
+        return collection.stream()
+        .skip(faker.random().nextInt(collection.size()))
+        .findFirst().orElseThrow(() -> new IllegalArgumentException("Collection is empty"));
     }
 }
