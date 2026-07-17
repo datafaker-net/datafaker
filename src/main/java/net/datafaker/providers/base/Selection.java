@@ -74,7 +74,7 @@ public class Selection extends AbstractProvider<BaseProviders> {
      * If size is larger than a unique set from options then all options will be returned.
      */
     @SafeVarargs
-    public final <E> Set<E> manyOf(int size, E... options) {
+    public final <E> Set<E> setOf(int size, E... options) {
         if (size < 0) {
             throw new IllegalArgumentException("size should be not negative: " + size);
         }
@@ -89,8 +89,7 @@ public class Selection extends AbstractProvider<BaseProviders> {
         Set<E> set = new HashSet<>();
         while (i < size) {
             int randomIndex = faker.random().nextInt(opts.size());
-            set.add(opts.get(randomIndex));
-            opts.remove(randomIndex);
+            set.add(opts.remove(randomIndex));
             i++;
         }
 

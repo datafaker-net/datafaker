@@ -50,30 +50,31 @@ class SelectionTest {
     }
 
     @Test
-    void testManyOf() {
+    void testSetOf() {
         Integer[] integerOptions = {1, 3, 4, 5};
-        assertThat(selection.manyOf(1, integerOptions))
+        assertThat(selection.setOf(1, integerOptions))
             .doesNotContainAnyElementsOf(List.of(2, 6))
             .containsAnyElementsOf(List.of(integerOptions));
+
         Long[] longOptions = {1L, 3L, 4L, 5L};
-        assertThat(selection.manyOf(1, longOptions))
+        assertThat(selection.setOf(1, longOptions))
             .doesNotContainAnyElementsOf(List.of(2L, 6L))
             .containsAnyElementsOf(List.of(longOptions));
 
-        assertThat(selection.manyOf(longOptions.length, longOptions))
+        assertThat(selection.setOf(longOptions.length, longOptions))
             .doesNotContainAnyElementsOf(List.of(2L, 6L))
             .containsAnyElementsOf(List.of(longOptions)).hasSameSizeAs(longOptions);
 
-        assertThat(selection.manyOf(longOptions.length + 1, longOptions))
+        assertThat(selection.setOf(longOptions.length + 1, longOptions))
             .doesNotContainAnyElementsOf(List.of(2L, 6L))
             .containsAnyElementsOf(List.of(longOptions)).hasSameSizeAs(longOptions);
 
         String[] strOptions = {"1", "2", "3"};
-        assertThat(selection.manyOf(strOptions.length + 1, strOptions))
+        assertThat(selection.setOf(strOptions.length + 1, strOptions))
             .doesNotContainAnyElementsOf(List.of("q", "w"))
             .containsAnyElementsOf(List.of(strOptions)).hasSameSizeAs(strOptions);
 
-        assertThat(selection.manyOf(1, strOptions))
+        assertThat(selection.setOf(1, strOptions))
             .doesNotContainAnyElementsOf(List.of("q", "w"))
             .containsAnyElementsOf(List.of(strOptions))
             .hasSize(1);
@@ -81,22 +82,22 @@ class SelectionTest {
     }
 
     @Test
-    void testManyOfDuplicates() {
+    void testSetOfDuplicates() {
         Object[] array = {1, 1, 2, 2};
-        assertThat(selection.manyOf(5, array)).hasSize(2);
+        assertThat(selection.setOf(5, array)).hasSize(2);
         String[] strArray = {"a", "s", "s", "a"};
-        assertThat(selection.manyOf(Integer.MAX_VALUE, strArray)).hasSize(2);
+        assertThat(selection.setOf(Integer.MAX_VALUE, strArray)).hasSize(2);
     }
 
     @Test
-    void testEmptyManyOf() {
+    void testEmptySetOf() {
         Object[] array = {1, 2, 3};
-        assertThat(selection.manyOf(0, array)).isEmpty();
-        assertThatThrownBy(() -> selection.manyOf(-1, array))
+        assertThat(selection.setOf(0, array)).isEmpty();
+        assertThatThrownBy(() -> selection.setOf(-1, array))
             .isInstanceOf(IllegalArgumentException.class);
         String[] strArray = {"1", "2", "3"};
-        assertThat(selection.manyOf(0, strArray)).isEmpty();
-        assertThatThrownBy(() -> selection.manyOf(-1, strArray)).isInstanceOf(IllegalArgumentException.class);
+        assertThat(selection.setOf(0, strArray)).isEmpty();
+        assertThatThrownBy(() -> selection.setOf(-1, strArray)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

@@ -71,7 +71,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      */
     @SafeVarargs
     public final <E> Set<E> subset(int size, E... options) {
-        return faker.selection().manyOf(size, options);
+        return faker.selection().setOf(size, options);
     }
 
     /**
@@ -95,7 +95,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * If size is larger than a unique set from options then all options will be returned.
      */
     public final Set<String> subset(int size, String... options) {
-        return faker.selection().manyOf(size, options);
+        return faker.selection().setOf(size, options);
     }
 
     /**
