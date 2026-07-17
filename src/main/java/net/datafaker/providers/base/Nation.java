@@ -30,10 +30,10 @@ public class Nation extends AbstractProvider<BaseProviders> {
     }
 
     public String isoLanguage() {
-        return faker.options().option(isoLanguages);
+        return faker.selection().option(isoLanguages);
     }
 
     public String isoCountry() {
-        return faker.options().option(isoCountries);
+        return faker.selection().option(isoCountries);
     }
 }

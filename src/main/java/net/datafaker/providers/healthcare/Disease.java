@@ -47,7 +47,7 @@ public class Disease extends AbstractProvider<HealthcareProviders> {
     }
 
     public String anyDisease() {
-        return resolve(faker.options().option(DiseaseType.class));
+        return resolve(faker.selection().option(DiseaseType.class));
     }
 
     /**

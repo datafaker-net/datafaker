@@ -147,7 +147,7 @@ public class Selection extends AbstractProvider<BaseProviders> {
      * @return A randomly selected element from the enum.
      */
     public <E extends Enum<E>> E option(Class<E> enumeration) {
-        return faker.random().nextEnum(enumeration);
+        return option(enumeration.getEnumConstants());
     }
 
     /**

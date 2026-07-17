@@ -42,7 +42,7 @@ public class ChineseIdNumber implements IdNumberGenerator {
     public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
         LocalDate birthday = birthday(faker, request);
         RandomService rand = faker.random();
-        String loc = faker.options().option(LOCATIONS);
+        String loc = faker.selection().option(LOCATIONS);
         final int dayLength = 8;
         final int locLength = loc.length();
         final char[] res = new char[locLength + dayLength + 3];

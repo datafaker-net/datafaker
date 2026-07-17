@@ -153,6 +153,7 @@ class RandomServiceTest {
         assertThat(randomService.hex()).matches("^[0-9A-F]{8}$");
     }
 
+    @Deprecated
     @Test
     void nextEnum() {
         RandomService randomService = new RandomService();
@@ -165,6 +166,7 @@ class RandomServiceTest {
         assertThat(all).containsExactly(Ring.values());
     }
 
+    @Deprecated
     @ParameterizedTest
     @CsvSource({
         "12345, DWARVES, MEN, LORD, LORD, LORD",

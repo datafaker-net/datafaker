@@ -2,14 +2,14 @@ package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
-import net.datafaker.providers.base.Options;
 import net.datafaker.providers.base.PersonIdNumber;
 import net.datafaker.providers.base.PersonIdNumber.Gender;
+import net.datafaker.providers.base.Selection;
 
 import java.time.LocalDate;
 
-import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.gender;
 
 /**
  * Implementation based on the definition at
@@ -68,18 +68,18 @@ public class MexicanIdNumber implements IdNumberGenerator {
         char[] birthDay = formatBirthday(birthday).toCharArray();
         final char[] ssn = new char[18];
 
-        final Options options = faker.options();
-        ssn[0] = options.option(CONSONANT);
-        ssn[1] = options.option(VOWEL);
-        ssn[2] = options.option(CONSONANT);
-        ssn[3] = options.option(CONSONANT);
+        final Selection selection = faker.selection();
+        ssn[0] = selection.option(CONSONANT);
+        ssn[1] = selection.option(VOWEL);
+        ssn[2] = selection.option(CONSONANT);
+        ssn[3] = selection.option(CONSONANT);
         System.arraycopy(birthDay, 0, ssn, 4, 6);
         ssn[10] = genderCharacter(gender);
-        System.arraycopy(options.option(STATES).toCharArray(), 0, ssn, 11, 2);
-        ssn[13] = options.option(VOWEL);
-        ssn[14] = options.option(VOWEL);
-        ssn[15] = options.option(VOWEL);
-        ssn[16] = (birthDay[0] == '1' ? '0' : options.option(CONSONANT));
+        System.arraycopy(selection.option(STATES).toCharArray(), 0, ssn, 11, 2);
+        ssn[13] = selection.option(VOWEL);
+        ssn[14] = selection.option(VOWEL);
+        ssn[15] = selection.option(VOWEL);
+        ssn[16] = (birthDay[0] == '1' ? '0' : selection.option(CONSONANT));
         ssn[17] = String.valueOf(getChecksum(ssn)).charAt(0);
         return new PersonIdNumber(String.valueOf(ssn), birthday, gender);
     }
@@ -104,7 +104,7 @@ public class MexicanIdNumber implements IdNumberGenerator {
      */
     @Override
     public String generateInvalid(BaseProviders faker) {
-        return faker.options().option(CHA);
+        return faker.selection().option(CHA);
     }
 
     /**

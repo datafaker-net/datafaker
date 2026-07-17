@@ -39,10 +39,10 @@ public class PortugueseIdNumber implements IdNumberGenerator {
     public String generateValid(final BaseProviders faker) {
         String digits;
         if (faker.random().nextBoolean()) {
-            final char firstDigit = faker.options().option(VALID_FIRST_DIGITS);
+            final char firstDigit = faker.selection().option(VALID_FIRST_DIGITS);
             digits = firstDigit + faker.number().digits(7);
         } else {
-            final String firstDoubleDigit = faker.options().option(VALID_FIRST_DOUBLE_DIGITS);
+            final String firstDoubleDigit = faker.selection().option(VALID_FIRST_DOUBLE_DIGITS);
             digits = firstDoubleDigit + faker.number().digits(6);
         }
         int digitSum = calculateDigitSum(digits);

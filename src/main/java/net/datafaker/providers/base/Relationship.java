@@ -49,7 +49,7 @@ public class Relationship extends AbstractProvider<BaseProviders> {
     }
 
     public String any() {
-        Kind kind = faker.options().option(Kind.class);
+        Kind kind = faker.selection().option(Kind.class);
         return resolve(kind.expression);
     }
 

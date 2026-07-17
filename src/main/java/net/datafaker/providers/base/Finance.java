@@ -4,9 +4,7 @@ import net.datafaker.annotations.Deterministic;
 import net.datafaker.internal.helper.LuhnCheckDigit;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -135,8 +133,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
      * @return a valid IBAN
      */
     public String iban() {
-        List<String> countryCodes = new ArrayList<>(countryCodeToBasicBankAccountNumberPattern.keySet());
-        String countryCode = faker.options().nextElement(countryCodes);
+        String countryCode = faker.selection().option(countryCodeToBasicBankAccountNumberPattern.keySet());
         return iban(countryCode);
     }
 
@@ -178,7 +175,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
     }
 
     private CreditCardType randomCreditCardType() {
-        return faker.random().nextEnum(CreditCardType.class);
+        return faker.selection().option(CreditCardType.class);
     }
 
     private static String calculateIbanChecksum(String countryCode, String basicBankAccountNumber) {

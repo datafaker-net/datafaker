@@ -20,7 +20,7 @@ public class Computer extends AbstractProvider<BaseProviders> {
     }
 
     public String operatingSystem() {
-        return resolve("computer.os." + faker.options().option("linux", "macos", "windows"));
+        return resolve("computer.os." + faker.selection().option("linux", "macos", "windows"));
     }
 
     public String linux() {

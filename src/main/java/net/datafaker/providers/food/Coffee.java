@@ -19,7 +19,7 @@ public class Coffee extends AbstractProvider<FoodProviders> {
     }
 
     public String region() {
-        return region(faker.options().option(Coffee.Country.class));
+        return region(faker.selection().option(Coffee.Country.class));
     }
 
     public String region(Coffee.Country country) {
