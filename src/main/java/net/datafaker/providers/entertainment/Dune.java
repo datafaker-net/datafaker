@@ -24,7 +24,7 @@ public class Dune extends AbstractProvider<EntertainmentProviders> {
     }
 
     public String quote() {
-        return quote(faker.selection().option(Dune.Quote.class));
+        return quote(faker.selection().oneOf(Dune.Quote.class));
     }
 
     public String quote(Quote quote) {
@@ -32,7 +32,7 @@ public class Dune extends AbstractProvider<EntertainmentProviders> {
     }
 
     public String saying() {
-        return saying(faker.selection().option(Dune.Saying.class));
+        return saying(faker.selection().oneOf(Dune.Saying.class));
     }
 
     public String saying(Saying saying) {

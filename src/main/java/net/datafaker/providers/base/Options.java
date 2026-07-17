@@ -27,39 +27,39 @@ public class Options extends AbstractProvider<BaseProviders> {
      */
     @SafeVarargs
     public final <E> E option(E... options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     public final char option(char[] options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     public final int option(int[] options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     public final long option(long[] options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     public final float option(float[] options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     public final double option(double[] options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     public final short option(short[] options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     public final boolean option(boolean[] options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     public final byte option(byte[] options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     /**
@@ -75,7 +75,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      */
     @SafeVarargs
     public final <E> Set<E> subset(int size, E... options) {
-        return faker.selection().subset(size, options);
+        return faker.selection().manyOf(size, options);
     }
 
     /**
@@ -85,7 +85,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @return A randomly selected element from the varargs.
      */
     public String option(String... options) {
-        return faker.selection().option(options);
+        return faker.selection().oneOf(options);
     }
 
     /**
@@ -128,7 +128,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @return A randomly selected element from the enum.
      */
     public <E extends Enum<E>> E option(Class<E> enumeration) {
-        return faker.selection().option(enumeration);
+        return faker.selection().oneOf(enumeration);
     }
 
     /**
@@ -139,7 +139,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @return A randomly selected element from the array.
      */
     public <E> E nextElement(E[] array) {
-        return faker.selection().option(array);
+        return faker.selection().oneOf(array);
     }
 
     /**
@@ -150,7 +150,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @return A randomly selected element from the list.
      */
     public <E> E nextElement(List<E> list) {
-        return faker.selection().option(list);
+        return faker.selection().oneOf(list);
     }
 
     /**
@@ -162,7 +162,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @throws IllegalArgumentException if the collection is empty.
      * @since 3.0.0
      */
-    public <E> E nextElement(Collection<E> collection) throws IllegalArgumentException {
-        return faker.selection().option(collection);
+    public <E> E nextElement(Collection<E> collection) {
+        return faker.selection().oneOf(collection);
     }
 }

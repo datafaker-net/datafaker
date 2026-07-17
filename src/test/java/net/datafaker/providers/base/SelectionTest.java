@@ -14,66 +14,66 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SelectionTest {
 
+    private final Selection selection = new Faker().selection();
     private final String[] options = {"A", "B", "C"};
-    private final Selection opt = new Faker().selection();
 
     @Test
-    void testOptionWithArray() {
-        assertThat(opt.option(options)).isIn((Object[]) options);
+    void testOneOfAnArray() {
+        assertThat(selection.oneOf(options)).isIn((Object[]) options);
     }
 
     @Test
-    void testOptionWithVarargsString() {
-        assertThat(opt.option("A", "B", "C")).isIn((Object[]) options);
+    void testOneOfStringVarargs() {
+        assertThat(selection.oneOf("A", "B", "C")).isIn((Object[]) options);
     }
 
     @Test
-    void testOptionWithVarargs() {
+    void testOneOfVarargs() {
         Integer[] integerOptions = {1, 3, 4, 5};
-        assertThat(opt.option(1, 3, 4, 5)).isIn((Object[]) integerOptions);
+        assertThat(selection.oneOf(1, 3, 4, 5)).isIn((Object[]) integerOptions);
         Long[] longOptions = {1L, 3L, 4L, 5L};
-        assertThat(opt.option(longOptions)).isIn((Object[]) longOptions);
+        assertThat(selection.oneOf(longOptions)).isIn((Object[]) longOptions);
         Short[] shortOptions = {1, 3, 4};
-        assertThat(opt.option(shortOptions)).isIn((Object[]) shortOptions);
+        assertThat(selection.oneOf(shortOptions)).isIn((Object[]) shortOptions);
         Byte[] byteOptions = {(byte) 11, (byte) 13, (byte) 14};
-        assertThat(opt.option(byteOptions)).isIn((Object[]) byteOptions);
+        assertThat(selection.oneOf(byteOptions)).isIn((Object[]) byteOptions);
         Double[] doubleOptions = {1.1d, 13d, 14.2d};
-        assertThat(opt.option(doubleOptions)).isIn((Object[]) doubleOptions);
+        assertThat(selection.oneOf(doubleOptions)).isIn((Object[]) doubleOptions);
         Float[] floatOptions = {1.2f, 13f, 14.2f};
-        assertThat(opt.option(floatOptions)).isIn((Object[]) floatOptions);
+        assertThat(selection.oneOf(floatOptions)).isIn((Object[]) floatOptions);
         BigInteger[] bigIntegerOptions = {BigInteger.ONE, BigInteger.TEN, BigInteger.ZERO};
-        assertThat(opt.option(bigIntegerOptions)).isIn((Object[]) bigIntegerOptions);
+        assertThat(selection.oneOf(bigIntegerOptions)).isIn((Object[]) bigIntegerOptions);
         BigDecimal[] bigDecimalOptions = {BigDecimal.ONE, BigDecimal.TEN, BigDecimal.ZERO};
-        assertThat(opt.option(bigDecimalOptions)).isIn((Object[]) bigDecimalOptions);
+        assertThat(selection.oneOf(bigDecimalOptions)).isIn((Object[]) bigDecimalOptions);
         Boolean[] booleanOptions = {true, false};
-        assertThat(opt.option(booleanOptions)).isIn((Object[]) booleanOptions);
+        assertThat(selection.oneOf(booleanOptions)).isIn((Object[]) booleanOptions);
     }
 
     @Test
-    void testSubset() {
+    void testManyOf() {
         Integer[] integerOptions = {1, 3, 4, 5};
-        assertThat(opt.subset(1, integerOptions))
+        assertThat(selection.manyOf(1, integerOptions))
             .doesNotContainAnyElementsOf(List.of(2, 6))
             .containsAnyElementsOf(List.of(integerOptions));
         Long[] longOptions = {1L, 3L, 4L, 5L};
-        assertThat(opt.subset(1, longOptions))
+        assertThat(selection.manyOf(1, longOptions))
             .doesNotContainAnyElementsOf(List.of(2L, 6L))
             .containsAnyElementsOf(List.of(longOptions));
 
-        assertThat(opt.subset(longOptions.length, longOptions))
+        assertThat(selection.manyOf(longOptions.length, longOptions))
             .doesNotContainAnyElementsOf(List.of(2L, 6L))
             .containsAnyElementsOf(List.of(longOptions)).hasSameSizeAs(longOptions);
 
-        assertThat(opt.subset(longOptions.length + 1, longOptions))
+        assertThat(selection.manyOf(longOptions.length + 1, longOptions))
             .doesNotContainAnyElementsOf(List.of(2L, 6L))
             .containsAnyElementsOf(List.of(longOptions)).hasSameSizeAs(longOptions);
 
         String[] strOptions = {"1", "2", "3"};
-        assertThat(opt.subset(strOptions.length + 1, strOptions))
+        assertThat(selection.manyOf(strOptions.length + 1, strOptions))
             .doesNotContainAnyElementsOf(List.of("q", "w"))
             .containsAnyElementsOf(List.of(strOptions)).hasSameSizeAs(strOptions);
 
-        assertThat(opt.subset(1, strOptions))
+        assertThat(selection.manyOf(1, strOptions))
             .doesNotContainAnyElementsOf(List.of("q", "w"))
             .containsAnyElementsOf(List.of(strOptions))
             .hasSize(1);
@@ -81,49 +81,49 @@ class SelectionTest {
     }
 
     @Test
-    void testSubsetWithDuplicate() {
+    void testManyOfDuplicates() {
         Object[] array = {1, 1, 2, 2};
-        assertThat(opt.subset(5, array)).hasSize(2);
+        assertThat(selection.manyOf(5, array)).hasSize(2);
         String[] strArray = {"a", "s", "s", "a"};
-        assertThat(opt.subset(Integer.MAX_VALUE, strArray)).hasSize(2);
+        assertThat(selection.manyOf(Integer.MAX_VALUE, strArray)).hasSize(2);
     }
 
     @Test
-    void testEmptySubset() {
+    void testEmptyManyOf() {
         Object[] array = {1, 2, 3};
-        assertThat(opt.subset(0, array)).isEmpty();
-        assertThatThrownBy(() -> opt.subset(-1, array))
+        assertThat(selection.manyOf(0, array)).isEmpty();
+        assertThatThrownBy(() -> selection.manyOf(-1, array))
             .isInstanceOf(IllegalArgumentException.class);
         String[] strArray = {"1", "2", "3"};
-        assertThat(opt.subset(0, strArray)).isEmpty();
-        assertThatThrownBy(() -> opt.subset(-1, strArray)).isInstanceOf(IllegalArgumentException.class);
+        assertThat(selection.manyOf(0, strArray)).isEmpty();
+        assertThatThrownBy(() -> selection.manyOf(-1, strArray)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void testOptionWithEnum() {
-        assertThat(opt.option(Day.class)).isIn((Object[]) Day.values());
+    void testOneOfAnEnum() {
+        assertThat(selection.oneOf(Day.class)).isIn((Object[]) Day.values());
     }
 
     @Test
-    void testOptionWithList() {
+    void testOneOfAList() {
         List<Integer> list = List.of(1, 2, 3, 5, 8, 13, 21);
         for (int i = 1; i < 10; i++) {
-            assertThat(opt.option(list)).isIn(list);
+            assertThat(selection.oneOf(list)).isIn(list);
         }
     }
 
     @Test
-    void testOptionWithCollection() {
+    void testOneOfACollection() {
         Collection<Integer> collection = Set.of(1, 2, 3, 5, 8, 13, 21);
         for (int i = 1; i < 10; i++) {
-            assertThat(opt.option(collection)).isIn(collection);
+            assertThat(selection.oneOf(collection)).isIn(collection);
         }
     }
 
     @Test
-    void testOptionWithEmptyCollection() {
+    void testOneOfAnEmptyCollection() {
         Collection<Integer> collection = Set.of();
-        assertThatThrownBy(() -> opt.option(collection))
+        assertThatThrownBy(() -> selection.oneOf(collection))
             .isInstanceOf(IllegalArgumentException.class);
     }
 

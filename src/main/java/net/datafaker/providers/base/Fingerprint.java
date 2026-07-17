@@ -61,7 +61,7 @@ public class Fingerprint extends AbstractProvider<BaseProviders> {
     }
 
     private PatternType randomType() {
-        return faker.selection().option(PatternType.class);
+        return faker.selection().oneOf(PatternType.class);
     }
 
     private byte[] encodePng(BufferedImage image) {

@@ -14,7 +14,7 @@ public class Tron extends AbstractProvider<EntertainmentProviders> {
     }
 
     public String character() {
-        return character(faker.selection().option(Character.class));
+        return character(faker.selection().oneOf(Character.class));
     }
 
     public String character(Character character) {
@@ -30,7 +30,7 @@ public class Tron extends AbstractProvider<EntertainmentProviders> {
     }
 
     public String quote() {
-        return quote(faker.selection().option(Tron.Quote.class));
+        return quote(faker.selection().oneOf(Tron.Quote.class));
     }
 
     public String quote(Tron.Quote quote) {
@@ -46,7 +46,7 @@ public class Tron extends AbstractProvider<EntertainmentProviders> {
     }
 
     public String alternateCharacterSpelling() {
-        return alternateCharacterSpelling(faker.selection().option(Tron.AlternateCharacterSpelling.class));
+        return alternateCharacterSpelling(faker.selection().oneOf(Tron.AlternateCharacterSpelling.class));
     }
 
     public String alternateCharacterSpelling(AlternateCharacterSpelling alternateCharacterSpelling) {

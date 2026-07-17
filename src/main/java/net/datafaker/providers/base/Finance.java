@@ -133,7 +133,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
      * @return a valid IBAN
      */
     public String iban() {
-        String countryCode = faker.selection().option(countryCodeToBasicBankAccountNumberPattern.keySet());
+        String countryCode = faker.selection().oneOf(countryCodeToBasicBankAccountNumberPattern.keySet());
         return iban(countryCode);
     }
 
@@ -175,7 +175,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
     }
 
     private CreditCardType randomCreditCardType() {
-        return faker.selection().option(CreditCardType.class);
+        return faker.selection().oneOf(CreditCardType.class);
     }
 
     private static String calculateIbanChecksum(String countryCode, String basicBankAccountNumber) {

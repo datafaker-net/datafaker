@@ -16,7 +16,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String symbol() {
-        return symbol(faker.selection().option(PlanetName.class));
+        return symbol(faker.selection().oneOf(PlanetName.class));
     }
 
     public String symbol(PlanetName planetName) {
@@ -24,7 +24,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String classification() {
-        return classification(faker.selection().option(PlanetName.class));
+        return classification(faker.selection().oneOf(PlanetName.class));
     }
 
     public String classification(PlanetName planetName) {
@@ -32,7 +32,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String discoveryYear() {
-        return discoveryYear(faker.selection().option(PlanetName.class));
+        return discoveryYear(faker.selection().oneOf(PlanetName.class));
     }
 
     public String discoveryYear(PlanetName planetName) {
@@ -40,7 +40,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String meanDistanceFromTheSun() {
-        return meanDistanceFromTheSun(faker.selection().option(PlanetName.class));
+        return meanDistanceFromTheSun(faker.selection().oneOf(PlanetName.class));
     }
 
     public String meanDistanceFromTheSun(PlanetName planetName) {
@@ -48,7 +48,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String lengthOfDay() {
-        return meanDistanceFromTheSun(faker.selection().option(PlanetName.class));
+        return meanDistanceFromTheSun(faker.selection().oneOf(PlanetName.class));
     }
 
     public String lengthOfDay(PlanetName planetName) {
@@ -56,7 +56,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String equatorialRadius() {
-        return equatorialRadius(faker.selection().option(PlanetName.class));
+        return equatorialRadius(faker.selection().oneOf(PlanetName.class));
     }
 
     public String equatorialRadius(PlanetName planetName) {
@@ -64,7 +64,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String surfaceArea() {
-        return surfaceArea(faker.selection().option(PlanetName.class));
+        return surfaceArea(faker.selection().oneOf(PlanetName.class));
     }
 
     public String surfaceArea(PlanetName planetName) {
@@ -72,7 +72,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String volume() {
-        return volume(faker.selection().option(PlanetName.class));
+        return volume(faker.selection().oneOf(PlanetName.class));
     }
 
     public String volume(PlanetName planetName) {
@@ -80,7 +80,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String mass() {
-        return mass(faker.selection().option(PlanetName.class));
+        return mass(faker.selection().oneOf(PlanetName.class));
     }
 
     public String mass(PlanetName planetName) {
@@ -88,7 +88,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String gravitationParameters() {
-        return gravitationParameters(faker.selection().option(PlanetName.class));
+        return gravitationParameters(faker.selection().oneOf(PlanetName.class));
     }
 
     public String gravitationParameters(PlanetName planetName) {
@@ -96,7 +96,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String density() {
-        return density(faker.selection().option(PlanetName.class));
+        return density(faker.selection().oneOf(PlanetName.class));
     }
 
     public String density(PlanetName planetName) {
@@ -104,7 +104,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String equatorialGravity() {
-        return equatorialGravity(faker.selection().option(PlanetName.class));
+        return equatorialGravity(faker.selection().oneOf(PlanetName.class));
     }
 
     public String equatorialGravity(PlanetName planetName) {
@@ -112,7 +112,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String escapeVelocity() {
-        return escapeVelocity(faker.selection().option(PlanetName.class));
+        return escapeVelocity(faker.selection().oneOf(PlanetName.class));
     }
 
     public String escapeVelocity(PlanetName planetName) {
@@ -120,7 +120,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String rotationPeriod() {
-        return rotationPeriod(faker.selection().option(PlanetName.class));
+        return rotationPeriod(faker.selection().oneOf(PlanetName.class));
     }
 
     public String rotationPeriod(PlanetName planetName) {
@@ -128,7 +128,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String orbitalPeriod() {
-        return orbitalPeriod(faker.selection().option(PlanetName.class));
+        return orbitalPeriod(faker.selection().oneOf(PlanetName.class));
     }
 
     public String orbitalPeriod(PlanetName planetName) {
@@ -136,7 +136,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String meanOrbitalSpeed() {
-        return meanOrbitalSpeed(faker.selection().option(PlanetName.class));
+        return meanOrbitalSpeed(faker.selection().oneOf(PlanetName.class));
     }
 
     public String meanOrbitalSpeed(PlanetName planetName) {
@@ -144,7 +144,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String eccentricity() {
-        return eccentricity(faker.selection().option(PlanetName.class));
+        return eccentricity(faker.selection().oneOf(PlanetName.class));
     }
 
     public String eccentricity(PlanetName planetName) {
@@ -152,7 +152,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String inclination() {
-        return inclination(faker.selection().option(PlanetName.class));
+        return inclination(faker.selection().oneOf(PlanetName.class));
     }
 
     public String inclination(PlanetName planetName) {
@@ -160,7 +160,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String axialTilt() {
-        return axialTilt(faker.selection().option(PlanetName.class));
+        return axialTilt(faker.selection().oneOf(PlanetName.class));
     }
 
     public String axialTilt(PlanetName planetName) {
@@ -168,7 +168,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String meanSurfaceTemperature() {
-        return meanSurfaceTemperature(faker.selection().option(PlanetName.class));
+        return meanSurfaceTemperature(faker.selection().oneOf(PlanetName.class));
     }
 
     public String meanSurfaceTemperature(PlanetName planetName) {
@@ -176,7 +176,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String meanAirTemperature() {
-        return meanAirTemperature(faker.selection().option(PlanetName.class));
+        return meanAirTemperature(faker.selection().oneOf(PlanetName.class));
     }
 
     public String meanAirTemperature(PlanetName planetName) {
@@ -184,7 +184,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String atmosphericComposition() {
-        return atmosphericComposition(faker.selection().option(PlanetName.class));
+        return atmosphericComposition(faker.selection().oneOf(PlanetName.class));
     }
 
     public String atmosphericComposition(PlanetName planetName) {
@@ -192,7 +192,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String numberOfKnownMoons() {
-        return numberOfKnownMoons(faker.selection().option(PlanetName.class));
+        return numberOfKnownMoons(faker.selection().oneOf(PlanetName.class));
     }
 
     public String numberOfKnownMoons(PlanetName planetName) {
@@ -200,7 +200,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String rings() {
-        return rings(faker.selection().option(PlanetName.class));
+        return rings(faker.selection().oneOf(PlanetName.class));
     }
 
     public String rings(PlanetName planetName) {
@@ -208,7 +208,7 @@ public class Planet extends AbstractProvider<BaseProviders> {
     }
 
     public String planetaryDiscriminant() {
-        return planetaryDiscriminant(faker.selection().option(PlanetName.class));
+        return planetaryDiscriminant(faker.selection().oneOf(PlanetName.class));
     }
 
     public String planetaryDiscriminant(PlanetName planetName) {

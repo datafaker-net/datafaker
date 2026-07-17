@@ -26,44 +26,44 @@ public class Selection extends AbstractProvider<BaseProviders> {
      * @return A randomly selected element from the array.
      */
     @SafeVarargs
-    public final <E> E option(E... options) {
+    public final <E> E oneOf(E... options) {
         return options[faker.random().nextInt(options.length)];
     }
 
-    public final char option(char[] options) {
+    public final char oneOf(char[] options) {
         return options[faker.random().nextInt(options.length)];
     }
 
-    public final int option(int[] options) {
+    public final int oneOf(int[] options) {
         return options[faker.random().nextInt(options.length)];
     }
 
-    public final long option(long[] options) {
+    public final long oneOf(long[] options) {
         return options[faker.random().nextInt(options.length)];
     }
 
-    public final float option(float[] options) {
+    public final float oneOf(float[] options) {
         return options[faker.random().nextInt(options.length)];
     }
 
-    public final double option(double[] options) {
+    public final double oneOf(double[] options) {
         return options[faker.random().nextInt(options.length)];
     }
 
-    public final short option(short[] options) {
+    public final short oneOf(short[] options) {
         return options[faker.random().nextInt(options.length)];
     }
 
-    public final boolean option(boolean[] options) {
+    public final boolean oneOf(boolean[] options) {
         return options[faker.random().nextInt(options.length)];
     }
 
-    public final byte option(byte[] options) {
+    public final byte oneOf(byte[] options) {
         return options[faker.random().nextInt(options.length)];
     }
 
     /**
-     * Returns a random unique subset of elements from an varargs.
+     * Returns a random unique subset of elements from a varargs.
      *
      * @param size    The size of subset to return.
      * @param options The varargs to take a random element from.
@@ -74,7 +74,7 @@ public class Selection extends AbstractProvider<BaseProviders> {
      * If size is larger than a unique set from options then all options will be returned.
      */
     @SafeVarargs
-    public final <E> Set<E> subset(int size, E... options) {
+    public final <E> Set<E> manyOf(int size, E... options) {
         if (size < 0) {
             throw new IllegalArgumentException("size should be not negative: " + size);
         }
@@ -98,17 +98,17 @@ public class Selection extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Returns a random String element from an varargs.
+     * Returns a random String element from a varargs.
      *
      * @param options The varargs to take a random element from.
      * @return A randomly selected element from the varargs.
      */
-    public String option(String... options) {
+    public String oneOf(String... options) {
         return options[faker.random().nextInt(options.length)];
     }
 
     /**
-     * Returns a random unique subset of elements from an varargs.
+     * Returns a random unique subset of elements from a varargs.
      *
      * @param size    The size of subset to return.
      * @param options The varargs to take a random element from.
@@ -117,7 +117,7 @@ public class Selection extends AbstractProvider<BaseProviders> {
      * If size is zero then an empty subset will be returned.
      * If size is larger than a unique set from options then all options will be returned.
      */
-    public final Set<String> subset(int size, String... options) {
+    public final Set<String> manyOf(int size, String... options) {
         if (size < 0) {
             throw new IllegalArgumentException("size should be not negative: " + size);
         }
@@ -141,13 +141,13 @@ public class Selection extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Returns a random element from Enum.
+     * Returns a random element from an enum.
      *
-     * @param enumeration The Enum to take a random element from.
+     * @param enumeration The enum to take a random element from.
      * @return A randomly selected element from the enum.
      */
-    public <E extends Enum<E>> E option(Class<E> enumeration) {
-        return option(enumeration.getEnumConstants());
+    public <E extends Enum<E>> E oneOf(Class<E> enumeration) {
+        return oneOf(enumeration.getEnumConstants());
     }
 
     /**
@@ -157,7 +157,7 @@ public class Selection extends AbstractProvider<BaseProviders> {
      * @param <E>  The type of the elements in the list.
      * @return A randomly selected element from the list.
      */
-    public <E> E option(List<E> list) {
+    public <E> E oneOf(List<E> list) {
         return list.get(faker.random().nextInt(list.size()));
     }
 
@@ -170,7 +170,7 @@ public class Selection extends AbstractProvider<BaseProviders> {
      * @throws IllegalArgumentException if the collection is empty.
      * @since 3.0.0
      */
-    public <E> E option(Collection<E> collection) {
+    public <E> E oneOf(Collection<E> collection) {
         return collection.stream()
             .skip(faker.random().nextInt(collection.size()))
             .findFirst().orElseThrow(() -> new IllegalArgumentException("Collection is empty"));

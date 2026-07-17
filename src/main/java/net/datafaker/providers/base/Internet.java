@@ -202,7 +202,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @since 2.0.0
      */
     public String url(boolean schemeChoice, boolean portChoice, boolean pathChoice, boolean fileChoice, boolean paramsChoice, boolean anchorChoice) {
-        String scheme = schemeChoice ? faker.selection().option(HTTP_SCHEMES) : "https://";
+        String scheme = schemeChoice ? faker.selection().oneOf(HTTP_SCHEMES) : "https://";
         String port = portChoice ? (":" + port()) : "";
         String path = pathChoice ? ("/" + slug(faker.lorem().words(2), "/")) : "/";
         String file = fileChoice ? faker.lorem().words(1).get(0) : "";
@@ -648,7 +648,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         }
 
         private static BotUserAgent any(BaseProviders faker) {
-            return faker.selection().option(BotUserAgent.class);
+            return faker.selection().oneOf(BotUserAgent.class);
         }
 
         @Override

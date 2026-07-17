@@ -18,11 +18,11 @@ public class Music extends AbstractProvider<BaseProviders> {
     }
 
     public String key() {
-        return faker.selection().option(KEYS) + faker.selection().option(KEY_VARIANTS);
+        return faker.selection().oneOf(KEYS) + faker.selection().oneOf(KEY_VARIANTS);
     }
 
     public String chord() {
-        return key() + faker.selection().option(CHORD_TYPES);
+        return key() + faker.selection().oneOf(CHORD_TYPES);
     }
 
     public String genre() {

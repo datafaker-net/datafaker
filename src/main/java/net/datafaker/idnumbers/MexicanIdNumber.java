@@ -69,17 +69,17 @@ public class MexicanIdNumber implements IdNumberGenerator {
         final char[] ssn = new char[18];
 
         final Selection selection = faker.selection();
-        ssn[0] = selection.option(CONSONANT);
-        ssn[1] = selection.option(VOWEL);
-        ssn[2] = selection.option(CONSONANT);
-        ssn[3] = selection.option(CONSONANT);
+        ssn[0] = selection.oneOf(CONSONANT);
+        ssn[1] = selection.oneOf(VOWEL);
+        ssn[2] = selection.oneOf(CONSONANT);
+        ssn[3] = selection.oneOf(CONSONANT);
         System.arraycopy(birthDay, 0, ssn, 4, 6);
         ssn[10] = genderCharacter(gender);
-        System.arraycopy(selection.option(STATES).toCharArray(), 0, ssn, 11, 2);
-        ssn[13] = selection.option(VOWEL);
-        ssn[14] = selection.option(VOWEL);
-        ssn[15] = selection.option(VOWEL);
-        ssn[16] = (birthDay[0] == '1' ? '0' : selection.option(CONSONANT));
+        System.arraycopy(selection.oneOf(STATES).toCharArray(), 0, ssn, 11, 2);
+        ssn[13] = selection.oneOf(VOWEL);
+        ssn[14] = selection.oneOf(VOWEL);
+        ssn[15] = selection.oneOf(VOWEL);
+        ssn[16] = (birthDay[0] == '1' ? '0' : selection.oneOf(CONSONANT));
         ssn[17] = String.valueOf(getChecksum(ssn)).charAt(0);
         return new PersonIdNumber(String.valueOf(ssn), birthday, gender);
     }
@@ -104,7 +104,7 @@ public class MexicanIdNumber implements IdNumberGenerator {
      */
     @Override
     public String generateInvalid(BaseProviders faker) {
-        return faker.selection().option(CHA);
+        return faker.selection().oneOf(CHA);
     }
 
     /**
