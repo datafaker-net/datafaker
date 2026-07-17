@@ -156,8 +156,13 @@ public interface ProviderRegistration {
 
     FakeValuesService fakeValuesService();
 
+    @Deprecated(since = "3.0.0")
     default Options options() {
         return getProvider(Options.class, Options::new);
+    }
+
+    default Selection selection() {
+        return getProvider(Selection.class, Selection::new);
     }
 
     void addPath(Locale locale, Path path);

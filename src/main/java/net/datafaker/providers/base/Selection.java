@@ -8,58 +8,58 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * @since 0.8.0
- * @deprecated Use {@link Selection} instead
+ * Provides utility methods for selecting a element from an array or collection
+ *
+ * @since 3.0.0
  */
-@Deprecated(since = "3.0.0")
-public class Options extends AbstractProvider<BaseProviders> {
+public class Selection extends AbstractProvider<BaseProviders> {
 
-    protected Options(BaseProviders faker) {
+    protected Selection(BaseProviders faker) {
         super(faker);
     }
 
     /**
-     * Returns a random element from an varargs.
+     * Returns a random element from an array or varargs.
      *
      * @param options The varargs to take a random element from.
-     * @param <E>     The type of the elements in the varargs.
-     * @return A randomly selected element from the varargs.
+     * @param <E>     The type of the elements in the array.
+     * @return A randomly selected element from the array.
      */
     @SafeVarargs
     public final <E> E option(E... options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     public final char option(char[] options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     public final int option(int[] options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     public final long option(long[] options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     public final float option(float[] options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     public final double option(double[] options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     public final short option(short[] options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     public final boolean option(boolean[] options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     public final byte option(byte[] options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     /**
@@ -75,7 +75,26 @@ public class Options extends AbstractProvider<BaseProviders> {
      */
     @SafeVarargs
     public final <E> Set<E> subset(int size, E... options) {
-        return faker.selection().subset(size, options);
+        if (size < 0) {
+            throw new IllegalArgumentException("size should be not negative: " + size);
+        }
+        if (size == 0) {
+            return Set.of();
+        }
+        List<E> opts = Stream.of(options).distinct().collect(Collectors.toList());
+        if (size >= opts.size()) {
+            return new HashSet<>(opts);
+        }
+        int i = 0;
+        Set<E> set = new HashSet<>();
+        while (i < size) {
+            int randomIndex = faker.random().nextInt(opts.size());
+            set.add(opts.get(randomIndex));
+            opts.remove(randomIndex);
+            i++;
+        }
+
+        return set;
     }
 
     /**
@@ -85,7 +104,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @return A randomly selected element from the varargs.
      */
     public String option(String... options) {
-        return faker.selection().option(options);
+        return options[faker.random().nextInt(options.length)];
     }
 
     /**
@@ -128,18 +147,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @return A randomly selected element from the enum.
      */
     public <E extends Enum<E>> E option(Class<E> enumeration) {
-        return faker.selection().option(enumeration);
-    }
-
-    /**
-     * Returns a random element from an array.
-     *
-     * @param array The array to take a random element from.
-     * @param <E>   The type of the elements in the array.
-     * @return A randomly selected element from the array.
-     */
-    public <E> E nextElement(E[] array) {
-        return faker.selection().option(array);
+        return faker.random().nextEnum(enumeration);
     }
 
     /**
@@ -149,8 +157,8 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @param <E>  The type of the elements in the list.
      * @return A randomly selected element from the list.
      */
-    public <E> E nextElement(List<E> list) {
-        return faker.selection().option(list);
+    public <E> E option(List<E> list) {
+        return list.get(faker.random().nextInt(list.size()));
     }
 
     /**
@@ -162,7 +170,9 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @throws IllegalArgumentException if the collection is empty.
      * @since 3.0.0
      */
-    public <E> E nextElement(Collection<E> collection) throws IllegalArgumentException {
-        return faker.selection().option(collection);
+    public <E> E option(Collection<E> collection) {
+        return collection.stream()
+            .skip(faker.random().nextInt(collection.size()))
+            .findFirst().orElseThrow(() -> new IllegalArgumentException("Collection is empty"));
     }
 }

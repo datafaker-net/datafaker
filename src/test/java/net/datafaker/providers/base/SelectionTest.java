@@ -12,11 +12,10 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@Deprecated(since = "3.0.0")
-class OptionsTest {
+class SelectionTest {
 
     private final String[] options = {"A", "B", "C"};
-    private final Options opt = new Faker().options();
+    private final Selection opt = new Faker().selection();
 
     @Test
     void testOptionWithArray() {
@@ -106,34 +105,25 @@ class OptionsTest {
     }
 
     @Test
-    void testNextArrayElement() {
-        Integer[] array = {1, 2, 3, 5, 8, 13, 21};
-
-        for (int i = 1; i < 10; i++) {
-            assertThat(opt.nextElement(array)).isIn((Object[]) array);
-        }
-    }
-
-    @Test
-    void testNextListElement() {
+    void testOptionWithList() {
         List<Integer> list = List.of(1, 2, 3, 5, 8, 13, 21);
         for (int i = 1; i < 10; i++) {
-            assertThat(opt.nextElement(list)).isIn(list);
+            assertThat(opt.option(list)).isIn(list);
         }
     }
 
     @Test
-    void testNextCollectionElement() {
+    void testOptionWithCollection() {
         Collection<Integer> collection = Set.of(1, 2, 3, 5, 8, 13, 21);
         for (int i = 1; i < 10; i++) {
-            assertThat(opt.nextElement(collection)).isIn(collection);
+            assertThat(opt.option(collection)).isIn(collection);
         }
     }
 
     @Test
-    void testNextCollectionElementEmpty() {
+    void testOptionWithEmptyCollection() {
         Collection<Integer> collection = Set.of();
-        assertThatThrownBy(() -> opt.nextElement(collection))
+        assertThatThrownBy(() -> opt.option(collection))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
