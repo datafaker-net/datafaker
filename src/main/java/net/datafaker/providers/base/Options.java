@@ -17,11 +17,11 @@ public class Options extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Returns a random element from an varargs.
+     * Returns a random element from an array or varargs.
      *
      * @param options The varargs to take a random element from.
-     * @param <E>     The type of the elements in the varargs.
-     * @return A randomly selected element from the varargs.
+     * @param <E>     The type of the elements in the array.
+     * @return A randomly selected element from the array.
      */
     @SafeVarargs
     public final <E> E option(E... options) {
@@ -71,7 +71,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * If size is zero then an empty subset will be returned.
      * If size is larger than a unique set from options then all options will be returned.
      */
-    @SuppressWarnings("unchecked")
+    @SafeVarargs
     public final <E> Set<E> subset(int size, E... options) {
         if (size < 0) {
             throw new IllegalArgumentException("size should be not negative: " + size);
@@ -154,9 +154,24 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @param array The array to take a random element from.
      * @param <E>   The type of the elements in the array.
      * @return A randomly selected element from the array.
+     * @deprecated Use {@link #option(Object[]) option(E...)}
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public <E> E nextElement(E[] array) {
-        return array[faker.random().nextInt(array.length)];
+        return option(array);
+    }
+
+    /**
+     * Returns a random element from a list.
+     *
+     * @param list The list to take a random element from.
+     * @param <E>  The type of the elements in the list.
+     * @return A randomly selected element from the list.
+     * @deprecated Use {@link #option(List)}
+     */
+    @Deprecated(since = "3.0.0", forRemoval = true)
+    public <E> E nextElement(List<E> list) {
+        return option(list);
     }
 
     /**
@@ -166,7 +181,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @param <E>  The type of the elements in the list.
      * @return A randomly selected element from the list.
      */
-    public <E> E nextElement(List<E> list) {
+    public <E> E option(List<E> list) {
         return list.get(faker.random().nextInt(list.size()));
     }
 
@@ -179,7 +194,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * @throws IllegalArgumentException if the collection is empty.
      * @since 3.0.0
      */
-    public <E> E nextElement(Collection<E> collection) throws IllegalArgumentException {
+    public <E> E option(Collection<E> collection) {
         return collection.stream()
             .skip(faker.random().nextInt(collection.size()))
             .findFirst().orElseThrow(() -> new IllegalArgumentException("Collection is empty"));

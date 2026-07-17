@@ -104,6 +104,8 @@ class OptionsTest {
         assertThat(opt.option(Day.class)).isIn((Object[]) Day.values());
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated
     @Test
     void testNextArrayElement() {
         Integer[] array = {1, 2, 3, 5, 8, 13, 21};
@@ -113,6 +115,8 @@ class OptionsTest {
         }
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated
     @Test
     void testNextListElement() {
         List<Integer> list = List.of(1, 2, 3, 5, 8, 13, 21);
@@ -122,17 +126,25 @@ class OptionsTest {
     }
 
     @Test
-    void testNextCollectionElement() {
-        Collection<Integer> collection = Set.of(1, 2, 3, 5, 8, 13, 21);
+    void testOptionWithList() {
+        List<Integer> list = List.of(1, 2, 3, 5, 8, 13, 21);
         for (int i = 1; i < 10; i++) {
-            assertThat(opt.nextElement(collection)).isIn(collection);
+            assertThat(opt.option(list)).isIn(list);
         }
     }
 
     @Test
-    void testNextCollectionElementEmpty() {
+    void testOptionWithCollection() {
+        Collection<Integer> collection = Set.of(1, 2, 3, 5, 8, 13, 21);
+        for (int i = 1; i < 10; i++) {
+            assertThat(opt.option(collection)).isIn(collection);
+        }
+    }
+
+    @Test
+    void testOptionWithEmptyCollection() {
         Collection<Integer> collection = Set.of();
-        assertThatThrownBy(() -> opt.nextElement(collection))
+        assertThatThrownBy(() -> opt.option(collection))
             .isInstanceOf(IllegalArgumentException.class);
     }
 

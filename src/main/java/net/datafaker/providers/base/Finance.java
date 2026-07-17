@@ -136,7 +136,7 @@ public class Finance extends AbstractProvider<BaseProviders> {
      */
     public String iban() {
         List<String> countryCodes = new ArrayList<>(countryCodeToBasicBankAccountNumberPattern.keySet());
-        String countryCode = faker.options().nextElement(countryCodes);
+        String countryCode = faker.options().option(countryCodes);
         return iban(countryCode);
     }
 
