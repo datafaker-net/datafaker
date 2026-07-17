@@ -1,11 +1,7 @@
 package net.datafaker.providers.base;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @since 0.8.0
@@ -19,7 +15,7 @@ public class Options extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Returns a random element from an varargs.
+     * Returns a random element from a varargs.
      *
      * @param options The varargs to take a random element from.
      * @param <E>     The type of the elements in the varargs.
@@ -63,7 +59,7 @@ public class Options extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Returns a random unique subset of elements from an varargs.
+     * Returns a random unique subset of elements from a varargs.
      *
      * @param size    The size of subset to return.
      * @param options The varargs to take a random element from.
@@ -79,7 +75,7 @@ public class Options extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Returns a random String element from an varargs.
+     * Returns a random String element from a varargs.
      *
      * @param options The varargs to take a random element from.
      * @return A randomly selected element from the varargs.
@@ -89,7 +85,7 @@ public class Options extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Returns a random unique subset of elements from an varargs.
+     * Returns a random unique subset of elements from a varargs.
      *
      * @param size    The size of subset to return.
      * @param options The varargs to take a random element from.
@@ -99,26 +95,7 @@ public class Options extends AbstractProvider<BaseProviders> {
      * If size is larger than a unique set from options then all options will be returned.
      */
     public final Set<String> subset(int size, String... options) {
-        if (size < 0) {
-            throw new IllegalArgumentException("size should be not negative: " + size);
-        }
-        if (size == 0) {
-            return Set.of();
-        }
-        List<String> opts = Stream.of(options).distinct().collect(Collectors.toList());
-        if (size >= opts.size()) {
-            return new HashSet<>(opts);
-        }
-        int i = 0;
-        Set<String> set = new HashSet<>();
-        while (i < size) {
-            int randomIndex = faker.random().nextInt(opts.size());
-            set.add(opts.get(randomIndex));
-            opts.remove(randomIndex);
-            i++;
-        }
-
-        return set;
+        return faker.selection().manyOf(size, options);
     }
 
     /**
@@ -151,18 +128,5 @@ public class Options extends AbstractProvider<BaseProviders> {
      */
     public <E> E nextElement(List<E> list) {
         return faker.selection().oneOf(list);
-    }
-
-    /**
-     * Returns a random element from a collection.
-     *
-     * @param collection The collection to take a random element from.
-     * @param <E>        The type of the elements in the collection.
-     * @return A randomly selected element from the collection.
-     * @throws IllegalArgumentException if the collection is empty.
-     * @since 3.0.0
-     */
-    public <E> E nextElement(Collection<E> collection) {
-        return faker.selection().oneOf(collection);
     }
 }

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Provides utility methods for selecting a element from an array or collection
+ * Provides utility methods for selecting an element from an array, collection or enum.
  *
  * @since 3.0.0
  */
@@ -87,49 +87,6 @@ public class Selection extends AbstractProvider<BaseProviders> {
         }
         int i = 0;
         Set<E> set = new HashSet<>();
-        while (i < size) {
-            int randomIndex = faker.random().nextInt(opts.size());
-            set.add(opts.get(randomIndex));
-            opts.remove(randomIndex);
-            i++;
-        }
-
-        return set;
-    }
-
-    /**
-     * Returns a random String element from a varargs.
-     *
-     * @param options The varargs to take a random element from.
-     * @return A randomly selected element from the varargs.
-     */
-    public String oneOf(String... options) {
-        return options[faker.random().nextInt(options.length)];
-    }
-
-    /**
-     * Returns a random unique subset of elements from a varargs.
-     *
-     * @param size    The size of subset to return.
-     * @param options The varargs to take a random element from.
-     * @return A randomly selected unique subset from the varargs.
-     * If size is negative then {@code IllegalArgumentException} will be thrown.
-     * If size is zero then an empty subset will be returned.
-     * If size is larger than a unique set from options then all options will be returned.
-     */
-    public final Set<String> manyOf(int size, String... options) {
-        if (size < 0) {
-            throw new IllegalArgumentException("size should be not negative: " + size);
-        }
-        if (size == 0) {
-            return Set.of();
-        }
-        List<String> opts = Stream.of(options).distinct().collect(Collectors.toList());
-        if (size >= opts.size()) {
-            return new HashSet<>(opts);
-        }
-        int i = 0;
-        Set<String> set = new HashSet<>();
         while (i < size) {
             int randomIndex = faker.random().nextInt(opts.size());
             set.add(opts.get(randomIndex));

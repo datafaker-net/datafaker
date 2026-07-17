@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -120,21 +118,6 @@ class OptionsTest {
         for (int i = 1; i < 10; i++) {
             assertThat(opt.nextElement(list)).isIn(list);
         }
-    }
-
-    @Test
-    void testNextCollectionElement() {
-        Collection<Integer> collection = Set.of(1, 2, 3, 5, 8, 13, 21);
-        for (int i = 1; i < 10; i++) {
-            assertThat(opt.nextElement(collection)).isIn(collection);
-        }
-    }
-
-    @Test
-    void testNextCollectionElementEmpty() {
-        Collection<Integer> collection = Set.of();
-        assertThatThrownBy(() -> opt.nextElement(collection))
-            .isInstanceOf(IllegalArgumentException.class);
     }
 
     enum Day {
