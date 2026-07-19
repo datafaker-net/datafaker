@@ -8,9 +8,8 @@
     <name>Datafaker</name>
     <description>
         This library is an improved fork of JavaFaker (as well as Ruby's stympy/faker gem and Perl's Data::Faker
-        library)
-        that generates fake data. It's useful when you're developing a new project and need some pretty data for
-        showcase.
+        library) that generates fake data.
+        It's useful when you're developing a new project and need some pretty data for showcase.
     </description>
     <url>https://www.datafaker.net</url>
     <developers>
@@ -39,8 +38,7 @@
         <jspecify.version>1.0.0</jspecify.version>
         <error_prone.version>2.50.0</error_prone.version>
 
-        <releaseJavaVersion>17</releaseJavaVersion>
-        <buildJavaVersion>17</buildJavaVersion>
+        <java.version>17</java.version>
 
         <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
@@ -61,10 +59,10 @@
         <javaparser.version>3.28.2</javaparser.version>
         <snakeyaml.version>2.6</snakeyaml.version>
         <spotless-maven-plugin.version>3.9.0</spotless-maven-plugin.version>
-        <!-- Empty means scan all, non empty value will be passed from CI -->
-        <spotless.ratchetFrom></spotless.ratchetFrom>
-        <!-- Run tests in Turkish to make sure that they don't depend on
-                         locale. Turkish is a notoriously tricky locale. -->
+        <!-- Empty means scan all, non-empty value will be passed from CI -->
+        <spotless.ratchetFrom/>
+        <!-- Run tests in Turkish to make sure that they don't depend on locale.
+             Turkish is a notoriously tricky locale. -->
         <surefire.argline>@{argLine} -Duser.language=TR -Duser.country=tr</surefire.argline>
         <kotlin.version>2.4.10</kotlin.version>
     </properties>
@@ -220,7 +218,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                        <release>${releaseJavaVersion}</release>
+                        <release>${java.version}</release>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -282,7 +280,7 @@
                                     <version>[3.9,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>[${buildJavaVersion},)</version>
+                                    <version>[${java.version},)</version>
                                 </requireJavaVersion>
                                 <requirePluginVersions>
                                     <message>Best practice is to always define Maven plugin versions</message>
@@ -445,7 +443,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Attaching java doc to comply OSSRH -->
+            <!-- Attaching Javadoc to comply OSSRH -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -562,7 +560,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>${releaseJavaVersion}</jvmTarget>
+                    <jvmTarget>${java.version}</jvmTarget>
                 </configuration>
             </plugin>
             <plugin>
