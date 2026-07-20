@@ -93,8 +93,8 @@ public class NorwegianIdNumber implements IdNumberGenerator {
 
     private int genderDigit(BaseProviders faker, Gender gender) {
         return switch (gender) {
-            case FEMALE -> faker.options().option(0, 2, 4, 6, 8);
-            case MALE -> faker.options().option(1, 3, 5, 7, 9);
+            case FEMALE -> faker.selection().oneOf(0, 2, 4, 6, 8);
+            case MALE -> faker.selection().oneOf(1, 3, 5, 7, 9);
         };
     }
 

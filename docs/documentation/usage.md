@@ -68,7 +68,7 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
     List<Faker> fakers = Arrays.asList(faker1, faker2);
 
     for (int i = 0; i < 10; i++) {
-        Faker randomFaker = new Faker().options().nextElement(fakers);
+        Faker randomFaker = new Faker().selection().oneOf(fakers);
         System.out.println(randomFaker.address().fullAddress());
     }
     ```
@@ -82,7 +82,7 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
     val fakers = listOf(faker1, faker2)
 
     repeat(10) {
-        val randomFaker = Faker().options().nextElement(fakers)
+        val randomFaker = Faker().selection().oneOf(fakers)
         println(randomFaker.address().fullAddress())
     }
     ```
@@ -108,7 +108,7 @@ which can be handy for generating results multiple times.
 
 ## Random Java enum values
 
-To get a random value from a Java `enum` you can employ the `Options.option()` method.
+To get a random value from a Java `enum` you can employ the `Selection.oneOf()` method.
 
 The following example assumes you want to retrieve a random value from the `Day` enum.
 
@@ -119,6 +119,5 @@ The following example assumes you want to retrieve a random value from the `Day`
         MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
     }
 
-    private final Options opt = faker.options();
-    opt.option(Day.class);
+    faker.selection().oneOf(Day.class);
     ```

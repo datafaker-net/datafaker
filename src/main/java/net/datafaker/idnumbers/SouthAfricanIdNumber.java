@@ -45,7 +45,7 @@ public class SouthAfricanIdNumber implements IdNumberGenerator {
         Gender gender = gender(f, request);
         String basePart = DATE_TIME_FORMATTER.format(birthday)
             + sequentialNumber(f, gender)
-            + f.options().option(CODE_PATTERN);
+            + f.selection().oneOf(CODE_PATTERN);
         return new PersonIdNumber(basePart + calculateChecksum(basePart, 12), birthday, gender);
     }
 
@@ -70,7 +70,7 @@ public class SouthAfricanIdNumber implements IdNumberGenerator {
      */
     @Override
     public String generateInvalid(BaseProviders f) {
-        String ssn = f.numerify(f.options().option(VALID_PATTERN));
+        String ssn = f.numerify(f.selection().oneOf(VALID_PATTERN));
         while (isValidEnZASsn(ssn)) {
             String pattern = getPattern(f);
             ssn = f.numerify(pattern);
@@ -85,7 +85,7 @@ public class SouthAfricanIdNumber implements IdNumberGenerator {
      * @return a fixed format numeric string
      */
     private String getPattern(BaseProviders faker) {
-        return faker.options().option(VALID_PATTERN);
+        return faker.selection().oneOf(VALID_PATTERN);
     }
 
     /**

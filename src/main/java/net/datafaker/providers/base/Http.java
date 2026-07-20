@@ -104,7 +104,7 @@ public class Http extends AbstractProvider<BaseProviders> {
 
     /** Returns a random browser user agent string from any supported browser. */
     public String userAgent() {
-        Browser browser = faker.options().nextElement(Browser.values());
+        Browser browser = faker.selection().oneOf(Browser.class);
         return resolve("http.user_agent." + browser.key);
     }
 
@@ -143,7 +143,7 @@ public class Http extends AbstractProvider<BaseProviders> {
      * @see #responseBody(String)
      */
     public String responseBody() {
-        return resolve("http.response_body." + faker.options().nextElement(TEXT_BODY_TYPES));
+        return resolve("http.response_body." + faker.selection().oneOf(TEXT_BODY_TYPES));
     }
 
     /**
@@ -181,7 +181,7 @@ public class Http extends AbstractProvider<BaseProviders> {
     }
 
     private String randomStatusEntry() {
-        String category = faker.options().nextElement(ALL_STATUS_CATEGORIES);
+        String category = faker.selection().oneOf(ALL_STATUS_CATEGORIES);
         return resolve("http.status_code." + category);
     }
 

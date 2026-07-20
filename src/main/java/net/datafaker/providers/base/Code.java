@@ -34,7 +34,7 @@ public class Code extends AbstractProvider<BaseProviders> {
      * @return a GS1 code for an ISBN13, currently is only 978 and 979
      */
     public String isbnGs1() {
-        return faker.options().option("978", "979");
+        return faker.selection().oneOf("978", "979");
     }
 
     /**
@@ -48,7 +48,7 @@ public class Code extends AbstractProvider<BaseProviders> {
      * @return an ISBN group number
      */
     public String isbnGroup() {
-        return faker.options().option("0", "1");
+        return faker.selection().oneOf("0", "1");
     }
 
     /**
@@ -158,7 +158,7 @@ public class Code extends AbstractProvider<BaseProviders> {
         int len = str.length;
 
         // Fill in the first two values of the string based with the specified prefix.
-        String arr = faker.options().option(REPORTING_BODY_IDENTIFIERS);
+        String arr = faker.selection().oneOf(REPORTING_BODY_IDENTIFIERS);
         str[0] = arr.charAt(0);
         str[1] = arr.charAt(1);
 

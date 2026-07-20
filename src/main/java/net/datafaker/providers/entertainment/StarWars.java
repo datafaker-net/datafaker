@@ -27,7 +27,7 @@ public class StarWars extends AbstractProvider<EntertainmentProviders> {
     }
 
     public String quotes() {
-        return resolve("star_wars.quotes." + getFaker().options().option(CHARACTERS));
+        return resolve("star_wars.quotes." + getFaker().selection().oneOf(CHARACTERS));
     }
 
     public String vehicles() {
@@ -51,6 +51,6 @@ public class StarWars extends AbstractProvider<EntertainmentProviders> {
     }
 
     public String alternateCharacterSpelling() {
-        return resolve("star_wars.alternate_character_spellings." + getFaker().options().option(CHARACTERS));
+        return resolve("star_wars.alternate_character_spellings." + getFaker().selection().oneOf(CHARACTERS));
     }
 }

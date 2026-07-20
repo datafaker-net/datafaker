@@ -36,7 +36,7 @@ public class Company extends AbstractProvider<BaseProviders> {
     }
 
     public String buzzword() {
-        return faker.options().nextElement(allBuzzwords.get());
+        return faker.selection().oneOf(allBuzzwords.get());
     }
 
     private List<String> loadBuzzwords() {
@@ -93,7 +93,7 @@ public class Company extends AbstractProvider<BaseProviders> {
 
     private String joinSampleOfEachList(List<List<String>> listOfLists) {
         return listOfLists.stream()
-            .map(list -> faker.options().nextElement(list))
+            .map(list -> faker.selection().oneOf(list))
             .collect(joining(" "));
     }
 }

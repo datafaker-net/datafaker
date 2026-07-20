@@ -65,7 +65,7 @@ public class SwedenIdNumber implements IdNumberGenerator {
     public String generateInvalid(BaseProviders f) {
         String candidate = "121212-1212"; // Seed with a valid number
         while (isValidSwedishSsn(candidate)) {
-            String pattern = f.options().option(VALID_PATTERNS);
+            String pattern = f.selection().oneOf(VALID_PATTERNS);
             candidate = f.numerify(pattern);
         }
 
