@@ -153,7 +153,8 @@ class RandomServiceTest {
         assertThat(randomService.hex()).matches("^[0-9A-F]{8}$");
     }
 
-    @Deprecated
+    @SuppressWarnings("removal")
+    @Deprecated(since = "3.0.0", forRemoval = true)
     @Test
     void nextEnum() {
         RandomService randomService = new RandomService();
@@ -166,7 +167,8 @@ class RandomServiceTest {
         assertThat(all).containsExactly(Ring.values());
     }
 
-    @Deprecated
+    @SuppressWarnings("removal")
+    @Deprecated(since = "3.0.0", forRemoval = true)
     @ParameterizedTest
     @CsvSource({
         "12345, DWARVES, MEN, LORD, LORD, LORD",

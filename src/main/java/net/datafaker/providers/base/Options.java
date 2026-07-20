@@ -7,7 +7,7 @@ import java.util.Set;
  * @since 0.8.0
  * @deprecated Use {@link Selection} instead
  */
-@Deprecated(since = "3.0.0")
+@Deprecated(since = "3.0.0", forRemoval = true)
 public class Options extends AbstractProvider<BaseProviders> {
 
     protected Options(BaseProviders faker) {

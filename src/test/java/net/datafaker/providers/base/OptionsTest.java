@@ -10,7 +10,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@Deprecated(since = "3.0.0")
+@SuppressWarnings("removal")
+@Deprecated(since = "3.0.0", forRemoval = true)
 class OptionsTest {
 
     private final String[] options = {"A", "B", "C"};

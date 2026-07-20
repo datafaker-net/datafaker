@@ -159,7 +159,8 @@ public interface ProviderRegistration {
     /**
      * @deprecated Use {@link #selection()} instead
      */
-    @Deprecated(since = "3.0.0")
+    @SuppressWarnings("removal")
+    @Deprecated(since = "3.0.0", forRemoval = true)
     default Options options() {
         return getProvider(Options.class, Options::new);
     }

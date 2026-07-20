@@ -124,7 +124,7 @@ public class RandomService {
     /**
      * @deprecated Use {@link net.datafaker.providers.base.Selection#oneOf(Class) faker.selection().oneOf(Enum)} instead
      */
-    @Deprecated(since = "3.0.0")
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public <T extends Enum<T>> T nextEnum(Class<T> klass) {
         T[] enumConstants = klass.getEnumConstants();
         return enumConstants[nextInt(enumConstants.length)];
