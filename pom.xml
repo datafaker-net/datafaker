@@ -598,6 +598,17 @@
 
     <profiles>
         <profile>
+            <id>nativeMetadata</id>
+            <properties>
+                <native.image.agent.additional.filter></native.image.agent.additional.filter>
+                <surefire.argline>
+                    @{argLine} -Duser.language=TR -Duser.country=tr
+                    -Dnative.image.metadata.generation=true
+                    -agentlib:native-image-agent=caller-filter-file=${project.basedir}/src/test/resources/native-image-agent-filter.json,access-filter-file=${project.basedir}/src/test/resources/native-image-agent-filter.json${native.image.agent.additional.filter},config-output-dir=${project.build.directory}/native-image-agent
+                </surefire.argline>
+            </properties>
+        </profile>
+        <profile>
             <id>noGpg</id>
             <build>
                 <plugins>
