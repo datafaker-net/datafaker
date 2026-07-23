@@ -36,7 +36,7 @@ class TimeAndDateTest {
     void testFutureDateWithBounds() {
         Instant now = Instant.now();
         Instant future = timeAndDate.future(1, TimeUnit.SECONDS);
-        assertThat(future).isBetween(now, now.plusSeconds(1));
+        assertThat(future).isBetween(now, Instant.now().plusSeconds(1));
     }
 
     @RepeatedTest(100)
