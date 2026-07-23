@@ -19,6 +19,7 @@ class StockTest extends BaseFakerTest {
                 TestSpec.of(stock::nyseSymbol, "stock.symbol_nyse"),
                 TestSpec.of(stock::nseSymbol, "stock.symbol_nse"),
                 TestSpec.of(stock::lseSymbol, "stock.symbol_lse"),
+                TestSpec.of(stock::tseSymbol, "stock.symbol_tse"),
                 TestSpec.of(stock::exchanges, "stock.exchanges"));
     }
 
