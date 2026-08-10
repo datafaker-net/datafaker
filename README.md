@@ -568,6 +568,16 @@ In the example above,
 * zh-TW (language: Chinese, country: Taiwan)
 </details>
 
+RELATED PROJECTS
+----------------
+
+* **Address formatting:** Pair Datafaker's `Address` provider with
+  [address-formatter-java](https://github.com/placemarkt/address-formatter-java)
+  to turn generated components into locale-aware postal addresses.
+  See [Related projects](https://www.datafaker.net/documentation/related-projects/) for examples.
+* **CLI generator:** [datafaker-gen](https://github.com/datafaker-net/datafaker-gen)
+* **Native image demo:** [datafaker-native-demo](https://github.com/datafaker-net/datafaker-native-demo)
+
 NATIVE IMAGE
 ------------
 
