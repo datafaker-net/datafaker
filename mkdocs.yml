@@ -129,6 +129,7 @@ nav:
       - Formats: documentation/formats.md
       - Transformation schemas: documentation/schemas.md
       - Unique values: documentation/unique-values.md
+    - Related projects: documentation/related-projects.md
     - Performance:
       - Datafaker 1.4.0: documentation/performance140.md
       - Datafaker 1.7.0: documentation/performance170.md
