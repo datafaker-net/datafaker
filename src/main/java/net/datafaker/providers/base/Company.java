@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.internal.helper.FakerIDN;
+import net.datafaker.internal.helper.HostnameHelper;
 import net.datafaker.internal.helper.LazyEvaluated;
 
 import java.util.Collection;
@@ -68,27 +69,46 @@ public class Company extends AbstractProvider<BaseProviders> {
         return "https://pigment.github.io/fake-logos/logos/medium/color/" + number + ".png";
     }
 
+    /**
+     * Returns a domain name based on the company name.
+     * <p>
+     * The domain name is created by sanitizing the company name according to RFC 1123
+     * (Letter-Digit-Hyphen rules). The result is always a valid ASCII hostname.
+     *
+     * @return a valid ASCII domain name
+     * @since 0.8.0
+     */
+    public String domainName() {
+        String companyName = name();
+        return HostnameHelper.toAsciiHostnameLabel(companyName, faker.getContext().getLocale());
+    }
+
+    /**
+     * Returns a web URL for the company.
+     * <p>
+     * The domain name is created by sanitizing the company name according to RFC 1123
+     * (Letter-Digit-Hyphen rules), and the full URL is constructed with a domain suffix.
+     *
+     * @return a valid web URL
+     * @since 0.8.0
+     */
     public String url() {
         return "www."
             + FakerIDN.toASCII(domainName()) + "."
             + domainSuffix();
     }
 
-    private String domainName() {
-        final char[] res = name().toLowerCase(faker.getContext().getLocale()).toCharArray();
-        int offset = 0;
-        for (int i = 0; i < res.length; i++) {
-            final char c = res[i];
-            switch (c) {
-                case '.', ',', '\'', ' ', ']', '&' -> offset++;
-                default -> res[i - offset] = res[i];
-            }
-        }
-        return String.valueOf(res, 0, res.length - offset);
-    }
-
+    /**
+     * Returns a domain suffix (TLD).
+     * <p>
+     * The suffix is sanitized according to RFC 1123 to ensure it is ASCII-compatible.
+     * For non-ASCII locales, the suffix is converted to ASCII via the hostname sanitizer.
+     *
+     * @return a domain suffix (ASCII)
+     */
     private String domainSuffix() {
-        return resolve("internet.domain_suffix");
+        String suffix = resolve("internet.domain_suffix");
+        return HostnameHelper.toAsciiHostname(suffix, faker.getContext().getLocale());
     }
 
     private String joinSampleOfEachList(List<List<String>> listOfLists) {

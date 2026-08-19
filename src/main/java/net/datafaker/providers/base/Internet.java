@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.internal.helper.FakerIDN;
+import net.datafaker.internal.helper.HostnameHelper;
 import net.datafaker.service.RandomService;
 import org.jspecify.annotations.Nullable;
 
@@ -162,17 +163,45 @@ public class Internet extends AbstractProvider<BaseProviders> {
             LOCALPART.matcher(parts[parts.length - 1].toLowerCase(faker.getContext().getLocale())).replaceAll(""));
     }
 
+    /**
+     * Returns a domain name with a word and a suffix.
+     * <p>
+     * The domain word is created by sanitizing a name according to RFC 1123
+     * (Letter-Digit-Hyphen rules). The result is always a valid ASCII hostname.
+     *
+     * @return a valid ASCII domain name
+     * @since 0.8.0
+     */
     public String domainName() {
         return domainWord() + "." + domainSuffix();
     }
 
+    /**
+     * Returns a domain word (label without suffix).
+     * <p>
+     * The word is created by sanitizing a last name according to RFC 1123
+     * (Letter-Digit-Hyphen rules). The result is always a valid ASCII hostname label.
+     *
+     * @return a valid ASCII domain label
+     * @since 0.8.0
+     */
     public String domainWord() {
-        return FakerIDN.toASCII(
-            faker.name().lastName().toLowerCase(faker.getContext().getLocale()).replace("'", ""));
+        String lastName = faker.name().lastName().toLowerCase(faker.getContext().getLocale()).replace("'", "");
+        return HostnameHelper.toAsciiHostnameLabel(lastName, faker.getContext().getLocale());
     }
 
+    /**
+     * Returns a domain suffix (TLD).
+     * <p>
+     * The suffix is sanitized according to RFC 1123 to ensure it is ASCII-compatible.
+     * For non-ASCII locales, the suffix is converted to ASCII via the hostname sanitizer.
+     *
+     * @return a domain suffix (ASCII)
+     * @since 0.8.0
+     */
     public String domainSuffix() {
-        return resolve("internet.domain_suffix");
+        String suffix = resolve("internet.domain_suffix");
+        return HostnameHelper.toAsciiHostname(suffix, faker.getContext().getLocale());
     }
 
     /**
@@ -213,18 +242,25 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
     /**
      * Returns a web domain.
+     * <p>
+     * The domain is created by combining a first name and domain word, both sanitized
+     * according to RFC 1123 (Letter-Digit-Hyphen rules). The result is always a valid
+     * ASCII hostname.
      *
      * @return a web domain in the form "www.example.com"
      * @since 2.0.0
      */
     public String webdomain() {
+        String firstName = faker.name().firstName().toLowerCase(
+            faker.getContext().getLocale()).replace("'", "");
+        String firstNameLabel = HostnameHelper.toAsciiHostnameLabel(firstName, faker.getContext().getLocale());
+        String combinedLabel = firstNameLabel + "-" + domainWord();
+        // Sanitize the combined label to handle cases where concatenation might create issues
+        String sanitized = HostnameHelper.toAsciiHostnameLabel(combinedLabel, faker.getContext().getLocale());
+
         return String.join("",
             "www", ".",
-            FakerIDN.toASCII(
-                faker.name().firstName().toLowerCase(
-                    faker.getContext().getLocale()).replace("'", "") + "-" +
-                    domainWord()
-            ),
+            sanitized,
             ".",
             domainSuffix()
         );
