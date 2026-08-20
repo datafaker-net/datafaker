@@ -11,6 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,9 @@ import static org.mockito.Mockito.when;
 class InternetTest {
 
     public static final Pattern IPV6_HOST_ADDRESS = Pattern.compile("[0-9a-fA-F]{1,4}(:([0-9a-fA-F]{1,4})){1,7}");
+    // RFC 1123 compliant hostname patterns (used in our new/modified domain tests)
+    private static final Pattern RFC_1123_LABEL = Pattern.compile("^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$");
+    private static final Pattern RFC_1123_DOMAIN = Pattern.compile("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$");
     private final Faker faker = new Faker();
 
     @RepeatedTest(10)
@@ -194,7 +198,12 @@ class InternetTest {
 
     @Test
     void testWebdomain() {
-        assertThat(faker.internet().webdomain()).matches("www\\.[\\w-]+\\.\\w+");
+        // RFC 1123 compliant: www.<label>.<suffix>
+        // Each label (including suffix labels) is [a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?
+        String webdomain = faker.internet().webdomain();
+        assertThat(webdomain).matches("^www\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$");
+        // Also verify it can be used in a URL
+        assertDoesNotThrow(() -> new URL("https://" + webdomain + "/"));
     }
 
     @RepeatedTest(10)
@@ -213,12 +222,14 @@ class InternetTest {
 
     @Test
     void testDomainName() {
-        assertThat(faker.internet().domainName()).matches("[a-z]+\\.\\w{2,4}");
+        // RFC 1123 compliant: each label is [a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?
+        assertThat(faker.internet().domainName()).matches(RFC_1123_DOMAIN);
     }
 
     @Test
     void testDomainWord() {
-        assertThat(faker.internet().domainWord()).matches("[a-z]+");
+        // RFC 1123 compliant label: [a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?
+        assertThat(faker.internet().domainWord()).matches(RFC_1123_LABEL);
     }
 
     @Test
@@ -544,5 +555,71 @@ class InternetTest {
     @Test
     void testSlugWithNull() {
         assertThat(faker.internet().slug(null, "_")).isNotNull();
+    }
+
+    @RepeatedTest(10)
+    void testDomainWordCanBeUsedInUrl() {
+        String domainWord = faker.internet().domainWord();
+        assertDoesNotThrow(() -> new URL("https://" + domainWord + ".com/"));
+    }
+
+    @RepeatedTest(10)
+    void testDomainNameCanBeUsedInUrl() {
+        String domainName = faker.internet().domainName();
+        assertDoesNotThrow(() -> new URL("https://" + domainName + "/"));
+    }
+
+    @RepeatedTest(10)
+    void testDomainNameCanBeUsedInUri() {
+        String domainName = faker.internet().domainName();
+        assertDoesNotThrow(() -> new URI("https://" + domainName + "/"));
+    }
+
+    @Test
+    void testWebdomainCanBeUsedInUrl() {
+        String webdomain = faker.internet().webdomain();
+        assertDoesNotThrow(() -> new URL("https://" + webdomain + "/"));
+    }
+
+    @Test
+    void testWebdomainCanBeUsedInUri() {
+        String webdomain = faker.internet().webdomain();
+        assertDoesNotThrow(() -> new URI("https://" + webdomain + "/"));
+    }
+
+    @RepeatedTest(10)
+    void testHebrewIDNs() {
+        // Regression test for bidirectional language handling (PR #1757)
+        final BaseFaker f = new BaseFaker(new Locale("he"));
+        String domainName = f.internet().domainName();
+        assertThat(domainName).isNotEmpty();
+        // Should be ASCII/punycode, not raw Hebrew characters
+        assertThat(domainName).matches(RFC_1123_DOMAIN);
+        // Must be usable in URL
+        assertDoesNotThrow(() -> new URL("https://" + domainName + "/"));
+    }
+
+    @RepeatedTest(10)
+    void testCyrillicIDNs() {
+        // Regression test for Cyrillic locale (PR #1757)
+        final BaseFaker f = new BaseFaker(new Locale("bg"));
+        String domainName = f.internet().domainName();
+        assertThat(domainName).isNotEmpty();
+        // Should be ASCII/punycode, not raw Cyrillic
+        assertThat(domainName).matches(RFC_1123_DOMAIN);
+        // Must be usable in URL
+        assertDoesNotThrow(() -> new URL("https://" + domainName + "/"));
+    }
+
+    @RepeatedTest(10)
+    void testCJKIDNs() {
+        // Test that CJK characters are properly converted to punycode
+        final BaseFaker f = new BaseFaker(new Locale("ja"));
+        String domainName = f.internet().domainName();
+        assertThat(domainName).isNotEmpty();
+        // Should be ASCII (punycode or latin chars), no raw Unicode
+        assertThat(domainName).matches(RFC_1123_DOMAIN);
+        // Must be usable in URL
+        assertDoesNotThrow(() -> new URL("https://" + domainName + "/"));
     }
 }
