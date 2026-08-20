@@ -60,7 +60,7 @@
         <slf4j.version>2.0.18</slf4j.version>
         <javaparser.version>3.28.2</javaparser.version>
         <snakeyaml.version>2.6</snakeyaml.version>
-        <spotless-maven-plugin.version>3.9.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>3.10.0</spotless-maven-plugin.version>
         <!-- Empty means scan all, non empty value will be passed from CI -->
         <spotless.ratchetFrom></spotless.ratchetFrom>
         <!-- Run tests in Turkish to make sure that they don't depend on
