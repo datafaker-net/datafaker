@@ -15,5 +15,6 @@ public class IdNumberPatterns {
     public static final Pattern ESTONIAN = Pattern.compile("[1-6][0-9]{10}");
     public static final Pattern BRAZILIAN = Pattern.compile("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}");
     public static final Pattern NORWEGIAN = Pattern.compile("\\d{11}");
+    public static final Pattern SPANISH_DNI = Pattern.compile("\\d{8}[TRWAGMYFPDXBNJZSQVHLCKE]");
 
 }
