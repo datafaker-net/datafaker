@@ -280,13 +280,13 @@ class IdNumberTest {
     }
 
     @RepeatedTest(100)
-    void spanishDni_valid() {
-        assertThatPin(SPANISH.idNumber().valid()).matches(IdNumberPatterns.SPANISH_DNI);
+    void spanishIdNumber_valid() {
+        assertThatPin(SPANISH.idNumber().valid()).matches(IdNumberPatterns.SPANISH);
     }
 
     @RepeatedTest(100)
-    void spanishDni_invalid() {
-        assertThatPin(SPANISH.idNumber().invalid()).matches(IdNumberPatterns.SPANISH_DNI);
+    void spanishIdNumber_invalid() {
+        assertThatPin(SPANISH.idNumber().invalid()).matches(IdNumberPatterns.SPANISH);
     }
 
     private static AbstractStringAssert<?> assertThatPin(String pin) {

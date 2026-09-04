@@ -27,7 +27,7 @@ class SpanishIdNumberTest {
     void valid() {
         String generated = generator.generateValid(faker);
 
-        assertThat(generated).matches(IdNumberPatterns.SPANISH_DNI);
+        assertThat(generated).matches(IdNumberPatterns.SPANISH);
         assertThat(generated.charAt(8))
             .as("DNI check letter")
             .isEqualTo(SpanishIdNumber.checksum(generated.substring(0, 8)));
@@ -37,7 +37,7 @@ class SpanishIdNumberTest {
     void invalid() {
         String generated = generator.generateInvalid(faker);
 
-        assertThat(generated).matches(IdNumberPatterns.SPANISH_DNI);
+        assertThat(generated).matches(IdNumberPatterns.SPANISH);
         assertThat(generated.charAt(8))
             .as("DNI check letter should be invalid")
             .isNotEqualTo(SpanishIdNumber.checksum(generated.substring(0, 8)));
