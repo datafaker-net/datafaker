@@ -1,0 +1,108 @@
+/* Hero section — wave + gradient from original landing-page styling */
+.mdx-container {
+  padding-top: 1rem;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1123 258'><path d='M1124,2c0,0 0,256 0,256l-1125,0l0,-48c0,0 16,5 55,5c116,0 197,-92 325,-92c121,0 114,46 254,46c140,0 214,-167 572,-166Z' style='fill: hsla(0, 0%, 100%, 1)' /></svg>") no-repeat bottom,
+    linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9 99%, var(--md-default-bg-color) 99%);
+}
+
+[data-md-color-scheme=slate] .mdx-container {
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1123 258'><path d='M1124,2c0,0 0,256 0,256l-1125,0l0,-48c0,0 16,5 55,5c116,0 197,-92 325,-92c121,0 114,46 254,46c140,0 214,-167 572,-166Z' style='fill: hsla(232, 15%, 21%, 1)' /></svg>") no-repeat bottom,
+    linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9 99%, var(--md-default-bg-color) 99%);
+}
+
+.mdx-hero {
+  margin: 0 0.8rem;
+  color: var(--md-primary-bg-color);
+}
+
+.mdx-hero h1 {
+  margin-bottom: 1rem;
+  color: currentColor;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 29.9375em) {
+  .mdx-hero h1 {
+    font-size: 1.4rem;
+  }
+}
+
+.mdx-hero__content {
+  padding-bottom: 6rem;
+}
+
+.mdx-hero__image {
+  order: 1;
+  transform: translateX(4rem);
+  width: 38rem;
+}
+
+.mdx-hero__image img {
+  width: 100%;
+  height: auto;
+}
+
+@media screen and (min-width: 60em) {
+  .mdx-hero {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .mdx-hero__content {
+    margin-top: 3.5rem;
+    max-width: 19rem;
+    padding-bottom: 14vw;
+  }
+}
+
+@media screen and (min-width: 76.25em) {
+  .mdx-hero__image {
+    transform: translateX(8rem);
+  }
+}
+
+.mdx-hero .md-button {
+  color: var(--md-primary-bg-color);
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.mdx-hero .md-button:focus,
+.mdx-hero .md-button:hover {
+  background-color: var(--md-accent-fg-color);
+  border-color: var(--md-accent-fg-color);
+  color: var(--md-accent-bg-color);
+}
+
+.mdx-hero .md-button--primary {
+  background-color: var(--md-primary-bg-color);
+  border-color: var(--md-primary-bg-color);
+  color: #894da8;
+}
+
+/* Announce bar */
+.md-typeset .twitter {
+  color: #00acee;
+}
+
+/* Allscreenshots attribution on homepage */
+.mdx-attribution {
+  position: fixed;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.mdx-attribution p {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  margin: 0;
+}
+
+.mdx-attribution a {
+  text-decoration: underline;
+  color: inherit;
+}
