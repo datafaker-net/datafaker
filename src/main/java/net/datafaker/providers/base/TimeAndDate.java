@@ -8,9 +8,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalUnit;
 import java.util.concurrent.TimeUnit;
-
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
  * A generator of random times and dates.
@@ -34,7 +33,7 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      */
     public Instant future() {
         long FIFTY_YEARS = TimeUnit.DAYS.toMillis(18262);
-        return future(faker.number().numberBetween(1, FIFTY_YEARS), MILLISECONDS);
+        return future(faker.number().numberBetween(1, FIFTY_YEARS), ChronoUnit.MILLIS);
     }
 
     /**
@@ -43,8 +42,22 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param atMost at most this amount of time ahead from now exclusive.
      * @param unit   the time unit.
      * @return a future date from now.
+     * @deprecated since 3.0.0. Use {@link #future(long, TemporalUnit)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public Instant future(long atMost, TimeUnit unit) {
+        return future(atMost, unit.toChronoUnit());
+    }
+
+    /**
+     * Generates a future date from now.
+     *
+     * @param atMost at most this amount of time ahead from now exclusive.
+     * @param unit   the temporal unit, e.g. {@link ChronoUnit#HOURS}.
+     * @return a future date from now.
+     * @since 3.0.0
+     */
+    public Instant future(long atMost, TemporalUnit unit) {
         Instant aBitLaterThanNow = Instant.now().plusMillis(1);
         return future(atMost, unit, aBitLaterThanNow);
     }
@@ -56,8 +69,23 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit    the time unit.
      * @param pattern date time pattern to convert to string.
      * @return a string representation of a future date from now.
+     * @deprecated since 3.0.0. Use {@link #future(long, TemporalUnit, String)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public String future(long atMost, TimeUnit unit, String pattern) {
+        return future(atMost, unit.toChronoUnit(), pattern);
+    }
+
+    /**
+     * Generates and converts to string representation a future date from now.
+     *
+     * @param atMost  at most this amount of time ahead from now exclusive.
+     * @param unit    the temporal unit, e.g. {@link ChronoUnit#HOURS}.
+     * @param pattern date time pattern to convert to string.
+     * @return a string representation of a future date from now.
+     * @since 3.0.0
+     */
+    public String future(long atMost, TemporalUnit unit, String pattern) {
         return formatInstant(future(atMost, unit), pattern);
     }
 
@@ -68,9 +96,24 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param minimum the minimum amount of time in the future from now.
      * @param unit    the time unit.
      * @return a future date from now, with a minimum time.
+     * @deprecated since 3.0.0. Use {@link #future(long, long, TemporalUnit)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public Instant future(long atMost, long minimum, TimeUnit unit) {
-        Instant minimumDate = Instant.now().plus(minimum, unit.toChronoUnit());
+        return future(atMost, minimum, unit.toChronoUnit());
+    }
+
+    /**
+     * Generates a future date from now, with a minimum time.
+     *
+     * @param atMost  at most this amount of time ahead from now exclusive.
+     * @param minimum the minimum amount of time in the future from now.
+     * @param unit    the temporal unit, e.g. {@link ChronoUnit#HOURS}.
+     * @return a future date from now, with a minimum time.
+     * @since 3.0.0
+     */
+    public Instant future(long atMost, long minimum, TemporalUnit unit) {
+        Instant minimumDate = Instant.now().atZone(ZoneId.systemDefault()).plus(minimum, unit).toInstant();
         return future(atMost - minimum, unit, minimumDate);
     }
 
@@ -83,8 +126,25 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit    the time unit.
      * @param pattern date time pattern to convert to string.
      * @return a string representation of a future date from now, with a minimum time.
+     * @deprecated since 3.0.0. Use {@link #future(long, long, TemporalUnit, String)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public String future(long atMost, long minimum, TimeUnit unit, String pattern) {
+        return future(atMost, minimum, unit.toChronoUnit(), pattern);
+    }
+
+    /**
+     * Generates and converts to string representation
+     * of a future date from now, with a minimum time.
+     *
+     * @param atMost  at most this amount of time ahead from now exclusive.
+     * @param minimum the minimum amount of time in the future from now.
+     * @param unit    the temporal unit, e.g. {@link ChronoUnit#HOURS}.
+     * @param pattern date time pattern to convert to string.
+     * @return a string representation of a future date from now, with a minimum time.
+     * @since 3.0.0
+     */
+    public String future(long atMost, long minimum, TemporalUnit unit, String pattern) {
         return formatInstant(future(atMost, minimum, unit), pattern);
     }
 
@@ -95,11 +155,25 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit          the time unit.
      * @param referenceDate the future date relative to this date.
      * @return a future date relative to {@code referenceDate}.
+     * @deprecated since 3.0.0. Use {@link #future(long, TemporalUnit, Instant)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public Instant future(long atMost, TimeUnit unit, Instant referenceDate) {
-        long upperBoundMillis = unit.toMillis(atMost);
-        long futureMillis = referenceDate.toEpochMilli() + 1 + faker.random().nextLong(upperBoundMillis - 1);
-        return Instant.ofEpochMilli(futureMillis);
+        return future(atMost, unit.toChronoUnit(), referenceDate);
+    }
+
+    /**
+     * Generates a future date relative to the {@code referenceDate}.
+     *
+     * @param atMost        at most this amount of time ahead to the {@code referenceDate} exclusive.
+     * @param unit          the temporal unit, e.g. {@link ChronoUnit#YEARS}.
+     * @param referenceDate the future date relative to this date.
+     * @return a future date relative to {@code referenceDate}.
+     * @since 3.0.0
+     */
+    public Instant future(long atMost, TemporalUnit unit, Instant referenceDate) {
+        Instant upperBound = referenceDate.atZone(ZoneId.systemDefault()).plus(atMost, unit).toInstant();
+        return between(referenceDate.plusMillis(1), upperBound);
     }
 
     /**
@@ -111,17 +185,34 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param referenceDate the future date relative to this date.
      * @param pattern       date time pattern to convert to string.
      * @return a string representation of a future date relative to {@code referenceDate}.
+     * @deprecated since 3.0.0. Use {@link #future(long, TemporalUnit, Instant, String)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public String future(long atMost, TimeUnit unit, Instant referenceDate, String pattern) {
+        return future(atMost, unit.toChronoUnit(), referenceDate, pattern);
+    }
+
+    /**
+     * Generates and converts to string representation
+     * a future date relative to the {@code referenceDate}.
+     *
+     * @param atMost        at most this amount of time ahead to the {@code referenceDate} exclusive.
+     * @param unit          the temporal unit, e.g. {@link ChronoUnit#YEARS}.
+     * @param referenceDate the future date relative to this date.
+     * @param pattern       date time pattern to convert to string.
+     * @return a string representation of a future date relative to {@code referenceDate}.
+     * @since 3.0.0
+     */
+    public String future(long atMost, TemporalUnit unit, Instant referenceDate, String pattern) {
         return formatInstant(future(atMost, unit, referenceDate), pattern);
     }
 
     /**
      * Generates a past date from now.
      */
-     public Instant past() {
-         long FIFTY_YEARS = TimeUnit.DAYS.toMillis(18262);
-         return past(faker.number().numberBetween(1, FIFTY_YEARS), MILLISECONDS);
+    public Instant past() {
+        long FIFTY_YEARS = TimeUnit.DAYS.toMillis(18262);
+        return past(faker.number().numberBetween(1, FIFTY_YEARS), ChronoUnit.MILLIS);
     }
 
     /**
@@ -130,8 +221,22 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param atMost at most this amount of time earlier from now exclusive.
      * @param unit   the time unit.
      * @return a past date from now.
+     * @deprecated since 3.0.0. Use {@link #past(long, TemporalUnit)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public Instant past(long atMost, TimeUnit unit) {
+        return past(atMost, unit.toChronoUnit());
+    }
+
+    /**
+     * Generates a past date from now.
+     *
+     * @param atMost at most this amount of time earlier from now exclusive.
+     * @param unit   the temporal unit, e.g. {@link ChronoUnit#DAYS}.
+     * @return a past date from now.
+     * @since 3.0.0
+     */
+    public Instant past(long atMost, TemporalUnit unit) {
         Instant aBitEarlierThanNow = Instant.now().minusMillis(1);
         return past(atMost, unit, aBitEarlierThanNow);
     }
@@ -143,8 +248,23 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit    the time unit.
      * @param pattern date time pattern to convert to string.
      * @return a string representation of a past date from now.
+     * @deprecated since 3.0.0. Use {@link #past(long, TemporalUnit, String)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public String past(long atMost, TimeUnit unit, String pattern) {
+        return past(atMost, unit.toChronoUnit(), pattern);
+    }
+
+    /**
+     * Generates a string representation of a past date from now.
+     *
+     * @param atMost  at most this amount of time earlier from now exclusive.
+     * @param unit    the temporal unit, e.g. {@link ChronoUnit#DAYS}.
+     * @param pattern date time pattern to convert to string.
+     * @return a string representation of a past date from now.
+     * @since 3.0.0
+     */
+    public String past(long atMost, TemporalUnit unit, String pattern) {
         return formatInstant(past(atMost, unit), pattern);
     }
 
@@ -155,9 +275,24 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param minimum the minimum amount of time in the past from now.
      * @param unit    the time unit.
      * @return a past date from now.
+     * @deprecated since 3.0.0. Use {@link #past(long, long, TemporalUnit)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public Instant past(long atMost, long minimum, TimeUnit unit) {
-        Instant minimumDate = Instant.now().minusMillis(unit.toMillis(minimum));
+        return past(atMost, minimum, unit.toChronoUnit());
+    }
+
+    /**
+     * Generates a past date from now, with a minimum time.
+     *
+     * @param atMost  at most this amount of time earlier from now exclusive.
+     * @param minimum the minimum amount of time in the past from now.
+     * @param unit    the temporal unit, e.g. {@link ChronoUnit#DAYS}.
+     * @return a past date from now, with a minimum time.
+     * @since 3.0.0
+     */
+    public Instant past(long atMost, long minimum, TemporalUnit unit) {
+        Instant minimumDate = Instant.now().atZone(ZoneId.systemDefault()).minus(minimum, unit).toInstant();
         return past(atMost - minimum, unit, minimumDate);
     }
 
@@ -169,8 +304,24 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit    the time unit.
      * @param pattern date time pattern to convert to string.
      * @return a string representation of a past date from now, with a minimum time.
+     * @deprecated since 3.0.0. Use {@link #past(long, long, TemporalUnit, String)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public String past(long atMost, long minimum, TimeUnit unit, String pattern) {
+        return past(atMost, minimum, unit.toChronoUnit(), pattern);
+    }
+
+    /**
+     * Generates and converts to string representation a past date from now, with a minimum time.
+     *
+     * @param atMost  at most this amount of time earlier from now exclusive.
+     * @param minimum the minimum amount of time in the past from now.
+     * @param unit    the temporal unit, e.g. {@link ChronoUnit#DAYS}.
+     * @param pattern date time pattern to convert to string.
+     * @return a string representation of a past date from now, with a minimum time.
+     * @since 3.0.0
+     */
+    public String past(long atMost, long minimum, TemporalUnit unit, String pattern) {
         return formatInstant(past(atMost, minimum, unit), pattern);
     }
 
@@ -181,12 +332,29 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param unit          the time unit.
      * @param referenceDate the past date relative to this date.
      * @return a past date relative to {@code referenceDate}.
+     * @deprecated since 3.0.0. Use {@link #past(long, TemporalUnit, Instant)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public Instant past(long atMost, TimeUnit unit, Instant referenceDate) {
-        long upperBoundMillis = unit.toMillis(atMost);
-        long pastMillis = referenceDate.toEpochMilli() - 1 - faker.random().nextLong(upperBoundMillis - 1);
+        return past(atMost, unit.toChronoUnit(), referenceDate);
+    }
+
+    /**
+     * Generates a past date relative to the {@code referenceDate}.
+     *
+     * @param atMost        at most this amount of time past to the {@code referenceDate} exclusive.
+     * @param unit          the temporal unit, e.g. {@link ChronoUnit#YEARS}.
+     * @param referenceDate the past date relative to this date.
+     * @return a past date relative to {@code referenceDate}.
+     * @since 3.0.0
+     */
+    public Instant past(long atMost, TemporalUnit unit, Instant referenceDate) {
+        Instant earliest = referenceDate.atZone(ZoneId.systemDefault()).minus(atMost, unit).toInstant();
+        long boundMillis = referenceDate.toEpochMilli() - earliest.toEpochMilli();
+        long pastMillis = referenceDate.toEpochMilli() - 1 - faker.random().nextLong(boundMillis - 1);
         return Instant.ofEpochMilli(pastMillis);
     }
+
     /**
      * Generates a string representation of a past date relative to the {@code referenceDate}.
      *
@@ -195,8 +363,24 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @param referenceDate the past date relative to this date.
      * @param pattern       date time pattern to convert to string.
      * @return a string representation of a past date relative to {@code referenceDate}.
+     * @deprecated since 3.0.0. Use {@link #past(long, TemporalUnit, Instant, String)} instead.
      */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public String past(long atMost, TimeUnit unit, Instant referenceDate, String pattern) {
+        return past(atMost, unit.toChronoUnit(), referenceDate, pattern);
+    }
+
+    /**
+     * Generates a string representation of a past date relative to the {@code referenceDate}.
+     *
+     * @param atMost        at most this amount of time past to the {@code referenceDate} exclusive.
+     * @param unit          the temporal unit, e.g. {@link ChronoUnit#YEARS}.
+     * @param referenceDate the past date relative to this date.
+     * @param pattern       date time pattern to convert to string.
+     * @return a string representation of a past date relative to {@code referenceDate}.
+     * @since 3.0.0
+     */
+    public String past(long atMost, TemporalUnit unit, Instant referenceDate, String pattern) {
         return formatInstant(past(atMost, unit, referenceDate), pattern);
     }
 
