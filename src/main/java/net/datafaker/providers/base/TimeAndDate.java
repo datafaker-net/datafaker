@@ -349,8 +349,10 @@ public class TimeAndDate extends AbstractProvider<BaseProviders> {
      * @since 3.0.0
      */
     public Instant past(long atMost, TemporalUnit unit, Instant referenceDate) {
-        Instant lowerBound = referenceDate.atZone(ZoneId.systemDefault()).minus(atMost, unit).toInstant();
-        return between(lowerBound, referenceDate);
+        Instant earliest = referenceDate.atZone(ZoneId.systemDefault()).minus(atMost, unit).toInstant();
+        long boundMillis = referenceDate.toEpochMilli() - earliest.toEpochMilli();
+        long pastMillis = referenceDate.toEpochMilli() - 1 - faker.random().nextLong(boundMillis - 1);
+        return Instant.ofEpochMilli(pastMillis);
     }
 
     /**
