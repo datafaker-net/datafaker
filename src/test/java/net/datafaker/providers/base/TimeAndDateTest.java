@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@SuppressWarnings("removal")
 class TimeAndDateTest {
     private final Faker faker = new Faker();
     private final TimeAndDate timeAndDate = faker.timeAndDate();
@@ -82,6 +84,68 @@ class TimeAndDateTest {
         Instant now = Instant.now();
         Instant past = timeAndDate.past(100, TimeUnit.SECONDS);
         assertThat(past.toEpochMilli()).isLessThan(now.toEpochMilli());
+    }
+
+    @RepeatedTest(100)
+    void testFutureDateWithBoundsTemporalUnit() {
+        Instant now = Instant.now();
+        Instant future = timeAndDate.future(1, ChronoUnit.SECONDS);
+        assertThat(future).isBetween(now, Instant.now().plusSeconds(1));
+    }
+
+    @RepeatedTest(100)
+    void testFutureDateWithBoundsInYears() {
+        Instant now = Instant.now();
+        Instant future = timeAndDate.future(10, ChronoUnit.YEARS);
+        Instant tenYearsLater = now.atZone(ZoneId.systemDefault()).plusYears(10).toInstant();
+        assertThat(future).isBetween(now, tenYearsLater);
+    }
+
+    @RepeatedTest(100)
+    void testFutureDateWithBoundsFromGivenMomentTemporalUnit() {
+        Instant moment = Instant.now().minus(10, ChronoUnit.DAYS);
+        Instant future = timeAndDate.future(15, MINUTES, moment);
+        assertThat(future).isBetween(moment, moment.plus(15, MINUTES));
+    }
+
+    @RepeatedTest(100)
+    void testFutureDateWithMinimumTemporalUnit() {
+        Instant now = Instant.now();
+        Instant future = timeAndDate.future(5, 4, ChronoUnit.SECONDS);
+        assertThat(future)
+            .isBetween(now.plusMillis(3500), now.plusMillis(5500));
+    }
+
+    @RepeatedTest(100)
+    void testPastDateWithBoundsTemporalUnit() {
+        Instant now = Instant.now();
+        Instant past = timeAndDate.past(100, ChronoUnit.SECONDS);
+        assertThat(past.toEpochMilli()).isLessThan(now.toEpochMilli());
+    }
+
+    @RepeatedTest(100)
+    void testPastDateWithBoundsInYears() {
+        Instant now = Instant.now();
+        Instant past = timeAndDate.past(10, ChronoUnit.YEARS);
+        Instant tenYearsEarlier = now.atZone(ZoneId.systemDefault()).minusYears(10).toInstant();
+        assertThat(past).isBetween(tenYearsEarlier, now);
+    }
+
+    @RepeatedTest(100)
+    void testPastDateWithMinimumTemporalUnit() {
+        final long now = System.currentTimeMillis();
+        Instant past = timeAndDate.past(5, 4, ChronoUnit.SECONDS);
+        assertThat(past.toEpochMilli()).isLessThan(now)
+            .isGreaterThan(now - 5500)
+            .isLessThan(now - 3500);
+    }
+
+    @RepeatedTest(100)
+    void testPastDateWithReferenceDateTemporalUnit() {
+        Instant now = Instant.now();
+        Instant past = timeAndDate.past(1, ChronoUnit.YEARS, now);
+        Instant oneYearEarlier = now.atZone(ZoneId.systemDefault()).minusYears(1).toInstant();
+        assertThat(past).isBetween(oneYearEarlier, now);
     }
 
     @RepeatedTest(100)
@@ -157,11 +221,28 @@ class TimeAndDateTest {
     }
 
     @Test
+    void futureWithMaskTemporalUnit() {
+        String pattern = "yyyy MM.dd mm:hh:ss";
+        assertValidDate(timeAndDate.future(1, ChronoUnit.HOURS, pattern), pattern);
+        assertValidDate(timeAndDate.future(20, 1, ChronoUnit.HOURS, pattern), pattern);
+        assertValidDate(timeAndDate.future(20, ChronoUnit.HOURS, Instant.now(), pattern), pattern);
+        assertValidDate(timeAndDate.future(2, ChronoUnit.YEARS, Instant.now(), pattern), pattern);
+    }
+
+    @Test
     void pastWithMask() {
         String pattern = "yyyy MM.dd mm:hh:ss";
         assertValidDate(timeAndDate.past(1, TimeUnit.DAYS, pattern), pattern);
         assertValidDate(timeAndDate.past(20, 1, TimeUnit.DAYS, pattern), pattern);
         assertValidDate(timeAndDate.past(1, TimeUnit.DAYS, Instant.now(), pattern), pattern);
+    }
+
+    @Test
+    void pastWithMaskTemporalUnit() {
+        String pattern = "yyyy MM.dd mm:hh:ss";
+        assertValidDate(timeAndDate.past(1, ChronoUnit.DAYS, pattern), pattern);
+        assertValidDate(timeAndDate.past(20, 1, ChronoUnit.DAYS, pattern), pattern);
+        assertValidDate(timeAndDate.past(1, ChronoUnit.YEARS, Instant.now(), pattern), pattern);
     }
 
     @Test
