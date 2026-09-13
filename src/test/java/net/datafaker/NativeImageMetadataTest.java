@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -25,22 +26,25 @@ class NativeImageMetadataTest {
             "org.mockito.",
             "org.opentest4j.",
             "org.slf4j.simple.");
+    /**
+     * Inner types of {@link net.datafaker.service.FakeValuesService} used for expression resolution.
+     * The tracing agent never records them because they are not accessed reflectively on a regular
+     * JVM, but native images still need them registered (see issue #1737).
+     */
+    private static final List<String> EXPRESSION_RESOLUTION_TYPES = List.of(
+            "net.datafaker.service.FakeValuesService$ConstantResolver",
+            "net.datafaker.service.FakeValuesService$MethodAndCoercedArgs",
+            "net.datafaker.service.FakeValuesService$MethodAndCoercedArgsResolver",
+            "net.datafaker.service.FakeValuesService$MethodResolver",
+            "net.datafaker.service.FakeValuesService$RegExpContext",
+            "net.datafaker.service.FakeValuesService$SafeFetchResolver",
+            "net.datafaker.service.FakeValuesService$ValueResolver");
 
     @Test
     void metadataContainsProductionEntriesOnly() throws IOException {
-        Assumptions.assumeFalse(Boolean.getBoolean("native.image.metadata.generation"));
+        Map<String, List<Map<String, Object>>> metadata = loadMetadata();
 
-        Path metadataFile = Path.of(System.getProperty("native.image.metadata", DEFAULT_METADATA));
-        Map<String, List<Map<String, Object>>> metadata;
-        try (InputStream input = Files.newInputStream(metadataFile)) {
-            metadata = new Yaml().load(input);
-        }
-
-        List<String> reflectionTypes = entries(metadata, "reflection").stream()
-                .map(entry -> entry.get("type"))
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .toList();
+        List<String> reflectionTypes = reflectionTypes(metadata);
 
         assertThat(reflectionTypes)
                 .noneMatch(type -> TEST_DEPENDENCY_PREFIXES.stream().anyMatch(type::startsWith));
@@ -61,6 +65,29 @@ class NativeImageMetadataTest {
                 .doesNotContain("com.intellij", "net.bytebuddy", "org.assertj", "org.junit", "org.mockito");
         assertThat(entries(metadata, "serialization").toString())
                 .doesNotContain("com.intellij", "net.bytebuddy", "org.assertj", "org.junit", "org.mockito");
+    }
+
+    @Test
+    void metadataRegistersExpressionResolutionTypes() throws IOException {
+        assertThat(new HashSet<>(reflectionTypes(loadMetadata())))
+                .containsAll(EXPRESSION_RESOLUTION_TYPES);
+    }
+
+    private static Map<String, List<Map<String, Object>>> loadMetadata() throws IOException {
+        Assumptions.assumeFalse(Boolean.getBoolean("native.image.metadata.generation"));
+
+        Path metadataFile = Path.of(System.getProperty("native.image.metadata", DEFAULT_METADATA));
+        try (InputStream input = Files.newInputStream(metadataFile)) {
+            return new Yaml().load(input);
+        }
+    }
+
+    private static List<String> reflectionTypes(Map<String, List<Map<String, Object>>> metadata) {
+        return entries(metadata, "reflection").stream()
+                .map(entry -> entry.get("type"))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .toList();
     }
 
     private static List<Map<String, Object>> entries(
