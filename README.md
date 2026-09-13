@@ -593,8 +593,10 @@ installation and run:
 
 The generator requires `jq`. It filters test runners and test dependencies while tracing, includes resources shipped
 by Datafaker and its runtime dependencies, writes to `target` first, and only replaces the published metadata after
-`NativeImageMetadataTest` validates it. If you encounter unexpected native image behaviour, feel free to report an
-issue.
+`NativeImageMetadataTest` validates it. Types that have to be reflectively reachable in a native image but are never
+accessed reflectively during a regular test run (and are therefore invisible to the tracing agent) can be added to
+`scripts/reachability-metadata-manual.json`, which is merged into the generated metadata. If you encounter unexpected
+native image behaviour, feel free to report an issue.
 
 An example usage of this can be found here: https://github.com/datafaker-net/datafaker-native-demo
 
