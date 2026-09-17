@@ -69,8 +69,17 @@ class NativeImageMetadataTest {
 
     @Test
     void metadataRegistersExpressionResolutionTypes() throws IOException {
-        assertThat(new HashSet<>(reflectionTypes(loadMetadata())))
+        Map<String, List<Map<String, Object>>> metadata = loadMetadata();
+
+        assertThat(new HashSet<>(reflectionTypes(metadata)))
                 .containsAll(EXPRESSION_RESOLUTION_TYPES);
+
+        assertThat(entries(metadata, "reflection"))
+                .filteredOn(entry -> EXPRESSION_RESOLUTION_TYPES.contains(entry.get("type")))
+                .allSatisfy(entry -> assertThat(entry)
+                        .containsEntry("allDeclaredConstructors", true)
+                        .containsEntry("allDeclaredMethods", true)
+                        .containsEntry("allDeclaredFields", true));
     }
 
     private static Map<String, List<Map<String, Object>>> loadMetadata() throws IOException {
