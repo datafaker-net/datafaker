@@ -125,9 +125,11 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         } else if (value instanceof Integer
                 || value instanceof Long
                 || value instanceof Short
+                || value instanceof Byte
                 || value instanceof BigInteger
                 || value instanceof Boolean
                 || value instanceof Double
+                || (value instanceof Float floatValue && Float.isFinite(floatValue))
                 || value instanceof BigDecimal) {
             sb.append(value);
         } else {
