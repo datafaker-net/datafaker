@@ -128,7 +128,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
                 || value instanceof Byte
                 || value instanceof BigInteger
                 || value instanceof Boolean
-                || value instanceof Double
+                || value instanceof Double doubleValue && Double.isFinite(doubleValue)
                 || (value instanceof Float floatValue && Float.isFinite(floatValue))
                 || value instanceof BigDecimal) {
             sb.append(value);
