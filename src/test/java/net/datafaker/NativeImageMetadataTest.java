@@ -8,9 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,7 +45,7 @@ class NativeImageMetadataTest {
     void metadataContainsProductionEntriesOnly() throws IOException {
         Map<String, List<Map<String, Object>>> metadata = loadMetadata();
 
-        List<String> reflectionTypes = reflectionTypes(metadata);
+        Set<String> reflectionTypes = reflectionTypes(metadata);
 
         assertThat(reflectionTypes)
                 .noneMatch(type -> TEST_DEPENDENCY_PREFIXES.stream().anyMatch(type::startsWith));
@@ -71,7 +72,7 @@ class NativeImageMetadataTest {
     void metadataRegistersExpressionResolutionTypes() throws IOException {
         Map<String, List<Map<String, Object>>> metadata = loadMetadata();
 
-        assertThat(new HashSet<>(reflectionTypes(metadata)))
+        assertThat(reflectionTypes(metadata))
                 .containsAll(EXPRESSION_RESOLUTION_TYPES);
 
         assertThat(entries(metadata, "reflection"))
@@ -91,12 +92,12 @@ class NativeImageMetadataTest {
         }
     }
 
-    private static List<String> reflectionTypes(Map<String, List<Map<String, Object>>> metadata) {
+    private static Set<String> reflectionTypes(Map<String, List<Map<String, Object>>> metadata) {
         return entries(metadata, "reflection").stream()
                 .map(entry -> entry.get("type"))
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     private static List<Map<String, Object>> entries(
