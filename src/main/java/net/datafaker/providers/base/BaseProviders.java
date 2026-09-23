@@ -160,6 +160,8 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Currency.class, Currency::new);
     }
 
+    default Database database() { return getProvider(Database.class, Database::new); }
+
     /**
      * @deprecated Use {@link #timeAndDate()} instead.
      */

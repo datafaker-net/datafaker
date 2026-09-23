@@ -316,6 +316,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Cricket
 * Crypto
 * Currency
+* Database
 * Date and Time
 * DC Comics
 * Demographic
