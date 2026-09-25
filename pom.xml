@@ -57,7 +57,7 @@
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <versions-maven-plugin.version>2.22.0</versions-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
-        <slf4j.version>2.0.19</slf4j.version>
+        <slf4j.version>2.0.20</slf4j.version>
         <javaparser.version>3.28.2</javaparser.version>
         <snakeyaml.version>2.7</snakeyaml.version>
         <spotless-maven-plugin.version>3.10.2</spotless-maven-plugin.version>
