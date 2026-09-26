@@ -7,6 +7,7 @@ generated_filter="$project_dir/target/native-image-test-classes-filter.json"
 generated_metadata="$project_dir/target/native-image-agent/reachability-metadata.json"
 runtime_classpath="$project_dir/target/native-image-runtime-classpath.txt"
 runtime_resources="$project_dir/target/native-image-runtime-resources.json"
+manual_metadata="$project_dir/scripts/reachability-metadata-manual.json"
 published_metadata="$project_dir/src/main/resources/META-INF/native-image/reachability-metadata.json"
 
 if [[ -z "${JAVA_HOME:-}" || ! -x "$JAVA_HOME/bin/native-image" ]]; then
@@ -73,6 +74,24 @@ jq --slurpfile runtimeResources "$runtime_resources" '
     | with_entries(select(.value | type != "array" or length > 0))
 ' "$generated_metadata" > "$generated_metadata.tmp"
 mv "$generated_metadata.tmp" "$generated_metadata"
+
+# The tracing agent only records types that are actually accessed reflectively while the
+# tests run on a regular JVM. Entries in the manual metadata file are merged in so types that
+# still have to be reflectively reachable in a native image (see #1737) are not lost on update.
+if [[ -f "$manual_metadata" ]]; then
+    jq --slurpfile manual "$manual_metadata" '
+        . as $generated
+        | reduce ($manual[0] | keys_unsorted[]) as $category ($generated;
+            .[$category] = (
+                [$manual[0][$category][], ($generated[$category] // [])[]]
+                | unique_by(.type // .glob // .bundle // .name // tostring)
+            )
+        )
+        | if has("reflection") then .reflection |= sort_by(.type) else . end
+        | with_entries(select(.value | type != "array" or length > 0))
+    ' "$generated_metadata" > "$generated_metadata.tmp"
+    mv "$generated_metadata.tmp" "$generated_metadata"
+fi
 
 ./mvnw -PnoGpg -Djacoco.skip=true -Dtest=NativeImageMetadataTest \
     -Dnative.image.metadata="$generated_metadata" test
