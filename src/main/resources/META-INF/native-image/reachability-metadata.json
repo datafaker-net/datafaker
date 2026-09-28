@@ -2070,6 +2070,48 @@
       "type": "net.datafaker.service.FakeValuesService"
     },
     {
+      "type": "net.datafaker.service.FakeValuesService$ConstantResolver",
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true,
+      "allDeclaredFields": true
+    },
+    {
+      "type": "net.datafaker.service.FakeValuesService$MethodAndCoercedArgs",
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true,
+      "allDeclaredFields": true
+    },
+    {
+      "type": "net.datafaker.service.FakeValuesService$MethodAndCoercedArgsResolver",
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true,
+      "allDeclaredFields": true
+    },
+    {
+      "type": "net.datafaker.service.FakeValuesService$MethodResolver",
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true,
+      "allDeclaredFields": true
+    },
+    {
+      "type": "net.datafaker.service.FakeValuesService$RegExpContext",
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true,
+      "allDeclaredFields": true
+    },
+    {
+      "type": "net.datafaker.service.FakeValuesService$SafeFetchResolver",
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true,
+      "allDeclaredFields": true
+    },
+    {
+      "type": "net.datafaker.service.FakeValuesService$ValueResolver",
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true,
+      "allDeclaredFields": true
+    },
+    {
       "type": "net.datafaker.service.RandomService"
     },
     {
