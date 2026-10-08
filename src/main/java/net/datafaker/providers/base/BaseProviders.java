@@ -11,6 +11,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(Address.class, Address::new);
     }
 
+    default Adjective adjective() {
+        return getProvider(Adjective.class, Adjective::new);
+    }
+
     default Ancient ancient() {
         return getProvider(Ancient.class, Ancient::new);
     }
