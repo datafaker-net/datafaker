@@ -34,13 +34,16 @@ class StockTest extends BaseFakerTest {
 
     @RepeatedTest(10)
     void nsdqSymbol() {
-        assertThat(faker.stock().nsdqSymbol()).matches("[A-Z.-]+");
+        assertThat(faker.stock().nsdqSymbol()).matches("[A-Z. -]+");
     }
 
     @RepeatedTest(10)
-    @SuppressWarnings("removal")
     void nyseTicker() {
-        assertThat(faker.stock().nyseSymbol()).matches("[A-Z.-^]+");
+        assertThat(faker.stock().nyseSymbol()).matches("[A-Z.-^$` ]+");
     }
 
+    @RepeatedTest(10)
+    void exchanges() {
+        assertThat(faker.stock().exchanges()).matches("[A-Z\\- ]+");
+    }
 }

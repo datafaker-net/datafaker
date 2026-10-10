@@ -1,43 +1,38 @@
 package net.datafaker.providers.base;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import fr.marcwrobel.jbanking.bic.Bic;
 import fr.marcwrobel.jbanking.checkdigit.IbanCheckDigit;
 import fr.marcwrobel.jbanking.iban.BbanStructure;
 import fr.marcwrobel.jbanking.iban.Iban;
 import net.datafaker.providers.base.Finance.CreditCardType;
 import org.apache.commons.validator.routines.CreditCardValidator;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import java.util.Collection;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class FinanceTest extends BaseFakerTest {
+import static java.util.Objects.requireNonNullElse;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class FinanceTest {
 
     private static final Set<String> JBANKING_SUPPORTED_COUNTRY_CODES = Arrays.stream(BbanStructure.values())
         .map(Enum::name)
         .collect(Collectors.toUnmodifiableSet());
     private static final CreditCardValidator CREDIT_CARD_VALIDATOR = CreditCardValidator.genericCreditCardValidator();
 
+    private final BaseFaker faker = new BaseFaker();
     private final Finance finance = faker.finance();
 
     @RepeatedTest(100)
     void creditCard() {
         assertThatCreditCardIsValid(finance.creditCard().replace("-", ""), null, CREDIT_CARD_VALIDATOR);
-    }
-
-    @Override
-    @SuppressWarnings("removal")
-    protected Collection<TestSpec> providerListTest() {
-        return List.of(TestSpec.of(finance::stockMarket, "finance.stock_market"));
     }
 
     @RepeatedTest(100)
@@ -146,12 +141,12 @@ class FinanceTest extends BaseFakerTest {
      * @param type the expected card type, or {@code null} if unspecified
      * @param creditCardValidator the validator instance used for verification
      */
-    private void assertThatCreditCardIsValid(String creditCard, CreditCardType type, CreditCardValidator creditCardValidator) {
+    private void assertThatCreditCardIsValid(String creditCard, @Nullable CreditCardType type, CreditCardValidator creditCardValidator) {
         assertThat(creditCard)
             .satisfies(cc -> {
                 assertThat(creditCardValidator.isValid(cc))
                     .as("Credit card %s (%s) should be valid according to %s",
-                        cc, Objects.requireNonNullElse(type, "unspecified"), creditCardValidator.getClass().getName())
+                        cc, requireNonNullElse(type, "unspecified"), creditCardValidator.getClass().getName())
                     .isTrue();
             });
     }
