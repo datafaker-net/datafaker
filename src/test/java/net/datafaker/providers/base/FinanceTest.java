@@ -34,12 +34,6 @@ class FinanceTest extends BaseFakerTest {
         assertThatCreditCardIsValid(finance.creditCard().replace("-", ""), null, CREDIT_CARD_VALIDATOR);
     }
 
-    @RepeatedTest(10)
-    @SuppressWarnings("removal")
-    void nyseTicker() {
-        assertThat(finance.nyseTicker()).matches("[A-Z.-]+");
-    }
-
     @Override
     @SuppressWarnings("removal")
     protected Collection<TestSpec> providerListTest() {

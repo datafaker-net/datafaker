@@ -34,14 +34,6 @@ public class Finance extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @deprecated since 2.2.0. For removal in 3.0.0 version. Use {@link Stock#nyseSymbol} instead.
-     */
-    @Deprecated(since = "2.2.0", forRemoval = true)
-    public String nyseTicker() {
-        return resolve("finance.ticker.nyse");
-    }
-
-    /**
      * @deprecated since 2.2.0. For removal in 3.0.0 version. Use {@link Stock#exchanges} instead.
      */
     @Deprecated(since = "2.2.0", forRemoval = true)
