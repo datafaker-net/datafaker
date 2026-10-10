@@ -36,12 +36,6 @@ class FinanceTest extends BaseFakerTest {
 
     @RepeatedTest(10)
     @SuppressWarnings("removal")
-    void nasdaqTicker() {
-        assertThat(finance.nasdaqTicker()).matches("[A-Z.-]+");
-    }
-
-    @RepeatedTest(10)
-    @SuppressWarnings("removal")
     void nyseTicker() {
         assertThat(finance.nyseTicker()).matches("[A-Z.-]+");
     }
