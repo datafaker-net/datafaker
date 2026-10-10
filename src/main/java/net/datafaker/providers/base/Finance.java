@@ -33,14 +33,6 @@ public class Finance extends AbstractProvider<BaseProviders> {
         super(faker);
     }
 
-    /**
-     * @deprecated since 2.2.0. For removal in 3.0.0 version. Use {@link Stock#exchanges} instead.
-     */
-    @Deprecated(since = "2.2.0", forRemoval = true)
-    public String stockMarket() {
-        return resolve("finance.stock_market");
-    }
-
     private static final Map<String, String> countryCodeToBasicBankAccountNumberPattern =
         createCountryCodeToBasicBankAccountNumberPatternMap();
 
