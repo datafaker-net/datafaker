@@ -25,10 +25,4 @@ class MexicanIdNumberTest {
     void invalid() {
         assertThat(idNumber.invalid()).matches(REGEX);
     }
-
-    @RepeatedTest(100)
-    @SuppressWarnings("deprecation")
-    void invalidEsMXSsn() {
-        assertThat(idNumber.invalidEsMXSsn()).matches(REGEX);
-    }
 }
