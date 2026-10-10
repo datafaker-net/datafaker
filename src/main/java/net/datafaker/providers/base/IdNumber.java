@@ -168,22 +168,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return An invalid Mexican CURP
-     *
-     * @deprecated Instead of calling this method directly, use faker with locale:
-     * <pre>
-     * {@code
-     *   Faker faker = new Faker(new Locale("es", "MX"));
-     *   String idNumber = faker.idNumber().invalid();
-     * }
-     * </pre>
-     */
-    @Deprecated
-    public String invalidEsMXSsn() {
-        return provider(MexicanIdNumber.class).generateInvalid(faker);
-    }
-
-    /**
      * Generates a valid PESEL number for a person of random gender and age between
      * 0 and 100.
      *
