@@ -37,4 +37,10 @@ class StockTest extends BaseFakerTest {
         assertThat(faker.stock().nsdqSymbol()).matches("[A-Z.-]+");
     }
 
+    @RepeatedTest(10)
+    @SuppressWarnings("removal")
+    void nyseTicker() {
+        assertThat(faker.stock().nyseSymbol()).matches("[A-Z.-^]+");
+    }
+
 }
