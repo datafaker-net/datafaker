@@ -32,4 +32,9 @@ class StockTest extends BaseFakerTest {
             .isTrue());
     }
 
+    @RepeatedTest(10)
+    void nsdqSymbol() {
+        assertThat(faker.stock().nsdqSymbol()).matches("[A-Z.-]+");
+    }
+
 }
