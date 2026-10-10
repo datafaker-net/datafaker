@@ -168,22 +168,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return A valid Mexican CURP
-     *
-     * @deprecated Instead of calling this method directly, use faker with locale:
-     * <pre>
-     * {@code
-     *   Faker faker = new Faker(new Locale("es", "MX"));
-     *   String idNumber = faker.idNumber().valid();
-     * }
-     * </pre>
-     */
-    @Deprecated
-    public String validEsMXSsn() {
-        return provider(MexicanIdNumber.class).get(faker);
-    }
-
-    /**
      * @return An invalid Mexican CURP
      *
      * @deprecated Instead of calling this method directly, use faker with locale:
