@@ -1110,9 +1110,6 @@
       "type": "net.datafaker.providers.base.CultureSeries"
     },
     {
-      "type": "net.datafaker.providers.base.Currency"
-    },
-    {
       "type": "net.datafaker.providers.base.DateAndTime",
       "methods": [
         {
