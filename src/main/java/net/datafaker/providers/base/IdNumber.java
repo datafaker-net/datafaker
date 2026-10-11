@@ -2,7 +2,6 @@ package net.datafaker.providers.base;
 
 import net.datafaker.idnumbers.AmericanIdNumber;
 import net.datafaker.idnumbers.IdNumberGenerator;
-import net.datafaker.idnumbers.PortugueseIdNumber;
 import net.datafaker.idnumbers.SingaporeIdNumber;
 import net.datafaker.idnumbers.SingaporeIdNumber.Type;
 
@@ -82,27 +81,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     public String singaporeanUinBefore2000() {
         return SingaporeIdNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTIETH_CENTURY);
-    }
-
-    /**
-     * Generate a valid Portuguese ID number
-     *
-     * @deprecated Instead of calling this method directly, use faker with locale:
-     * <pre>
-     * {@code
-     *   Faker faker = new Faker(new Locale("pt", "PT"));
-     *   String idNumber = faker.idNumber().valid();
-     * }
-     * </pre>
-     */
-    @Deprecated
-    public String validPtNif() {
-        return provider(PortugueseIdNumber.class).generateValid(faker);
-    }
-
-    @Deprecated
-    public String invalidPtNif() {
-        return provider(PortugueseIdNumber.class).generateInvalid(faker);
     }
 
     /**
