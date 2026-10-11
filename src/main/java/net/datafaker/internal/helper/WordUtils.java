@@ -8,7 +8,7 @@ public class WordUtils {
      * @deprecated Use {@link #capitalizeWord(String)} instead -
      *      it doesn't accept nulls, and doesn't return nulls.
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated(since = "3.0.0", forRemoval = true)
     @Nullable
     @SuppressWarnings("DeprecatedIsStillUsed")
     public static String capitalize(@Nullable String input) {
@@ -16,7 +16,7 @@ public class WordUtils {
         return capitalizeWord(input);
     }
 
-    @Deprecated(forRemoval = true)
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public static String capitalizeWords(String input) {
         return capitalizeWord(input);
     }
