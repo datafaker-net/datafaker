@@ -20,29 +20,19 @@ class AviationTest extends BaseFakerTest {
     private final Aviation aviation = faker.aviation();
 
     @Test
-    @SuppressWarnings("deprecation")
     void flight_ICAO() {
         assertThat(aviation.flight(ICAO)).matches(FLIGHT_ICAO_CODE);
-        assertThat(aviation.flight("ICAO")).matches(FLIGHT_ICAO_CODE);
-        assertThat(aviation.flight("icao")).matches(FLIGHT_ICAO_CODE);
-        assertThat(aviation.flight("Icao")).matches(FLIGHT_ICAO_CODE);
-        assertThat(aviation.flight("IcaO")).matches(FLIGHT_ICAO_CODE);
     }
 
     @Test
-    @SuppressWarnings({"deprecation", "DataFlowIssue"})
     void flight_IATA() {
         assertThat(aviation.flight(IATA)).matches(FLIGHT_IATA_CODE);
-        assertThat(aviation.flight("IATA")).matches(FLIGHT_IATA_CODE);
-        assertThat(aviation.flight("iata")).matches(FLIGHT_IATA_CODE);
-        assertThat(aviation.flight("test")).matches(FLIGHT_IATA_CODE);
-        assertThat(aviation.flight((String) null)).matches(FLIGHT_IATA_CODE);
     }
 
     @Test
     @SuppressWarnings("DataFlowIssue")
     void flight_nullCodeNotAllowed() {
-        assertThatThrownBy(() -> aviation.flight((AviationCodeType) null))
+        assertThatThrownBy(() -> aviation.flight(null))
             .isInstanceOf(NullPointerException.class);
     }
 

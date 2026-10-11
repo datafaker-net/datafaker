@@ -3,7 +3,6 @@ package net.datafaker.providers.base;
 import java.util.List;
 
 import static net.datafaker.providers.base.AviationCodeType.IATA;
-import static net.datafaker.providers.base.AviationCodeType.ICAO;
 
 /**
  * Generates aviation related strings.
@@ -119,18 +118,6 @@ public class Aviation extends AbstractProvider<BaseProviders> {
      */
     public String engineType() {
         return resolve("aviation.engine_type");
-    }
-
-    /**
-     * @deprecated use {@link #flight(AviationCodeType)} instead
-     */
-    @Deprecated
-    public String flight(String type) {
-        if ("ICAO".equalsIgnoreCase(type)) {
-            return flight(ICAO);
-        } else {
-            return flight(IATA);
-        }
     }
 
     /**
