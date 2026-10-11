@@ -72,18 +72,6 @@ public class Name extends AbstractProvider<BaseProviders> {
 
     /**
      * Returns a random male 'given' name.
-     * @deprecated Use {@link #maleFirstName()} instead.
-     *
-     * @return a male 'given' name
-     */
-    @Deprecated(since = "2.4.3", forRemoval = true)
-    @SuppressWarnings("SpellCheckingInspection")
-    public String malefirstName() {
-        return maleFirstName();
-    }
-
-    /**
-     * Returns a random male 'given' name.
      *
      * @return a male 'given' name
      */
