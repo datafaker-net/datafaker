@@ -41020,10 +41020,6 @@ _US:
         '82723': [Weston]
         '82730': [Weston]
 
-    id_number:
-      valid: "#{IDNumber.ssn_valid}"
-      invalid: ['000-##-####', '###-00-####', '###-##-0000', '666-##-####', '9##-##-####']
-
     medical:
       diagnosis_code:
         icd10: "[A-TV-Z][0-9][0-9AB](\\.[0-9A-TV-Z]{1,4})?"

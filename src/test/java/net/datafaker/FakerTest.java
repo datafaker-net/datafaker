@@ -155,6 +155,8 @@ class FakerTest {
 
     @Test
     void expression() {
+        assertThat(faker.expression("#{id_number.valid}")).matches("\\d{3}-\\d{2}-\\d{4}");
+        assertThat(faker.expression("#{id_number.invalid}")).matches("\\d{3}-\\d{2}-\\d{4}");
         assertThat(faker.expression("#{options.option 'a','b','c','d'}")).matches("([abcd])");
         assertThat(faker.expression("#{options.option 'single'}")).isEqualTo("single");
         assertThat(faker.expression("#{options.option '12','345','89','54321'}")).matches("(12|345|89|54321)");

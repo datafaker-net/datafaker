@@ -48,11 +48,13 @@ class IdNumberTest {
     @Test
     void testValid() {
         assertThat(faker.idNumber().valid()).matches("[0-8]\\d{2}-\\d{2}-\\d{4}");
+        assertThat(faker.expression("#{id_number.valid}")).matches("[0-8]\\d{2}-\\d{2}-\\d{4}");
     }
 
     @Test
     void testInvalid() {
         assertThat(faker.idNumber().invalid()).matches("[0-9]\\d{2}-\\d{2}-\\d{4}");
+        assertThat(faker.expression("#{id_number.invalid}")).matches("[0-9]\\d{2}-\\d{2}-\\d{4}");
     }
 
     @RepeatedTest(100)
@@ -70,8 +72,15 @@ class IdNumberTest {
     }
 
     @RepeatedTest(100)
-    void testValidSwedishSsn() {
+    void validSwedishSsn() {
         String actual = SWEDISH.idNumber().valid();
+        assertThat(actual).matches(IdNumberPatterns.SWEDISH);
+        assertThat(SwedenIdNumber.isValidSwedishSsn(actual)).isTrue();
+    }
+
+    @Test
+    void validSwedishSsn_withExpression() {
+        String actual = SWEDISH.expression("#{id_number.valid}");
         assertThat(actual).matches(IdNumberPatterns.SWEDISH);
         assertThat(SwedenIdNumber.isValidSwedishSsn(actual)).isTrue();
     }
@@ -79,6 +88,13 @@ class IdNumberTest {
     @RepeatedTest(100)
     void testInvalidSwedishSsn() {
         String actual = SWEDISH.idNumber().invalid();
+        assertThat(actual).matches(IdNumberPatterns.SWEDISH);
+        assertThat(SwedenIdNumber.isValidSwedishSsn(actual)).isFalse();
+    }
+
+    @Test
+    void invalidSwedishSsn_withExpression() {
+        String actual = SWEDISH.expression("#{id_number.invalid}");
         assertThat(actual).matches(IdNumberPatterns.SWEDISH);
         assertThat(SwedenIdNumber.isValidSwedishSsn(actual)).isFalse();
     }
@@ -123,16 +139,25 @@ class IdNumberTest {
     @RepeatedTest(100)
     void estonianPersonalCode_valid() {
         assertThatPin(ESTONIAN.idNumber().valid()).matches(IdNumberPatterns.ESTONIAN);
+        assertThatPin(ESTONIAN.expression("#{id_number.valid}")).matches(IdNumberPatterns.ESTONIAN);
     }
 
     @RepeatedTest(100)
     void estonianPersonalCode_invalid() {
         assertThatPin(ESTONIAN.idNumber().invalid()).matches(IdNumberPatterns.ESTONIAN);
+        assertThatPin(ESTONIAN.expression("#{id_number.invalid}")).matches(IdNumberPatterns.ESTONIAN);
     }
 
     @RepeatedTest(100)
     void brazilianPersonalCode_valid() {
         String actual = BRAZILIAN.idNumber().valid();
+        assertThatPin(actual).matches(IdNumberPatterns.BRAZILIAN);
+        assertThat(isCPFValid(actual)).describedAs(() -> "Current value " + actual).isTrue();
+    }
+
+    @Test
+    void brazilianPersonalCode_withExpression() {
+        String actual = BRAZILIAN.expression("#{id_number.valid}");
         assertThatPin(actual).matches(IdNumberPatterns.BRAZILIAN);
         assertThat(isCPFValid(actual)).describedAs(() -> "Current value " + actual).isTrue();
     }

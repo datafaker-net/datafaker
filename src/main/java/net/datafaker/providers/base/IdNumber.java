@@ -30,13 +30,13 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     public String valid() {
         return countryProvider()
             .map(p -> p.generateValid(faker))
-            .orElseGet(() -> faker.numerify(faker.resolve("id_number.valid")));
+            .orElseGet(() -> ssnValid());
     }
 
     public String invalid() {
         return countryProvider()
             .map(p -> p.generateInvalid(faker))
-            .orElseGet(() -> faker.numerify(faker.resolve("id_number.invalid")));
+            .orElseGet(() -> ssnInvalid());
     }
 
     public PersonIdNumber valid(IdNumberRequest request) {
@@ -67,6 +67,10 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
         return provider(AmericanIdNumber.class).generateValid(faker);
     }
 
+    private String ssnInvalid() {
+        return provider(AmericanIdNumber.class).generateInvalid(faker);
+    }
+
     public String singaporeanFin() {
         return SingaporeIdNumber.getValidFIN(faker, Type.FOREIGNER_TWENTY_FIRST_CENTURY);
     }
@@ -83,23 +87,7 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
         return SingaporeIdNumber.getValidFIN(faker, Type.SINGAPOREAN_TWENTIETH_CENTURY);
     }
 
-    /**
-     * Generates valid ID number for Georgian citizens and Residents
-     *
-     * @deprecated Instead of calling this method directly, use faker with locale:
-     * <pre>
-     * {@code
-     *   Faker f = new Faker(new Locale("en", "GE"));
-     *   String idNumber = f.idNumber().valid();
-     * }
-     * </pre>
-     */
-    @Deprecated
-    public String validGeIDNumber() {
-    	return faker.numerify("###########");
-    }
-
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "SameParameterValue"})
     private <T extends IdNumberGenerator> T provider(Class<T> clazz) {
         return (T) providers.computeIfAbsent(clazz, aClass -> create(clazz));
     }
