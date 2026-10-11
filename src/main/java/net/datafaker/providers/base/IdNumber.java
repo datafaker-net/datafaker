@@ -6,7 +6,6 @@ import net.datafaker.idnumbers.IdNumberGenerator;
 import net.datafaker.idnumbers.PortugueseIdNumber;
 import net.datafaker.idnumbers.SingaporeIdNumber;
 import net.datafaker.idnumbers.SingaporeIdNumber.Type;
-import net.datafaker.idnumbers.SouthKoreanIdNumber;
 import net.datafaker.idnumbers.SwedenIdNumber;
 
 import java.lang.reflect.InvocationTargetException;
@@ -141,24 +140,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
     @Deprecated
     public String invalidPtNif() {
         return provider(PortugueseIdNumber.class).generateInvalid(faker);
-    }
-
-    /**
-     * Generates a valid RRN (Resident Registration Number) for a person of random binary gender and default random age
-     *
-     * @return A valid RRN
-     * @since 1.8.0
-     * @deprecated Instead of calling this method directly, use faker with locale:
-     * <pre>
-     * {@code
-     *   Faker f = new Faker(new Locale("en", "KR"));
-     *   String rrn = f.idNumber().valid();
-     * }
-     * </pre>
-     */
-    @Deprecated
-    public String validKoKrRrn() {
-        return provider(SouthKoreanIdNumber.class).getValidRrn(faker);
     }
 
     /**
