@@ -6,7 +6,6 @@ import net.datafaker.idnumbers.IdNumberGenerator;
 import net.datafaker.idnumbers.PortugueseIdNumber;
 import net.datafaker.idnumbers.SingaporeIdNumber;
 import net.datafaker.idnumbers.SingaporeIdNumber.Type;
-import net.datafaker.idnumbers.SwedenIdNumber;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -68,25 +67,6 @@ public class IdNumber extends AbstractProvider<BaseProviders> {
 
     public String ssnValid() {
         return provider(AmericanIdNumber.class).generateValid(faker);
-    }
-
-    /**
-     * @deprecated Instead of calling this method directly, use faker with locale:
-     * <pre>
-     * {@code
-     *   Faker faker = new Faker(new Locale("sv", "SE"));
-     *   String idNumber = faker.idNumber().valid();
-     * }
-     * </pre>
-     */
-    @Deprecated
-    public String validSvSeSsn() {
-        return provider(SwedenIdNumber.class).generateValid(faker);
-    }
-
-    @Deprecated
-    public String invalidSvSeSsn() {
-        return provider(SwedenIdNumber.class).generateInvalid(faker);
     }
 
     public String singaporeanFin() {
