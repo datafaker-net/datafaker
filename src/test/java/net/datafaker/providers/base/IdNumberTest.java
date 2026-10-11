@@ -43,6 +43,7 @@ class IdNumberTest {
     private static final Faker BRAZILIAN = new Faker(new Locale("pt", "BR"));
     private static final Faker NORWEGIAN = new Faker(new Locale("no", "NO"));
     private static final Faker SPANISH = new Faker(new Locale("es", "ES"));
+    private static final Faker POLISH = new Faker(new Locale("pl", "PL"));
 
     @Test
     void testValid() {
@@ -115,9 +116,8 @@ class IdNumberTest {
     }
 
     @RepeatedTest(100)
-    @SuppressWarnings("deprecation")
     void testPeselNumber() {
-        assertThat(faker.idNumber().peselNumber()).matches("[0-9]{11}");
+        assertThat(POLISH.idNumber().valid()).matches("[0-9]{11}");
     }
 
     @RepeatedTest(100)

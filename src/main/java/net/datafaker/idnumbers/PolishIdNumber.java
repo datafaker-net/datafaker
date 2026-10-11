@@ -1,18 +1,15 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.providers.base.BaseProviders;
-import net.datafaker.providers.base.IdNumber.GenderRequest;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
-import org.jspecify.annotations.Nullable;
+import net.datafaker.providers.base.PersonIdNumber.Gender;
 
 import java.time.LocalDate;
 
 import static net.datafaker.idnumbers.Utils.birthday;
 import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.randomGender;
-import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
-import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
 
 /**
  * Implementation based on the definition at
@@ -28,41 +25,14 @@ public class PolishIdNumber implements IdNumberGenerator {
         return "PL";
     }
 
-    /**
-     * @deprecated Use {@link GenderRequest} instead
-     */
-    @Deprecated
-    public enum Gender {
-        MALE, FEMALE, ANY
-    }
-
     @Override
     public PersonIdNumber generateValid(BaseProviders faker, IdNumberRequest request) {
         LocalDate birthday = birthday(faker, request);
-        PersonIdNumber.Gender gender = gender(faker, request);
+        Gender gender = gender(faker, request);
         return new PersonIdNumber(get(faker, birthday, gender), birthday, gender);
     }
 
-    /**
-     * @param requestedGender nullable
-     * @deprecated Use {@link #generateValid(BaseProviders, IdNumberRequest)} instead
-     */
-    @Deprecated
-    public String get(BaseProviders faker, LocalDate birthDate, Gender requestedGender) {
-        PersonIdNumber.Gender gender = pickGender(faker, requestedGender);
-        return get(faker, birthDate, gender);
-    }
-
-    private static PersonIdNumber.Gender pickGender(BaseProviders faker, @Nullable Gender requestedGender) {
-        return requestedGender == null ? randomGender(faker) :
-            switch (requestedGender) {
-                case ANY -> randomGender(faker);
-                case MALE -> MALE;
-                case FEMALE -> FEMALE;
-            };
-    }
-
-    private String get(BaseProviders faker, LocalDate birthDate, PersonIdNumber.Gender gender) {
+    String get(BaseProviders faker, LocalDate birthDate, Gender gender) {
         int[] digits = generateDigits(faker, birthDate, gender);
         int controlDigit = getControlDigit(digits);
         return toString(digits, controlDigit);
@@ -70,14 +40,14 @@ public class PolishIdNumber implements IdNumberGenerator {
 
     @Override
     public String generateInvalid(BaseProviders faker) {
-        PersonIdNumber.Gender gender = randomGender(faker);
+        Gender gender = randomGender(faker);
         int[] digits = generateDigits(faker, faker.timeAndDate().birthday(), gender);
         int controlDigit = getControlDigit(digits);
         int invalidControlDigit = (controlDigit + 1) % 10;
         return toString(digits, invalidControlDigit);
     }
 
-    private int[] generateDigits(BaseProviders faker, LocalDate birthDate, PersonIdNumber.Gender gender) {
+    private int[] generateDigits(BaseProviders faker, LocalDate birthDate, Gender gender) {
         int monthEncoded = getMonthEncoded(birthDate.getYear(), birthDate.getMonthValue());
         return new int[]{
             birthDate.getYear() / 10 % 10,
@@ -116,7 +86,7 @@ public class PolishIdNumber implements IdNumberGenerator {
         return (10 - sum % 10) % 10;
     }
 
-    private int getGenderDigit(BaseProviders faker, PersonIdNumber.Gender gender) {
+    private int getGenderDigit(BaseProviders faker, Gender gender) {
         return switch (gender) {
             case FEMALE -> faker.random().nextInt(5) * 2;
             case MALE -> faker.random().nextInt(5) * 2 + 1;
@@ -124,22 +94,24 @@ public class PolishIdNumber implements IdNumberGenerator {
     }
 
     private int getMonthEncoded(int year, int month) {
-        final int monthModifier;
+        return month + monthModifier(year);
+    }
+
+    private int monthModifier(int year) {
         if (year < 1800) {
             throw new IllegalArgumentException("Year is before 1800: " + year);
         } else if (year < 1900) {
-            monthModifier = 80;
+            return 80;
         } else if (year < 2000) {
-            monthModifier = 0;
+            return 0;
         } else if (year < 2100) {
-            monthModifier = 20;
+            return 20;
         } else if (year < 2200) {
-            monthModifier = 40;
+            return 40;
         } else if (year < 2300) {
-            monthModifier = 60;
+            return 60;
         } else {
             throw new IllegalArgumentException("Year is after 2300: " + year);
         }
-        return month + monthModifier;
     }
 }
