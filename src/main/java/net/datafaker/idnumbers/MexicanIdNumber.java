@@ -50,11 +50,6 @@ public class MexicanIdNumber implements IdNumberGenerator {
         "TB", "TM", "TL", "VE", "YU", "ZA", "NE",
     };
 
-    @Deprecated
-    public String get(BaseProviders faker) {
-        return generateValid(faker);
-    }
-
     /**
      * Get A valid MEX CURP.
      *
@@ -89,11 +84,6 @@ public class MexicanIdNumber implements IdNumberGenerator {
             case FEMALE -> 'M';
             case MALE -> 'H';
         };
-    }
-
-    @Deprecated
-    public String getWrong(BaseProviders faker) {
-        return generateInvalid(faker);
     }
 
     /**
