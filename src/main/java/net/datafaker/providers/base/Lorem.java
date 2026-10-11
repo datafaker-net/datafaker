@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.datafaker.internal.helper.WordUtils.capitalizeWords;
+import static net.datafaker.internal.helper.WordUtils.capitalizeWord;
 
 
 /**
@@ -115,7 +115,7 @@ public class Lorem extends AbstractProvider<BaseProviders> {
         final int totalWordCount = wordCount + numberOfWordsToAdd;
         StringBuilder sb = new StringBuilder(totalWordCount * 8);
         if (totalWordCount > 0) {
-            sb.append(capitalizeWords(word()));
+            sb.append(capitalizeWord(word()));
         }
         for (int i = 1; i < totalWordCount; i++) {
             sb.append(" ").append(word());
