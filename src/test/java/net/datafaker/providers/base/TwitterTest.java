@@ -4,7 +4,6 @@ import net.datafaker.Faker;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,26 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TwitterTest {
 
     private final Twitter twitter = new Faker().twitter();
-
-    @Test
-    @SuppressWarnings("removal")
-    void testCreatedDateForward() {
-        Date testDate = new Date();
-        Date constrainDate = new Date(testDate.getTime() + 3000000);
-        Date generated = twitter.createdTime(true, testDate, constrainDate);
-        boolean test = generated.after(testDate) && generated.before(constrainDate);
-        assertThat(test).isTrue();
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testCreatedDateBackward() {
-        Date testDate = new Date();
-        Date constrainDate = new Date(testDate.getTime() - 3000000);
-        Date generated = twitter.createdTime(false, testDate, constrainDate);
-        boolean test = generated.before(testDate) && generated.after(constrainDate);
-        assertThat(test).isTrue();
-    }
 
     @Test
     void testShortTwitterIdLength() {
