@@ -13,12 +13,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * A generator of random times and dates.
- * <p>
- * This class is similar to {@link DateAndTime}, but migrated to the newer Java 8+ Time API.
- *
  * @since 2.3.0
  */
-@SuppressWarnings("removal")
 public class TimeAndDate extends AbstractProvider<BaseProviders> {
 
     static final int DEFAULT_MIN_AGE = 18;

@@ -153,15 +153,6 @@ public interface BaseProviders extends ProviderRegistration {
 
     default Database database() { return getProvider(Database.class, Database::new); }
 
-    /**
-     * @deprecated Use {@link #timeAndDate()} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    @SuppressWarnings("removal")
-    default DateAndTime date() {
-        return getProvider(DateAndTime.class, DateAndTime::new);
-    }
-
     default DcComics dcComics() {
         return getProvider(DcComics.class, DcComics::new);
     }

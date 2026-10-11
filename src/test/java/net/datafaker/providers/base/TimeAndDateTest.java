@@ -19,12 +19,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static java.time.LocalDate.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static net.datafaker.providers.base.TimeAndDate.DEFAULT_MAX_AGE;
+import static net.datafaker.providers.base.TimeAndDate.DEFAULT_MIN_AGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SuppressWarnings("removal")
 class TimeAndDateTest {
     private final Faker faker = new Faker();
     private final TimeAndDate timeAndDate = faker.timeAndDate();
@@ -160,6 +162,14 @@ class TimeAndDateTest {
     }
 
     @Test
+    void testBetween_sameMoment() {
+        Instant now = Instant.now();
+
+        Instant date = timeAndDate.between(now, now);
+        assertThat(date).isEqualTo(now);
+    }
+
+    @Test
     void testBetweenWithMaskReturningString() {
         Instant now = Instant.now();
         Instant then = Instant.now().plusMillis(1000);
@@ -183,15 +193,15 @@ class TimeAndDateTest {
     @RepeatedTest(100)
     void testBirthday() {
         final LocalDateTime now = LocalDateTime.now();
-        final LocalDate from = now.minusYears(TimeAndDate.DEFAULT_MIN_AGE).toLocalDate();
-        final LocalDate to = now.minusYears(TimeAndDate.DEFAULT_MAX_AGE).toLocalDate();
+        final LocalDate from = now.minusYears(DEFAULT_MIN_AGE).toLocalDate();
+        final LocalDate to = now.minusYears(DEFAULT_MAX_AGE).toLocalDate();
         LocalDate birthday = timeAndDate.birthday();
         assertThat(birthday).isBetween(to, from);
     }
 
     @RepeatedTest(100)
     void testBirthdayWithAges() {
-        LocalDate nw = LocalDate.now();
+        LocalDate nw = now();
         final Number number = faker.number();
         int minAge = number.numberBetween(1, 99);
         int maxAge = number.numberBetween(minAge, 100);
@@ -207,8 +217,19 @@ class TimeAndDateTest {
     @Test
     void birthdayWithMask() {
         String pattern = "yyyy MM.dd";
+        String birthday = timeAndDate.birthday(pattern);
+
+        int age = (int) ChronoUnit.YEARS.between(parse(birthday, pattern), now());
+        assertThat(age).isBetween(DEFAULT_MIN_AGE, DEFAULT_MAX_AGE);
+    }
+
+    @Test
+    void birthdayWithMask_andCustomAge() {
+        String pattern = "yyyy MM.dd";
         String birthday = timeAndDate.birthday(1, 50, pattern);
-        assertValidDate(birthday, pattern);
+
+        int age = (int) ChronoUnit.YEARS.between(parse(birthday, pattern), now());
+        assertThat(age).isBetween(1, 50);
     }
 
     @Test

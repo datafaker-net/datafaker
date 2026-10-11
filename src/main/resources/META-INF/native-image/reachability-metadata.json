@@ -1110,39 +1110,6 @@
       "type": "net.datafaker.providers.base.CultureSeries"
     },
     {
-      "type": "net.datafaker.providers.base.DateAndTime",
-      "methods": [
-        {
-          "name": "birthday",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "future",
-          "parameterTypes": [
-            "int",
-            "java.util.concurrent.TimeUnit"
-          ]
-        },
-        {
-          "name": "past",
-          "parameterTypes": [
-            "int",
-            "java.util.concurrent.TimeUnit"
-          ]
-        },
-        {
-          "name": "past",
-          "parameterTypes": [
-            "int",
-            "java.util.concurrent.TimeUnit",
-            "java.lang.String"
-          ]
-        }
-      ]
-    },
-    {
       "type": "net.datafaker.providers.base.DcComics"
     },
     {
