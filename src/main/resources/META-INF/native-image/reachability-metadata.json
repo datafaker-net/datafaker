@@ -534,15 +534,10 @@
       "type": "java.sql.Timestamp"
     },
     {
-      "type": "java.util.Date",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        }
-      ]
+      "type": "java.time.Instant"
+    },
+    {
+      "type": "java.time.temporal.TemporalUnit"
     },
     {
       "type": "java.util.List"
@@ -622,13 +617,7 @@
       "type": "net.datafaker.idnumbers.BulgarianIdNumber"
     },
     {
-      "type": "net.datafaker.idnumbers.ChineseIdNumber",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
+      "type": "net.datafaker.idnumbers.ChineseIdNumber"
     },
     {
       "type": "net.datafaker.idnumbers.EstonianIdNumber"
@@ -652,13 +641,7 @@
       "type": "net.datafaker.idnumbers.MacedonianIdNumber"
     },
     {
-      "type": "net.datafaker.idnumbers.MexicanIdNumber",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
+      "type": "net.datafaker.idnumbers.MexicanIdNumber"
     },
     {
       "type": "net.datafaker.idnumbers.MoldovanIdNumber"
@@ -670,13 +653,7 @@
       "type": "net.datafaker.idnumbers.PolishIdNumber"
     },
     {
-      "type": "net.datafaker.idnumbers.PortugueseIdNumber",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
+      "type": "net.datafaker.idnumbers.PortugueseIdNumber"
     },
     {
       "type": "net.datafaker.idnumbers.RomanianIdNumber"
@@ -685,31 +662,16 @@
       "type": "net.datafaker.idnumbers.SingaporeIdNumber"
     },
     {
-      "type": "net.datafaker.idnumbers.SouthAfricanIdNumber",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
+      "type": "net.datafaker.idnumbers.SouthAfricanIdNumber"
     },
     {
-      "type": "net.datafaker.idnumbers.SouthKoreanIdNumber",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
+      "type": "net.datafaker.idnumbers.SouthKoreanIdNumber"
     },
     {
-      "type": "net.datafaker.idnumbers.SwedenIdNumber",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
+      "type": "net.datafaker.idnumbers.SpanishIdNumber"
+    },
+    {
+      "type": "net.datafaker.idnumbers.SwedenIdNumber"
     },
     {
       "type": "net.datafaker.idnumbers.UkrainianIdNumber"
@@ -742,10 +704,6 @@
         },
         {
           "name": "country",
-          "parameterTypes": []
-        },
-        {
-          "name": "mailBox",
           "parameterTypes": []
         },
         {
@@ -939,7 +897,7 @@
           "parameterTypes": []
         },
         {
-          "name": "date",
+          "name": "credentials",
           "parameterTypes": []
         },
         {
@@ -956,10 +914,6 @@
         },
         {
           "name": "idNumber",
-          "parameterTypes": []
-        },
-        {
-          "name": "internet",
           "parameterTypes": []
         },
         {
@@ -992,6 +946,10 @@
         },
         {
           "name": "team",
+          "parameterTypes": []
+        },
+        {
+          "name": "timeAndDate",
           "parameterTypes": []
         },
         {
@@ -1101,13 +1059,37 @@
       ]
     },
     {
-      "type": "net.datafaker.providers.base.Credentials"
+      "type": "net.datafaker.providers.base.Credentials",
+      "methods": [
+        {
+          "name": "password",
+          "parameterTypes": [
+            "int",
+            "int",
+            "boolean",
+            "boolean"
+          ]
+        },
+        {
+          "name": "password",
+          "parameterTypes": [
+            "int",
+            "int",
+            "boolean",
+            "boolean",
+            "boolean"
+          ]
+        }
+      ]
     },
     {
       "type": "net.datafaker.providers.base.CryptoCoin"
     },
     {
       "type": "net.datafaker.providers.base.CultureSeries"
+    },
+    {
+      "type": "net.datafaker.providers.base.Database"
     },
     {
       "type": "net.datafaker.providers.base.DcComics"
@@ -1234,15 +1216,11 @@
       "type": "net.datafaker.providers.base.IdNumber",
       "methods": [
         {
-          "name": "invalidPtNif",
+          "name": "invalid",
           "parameterTypes": []
         },
         {
-          "name": "ssnValid",
-          "parameterTypes": []
-        },
-        {
-          "name": "validPtNif",
+          "name": "valid",
           "parameterTypes": []
         }
       ]
@@ -1254,18 +1232,7 @@
       "type": "net.datafaker.providers.base.IndustrySegments"
     },
     {
-      "type": "net.datafaker.providers.base.Internet",
-      "methods": [
-        {
-          "name": "password",
-          "parameterTypes": [
-            "int",
-            "int",
-            "boolean",
-            "boolean"
-          ]
-        }
-      ]
+      "type": "net.datafaker.providers.base.Internet"
     },
     {
       "type": "net.datafaker.providers.base.Job",
@@ -1456,10 +1423,6 @@
         {
           "name": "nameSuffix",
           "parameterTypes": []
-        },
-        {
-          "name": "type",
-          "parameterTypes": []
         }
       ]
     },
@@ -1529,7 +1492,37 @@
       "type": "net.datafaker.providers.base.Time"
     },
     {
-      "type": "net.datafaker.providers.base.TimeAndDate"
+      "type": "net.datafaker.providers.base.TimeAndDate",
+      "methods": [
+        {
+          "name": "birthday",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "future",
+          "parameterTypes": [
+            "long",
+            "java.util.concurrent.TimeUnit"
+          ]
+        },
+        {
+          "name": "past",
+          "parameterTypes": [
+            "long",
+            "java.util.concurrent.TimeUnit"
+          ]
+        },
+        {
+          "name": "past",
+          "parameterTypes": [
+            "long",
+            "java.util.concurrent.TimeUnit",
+            "java.lang.String"
+          ]
+        }
+      ]
     },
     {
       "type": "net.datafaker.providers.base.Tire"
@@ -2704,6 +2697,24 @@
       ]
     },
     {
+      "type": "sun.net.www.protocol.http.Handler",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "sun.net.www.protocol.https.Handler",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "sun.security.provider.MD2",
       "methods": [
         {
@@ -2769,12 +2780,6 @@
       ]
     },
     {
-      "type": "sun.text.resources.BreakIteratorInfo"
-    },
-    {
-      "type": "sun.text.resources.BreakIteratorResources"
-    },
-    {
       "type": "sun.text.resources.cldr.FormatData"
     },
     {
@@ -2788,9 +2793,6 @@
     },
     {
       "type": "sun.util.resources.LocaleNames"
-    },
-    {
-      "type": "sun.util.resources.cldr.CalendarData"
     },
     {
       "type": "sun.util.resources.cldr.CurrencyNames"
@@ -4877,6 +4879,9 @@
       "glob": "en/dark_souls.yml"
     },
     {
+      "glob": "en/database.yml"
+    },
+    {
       "glob": "en/dc_comics.yml"
     },
     {
@@ -5640,10 +5645,6 @@
     {
       "module": "java.base",
       "glob": "sun/net/idn/uidna.spp"
-    },
-    {
-      "module": "java.base",
-      "glob": "sun/text/resources/WordBreakIteratorData"
     },
     {
       "module": "java.desktop",
