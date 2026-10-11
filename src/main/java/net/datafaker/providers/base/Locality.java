@@ -5,7 +5,6 @@ import net.datafaker.annotations.Deterministic;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.random.RandomGenerator;
 
 /**
@@ -42,16 +41,6 @@ public class Locality extends AbstractProvider<BaseProviders> {
      */
     public Locality(BaseProviders baseProviders) {
         super(baseProviders);
-    }
-
-    /**
-     * @param fileMasks is not used anymore
-     * @deprecated Use {{@link #allSupportedLocales()}} instead
-     */
-    @Deprecated
-    @SuppressWarnings("unused")
-    public List<String> allSupportedLocales(Set<String> fileMasks) {
-        return allSupportedLocales();
     }
 
     /**
