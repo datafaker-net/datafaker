@@ -296,8 +296,14 @@ class FakeValuesServiceTest {
 
     @Test
     void expressionWithFourArguments() {
-        assertThat(fakeValuesService.expression("#{Internet.password '5','8','true','true'}", faker, context))
-            .matches("[\\w\\d!%#$@_^&*]{5,8}");
+        assertThat(fakeValuesService.expression("#{credentials.password '5','8','true','true'}", faker, context))
+            .matches("[\\w!%#$@_^&*]{5,8}");
+    }
+
+    @Test
+    void expressionWithFiveArguments() {
+        assertThat(fakeValuesService.expression("#{credentials.password '5','8','true','true','false'}", faker, context))
+            .matches("[\\w!%#$@_^&*]{5,8}");
     }
 
     @ParameterizedTest

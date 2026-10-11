@@ -7,9 +7,6 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.URI;
 import java.net.URL;
@@ -20,7 +17,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.lang.Integer.parseInt;
 import static net.datafaker.providers.base.Internet.PortRange.RegisteredPorts;
@@ -29,7 +25,6 @@ import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -43,41 +38,8 @@ class InternetTest {
     private final Faker faker = new Faker();
 
     @RepeatedTest(10)
-    @SuppressWarnings("removal")
-    void testUsername() {
-        assertThat(faker.internet().username()).matches("^(\\w+)\\.(\\w+)$");
-    }
-
-    @RepeatedTest(10)
     void emailSubject() {
         assertThat(faker.internet().emailSubject()).isNotBlank();
-    }
-
-    @ParameterizedTest
-    @MethodSource("userNameWithSpacesProvider")
-    @SuppressWarnings("removal")
-    void testUsernameWithSpaces(String firstName, String lastName, String expected) {
-        Locale locale = new Locale("TR");
-        Name name = mock();
-        doReturn(firstName).when(name).firstName();
-        doReturn(lastName).when(name).lastName();
-
-        BaseFaker mockedFaker = new BaseFaker(locale) {
-            @Override
-            public Name name() {
-                return name;
-            }
-        };
-
-        assertThat(mockedFaker.internet().username())
-            .isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> userNameWithSpacesProvider() {
-        return Stream.of(
-            Arguments.of("Jin Quan", "D'Artagnan", "jinquan.dartagnan"),
-            Arguments.of("Ivan Ivanov", "Другой Язык", "ıvanıvanov.другойязык")
-        );
     }
 
     @Test
@@ -87,9 +49,8 @@ class InternetTest {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void testEmailAddressWithNameParameter() {
-        String username = faker.internet().username();
+        String username = faker.credentials().username();
         String emailAddress = faker.internet().emailAddress(username);
         assertThat(emailAddress).startsWith(username + "@");
         assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
@@ -248,47 +209,6 @@ class InternetTest {
         assertThat(faker.internet().httpMethod()).isNotEmpty();
     }
 
-    @Test
-    @SuppressWarnings("removal")
-    void testPassword() {
-        assertThat(faker.internet().password()).matches("[a-z\\d]{8,16}");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordWithFixedLength() {
-        String password = new BaseFaker().internet().password(32, 32, true, true, true);
-        assertThat(password).hasSize(32);
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordIncludeDigit() {
-        assertThat(faker.internet().password()).matches("[a-z\\d]{8,16}");
-        assertThat(faker.internet().password(false)).matches("[a-z]{8,16}");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordMinLengthMaxLength() {
-        assertThat(faker.internet().password(10, 25)).matches("[a-z\\d]{10,25}");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordMinLengthMaxLengthIncludeUpperCase() {
-        assertThat(faker.internet().password(1, 2, false)).matches("[a-z\\d]{1,2}");
-        assertThat(faker.internet().password(10, 25, true)).matches("[a-zA-Z\\d]{10,25}");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordMinLengthMaxLengthIncludeUpperCaseIncludeSpecial() {
-        assertThat(faker.internet().password(10, 25, false, false)).matches("[a-z\\d]{10,25}");
-        assertThat(faker.internet().password(10, 25, false, true)).matches("[a-z\\d!@#$%^&*]{10,25}");
-        assertThat(faker.internet().password(10, 25, true, true)).matches("[a-zA-Z\\d!@#$%^&*]{10,25}");
-    }
-
     @RepeatedTest(10)
     void testPort() {
         assertThat(faker.internet().port()).isBetween(0, 65535);
@@ -322,30 +242,6 @@ class InternetTest {
         assertThatThrownBy(() -> faker.internet().port(65535, 65536))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Port number 65536 cannot be greater than 65535");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void shouldGenerateAPasswordWithMinAndMaxLength() {
-        List<String> results = new ArrayList<>();
-        for (int i = 0; i < 300; i++) {
-            results.add(faker.internet().password(1, 10));
-        }
-
-        final List<String> min = results.stream().filter(x -> x.length() == 1).toList();
-        final List<String> max = results.stream().filter(x -> x.length() == 10).toList();
-
-        assertThat(min.size()).isPositive();
-        assertThat(max.size()).isPositive();
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordMinLengthMaxLengthIncludeUpperCaseIncludeSpecialIncludeDigit() {
-        assertThat(faker.internet().password(10, 25, false, false, false)).matches("[a-z]{10,25}");
-        assertThat(faker.internet().password(10, 25, false, true, true)).matches("[a-z\\d!@#$%^&*]{10,25}");
-        assertThat(faker.internet().password(10, 25, true, true, false)).matches("[a-zA-Z!@#$%^&*]{10,25}");
-        assertThat(faker.internet().password(10, 25, true, true, true)).matches("[a-zA-Z\\d!@#$%^&*]{10,25}");
     }
 
     private Condition<String> getCharacterCondition(char c, int expectedCnt) {

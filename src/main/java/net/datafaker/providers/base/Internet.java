@@ -29,25 +29,6 @@ public class Internet extends AbstractProvider<BaseProviders> {
         super(faker);
     }
 
-    /**
-     * A lowercase username composed of the first_name and last_name joined with a '.'. Some examples are:
-     * <ul>
-     *     <li>(template) {@link Name#firstName()}.{@link Name#lastName()}</li>
-     *     <li>jim.jones</li>
-     *     <li>jason.leigh</li>
-     *     <li>tracy.jordan</li>
-     * </ul>
-     *
-     * @return a random two part username.
-     * @see Name#firstName()
-     * @see Name#lastName()
-     * @deprecated Since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#username()} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String username() {
-        return faker.credentials().username();
-    }
-
     public String emailAddress() {
         return emailAddress(faker.credentials().username());
     }
@@ -285,54 +266,6 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
     public String httpMethod() {
         return resolve("internet.http_method");
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password()} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password() {
-        return password(8, 16);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(boolean)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(boolean includeDigit) {
-        return password(8, 16, false, false, includeDigit);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(int minimumLength, int maximumLength) {
-        return password(minimumLength, maximumLength, false);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(int minimumLength, int maximumLength, boolean includeUppercase) {
-        return password(minimumLength, maximumLength, includeUppercase, false);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial) {
-        return password(minimumLength, maximumLength, includeUppercase, includeSpecial, true);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean, boolean)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
 
     /**
