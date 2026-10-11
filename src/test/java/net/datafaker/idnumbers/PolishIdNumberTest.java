@@ -1,8 +1,6 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.Faker;
-import net.datafaker.idnumbers.PolishIdNumber.Gender;
-import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.IdNumber.IdNumberRequest;
 import net.datafaker.providers.base.PersonIdNumber;
 import org.junit.jupiter.api.RepeatedTest;
@@ -16,6 +14,8 @@ import java.util.Locale;
 import static java.lang.Integer.parseInt;
 import static net.datafaker.helpers.IdNumberPatterns.POLISH;
 import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
+import static net.datafaker.providers.base.IdNumber.GenderRequest.MALE;
+import static net.datafaker.providers.base.IdNumber.GenderRequest.FEMALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -26,7 +26,7 @@ class PolishIdNumberTest {
 
     @RepeatedTest(100)
     void idNumberConsistsOf11Digits() {
-        PersonIdNumber actual = peselNumber.generateValid(faker, new IdNumberRequest(0, 222, ANY));
+        PersonIdNumber actual = faker.idNumber().valid(new IdNumberRequest(0, 222, ANY));
 
         assertThat(actual.idNumber()).matches(POLISH);
         assertThat(year(actual.idNumber()) % 100).isEqualTo(actual.birthDate().getYear() % 100);
@@ -35,21 +35,21 @@ class PolishIdNumberTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     void generateIdNumberForFemale() {
-        LocalDate birthDate = new BaseFaker().timeAndDate().birthday(0, 100);
-        String actual = peselNumber.get(faker, birthDate, Gender.FEMALE);
+        PersonIdNumber actual = faker.idNumber().valid(new IdNumberRequest(0, 100, FEMALE));
 
-        assertThat(getGenderDigit(actual) % 2).isZero();
+        assertThat(getGenderDigit(actual.idNumber()) % 2).isZero();
+        assertThat(actual.gender()).isEqualTo(PersonIdNumber.Gender.FEMALE);
+        assertThat(actual.age()).isBetween(0, 100);
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     void generateIdNumberForMale() {
-        LocalDate birthDate = new BaseFaker().timeAndDate().birthday(0, 100);
-        String actual = peselNumber.get(faker, birthDate, Gender.MALE);
+        PersonIdNumber actual = faker.idNumber().valid(new IdNumberRequest(16, 64, MALE));
 
-        assertThat(getGenderDigit(actual) % 2).isOne();
+        assertThat(getGenderDigit(actual.idNumber()) % 2).isOne();
+        assertThat(actual.gender()).isEqualTo(PersonIdNumber.Gender.MALE);
+        assertThat(actual.age()).isBetween(16, 64);
     }
 
     @Test
@@ -72,22 +72,20 @@ class PolishIdNumberTest {
 
     @ParameterizedTest
     @ValueSource(ints = {-100, 1699, 1799})
-    @SuppressWarnings("deprecation")
     void tooEarlyCenturies(int birthYear) {
-        LocalDate birthDate = LocalDate.of(birthYear, 6, 28);
+        int age = LocalDate.now().getYear() - birthYear;
 
-        assertThatThrownBy(() -> peselNumber.get(faker, birthDate, Gender.ANY))
+        assertThatThrownBy(() -> faker.idNumber().valid(new IdNumberRequest(age, age, ANY)))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Year is before 1800: %s", birthYear);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {2300, 2399, 9999})
-    @SuppressWarnings("deprecation")
     void tooLateCenturies(int birthYear) {
-        LocalDate birthDate = LocalDate.of(birthYear, 6, 28);
+        int age = LocalDate.now().getYear() - birthYear;
 
-        assertThatThrownBy(() -> peselNumber.get(faker, birthDate, Gender.ANY))
+        assertThatThrownBy(() -> faker.idNumber().valid(new IdNumberRequest(age, age, ANY)))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Year is after 2300: %s", birthYear);
     }
@@ -96,10 +94,9 @@ class PolishIdNumberTest {
         return idNumber.charAt(9) - '0';
     }
 
-    @SuppressWarnings("deprecation")
     private String bornAt(int month, int year) {
         LocalDate birthDate = LocalDate.of(year, month, 28);
-        return peselNumber.get(faker, birthDate, Gender.ANY);
+        return peselNumber.get(faker, birthDate, PersonIdNumber.Gender.FEMALE);
     }
 
     private int year(String idNumber) {
