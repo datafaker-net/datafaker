@@ -19,30 +19,21 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
+import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.HOURS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 class FakeValuesServiceTest {
-
-    private static final DateTimeFormatter DATE_TIME_FORMATTER =
-        new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-            .appendFraction(ChronoField.MILLI_OF_SECOND, 0, 9, true)
-            .appendPattern("X")
-            .toFormatter();
 
     private final Faker faker = spy(new Faker(new Locale("test")));
     private final FakerContext context = faker.getContext();
@@ -271,19 +262,19 @@ class FakeValuesServiceTest {
 
     @RepeatedTest(10)
     void futureDateExpression() {
-        LocalDateTime now = LocalDateTime.now(OffsetDateTime.now(ZoneId.systemDefault()).getOffset());
-        LocalDateTime nowPlus10Days = now.plusDays(10);
+        Instant now = Instant.now();
+        Instant nowPlus10Days = now.plus(10, DAYS);
         String expression = fakeValuesService.expression("#{timeAndDate.future '10','TimeUnit.DAYS'}", faker, context);
-        LocalDateTime date = LocalDateTime.parse(expression, DATE_TIME_FORMATTER);
+        Instant date = Instant.parse(expression);
         assertThat(date).isStrictlyBetween(now, nowPlus10Days);
     }
 
     @RepeatedTest(10)
     void pastDateExpression() {
-        LocalDateTime now = LocalDateTime.now(OffsetDateTime.now(ZoneId.systemDefault()).getOffset());
-        LocalDateTime nowMinus5Hours = now.minusHours(5);
+        Instant now = Instant.now();
+        Instant nowMinus5Hours = now.minus(5, HOURS);
         String expression = fakeValuesService.expression("#{timeAndDate.past '4','TimeUnit.HOURS'}", faker, context);
-        LocalDateTime date = LocalDateTime.parse(expression, DATE_TIME_FORMATTER);
+        Instant date = Instant.parse(expression);
         assertThat(date).isStrictlyBetween(nowMinus5Hours, now);
     }
 
