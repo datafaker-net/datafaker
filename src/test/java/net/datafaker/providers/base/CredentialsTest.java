@@ -1,5 +1,6 @@
 package net.datafaker.providers.base;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -68,6 +69,20 @@ class CredentialsTest {
     @RepeatedTest(100)
     void testPasswordWithSpecificSizeAndUppercase() {
         assertThat(faker.credentials().password(8, 16, true)).hasSizeBetween(8, 16).matches("^[a-zA-Z0-9]+$");
+    }
+
+    @Test
+    void shouldGenerateAPasswordWithMinAndMaxLength() {
+        List<String> allPasswords = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            allPasswords.add(faker.credentials().password(1, 10));
+        }
+
+        final List<String> min = allPasswords.stream().filter(x -> x.length() == 1).toList();
+        final List<String> max = allPasswords.stream().filter(x -> x.length() == 10).toList();
+
+        assertThat(min).as(() -> "No password of length 1: " + allPasswords).isNotEmpty();
+        assertThat(max).as(() -> "No password of length 10: " + allPasswords).isNotEmpty();
     }
 
     @Test
