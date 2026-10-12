@@ -18,7 +18,7 @@ jobs:
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v6.0.1
         with:
-          java-version: '17'
+          java-version: '25'
           distribution: 'temurin'
           cache: maven
           server-id: central
