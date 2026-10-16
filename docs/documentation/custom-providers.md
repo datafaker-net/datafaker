@@ -42,7 +42,7 @@ Create your own custom faker, which extends `Faker`, and register the custom pro
     ```java
     public static class MyCustomFaker extends Faker {
         public Insect insect() {
-            return getProvider(Insect.class, Insect::new, this);
+            return getProvider(Insect.class, Insect::new);
         }
     }
     ```
@@ -163,7 +163,7 @@ Registering the provider would happen like this:
     ```java
     public static class MyCustomFaker extends Faker {
         public InsectFromFile insectFromFile() {
-            return getProvider(InsectFromFile.class, InsectFromFile::new, this);
+            return getProvider(InsectFromFile.class, InsectFromFile::new);
         }
     }
     ```

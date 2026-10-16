@@ -132,6 +132,6 @@ It is possible to call methods returning string values and taking primitive or s
     
     ```java
     Faker faker = new Faker();
-    faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}");
+    faker.expression("#{timeAndDate.birthday 'yy DDD'}");
     faker.expression("#{color.name}");
     ```

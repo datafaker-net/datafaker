@@ -110,7 +110,7 @@ faker.expression("#{templatify 'test','t','q','@'}"); // @esq
 faker.expression("#{examplify 'test'}"); // ghjk
 faker.expression("#{regexify '[a-z]{4,10}'}"); // wbevoa
 faker.expression("#{options.option '23','2','5','$','%','*'}"); // *
-faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}"); // 61 327 08:11:45
+faker.expression("#{timeAndDate.birthday 'yy DDD'}"); // 61 327
 faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
 // "name_column","last_name_column"
 // "Sabrina","Kihn"
@@ -476,15 +476,15 @@ Usage with Locales
 -----
 
 ```java
-Faker faker = new Faker(Locale.of("lang", "COUNTRY"));
+Faker faker = new Faker(new Locale("lang", "COUNTRY"));
 ```
 
 For example:
 
 ```java
-String californiaZipCode = new Faker(Locale.of("en", "US")).address().zipCodeByState("CA");
-String albanianIdNumber = new Faker(Locale.of("sq", "AL")).idNumber().valid();
-String moldovanPhone = new Faker(Locale.of("ru", "MD")).phoneNumber().cellPhone();
+String californiaZipCode = new Faker(new Locale("en", "US")).address().zipCodeByState("CA");
+String albanianIdNumber = new Faker(new Locale("sq", "AL")).idNumber().valid();
+String moldovanPhone = new Faker(new Locale("ru", "MD")).phoneNumber().cellPhone();
 ```
 
 Note that most of the data depends on language,

@@ -17,7 +17,7 @@ This feature could also be used in expressions like:
 === "Java"
 
     ```java
-    faker.expression("#{date.past '15','SECONDS','dd/MM/yyyy hh:mm:ss'}");
+    faker.expression("#{timeAndDate.past '15','SECONDS','dd/MM/yyyy hh:mm:ss'}");
     ```
 
 List of available time units:
