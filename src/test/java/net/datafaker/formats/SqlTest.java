@@ -598,4 +598,26 @@ class SqlTest {
 
         assertThat(sql).isEqualTo(expected);
     }
+
+    @ParameterizedTest
+    @MethodSource("quoteEscapeDialects")
+    void escapesQuoteInStringValues(SqlDialect dialect, String expectedValue) {
+        Schema<String, String> schema = Schema.of(field("lastName", () -> "O'Brien"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES (" + expectedValue + ");");
+    }
+
+    private static Stream<Arguments> quoteEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.POSTGRES, "'O''Brien'"),
+            of(SqlDialect.ORACLE, "'O''Brien'"),
+            of(SqlDialect.MSSQL, "'O''Brien'"),
+            of(SqlDialect.H2, "'O''Brien'"),
+            of(SqlDialect.MYSQL, "'O\\'Brien'"),
+            of(SqlDialect.MARIADB, "'O\\'Brien'"),
+            of(SqlDialect.BIGQUERY, "'O\\'Brien'"),
+            of(SqlDialect.SPARKSQL, "'O\\'Brien'")
+        );
+    }
 }

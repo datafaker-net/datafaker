@@ -32,6 +32,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private final Casing casing;
     private final char quote;
+    private final char quoteEscape;
     private final char openSqlIdentifier;
     private final char closeSqlIdentifier;
     private final String tableName;
@@ -52,6 +53,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                            Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
         this.schemaName = schemaName;
         this.quote = quote;
+        this.quoteEscape = dialect == null || dialect.escapesQuoteWithBackslash() ? '\\' : quote;
         this.dialect = dialect;
         this.openSqlIdentifier = sqlIdentifier.charAt(0);
         this.closeSqlIdentifier = sqlIdentifier.length() == 1 ? sqlIdentifier.charAt(0) : sqlIdentifier.charAt(1);
@@ -225,7 +227,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
         for (int k = 0; k < length; k++) {
             if (strValue.charAt(k) == quote) {
-                builder.append('\\').append(quote);
+                builder.append(quoteEscape).append(quote);
             }else {
                 builder.append(strValue.charAt(k));
             }
