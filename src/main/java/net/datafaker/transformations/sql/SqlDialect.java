@@ -147,6 +147,17 @@ public enum SqlDialect {
         return "]";
     }
 
+    /**
+     * Whether a quote inside a string literal is escaped with a backslash ({@code 'It\'s'}).
+     * Other dialects double it ({@code 'It''s'}) as standard SQL requires.
+     */
+    public boolean escapesQuoteWithBackslash() {
+        return switch (this) {
+            case BIGQUERY, CLICKHOUSE, INFOBRIGHT, MARIADB, MYSQL, SPARKSQL -> true;
+            default -> false;
+        };
+    }
+
     static class AuxiliaryConstants {
         static final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> DEFAULT_FIRST_ROW = (supplier, supplier2, caze) -> {
             final String insertAll = INSERT_INTO.getValue(caze) + " ";
