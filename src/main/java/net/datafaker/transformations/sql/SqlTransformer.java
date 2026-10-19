@@ -228,7 +228,10 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         for (int k = 0; k < length; k++) {
             if (strValue.charAt(k) == quote) {
                 builder.append(quoteEscape).append(quote);
-            }else {
+            } else if (strValue.charAt(k) == '\\' && quoteEscape == '\\') {
+                // where a backslash escapes the quote, a literal backslash has to be escaped too
+                builder.append("\\\\");
+            } else {
                 builder.append(strValue.charAt(k));
             }
         }

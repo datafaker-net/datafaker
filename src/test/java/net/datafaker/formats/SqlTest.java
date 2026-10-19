@@ -620,4 +620,32 @@ class SqlTest {
             of(SqlDialect.SPARKSQL, "'O\\'Brien'")
         );
     }
+
+    @ParameterizedTest
+    @MethodSource("backslashEscapeDialects")
+    void escapesBackslashInStringValues(SqlDialect dialect, String expectedValue) {
+        Schema<String, String> schema = Schema.of(field("path", () -> "C:\\temp\\"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES (" + expectedValue + ");");
+    }
+
+    private static Stream<Arguments> backslashEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.POSTGRES, "'C:\\temp\\'"),
+            of(SqlDialect.MSSQL, "'C:\\temp\\'"),
+            of(SqlDialect.MYSQL, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.MARIADB, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.BIGQUERY, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.SPARKSQL, "'C:\\\\temp\\\\'")
+        );
+    }
+
+    @Test
+    void escapesBackslashBeforeQuote() {
+        Schema<String, String> schema = Schema.of(field("text", () -> "a\\'b"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(SqlDialect.MYSQL).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES ('a\\\\\\'b');");
+    }
 }
