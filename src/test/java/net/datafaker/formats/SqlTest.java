@@ -269,6 +269,24 @@ class SqlTest {
     }
 
     @ParameterizedTest
+    @MethodSource("identifierEscapeDialects")
+    void escapesClosingQuoteInIdentifiers(SqlDialect dialect, String schemaName, String tableName, String fieldName, String expected) {
+        Schema<String, String> schema = Schema.of(field(fieldName, () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .schemaName(schemaName).tableName(tableName).dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> identifierEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.MSSQL, "s]1", "t]2", "a]b[c", "INSERT INTO [s]]1].[t]]2] ([a]]b[c]) VALUES ('x');"),
+            of(SqlDialect.POSTGRES, "s\"1", "t\"2", "a\"b", "INSERT INTO \"s\"\"1\".\"t\"\"2\" (\"a\"\"b\") VALUES ('x');"),
+            of(SqlDialect.MYSQL, "s`1", "t`2", "a`b", "INSERT INTO `s``1`.`t``2` (`a``b`) VALUES ('x');")
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("generateTestSchemaForMySQL")
     void simpleSqlTestForSqlTransformerMySQL(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
