@@ -287,21 +287,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         appendNameToQuery(result, tableName);
         result.append(" (");
         for (int i = 0; i < fields.length; i++) {
-            final String fieldName = fields[i].getName();
-            final boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(fieldName);
-            if (sqlIdentifierRequired) {
-                result.append(openSqlIdentifier);
-            }
-            for (int j = 0; j < fieldName.length(); j++) {
-                if (openSqlIdentifier == fieldName.charAt(j)
-                        || closeSqlIdentifier == fieldName.charAt(j)) {
-                    result.append(openSqlIdentifier);
-                }
-                result.append(fieldName.charAt(j));
-            }
-            if (sqlIdentifierRequired) {
-                result.append(closeSqlIdentifier);
-            }
+            appendNameToQuery(result, fields[i].getName());
             if (i < fields.length - 1) {
                 result.append(", ");
             }
@@ -317,7 +303,13 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         if (sqlIdentifierRequired) {
             sb.append(openSqlIdentifier);
         }
-        sb.append(name);
+        // inside a quoted identifier only the closing character needs escaping, by doubling it: "a""b", `a``b`, [a]]b]
+        for (int j = 0; j < name.length(); j++) {
+            if (name.charAt(j) == closeSqlIdentifier) {
+                sb.append(closeSqlIdentifier);
+            }
+            sb.append(name.charAt(j));
+        }
         if (sqlIdentifierRequired) {
             sb.append(closeSqlIdentifier);
         }
