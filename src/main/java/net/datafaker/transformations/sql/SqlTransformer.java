@@ -289,13 +289,9 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         if (sqlIdentifierRequired) {
             sb.append(openSqlIdentifier);
         }
-        // inside a quoted identifier only the closing character needs escaping, by doubling it: "a""b", `a``b`, [a]]b]
-        for (int j = 0; j < name.length(); j++) {
-            if (name.charAt(j) == closeSqlIdentifier) {
-                sb.append(closeSqlIdentifier);
-            }
-            sb.append(name.charAt(j));
-        }
+        sb.append(dialect == null
+            ? SqlDialect.escape(name, closeSqlIdentifier, closeSqlIdentifier)
+            : dialect.escapeIdentifier(name));
         if (sqlIdentifierRequired) {
             sb.append(closeSqlIdentifier);
         }
