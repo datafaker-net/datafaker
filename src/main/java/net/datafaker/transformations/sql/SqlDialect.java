@@ -178,6 +178,15 @@ public enum SqlDialect {
     }
 
     /**
+     * Escapes a name placed inside a quoted identifier. Only the closing character needs escaping,
+     * by doubling it ({@code "a""b"}, {@code `a``b`}, {@code [a]]b]}).
+     */
+    public String escapeIdentifier(String name) {
+        char close = sqlQuoteIdentifier.charAt(sqlQuoteIdentifier.length() - 1);
+        return escape(name, close, close);
+    }
+
+    /**
      * Puts {@code escape} before every {@code quote} and every {@code escape} in the value.
      * When both are the same character, this doubles it.
      */
