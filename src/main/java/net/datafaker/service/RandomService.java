@@ -37,6 +37,9 @@ public class RandomService {
         return random.nextInt(maxExclusive);
     }
 
+    /**
+     * Returns a random integer between {@code minInclusive} and {@code maxInclusive}, including both bounds.
+     */
     public int nextInt(int minInclusive, int maxInclusive) {
         if (minInclusive > maxInclusive)
             throw new IllegalArgumentException("Min (%s) > Max (%s)".formatted(minInclusive, maxInclusive));
