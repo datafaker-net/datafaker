@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.SplittableRandom;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 import static net.datafaker.service.RandomServiceTest.Ring.DWARVES;
@@ -70,6 +71,37 @@ class RandomServiceTest {
                 .isGreaterThanOrEqualTo(2)
                 .isLessThanOrEqualTo(6);
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "-3, -2",
+        "-2147483648, -2147483647",
+        "2147483646, 2147483647",
+        "-2147483648, 2147483647",
+        "-3, -1",
+        "0, 2147483646",
+        "-2, -2",
+        "2147483647, 2147483647"
+    })
+    void nextInt_includesUpperBound(int min, int max) {
+        RandomGenerator upperBoundGenerator = new RandomGenerator() {
+            @Override
+            public long nextLong() {
+                return 0;
+            }
+
+            @Override
+            public int nextInt(int origin, int bound) {
+                return bound - 1;
+            }
+
+            @Override
+            public long nextLong(long origin, long bound) {
+                return bound - 1;
+            }
+        };
+        assertThat(new RandomService(upperBoundGenerator).nextInt(min, max)).isEqualTo(max);
     }
 
     @Test
