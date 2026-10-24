@@ -115,7 +115,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     dialect.getFieldPrefix(fields[i].getName());
 
                 if (!fieldPrefix.isEmpty() && !isRoot) {
-                    result.add(quote + dialect.getFieldPrefix(fields[i].getName()) + quote);
+                    result.add(quote + escapeStringLiteral(fieldPrefix) + quote);
                 }
             }
 
@@ -213,12 +213,20 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             } else {
                 String strValue = value.toString();
                 final boolean quoteRequired = !(value instanceof Number) && !(value instanceof Boolean);
-                String res = dialect == null
-                    ? SqlDialect.escape(strValue, quote, '\\')
-                    : dialect.escapeStringLiteral(strValue, quote);
+                String res = escapeStringLiteral(strValue);
                 return quoteRequired ? quote + res + quote : res;
             }
         }
+    }
+
+    /**
+     * Without a dialect, the quote is prefixed with a backslash and backslashes are left alone.
+     */
+    private String escapeStringLiteral(String value) {
+        if (dialect != null) {
+            return dialect.escapeStringLiteral(value, quote);
+        }
+        return value.replace(String.valueOf(quote), "\\" + quote);
     }
 
     private String handlePrimitivesInArray(Class<?> componentType, Object value) {
