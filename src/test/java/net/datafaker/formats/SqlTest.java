@@ -269,6 +269,24 @@ class SqlTest {
     }
 
     @ParameterizedTest
+    @MethodSource("identifierEscapeDialects")
+    void escapesClosingQuoteInIdentifiers(SqlDialect dialect, String schemaName, String tableName, String fieldName, String expected) {
+        Schema<String, String> schema = Schema.of(field(fieldName, () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .schemaName(schemaName).tableName(tableName).dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> identifierEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.MSSQL, "s]1", "t]2", "a]b[c", "INSERT INTO [s]]1].[t]]2] ([a]]b[c]) VALUES ('x');"),
+            of(SqlDialect.POSTGRES, "s\"1", "t\"2", "a\"b", "INSERT INTO \"s\"\"1\".\"t\"\"2\" (\"a\"\"b\") VALUES ('x');"),
+            of(SqlDialect.MYSQL, "s`1", "t`2", "a`b", "INSERT INTO `s``1`.`t``2` (`a``b`) VALUES ('x');")
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("generateTestSchemaForMySQL")
     void simpleSqlTestForSqlTransformerMySQL(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
@@ -619,5 +637,33 @@ class SqlTest {
             of(SqlDialect.BIGQUERY, "'O\\'Brien'"),
             of(SqlDialect.SPARKSQL, "'O\\'Brien'")
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("backslashEscapeDialects")
+    void escapesBackslashInStringValues(SqlDialect dialect, String expectedValue) {
+        Schema<String, String> schema = Schema.of(field("path", () -> "C:\\temp\\"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES (" + expectedValue + ");");
+    }
+
+    private static Stream<Arguments> backslashEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.POSTGRES, "'C:\\temp\\'"),
+            of(SqlDialect.MSSQL, "'C:\\temp\\'"),
+            of(SqlDialect.MYSQL, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.MARIADB, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.BIGQUERY, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.SPARKSQL, "'C:\\\\temp\\\\'")
+        );
+    }
+
+    @Test
+    void escapesBackslashBeforeQuote() {
+        Schema<String, String> schema = Schema.of(field("text", () -> "a\\'b"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(SqlDialect.MYSQL).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES ('a\\\\\\'b');");
     }
 }

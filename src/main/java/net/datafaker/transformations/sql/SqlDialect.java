@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static net.datafaker.transformations.sql.Casing.DEFAULT_CASING;
+import static net.datafaker.transformations.sql.SqlDialect.AuxiliaryConstants.BACKSLASH_ESCAPE;
 import static net.datafaker.transformations.sql.SqlDialect.AuxiliaryConstants.DEFAULT_FIRST_ROW;
 import static net.datafaker.transformations.sql.SqlDialect.AuxiliaryConstants.DEFAULT_OTHER_ROWS;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.INSERT_ALL;
@@ -19,17 +20,17 @@ import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.VALUE
 
 public enum SqlDialect {
     ANSI("`"),
-    BIGQUERY("`", Casing.UNCHANGED),
+    BIGQUERY("`", Casing.UNCHANGED, BACKSLASH_ESCAPE),
     CALCITE("\""),
-    CLICKHOUSE("`"),
+    CLICKHOUSE("`", BACKSLASH_ESCAPE),
     EXASOL("\""),
     FIREBOLT("\""),
     H2("\""),
-    INFOBRIGHT("`"),
+    INFOBRIGHT("`", BACKSLASH_ESCAPE),
     LUCIDDB("\""),
-    MARIADB("`", Casing.TO_LOWER),
+    MARIADB("`", Casing.TO_LOWER, BACKSLASH_ESCAPE),
     MSSQL("[]"),
-    MYSQL("`", Casing.UNCHANGED),
+    MYSQL("`", Casing.UNCHANGED, BACKSLASH_ESCAPE),
     NETEZZA("\""),
     ORACLE("\"", Casing.TO_UPPER,
         (columns, values, caze) -> {
@@ -48,7 +49,7 @@ public enum SqlDialect {
     PRESTO("\"", Casing.UNCHANGED),
     REDSHIFT("\"", Casing.TO_LOWER),
     SNOWFLAKE("\""),
-    SPARKSQL("`") {
+    SPARKSQL("`", BACKSLASH_ESCAPE) {
 
         @Override
         public String getCompositePrefix(SqlTransformer.Case caze) {
@@ -77,16 +78,24 @@ public enum SqlDialect {
     private final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow;
     private final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows;
     private final Function<SqlTransformer.Case, String> lastBatchRow;
+    private final boolean backslashEscape;
 
     private static final String DEFAULT_BEFORE_EACH_BATCH_PREFIX = "       ";
 
-    SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
+    SqlDialect(String sqlQuoteIdentifier, Casing casing, boolean backslashEscape,
+               TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
                TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
         this.sqlQuoteIdentifier = sqlQuoteIdentifier;
         this.unquotedCasing = casing;
+        this.backslashEscape = backslashEscape;
         this.batchFirstRow = batchFirstRow;
         this.batchOtherRows = batchOtherRows;
         this.lastBatchRow = lastBatchRow;
+    }
+
+    SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
+               TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
+        this(sqlQuoteIdentifier, casing, false, batchFirstRow, batchOtherRows, lastBatchRow);
     }
 
     SqlDialect(String sqlQuoteIdentifier, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
@@ -94,11 +103,19 @@ public enum SqlDialect {
         this(sqlQuoteIdentifier, DEFAULT_CASING, batchFirstRow, batchOtherRows, lastBatchRow);
     }
 
-    SqlDialect(String sqlQuoteIdentifier, Casing casing) {
-        this(sqlQuoteIdentifier, casing,
+    SqlDialect(String sqlQuoteIdentifier, Casing casing, boolean backslashEscape) {
+        this(sqlQuoteIdentifier, casing, backslashEscape,
             DEFAULT_FIRST_ROW,
             DEFAULT_OTHER_ROWS,
             s -> "");
+    }
+
+    SqlDialect(String sqlQuoteIdentifier, Casing casing) {
+        this(sqlQuoteIdentifier, casing, false);
+    }
+
+    SqlDialect(String sqlQuoteIdentifier, boolean backslashEscape) {
+        this(sqlQuoteIdentifier, DEFAULT_CASING, backslashEscape);
     }
 
     SqlDialect(String sqlQuoteIdentifier) {
@@ -148,17 +165,43 @@ public enum SqlDialect {
     }
 
     /**
-     * Whether a quote inside a string literal is escaped with a backslash ({@code 'It\'s'}).
-     * Other dialects double it ({@code 'It''s'}) as standard SQL requires.
+     * Escapes a value placed inside a string literal delimited by {@code quote}.
+     * Most dialects double the quote ({@code 'It''s'}) as standard SQL requires. Dialects created with
+     * {@code BACKSLASH_ESCAPE} put a backslash before the quote and before a literal backslash
+     * ({@code 'It\'s'}, {@code 'C:\\temp'}).
      */
-    public boolean escapesQuoteWithBackslash() {
-        return switch (this) {
-            case BIGQUERY, CLICKHOUSE, INFOBRIGHT, MARIADB, MYSQL, SPARKSQL -> true;
-            default -> false;
-        };
+    public String escapeStringLiteral(String value, char quote) {
+        return escape(value, quote, backslashEscape ? '\\' : quote);
+    }
+
+    /**
+     * Escapes a name placed inside a quoted identifier. Only the closing character needs escaping,
+     * by doubling it ({@code "a""b"}, {@code `a``b`}, {@code [a]]b]}).
+     */
+    public String escapeIdentifier(String name) {
+        char close = sqlQuoteIdentifier.charAt(sqlQuoteIdentifier.length() - 1);
+        return escape(name, close, close);
+    }
+
+    /**
+     * Puts {@code escape} before every {@code quote} and every {@code escape} in the value.
+     * When both are the same character, this doubles it.
+     */
+    static String escape(String value, char quote, char escape) {
+        StringBuilder result = new StringBuilder(value.length());
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if (c == quote || c == escape) {
+                result.append(escape);
+            }
+            result.append(c);
+        }
+        return result.toString();
     }
 
     static class AuxiliaryConstants {
+        static final boolean BACKSLASH_ESCAPE = true;
+
         static final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> DEFAULT_FIRST_ROW = (supplier, supplier2, caze) -> {
             final String insertAll = INSERT_INTO.getValue(caze) + " ";
             final String values = LINE_SEPARATOR + VALUES.getValue(caze) + " ";
