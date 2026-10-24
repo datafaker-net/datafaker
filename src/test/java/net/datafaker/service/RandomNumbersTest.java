@@ -35,13 +35,21 @@ class RandomNumbersTest {
     @Test
     void range_exclusive_inclusive() {
         assertThat(all(() -> randomService.nextInt(Range.exclusiveInclusive(2, 5)))).containsExactly(3, 4, 5);
+        assertThat(randomService.nextInt(Range.exclusiveInclusive(Integer.MIN_VALUE, Integer.MIN_VALUE + 1))).isEqualTo(Integer.MIN_VALUE + 1);
+
         assertThat(all(() -> randomService.nextLong(Range.exclusiveInclusive(2L, 5L)))).containsExactly(3L, 4L, 5L);
+        assertThat(randomService.nextLong(Range.exclusiveInclusive(Long.MIN_VALUE, Long.MIN_VALUE + 1))).isEqualTo(Long.MIN_VALUE + 1);
+        assertThat(randomService.nextLong(Range.exclusiveInclusive(Long.MAX_VALUE - 2, Long.MAX_VALUE))).isEqualTo(Long.MAX_VALUE - 1);
     }
 
     @Test
     void range_exclusive() {
         assertThat(all(() -> randomService.nextLong(Range.exclusive(2L, 5L)))).containsExactly(3L, 4L);
+        assertThat(randomService.nextInt(Range.exclusive(Integer.MIN_VALUE, Integer.MIN_VALUE + 2))).isEqualTo(Integer.MIN_VALUE + 1);
+
         assertThat(all(() -> randomService.nextInt(Range.exclusive(2, 5)))).containsExactly(3, 4);
+        assertThat(randomService.nextLong(Range.exclusive(Long.MIN_VALUE, Long.MIN_VALUE + 2))).isEqualTo(Long.MIN_VALUE + 1);
+        assertThat(randomService.nextLong(Range.exclusive(Long.MAX_VALUE - 2, Long.MAX_VALUE))).isEqualTo(Long.MAX_VALUE - 1);
     }
 
     @RepeatedTest(10)

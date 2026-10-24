@@ -28,7 +28,6 @@ public class RandomService {
         this.random = requireNonNullElse(random, SHARED_RANDOM);
     }
 
-    @SuppressWarnings("unused")
     public int nextInt() {
         return random.nextInt();
     }

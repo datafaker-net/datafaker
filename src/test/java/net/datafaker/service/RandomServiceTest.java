@@ -14,8 +14,10 @@ import java.util.Random;
 import java.util.Set;
 import java.util.SplittableRandom;
 import java.util.random.RandomGenerator;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toSet;
 import static net.datafaker.service.RandomServiceTest.Ring.DWARVES;
 import static net.datafaker.service.RandomServiceTest.Ring.ELVES;
 import static net.datafaker.service.RandomServiceTest.Ring.LORD;
@@ -64,13 +66,85 @@ class RandomServiceTest {
     }
 
     @Test
+    void nextInt_withoutBounds() {
+        RandomService randomService = new RandomService();
+        for (int i = 0; i < 100; i++) {
+            assertThat(randomService.nextInt())
+                .isBetween(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        }
+    }
+
+    @Test
+    void nextLong_withoutBounds() {
+        RandomService randomService = new RandomService();
+        for (int i = 0; i < 100; i++) {
+            assertThat(randomService.nextLong())
+                .isBetween(Long.MIN_VALUE, Long.MAX_VALUE);
+        }
+    }
+
+    @Test
+    void nextInt_withUpperBound_exclusive() {
+        RandomService randomService = new RandomService();
+        assertThat(randomService.nextInt(1)).isEqualTo(0);
+
+        for (int i = 0; i < 100; i++) {
+            assertThat(randomService.nextInt(5)).isBetween(0, 4);
+        }
+    }
+
+    @Test
+    void nextLong_withUpperBound_exclusive() {
+        RandomService randomService = new RandomService();
+        assertThat(randomService.nextLong(1L)).isEqualTo(0);
+
+        for (int i = 0; i < 100; i++) {
+            assertThat(randomService.nextLong(5)).isBetween(0L, 4L);
+        }
+    }
+
+    @Test
+    void nextInt_withLowerAndUpperBounds() {
+        RandomService randomService = new RandomService();
+        assertThatThrownBy(() -> randomService.nextInt(20, 19))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Min (20) > Max (19)");
+
+        assertThat(randomService.nextInt(42, 42)).isEqualTo(42);
+        assertThat(randomService.nextInt(6, 7)).isBetween(6, 7);
+        assertThat(randomService.nextInt(-3, 3)).isBetween(-3, 3);
+    }
+
+    @Test
     void nextInt_returnsValueWithinGivenRange() {
         RandomService randomService = new RandomService();
-        for (int i = 0; i < 10_000; i++) {
-            assertThat(randomService.nextInt(2, 6))
-                .isGreaterThanOrEqualTo(2)
-                .isLessThanOrEqualTo(6);
-        }
+        Set<Integer> results = IntStream.range(0, 100)
+            .mapToObj(__ -> randomService.nextInt(2, 6))
+            .collect(toSet());
+
+        assertThat(results).containsExactlyInAnyOrder(2, 3, 4, 5, 6);
+    }
+
+    @Test
+    void nextInt_includesLowerBound() {
+        RandomService randomService = new RandomService();
+        assertThat(randomService.nextInt(Integer.MIN_VALUE, Integer.MIN_VALUE)).isEqualTo(Integer.MIN_VALUE);
+
+        Set<Integer> results = IntStream.range(0, 100)
+            .mapToObj(__ -> randomService.nextInt(Integer.MIN_VALUE, Integer.MIN_VALUE + 1))
+            .collect(toSet());
+        assertThat(results).containsExactlyInAnyOrder(Integer.MIN_VALUE, Integer.MIN_VALUE + 1);
+    }
+
+    @Test
+    void nextInt_includesUpperBound() {
+        RandomService randomService = new RandomService();
+        assertThat(randomService.nextInt(Integer.MAX_VALUE, Integer.MAX_VALUE)).isEqualTo(Integer.MAX_VALUE);
+
+        Set<Integer> all = IntStream.range(0, 100)
+            .mapToObj(__ -> randomService.nextInt(Integer.MAX_VALUE - 1, Integer.MAX_VALUE))
+            .collect(toSet());
+        assertThat(all).containsExactlyInAnyOrder(Integer.MAX_VALUE - 1, Integer.MAX_VALUE);
     }
 
     @ParameterizedTest
@@ -171,6 +245,14 @@ class RandomServiceTest {
         assertThat(randomService.nextLong(0, Long.MAX_VALUE - 1)).isBetween(0L, Long.MAX_VALUE - 1);
         assertThat(randomService.nextLong(Long.MIN_VALUE, 0)).isBetween(Long.MIN_VALUE, 0L);
         assertThat(randomService.nextLong(Long.MIN_VALUE, Long.MAX_VALUE)).isBetween(Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    @Test
+    void nextLong() {
+        RandomService randomService = new RandomService();
+        assertThat(randomService.nextLong(0L, 0L)).isEqualTo(0L);
+        assertThat(randomService.nextLong(1L, 1L)).isEqualTo(1L);
+        assertThat(randomService.nextLong(-42L, -42L)).isEqualTo(-42L);
     }
 
     @ParameterizedTest
