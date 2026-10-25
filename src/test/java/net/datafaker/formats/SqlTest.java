@@ -671,10 +671,4 @@ class SqlTest {
 
         assertThat(transformer.generate(schema, 1)).contains("'it\\'s', 'x'", "'a\\\\b', 'y'");
     }
-
-    @Test
-    void deprecatedEscapesQuoteWithBackslashStillReports() {
-        assertThat(SqlDialect.MYSQL.escapesQuoteWithBackslash()).isTrue();
-        assertThat(SqlDialect.POSTGRES.escapesQuoteWithBackslash()).isFalse();
-    }
 }

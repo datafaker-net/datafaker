@@ -165,16 +165,6 @@ public enum SqlDialect {
     }
 
     /**
-     * Whether string literals of this dialect escape the quote with a backslash instead of doubling it.
-     *
-     * @deprecated use {@link #escapeStringLiteral(String, char)}, which also escapes backslashes
-     */
-    @Deprecated
-    public boolean escapesQuoteWithBackslash() {
-        return quoteEscape == QuoteEscape.BACKSLASH;
-    }
-
-    /**
      * Escapes a value placed inside a string literal delimited by {@code quote}.
      * Most dialects double the quote ({@code 'It''s'}) as standard SQL requires. Dialects declared with
      * {@code QuoteEscape.BACKSLASH} put a backslash before the quote and before a literal backslash
@@ -209,7 +199,7 @@ public enum SqlDialect {
     enum QuoteEscape {
         /** {@code 'It''s'} */
         DOUBLE,
-        /** {@code 'It's'}, a literal backslash is escaped too */
+        /** {@code 'It\'s'}, a literal backslash is escaped too */
         BACKSLASH
     }
 
