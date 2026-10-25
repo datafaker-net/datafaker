@@ -617,7 +617,58 @@ class SqlTest {
             of(SqlDialect.MYSQL, "'O\\'Brien'"),
             of(SqlDialect.MARIADB, "'O\\'Brien'"),
             of(SqlDialect.BIGQUERY, "'O\\'Brien'"),
+            of(SqlDialect.CLICKHOUSE, "'O\\'Brien'"),
+            of(SqlDialect.INFOBRIGHT, "'O\\'Brien'"),
+            of(SqlDialect.SNOWFLAKE, "'O\\'Brien'"),
             of(SqlDialect.SPARKSQL, "'O\\'Brien'")
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("backslashEscapeDialects")
+    void escapesBackslashInStringValues(SqlDialect dialect, String expectedValue) {
+        Schema<String, String> schema = Schema.of(field("path", () -> "C:\\temp\\"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES (" + expectedValue + ");");
+    }
+
+    private static Stream<Arguments> backslashEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.POSTGRES, "'C:\\temp\\'"),
+            of(SqlDialect.MSSQL, "'C:\\temp\\'"),
+            of(SqlDialect.MYSQL, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.MARIADB, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.BIGQUERY, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.CLICKHOUSE, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.INFOBRIGHT, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.SNOWFLAKE, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.SPARKSQL, "'C:\\\\temp\\\\'")
+        );
+    }
+
+    @Test
+    void escapesBackslashBeforeQuote() {
+        Schema<String, String> schema = Schema.of(field("text", () -> "a\\'b"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(SqlDialect.MYSQL).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES ('a\\\\\\'b');");
+    }
+
+    @Test
+    void withoutDialectOnlyTheQuoteIsEscaped() {
+        Schema<String, String> schema = Schema.of(field("text", () -> "C:\\temp\\O'Brien"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES ('C:\\temp\\O\\'Brien');");
+    }
+
+    @Test
+    void escapesSparkSqlFieldPrefix() {
+        Schema<String, String> schema = Schema.of(
+            compositeField("outer", new Field[]{field("it's", () -> "x"), field("a\\b", () -> "y")}));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(SqlDialect.SPARKSQL).build();
+
+        assertThat(transformer.generate(schema, 1)).contains("'it\\'s', 'x'", "'a\\\\b', 'y'");
     }
 }

@@ -32,7 +32,6 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private final Casing casing;
     private final char quote;
-    private final char quoteEscape;
     private final char openSqlIdentifier;
     private final char closeSqlIdentifier;
     private final String tableName;
@@ -53,7 +52,6 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                            Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
         this.schemaName = schemaName;
         this.quote = quote;
-        this.quoteEscape = dialect == null || dialect.escapesQuoteWithBackslash() ? '\\' : quote;
         this.dialect = dialect;
         this.openSqlIdentifier = sqlIdentifier.charAt(0);
         this.closeSqlIdentifier = sqlIdentifier.length() == 1 ? sqlIdentifier.charAt(0) : sqlIdentifier.charAt(1);
@@ -117,7 +115,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     dialect.getFieldPrefix(fields[i].getName());
 
                 if (!fieldPrefix.isEmpty() && !isRoot) {
-                    result.add(quote + dialect.getFieldPrefix(fields[i].getName()) + quote);
+                    result.add(quote + escapeStringLiteral(fieldPrefix) + quote);
                 }
             }
 
@@ -214,25 +212,21 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     + "[" + handleObjectInCollection(collection) + "]";
             } else {
                 String strValue = value.toString();
-                final int length = strValue.length();
                 final boolean quoteRequired = !(value instanceof Number) && !(value instanceof Boolean);
-                String res = handledObjectToString(length, strValue);
+                String res = escapeStringLiteral(strValue);
                 return quoteRequired ? quote + res + quote : res;
             }
         }
     }
 
-    private String handledObjectToString(int length, String strValue) {
-        StringBuilder builder = new StringBuilder(length);
-
-        for (int k = 0; k < length; k++) {
-            if (strValue.charAt(k) == quote) {
-                builder.append(quoteEscape).append(quote);
-            }else {
-                builder.append(strValue.charAt(k));
-            }
+    /**
+     * Without a dialect, the quote is prefixed with a backslash and backslashes are left alone.
+     */
+    private String escapeStringLiteral(String value) {
+        if (dialect != null) {
+            return dialect.escapeStringLiteral(value, quote);
         }
-        return builder.toString();
+        return value.replace(String.valueOf(quote), "\\" + quote);
     }
 
     private String handlePrimitivesInArray(Class<?> componentType, Object value) {

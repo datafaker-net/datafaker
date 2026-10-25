@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import static net.datafaker.transformations.Transformer.LINE_SEPARATOR;
 import static net.datafaker.transformations.sql.Casing.DEFAULT_CASING;
+import static net.datafaker.transformations.sql.SqlDialect.QuoteEscape.BACKSLASH;
 import static net.datafaker.transformations.sql.SqlDialect.AuxiliaryConstants.DEFAULT_FIRST_ROW;
 import static net.datafaker.transformations.sql.SqlDialect.AuxiliaryConstants.DEFAULT_OTHER_ROWS;
 import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.INSERT_ALL;
@@ -19,17 +20,17 @@ import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.VALUE
 
 public enum SqlDialect {
     ANSI("`"),
-    BIGQUERY("`", Casing.UNCHANGED),
+    BIGQUERY("`", Casing.UNCHANGED, BACKSLASH),
     CALCITE("\""),
-    CLICKHOUSE("`"),
+    CLICKHOUSE("`", BACKSLASH),
     EXASOL("\""),
     FIREBOLT("\""),
     H2("\""),
-    INFOBRIGHT("`"),
+    INFOBRIGHT("`", BACKSLASH),
     LUCIDDB("\""),
-    MARIADB("`", Casing.TO_LOWER),
+    MARIADB("`", Casing.TO_LOWER, BACKSLASH),
     MSSQL("[]"),
-    MYSQL("`", Casing.UNCHANGED),
+    MYSQL("`", Casing.UNCHANGED, BACKSLASH),
     NETEZZA("\""),
     ORACLE("\"", Casing.TO_UPPER,
         (columns, values, caze) -> {
@@ -47,8 +48,8 @@ public enum SqlDialect {
     POSTGRES("\""),
     PRESTO("\"", Casing.UNCHANGED),
     REDSHIFT("\"", Casing.TO_LOWER),
-    SNOWFLAKE("\""),
-    SPARKSQL("`") {
+    SNOWFLAKE("\"", BACKSLASH),
+    SPARKSQL("`", BACKSLASH) {
 
         @Override
         public String getCompositePrefix(SqlTransformer.Case caze) {
@@ -77,16 +78,24 @@ public enum SqlDialect {
     private final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow;
     private final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows;
     private final Function<SqlTransformer.Case, String> lastBatchRow;
+    private final QuoteEscape quoteEscape;
 
     private static final String DEFAULT_BEFORE_EACH_BATCH_PREFIX = "       ";
 
-    SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
+    SqlDialect(String sqlQuoteIdentifier, Casing casing, QuoteEscape quoteEscape,
+               TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
                TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
         this.sqlQuoteIdentifier = sqlQuoteIdentifier;
         this.unquotedCasing = casing;
+        this.quoteEscape = quoteEscape;
         this.batchFirstRow = batchFirstRow;
         this.batchOtherRows = batchOtherRows;
         this.lastBatchRow = lastBatchRow;
+    }
+
+    SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
+               TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
+        this(sqlQuoteIdentifier, casing, QuoteEscape.DOUBLE, batchFirstRow, batchOtherRows, lastBatchRow);
     }
 
     SqlDialect(String sqlQuoteIdentifier, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
@@ -94,11 +103,19 @@ public enum SqlDialect {
         this(sqlQuoteIdentifier, DEFAULT_CASING, batchFirstRow, batchOtherRows, lastBatchRow);
     }
 
-    SqlDialect(String sqlQuoteIdentifier, Casing casing) {
-        this(sqlQuoteIdentifier, casing,
+    SqlDialect(String sqlQuoteIdentifier, Casing casing, QuoteEscape quoteEscape) {
+        this(sqlQuoteIdentifier, casing, quoteEscape,
             DEFAULT_FIRST_ROW,
             DEFAULT_OTHER_ROWS,
             s -> "");
+    }
+
+    SqlDialect(String sqlQuoteIdentifier, Casing casing) {
+        this(sqlQuoteIdentifier, casing, QuoteEscape.DOUBLE);
+    }
+
+    SqlDialect(String sqlQuoteIdentifier, QuoteEscape quoteEscape) {
+        this(sqlQuoteIdentifier, DEFAULT_CASING, quoteEscape);
     }
 
     SqlDialect(String sqlQuoteIdentifier) {
@@ -148,14 +165,42 @@ public enum SqlDialect {
     }
 
     /**
-     * Whether a quote inside a string literal is escaped with a backslash ({@code 'It\'s'}).
-     * Other dialects double it ({@code 'It''s'}) as standard SQL requires.
+     * Escapes a value placed inside a string literal delimited by {@code quote}.
+     * Most dialects double the quote ({@code 'It''s'}) as standard SQL requires. Dialects declared with
+     * {@code QuoteEscape.BACKSLASH} put a backslash before the quote and before a literal backslash
+     * ({@code 'It\'s'}, {@code 'C:\\temp'}).
+     * <p>
+     * This assumes the server's default behaviour: MySQL and MariaDB running with the
+     * {@code NO_BACKSLASH_ESCAPES} SQL mode treat backslashes literally and need the standard doubling instead.
      */
-    public boolean escapesQuoteWithBackslash() {
-        return switch (this) {
-            case BIGQUERY, CLICKHOUSE, INFOBRIGHT, MARIADB, MYSQL, SPARKSQL -> true;
-            default -> false;
-        };
+    public String escapeStringLiteral(String value, char quote) {
+        return escape(value, quote, quoteEscape == QuoteEscape.BACKSLASH ? '\\' : quote);
+    }
+
+    /**
+     * Puts {@code escape} before every {@code quote} and every {@code escape} in the value.
+     * When both are the same character, this doubles it.
+     */
+    static String escape(String value, char quote, char escape) {
+        StringBuilder result = new StringBuilder(value.length());
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if (c == quote || c == escape) {
+                result.append(escape);
+            }
+            result.append(c);
+        }
+        return result.toString();
+    }
+
+    /**
+     * How a dialect escapes the quote character inside a string literal.
+     */
+    enum QuoteEscape {
+        /** {@code 'It''s'} */
+        DOUBLE,
+        /** {@code 'It\'s'}, a literal backslash is escaped too */
+        BACKSLASH
     }
 
     static class AuxiliaryConstants {
