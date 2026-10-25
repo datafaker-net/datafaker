@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.commons.validator.routines.ISINValidator;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +40,14 @@ class StockTest extends BaseFakerTest {
 
     @RepeatedTest(10)
     void nyseTicker() {
-        assertThat(faker.stock().nyseSymbol()).matches("[A-Z.-^$` ]+");
+        assertThat(faker.stock().nyseSymbol()).matches("[A-Z]{1,4}");
+    }
+
+    @Test
+    void nyseSymbolsArePlainTickers() {
+        assertThat(getBaseList(faker, "stock.symbol_nyse"))
+            .doesNotHaveDuplicates()
+            .allMatch(symbol -> symbol.matches("[A-Z]{1,4}"));
     }
 
     @RepeatedTest(10)
