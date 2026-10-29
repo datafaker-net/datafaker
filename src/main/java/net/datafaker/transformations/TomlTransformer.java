@@ -132,7 +132,31 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
         if (val instanceof Number || val instanceof Boolean) {
             return val.toString();
         }
-        String s = String.valueOf(val).replace("\\", "\\\\").replace("\"", "\\\"");
-        return "\"" + s + "\"";
+        String value = String.valueOf(val);
+        StringBuilder escaped = new StringBuilder();
+        escaped.append('"');
+
+        for (int i = 0; i < value.length(); i++) {
+            char ch = value.charAt(i);
+            switch (ch) {
+                case '"' -> escaped.append("\\\"");
+                case '\\' -> escaped.append("\\\\");
+                case '\b' -> escaped.append("\\b");
+                case '\t' -> escaped.append("\\t");
+                case '\n' -> escaped.append("\\n");
+                case '\f' -> escaped.append("\\f");
+                case '\r' -> escaped.append("\\r");
+                default -> {
+                    if (ch <= 0x1F || ch == 0x7F) {
+                        escaped.append(String.format("\\u%04X", (int) ch));
+                    } else {
+                        escaped.append(ch);
+                    }
+                }
+            }
+        }
+
+        escaped.append('"');
+        return escaped.toString();
     }
 }

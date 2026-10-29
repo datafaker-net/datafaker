@@ -29,11 +29,56 @@ class TomlTest {
         assertThat(tomlTransformer.generate(schema, 1)).isEqualTo(expected);
     }
 
+    @ParameterizedTest(name = "Escape control character U+{0}")
+    @MethodSource("controlCharacters")
+    void escapesControlCharacters(String codePoint, String input, String expectedEscape) {
+        Schema<String, String> schema = Schema.of(field("message", () -> "before" + input + "after"));
+        TomlTransformer<String> transformer = new TomlTransformer<>();
+
+        assertThat(transformer.generate(schema, 1))
+            .isEqualTo("message = \"before" + expectedEscape + "after\"");
+    }
+
+    private static Stream<Arguments> controlCharacters() {
+        return IntStream.concat(IntStream.rangeClosed(0, 0x1F), IntStream.of(0x7F))
+            .mapToObj(codePoint -> {
+                String expectedEscape = switch (codePoint) {
+                    case '\b' -> "\\b";
+                    case '\t' -> "\\t";
+                    case '\n' -> "\\n";
+                    case '\f' -> "\\f";
+                    case '\r' -> "\\r";
+                    default -> String.format("\\u%04X", codePoint);
+                };
+                return of(String.format("%04X", codePoint),
+                    String.valueOf((char) codePoint), expectedEscape);
+            });
+    }
+
     private static Stream<Arguments> generateTestSchema() {
         String sep = System.lineSeparator();
         return Stream.of(
             of(Schema.of(), ""),
             of(Schema.of(field("key", () -> "value")), "key = \"value\""),
+            // A literal newline in the input must be escaped as \n in the generated TOML string.
+            of(Schema.of(field("message", () -> "line1\nline2")), "message = \"line1\\nline2\""),
+            // A carriage return(\r) must also be escaped in the generated TOML string.
+            of(Schema.of(field("message", () -> "line1\rline2")), "message = \"line1\\rline2\""),
+            // Preserve both characters of a Windows-style line ending(\r\n) as TOML escapes.
+            of(Schema.of(field("message", () -> "line1\r\nline2")), "message = \"line1\\r\\nline2\""),
+            // Backspace and form feed must be escaped in TOML basic strings.
+            of(Schema.of(field("message", () -> "a\bb")), "message = \"a\\bb\""),
+            of(Schema.of(field("message", () -> "a\fb")), "message = \"a\\fb\""),
+            // Serialize a tab using its escape sequence.
+            of(Schema.of(field("message", () -> "a\tb")), "message = \"a\\tb\""),
+            // Keep escaping double quotes and backslashes correctly.
+            of(Schema.of(field("message", () -> "say \"hello\"")), "message = \"say \\\"hello\\\"\""),
+            of(Schema.of(field("message", () -> "C:\\temp")), "message = \"C:\\\\temp\""),
+            // A literal backslash followed by n must not become an actual newline.
+            of(Schema.of(field("message", () -> "line1\\nline2")), "message = \"line1\\\\nline2\""),
+            // Preserve Unicode text while escaping mixed special characters.
+            of(Schema.of(field("message", () -> "中文😀\n\"quoted\"\\path")),
+                "message = \"中文😀\\n\\\"quoted\\\"\\\\path\""),
             of(Schema.of(field("number", () -> 123)), "number = 123"),
             of(Schema.of(field("number", () -> BigDecimal.valueOf(123.0))), "number = 123.0"),
             of(Schema.of(field("number", () -> BigDecimal.valueOf(123.123))), "number = 123.123"),
