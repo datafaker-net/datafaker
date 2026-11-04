@@ -71,11 +71,16 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
                 continue;
             }
             Object val = f.transform(input);
-            writeValue(sb, key, pathPrefix, val);
+            writeValue(sb, formatKey(key), pathPrefix, val);
         }
     }
 
-    private void writeValue(StringBuilder sb, @Nullable String key, String pathPrefix, @Nullable Object val) {
+    private String formatKey(@Nullable String key) {
+        String name = String.valueOf(key);
+        return name.matches("[A-Za-z0-9_-]+") ? name : value2String(name);
+    }
+
+    private void writeValue(StringBuilder sb, String key, String pathPrefix, @Nullable Object val) {
         String fullPath = pathPrefix.isEmpty() ? key : pathPrefix + "." + key;
 
         if (val instanceof Schema<?, ?> nested) {
