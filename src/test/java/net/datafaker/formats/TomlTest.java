@@ -39,6 +39,98 @@ class TomlTest {
             .isEqualTo("message = \"before" + expectedEscape + "after\"");
     }
 
+    @ParameterizedTest
+    @MethodSource("keyNames")
+    void formatsScalarKeys(String key, String expectedKey) {
+        Schema<Object, ?> schema = Schema.of(field(key, () -> "value"));
+
+        assertThat(new TomlTransformer<>().generate(schema, 1))
+            .isEqualTo(expectedKey + " = \"value\"");
+    }
+
+    @ParameterizedTest
+    @MethodSource("keyNames")
+    void formatsArrayAndCollectionKeys(String key, String expectedKey) {
+        for (Object value : List.of(new int[]{1, 2}, List.of(1, 2))) {
+            Schema<Object, ?> schema = Schema.of(field(key, () -> value));
+
+            assertThat(new TomlTransformer<>().generate(schema, 1))
+                .isEqualTo(expectedKey + " = [ 1, 2 ]");
+        }
+        for (Object value : List.of(new int[]{}, List.of())) {
+            Schema<Object, ?> schema = Schema.of(field(key, () -> value));
+
+            assertThat(new TomlTransformer<>().generate(schema, 1))
+                .isEqualTo(expectedKey + " = []");
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("keyNames")
+    void formatsTableNames(String key, String expectedKey) {
+        Schema<Object, ?> schema = Schema.of(field(key, () -> Schema.of(field(key, () -> 1))));
+
+        assertThat(new TomlTransformer<>().generate(schema, 1))
+            .isEqualTo("[" + expectedKey + "]" + System.lineSeparator() + expectedKey + " = 1");
+    }
+
+    @ParameterizedTest
+    @MethodSource("keyNames")
+    void formatsArrayOfTablesNames(String key, String expectedKey) {
+        Schema<Object, ?> schema = Schema.of(field(key, () -> List.of(
+            Schema.of(field(key, () -> 1)), Schema.of(field(key, () -> 2)))));
+        String sep = System.lineSeparator();
+
+        assertThat(new TomlTransformer<>().generate(schema, 1))
+            .isEqualTo("[[" + expectedKey + "]]" + sep + expectedKey + " = 1" + sep
+                + "[[" + expectedKey + "]]" + sep + expectedKey + " = 2");
+    }
+
+    @ParameterizedTest
+    @MethodSource("keyNames")
+    void formatsNestedPathComponents(String key, String expectedKey) {
+        Schema<Object, ?> schema = Schema.of(field("parent.name", () -> Schema.of(
+            field(key, () -> Schema.of(field("value", () -> 1))),
+            field("items", () -> List.of(Schema.of(field(key, () -> 2)))))));
+        String sep = System.lineSeparator();
+
+        assertThat(new TomlTransformer<>().generate(schema, 1))
+            .isEqualTo("[\"parent.name\"]" + sep
+                + "[\"parent.name\"." + expectedKey + "]" + sep + "value = 1" + sep
+                + "[[\"parent.name\".items]]" + sep + expectedKey + " = 2");
+    }
+
+    @ParameterizedTest
+    @MethodSource("keyNames")
+    void formatsNestedArrayOfTablesPathComponents(String key, String expectedKey) {
+        Schema<Object, ?> schema = Schema.of(field("parent", () -> List.of(Schema.of(
+            field(key, () -> List.of(Schema.of(field("value", () -> 1))))))));
+        String sep = System.lineSeparator();
+
+        assertThat(new TomlTransformer<>().generate(schema, 1))
+            .isEqualTo("[[parent]]" + sep + "[[parent." + expectedKey + "]]" + sep + "value = 1");
+    }
+
+    private static Stream<Arguments> keyNames() {
+        return Stream.concat(Stream.of(
+            of("key", "key"),
+            of("AZaz09_-", "AZaz09_-"),
+            of("123", "123"),
+            of("", "\"\""),
+            of("first name", "\"first name\""),
+            of("first.name", "\"first.name\""),
+            of("a\"b", "\"a\\\"b\""),
+            of("a\\b", "\"a\\\\b\""),
+            of("中文😀", "\"中文😀\""),
+            of("a\r\nb", "\"a\\r\\nb\""),
+            of("a\\nb", "\"a\\\\nb\""),
+            of("a]#[b", "\"a]#[b\"")),
+            controlCharacters().map(args -> {
+                Object[] values = args.get();
+                return of("before" + values[1] + "after", "\"before" + values[2] + "after\"");
+            }));
+    }
+
     private static Stream<Arguments> controlCharacters() {
         return IntStream.concat(IntStream.rangeClosed(0, 0x1F), IntStream.of(0x7F))
             .mapToObj(codePoint -> {
