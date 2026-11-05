@@ -50,7 +50,8 @@ class NationTest extends BaseFakerTest {
         return List.of(
             TestSpec.of(nation::nationality, "nation.nationality"),
             TestSpec.of(nation::language, "nation.language"),
-            TestSpec.of(nation::capitalCity, "nation.capital_city")
+            TestSpec.of(nation::capitalCity, "nation.capital_city"),
+            TestSpec.of(nation::flag, "nation.flag")
         );
     }
 }

@@ -1,15 +1,13 @@
 package net.datafaker.providers.base;
 
-import net.datafaker.Faker;
-import org.junit.jupiter.api.RepeatedTest;
+import java.util.Collection;
+import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class FamousLastWordsTest extends BaseFakerTest {
 
-class FamousLastWordsTest {
-    private final Faker faker = new Faker();
-
-    @RepeatedTest(10)
-    void testLastWords() {
-        assertThat(faker.famousLastWords().lastWords()).matches("^[A-Za-z- .,'!?-…]+$");
+    @Override
+    protected Collection<TestSpec> providerListTest() {
+        FamousLastWords famousLastWords = faker.famousLastWords();
+        return List.of(TestSpec.of(famousLastWords::lastWords, "famous_last_words.last_words", "^[A-Za-z- .,'!?-…]+$"));
     }
 }

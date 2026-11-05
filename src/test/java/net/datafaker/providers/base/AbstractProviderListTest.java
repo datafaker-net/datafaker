@@ -52,6 +52,11 @@ public abstract class AbstractProviderListTest<T extends BaseFaker> {
         assertThat(expected)
             .as(() -> "Actual should not have empty entries. " + collection)
             .noneMatch(String::isBlank);
+        if (!testSpec.outerWhitespaceAllowed()) {
+            assertThat(expected)
+                .as(() -> "Values in %s must not have leading or trailing whitespace".formatted(collection))
+                .allMatch(entry -> entry == null || entry.equals(entry.strip()));
+        }
         if (!testSpec.regex().isEmpty()) {
             Pattern pattern = Pattern.compile(testSpec.regex());
             assertThat(actual).matches(pattern);
@@ -61,13 +66,26 @@ public abstract class AbstractProviderListTest<T extends BaseFaker> {
         }
     }
 
-    protected record TestSpec(Supplier<?> supplier, String key, String regex) {
+    protected record TestSpec(Supplier<?> supplier, String key, String regex, boolean outerWhitespaceAllowed) {
         public static TestSpec of(Supplier<?> supplier, String key) {
-            return new TestSpec(supplier, key, "");
+            return new TestSpec(supplier, key, "", false);
         }
 
         public static TestSpec of(Supplier<?> supplier, String key, String regex) {
-            return new TestSpec(supplier, key, regex);
+            return new TestSpec(supplier, key, regex, false);
+        }
+
+        /**
+         * Allows leading and trailing whitespace in the provider-list values.
+         * <p>
+         * By default every string value must not have outer whitespace
+         * ({@code value.equals(value.strip())}). Use this opt-out only when the
+         * whitespace is intentional.
+         *
+         * @return a copy of this spec with outer whitespace allowed
+         */
+        public TestSpec allowOuterWhitespace() {
+            return new TestSpec(supplier, key, regex, true);
         }
 
         @Override

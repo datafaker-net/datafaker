@@ -15,7 +15,8 @@ public class SoulKnightTest extends VideoGameFakerTest {
             TestSpec.of(soulKnight::buffs, "soul_knight.buffs"),
             TestSpec.of(soulKnight::enemies, "soul_knight.enemies"),
             TestSpec.of(soulKnight::statues, "soul_knight.statues"),
-            TestSpec.of(soulKnight::weapons, "soul_knight.weapons")
+            TestSpec.of(soulKnight::weapons, "soul_knight.weapons"),
+            TestSpec.of(soulKnight::characters, "soul_knight.characters")
         );
     }
 }

@@ -13,7 +13,8 @@ class MusicTest extends BaseFakerTest {
     @Override
     protected Collection<TestSpec> providerListTest() {
         Music music = faker.music();
-        return List.of(TestSpec.of(music::instrument, "music.instruments", "\\w+ ?\\w+"));
+        return List.of(TestSpec.of(music::instrument, "music.instruments", "\\w+ ?\\w+"),
+            TestSpec.of(music::genre, "music.genres"));
     }
 
     @Test
