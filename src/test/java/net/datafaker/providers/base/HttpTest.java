@@ -31,7 +31,17 @@ class HttpTest extends BaseFakerTest {
             TestSpec.of(() -> http.responseBody("application/javascript"), "http.response_body.javascript"),
             TestSpec.of(() -> http.responseBody("text/css"), "http.response_body.css"),
             TestSpec.of(() -> http.responseBody("application/graphql"), "http.response_body.graphql"),
-            TestSpec.of(() -> http.responseBody("text/markdown"), "http.response_body.markdown")
+            TestSpec.of(() -> http.responseBody("text/markdown"), "http.response_body.markdown").allowOuterWhitespace(),
+            TestSpec.of(() -> faker.resolve("http.status_code.informational"), "http.status_code.informational"),
+            TestSpec.of(() -> faker.resolve("http.status_code.successful"), "http.status_code.successful"),
+            TestSpec.of(() -> faker.resolve("http.status_code.redirect"), "http.status_code.redirect"),
+            TestSpec.of(() -> faker.resolve("http.status_code.client_error"), "http.status_code.client_error"),
+            TestSpec.of(() -> faker.resolve("http.status_code.server_error"), "http.status_code.server_error"),
+            TestSpec.of(http::mobileUserAgent, "http.user_agent.mobile"),
+            TestSpec.of(() -> http.userAgent(Http.Browser.CHROME), "http.user_agent.chrome"),
+            TestSpec.of(() -> http.userAgent(Http.Browser.FIREFOX), "http.user_agent.firefox"),
+            TestSpec.of(() -> http.userAgent(Http.Browser.SAFARI), "http.user_agent.safari"),
+            TestSpec.of(() -> http.userAgent(Http.Browser.EDGE), "http.user_agent.edge")
         );
     }
 
