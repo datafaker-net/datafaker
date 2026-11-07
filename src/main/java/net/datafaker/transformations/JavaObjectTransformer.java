@@ -117,10 +117,11 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
                 collection.add(o);
             }
         }
+        Collection<Object> result = new ArrayList<>(collection.size());
         for (Object elem : collection) {
-            apply(elem, schema);
+            result.add(apply(elem, schema));
         }
-        return collection;
+        return result;
     }
 
     public JavaObjectTransformer from(Class<?> input) {
