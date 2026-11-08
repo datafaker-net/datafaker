@@ -142,6 +142,9 @@ public class FakeValuesService {
     public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
         final Object o = fetchObject(key, context);
+        if (o instanceof WeightedYamlValues weighted) {
+            return weighted.select(context.getRandomService());
+        }
         if (o instanceof List<?> list) {
             valuesArray = list;
             final int size = valuesArray.size();
@@ -196,6 +199,9 @@ public class FakeValuesService {
         Object o = fetchObject(key, context);
         String str;
         if (o == null) return defaultIfNull;
+        if (o instanceof WeightedYamlValues weighted) {
+            return weighted.select(context.getRandomService());
+        }
         if (o instanceof List<?> list) {
             final List<String> values = (List<String>) list;
             final int size = values.size();

@@ -63,7 +63,7 @@ This will print something like the following:
 
 ### Weighted random selection
 
-> **Note**: Usage of weighted random selector is in the POC stage and is currently available only for custom hardcoded providers.
+> **Note**: Usage of weighted random selector is in the POC stage. Custom YAML providers also support the percentage syntax described below.
 
 Since version 2.4.2 of Datafaker it's possible to use a random selector based on weights, add a `WeightedRandomSelector` and weighted values to your provider:
 
@@ -153,6 +153,29 @@ en:
     insectsfromfile:
       bees: ['Bumblebee', 'Euglossine bee', 'Honeybee', 'Carpenter bee', 'Leaf-cutter bee', 'Mining bee']
 ```
+
+### Weighted YAML choices
+
+Custom files loaded with `addPath` or `addUrl` can use a list of percentage-key mappings:
+
+```yaml
+en:
+  faker:
+    insectsfromfile:
+      ants:
+        - "60%": "Driver ant"
+        - "40%": "#{other_ant}"
+      other_ant: ["Fire ant", "Harvester ant"]
+      domains:
+        - "90%": ".it"
+        - "10%": [".ee", ".lv", ".lt"]
+```
+
+Each entry must have exactly one quoted decimal percentage key and a string template or a non-empty list of string templates. Percentages must be finite, positive and total exactly 100 (decimal fractions such as `33.3%` are supported). Branch values must be unique, matching `WeightedRandomSelector`'s validation. Mixing weighted entries with ordinary entries, or nesting weighted choices inside a branch, is not supported.
+
+The weighted branch is selected first; a list branch then selects one entry uniformly. Templates resolve in the same way as ordinary custom-provider templates, including local and other provider references. Selection uses the current Faker's random service, so seeded Fakers remain reproducible. Percentages describe probabilities, not guaranteed counts in a finite sample.
+
+This syntax applies only to custom files. Ordinary lists, maps and scalar values, bundled locale data, and the Java weighted-selection API retain their existing behavior. An empty ordinary list still uses the existing fallback behavior.
 
 ### Register provider
 

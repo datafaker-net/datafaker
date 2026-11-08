@@ -7,6 +7,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -46,9 +47,31 @@ public class FakeValues implements FakeValuesInterface {
         try (var stream = url.openStream()) {
             Map<String, Object> result = readFromStream(stream);
             enrichMapWithJavaNames(result);
+            if (result != null) {
+                result.forEach((provider, value) -> prepareCustomValues(value, provider));
+            }
             return result;
         } catch (IOException e) {
             throw new RuntimeException("Failed to read fake values from %s".formatted(url), e);
+        }
+    }
+
+    private void prepareCustomValues(Object node, String provider) {
+        if (node instanceof Map<?, ?> rawMap) {
+            @SuppressWarnings("unchecked")
+            Map<Object, Object> map = (Map<Object, Object>) rawMap;
+            map.replaceAll((key, value) -> {
+                if (value instanceof List<?> list) {
+                    WeightedYamlValues weighted = WeightedYamlValues.from(list, template -> {
+                        List<Object> singleton = new ArrayList<>(List.of(template));
+                        prefixUnqualifiedExpressions(singleton, provider);
+                        return (String) singleton.get(0);
+                    });
+                    if (weighted != null) return weighted;
+                }
+                prepareCustomValues(value, provider);
+                return value;
+            });
         }
     }
 
