@@ -4,18 +4,18 @@ import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.function.UnaryOperator;
 
 /** A custom YAML choice, parsed once but sampled using the current Faker's random service. */
 final class WeightedYamlValues {
-    private final List<Map<String, Object>> choices;
+    private final double[] cumulativeWeights;
+    private final Object[] choices;
 
-    private WeightedYamlValues(List<Map<String, Object>> choices) {
-        this.choices = List.copyOf(choices);
+    private WeightedYamlValues(double[] cumulativeWeights, Object[] choices) {
+        this.cumulativeWeights = cumulativeWeights;
+        this.choices = choices;
     }
 
     @Nullable
@@ -25,10 +25,12 @@ final class WeightedYamlValues {
             && map.keySet().stream().anyMatch(key -> key instanceof String s && s.endsWith("%")));
         if (!weighted) return null;
 
-        List<Map<String, Object>> choices = new ArrayList<>(values.size());
-        var uniqueValues = new HashSet<Object>();
+        double[] cumulativeWeights = new double[values.size()];
+        Object[] choices = new Object[values.size()];
+        double cumulative = 0;
         BigDecimal total = BigDecimal.ZERO;
-        for (Object value : values) {
+        for (int i = 0; i < values.size(); i++) {
+            Object value = values.get(i);
             if (!(value instanceof Map<?, ?> map) || map.size() != 1) {
                 throw invalid("each entry must be a single percentage-to-value mapping");
             }
@@ -38,6 +40,7 @@ final class WeightedYamlValues {
             }
             BigDecimal percentage = new BigDecimal(key.substring(0, key.length() - 1));
             double weight = percentage.doubleValue();
+            // Decimal strings can still overflow or underflow when converted to double.
             if (percentage.signum() <= 0 || !Double.isFinite(weight) || weight <= 0) {
                 throw invalid("percentages must be finite and positive");
             }
@@ -58,27 +61,19 @@ final class WeightedYamlValues {
             } else {
                 throw invalid("each branch must be a string template or a non-empty list of string templates");
             }
-            if (!uniqueValues.add(qualified)) {
-                throw invalid("branch values must be unique, as required by WeightedRandomSelector");
-            }
-            choices.add(Map.of("weight", weight, "value", qualified));
+            cumulative += weight;
+            cumulativeWeights[i] = cumulative;
+            choices[i] = qualified;
         }
         if (total.compareTo(BigDecimal.valueOf(100)) != 0) {
             throw invalid("percentages must total 100");
         }
-        return new WeightedYamlValues(choices);
+        return new WeightedYamlValues(cumulativeWeights, choices);
     }
 
     String select(RandomService random) {
-        // The Java provider API accepts Random, while RandomService also supports other
-        // RandomGenerators. Forward its draw without creating an independent random stream.
-        Random delegate = new Random(0) {
-            @Override
-            public double nextDouble() {
-                return random.nextDouble();
-            }
-        };
-        Object selected = new WeightedRandomSelector(delegate).select(choices);
+        Object selected = WeightedRandomSelector.selectWeightedElement(
+            random.nextDouble() * cumulativeWeights[cumulativeWeights.length - 1], cumulativeWeights, choices);
         if (selected instanceof List<?> list) {
             return (String) list.get(list.size() == 1 ? 0 : random.nextInt(list.size()));
         }

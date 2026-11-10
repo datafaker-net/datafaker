@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -86,6 +88,34 @@ class WeightedYamlValuesTest {
         assertThat(values.select(fixed(0.99, 0))).isEqualTo("c");
     }
 
+    @Test
+    void acceptsDuplicateStringAndListBranches() {
+        var strings = WeightedYamlValues.from(List.of(Map.of("60%", "same"), Map.of("40%", "same")), UnaryOperator.identity());
+        var lists = WeightedYamlValues.from(List.of(Map.of("60%", List.of("a", "b")), Map.of("40%", List.of("a", "b"))), UnaryOperator.identity());
+        for (double draw : new double[]{0, 0.99}) {
+            assertThat(strings.select(fixed(draw, 0))).isEqualTo("same");
+            assertThat(lists.select(fixed(draw, 1))).isEqualTo("b");
+        }
+    }
+
+    @Test
+    void preparesChoicesOnceWithoutRetainingMutableInput() {
+        List<String> branch = new ArrayList<>(List.of("a", "b"));
+        Map<String, Object> entry = new HashMap<>(Map.of("100%", branch));
+        List<Map<String, Object>> source = new ArrayList<>(List.of(entry));
+        int[] qualified = {0};
+        var values = WeightedYamlValues.from(source, string -> {
+            qualified[0]++;
+            return string;
+        });
+        branch.clear();
+        entry.clear();
+        source.clear();
+        assertThat(values.select(fixed(0, 0))).isEqualTo("a");
+        assertThat(values.select(fixed(0.99, 1))).isEqualTo("b");
+        assertThat(qualified[0]).isEqualTo(2);
+    }
+
     @ParameterizedTest
     @MethodSource("invalidChoices")
     void rejectsMalformedChoices(List<?> choices) {
@@ -110,7 +140,8 @@ class WeightedYamlValuesTest {
             List.of(Map.of("100%", List.of("a", 1))),
             List.of(Map.of("100%", Map.of("nested", "a"))),
             List.of(Map.of("100%", List.of(Map.of("100%", "a")))),
-            List.of(Map.of("60%", "same"), Map.of("40%", "same"))
+            List.of(Map.of("9".repeat(400) + "%", "overflow")),
+            List.of(Map.of("0." + "0".repeat(400) + "1%", "underflow"))
         );
     }
 

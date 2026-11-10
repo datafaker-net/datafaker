@@ -200,7 +200,7 @@ public class FakeValuesService {
         String str;
         if (o == null) return defaultIfNull;
         if (o instanceof WeightedYamlValues weighted) {
-            return weighted.select(context.getRandomService());
+            o = weighted.select(context.getRandomService());
         }
         if (o instanceof List<?> list) {
             final List<String> values = (List<String>) list;

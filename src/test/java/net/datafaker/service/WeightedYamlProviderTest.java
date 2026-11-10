@@ -1,13 +1,17 @@
 package net.datafaker.service;
 
 import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.Unique;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,17 +36,17 @@ class WeightedYamlProviderTest {
         }
         assertThat(faker.fakeValuesService().fetchString("weighted_custom.strings", faker.getContext())).isIn("first", "second");
         Object ordinary = faker.fakeValuesService().fetchObject("weighted_custom.ordinary", faker.getContext());
-        assertThat(ordinary).isEqualTo(java.util.List.of("a", "b"));
+        assertThat(ordinary).isEqualTo(List.of("a", "b"));
         assertThat(faker.fakeValuesService().safeFetch("weighted_custom.empty", faker.getContext(), "fallback")).isEqualTo("fallback");
         // Custom data is merged with the ordinary locale fallback, not substituted for it.
         assertThat(faker.resolve("name.first_name")).isNotEmpty();
     }
 
     @Test
-    void sameSeedAndSharedYamlDoNotShareSamples() {
+    void sameSeedProducesSameSequence() {
         BaseFaker first = custom(new Random(123));
         BaseFaker second = custom(new Random(123));
-        for (BaseFaker faker : java.util.List.of(first, second)) {
+        for (BaseFaker faker : List.of(first, second)) {
             faker.addUrl(Locale.ENGLISH, getClass().getResource("/weighted-custom.yml"));
         }
         for (int i = 0; i < 100; i++) {
@@ -82,7 +86,7 @@ class WeightedYamlProviderTest {
         faker.addPath(Locale.ENGLISH, file);
         assertThat(faker.resolve("weighted_custom.sibling")).isEqualTo("ordinary sibling");
         Object original = faker.fakeValuesService().fetchObject("weighted_custom.original", faker.getContext());
-        assertThat(original).isEqualTo(java.util.Map.of(1, "one", 2, java.util.List.of("two", "deux")));
+        assertThat(original).isEqualTo(Map.of(1, "one", 2, List.of("two", "deux")));
     }
 
     @Test
@@ -94,7 +98,55 @@ class WeightedYamlProviderTest {
             faker.addPath(Locale.ENGLISH, bad);
             faker.resolve("weighted_custom.value");
         })
-            .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("percentages must total 100");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("percentages must total 100")
+            .hasMessageContaining("weighted_custom.value")
+            .hasMessageContaining(bad.toUri().toURL().toString());
+    }
+
+    @Test
+    void loadingReportsBrokenNestedKeyAlongsideValidSibling() throws IOException {
+        Path bad = directory.resolve("nested-bad.yml");
+        Files.writeString(bad, """
+            en:
+              faker:
+                weighted_custom:
+                  sibling: 'valid'
+                  nested:
+                    value:
+                    - 60%: 'a'
+                    - 30%: 'b'
+            """);
+        BaseFaker faker = custom(new Random(1));
+        assertThatThrownBy(() -> {
+            faker.addPath(Locale.ENGLISH, bad);
+            faker.resolve("weighted_custom.sibling");
+        })
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("weighted_custom.nested.value")
+            .hasMessageContaining(bad.toUri().toURL().toString())
+            .hasMessageContaining("percentages must total 100");
+    }
+
+    @Test
+    void weightedRegexTemplatesResolveLikeScalarRegexValues() {
+        BaseFaker faker = custom(new Random(1));
+        faker.addUrl(Locale.ENGLISH, getClass().getResource("/weighted-custom.yml"));
+        for (String key : List.of("regex_string", "regex_list")) {
+            assertThat(faker.fakeValuesService().safeFetch("weighted_custom." + key, faker.getContext(), null))
+                .isEqualTo("#{regexify '[A-Z]{3}'}");
+            assertThat(faker.expression("#{weighted_custom." + key + "}")).matches("[A-Z]{3}");
+        }
+    }
+
+    @Test
+    void weightedValuesAreNotEnumerableByUnique() {
+        BaseFaker faker = custom(new Random(1));
+        faker.addUrl(Locale.ENGLISH, getClass().getResource("/weighted-custom.yml"));
+        Object raw = faker.fakeValuesService().fetchObject("weighted_custom.strings", faker.getContext());
+        assertThat(raw).isInstanceOf(WeightedYamlValues.class);
+        assertThatThrownBy(() -> new Unique(faker).fetchFromYaml("weighted_custom.strings"))
+            .isInstanceOf(NoSuchElementException.class).hasMessageContaining("No values found");
     }
 
     private static BaseFaker custom(Random random) {

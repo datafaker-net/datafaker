@@ -21,6 +21,11 @@ en:
       - "b"
       empty: []
       scalar: "plain"
+      regex_string:
+      - "100%": "/[A-Z]{3}/"
+      regex_list:
+      - "100%":
+        - "/[A-Z]{3}/"
       nested:
         value:
         - "100%": "nested"

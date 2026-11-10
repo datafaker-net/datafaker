@@ -163,19 +163,21 @@ en:
   faker:
     insectsfromfile:
       ants:
-        - "60%": "Driver ant"
-        - "40%": "#{other_ant}"
+        - 60%: "Driver ant"
+        - 40%: "#{other_ant}"
       other_ant: ["Fire ant", "Harvester ant"]
       domains:
-        - "90%": ".it"
-        - "10%": [".ee", ".lv", ".lt"]
+        - 90%: ".it"
+        - 10%: [".ee", ".lv", ".lt"]
 ```
 
-Each entry must have exactly one quoted decimal percentage key and a string template or a non-empty list of string templates. Percentages must be finite, positive and total exactly 100 (decimal fractions such as `33.3%` are supported). Branch values must be unique, matching `WeightedRandomSelector`'s validation. Mixing weighted entries with ordinary entries, or nesting weighted choices inside a branch, is not supported.
+Each entry must have exactly one decimal percentage key (quoting is optional) and a string template or a non-empty list of string templates. Percentages must be finite, positive and total exactly 100 (decimal fractions such as `33.3%` are supported). Mixing weighted entries with ordinary entries, or nesting weighted choices inside a branch, is not supported.
 
-The weighted branch is selected first; a list branch then selects one entry uniformly. Templates resolve in the same way as ordinary custom-provider templates, including local and other provider references. Selection uses the current Faker's random service, so seeded Fakers remain reproducible. Percentages describe probabilities, not guaranteed counts in a finite sample.
+Selection uses the current Faker's random service to choose a branch, then a list entry uniformly; templates support local and provider references and slash-delimited regexes, and percentages describe probabilities rather than guaranteed sample counts.
 
-This syntax applies only to custom files. Ordinary lists, maps and scalar values, bundled locale data, and the Java weighted-selection API retain their existing behavior. An empty ordinary list still uses the existing fallback behavior.
+This syntax applies only to custom files; ordinary values, bundled locale data, and the Java weighted-selection API retain their existing behavior.
+
+Weighted keys are intended for `resolve`, `fetch` and `safeFetch`: `fetchObject` returns an internal representation, and `Unique.fetchFromYaml` does not support them.
 
 ### Register provider
 
