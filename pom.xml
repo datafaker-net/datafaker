@@ -26,6 +26,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
+        <tomlj.version>1.1.1</tomlj.version>
         <assertj-core.version>3.27.7</assertj-core.version>
         <commons-lang3.version>3.21.0</commons-lang3.version>
         <commons-text.version>1.15.0</commons-text.version>
@@ -112,6 +113,12 @@
         </dependency>
 
         <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.tomlj</groupId>
+            <artifactId>tomlj</artifactId>
+            <version>${tomlj.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
