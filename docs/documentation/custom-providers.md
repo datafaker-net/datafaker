@@ -63,7 +63,7 @@ This will print something like the following:
 
 ### Weighted random selection
 
-> **Note**: Usage of weighted random selector is in the POC stage and is currently available only for custom hardcoded providers.
+> **Note**: Usage of weighted random selector is in the POC stage. Custom YAML providers also support the percentage syntax described below.
 
 Since version 2.4.2 of Datafaker it's possible to use a random selector based on weights, add a `WeightedRandomSelector` and weighted values to your provider:
 
@@ -153,6 +153,31 @@ en:
     insectsfromfile:
       bees: ['Bumblebee', 'Euglossine bee', 'Honeybee', 'Carpenter bee', 'Leaf-cutter bee', 'Mining bee']
 ```
+
+### Weighted YAML choices
+
+Custom files loaded with `addPath` or `addUrl` can use a list of percentage-key mappings:
+
+```yaml
+en:
+  faker:
+    insectsfromfile:
+      ants:
+        - 60%: "Driver ant"
+        - 40%: "#{other_ant}"
+      other_ant: ["Fire ant", "Harvester ant"]
+      domains:
+        - 90%: ".it"
+        - 10%: [".ee", ".lv", ".lt"]
+```
+
+Each entry must have exactly one decimal percentage key (quoting is optional) and a string template or a non-empty list of string templates. Percentages must be finite, positive and total exactly 100 (decimal fractions such as `33.3%` are supported). Mixing weighted entries with ordinary entries, or nesting weighted choices inside a branch, is not supported.
+
+Selection uses the current Faker's random service to choose a branch, then a list entry uniformly; templates support local and provider references and slash-delimited regexes, and percentages describe probabilities rather than guaranteed sample counts.
+
+This syntax applies only to custom files; ordinary values, bundled locale data, and the Java weighted-selection API retain their existing behavior.
+
+Weighted keys are intended for `resolve`, `fetch` and `safeFetch`: `fetchObject` returns an internal representation, and `Unique.fetchFromYaml` does not support them.
 
 ### Register provider
 

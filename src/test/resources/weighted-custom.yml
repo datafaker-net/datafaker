@@ -1,0 +1,31 @@
+en:
+  faker:
+    weighted_custom:
+      strings:
+      - "60%": "first"
+      - "40%": "second"
+      domains:
+      - "90%": ".it"
+      - "10%":
+        - ".ee"
+        - ".lv"
+        - ".lt"
+      local_template:
+      - "100%": "#{suffix}!"
+      suffix:
+      - "chosen"
+      reference:
+      - "100%": "#{Name.first_name}"
+      ordinary:
+      - "a"
+      - "b"
+      empty: []
+      scalar: "plain"
+      regex_string:
+      - "100%": "/[A-Z]{3}/"
+      regex_list:
+      - "100%":
+        - "/[A-Z]{3}/"
+      nested:
+        value:
+        - "100%": "nested"
