@@ -20,7 +20,12 @@ import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.VALUE
 
 public enum SqlDialect {
     ANSI("`"),
-    BIGQUERY("`", Casing.UNCHANGED, BACKSLASH),
+    BIGQUERY("`", Casing.UNCHANGED, BACKSLASH) {
+        @Override
+        public String escapeIdentifier(String name) {
+            return escape(name, '`', '\\');
+        }
+    },
     CALCITE("\""),
     CLICKHOUSE("`", BACKSLASH),
     EXASOL("\""),
@@ -42,7 +47,15 @@ public enum SqlDialect {
             final String into = "    " + INTO.getValue(caze) + " ";
             final String valuesKeyWord = " " + VALUES.getValue(caze) + " ";
             return into + columns.get() + valuesKeyWord + values.get();
-        }, caze -> LINE_SEPARATOR + SELECT_1_FROM_DUAL.getValue(caze)),
+        }, caze -> LINE_SEPARATOR + SELECT_1_FROM_DUAL.getValue(caze)) {
+        @Override
+        public String escapeIdentifier(String name) {
+            if (name.indexOf('"') >= 0) {
+                throw new IllegalArgumentException("Oracle quoted identifiers cannot contain a double quote: " + name);
+            }
+            return escape(name, '"', '"');
+        }
+    },
     PARACCEL("\""),
     PHOENIX("\""),
     POSTGRES("\""),
@@ -175,6 +188,15 @@ public enum SqlDialect {
      */
     public String escapeStringLiteral(String value, char quote) {
         return escape(value, quote, quoteEscape == QuoteEscape.BACKSLASH ? '\\' : quote);
+    }
+
+    /**
+     * Escapes a name placed inside a quoted identifier. Only the closing character needs escaping,
+     * by doubling it ({@code "a""b"}, {@code `a``b`}, {@code [a]]b]}).
+     */
+    public String escapeIdentifier(String name) {
+        char close = sqlQuoteIdentifier.charAt(sqlQuoteIdentifier.length() - 1);
+        return escape(name, close, close);
     }
 
     /**
