@@ -4,8 +4,10 @@ import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.TomlTransformer;
-import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.tomlj.Toml;
+import org.tomlj.TomlArray;
+import org.tomlj.TomlParseResult;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -175,9 +177,9 @@ class TomlTest {
             of(Schema.of(field("number", () -> BigDecimal.valueOf(123.0))), "number = 123.0"),
             of(Schema.of(field("number", () -> BigDecimal.valueOf(123.123))), "number = 123.123"),
             of(Schema.of(field("boolean", () -> true)), "boolean = true"),
-            of(Schema.of(field("nullValue", () -> null)), "nullValue = null"),
-            of(Schema.of(field("array", () -> new @Nullable String[]{null, "test", "123"})),
-                "array = [ null, \"test\", \"123\" ]"),
+            of(Schema.of(field("nullValue", () -> null)), ""),
+            of(Schema.of(field("array", () -> new String[]{null, "test", "123"})),
+                "array = [ \"test\", \"123\" ]"),
             of(Schema.of(field("array", () -> new Integer[]{123, 456, 789})),
                 "array = [ 123, 456, 789 ]"),
             of(Schema.of(field("array", () -> new Object[]{"test", 456, true})),
@@ -233,14 +235,17 @@ class TomlTest {
             faker.<Name>collection().suppliers(faker::name).maxLen(limit).build(),
             schema);
 
-        int numberOfLines = 0;
-        for (int i = 0; i < toml.length(); i++) {
-            if (toml.regionMatches(i, System.lineSeparator(), 0, System.lineSeparator().length())) {
-                numberOfLines++;
+        TomlParseResult parsed = Toml.parse(toml);
+        assertThat(parsed.errors()).isEmpty();
+        if (limit == 1) {
+            assertThat(parsed.getString("firstName")).isNotEmpty();
+        } else {
+            TomlArray records = parsed.getArray("records");
+            assertThat(records.size()).isEqualTo(limit);
+            for (int i = 0; i < limit; i++) {
+                assertThat(records.getTable(i).getString("firstName")).isNotEmpty();
             }
         }
-
-        assertThat(numberOfLines).isEqualTo((limit * (schema.getFields().length)) - 1);
     }
 
     @ParameterizedTest
