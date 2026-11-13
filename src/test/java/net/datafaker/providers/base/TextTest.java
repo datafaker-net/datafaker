@@ -201,4 +201,14 @@ class TextTest {
     void minimumLengthIsNotEnoughToContainAllRequiredSymbols() {
         assertThat(faker.text().text(1, 4, true, false, true)).matches("[a-zA-Z0-9]{2,4}");
     }
+
+    @RepeatedTest(10)
+    void includesGrantsAtLeastOneCharacterFromGroup() {
+        assertThat(faker.text().text(1, 6, true, true, true, true))
+            .matches("^(?=.*[a-z]).+$")
+            .matches("^(?=.*[A-Z]).+$")
+            .matches("^(?=.*[0-9]).+$")
+            .matches("^(?=.*[" + DEFAULT_SPECIAL + "]).+$")
+            .hasSizeBetween(4, 6);
+    }
 }
