@@ -142,10 +142,10 @@ class TomlSerializationTest {
             field("items", () -> List.of(Schema.of(field("optional", () -> null), field("id", () -> 2)))),
             field("after", () -> { calls.add("after"); return (List<?>) null; }),
             field("value", () -> { calls.add("value"); return 3; }),
-            field("before", () -> { throw new AssertionError("Duplicate null field supplier must not run"); }));
+            field("before", () -> { calls.add("fallback"); return 4; }));
         assertThat(parse(schema)).isEqualTo(Map.of("child", Map.of("id", 1L),
-            "items", List.of(Map.of("id", 2L)), "value", 3L));
-        assertThat(calls).containsExactly("before", "middle", "after", "value");
+            "items", List.of(Map.of("id", 2L)), "value", 3L, "before", 4L));
+        assertThat(calls).containsExactly("before", "middle", "after", "value", "fallback");
     }
 
     @Test
@@ -176,33 +176,31 @@ class TomlSerializationTest {
 
     @ParameterizedTest
     @MethodSource("nullValues")
-    void rejectsNullElementsAtEveryDepth(Object value, String suffix) {
-        Schema<Object, ?> bad = Schema.of(field("value", () -> value));
-        assertThatIllegalArgumentException().isThrownBy(() -> transformer.generate(bad, 1))
-            .withMessageContaining("value" + suffix).withMessageContaining("null");
-        assertThatIllegalArgumentException().isThrownBy(() -> transformer.generate(
-            Schema.of(field("parent", () -> bad)), 1))
-            .withMessageContaining("parent.value" + suffix).withMessageContaining("null");
-        assertThatIllegalArgumentException().isThrownBy(() -> transformer.generate(
-            Schema.of(field("parents", () -> List.of(Schema.of(), bad))), 1))
-            .withMessageContaining("parents[1].value" + suffix).withMessageContaining("null");
+    void omitsNullElementsAtEveryDepth(Object value, Object expected) {
+        Schema<Object, ?> schema = Schema.of(field("value", () -> value));
+        Map<String, Object> expectedTable = Map.of("value", expected);
+        assertThat(parse(schema)).isEqualTo(expectedTable);
+        assertThat(parse(Schema.of(field("parent", () -> schema))))
+            .isEqualTo(Map.of("parent", expectedTable));
+        assertThat(parse(Schema.of(field("parents", () -> List.of(Schema.of(), schema)))))
+            .isEqualTo(Map.of("parents", List.of(Map.of(), expectedTable)));
     }
 
     static Stream<Arguments> nullValues() {
         return Stream.of(
-            of(Arrays.asList(null, "a"), "[0]"),
-            of(Arrays.asList("a", null, "b"), "[1]"),
-            of(Arrays.asList("a", null), "[1]"),
-            of(Arrays.asList(null, null), "[0]"),
-            of(new String[]{null, "a"}, "[0]"),
-            of(new String[]{"a", null, "b"}, "[1]"),
-            of(new String[]{"a", null}, "[1]"),
-            of(new Object[]{null, null}, "[0]"),
-            of(List.of(Arrays.asList(1, null)), "[0][1]"),
-            of(new Object[]{List.of((Object) new Object[]{1, null})}, "[0][0][1]"),
-            of(List.of((Object) new Object[]{List.of(Arrays.asList("a", null))}), "[0][0][0][1]"),
-            of(Arrays.asList(Schema.of(), null), "[1]"),
-            of(new Object[]{Schema.of(), null}, "[1]"));
+            of(Arrays.asList(null, "a"), List.of("a")),
+            of(Arrays.asList("a", null, "b"), List.of("a", "b")),
+            of(Arrays.asList("a", null), List.of("a")),
+            of(Arrays.asList(null, null), List.of()),
+            of(new String[]{null, "a"}, List.of("a")),
+            of(new String[]{"a", null, "b"}, List.of("a", "b")),
+            of(new String[]{"a", null}, List.of("a")),
+            of(new Object[]{null, null}, List.of()),
+            of(List.of(Arrays.asList(1, null)), List.of(List.of(1L))),
+            of(new Object[]{List.of((Object) new Object[]{1, null})}, List.of(List.of(List.of(1L)))),
+            of(List.of((Object) new Object[]{List.of(Arrays.asList("a", null))}), List.of(List.of(List.of(List.of("a"))))),
+            of(Arrays.asList(Schema.of(), null), List.of(Map.of())),
+            of(new Object[]{Schema.of(), null}, List.of(Map.of())));
     }
 
     @ParameterizedTest

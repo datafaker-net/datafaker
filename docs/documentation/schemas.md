@@ -576,3 +576,42 @@ city = "Lake Caitlin"
 country = "Mongolia"
 streetAddress = "5111 D'Amore Fall"
 ```
+
+### TOML nulls and containers
+
+Null field values and null values in maps are omitted. Null elements in arrays,
+collections, other finite iterables and streams are also omitted, while the remaining
+elements keep their relative order. A container containing only null elements is
+written as an empty array. Null keys are rejected. For duplicate schema field names,
+the first non-null value is used; suppliers after that value are not called.
+
+Nested schemas and composite fields become tables. Containers containing only
+non-null schemas become arrays of tables; mixing schemas with ordinary values in
+one container is rejected. Maps with string keys become inline tables. Streams
+returned by fields are consumed once and closed after serialization. Nested fields
+using functions receive the same input object as the enclosing schema.
+
+Cyclic structures and nesting deeper than 128 schema/container levels are rejected
+with an exception. Integers outside the signed 64-bit range are also rejected;
+BigDecimal values written with a decimal point or exponent remain TOML floats.
+
+### Multiple TOML records
+
+A single record is written at the document root, as in the example above. Generating
+two or more records uses a `records` array of tables so that root keys and nested
+table headers are not redefined in the same document:
+
+```toml
+[[records]]
+name = "Alice"
+[records.address]
+city = "Paris"
+[[records]]
+name = "Bob"
+[records.address]
+city = "London"
+```
+
+This applies to both `generate(schema, limit)` and `generate(iterable, schema)`,
+and to the joined output of `generateStream(schema, limit)`. Each non-null schema
+occurrence is preserved, including empty records and empty array-of-tables elements.
