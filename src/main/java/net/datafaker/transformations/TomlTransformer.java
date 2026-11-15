@@ -6,6 +6,7 @@ import org.jspecify.annotations.Nullable;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -27,6 +28,7 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
     private static final Pattern BARE_KEY = Pattern.compile("[A-Za-z0-9_-]+");
     private static final Pattern INTEGER = Pattern.compile("[+-]?[0-9]+");
     private static final int MAX_DEPTH = 128;
+    private static final int MAX_STREAM_ELEMENTS = 100_000;
 
     @Override
     public String apply(@Nullable IN input, @Nullable Schema<IN, ?> schema) {
@@ -77,7 +79,10 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
 
     @Override
     public Stream<String> generateStream(Schema<IN, ?> schema, long limit) {
-        return Stream.generate(() -> renderRecord(null, schema, limit > 1)).limit(limit);
+        // Preserve the interface's lifecycle and row-id hooks, including for subclasses.
+        Schema<IN, ?> streamSchema = limit > 1
+            ? Schema.of(Field.field("records", () -> List.of(schema))) : schema;
+        return Transformer.super.generateStream(streamSchema, limit);
     }
 
     @Override
@@ -93,7 +98,7 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
     private Table resolveSchema(@Nullable IN input, Schema<IN, ?> schema, String path, Set<Object> active) {
         enter(schema, path, active);
         try {
-            List<ResolvedField> raw = new ArrayList<>();
+            List<ResolvedField> fields = new ArrayList<>();
             Set<String> seen = new HashSet<>();
             for (Field<IN, ?> field : schema.getFields()) {
                 String key = checkedKey(field.getName(), path);
@@ -103,16 +108,12 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
                 Object value = field instanceof CompositeField<?, ?> ? field : field.transform(input);
                 if (value != null) {
                     seen.add(key);
-                    raw.add(new ResolvedField(formatKey(key), value));
+                    String outputKey = formatKey(key);
+                    fields.add(new ResolvedField(outputKey,
+                        resolveValue(input, value, appendPath(path, outputKey), active)));
                 }
             }
-            // Resolve each unique field once, in declaration order, before classifying output.
-            List<ResolvedField> fields = new ArrayList<>(raw.size());
-            for (ResolvedField field : raw) {
-                fields.add(new ResolvedField(field.key(),
-                    resolveValue(input, field.value(), appendPath(path, field.key()), active)));
-            }
-            return new Table(fields);
+            return new Table(fields, false);
         } finally {
             active.remove(schema);
         }
@@ -126,46 +127,39 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
             enter(value, path, active);
             try {
                 List<ResolvedField> fields = new ArrayList<>();
+                Set<String> seen = new HashSet<>();
                 for (Map.Entry<?, ?> entry : map.entrySet()) {
                     String key = formatKey(checkedKey(entry.getKey(), path));
                     Object element = entry.getValue();
                     if (element != null) {
+                        if (!seen.add(key)) {
+                            throw new IllegalArgumentException("Duplicate TOML map key at " + appendPath(path, key));
+                        }
                         fields.add(new ResolvedField(key, resolveValue(input, element, appendPath(path, key), active)));
                     }
                 }
-                return new InlineTable(fields);
+                return new Table(fields, true);
             } finally {
                 active.remove(value);
             }
         }
-        if (value instanceof Iterable<?> || value instanceof Stream<?> || value.getClass().isArray()) {
+        if (value instanceof Collection<?> || value instanceof Stream<?> || value.getClass().isArray()) {
             enter(value, path, active);
             try {
-                if (value instanceof FakeSequence<?> sequence && sequence.isInfinite()) {
-                    throw new IllegalArgumentException("The sequence must be finite at " + path);
-                }
                 if (value instanceof Stream<?> stream) {
                     try (stream) {
-                        return resolveElements(input, stream.iterator(), path, active);
+                        return resolveElements(input, stream.iterator(), path, active, MAX_STREAM_ELEMENTS);
                     }
                 }
-                if (value instanceof Iterable<?> iterable) {
-                    return resolveElements(input, iterable.iterator(), path, active);
+                if (value instanceof Collection<?> collection) {
+                    return resolveElements(input, collection.iterator(), path, active, Integer.MAX_VALUE);
                 }
                 int length = Array.getLength(value);
-                return resolveElements(input, new Iterator<Object>() {
-                    private int index;
-
-                    @Override
-                    public boolean hasNext() {
-                        return index < length;
-                    }
-
-                    @Override
-                    public Object next() {
-                        return Array.get(value, index++);
-                    }
-                }, path, active);
+                List<Object> elements = new ArrayList<>(length);
+                for (int i = 0; i < length; i++) {
+                    elements.add(Array.get(value, i));
+                }
+                return resolveElements(input, elements.iterator(), path, active, Integer.MAX_VALUE);
             } finally {
                 active.remove(value);
             }
@@ -179,11 +173,14 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
         return value;
     }
 
-    private Sequence resolveElements(@Nullable IN input, Iterator<?> iterator, String path, Set<Object> active) {
+    private Sequence resolveElements(@Nullable IN input, Iterator<?> iterator, String path, Set<Object> active, int limit) {
         List<Object> values = new ArrayList<>();
         Boolean schemas = null;
         int index = 0;
         while (iterator.hasNext()) {
+            if (index >= limit) {
+                throw new IllegalArgumentException("TOML stream exceeds " + limit + " elements at " + path);
+            }
             Object element = iterator.next();
             String elementPath = path + "[" + index++ + "]";
             if (element == null) {
@@ -209,11 +206,11 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
     }
 
     private String checkedKey(@Nullable Object key, String path) {
-        if (!(key instanceof String name)) {
-            throw new IllegalArgumentException("TOML key must be a non-null string at "
+        if (key == null) {
+            throw new IllegalArgumentException("TOML key must not be null at "
                 + (path.isEmpty() ? "<root>" : path));
         }
-        return name;
+        return String.valueOf(key);
     }
 
     private String formatKey(String key) {
@@ -226,13 +223,12 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
 
     private record ResolvedField(String key, Object value) {
         boolean isTable() {
-            return value instanceof Table || value instanceof Sequence sequence && sequence.schemas();
+            return value instanceof Table table && !table.inline()
+                || value instanceof Sequence sequence && sequence.schemas();
         }
     }
 
-    private record Table(List<ResolvedField> fields) { }
-
-    private record InlineTable(List<ResolvedField> fields) { }
+    private record Table(List<ResolvedField> fields, boolean inline) { }
 
     private record Sequence(List<Object> values, boolean schemas) { }
 
@@ -244,7 +240,7 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
         }
         for (ResolvedField field : table.fields()) {
             String fullPath = appendPath(path, field.key());
-            if (field.value() instanceof Table nested) {
+            if (field.value() instanceof Table nested && !nested.inline()) {
                 sb.append("[").append(fullPath).append("]").append(LINE_SEPARATOR);
                 writeSchema(sb, nested, fullPath);
             } else if (field.value() instanceof Sequence sequence && sequence.schemas()) {
@@ -276,9 +272,6 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
             return result.toString();
         }
         if (value instanceof Table table) {
-            return inlineTable(table.fields());
-        }
-        if (value instanceof InlineTable table) {
             return inlineTable(table.fields());
         }
         if (value instanceof Double || value instanceof Float) {

@@ -580,15 +580,21 @@ streetAddress = "5111 D'Amore Fall"
 ### TOML nulls and containers
 
 Null field values and null values in maps are omitted. Null elements in arrays,
-collections, other finite iterables and streams are also omitted, while the remaining
+collections and streams are also omitted, while the remaining
 elements keep their relative order. A container containing only null elements is
 written as an empty array. Null keys are rejected. For duplicate schema field names,
 the first non-null value is used; suppliers after that value are not called.
 
 Nested schemas and composite fields become tables. Containers containing only
 non-null schemas become arrays of tables; mixing schemas with ordinary values in
-one container is rejected. Maps with string keys become inline tables. Streams
-returned by fields are consumed once and closed after serialization. Nested fields
+one container is rejected. Maps become inline tables, converting non-null keys using
+`String.valueOf` and quoting and escaping them as needed. Null keys and keys that
+collide after conversion are rejected. Other `Iterable` values, such as `Path`,
+are written as strings via `toString()` for compatibility.
+Streams returned by fields are consumed once and closed after serialization, including
+when an exception occurs. Each field stream is limited to 100,000 source elements,
+including nulls; exceeding the limit throws an exception rather than truncating it.
+Collections and arrays are not subject to this stream limit. Nested fields
 using functions receive the same input object as the enclosing schema.
 
 Cyclic structures and nesting deeper than 128 schema/container levels are rejected

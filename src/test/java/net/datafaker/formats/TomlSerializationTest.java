@@ -89,7 +89,7 @@ class TomlSerializationTest {
         assertThat(parse(schema)).isEqualTo(Map.of("value", 42L, "numbers", List.of(3L, 1L, 2L),
             "items", List.of(Map.of("id", 1L, "child", Map.of("x", 7L)),
                 Map.of("id", 2L, "child", Map.of("x", 7L)))));
-        assertThat(calls).containsExactly("items", "value", "numbers", "child", "id", "child", "id");
+        assertThat(calls).containsExactly("items", "child", "id", "child", "id", "value", "numbers");
         assertThat(ids).hasValue(2);
     }
 
