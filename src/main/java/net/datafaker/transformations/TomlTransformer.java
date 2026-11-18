@@ -1,6 +1,5 @@
 package net.datafaker.transformations;
 
-import net.datafaker.sequence.FakeSequence;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Array;
@@ -33,9 +32,7 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
 
     @Override
     public String generate(Iterable<IN> input, Schema<IN, ?> schema) {
-        if (input instanceof FakeSequence<IN> fs && fs.isInfinite()) {
-            throw new IllegalArgumentException("The sequence should be finite of size: " + fs);
-        }
+        requireFiniteSequence(input);
         StringJoiner joiner = new StringJoiner(LINE_SEPARATOR);
         for (var in : input) {
             joiner.add(apply(in, schema));

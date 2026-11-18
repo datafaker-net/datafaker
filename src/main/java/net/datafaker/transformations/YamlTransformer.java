@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringJoiner;
 
-import net.datafaker.sequence.FakeSequence;
 import org.jspecify.annotations.Nullable;
 
 public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
@@ -26,9 +25,7 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String generate(Iterable<IN> input, Schema<IN, ?> schema) {
-        if (input instanceof FakeSequence<?> fakeSequence && fakeSequence.isInfinite()) {
-            throw new IllegalArgumentException("The sequence should be finite of size: " + fakeSequence);
-        }
+        requireFiniteSequence(input);
 
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
         for (var in : input) {

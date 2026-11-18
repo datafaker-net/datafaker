@@ -1,6 +1,5 @@
 package net.datafaker.transformations;
 
-import net.datafaker.sequence.FakeSequence;
 import org.jspecify.annotations.Nullable;
 
 public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
@@ -38,9 +37,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String generate(Iterable<IN> input, Schema<IN, ?> schema) {
-        if (input instanceof FakeSequence<?> fakeSequence && fakeSequence.isInfinite()) {
-            throw new IllegalArgumentException("The sequence should be finite of size: " + fakeSequence);
-        }
+        requireFiniteSequence(input);
 
         StringBuilder sb = new StringBuilder();
         generateHeader(schema, sb, true);

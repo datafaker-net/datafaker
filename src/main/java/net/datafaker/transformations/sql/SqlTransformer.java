@@ -322,9 +322,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         if (schema.getFields().length == 0) {
             return EMPTY_RESULT;
         }
-        if (input instanceof FakeSequence<?> fakeSequence && fakeSequence.isInfinite()) {
-            throw new IllegalArgumentException("The sequence should be finite of size: " + input);
-        }
+        requireFiniteSequence(input);
 
         final List<IN> inputs;
         if (input instanceof FakeStream<IN> fakeStream) {

@@ -1,5 +1,6 @@
 package net.datafaker.transformations;
 
+import net.datafaker.sequence.FakeSequence;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -18,6 +19,17 @@ public interface Transformer<IN, OUT> {
     }
 
     OUT generate(Iterable<IN> input, final Schema<IN, ?> schema);
+
+    /**
+     * Shared check for {@link #generate(Iterable, Schema)}: an infinite sequence can never be fully written out.
+     *
+     * @throws IllegalArgumentException if {@code input} is an infinite {@link FakeSequence}
+     */
+    default void requireFiniteSequence(Iterable<?> input) {
+        if (input instanceof FakeSequence<?> fakeSequence && fakeSequence.isInfinite()) {
+            throw new IllegalArgumentException("The sequence should be finite of size: " + fakeSequence);
+        }
+    }
 
     OUT generate(final Schema<IN, ?> schema, int limit);
 
