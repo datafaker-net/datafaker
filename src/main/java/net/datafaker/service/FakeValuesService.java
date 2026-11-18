@@ -717,27 +717,11 @@ public class FakeValuesService {
 
         List<ValueResolver> res = new ArrayList<>();
         if (args.length == 0) {
-            // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
-            // #{ssn_valid} on IdNumber
-            if (dotIndex == -1) {
-                if (current instanceof AbstractProvider<?> provider) {
-                    final Method method = BaseFaker.getMethod(provider, directive);
-                    if (method != null) {
-                        res.add(new MethodResolver(method, current, args));
-                        return res;
-                    }
-                }
-                res.add(resolveFromMethodOn(current, directive, args));
+            if (dotIndex == -1 && addCurrentObjectMethodResolver(directive, args, current, res)) {
+                return res;
             }
-            if (dotIndex > 0) {
-                String providerClassName = directive.substring(0, dotIndex);
-                String methodName = directive.substring(dotIndex + 1);
-                AbstractProvider<?> ap = root.getProvider(providerClassName);
-                Method method = ap == null ? null : ObjectMethods.getMethodByName(ap, methodName);
-                if (method != null) {
-                    res.add(new MethodResolver(method, ap, args));
-                    return res;
-                }
+            if (dotIndex > 0 && addProviderMethodResolver(directive, args, dotIndex, root, res)) {
+                return res;
             }
         }
         final String simpleDirective = (dotIndex >= 0 || current == null)
@@ -774,6 +758,42 @@ public class FakeValuesService {
         return res;
     }
 
+
+    /**
+     * Resolves method references on the CURRENT object like #{number_between '1','10'} on Number or
+     * #{ssn_valid} on IdNumber.
+     *
+     * @return true if an exact method was found and resolution can stop here
+     */
+    private boolean addCurrentObjectMethodResolver(String directive, String[] args, Object current, List<ValueResolver> res) {
+        if (current instanceof AbstractProvider<?> provider) {
+            final Method method = BaseFaker.getMethod(provider, directive);
+            if (method != null) {
+                res.add(new MethodResolver(method, current, args));
+                return true;
+            }
+        }
+        res.add(resolveFromMethodOn(current, directive, args));
+        return false;
+    }
+
+    /**
+     * Resolves method references on a registered provider like #{Name.first_name}.
+     *
+     * @return true if an exact method was found and resolution can stop here
+     */
+    private boolean addProviderMethodResolver(String directive, String[] args, int dotIndex, ProviderRegistration root,
+                                              List<ValueResolver> res) {
+        String providerClassName = directive.substring(0, dotIndex);
+        String methodName = directive.substring(dotIndex + 1);
+        AbstractProvider<?> ap = root.getProvider(providerClassName);
+        Method method = ap == null ? null : ObjectMethods.getMethodByName(ap, methodName);
+        if (method != null) {
+            res.add(new MethodResolver(method, ap, args));
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @param expression input expression
