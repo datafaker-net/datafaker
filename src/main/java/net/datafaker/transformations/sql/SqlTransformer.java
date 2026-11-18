@@ -494,8 +494,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             return this;
         }
 
-        public SqlTransformerBuilder<IN> keywordCase(Case caze) {
-            this.keywordCase = caze;
+        public SqlTransformerBuilder<IN> keywordCase(Case keywordCase) {
+            this.keywordCase = keywordCase;
             return this;
         }
 
@@ -544,8 +544,8 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
             this.capitalValue = capitalValue;
         }
 
-        public String getValue(Case caze) {
-            return switch (caze) {
+        public String getValue(Case keywordCase) {
+            return switch (keywordCase) {
                 case UPPERCASE -> upperCaseValue;
                 case LOWERCASE -> lowerCaseValue;
                 case CAPITAL -> capitalValue;
