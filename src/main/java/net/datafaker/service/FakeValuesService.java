@@ -2,6 +2,7 @@ package net.datafaker.service;
 
 import com.github.curiousoddman.rgxgen.RgxGen;
 import net.datafaker.internal.helper.CopyOnWriteMap;
+import net.datafaker.internal.helper.JavaNames;
 import net.datafaker.internal.helper.SingletonLocale;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
@@ -71,8 +72,6 @@ public class FakeValuesService {
     private static final Map<String, String[]> KEY_2_SPLITTED_KEY = new CopyOnWriteMap<>(WeakHashMap::new);
 
     private final CopyOnWriteMap<SingletonLocale, Map<String, Object>> key2fetchedObject = new CopyOnWriteMap<>(IdentityHashMap::new);
-
-    private static final Map<String, String> NAME_2_YAML = new CopyOnWriteMap<>(WeakHashMap::new);
 
     private static final Map<String, String> REMOVED_UNDERSCORE = new CopyOnWriteMap<>(WeakHashMap::new);
     private static final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> MAP_OF_METHOD_AND_COERCED_ARGS = new CopyOnWriteMap<>(IdentityHashMap::new);
@@ -767,7 +766,7 @@ public class FakeValuesService {
         // did first, but FIRST we change the Object reference Class.method_name with a yml style internal reference ->
         // class.method_name (lowercase)
         if (dotIndex >= 0) {
-            final String key = javaNameToYamlName(simpleDirective);
+            final String key = JavaNames.javaNameToYamlName(simpleDirective);
             res.add(new SafeFetchResolver(this, key, context));
         }
 
@@ -802,46 +801,7 @@ public class FakeValuesService {
      * @return a yaml style name from the classname of the supplied object (PhoneNumber => phone_number)
      */
     private String classNameToYamlName(Object current) {
-        return javaNameToYamlName(current.getClass().getSimpleName());
-    }
-
-    /**
-     * @return a yaml style name like 'phone_number' from a java style name like 'PhoneNumber'
-     */
-    private String javaNameToYamlName(String expression) {
-        return NAME_2_YAML.computeIfAbsent(expression, (__) -> {
-
-            final int length = expression.length();
-            final boolean firstLetterUpperCase = length > 0 && Character.isUpperCase(expression.charAt(0));
-            int cnt = firstLetterUpperCase ? 1 : 0;
-            for (int i = 1; i < length; i++) {
-                if (Character.isUpperCase(expression.charAt(i))) {
-                    cnt++;
-                }
-            }
-            if (cnt == 0) {
-                return expression;
-            }
-            final char[] res = new char[length + (firstLetterUpperCase ? cnt - 1 : cnt)];
-            int pos = 0;
-            for (int i = 0; i < length; i++) {
-                final char c = expression.charAt(i);
-                if (cnt > 0) {
-                    if (Character.isUpperCase(c)) {
-                        if (pos > 0) {
-                            res[pos++] = '_';
-                        }
-                        res[pos++] = Character.toLowerCase(c);
-                        cnt--;
-                    } else {
-                        res[pos++] = c;
-                    }
-                } else {
-                    res[pos++] = c;
-                }
-            }
-            return new String(res);
-        });
+        return JavaNames.javaNameToYamlName(current.getClass().getSimpleName());
     }
 
 
