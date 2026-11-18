@@ -23,9 +23,48 @@ public class Fingerprint extends AbstractProvider<BaseProviders> {
     private static final double TWO_PI = 2 * Math.PI;
 
     /**
-     * The three standard fingerprint ridge-flow patterns.
+     * The three standard fingerprint ridge-flow patterns. Each pattern knows how to compute its own global ridge value.
      */
-    public enum PatternType {WHORL, LOOP, ARCH}
+    public enum PatternType {
+        WHORL {
+            @Override
+            double ridgeValue(double dx, double dy, double r, RidgeShape shape) {
+                // Spiral: angle controls how much the ridges rotate
+                double theta = Math.atan2(dy, dx);
+                return r + shape.spiralFactor() * shape.ridgePeriod() * theta / Math.PI;
+            }
+        },
+        LOOP {
+            @Override
+            double ridgeValue(double dx, double dy, double r, RidgeShape shape) {
+                // Pull the effective centre upward near the core to form a loop
+                double pull = shape.loopAmplitude() * Math.exp(-r * r / (2 * shape.loopSigma() * shape.loopSigma()));
+                double loopDy = dy - pull;
+                return Math.sqrt(dx * dx + loopDy * loopDy);
+            }
+        },
+        ARCH {
+            @Override
+            double ridgeValue(double dx, double dy, double r, RidgeShape shape) {
+                // Ridges arch upward over the core
+                double arch = shape.archAmplitude() * Math.exp(-dx * dx / (2 * shape.archSigma() * shape.archSigma()));
+                return dy + arch;
+            }
+        };
+
+        /**
+         * Global ridge value at offset (dx, dy) from the core, periodic over the ridge period.
+         */
+        abstract double ridgeValue(double dx, double dy, double r, RidgeShape shape);
+    }
+
+    /**
+     * Random shape parameters for one image. All of them are drawn for every image, whatever the pattern, so that
+     * a seeded faker keeps producing the same pictures.
+     */
+    private record RidgeShape(double ridgePeriod, double spiralFactor, double loopAmplitude, double loopSigma,
+                              double archAmplitude, double archSigma) {
+    }
 
     protected Fingerprint(BaseProviders faker) {
         super(faker);
@@ -90,6 +129,7 @@ public class Fingerprint extends AbstractProvider<BaseProviders> {
         double loopSigma = Math.min(width, height) * (0.28 + faker.random().nextDouble(0.0, 0.12));
         double archAmplitude = height * (0.12 + faker.random().nextDouble(0.0, 0.08));
         double archSigma = width * (0.30 + faker.random().nextDouble(0.0, 0.15));
+        RidgeShape shape = new RidgeShape(ridgePeriod, spiralFactor, loopAmplitude, loopSigma, archAmplitude, archSigma);
 
         // Organic displacement noise: three sine-wave components
         int numNoise = 3;
@@ -149,24 +189,7 @@ public class Fingerprint extends AbstractProvider<BaseProviders> {
                 double r = Math.sqrt(dx * dx + dy * dy);
 
                 // Global ridge value – periodic over ridgePeriod
-                double ridgeVal = switch (patternType) {
-                    case WHORL -> {
-                        // Spiral: angle controls how much the ridges rotate
-                        double theta = Math.atan2(dy, dx);
-                        yield r + spiralFactor * ridgePeriod * theta / Math.PI;
-                    }
-                    case LOOP -> {
-                        // Pull the effective centre upward near the core to form a loop
-                        double pull = loopAmplitude * Math.exp(-r * r / (2 * loopSigma * loopSigma));
-                        double loopDy = dy - pull;
-                        yield Math.sqrt(dx * dx + loopDy * loopDy);
-                    }
-                    case ARCH -> {
-                        // Ridges arch upward over the core
-                        double arch = archAmplitude * Math.exp(-dx * dx / (2 * archSigma * archSigma));
-                        yield dy + arch;
-                    }
-                };
+                double ridgeVal = patternType.ridgeValue(dx, dy, r, shape);
 
                 // Minutiae: localised half-period phase bumps create ridge
                 // endings and bifurcations, the small features that give real
