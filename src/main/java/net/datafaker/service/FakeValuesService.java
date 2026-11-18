@@ -736,7 +736,7 @@ public class FakeValuesService {
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
-        if (dotIndex == -1 && root != null && (current == null || root.getClass() != current.getClass())) {
+        if (shouldResolveOnRoot(dotIndex, root, current)) {
             res.add(resolveFromMethodOn(root, directive, args));
         }
 
@@ -793,6 +793,19 @@ public class FakeValuesService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * A plain directive (no dot) may also be a method on the root faker, but only when the root is not the object
+     * we already searched.
+     */
+    private static boolean shouldResolveOnRoot(int dotIndex, ProviderRegistration root, Object current) {
+        if (dotIndex != -1 || root == null) {
+            return false;
+        }
+        // root.getClass() is only safe after the null check above
+        boolean rootNotSearchedYet = current == null || root.getClass() != current.getClass();
+        return rootNotSearchedYet;
     }
 
     /**
