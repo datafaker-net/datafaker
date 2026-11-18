@@ -1120,7 +1120,10 @@ public class FakeValuesService {
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
                      InvocationTargetException | NoSuchMethodException | NoSuchMethodRuntimeException e) {
                 Throwable cause = unwrap(e);
-                Level level = cause instanceof IllegalArgumentException || cause instanceof NoSuchMethodException || cause instanceof NoSuchMethodRuntimeException ? FINE : SEVERE;
+                boolean isExpectedMismatch = cause instanceof IllegalArgumentException
+                    || cause instanceof NoSuchMethodException
+                    || cause instanceof NoSuchMethodRuntimeException;
+                Level level = isExpectedMismatch ? FINE : SEVERE;
                 LOG.log(level, "Unable to coerce " + args[i] + " to " + toType.getSimpleName() + " via " + toType.getSimpleName() + "(String) constructor", e);
                 return null;
             }
