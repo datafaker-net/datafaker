@@ -158,6 +158,12 @@ class InternetTest {
     }
 
     @Test
+    void testEmailAddressKeepsDStrokeAsDInTheLocalPart() {
+        assertThat(faker.internet().safeEmailAddress("Đinh Dung")).startsWith("dinh.dung@");
+        assertThat(faker.internet().emailAddress("Nguyễn Văn Đức")).startsWith("nguyen.duc@");
+    }
+
+    @Test
     void testWebdomain() {
         // RFC 1123 compliant: www.<label>.<suffix>
         // Each label (including suffix labels) is [a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?

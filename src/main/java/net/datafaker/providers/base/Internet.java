@@ -90,8 +90,9 @@ public class Internet extends AbstractProvider<BaseProviders> {
         = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
     private String stripAccents(String input) {
-        // strip accents from input
-        String str = Normalizer.normalize(input, Normalizer.Form.NFD);
+        // strip accents from input; NFD does not decompose Đ/đ (U+0110/U+0111), so map them first
+        String str = input.replace('\u0110', 'D').replace('\u0111', 'd');
+        str = Normalizer.normalize(str, Normalizer.Form.NFD);
         str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
         return str;
     }
