@@ -121,6 +121,7 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
             case "ta" -> "IN"; // Tamil language -> India (though, Tamil is used in multiple countries)
             case "test" -> "US"; // What the hell is "test" language?
             case "uk" -> "UA"; // Ukraine
+            case "vi" -> "VN"; // Vietnamese language -> Vietnam (VN)
             case "zh" -> "CN"; // Chinese language -> China (CN)
             default -> language.toUpperCase(ROOT);
         };
