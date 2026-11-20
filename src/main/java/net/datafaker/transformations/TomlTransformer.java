@@ -10,9 +10,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class TomlTransformer<IN> implements Transformer<IN, String> {
+    private static final Pattern BARE_KEY = Pattern.compile("[A-Za-z0-9_-]+");
+
     @Override
     public String apply(@Nullable IN input, @Nullable Schema<IN, ?> schema) {
         if (schema == null) {
@@ -71,11 +74,16 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
                 continue;
             }
             Object val = f.transform(input);
-            writeValue(sb, key, pathPrefix, val);
+            writeValue(sb, formatKey(key), pathPrefix, val);
         }
     }
 
-    private void writeValue(StringBuilder sb, @Nullable String key, String pathPrefix, @Nullable Object val) {
+    private String formatKey(@Nullable String key) {
+        String name = String.valueOf(key);
+        return BARE_KEY.matcher(name).matches() ? name : quoteAndEscapeString(name);
+    }
+
+    private void writeValue(StringBuilder sb, String key, String pathPrefix, @Nullable Object val) {
         String fullPath = pathPrefix.isEmpty() ? key : pathPrefix + "." + key;
 
         if (val instanceof Schema<?, ?> nested) {
@@ -132,7 +140,10 @@ public class TomlTransformer<IN> implements Transformer<IN, String> {
         if (val instanceof Number || val instanceof Boolean) {
             return val.toString();
         }
-        String value = String.valueOf(val);
+        return quoteAndEscapeString(String.valueOf(val));
+    }
+
+    private String quoteAndEscapeString(String value) {
         StringBuilder escaped = new StringBuilder();
         escaped.append('"');
 
