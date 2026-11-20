@@ -66,38 +66,43 @@ public class Text extends AbstractProvider<BaseProviders> {
         return text(minimumLength, maximumLength, includeUppercase, includeSpecial, false);
     }
 
+    public String text(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
+        return text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit, false);
+    }
+
     /**
-     * For example, expression {@code text(5, 15, true, false, true} generates a random string of length 5 to 15
-     * containing at least one upper case letter and at least one digit.
+     * For example, expression {@code text(5, 15, true, false, true, true} generates a random string of length 5 to 15
+     * containing at least one upper case letter, at least one digit and at least one lower case letter.
      *
      * @param minimumLength The generated text will not be shorter than this length
      * @param maximumLength The generated text will not be longer than this length
      * @param includeUppercase is at least one uppercase letter required
      * @param includeSpecial  is at least one special symbol required
      * @param includeDigit  is at least one digit required
+     * @param includeLowercase  is at least one lowercase required
      * @return a random string withing given length interval
      * @see Text#DEFAULT_SPECIAL
      * @throws IllegalArgumentException if {@code minimumLength > maximumLength}
      * @throws IllegalArgumentException if {@code maximumLength} is not enough to include the required symbols (upper case letter, special char, digit)
      */
-    public String text(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
+    public String text(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit, boolean includeLowercase) {
         if (minimumLength > maximumLength) {
             throw new IllegalArgumentException("Min length (%s) should not be greater than max length (%s)".formatted(
                 minimumLength, maximumLength));
         }
 
-        final int minLength = Math.max(minimumLength, min(includeUppercase) + min(includeSpecial) + min(includeDigit));
+        final int minLength = Math.max(minimumLength, min(includeUppercase) + min(includeSpecial) + min(includeDigit) + min(includeLowercase));
         if (minLength > maximumLength) {
             throw new IllegalArgumentException("Minimum number of required characters (%s) should not be greater than max length (%s)".formatted(
                 minLength, maximumLength));
         }
 
         final int len = faker.number().numberBetween(minLength, maximumLength + 1);
-        TextConfigPojo pojo = new TextConfigPojo(len, includeUppercase, includeSpecial, includeDigit);
+        TextConfigPojo pojo = new TextConfigPojo(len, includeUppercase, includeSpecial, includeDigit, includeLowercase);
         Text.TextRuleConfig config = configMap.computeIfAbsent(pojo, (x) -> {
             TextSymbolsBuilder builder =
                 TextSymbolsBuilder.builder()
-                    .with(Text.EN_LOWERCASE);
+                    .with(Text.EN_LOWERCASE, includeLowercase ? 1 : 0);
             if (includeUppercase) builder = builder.with(Text.EN_UPPERCASE, 1);
             if (includeSpecial) builder = builder.with(Text.DEFAULT_SPECIAL, 1);
             if (includeDigit) builder = builder.with(Text.DIGITS, 1);
@@ -302,5 +307,5 @@ public class Text extends AbstractProvider<BaseProviders> {
         return String.valueOf(buffer);
     }
 
-    private record TextConfigPojo(int length, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) { }
+    private record TextConfigPojo(int length, boolean includeUppercase, boolean includeSpecial, boolean includeDigit, boolean includeLowercase) { }
 }
