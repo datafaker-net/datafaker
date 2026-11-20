@@ -3,26 +3,39 @@
 vi:
   faker:
     address:
-      city_root: ["Bắc Giang", "Bắc Kạn", "Bắc Ninh", "Cao Bằng", "Điện Biên", "Hà Giang", "Hà Nam", "Hà Tây",
-                  "Hải Dương", "TP Hải Phòng", "Hòa Bình", "Hưng Yên", "Lai Châu", "Lào Cai", "Lạng Sơn", "Nam Định",
-                  "Ninh Bình", "Phú Thọ", "Quảng Ninh", "Sơn La", "Thái Bình", "Thái Nguyên", "Tuyên Quang", "Vĩnh Phúc",
-                  "Yên Bái", "TP Đà Nẵng", "Bình Định", "Đắk Lắk", "Đắk Nông", "Gia Lai", "Hà Tĩnh", "Khánh Hòa", "Kon Tum",
-                  "Nghệ An", "Phú Yên", "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Trị", "Thanh Hóa", "Thừa Thiên Huế",
-                  "TP TP. Hồ Chí Minh", "An Giang", "Bà Rịa Vũng Tàu", "Bạc Liêu", "Bến Tre", "Bình Dương", "Bình Phước",
-                  "Bình Thuận", "Cà Mau", "TP Cần Thơ", "Đồng Nai", "Đồng Tháp", "Hậu Giang", "Kiên Giang", "Lâm Đồng",
-                  "Long An", "Ninh Thuận", "Sóc Trăng", "Tây Ninh", "Tiền Giang", "Trà Vinh", "Vĩnh Long"]
+      state: ["An Giang", "Bắc Ninh", "Cà Mau", "Cao Bằng", "Cần Thơ", "Đà Nẵng", "Đắk Lắk", "Điện Biên", "Đồng Nai",
+              "Đồng Tháp", "Gia Lai", "Hà Nội", "Hà Tĩnh", "Hải Phòng", "Thành phố Hồ Chí Minh", "Huế", "Hưng Yên",
+              "Khánh Hòa", "Lai Châu", "Lạng Sơn", "Lào Cai", "Lâm Đồng", "Nghệ An", "Ninh Bình", "Phú Thọ",
+              "Quảng Ngãi", "Quảng Ninh", "Quảng Trị", "Sơn La", "Tây Ninh", "Thái Nguyên", "Thanh Hóa", "Tuyên Quang",
+              "Vĩnh Long"]
       city:
-        - "#{city_root}"
-      county: ["Avon", "Bedfordshire", "Berkshire", "Borders", "Buckinghamshire", "Cambridgeshire", "Central",
-              "Cheshire", "Cleveland", "Clwyd", "Cornwall", "County Antrim", "County Armagh", "County Down",
-              "County Fermanagh", "County Londonderry", "County Tyrone", "Cumbria", "Derbyshire", "Devon",
-              "Dorset", "Dumfries and Galloway", "Durham", "Dyfed", "East Sussex", "Essex", "Fife", "Gloucestershire",
-              "Grampian", "Greater Manchester", "Gwent", "Gwynedd County", "Hampshire", "Herefordshire", "Hertfordshire",
-              "Highlands and Islands", "Humberside", "Isle of Wight", "Kent", "Lancashire", "Leicestershire", "Lincolnshire",
-              "Lothian", "Merseyside", "Mid Glamorgan", "Norfolk", "North Yorkshire", "Northamptonshire", "Northumberland",
-              "Nottinghamshire", "Oxfordshire", "Powys", "Rutland", "Shropshire", "Somerset", "South Glamorgan", "South Yorkshire",
-              "Staffordshire", "Strathclyde", "Suffolk", "Surrey", "Tayside", "Tyne and Wear", "Việt Nam", "Warwickshire",
-              "West Glamorgan", "West Midlands", "West Sussex", "West Yorkshire", "Wiltshire", "Worcestershire"]
+        - "#{state}"
+      city_name:
+        - "#{state}"
+      street_prefix: ["Đường", "Phố"]
+      street_root: ["Lê Lợi", "Trần Hưng Đạo", "Nguyễn Huệ", "Hai Bà Trưng", "Lý Thường Kiệt", "Lê Duẩn", "Hùng Vương",
+                    "Quang Trung", "Nguyễn Trãi", "Lê Lai", "Phan Chu Trinh", "Phan Bội Châu", "Nguyễn Du", "Trần Phú",
+                    "Điện Biên Phủ", "Lý Thái Tổ", "Ngô Quyền", "Đinh Tiên Hoàng", "Lê Thánh Tông", "Trần Quốc Toản",
+                    "Nguyễn Thị Minh Khai", "Võ Thị Sáu", "Nguyễn Văn Cừ", "Nguyễn Văn Linh", "Phạm Văn Đồng",
+                    "Võ Nguyên Giáp", "Tôn Đức Thắng", "Nguyễn Đình Chiểu", "Cách Mạng Tháng Tám", "Bà Triệu",
+                    "Lê Hồng Phong", "Hoàng Văn Thụ", "Trường Chinh", "Nguyễn Chí Thanh", "Lạc Long Quân", "Âu Cơ",
+                    "Chu Văn An", "Nguyễn Bỉnh Khiêm", "Lê Quý Đôn", "Nguyễn Thái Học", "Phạm Ngũ Lão", "Bạch Đằng",
+                    "Hàm Nghi", "Hoàng Diệu", "Nguyễn Công Trứ", "Trần Quang Khải", "Trần Nhật Duật", "Lý Tự Trọng",
+                    "Nam Kỳ Khởi Nghĩa", "Hoàng Hoa Thám", "Nguyễn Văn Trỗi", "Phan Đình Phùng", "Phan Đăng Lưu",
+                    "Xô Viết Nghệ Tĩnh", "Trần Khánh Dư", "Yết Kiêu", "Huỳnh Thúc Kháng", "Trần Cao Vân",
+                    "Nguyễn Trung Trực", "Trưng Nữ Vương", "Thống Nhất", "Độc Lập", "30 Tháng 4", "3 Tháng 2",
+                    "Cao Thắng", "Lê Đại Hành", "Mạc Đĩnh Chi", "Tô Hiến Thành", "Nguyễn Khuyến", "Kim Đồng"]
+      street_name:
+        - "#{street_root}"
+        - "#{street_prefix} #{street_root}"
+      building_number: ["Ø", "Ø#", "Ø##", "Ø#/Ø", "Ø##/Ø#"]
+      street_address:
+        - "#{building_number} #{street_name}"
+      secondary_address: ["Phòng Ø##", "Căn hộ Ø##"]
+      full_address:
+        - "#{street_address}, #{city}"
+        - "#{secondary_address}, #{street_address}, #{city}"
+      mail_box: ["Hộp thư Ø#", "Hộp thư Ø##"]
       default_country: ["Việt Nam"]
     name:
       first_name: ["Phạm", "Nguyễn", "Trần", "Lê", "Lý", "Hoàng", "Phan", "Vũ", "Tăng",
