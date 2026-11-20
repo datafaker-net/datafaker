@@ -2,6 +2,7 @@ package net.datafaker.providers.base;
 
 import net.datafaker.Faker;
 import org.assertj.core.api.Condition;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.text.DecimalFormatSymbols;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -342,5 +344,25 @@ class AddressTest {
     @RepeatedTest(10)
     void testCityCnSuffix() {
         assertThat(new Faker(Locale.CHINA).address().citySuffix()).matches("[\\u4e00-\\u9fa5]{1,7}(?:省|自治区)");
+    }
+
+    @Nested
+    class UsPostcodesByState extends ProviderListTest<BaseFaker> {
+        private static final String KEY = "address.postcode_by_state";
+        private final BaseFaker usFaker = new BaseFaker(new Locale("en", "US"));
+
+        @Override
+        protected BaseFaker getFaker() {
+            return usFaker;
+        }
+
+        @Override
+        protected Collection<TestSpec> providerListTest() {
+            // the states come from the data, so a newly added state is checked without touching this test
+            Map<String, ?> postcodesByState = usFaker.fakeValuesService().fetchObject(KEY, usFaker.getContext());
+            return postcodesByState.keySet().stream()
+                .map(state -> TestSpec.of(() -> usFaker.address().zipCodeByState(state), KEY + "." + state, "[0-9]{5}"))
+                .toList();
+        }
     }
 }
