@@ -281,21 +281,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         appendNameToQuery(result, tableName);
         result.append(" (");
         for (int i = 0; i < fields.length; i++) {
-            final String fieldName = fields[i].getName();
-            final boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(fieldName);
-            if (sqlIdentifierRequired) {
-                result.append(openSqlIdentifier);
-            }
-            for (int j = 0; j < fieldName.length(); j++) {
-                if (openSqlIdentifier == fieldName.charAt(j)
-                        || closeSqlIdentifier == fieldName.charAt(j)) {
-                    result.append(openSqlIdentifier);
-                }
-                result.append(fieldName.charAt(j));
-            }
-            if (sqlIdentifierRequired) {
-                result.append(closeSqlIdentifier);
-            }
+            appendNameToQuery(result, fields[i].getName());
             if (i < fields.length - 1) {
                 result.append(", ");
             }
@@ -311,7 +297,9 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         if (sqlIdentifierRequired) {
             sb.append(openSqlIdentifier);
         }
-        sb.append(name);
+        sb.append(dialect == null
+            ? SqlDialect.escape(name, closeSqlIdentifier, closeSqlIdentifier)
+            : dialect.escapeIdentifier(name));
         if (sqlIdentifierRequired) {
             sb.append(closeSqlIdentifier);
         }
