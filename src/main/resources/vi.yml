@@ -70,3 +70,130 @@ vi:
               "bàn", "ghế", "tủ", "quần", "áo", "nón", "dép", "giày", "lỗi", "được", "ghét", "giết",
               "chết", "tôi", "bạn", "tui", "trời", "trăng", "mây", "gió", "máy", "hàng", "hóa",
               "leo", "núi", "bơi", "biển", "chìm", "xuồng", "nước", "ngọt", "ruộng", "đồng", "quê", "hương"]
+
+    color:
+      name: ["đỏ", "xanh lá cây", "xanh dương", "vàng", "tím", "xanh bạc hà", "xanh ngọc", "trắng", "đen", "cam",
+             "hồng", "xám", "nâu", "đỏ đô", "tím than", "xanh da trời", "hồng phấn", "be", "kem", "vàng chanh",
+             "xanh rêu", "xanh lam", "xanh lục", "chàm", "vàng kim", "bạc", "tím hoa cà", "hồng cánh sen", "xanh lơ",
+             "xanh nõn chuối", "đỏ tươi", "nâu đất", "trắng ngà"]
+
+    job:
+      field: ["Tiếp thị", "Công nghệ thông tin", "Kế toán", "Hành chính", "Quảng cáo", "Ngân hàng", "Dịch vụ cộng đồng",
+              "Xây dựng", "Tư vấn", "Thiết kế", "Giáo dục", "Nông nghiệp", "Hành chính công", "Y tế", "Khách sạn",
+              "Pháp chế", "Sản xuất", "Khai khoáng", "Bất động sản", "Bán lẻ", "Kinh doanh", "Nhân sự", "Logistics"]
+      seniority: ["cấp cao", "cao cấp", "chính", "khu vực", "toàn quốc", "toàn cầu", "quốc tế", "nội bộ", "tập sự",
+                  "sơ cấp", "trung cấp", "chiến lược", "cấp tỉnh"]
+      position: ["Giám sát", "Chuyên viên", "Nhân viên", "Trưởng phòng", "Phó phòng", "Quản lý", "Kỹ sư", "Chuyên gia",
+                 "Giám đốc", "Phó giám đốc", "Điều phối viên", "Quản trị viên", "Kiến trúc sư", "Chuyên viên phân tích",
+                 "Kỹ thuật viên", "Lập trình viên", "Tư vấn viên", "Trợ lý", "Trưởng nhóm", "Thực tập sinh", "Cán bộ"]
+      key_skills: ["Làm việc nhóm", "Giao tiếp", "Giải quyết vấn đề", "Lãnh đạo", "Tổ chức", "Làm việc dưới áp lực",
+                   "Tự tin", "Tự tạo động lực", "Xây dựng mối quan hệ", "Chủ động", "Học hỏi nhanh", "Am hiểu công nghệ",
+                   "Quản lý thời gian", "Tư duy phản biện", "Đàm phán", "Thuyết trình"]
+      employment_type: ["Toàn thời gian", "Bán thời gian", "Tạm thời", "Hợp đồng", "Thực tập", "Hưởng hoa hồng"]
+      education_level: ["Cao đẳng", "Cử nhân", "Kỹ sư", "Thạc sĩ", "Tiến sĩ"]
+      title:
+        - "#{position} #{field}"
+        - "#{position} #{field}"
+        - "#{position} #{field} #{seniority}"
+        - "#{position} #{field} #{seniority}"
+        - "#{position} #{seniority}"
+
+    food:
+      allergens: ["Trứng", "Sữa", "Mù tạt", "Đậu phộng", "Giáp xác và nhuyễn thể", "Cá", "Hạt mè", "Đậu nành", "Sulfit",
+                  "Các loại hạt có vỏ cứng", "Lúa mì"]
+      dish: ["Phở bò", "Phở gà", "Phở cuốn", "Bún chả", "Bún bò Huế", "Bún riêu cua", "Bún thịt nướng", "Bún đậu mắm tôm",
+             "Bún cá", "Bún mắm", "Bánh mì", "Bánh xèo", "Bánh cuốn", "Bánh canh", "Bánh khọt", "Bánh bèo", "Bánh căn",
+             "Bánh hỏi", "Bánh đa cua", "Bánh chưng", "Bánh tét", "Cơm tấm", "Cơm gà Hội An", "Cơm hến", "Cao lầu",
+             "Mì Quảng", "Hủ tiếu Nam Vang", "Hủ tiếu Mỹ Tho", "Miến lươn", "Gỏi cuốn", "Chả giò", "Nem rán", "Nem lụi",
+             "Bò bía", "Chả cá Lã Vọng", "Cá kho tộ", "Thịt kho tàu", "Canh chua cá lóc", "Lẩu mắm", "Bò kho",
+             "Bò lá lốt", "Gà luộc", "Xôi xéo", "Cháo lòng", "Cháo gà", "Gỏi ngó sen", "Ốc luộc", "Cơm rang dưa bò"]
+      ingredients: ["Gạo tẻ", "Gạo nếp", "Bánh phở", "Bún tươi", "Miến dong", "Bánh tráng", "Thịt bò", "Thịt heo",
+                    "Thịt ba chỉ", "Sườn heo", "Thịt gà", "Thịt vịt", "Tôm sú", "Cua đồng", "Mực", "Cá lóc", "Cá basa",
+                    "Nghêu", "Trứng gà", "Trứng vịt", "Đậu phụ", "Giò lụa", "Nước mắm", "Nước tương", "Mắm tôm",
+                    "Mắm ruốc", "Dầu ăn", "Mỡ hành", "Nước cốt dừa", "Đường thốt nốt", "Me chua", "Bột năng", "Bột gạo",
+                    "Mộc nhĩ", "Nấm hương", "Giá đỗ", "Đậu xanh", "Đậu phộng", "Hành phi"]
+      fruits: ["Xoài", "Chuối", "Dứa", "Đu đủ", "Thanh long", "Vải", "Nhãn", "Chôm chôm", "Măng cụt", "Sầu riêng", "Mít",
+               "Bưởi", "Cam", "Quýt", "Chanh dây", "Ổi", "Mận", "Hồng xiêm", "Vú sữa", "Mãng cầu", "Khế", "Dưa hấu",
+               "Bơ", "Táo", "Lê", "Nho", "Dừa", "Chanh"]
+      vegetables: ["Rau muống", "Cải ngọt", "Cải thìa", "Bắp cải", "Súp lơ", "Bông cải xanh", "Cà rốt", "Củ cải trắng",
+                   "Khoai lang", "Khoai tây", "Khoai môn", "Bí đỏ", "Bí đao", "Mướp", "Khổ qua", "Cà tím", "Cà chua",
+                   "Dưa leo", "Đậu bắp", "Đậu đũa", "Đậu cô ve", "Rau dền", "Mồng tơi", "Rau ngót", "Rau má", "Xà lách",
+                   "Hành tây", "Măng tre", "Ngô", "Ngó sen", "Su hào", "Su su"]
+      spices: ["Tiêu đen", "Ớt", "Tỏi", "Hành tím", "Gừng", "Riềng", "Sả", "Nghệ", "Quế", "Hồi", "Thảo quả", "Đinh hương",
+               "Ngò rí", "Ngò gai", "Rau răm", "Húng quế", "Tía tô", "Kinh giới", "Lá chanh", "Lá lốt", "Thì là",
+               "Hạt điều màu", "Ngũ vị hương", "Bột cà ri", "Muối", "Mè rang"]
+      measurements: ["thìa cà phê", "thìa canh", "chén", "bát", "cốc", "nhúm"]
+
+    book:
+      title: ["Truyện Kiều", "Số đỏ", "Giông tố", "Tắt đèn", "Lều chõng", "Chí Phèo", "Lão Hạc", "Sống mòn", "Vợ nhặt",
+              "Dế Mèn phiêu lưu ký", "Nỗi buồn chiến tranh", "Mắt biếc", "Tôi thấy hoa vàng trên cỏ xanh",
+              "Cho tôi xin một vé đi tuổi thơ", "Cánh đồng bất tận", "Thương nhớ mười hai", "Vang bóng một thời",
+              "Gió lạnh đầu mùa", "Hà Nội băm sáu phố phường", "Đất rừng phương Nam", "Bỉ vỏ", "Hồn bướm mơ tiên",
+              "Nửa chừng xuân", "Đoạn tuyệt", "Tuổi thơ dữ dội", "Bến không chồng", "Mùa lá rụng trong vườn",
+              "Thời xa vắng", "Tướng về hưu", "Chiếc thuyền ngoài xa", "Những ngôi sao xa xôi", "Rừng xà nu"]
+      author: ["Nguyễn Du", "Vũ Trọng Phụng", "Ngô Tất Tố", "Nam Cao", "Kim Lân", "Tô Hoài", "Bảo Ninh", "Nguyễn Nhật Ánh",
+               "Nguyễn Ngọc Tư", "Vũ Bằng", "Nguyễn Tuân", "Thạch Lam", "Đoàn Giỏi", "Nguyên Hồng", "Khái Hưng",
+               "Nhất Linh", "Phùng Quán", "Dương Hướng", "Ma Văn Kháng", "Lê Lựu", "Nguyễn Huy Thiệp", "Nguyễn Minh Châu",
+               "Lê Minh Khuê", "Nguyễn Trung Thành"]
+      publisher: ["Nhà xuất bản Kim Đồng", "Nhà xuất bản Trẻ", "Nhà xuất bản Văn học", "Nhà xuất bản Hội Nhà văn",
+                  "Nhà xuất bản Giáo dục Việt Nam", "Nhà xuất bản Tổng hợp Thành phố Hồ Chí Minh",
+                  "Nhà xuất bản Phụ nữ Việt Nam", "Nhà xuất bản Thế giới", "Nhà xuất bản Lao động", "Nhà xuất bản Dân trí",
+                  "Nhà xuất bản Thanh niên", "Nhà xuất bản Đại học Quốc gia Hà Nội", "Nhà xuất bản Hà Nội",
+                  "Nhà xuất bản Chính trị quốc gia Sự thật", "Nhà xuất bản Khoa học xã hội", "Nhà xuất bản Tri thức",
+                  "Nhã Nam", "Alpha Books", "Đông A", "Đinh Tị", "Thái Hà Books", "First News - Trí Việt"]
+      genre: ["Tiểu thuyết", "Truyện ngắn", "Thơ", "Tùy bút", "Bút ký", "Phóng sự", "Truyện cổ tích", "Truyện ngụ ngôn",
+              "Truyền thuyết", "Thần thoại", "Tiểu thuyết lịch sử", "Trinh thám", "Kinh dị", "Khoa học viễn tưởng",
+              "Giả tưởng", "Truyện cười", "Truyện tranh", "Hồi ký", "Tự truyện", "Ngôn tình", "Kiếm hiệp",
+              "Văn học thiếu nhi"]
+
+    university:
+      degree: ["Cao đẳng", "Cử nhân", "Thạc sĩ", "Tiến sĩ", "Sau tiến sĩ"]
+      prefix: ["Trường Đại học", "Học viện", "Trường Cao đẳng"]
+      suffix: ["Bách khoa", "Kinh tế", "Y", "Y Dược", "Dược", "Sư phạm", "Sư phạm Kỹ thuật", "Luật", "Ngoại ngữ",
+               "Ngoại thương", "Xây dựng", "Kiến trúc", "Giao thông Vận tải", "Nông Lâm", "Thủy lợi", "Khoa học Tự nhiên",
+               "Khoa học Xã hội và Nhân văn", "Công nghiệp", "Công nghệ", "Mỹ thuật", "Văn hóa", "Thể dục Thể thao",
+               "Tài chính", "Ngân hàng", "Hàng hải"]
+      place: ["Hà Nội", "Thành phố Hồ Chí Minh", "Đà Nẵng", "Huế", "Cần Thơ", "Hải Phòng", "Thái Nguyên", "Vinh",
+              "Quy Nhơn", "Nha Trang", "Đà Lạt", "Tây Nguyên", "Tây Bắc", "Đồng Tháp", "An Giang"]
+      name:
+        - "#{University.prefix} #{University.suffix} #{University.place}"
+        - "#{University.prefix} #{University.suffix}"
+
+    commerce:
+      department: ["Sách", "Phim", "Âm nhạc", "Trò chơi", "Điện tử", "Máy tính", "Nhà cửa", "Vườn", "Dụng cụ", "Tạp hóa",
+                   "Sức khỏe", "Làm đẹp", "Đồ chơi", "Trẻ em", "Mẹ và bé", "Quần áo", "Giày dép", "Trang sức", "Thể thao",
+                   "Dã ngoại", "Ô tô", "Công nghiệp"]
+      brand: ["Vinamilk", "Viettel", "VinFast", "Vinasoy", "Sabeco", "Habeco", "Vissan", "Bkav", "Masan", "Sunhouse",
+              "Kangaroo"]
+
+    gender:
+      types: ["Nữ", "Nam", "Phi nhị nguyên giới", "Vô giới", "Giới tính linh hoạt", "Song giới", "Đa giới"]
+      binary_types: ["Nữ", "Nam"]
+
+    weather:
+      description: ["Trời quang", "Nắng", "Trời trong", "Có lúc có mây", "Mây rải rác", "Nhiều mây", "Âm u", "Mưa rào",
+                    "Mưa", "Mưa phùn", "Dông", "Tuyết", "Mưa tuyết", "Mưa đá"]
+
+    compass:
+      cardinal:
+        word: ["bắc", "đông", "nam", "tây"]
+        abbreviation: ["B", "Đ", "N", "T"]
+      ordinal:
+        word: ["đông bắc", "đông nam", "tây nam", "tây bắc"]
+        abbreviation: ["ĐB", "ĐN", "TN", "TB"]
+      half-wind:
+        word: ["bắc đông bắc", "đông đông bắc", "đông đông nam", "nam đông nam", "nam tây nam", "tây tây nam",
+               "tây tây bắc", "bắc tây bắc"]
+        abbreviation: ["BĐB", "ĐĐB", "ĐĐN", "NĐN", "NTN", "TTN", "TTB", "BTB"]
+      direction:
+        - "#{Compass.cardinal.word}"
+        - "#{Compass.ordinal.word}"
+        - "#{Compass.half-wind.word}"
+      abbreviation:
+        - "#{Compass.cardinal.abbreviation}"
+        - "#{Compass.ordinal.abbreviation}"
+        - "#{Compass.half-wind.abbreviation}"
+      azimuth:
+        - "#{Compass.cardinal.azimuth}"
+        - "#{Compass.ordinal.azimuth}"
+        - "#{Compass.half-wind.azimuth}"
