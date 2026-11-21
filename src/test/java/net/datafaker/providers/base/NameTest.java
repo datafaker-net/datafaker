@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -120,6 +122,65 @@ class NameTest {
         @Test
         void testPrefix() {
             assertThat(name.prefix()).matches("\\p{L}+\\.?");
+        }
+    }
+
+    @Nested
+    class NameInVietnameseTest {
+        private final Faker faker = new Faker(new Locale("vi"));
+        private final Name name = faker.name();
+
+        private final List<String> familyNames = list("name.last_name");
+        private final List<String> maleGivenNames = list("name.male_first_name");
+        private final List<String> femaleGivenNames = list("name.female_first_name");
+        private final List<String> givenNames = concat(maleGivenNames, femaleGivenNames);
+        private final List<String> middleNames = concat(list("name.male_middle_name"), list("name.female_middle_name"));
+
+        private List<String> list(String key) {
+            return faker.fakeValuesService().fetchObject(key, faker.getContext());
+        }
+
+        private static List<String> concat(List<String> a, List<String> b) {
+            return Stream.concat(a.stream(), b.stream()).toList();
+        }
+
+        @Test
+        void testFamilyAndGivenNamesAreInTheRightLists() {
+            assertThat(familyNames).contains("Nguyễn", "Trần", "Lê").doesNotContain("Thị", "Văn");
+            assertThat(middleNames).contains("Văn", "Thị").doesNotContain("Nguyễn");
+            assertThat(givenNames).contains("An", "Mai").doesNotContain("Nguyễn", "Thị", "Văn");
+        }
+
+        @RepeatedTest(10)
+        void testLastNameIsFamilyName() {
+            assertThat(name.lastName()).isIn(familyNames);
+        }
+
+        @RepeatedTest(10)
+        void testFirstNameIsGivenName() {
+            assertThat(name.firstName()).isIn(givenNames);
+            assertThat(name.maleFirstName()).isIn(maleGivenNames);
+            assertThat(name.femaleFirstName()).isIn(femaleGivenNames);
+        }
+
+        @RepeatedTest(10)
+        void testFullNameIsFamilyNameThenGivenName() {
+            String[] parts = name.fullName().split(" ");
+            assertThat(parts).hasSizeBetween(2, 3);
+            assertThat(parts[0]).isIn(familyNames);
+            assertThat(parts[parts.length - 1]).isIn(givenNames);
+            if (parts.length == 3) {
+                assertThat(parts[1]).isIn(middleNames);
+            }
+        }
+
+        @RepeatedTest(10)
+        void testNameWithMiddleIsFamilyMiddleGiven() {
+            String[] parts = name.nameWithMiddle().split(" ");
+            assertThat(parts).hasSize(3);
+            assertThat(parts[0]).isIn(familyNames);
+            assertThat(parts[1]).isIn(middleNames);
+            assertThat(parts[2]).isIn(givenNames);
         }
     }
 }
