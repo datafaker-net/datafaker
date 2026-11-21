@@ -7,6 +7,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,10 +46,38 @@ public class FakeValues implements FakeValuesInterface {
         }
         try (var stream = url.openStream()) {
             Map<String, Object> result = readFromStream(stream);
+            if (result != null) {
+                result.forEach((provider, value) -> prepareCustomValues(value, provider, provider));
+            }
             enrichMapWithJavaNames(result);
             return result;
         } catch (IOException e) {
             throw new RuntimeException("Failed to read fake values from %s".formatted(url), e);
+        }
+    }
+
+    private void prepareCustomValues(Object node, String provider, String path) {
+        if (node instanceof Map<?, ?> rawMap) {
+            @SuppressWarnings("unchecked")
+            Map<Object, Object> map = (Map<Object, Object>) rawMap;
+            map.replaceAll((key, value) -> {
+                String keyPath = path + "." + key;
+                if (value instanceof List<?> list) {
+                    try {
+                        WeightedYamlValues weighted = WeightedYamlValues.from(list, template -> {
+                            List<Object> singleton = new ArrayList<>(List.of(template));
+                            prefixUnqualifiedExpressions(singleton, provider);
+                            return (String) singleton.get(0);
+                        });
+                        if (weighted != null) return weighted;
+                    } catch (IllegalArgumentException e) {
+                        throw new IllegalArgumentException("Failed to load '%s' from %s: %s"
+                            .formatted(keyPath, fakeValuesContext.getUrl(), e.getMessage()), e);
+                    }
+                }
+                prepareCustomValues(value, provider, keyPath);
+                return value;
+            });
         }
     }
 
