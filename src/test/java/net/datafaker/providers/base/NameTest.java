@@ -127,56 +127,50 @@ class NameTest {
 
     @Nested
     class NameInVietnameseTest {
+        private final Faker faker = new Faker(new Locale("vi"));
+        private final Name name = faker.name();
 
-        private static final List<String> FAMILY_NAMES = List.of(
-            "Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng",
-            "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Lý", "Đào", "Đoàn", "Vương", "Trịnh",
-            "Đinh", "Lâm", "Phùng", "Mai", "Tô", "Trương", "Hà", "Tăng", "Cao", "Lương",
-            "Châu", "Tạ", "Quách", "Lưu", "Thái", "Triệu", "Kiều", "Từ", "La", "Nghiêm");
+        private final List<String> familyNames = list("name.last_name");
+        private final List<String> maleGivenNames = list("name.male_first_name");
+        private final List<String> femaleGivenNames = list("name.female_first_name");
+        private final List<String> givenNames = concat(maleGivenNames, femaleGivenNames);
+        private final List<String> middleNames = concat(list("name.male_middle_name"), list("name.female_middle_name"));
 
-        private static final List<String> MIDDLE_NAMES = List.of(
-            "Văn", "Đức", "Minh", "Hữu", "Quốc", "Công", "Thanh", "Xuân", "Đình", "Quang",
-            "Gia", "Mạnh", "Bá", "Duy", "Ngọc", "Tiến", "Trọng",
-            "Thị", "Thu", "Kim", "Bảo", "Diệu", "Khánh", "Thùy", "Hoài", "Mỹ", "Hồng", "Phương", "Bích");
+        private List<String> list(String key) {
+            return faker.fakeValuesService().fetchObject(key, faker.getContext());
+        }
 
-        private static final List<String> MALE_GIVEN_NAMES = List.of(
-            "An", "Anh", "Bảo", "Bình", "Cường", "Dũng", "Đạt", "Đông", "Hải", "Hiếu",
-            "Hòa", "Hùng", "Huy", "Khang", "Khánh", "Khoa", "Kiên", "Lâm", "Long", "Lộc",
-            "Nam", "Nghĩa", "Nhân", "Phát", "Phong", "Phúc", "Quân", "Sơn", "Tài", "Thắng",
-            "Thành", "Thịnh", "Toàn", "Trí", "Trung", "Tuấn", "Tùng", "Việt", "Vinh", "Vũ");
+        private static List<String> concat(List<String> a, List<String> b) {
+            return Stream.concat(a.stream(), b.stream()).toList();
+        }
 
-        private static final List<String> FEMALE_GIVEN_NAMES = List.of(
-            "An", "Anh", "Châu", "Chi", "Dung", "Duyên", "Giang", "Hà", "Hạnh", "Hằng",
-            "Hiền", "Hoa", "Hương", "Huyền", "Lan", "Liên", "Linh", "Loan", "Ly", "Mai",
-            "My", "Nga", "Ngân", "Nhàn", "Nhung", "Oanh", "Quyên", "Quỳnh", "Tâm", "Thảo",
-            "Thắm", "Thủy", "Trang", "Trinh", "Uyên", "Vân", "Vy", "Yến");
-
-        private static final List<String> GIVEN_NAMES = Stream
-            .concat(MALE_GIVEN_NAMES.stream(), FEMALE_GIVEN_NAMES.stream())
-            .toList();
-
-        private final Name name = new Faker(new Locale("vi")).name();
+        @Test
+        void testFamilyAndGivenNamesAreInTheRightLists() {
+            assertThat(familyNames).contains("Nguyễn", "Trần", "Lê").doesNotContain("Thị", "Văn");
+            assertThat(middleNames).contains("Văn", "Thị").doesNotContain("Nguyễn");
+            assertThat(givenNames).contains("An", "Mai").doesNotContain("Nguyễn", "Thị", "Văn");
+        }
 
         @RepeatedTest(10)
         void testLastNameIsFamilyName() {
-            assertThat(name.lastName()).isIn(FAMILY_NAMES);
+            assertThat(name.lastName()).isIn(familyNames);
         }
 
         @RepeatedTest(10)
         void testFirstNameIsGivenName() {
-            assertThat(name.firstName()).isIn(GIVEN_NAMES);
-            assertThat(name.maleFirstName()).isIn(MALE_GIVEN_NAMES);
-            assertThat(name.femaleFirstName()).isIn(FEMALE_GIVEN_NAMES);
+            assertThat(name.firstName()).isIn(givenNames);
+            assertThat(name.maleFirstName()).isIn(maleGivenNames);
+            assertThat(name.femaleFirstName()).isIn(femaleGivenNames);
         }
 
         @RepeatedTest(10)
         void testFullNameIsFamilyNameThenGivenName() {
             String[] parts = name.fullName().split(" ");
             assertThat(parts).hasSizeBetween(2, 3);
-            assertThat(parts[0]).isIn(FAMILY_NAMES);
-            assertThat(parts[parts.length - 1]).isIn(GIVEN_NAMES);
+            assertThat(parts[0]).isIn(familyNames);
+            assertThat(parts[parts.length - 1]).isIn(givenNames);
             if (parts.length == 3) {
-                assertThat(parts[1]).isIn(MIDDLE_NAMES);
+                assertThat(parts[1]).isIn(middleNames);
             }
         }
 
@@ -184,9 +178,9 @@ class NameTest {
         void testNameWithMiddleIsFamilyMiddleGiven() {
             String[] parts = name.nameWithMiddle().split(" ");
             assertThat(parts).hasSize(3);
-            assertThat(parts[0]).isIn(FAMILY_NAMES);
-            assertThat(parts[1]).isIn(MIDDLE_NAMES);
-            assertThat(parts[2]).isIn(GIVEN_NAMES);
+            assertThat(parts[0]).isIn(familyNames);
+            assertThat(parts[1]).isIn(middleNames);
+            assertThat(parts[2]).isIn(givenNames);
         }
     }
 }
