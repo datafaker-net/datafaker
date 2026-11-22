@@ -7,6 +7,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.net.URI;
 import java.net.URL;
@@ -161,6 +163,21 @@ class InternetTest {
     void testEmailAddressKeepsDStrokeAsDInTheLocalPart() {
         assertThat(faker.internet().safeEmailAddress("Đinh Dung")).startsWith("dinh.dung@");
         assertThat(faker.internet().emailAddress("Nguyễn Văn Đức")).startsWith("nguyen.duc@");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "Paweł Łukasiewicz, pawel.lukasiewicz",
+        "Søren Kierkegaard, soren.kierkegaard",
+        "Jürgen Großmann, jurgen.grossmann",
+        "Æsa Bjørnæs, aesa.bjornaes",
+        "Œdipe Cœur, oedipe.coeur",
+        "Þóra Ðórsdóttir, thora.dorsdottir",
+        "Ħamrun Ŧest, hamrun.test",
+        "Işık Ilgaz, isik.ilgaz",
+    })
+    void testEmailAddressTransliteratesLettersNotDecomposedByNfd(String name, String expectedLocalPart) {
+        assertThat(faker.internet().safeEmailAddress(name)).startsWith(expectedLocalPart + "@");
     }
 
     @Test

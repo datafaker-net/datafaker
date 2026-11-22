@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -79,7 +80,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     private String emailAddress(String localPart, String domain) {
-        return String.join("", stripAccents(localPart), "@", domain);
+        return localPart + "@" + domain;
     }
 
     public String emailSubject() {
@@ -89,12 +90,48 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public static final Pattern DIACRITICS_AND_FRIENDS
         = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
+    /**
+     * Latin letters that NFD does not decompose into a base letter plus combining marks,
+     * mapped to their usual ASCII transliteration.
+     */
+    private static final Map<Character, String> NON_DECOMPOSABLE_LETTERS = Map.ofEntries(
+        Map.entry('Đ', "D"), Map.entry('đ', "d"),
+        Map.entry('Ð', "D"), Map.entry('ð', "d"),
+        Map.entry('Ł', "L"), Map.entry('ł', "l"),
+        Map.entry('Ŀ', "L"), Map.entry('ŀ', "l"),
+        Map.entry('Ø', "O"), Map.entry('ø', "o"),
+        Map.entry('Ħ', "H"), Map.entry('ħ', "h"),
+        Map.entry('Ŧ', "T"), Map.entry('ŧ', "t"),
+        Map.entry('ı', "i"),
+        Map.entry('ß', "ss"), Map.entry('ẞ', "SS"),
+        Map.entry('Æ', "AE"), Map.entry('æ', "ae"),
+        Map.entry('Œ', "OE"), Map.entry('œ', "oe"),
+        Map.entry('Þ', "TH"), Map.entry('þ', "th")
+    );
+
     private String stripAccents(String input) {
-        // strip accents from input; NFD does not decompose Đ/đ (U+0110/U+0111), so map them first
-        String str = input.replace('\u0110', 'D').replace('\u0111', 'd');
-        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        String str = Normalizer.normalize(input, Normalizer.Form.NFD);
         str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
-        return str;
+        return replaceNonDecomposableLetters(str);
+    }
+
+    private static String replaceNonDecomposableLetters(String input) {
+        StringBuilder result = null;
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            String replacement = NON_DECOMPOSABLE_LETTERS.get(c);
+            if (replacement != null && result == null) {
+                result = new StringBuilder(input.length() + 4).append(input, 0, i);
+            }
+            if (result != null) {
+                if (replacement != null) {
+                    result.append(replacement);
+                } else {
+                    result.append(c);
+                }
+            }
+        }
+        return result == null ? input : result.toString();
     }
 
     private static final Pattern LOCALPART = Pattern.compile("[^a-z0-9\\.]");
@@ -112,7 +149,8 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @since 2.5.0
      */
     private String toLocalPart(String name) {
-        String[] parts = stripAccents(name).split(" ");
+        String asciiName = stripAccents(name);
+        String[] parts = asciiName.split(" ");
 
         Object prefixObj = faker.fakeValuesService().fetchObject("name.prefix", faker.getContext());
         final List<String> prefixList = (prefixObj instanceof List<?> list
@@ -133,7 +171,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         }
 
         if (parts.length == 0) {
-            return LOCALPART.matcher(name.toLowerCase(faker.getContext().getLocale())).replaceAll("");
+            return LOCALPART.matcher(asciiName.toLowerCase(faker.getContext().getLocale())).replaceAll("");
         }
 
         if (parts.length == 1) {
