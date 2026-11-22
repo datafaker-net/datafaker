@@ -10,13 +10,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.nio.file.Files.newInputStream;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,7 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class NoMixedScriptWordsInYmlTest {
 
-    private static final Pattern WORD = Pattern.compile("[\\p{L}\\p{M}]+");
+    private static final Pattern WORD = Pattern.compile("[\\p{L}\\p{M}\\p{N}.\\-]+");
+    /** Latin and Cyrillic letters that look the same as a letter of the other alphabet. */
+    private static final String LOOKALIKES = "AaBCcEeHIiKMOoPpTXxYy" + "АаВСсЕеНІіКМОоРрТХхУу";
     private static final Set<UnicodeScript> CHECKED_SCRIPTS = EnumSet.of(UnicodeScript.LATIN, UnicodeScript.CYRILLIC, UnicodeScript.GREEK);
 
     @ParameterizedTest
@@ -42,7 +48,7 @@ class NoMixedScriptWordsInYmlTest {
                 .overridingErrorMessage(() -> "Words mixing Latin, Cyrillic or Greek letters in file %s: %s".formatted(file, mixedWords))
                 .isEmpty();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to parse %s: %s".formatted(file, e.getMessage()), e);
+            throw new RuntimeException("Failed to read %s: %s".formatted(file, e.getMessage()), e);
         }
     }
 
@@ -57,7 +63,10 @@ class NoMixedScriptWordsInYmlTest {
 
     private static void findMixedScriptWords(Object node, Set<String> mixedWords) {
         if (node instanceof Map<?, ?> map) {
-            map.values().forEach(value -> findMixedScriptWords(value, mixedWords));
+            map.forEach((key, value) -> {
+                findMixedScriptWords(key, mixedWords);
+                findMixedScriptWords(value, mixedWords);
+            });
         } else if (node instanceof List<?> list) {
             list.forEach(value -> findMixedScriptWords(value, mixedWords));
         } else if (node instanceof String text) {
@@ -70,12 +79,32 @@ class NoMixedScriptWordsInYmlTest {
         }
     }
 
+    /**
+     * A word is a run of letters, digits, dots and dashes, so a model name such as "Зенит-E" is one word.
+     * It is flagged when one run of letters mixes scripts ("Мiнск"), or when the letters from the
+     * minority script all have a lookalike in the main script ("Зенит-E" with a Latin E).
+     * Names that really mix scripts, such as "occam-π" or "Зенит-200-Zoom", are not flagged.
+     */
     private static boolean isMixedScript(String word) {
-        Set<UnicodeScript> scripts = EnumSet.noneOf(UnicodeScript.class);
-        word.codePoints()
+        for (String letters : word.split("[^\\p{L}\\p{M}]+")) {
+            if (scriptCounts(letters).size() > 1) {
+                return true;
+            }
+        }
+        Map<UnicodeScript, Long> counts = scriptCounts(word);
+        if (counts.size() < 2) {
+            return false;
+        }
+        UnicodeScript mainScript = Collections.max(counts.entrySet(), Map.Entry.comparingByValue()).getKey();
+        return word.codePoints()
+            .filter(c -> CHECKED_SCRIPTS.contains(UnicodeScript.of(c)) && UnicodeScript.of(c) != mainScript)
+            .allMatch(c -> LOOKALIKES.indexOf(c) >= 0);
+    }
+
+    private static Map<UnicodeScript, Long> scriptCounts(String text) {
+        return text.codePoints()
             .mapToObj(UnicodeScript::of)
             .filter(CHECKED_SCRIPTS::contains)
-            .forEach(scripts::add);
-        return scripts.size() > 1;
+            .collect(Collectors.groupingBy(Function.identity(), () -> new EnumMap<>(UnicodeScript.class), Collectors.counting()));
     }
 }
