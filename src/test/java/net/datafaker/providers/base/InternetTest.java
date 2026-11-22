@@ -175,8 +175,26 @@ class InternetTest {
         "Þóra Ðórsdóttir, thora.dorsdottir",
         "Ħamrun Ŧest, hamrun.test",
         "Işık Ilgaz, isik.ilgaz",
+        "Marceŀla Coŀlell, marcella.collell",
+        "Ĳsbrand Ĳzerman, ijsbrand.ijzerman",
     })
     void testEmailAddressTransliteratesLettersNotDecomposedByNfd(String name, String expectedLocalPart) {
+        assertThat(faker.internet().safeEmailAddress(name)).startsWith(expectedLocalPart + "@");
+    }
+
+    @Test
+    void testEmailAddressLowercasesIndependentlyOfTurkishLocale() {
+        Faker trFaker = new Faker(new Locale("tr"));
+        assertThat(trFaker.internet().safeEmailAddress("Işık Ilgaz")).startsWith("isik.ilgaz@");
+        assertThat(trFaker.internet().safeEmailAddress("İsmail İbrahim")).startsWith("ismail.ibrahim@");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "Mr., mr",
+        "Mr. Jr., mr.jr",
+    })
+    void testEmailAddressFromNameThatIsOnlyPrefixOrSuffix(String name, String expectedLocalPart) {
         assertThat(faker.internet().safeEmailAddress(name)).startsWith(expectedLocalPart + "@");
     }
 

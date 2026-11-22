@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -106,7 +107,8 @@ public class Internet extends AbstractProvider<BaseProviders> {
         Map.entry('ß', "ss"), Map.entry('ẞ', "SS"),
         Map.entry('Æ', "AE"), Map.entry('æ', "ae"),
         Map.entry('Œ', "OE"), Map.entry('œ', "oe"),
-        Map.entry('Þ', "TH"), Map.entry('þ', "th")
+        Map.entry('Þ', "TH"), Map.entry('þ', "th"),
+        Map.entry('Ĳ', "IJ"), Map.entry('ĳ', "ij")
     );
 
     private String stripAccents(String input) {
@@ -119,7 +121,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         StringBuilder result = null;
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
-            String replacement = NON_DECOMPOSABLE_LETTERS.get(c);
+            String replacement = c < 0x80 ? null : NON_DECOMPOSABLE_LETTERS.get(c);
             if (replacement != null && result == null) {
                 result = new StringBuilder(input.length() + 4).append(input, 0, i);
             }
@@ -135,6 +137,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     private static final Pattern LOCALPART = Pattern.compile("[^a-z0-9\\.]");
+    private static final Pattern REPEATED_DOTS = Pattern.compile("\\.{2,}");
 
     /**
      * Converts a name to a local part (the part before the '@') of an email
@@ -157,7 +160,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
                 && list.stream().allMatch(String.class::isInstance))
                         ? list.stream().map(String.class::cast).toList()
                         : List.of();
-        if (prefixList.contains(parts[0])) {
+        if (parts.length > 0 && prefixList.contains(parts[0])) {
             parts = Arrays.copyOfRange(parts, 1, parts.length);
         }
 
@@ -166,21 +169,35 @@ public class Internet extends AbstractProvider<BaseProviders> {
                 && list.stream().allMatch(String.class::isInstance))
                         ? list.stream().map(String.class::cast).toList()
                         : List.of();
-        if (suffixList.contains(parts[parts.length - 1])) {
+        if (parts.length > 0 && suffixList.contains(parts[parts.length - 1])) {
             parts = Arrays.copyOfRange(parts, 0, parts.length - 1);
         }
 
+        String localPart;
         if (parts.length == 0) {
-            return LOCALPART.matcher(asciiName.toLowerCase(faker.getContext().getLocale())).replaceAll("");
+            localPart = toAsciiLowerCase(asciiName);
+        } else if (parts.length == 1) {
+            localPart = toAsciiLowerCase(parts[0]);
+        } else {
+            localPart = toAsciiLowerCase(parts[0]) + "." + toAsciiLowerCase(parts[parts.length - 1]);
         }
+        return trimDots(REPEATED_DOTS.matcher(localPart).replaceAll("."));
+    }
 
-        if (parts.length == 1) {
-            return LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll("");
-        }
+    /**
+     * Lower-cases with {@link Locale#ROOT}: the input is already transliterated to ASCII, and a locale such as
+     * Turkish would turn {@code I} into the non-ASCII dotless {@code ı}, which {@link #LOCALPART} then drops.
+     */
+    private static String toAsciiLowerCase(String word) {
+        return LOCALPART.matcher(word.toLowerCase(Locale.ROOT)).replaceAll("");
+    }
 
-        return String.join(".",
-            LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll(""),
-            LOCALPART.matcher(parts[parts.length - 1].toLowerCase(faker.getContext().getLocale())).replaceAll(""));
+    private static String trimDots(String localPart) {
+        int start = 0;
+        int end = localPart.length();
+        while (start < end && localPart.charAt(start) == '.') start++;
+        while (end > start && localPart.charAt(end - 1) == '.') end--;
+        return localPart.substring(start, end);
     }
 
     /**
