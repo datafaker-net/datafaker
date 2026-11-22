@@ -317,6 +317,57 @@ class TomlSerializationTest {
             of(Float.NEGATIVE_INFINITY, "-inf", Double.NEGATIVE_INFINITY));
     }
 
+    @ParameterizedTest
+    @MethodSource("signedZeros")
+    void preservesSignedZeroTextAndSignBit(Number value, String token, long expectedBits) {
+        Object primitiveArray = value instanceof Float
+            ? new float[]{value.floatValue()} : new double[]{value.doubleValue()};
+        Schema<Object, ?> schema = Schema.of(
+            field("value", () -> value),
+            field("list", () -> List.of(value)),
+            field("array", () -> new Object[]{value}),
+            field("primitive", () -> primitiveArray),
+            field("nested", () -> List.of(List.of(value))),
+            field("map", () -> Map.of("value", value)),
+            field("table", () -> Schema.of(field("value", () -> value))),
+            field("tables", () -> List.of(Schema.of(field("value", () -> value)))));
+
+        String text = transformer.generate(schema, 1);
+        assertThat(text.lines().toList()).containsExactly(
+            "value = " + token,
+            "list = [ " + token + " ]",
+            "array = [ " + token + " ]",
+            "primitive = [ " + token + " ]",
+            "nested = [ [ " + token + " ] ]",
+            "map = { value = " + token + " }",
+            "[table]", "value = " + token,
+            "[[tables]]", "value = " + token);
+
+        TomlParseResult parsed = Toml.parse(text);
+        assertThat(parsed.errors()).isEmpty();
+        List<Object> parsedValues = List.of(
+            parsed.get("value"),
+            parsed.getArray("list").get(0),
+            parsed.getArray("array").get(0),
+            parsed.getArray("primitive").get(0),
+            parsed.getArray("nested").getArray(0).get(0),
+            parsed.get("map.value"),
+            parsed.get("table.value"),
+            parsed.getArray("tables").getTable(0).get("value"));
+        for (Object actual : parsedValues) {
+            assertThat(actual).isInstanceOf(Double.class);
+            assertThat(Double.doubleToRawLongBits((Double) actual)).isEqualTo(expectedBits);
+        }
+    }
+
+    static Stream<Arguments> signedZeros() {
+        return Stream.of(
+            of(-0.0f, "-0.0", Long.MIN_VALUE),
+            of(-0.0d, "-0.0", Long.MIN_VALUE),
+            of(0.0f, "0.0", 0L),
+            of(0.0d, "0.0", 0L));
+    }
+
     @Test
     void preservesFiniteNumbersAndPrecision() {
         assertThat(parse(Schema.of(field("values", () -> List.of(1, 2.5f, 3.25d, -0.0f, -0.0d,
