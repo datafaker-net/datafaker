@@ -153,11 +153,13 @@ class AddressTest {
     void koreanCityHasItsRealAdministrativeSuffix() {
         BaseFaker koFaker = new BaseFaker(Locale.KOREAN);
         List<String> cityNames = koFaker.fakeValuesService().fetchObject("address.city_name", koFaker.getContext());
-        for (int i = 0; i < 100; i++) {
-            assertThat(koFaker.address().city())
-                .isIn(cityNames)
-                .matches(KOREAN_CITY_WITH_SUFFIX);
-        }
+
+        assertThat(cityNames)
+            .isNotEmpty()
+            .allSatisfy(name -> assertThat(name).matches(KOREAN_CITY_WITH_SUFFIX));
+
+        assertThat(koFaker.address().city()).isIn(cityNames);
+        assertThat(koFaker.address().cityName()).isIn(cityNames);
     }
 
     @Test
