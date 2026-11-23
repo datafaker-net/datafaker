@@ -38,6 +38,12 @@ class AddressTest {
     private static final Faker IE_FAKER = new Faker(new Locale("en", "IE"));
     private static final Pattern CYRILLIC_LETTERS = Pattern.compile(".*[а-яА-Я].*");
 
+    /**
+     * Korean letters followed by an administrative suffix:
+     * 시 (si, city), 군 (gun, county) or 구 (gu, district) - e.g. "강릉시", "영월군", "마포구".
+     */
+    private static final Pattern KOREAN_CITY_WITH_SUFFIX = Pattern.compile("\\p{IsHangul}+[시군구]");
+
     private static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
             Double.valueOf(s);
@@ -150,7 +156,7 @@ class AddressTest {
         for (int i = 0; i < 100; i++) {
             assertThat(koFaker.address().city())
                 .isIn(cityNames)
-                .matches("[가-힣]+[시군구]");
+                .matches(KOREAN_CITY_WITH_SUFFIX);
         }
     }
 
