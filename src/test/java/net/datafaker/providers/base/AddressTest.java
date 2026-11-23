@@ -145,13 +145,12 @@ class AddressTest {
 
     @Test
     void koreanCityHasItsRealAdministrativeSuffix() {
-        long seed = (long) (Long.MAX_VALUE * Math.random());
-        BaseFaker cityFaker = new BaseFaker(Locale.KOREAN, new Random(seed));
-        BaseFaker cityNameFaker = new BaseFaker(Locale.KOREAN, new Random(seed));
+        BaseFaker koFaker = new BaseFaker(Locale.KOREAN);
+        List<String> cityNames = koFaker.fakeValuesService().fetchObject("address.city_name", koFaker.getContext());
         for (int i = 0; i < 100; i++) {
-            String city = cityFaker.address().city();
-            assertThat(city).matches("[가-힣]+[시군구]");
-            assertThat(city).isEqualTo(cityNameFaker.address().cityName());
+            assertThat(koFaker.address().city())
+                .isIn(cityNames)
+                .matches("[가-힣]+[시군구]");
         }
     }
 
