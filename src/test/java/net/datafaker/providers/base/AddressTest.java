@@ -38,6 +38,12 @@ class AddressTest {
     private static final Faker IE_FAKER = new Faker(new Locale("en", "IE"));
     private static final Pattern CYRILLIC_LETTERS = Pattern.compile(".*[а-яА-Я].*");
 
+    /**
+     * Korean letters followed by an administrative suffix:
+     * 시 (si, city), 군 (gun, county) or 구 (gu, district) - e.g. "강릉시", "영월군", "마포구".
+     */
+    private static final Pattern KOREAN_CITY_WITH_SUFFIX = Pattern.compile("\\p{IsHangul}+[시군구]");
+
     private static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
             Double.valueOf(s);
@@ -141,6 +147,19 @@ class AddressTest {
     @Test
     void testCityName() {
         assertThat(faker.address().cityName()).matches("[A-Za-z'() ]+");
+    }
+
+    @Test
+    void koreanCityHasItsRealAdministrativeSuffix() {
+        BaseFaker koFaker = new BaseFaker(Locale.KOREAN);
+        List<String> cityNames = koFaker.fakeValuesService().fetchObject("address.city_name", koFaker.getContext());
+
+        assertThat(cityNames)
+            .isNotEmpty()
+            .allSatisfy(name -> assertThat(name).matches(KOREAN_CITY_WITH_SUFFIX));
+
+        assertThat(koFaker.address().city()).isIn(cityNames);
+        assertThat(koFaker.address().cityName()).isIn(cityNames);
     }
 
     @Test
