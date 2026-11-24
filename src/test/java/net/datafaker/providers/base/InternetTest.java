@@ -370,11 +370,12 @@ class InternetTest {
 
     @Test
     void testPublicIpV4Address() {
-        String tenDot = "^10\\.";
-        String oneTwoSeven = "^127\\.";
-        String oneSixNine = "^169\\.254";
-        String oneNineTwo = "^192\\.168\\.";
-        String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\.";
+        // doesNotMatch() needs the whole address to match, so every pattern ends with .*
+        String tenDot = "^10\\..*";
+        String oneTwoSeven = "^127\\..*";
+        String oneSixNine = "^169\\.254\\..*";
+        String oneNineTwo = "^192\\.168\\..*";
+        String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..*";
 
         for (int i = 0; i < 1000; i++) {
             String addr = faker.internet().getPublicIpV4Address().getHostAddress();

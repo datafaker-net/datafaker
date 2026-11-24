@@ -452,17 +452,27 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public InetAddress getPublicIpV4Address() {
         final RandomService r = faker.random();
 
-        final byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
+        int first = r.nextInt(256),
+            second = r.nextInt(256),
+            third = r.nextInt(256),
+            fourth = r.nextInt(256);
 
-        byte first = (byte) r.nextInt(256),
-            second = (byte) r.nextInt(256),
-            third = (byte) r.nextInt(256),
-            fourth = (byte) r.nextInt(256);
-
-        while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
-            first = (byte) r.nextInt(256);
+        while (isPrivateIpV4(first, second)) {
+            first = r.nextInt(256);
+            second = r.nextInt(256);
         }
-        return inet4Address(first, second, third, fourth);
+        return inet4Address((byte) first, (byte) second, (byte) third, (byte) fourth);
+    }
+
+    /**
+     * Same ranges as {@link #getPrivateIpV4Address()}: 10/8, 127/8, 169.254/16, 172.16/12 and 192.168/16.
+     */
+    private static boolean isPrivateIpV4(int first, int second) {
+        return first == 10
+            || first == 127
+            || (first == 169 && second == 254)
+            || (first == 172 && second >= 16 && second <= 31)
+            || (first == 192 && second == 168);
     }
 
     /**
