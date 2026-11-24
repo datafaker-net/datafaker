@@ -1,7 +1,7 @@
 package net.datafaker.providers.base;
 
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;
@@ -41,9 +41,15 @@ class JobTest extends BaseFakerTest {
                 TestSpec.of(() -> faker.expression("#{job.education_level}"), "job.education_level", "\\p{IsHan}+"));
         }
 
-        @RepeatedTest(10)
+        @Test
         void title() {
-            assertThat(faker.job().title()).matches("\\p{IsHan}+");
+            String title = faker.job().title();
+            List<String> positions = getBaseList(faker, "job.position");
+            assertThat(title).matches("\\p{IsHan}+");
+            assertThat(positions).anyMatch(title::endsWith, "position suffix of " + title);
+            assertThat(getBaseList(faker, "job.title"))
+                .isNotEmpty()
+                .allSatisfy(template -> assertThat(template).endsWith("#{Job.position}"));
         }
     }
 
