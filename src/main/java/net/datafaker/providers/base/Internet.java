@@ -419,10 +419,10 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return a private IPV4 address
+     * @return a private IPV4 address (RFC 1918: 10/8, 172.16/12 or 192.168/16)
      */
     public InetAddress getPrivateIpV4Address() {
-        final Byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
+        final Byte[] PRIVATE_FIRST_OCTET = {10, (byte) 192, (byte) 172};
         final Byte[] PRIVATE_SECOND_OCTET_172 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 
         final RandomService r = faker.random();
@@ -434,7 +434,6 @@ public class Internet extends AbstractProvider<BaseProviders> {
         switch (first) {
             case (byte) 172 -> second = random(PRIVATE_SECOND_OCTET_172);
             case (byte) 192 -> second = (byte) 168;
-            case (byte) 169 -> second = (byte) 254;
         }
         return inet4Address(first, second, third, fourth);
     }
@@ -460,15 +459,27 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * True for private (10/8, 172.16/12, 192.168/16), loopback (127/8), link-local (169.254/16),
-     * wildcard (0.0.0.0) and multicast (224/4) addresses, using the JDK checks.
+     * True for IPv4 addresses that are not globally routable:
+     * private (10/8, 172.16/12, 192.168/16), loopback (127/8), link-local (169.254/16),
+     * "this network" (0/8), shared address space (100.64/10), IETF protocol assignments (192.0.0/24),
+     * documentation (192.0.2/24, 198.51.100/24, 203.0.113/24), benchmarking (198.18/15),
+     * multicast (224/4), reserved (240/4) and broadcast (255.255.255.255).
      */
     static boolean isLocalOrReservedIpV4(InetAddress address) {
-        return address.isSiteLocalAddress()
-            || address.isLoopbackAddress()
-            || address.isLinkLocalAddress()
-            || address.isAnyLocalAddress()
-            || address.isMulticastAddress();
+        if (address.isSiteLocalAddress() || address.isLoopbackAddress() || address.isLinkLocalAddress()) {
+            return true;
+        }
+        byte[] bytes = address.getAddress();
+        int first = bytes[0] & 0xFF;
+        int second = bytes[1] & 0xFF;
+        int third = bytes[2] & 0xFF;
+        return first == 0
+            || first >= 224
+            || (first == 100 && (second & 0xC0) == 64)
+            || (first == 192 && second == 0 && (third == 0 || third == 2))
+            || (first == 198 && (second == 18 || second == 19))
+            || (first == 198 && second == 51 && third == 100)
+            || (first == 203 && second == 0 && third == 113);
     }
 
     /**
