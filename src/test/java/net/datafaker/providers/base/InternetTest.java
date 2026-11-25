@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -385,6 +386,27 @@ class InternetTest {
                 .doesNotMatch(oneNineTwo)
                 .doesNotMatch(oneSevenTwo);
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "10.0.0.1, false",
+        "127.0.0.1, false",
+        "169.254.1.1, false",
+        "169.253.1.1, true",
+        "172.15.0.1, true",
+        "172.16.0.1, false",
+        "172.31.255.255, false",
+        "172.32.0.1, true",
+        "192.168.1.1, false",
+        "192.167.1.1, true",
+        "0.0.0.0, false",
+        "224.0.0.1, false",
+        "239.255.255.255, false",
+        "8.8.8.8, true"
+    })
+    void testIsPublicIpV4(String ip, boolean expected) throws Exception {
+        assertThat(Internet.isPublicIpV4(InetAddress.getByName(ip))).isEqualTo(expected);
     }
 
     @Test

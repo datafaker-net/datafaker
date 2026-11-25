@@ -452,27 +452,23 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public InetAddress getPublicIpV4Address() {
         final RandomService r = faker.random();
 
-        int first = r.nextInt(256),
-            second = r.nextInt(256),
-            third = r.nextInt(256),
-            fourth = r.nextInt(256);
-
-        while (isPrivateIpV4(first, second)) {
-            first = r.nextInt(256);
-            second = r.nextInt(256);
-        }
-        return inet4Address((byte) first, (byte) second, (byte) third, (byte) fourth);
+        InetAddress address;
+        do {
+            address = inet4Address((byte) r.nextInt(256), (byte) r.nextInt(256), (byte) r.nextInt(256), (byte) r.nextInt(256));
+        } while (!isPublicIpV4(address));
+        return address;
     }
 
     /**
-     * Same ranges as {@link #getPrivateIpV4Address()}: 10/8, 127/8, 169.254/16, 172.16/12 and 192.168/16.
+     * Uses the JDK checks to rule out private (10/8, 172.16/12, 192.168/16), loopback (127/8),
+     * link-local (169.254/16), wildcard (0.0.0.0) and multicast (224/4) addresses.
      */
-    private static boolean isPrivateIpV4(int first, int second) {
-        return first == 10
-            || first == 127
-            || (first == 169 && second == 254)
-            || (first == 172 && second >= 16 && second <= 31)
-            || (first == 192 && second == 168);
+    static boolean isPublicIpV4(InetAddress address) {
+        return !(address.isSiteLocalAddress()
+            || address.isLoopbackAddress()
+            || address.isLinkLocalAddress()
+            || address.isAnyLocalAddress()
+            || address.isMulticastAddress());
     }
 
     /**
