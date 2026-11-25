@@ -164,13 +164,13 @@ class AddressTest {
     }
 
     @Test
-    void koreanStatesLeaveOutTheMergedSouthJeolla() {
+    void koreanStatesHaveTheMergedJeonnamGwangju() {
         BaseFaker koFaker = new BaseFaker(Locale.KOREAN);
         List<String> states = koFaker.fakeValuesService().fetchObject("address.state", koFaker.getContext());
         List<String> stateAbbrs = koFaker.fakeValuesService().fetchObject("address.state_abbr", koFaker.getContext());
 
-        assertThat(states).doesNotContain("전남").contains("광주");
-        assertThat(stateAbbrs).doesNotContain("전남").contains("광주");
+        assertThat(states).contains("전남광주").doesNotContain("전남", "광주").hasSize(16);
+        assertThat(stateAbbrs).contains("전남광주").doesNotContain("전남", "광주").hasSize(16);
     }
 
     @RepeatedTest(100)
