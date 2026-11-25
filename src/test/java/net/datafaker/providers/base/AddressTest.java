@@ -43,6 +43,7 @@ class AddressTest {
      * 시 (si, city), 군 (gun, county) or 구 (gu, district) - e.g. "강릉시", "영월군", "마포구".
      */
     private static final Pattern KOREAN_CITY_WITH_SUFFIX = Pattern.compile("\\p{IsHangul}+[시군구]");
+    private static final Pattern KOREAN_POSTCODE = Pattern.compile("(0[1-8]|1[0-8]|2[1-9]|[3-5]\\d|6[1-3])\\d{3}");
 
     private static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
@@ -160,6 +161,24 @@ class AddressTest {
 
         assertThat(koFaker.address().city()).isIn(cityNames);
         assertThat(koFaker.address().cityName()).isIn(cityNames);
+    }
+
+    @Test
+    void koreanStatesLeaveOutTheMergedSouthJeolla() {
+        BaseFaker koFaker = new BaseFaker(Locale.KOREAN);
+        List<String> states = koFaker.fakeValuesService().fetchObject("address.state", koFaker.getContext());
+        List<String> stateAbbrs = koFaker.fakeValuesService().fetchObject("address.state_abbr", koFaker.getContext());
+
+        assertThat(states).doesNotContain("전남").contains("광주");
+        assertThat(stateAbbrs).doesNotContain("전남").contains("광주");
+    }
+
+    @RepeatedTest(100)
+    void koreanPostcodeStartsWithAnAssignedPrefix() {
+        BaseFaker krFaker = new BaseFaker(new Locale("ko", "KR"));
+
+        assertThat(krFaker.address().postcode()).matches(KOREAN_POSTCODE);
+        assertThat(krFaker.address().zipCode()).matches(KOREAN_POSTCODE);
     }
 
     @Test
