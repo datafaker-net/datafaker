@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -370,11 +371,12 @@ class InternetTest {
 
     @Test
     void testPublicIpV4Address() {
-        String tenDot = "^10\\.";
-        String oneTwoSeven = "^127\\.";
-        String oneSixNine = "^169\\.254";
-        String oneNineTwo = "^192\\.168\\.";
-        String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\.";
+        // doesNotMatch() needs the whole address to match, so every pattern ends with .*
+        String tenDot = "^10\\..*";
+        String oneTwoSeven = "^127\\..*";
+        String oneSixNine = "^169\\.254\\..*";
+        String oneNineTwo = "^192\\.168\\..*";
+        String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..*";
 
         for (int i = 0; i < 1000; i++) {
             String addr = faker.internet().getPublicIpV4Address().getHostAddress();
@@ -384,6 +386,27 @@ class InternetTest {
                 .doesNotMatch(oneNineTwo)
                 .doesNotMatch(oneSevenTwo);
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "10.0.0.1, true",
+        "127.0.0.1, true",
+        "169.254.1.1, true",
+        "169.253.1.1, false",
+        "172.15.0.1, false",
+        "172.16.0.1, true",
+        "172.31.255.255, true",
+        "172.32.0.1, false",
+        "192.168.1.1, true",
+        "192.167.1.1, false",
+        "0.0.0.0, true",
+        "224.0.0.1, true",
+        "239.255.255.255, true",
+        "8.8.8.8, false"
+    })
+    void testIsLocalOrReservedIpV4(String ip, boolean expected) throws Exception {
+        assertThat(Internet.isLocalOrReservedIpV4(InetAddress.getByName(ip))).isEqualTo(expected);
     }
 
     @Test

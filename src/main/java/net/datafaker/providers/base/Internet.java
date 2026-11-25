@@ -452,17 +452,23 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public InetAddress getPublicIpV4Address() {
         final RandomService r = faker.random();
 
-        final byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
+        InetAddress address;
+        do {
+            address = inet4Address((byte) r.nextInt(256), (byte) r.nextInt(256), (byte) r.nextInt(256), (byte) r.nextInt(256));
+        } while (isLocalOrReservedIpV4(address));
+        return address;
+    }
 
-        byte first = (byte) r.nextInt(256),
-            second = (byte) r.nextInt(256),
-            third = (byte) r.nextInt(256),
-            fourth = (byte) r.nextInt(256);
-
-        while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
-            first = (byte) r.nextInt(256);
-        }
-        return inet4Address(first, second, third, fourth);
+    /**
+     * True for private (10/8, 172.16/12, 192.168/16), loopback (127/8), link-local (169.254/16),
+     * wildcard (0.0.0.0) and multicast (224/4) addresses, using the JDK checks.
+     */
+    static boolean isLocalOrReservedIpV4(InetAddress address) {
+        return address.isSiteLocalAddress()
+            || address.isLoopbackAddress()
+            || address.isLinkLocalAddress()
+            || address.isAnyLocalAddress()
+            || address.isMulticastAddress();
     }
 
     /**
