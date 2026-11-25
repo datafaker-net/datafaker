@@ -390,23 +390,23 @@ class InternetTest {
 
     @ParameterizedTest
     @CsvSource({
-        "10.0.0.1, false",
-        "127.0.0.1, false",
-        "169.254.1.1, false",
-        "169.253.1.1, true",
-        "172.15.0.1, true",
-        "172.16.0.1, false",
-        "172.31.255.255, false",
-        "172.32.0.1, true",
-        "192.168.1.1, false",
-        "192.167.1.1, true",
-        "0.0.0.0, false",
-        "224.0.0.1, false",
-        "239.255.255.255, false",
-        "8.8.8.8, true"
+        "10.0.0.1, true",
+        "127.0.0.1, true",
+        "169.254.1.1, true",
+        "169.253.1.1, false",
+        "172.15.0.1, false",
+        "172.16.0.1, true",
+        "172.31.255.255, true",
+        "172.32.0.1, false",
+        "192.168.1.1, true",
+        "192.167.1.1, false",
+        "0.0.0.0, true",
+        "224.0.0.1, true",
+        "239.255.255.255, true",
+        "8.8.8.8, false"
     })
-    void testIsPublicIpV4(String ip, boolean expected) throws Exception {
-        assertThat(Internet.isPublicIpV4(InetAddress.getByName(ip))).isEqualTo(expected);
+    void testIsLocalOrReservedIpV4(String ip, boolean expected) throws Exception {
+        assertThat(Internet.isLocalOrReservedIpV4(InetAddress.getByName(ip))).isEqualTo(expected);
     }
 
     @Test
