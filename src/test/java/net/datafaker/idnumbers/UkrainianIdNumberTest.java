@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,8 +35,8 @@ class UkrainianIdNumberTest {
     void validUsesRequestedAge() {
         PersonIdNumber person = ukrainianIdNumber.generateValid(faker, new IdNumber.IdNumberRequest(1, 10, ANY));
 
-        assertThat(person.age()).isBetween(1, 10);
-        assertThat(person.idNumber()).startsWith(DateTimeFormatter.ofPattern("yyyyMMdd").format(person.birthDate()));
+        assertTrue(person.age() >= 1 && person.age() <= 10, () -> "age " + person.age());
+        assertTrue(person.idNumber().startsWith(DateTimeFormatter.ofPattern("yyyyMMdd").format(person.birthDate())), person::idNumber);
         assertTrue(isUnzrValid(person.idNumber()));
     }
 
