@@ -27,7 +27,7 @@ class HungarianIdNumberTest {
         PersonIdNumber male = hungarianIdNumber.generateValid(faker, new IdNumberRequest(30, 40, GenderRequest.MALE));
         assertThat(male.gender()).isEqualTo(MALE);
         assertThat(male.age()).isBetween(30, 40);
-        assertThat(male.idNumber()).startsWith("1" + DateTimeFormatter.ofPattern("yyMMdd").format(male.birthDate()));
+        assertThat(male.idNumber()).startsWith(HungarianIdNumber.firstDigit(male.birthDate().getYear(), MALE) + DateTimeFormatter.ofPattern("yyMMdd").format(male.birthDate()));
     }
 
     @Test
