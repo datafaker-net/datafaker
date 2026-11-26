@@ -3,11 +3,14 @@ package net.datafaker.idnumbers;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.IdNumber;
 import net.datafaker.providers.base.PersonIdNumber;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static net.datafaker.providers.base.IdNumber.GenderRequest.ANY;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,6 +30,15 @@ class UkrainianIdNumberTest {
         assertEquals(bod.getMonthValue(), Integer.parseInt(unzr.substring(4, 6)));
         assertEquals(bod.getDayOfMonth(), Integer.parseInt(unzr.substring(6, 8)));
         assertTrue(isUnzrValid(unzr));
+    }
+
+    @RepeatedTest(10)
+    void validUsesRequestedAge() {
+        PersonIdNumber person = ukrainianIdNumber.generateValid(faker, new IdNumber.IdNumberRequest(1, 10, ANY));
+
+        assertThat(person.age()).isBetween(1, 10);
+        assertThat(person.idNumber()).startsWith(DateTimeFormatter.ofPattern("yyyyMMdd").format(person.birthDate()));
+        assertTrue(isUnzrValid(person.idNumber()));
     }
 
     @Test

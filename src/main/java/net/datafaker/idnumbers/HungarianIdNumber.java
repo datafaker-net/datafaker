@@ -8,7 +8,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static java.lang.Character.getNumericValue;
-import static net.datafaker.idnumbers.Utils.randomGender;
+import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.gender;
 
 /**
  * Hungarian personal identification number
@@ -43,8 +44,8 @@ public class HungarianIdNumber implements IdNumberGenerator {
 
     @Override
     public PersonIdNumber generateValid(BaseProviders faker, IdNumber.IdNumberRequest request) {
-        LocalDate birthday = faker.timeAndDate().birthday();
-        PersonIdNumber.Gender gender = randomGender(faker);
+        LocalDate birthday = birthday(faker, request);
+        PersonIdNumber.Gender gender = gender(faker, request);
         int checkDigit;
         String basePart;
         do {
