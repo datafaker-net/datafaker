@@ -112,8 +112,7 @@ public class Credentials extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Generates a password with lowercase letters and optionally uppercase letters, numbers and 
-     * special characters and with min and max length defined by the user.
+     * Generates a random password within the given length range. Lowercase letters are always eligible.
      *
      * @param minimumLength    the minimum length of the password
      * @param maximumLength    the maximum length of the password
@@ -123,12 +122,12 @@ public class Credentials extends AbstractProvider<BaseProviders> {
      * @return A randomly generated password
      */
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit, false);
+        return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
 
     /**
-     * Generates a password with lowercase letters and optionally uppercase letters, numbers and
-     * special characters and with min and max length defined by the user.
+     * Generates a random password within the given length range. Lowercase letters are always eligible.
+     * Each flag set to {@code true} requires at least one character from its group.
      *
      * @param minimumLength    the minimum length of the password
      * @param maximumLength    the maximum length of the password

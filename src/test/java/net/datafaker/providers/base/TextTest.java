@@ -6,6 +6,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 import static net.datafaker.providers.base.Text.DEFAULT_SPECIAL;
 import static net.datafaker.providers.base.Text.DIGITS;
@@ -195,11 +196,26 @@ class TextTest {
         assertThatThrownBy(() -> faker.text().text(1, 2, true, true, true))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Minimum number of required characters (3) should not be greater than max length (2)");
+        assertThatThrownBy(() -> faker.text().text(1, 3, true, true, true, true))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Minimum number of required characters (4) should not be greater than max length (3)");
     }
 
     @RepeatedTest(10)
     void minimumLengthIsNotEnoughToContainAllRequiredSymbols() {
         assertThat(faker.text().text(1, 4, true, false, true)).matches("[a-zA-Z0-9]{2,4}");
+    }
+
+    @Test
+    void generatesDifferentLengthsConcurrentlyWithTheSameRules() {
+        Text text = faker.text();
+        IntStream.range(4, 68).parallel().forEach(length ->
+            assertThat(text.text(length, length, true, true, true, true))
+                .hasSize(length)
+                .containsPattern("[a-z]")
+                .containsPattern("[A-Z]")
+                .containsPattern("[0-9]")
+                .containsPattern("[" + DEFAULT_SPECIAL + "]"));
     }
 
     @RepeatedTest(10)
