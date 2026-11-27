@@ -38,23 +38,39 @@ vi:
       mail_box: ["Hộp thư Ø#", "Hộp thư Ø##"]
       default_country: ["Việt Nam"]
     name:
-      first_name: ["Phạm", "Nguyễn", "Trần", "Lê", "Lý", "Hoàng", "Phan", "Vũ", "Tăng",
-                   "Đặng", "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Đào", "Đoàn", "Vương",
-                   "Trịnh", "Đinh", "Lâm", "Phùng", "Mai", "Tô", "Trương", "Hà"]
-      last_name: ["Nam", "Trung", "Thanh", "Thị", "Văn", "Dương", "Tăng", "Quốc", "Như",
-                 "Phạm", "Nguyễn", "Trần", "Lê", "Lý", "Hoàng", "Phan", "Vũ",
-                 "Đặng", "Bùi", "Đỗ", "Hồ", "Ngô", "Đào", "Đoàn", "Vương",
-                 "Trịnh", "Đinh", "Lâm", "Phùng", "Mai", "Tô", "Trương", "Hà",
-                 "Vinh", "Nhung", "Hòa", "Tiến", "Tâm", "Bửu", "Loan", "Hiền", "Hải",
-                 "Vân", "Kha", "Minh", "Nhân", "Triệu", "Tuân", "Hữu", "Đức", "Phú", "Khoa",
-                 "Thắng", "Sơn", "Dung", "Tú", "Trinh", "Thảo", "Sa", "Kim", "Long", "Thi",
-                 "Cường", "Ngọc", "Sinh", "Khang", "Phong", "Thắm", "Thu", "Thủy", "Nhàn"]
+      last_name: ["Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng",
+                  "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Lý", "Đào", "Đoàn", "Vương", "Trịnh",
+                  "Đinh", "Lâm", "Phùng", "Mai", "Tô", "Trương", "Hà", "Tăng", "Cao", "Lương",
+                  "Châu", "Tạ", "Quách", "Lưu", "Thái", "Triệu", "Kiều", "Từ", "La", "Nghiêm"]
+      male_middle_name: ["Văn", "Đức", "Minh", "Hữu", "Quốc", "Công", "Thanh", "Xuân", "Đình", "Quang",
+                         "Gia", "Mạnh", "Bá", "Duy", "Ngọc", "Tiến", "Trọng"]
+      female_middle_name: ["Thị", "Ngọc", "Thu", "Thanh", "Minh", "Kim", "Bảo", "Diệu", "Khánh", "Thùy",
+                           "Hoài", "Mỹ", "Hồng", "Xuân", "Phương", "Bích"]
+      male_first_name: ["An", "Anh", "Bảo", "Bình", "Cường", "Dũng", "Đạt", "Đông", "Hải", "Hiếu",
+                        "Hòa", "Hùng", "Huy", "Khang", "Khánh", "Khoa", "Kiên", "Lâm", "Long", "Lộc",
+                        "Nam", "Nghĩa", "Nhân", "Phát", "Phong", "Phúc", "Quân", "Sơn", "Tài", "Thắng",
+                        "Thành", "Thịnh", "Toàn", "Trí", "Trung", "Tuấn", "Tùng", "Việt", "Vinh", "Vũ"]
+      female_first_name: ["An", "Anh", "Châu", "Chi", "Dung", "Duyên", "Giang", "Hà", "Hạnh", "Hằng",
+                          "Hiền", "Hoa", "Hương", "Huyền", "Lan", "Liên", "Linh", "Loan", "Ly", "Mai",
+                          "My", "Nga", "Ngân", "Nhàn", "Nhung", "Oanh", "Quyên", "Quỳnh", "Tâm", "Thảo",
+                          "Thắm", "Thủy", "Trang", "Trinh", "Uyên", "Vân", "Vy", "Yến"]
+      # The literal list also supplies unique values through Unique.fetchFromYaml.
+      first_name: ["An", "Anh", "Bảo", "Bình", "Cường", "Dũng", "Đạt", "Đông", "Hải", "Hiếu",
+                   "Hòa", "Hùng", "Huy", "Khang", "Khánh", "Khoa", "Kiên", "Lâm", "Long", "Lộc",
+                   "Nam", "Nghĩa", "Nhân", "Phát", "Phong", "Phúc", "Quân", "Sơn", "Tài", "Thắng",
+                   "Thành", "Thịnh", "Toàn", "Trí", "Trung", "Tuấn", "Tùng", "Việt", "Vinh", "Vũ",
+                   "Châu", "Chi", "Dung", "Duyên", "Giang", "Hà", "Hạnh", "Hằng", "Hiền", "Hoa",
+                   "Hương", "Huyền", "Lan", "Liên", "Linh", "Loan", "Ly", "Mai", "My", "Nga",
+                   "Ngân", "Nhàn", "Nhung", "Oanh", "Quyên", "Quỳnh", "Tâm", "Thảo", "Thắm", "Thủy",
+                   "Trang", "Trinh", "Uyên", "Vân", "Vy", "Yến"]
+      # Give names with a middle name two of the three slots.
       name:
-        - "#{first_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name} #{last_name}"
+        - "#{name_with_middle}"
+        - "#{name_with_middle}"
+        - "#{last_name} #{first_name}"
       name_with_middle:
-        - "#{first_name} #{last_name} #{last_name}"
+        - "#{last_name} #{male_middle_name} #{male_first_name}"
+        - "#{last_name} #{female_middle_name} #{female_first_name}"
 
     company:
       prefix: ["Công ty", "Cty TNHH", "Cty", "Cửa hàng", "Trung tâm", "Chi nhánh"]
