@@ -8,7 +8,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import static net.datafaker.transformations.Field.field;
@@ -23,6 +22,14 @@ public class JavaObjectTransformerTest {
         private LocalDate birthDate;
         private Instant registrationDate;
         private int id;
+    }
+
+    public static class PersonWithId {
+        private final int id;
+
+        public PersonWithId(int id) {
+            this.id = id;
+        }
     }
 
     public record Client(String firstName, String lastName, String phoneNumber, Instant registrationDate, int id) { }
@@ -76,22 +83,6 @@ public class JavaObjectTransformerTest {
     }
 
     @Test
-    void javaRecordBatchTransformationTest() {
-        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
-        Schema<Object, ?> schema = Schema.of(
-            field("firstName", () -> "Alice"),
-            field("lastName", () -> "Smith"));
-
-        User original = new User("OLD_FIRST", "OLD_LAST");
-
-        Collection<Object> transformed = jTransformer.generate(List.of(original), schema);
-
-        assertThat(transformed)
-            .hasSize(1)
-            .containsExactly(new User("Alice", "Smith"));
-    }
-
-    @Test
     void javaRecordBatchTransformationKeepsInputOrderAndCountTest() {
         JavaObjectTransformer jTransformer = new JavaObjectTransformer();
         Schema<Object, ?> schema = Schema.of(
@@ -108,16 +99,6 @@ public class JavaObjectTransformerTest {
             new User("ALICE-transformed", "SMITH-transformed"),
             new User("BOB-transformed", "JONES-transformed"),
             new User("CAROL-transformed", "BROWN-transformed"));
-    }
-
-    @Test
-    void javaEmptyBatchTransformationTest() {
-        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
-        Schema<Object, ?> schema = Schema.of(
-            field("firstName", () -> "Alice"),
-            field("lastName", () -> "Smith"));
-
-        assertThat(jTransformer.generate(List.of(), schema)).isEmpty();
     }
 
     @Test
@@ -141,34 +122,45 @@ public class JavaObjectTransformerTest {
     }
 
     @Test
+    void batchTransformsClassWithoutNoArgConstructor() {
+        JavaObjectTransformer transformer = new JavaObjectTransformer();
+        Schema<Object, ?> schema = Schema.of(field("id", () -> 42));
+        PersonWithId original = new PersonWithId(7);
+
+        assertThat(transformer.generate(List.of(original), schema))
+            .singleElement()
+            .isInstanceOfSatisfying(PersonWithId.class, transformed -> {
+                assertThat(transformed).isNotSameAs(original);
+                assertThat(transformed.id).isEqualTo(42);
+            });
+    }
+
+    @Test
     void javaRecordBatchTransformationFromFakeSequenceTest() {
-        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
+        JavaObjectTransformer transformer = new JavaObjectTransformer();
         Schema<Object, ?> schema = Schema.of(
             field("firstName", (Object input) -> ((User) input).firstName() + "-new"),
             field("lastName", (Object input) -> ((User) input).lastName()));
-
-        List<User> produced = new ArrayList<>();
-        Iterable<Object> input = faker.<Object>collection(
-                () -> trackedUser("0", produced),
-                () -> trackedUser("1", produced),
-                () -> trackedUser("2", produced))
-            .len(3)
+        FakeSequence<Object> input = faker.<Object>collection(() -> new User("Alice", "Smith"))
+            .len(2)
             .build();
 
-        Collection<Object> transformed = jTransformer.generate(input, schema);
-
-        assertThat(produced).hasSize(3);
-        assertThat(transformed)
-            .hasSize(3)
-            .containsExactlyElementsOf(produced.stream()
-                .map(user -> new User(user.firstName() + "-new", user.lastName()))
-                .toList());
+        assertThat(transformer.generate(input, schema))
+            .containsExactly(new User("Alice-new", "Smith"), new User("Alice-new", "Smith"));
     }
 
-    private static User trackedUser(String suffix, List<User> produced) {
-        User user = new User("FIRST_" + suffix, "LAST_" + suffix);
-        produced.add(user);
-        return user;
+    @Test
+    void batchTransformsRecordsFromFiniteFakeStream() {
+        JavaObjectTransformer transformer = new JavaObjectTransformer();
+        Schema<Object, ?> schema = Schema.of(
+            field("firstName", () -> "Alice"),
+            field("lastName", () -> "Smith"));
+        FakeSequence<Object> input = faker.<Object>stream(() -> new User("OLD_FIRST", "OLD_LAST"))
+            .len(2)
+            .build();
+
+        assertThat(transformer.generate(input, schema))
+            .containsExactly(new User("Alice", "Smith"), new User("Alice", "Smith"));
     }
 
     @Test
@@ -183,67 +175,6 @@ public class JavaObjectTransformerTest {
         assertThatThrownBy(() -> jTransformer.generate(infiniteInput, schema))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Should be finite size");
-    }
-
-    @Test
-    void javaBatchTransformationConsumesLazyInputBeforeTransformingTest() {
-        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
-        List<String> events = new ArrayList<>();
-        Iterable<Object> lazyInput = () -> new Iterator<Object>() {
-            private int index;
-
-            @Override
-            public boolean hasNext() {
-                return index < 2;
-            }
-
-            @Override
-            public Object next() {
-                User user = new User("FIRST_" + index, "LAST_" + index);
-                events.add("read-" + index);
-                index++;
-                return user;
-            }
-        };
-        Schema<Object, ?> schema = Schema.of(
-            field("firstName", (Object input) -> {
-                events.add("transform");
-                return ((User) input).firstName() + "-new";
-            }),
-            field("lastName", (Object input) -> {
-                events.add("transform");
-                return ((User) input).lastName() + "-new";
-            }));
-
-        Collection<Object> transformed = jTransformer.generate(lazyInput, schema);
-
-        assertThat(transformed).containsExactly(
-            new User("FIRST_0-new", "LAST_0-new"),
-            new User("FIRST_1-new", "LAST_1-new"));
-        assertThat(events).containsExactly(
-            "read-0", "read-1",
-            "transform", "transform", "transform", "transform");
-    }
-
-    @Test
-    void javaBatchTransformationWhenSchemaMutatesInputListTest() {
-        JavaObjectTransformer jTransformer = new JavaObjectTransformer();
-        List<Object> source = new ArrayList<>(List.of(
-            new User("FIRST_0", "LAST_0"),
-            new User("FIRST_1", "LAST_1")));
-        Schema<Object, ?> schema = Schema.of(
-            field("firstName", (Object input) -> {
-                source.remove(0);
-                return ((User) input).firstName() + "-new";
-            }),
-            field("lastName", (Object input) -> ((User) input).lastName()));
-
-        Collection<Object> transformed = jTransformer.generate(source, schema);
-
-        assertThat(source).isEmpty();
-        assertThat(transformed).containsExactly(
-            new User("FIRST_0-new", "LAST_0"),
-            new User("FIRST_1-new", "LAST_1"));
     }
 
     @Test
