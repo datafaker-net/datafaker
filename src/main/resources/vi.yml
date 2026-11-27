@@ -41,14 +41,20 @@ vi:
                           "Hiền", "Hoa", "Hương", "Huyền", "Lan", "Liên", "Linh", "Loan", "Ly", "Mai",
                           "My", "Nga", "Ngân", "Nhàn", "Nhung", "Oanh", "Quyên", "Quỳnh", "Tâm", "Thảo",
                           "Thắm", "Thủy", "Trang", "Trinh", "Uyên", "Vân", "Vy", "Yến"]
-      first_name:
-        - "#{female_first_name}"
-        - "#{male_first_name}"
+      # The literal list also supplies unique values through Unique.fetchFromYaml.
+      first_name: ["An", "Anh", "Bảo", "Bình", "Cường", "Dũng", "Đạt", "Đông", "Hải", "Hiếu",
+                   "Hòa", "Hùng", "Huy", "Khang", "Khánh", "Khoa", "Kiên", "Lâm", "Long", "Lộc",
+                   "Nam", "Nghĩa", "Nhân", "Phát", "Phong", "Phúc", "Quân", "Sơn", "Tài", "Thắng",
+                   "Thành", "Thịnh", "Toàn", "Trí", "Trung", "Tuấn", "Tùng", "Việt", "Vinh", "Vũ",
+                   "Châu", "Chi", "Dung", "Duyên", "Giang", "Hà", "Hạnh", "Hằng", "Hiền", "Hoa",
+                   "Hương", "Huyền", "Lan", "Liên", "Linh", "Loan", "Ly", "Mai", "My", "Nga",
+                   "Ngân", "Nhàn", "Nhung", "Oanh", "Quyên", "Quỳnh", "Tâm", "Thảo", "Thắm", "Thủy",
+                   "Trang", "Trinh", "Uyên", "Vân", "Vy", "Yến"]
+      # Give names with a middle name two of the three slots.
       name:
-        - "#{last_name} #{male_middle_name} #{male_first_name}"
-        - "#{last_name} #{female_middle_name} #{female_first_name}"
-        - "#{last_name} #{male_first_name}"
-        - "#{last_name} #{female_first_name}"
+        - "#{name_with_middle}"
+        - "#{name_with_middle}"
+        - "#{last_name} #{first_name}"
       name_with_middle:
         - "#{last_name} #{male_middle_name} #{male_first_name}"
         - "#{last_name} #{female_middle_name} #{female_first_name}"
