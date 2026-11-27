@@ -7,7 +7,10 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
+import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -155,6 +158,45 @@ class InternetTest {
     void testSafeEmailAddressDoesNotIncludeAccentsInTheLocalPart() {
         String emailAddress = faker.internet().safeEmailAddress("áéíóú");
         assertThat(emailAddress).startsWith("aeiou@");
+    }
+
+    @Test
+    void testEmailAddressKeepsDStrokeAsDInTheLocalPart() {
+        assertThat(faker.internet().safeEmailAddress("Đinh Dung")).startsWith("dinh.dung@");
+        assertThat(faker.internet().emailAddress("Nguyễn Văn Đức")).startsWith("nguyen.duc@");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "Paweł Łukasiewicz, pawel.lukasiewicz",
+        "Søren Kierkegaard, soren.kierkegaard",
+        "Jürgen Großmann, jurgen.grossmann",
+        "Æsa Bjørnæs, aesa.bjornaes",
+        "Œdipe Cœur, oedipe.coeur",
+        "Þóra Ðórsdóttir, thora.dorsdottir",
+        "Ħamrun Ŧest, hamrun.test",
+        "Işık Ilgaz, isik.ilgaz",
+        "Marceŀla Coŀlell, marcella.collell",
+        "Ĳsbrand Ĳzerman, ijsbrand.ijzerman",
+    })
+    void testEmailAddressTransliteratesLettersNotDecomposedByNfd(String name, String expectedLocalPart) {
+        assertThat(faker.internet().safeEmailAddress(name)).startsWith(expectedLocalPart + "@");
+    }
+
+    @Test
+    void testEmailAddressLowercasesIndependentlyOfTurkishLocale() {
+        Faker trFaker = new Faker(new Locale("tr"));
+        assertThat(trFaker.internet().safeEmailAddress("Işık Ilgaz")).startsWith("isik.ilgaz@");
+        assertThat(trFaker.internet().safeEmailAddress("İsmail İbrahim")).startsWith("ismail.ibrahim@");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "Mr., mr",
+        "Mr. Jr., mr.jr",
+    })
+    void testEmailAddressFromNameThatIsOnlyPrefixOrSuffix(String name, String expectedLocalPart) {
+        assertThat(faker.internet().safeEmailAddress(name)).startsWith(expectedLocalPart + "@");
     }
 
     @Test
@@ -310,17 +352,14 @@ class InternetTest {
     @Test
     void testPrivateIpV4Address() {
         String tenDot = "^10\\..+";
-        String oneTwoSeven = "^127\\..+";
-        String oneSixNine = "^169\\.254\\..+";
         String oneNineTwo = "^192\\.168\\..+";
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..+";
 
         for (int i = 0; i < 1000; i++) {
-            String addr = faker.internet().getPrivateIpV4Address().getHostAddress();
-            assertThat(addr).is(anyOf(
+            InetAddress address = faker.internet().getPrivateIpV4Address();
+            assertThat(address.isSiteLocalAddress()).as(address.toString()).isTrue();
+            assertThat(address.getHostAddress()).is(anyOf(
                 new Condition<>(s -> s.matches(tenDot), "tenDot"),
-                new Condition<>(s -> s.matches(oneTwoSeven), "oneTwoSeven"),
-                new Condition<>(s -> s.matches(oneSixNine), "oneSixNine"),
                 new Condition<>(s -> s.matches(oneNineTwo), "oneNineTwo"),
                 new Condition<>(s -> s.matches(oneSevenTwo), "oneSevenTwo")
             ));
@@ -329,11 +368,12 @@ class InternetTest {
 
     @Test
     void testPublicIpV4Address() {
-        String tenDot = "^10\\.";
-        String oneTwoSeven = "^127\\.";
-        String oneSixNine = "^169\\.254";
-        String oneNineTwo = "^192\\.168\\.";
-        String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\.";
+        // doesNotMatch() needs the whole address to match, so every pattern ends with .*
+        String tenDot = "^10\\..*";
+        String oneTwoSeven = "^127\\..*";
+        String oneSixNine = "^169\\.254\\..*";
+        String oneNineTwo = "^192\\.168\\..*";
+        String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..*";
 
         for (int i = 0; i < 1000; i++) {
             String addr = faker.internet().getPublicIpV4Address().getHostAddress();
@@ -343,6 +383,48 @@ class InternetTest {
                 .doesNotMatch(oneNineTwo)
                 .doesNotMatch(oneSevenTwo);
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "10.0.0.1, true",
+        "127.0.0.1, true",
+        "169.254.1.1, true",
+        "169.253.1.1, false",
+        "172.15.0.1, false",
+        "172.16.0.1, true",
+        "172.31.255.255, true",
+        "172.32.0.1, false",
+        "192.168.1.1, true",
+        "192.167.1.1, false",
+        "0.0.0.0, true",
+        "0.1.2.3, true",
+        "1.0.0.1, false",
+        "100.63.255.255, false",
+        "100.64.0.1, true",
+        "100.127.255.255, true",
+        "100.128.0.1, false",
+        "192.0.0.1, true",
+        "192.0.1.1, false",
+        "192.0.2.1, true",
+        "192.0.3.1, false",
+        "198.17.255.255, false",
+        "198.18.0.1, true",
+        "198.19.255.255, true",
+        "198.20.0.1, false",
+        "198.51.100.1, true",
+        "198.51.101.1, false",
+        "203.0.113.1, true",
+        "203.0.114.1, false",
+        "223.255.255.255, false",
+        "224.0.0.1, true",
+        "239.255.255.255, true",
+        "240.0.0.1, true",
+        "255.255.255.255, true",
+        "8.8.8.8, false"
+    })
+    void testIsLocalOrReservedIpV4(String ip, boolean expected) throws Exception {
+        assertThat(Internet.isLocalOrReservedIpV4(InetAddress.getByName(ip))).isEqualTo(expected);
     }
 
     @Test

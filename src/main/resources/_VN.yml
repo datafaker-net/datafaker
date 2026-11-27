@@ -4,7 +4,7 @@ _VN:
   faker:
     address:
       country_code: ['VN']
-      postcode: /[A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}/
+      postcode: /(0[1-8]|1[0-8]|2[0-6]|3[0-6]|4[0-9]|5[0-79]|6[0-7]|7[0-8]|8[0-7]|9[0-24-8])[0-9]{3}/
 
     internet:
       domain_suffix: [com, net, info, vn, com.vn]
