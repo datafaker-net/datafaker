@@ -7,8 +7,8 @@ import net.datafaker.providers.base.PersonIdNumber;
 import java.time.LocalDate;
 
 import static net.datafaker.idnumbers.Utils.birthday;
+import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.multiply;
-import static net.datafaker.idnumbers.Utils.randomGender;
 
 /**
  * The Moldovan Individual Tax ID Number is 13 digits.
@@ -32,7 +32,7 @@ public class MoldovanIdNumber implements IdNumberGenerator {
         LocalDate birthday = birthday(faker, request);
         String basePart = basePart(faker, birthday);
         String idNumber = basePart + checksum(basePart);
-        return new PersonIdNumber(idNumber, birthday, randomGender(faker));
+        return new PersonIdNumber(idNumber, birthday, gender(faker, request));
     }
 
     @Override

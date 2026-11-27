@@ -12,9 +12,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -35,6 +37,13 @@ class AddressTest {
     private static final Faker AU_FAKER = new Faker(new Locale("en", "AU"));
     private static final Faker IE_FAKER = new Faker(new Locale("en", "IE"));
     private static final Pattern CYRILLIC_LETTERS = Pattern.compile(".*[а-яА-Я].*");
+
+    /**
+     * Korean letters followed by an administrative suffix:
+     * 시 (si, city), 군 (gun, county) or 구 (gu, district) - e.g. "강릉시", "영월군", "마포구".
+     */
+    private static final Pattern KOREAN_CITY_WITH_SUFFIX = Pattern.compile("\\p{IsHangul}+[시군구]");
+    private static final Pattern KOREAN_POSTCODE = Pattern.compile("(0[1-8]|1[0-8]|2[1-9]|[3-5]\\d|6[1-3])\\d{3}");
 
     private static final Condition<String> IS_A_NUMBER = new Condition<>(s -> {
         try {
@@ -139,6 +148,37 @@ class AddressTest {
     @Test
     void testCityName() {
         assertThat(faker.address().cityName()).matches("[A-Za-z'() ]+");
+    }
+
+    @Test
+    void koreanCityHasItsRealAdministrativeSuffix() {
+        BaseFaker koFaker = new BaseFaker(Locale.KOREAN);
+        List<String> cityNames = koFaker.fakeValuesService().fetchObject("address.city_name", koFaker.getContext());
+
+        assertThat(cityNames)
+            .isNotEmpty()
+            .allSatisfy(name -> assertThat(name).matches(KOREAN_CITY_WITH_SUFFIX));
+
+        assertThat(koFaker.address().city()).isIn(cityNames);
+        assertThat(koFaker.address().cityName()).isIn(cityNames);
+    }
+
+    @Test
+    void koreanStatesHaveTheMergedJeonnamGwangju() {
+        BaseFaker koFaker = new BaseFaker(Locale.KOREAN);
+        List<String> states = koFaker.fakeValuesService().fetchObject("address.state", koFaker.getContext());
+        List<String> stateAbbrs = koFaker.fakeValuesService().fetchObject("address.state_abbr", koFaker.getContext());
+
+        assertThat(states).contains("전남광주").doesNotContain("전남", "광주").hasSize(16);
+        assertThat(stateAbbrs).contains("전남광주").doesNotContain("전남", "광주").hasSize(16);
+    }
+
+    @RepeatedTest(100)
+    void koreanPostcodeStartsWithAnAssignedPrefix() {
+        BaseFaker krFaker = new BaseFaker(new Locale("ko", "KR"));
+
+        assertThat(krFaker.address().postcode()).matches(KOREAN_POSTCODE);
+        assertThat(krFaker.address().zipCode()).matches(KOREAN_POSTCODE);
     }
 
     @Test
@@ -344,6 +384,60 @@ class AddressTest {
     @RepeatedTest(10)
     void testCityCnSuffix() {
         assertThat(new Faker(Locale.CHINA).address().citySuffix()).matches("[\\u4e00-\\u9fa5]{1,7}(?:省|自治区)");
+    }
+
+    @Nested
+    class VietnameseAddress {
+        private final BaseFaker viFaker = new BaseFaker(new Locale("vi"));
+
+        // the 34 provincial-level units in place since the 2025 reorganization
+        private static final Set<String> PROVINCES = Set.of(
+            "An Giang", "Bắc Ninh", "Cà Mau", "Cao Bằng", "Cần Thơ", "Đà Nẵng", "Đắk Lắk", "Điện Biên",
+            "Đồng Nai", "Đồng Tháp", "Gia Lai", "Hà Nội", "Hà Tĩnh", "Hải Phòng", "Thành phố Hồ Chí Minh", "Huế",
+            "Hưng Yên", "Khánh Hòa", "Lai Châu", "Lạng Sơn", "Lào Cai", "Lâm Đồng", "Nghệ An", "Ninh Bình",
+            "Phú Thọ", "Quảng Ngãi", "Quảng Ninh", "Quảng Trị", "Sơn La", "Tây Ninh", "Thái Nguyên",
+            "Thanh Hóa", "Tuyên Quang", "Vĩnh Long");
+
+        @Test
+        void stateListsTheCurrentProvincialUnits() {
+            List<String> states = viFaker.fakeValuesService().fetchObject("address.state", viFaker.getContext());
+            assertThat(states).hasSize(34).containsExactlyInAnyOrderElementsOf(PROVINCES);
+        }
+
+        @RepeatedTest(20)
+        void cityAndStateAreProvincialUnits() {
+            assertThat(viFaker.address().state()).isIn(PROVINCES);
+            assertThat(viFaker.address().city()).isIn(PROVINCES);
+            assertThat(viFaker.address().cityName()).isIn(PROVINCES);
+        }
+
+        @RepeatedTest(20)
+        void streetNameHasNoEnglishSuffix() {
+            List<String> englishSuffixes = new BaseFaker(Locale.ENGLISH).fakeValuesService()
+                .fetchObject("address.street_suffix", new BaseFaker(Locale.ENGLISH).getContext());
+            String streetName = viFaker.address().streetName();
+            assertThat(streetName).matches("(?:(?:Đường|Phố) )?[\\p{Lu}0-9][\\p{L}0-9 ]+");
+            assertThat(streetName.split(" ")).doesNotContainAnyElementsOf(englishSuffixes);
+        }
+
+        @RepeatedTest(20)
+        void streetAddressStartsWithAHouseNumber() {
+            assertThat(viFaker.address().streetAddress())
+                .matches("[1-9][0-9]{0,2}(?:/[1-9][0-9]?)? (?:(?:Đường|Phố) )?[\\p{Lu}0-9][\\p{L}0-9 ]+");
+        }
+
+        @RepeatedTest(20)
+        void fullAddressEndsWithAProvincialUnit() {
+            String fullAddress = viFaker.address().fullAddress();
+            assertThat(fullAddress).matches("(?:(?:Phòng|Căn hộ) [1-9][0-9]{2}, )?[1-9][0-9/]* [^,]+, [^,]+");
+            assertThat(fullAddress.substring(fullAddress.lastIndexOf(", ") + 2)).isIn(PROVINCES);
+        }
+
+        @RepeatedTest(10)
+        void secondaryAddressAndMailBoxAreVietnamese() {
+            assertThat(viFaker.address().secondaryAddress()).matches("(?:Phòng|Căn hộ) [1-9][0-9]{2}");
+            assertThat(viFaker.address().mailBox()).matches("Hộp thư [1-9][0-9]{1,2}");
+        }
     }
 
     @Nested

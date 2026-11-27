@@ -13,6 +13,8 @@ import java.nio.ByteBuffer;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -79,7 +81,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     private String emailAddress(String localPart, String domain) {
-        return String.join("", stripAccents(localPart), "@", domain);
+        return localPart + "@" + domain;
     }
 
     public String emailSubject() {
@@ -89,15 +91,53 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public static final Pattern DIACRITICS_AND_FRIENDS
         = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
+    /**
+     * Latin letters that NFD does not decompose into a base letter plus combining marks,
+     * mapped to their usual ASCII transliteration.
+     */
+    private static final Map<Character, String> NON_DECOMPOSABLE_LETTERS = Map.ofEntries(
+        Map.entry('Đ', "D"), Map.entry('đ', "d"),
+        Map.entry('Ð', "D"), Map.entry('ð', "d"),
+        Map.entry('Ł', "L"), Map.entry('ł', "l"),
+        Map.entry('Ŀ', "L"), Map.entry('ŀ', "l"),
+        Map.entry('Ø', "O"), Map.entry('ø', "o"),
+        Map.entry('Ħ', "H"), Map.entry('ħ', "h"),
+        Map.entry('Ŧ', "T"), Map.entry('ŧ', "t"),
+        Map.entry('ı', "i"),
+        Map.entry('ß', "ss"), Map.entry('ẞ', "SS"),
+        Map.entry('Æ', "AE"), Map.entry('æ', "ae"),
+        Map.entry('Œ', "OE"), Map.entry('œ', "oe"),
+        Map.entry('Þ', "TH"), Map.entry('þ', "th"),
+        Map.entry('Ĳ', "IJ"), Map.entry('ĳ', "ij")
+    );
+
     private String stripAccents(String input) {
-        // strip accents from input; NFD does not decompose Đ/đ (U+0110/U+0111), so map them first
-        String str = input.replace('\u0110', 'D').replace('\u0111', 'd');
-        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        String str = Normalizer.normalize(input, Normalizer.Form.NFD);
         str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
-        return str;
+        return replaceNonDecomposableLetters(str);
+    }
+
+    private static String replaceNonDecomposableLetters(String input) {
+        StringBuilder result = null;
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            String replacement = c < 0x80 ? null : NON_DECOMPOSABLE_LETTERS.get(c);
+            if (replacement != null && result == null) {
+                result = new StringBuilder(input.length() + 4).append(input, 0, i);
+            }
+            if (result != null) {
+                if (replacement != null) {
+                    result.append(replacement);
+                } else {
+                    result.append(c);
+                }
+            }
+        }
+        return result == null ? input : result.toString();
     }
 
     private static final Pattern LOCALPART = Pattern.compile("[^a-z0-9\\.]");
+    private static final Pattern REPEATED_DOTS = Pattern.compile("\\.{2,}");
 
     /**
      * Converts a name to a local part (the part before the '@') of an email
@@ -112,14 +152,15 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @since 2.5.0
      */
     private String toLocalPart(String name) {
-        String[] parts = stripAccents(name).split(" ");
+        String asciiName = stripAccents(name);
+        String[] parts = asciiName.split(" ");
 
         Object prefixObj = faker.fakeValuesService().fetchObject("name.prefix", faker.getContext());
         final List<String> prefixList = (prefixObj instanceof List<?> list
                 && list.stream().allMatch(String.class::isInstance))
                         ? list.stream().map(String.class::cast).toList()
                         : List.of();
-        if (prefixList.contains(parts[0])) {
+        if (parts.length > 0 && prefixList.contains(parts[0])) {
             parts = Arrays.copyOfRange(parts, 1, parts.length);
         }
 
@@ -128,21 +169,35 @@ public class Internet extends AbstractProvider<BaseProviders> {
                 && list.stream().allMatch(String.class::isInstance))
                         ? list.stream().map(String.class::cast).toList()
                         : List.of();
-        if (suffixList.contains(parts[parts.length - 1])) {
+        if (parts.length > 0 && suffixList.contains(parts[parts.length - 1])) {
             parts = Arrays.copyOfRange(parts, 0, parts.length - 1);
         }
 
+        String localPart;
         if (parts.length == 0) {
-            return LOCALPART.matcher(name.toLowerCase(faker.getContext().getLocale())).replaceAll("");
+            localPart = toAsciiLowerCase(asciiName);
+        } else if (parts.length == 1) {
+            localPart = toAsciiLowerCase(parts[0]);
+        } else {
+            localPart = toAsciiLowerCase(parts[0]) + "." + toAsciiLowerCase(parts[parts.length - 1]);
         }
+        return trimDots(REPEATED_DOTS.matcher(localPart).replaceAll("."));
+    }
 
-        if (parts.length == 1) {
-            return LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll("");
-        }
+    /**
+     * Lower-cases with {@link Locale#ROOT}: the input is already transliterated to ASCII, and a locale such as
+     * Turkish would turn {@code I} into the non-ASCII dotless {@code ı}, which {@link #LOCALPART} then drops.
+     */
+    private static String toAsciiLowerCase(String word) {
+        return LOCALPART.matcher(word.toLowerCase(Locale.ROOT)).replaceAll("");
+    }
 
-        return String.join(".",
-            LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll(""),
-            LOCALPART.matcher(parts[parts.length - 1].toLowerCase(faker.getContext().getLocale())).replaceAll(""));
+    private static String trimDots(String localPart) {
+        int start = 0;
+        int end = localPart.length();
+        while (start < end && localPart.charAt(start) == '.') start++;
+        while (end > start && localPart.charAt(end - 1) == '.') end--;
+        return localPart.substring(start, end);
     }
 
     /**
@@ -364,10 +419,10 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return a private IPV4 address
+     * @return a private IPV4 address (RFC 1918: 10/8, 172.16/12 or 192.168/16)
      */
     public InetAddress getPrivateIpV4Address() {
-        final Byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
+        final Byte[] PRIVATE_FIRST_OCTET = {10, (byte) 192, (byte) 172};
         final Byte[] PRIVATE_SECOND_OCTET_172 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 
         final RandomService r = faker.random();
@@ -379,7 +434,6 @@ public class Internet extends AbstractProvider<BaseProviders> {
         switch (first) {
             case (byte) 172 -> second = random(PRIVATE_SECOND_OCTET_172);
             case (byte) 192 -> second = (byte) 168;
-            case (byte) 169 -> second = (byte) 254;
         }
         return inet4Address(first, second, third, fourth);
     }
@@ -397,17 +451,35 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public InetAddress getPublicIpV4Address() {
         final RandomService r = faker.random();
 
-        final byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
+        InetAddress address;
+        do {
+            address = inet4Address((byte) r.nextInt(256), (byte) r.nextInt(256), (byte) r.nextInt(256), (byte) r.nextInt(256));
+        } while (isLocalOrReservedIpV4(address));
+        return address;
+    }
 
-        byte first = (byte) r.nextInt(256),
-            second = (byte) r.nextInt(256),
-            third = (byte) r.nextInt(256),
-            fourth = (byte) r.nextInt(256);
-
-        while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
-            first = (byte) r.nextInt(256);
+    /**
+     * True for IPv4 addresses that are not globally routable:
+     * private (10/8, 172.16/12, 192.168/16), loopback (127/8), link-local (169.254/16),
+     * "this network" (0/8), shared address space (100.64/10), IETF protocol assignments (192.0.0/24),
+     * documentation (192.0.2/24, 198.51.100/24, 203.0.113/24), benchmarking (198.18/15),
+     * multicast (224/4), reserved (240/4) and broadcast (255.255.255.255).
+     */
+    static boolean isLocalOrReservedIpV4(InetAddress address) {
+        if (address.isSiteLocalAddress() || address.isLoopbackAddress() || address.isLinkLocalAddress()) {
+            return true;
         }
-        return inet4Address(first, second, third, fourth);
+        byte[] bytes = address.getAddress();
+        int first = bytes[0] & 0xFF;
+        int second = bytes[1] & 0xFF;
+        int third = bytes[2] & 0xFF;
+        return first == 0
+            || first >= 224
+            || (first == 100 && (second & 0xC0) == 64)
+            || (first == 192 && second == 0 && (third == 0 || third == 2))
+            || (first == 198 && (second == 18 || second == 19))
+            || (first == 198 && second == 51 && third == 100)
+            || (first == 203 && second == 0 && third == 113);
     }
 
     /**
