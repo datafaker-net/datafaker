@@ -20,14 +20,9 @@ import static net.datafaker.transformations.sql.SqlTransformer.SQLKeyWords.VALUE
 
 public enum SqlDialect {
     ANSI("`"),
-    BIGQUERY("`", Casing.UNCHANGED, BACKSLASH) {
-        @Override
-        public String escapeIdentifier(String name) {
-            return escape(name, '`', '\\');
-        }
-    },
+    BIGQUERY("`", Casing.UNCHANGED, BACKSLASH, BACKSLASH),
     CALCITE("\""),
-    CLICKHOUSE("`", BACKSLASH),
+    CLICKHOUSE("`", DEFAULT_CASING, BACKSLASH, BACKSLASH),
     EXASOL("\""),
     FIREBOLT("\""),
     H2("\""),
@@ -53,7 +48,7 @@ public enum SqlDialect {
             if (name.indexOf('"') >= 0) {
                 throw new IllegalArgumentException("Oracle quoted identifiers cannot contain a double quote: " + name);
             }
-            return escape(name, '"', '"');
+            return name;
         }
     },
     PARACCEL("\""),
@@ -92,15 +87,17 @@ public enum SqlDialect {
     private final TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows;
     private final Function<SqlTransformer.Case, String> lastBatchRow;
     private final QuoteEscape quoteEscape;
+    private final QuoteEscape identifierQuoteEscape;
 
     private static final String DEFAULT_BEFORE_EACH_BATCH_PREFIX = "       ";
 
-    SqlDialect(String sqlQuoteIdentifier, Casing casing, QuoteEscape quoteEscape,
+    SqlDialect(String sqlQuoteIdentifier, Casing casing, QuoteEscape quoteEscape, QuoteEscape identifierQuoteEscape,
                TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
                TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
         this.sqlQuoteIdentifier = sqlQuoteIdentifier;
         this.unquotedCasing = casing;
         this.quoteEscape = quoteEscape;
+        this.identifierQuoteEscape = identifierQuoteEscape;
         this.batchFirstRow = batchFirstRow;
         this.batchOtherRows = batchOtherRows;
         this.lastBatchRow = lastBatchRow;
@@ -108,7 +105,7 @@ public enum SqlDialect {
 
     SqlDialect(String sqlQuoteIdentifier, Casing casing, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
                TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchOtherRows, Function<SqlTransformer.Case, String> lastBatchRow) {
-        this(sqlQuoteIdentifier, casing, QuoteEscape.DOUBLE, batchFirstRow, batchOtherRows, lastBatchRow);
+        this(sqlQuoteIdentifier, casing, QuoteEscape.DOUBLE, QuoteEscape.DOUBLE, batchFirstRow, batchOtherRows, lastBatchRow);
     }
 
     SqlDialect(String sqlQuoteIdentifier, TriFunction<Supplier<String>, Supplier<String>, SqlTransformer.Case, String> batchFirstRow,
@@ -117,7 +114,11 @@ public enum SqlDialect {
     }
 
     SqlDialect(String sqlQuoteIdentifier, Casing casing, QuoteEscape quoteEscape) {
-        this(sqlQuoteIdentifier, casing, quoteEscape,
+        this(sqlQuoteIdentifier, casing, quoteEscape, QuoteEscape.DOUBLE);
+    }
+
+    SqlDialect(String sqlQuoteIdentifier, Casing casing, QuoteEscape quoteEscape, QuoteEscape identifierQuoteEscape) {
+        this(sqlQuoteIdentifier, casing, quoteEscape, identifierQuoteEscape,
             DEFAULT_FIRST_ROW,
             DEFAULT_OTHER_ROWS,
             s -> "");
@@ -190,13 +191,17 @@ public enum SqlDialect {
         return escape(value, quote, quoteEscape == QuoteEscape.BACKSLASH ? '\\' : quote);
     }
 
+    boolean requiresQuotingForIdentifierEscape(String name) {
+        return identifierQuoteEscape == BACKSLASH && name.indexOf('\\') >= 0;
+    }
+
     /**
-     * Escapes a name placed inside a quoted identifier. Only the closing character needs escaping,
-     * by doubling it ({@code "a""b"}, {@code `a``b`}, {@code [a]]b]}).
+     * Escapes a name for use inside a quoted identifier. Most dialects double the closing quote.
+     * BigQuery and ClickHouse prefix backticks and literal backslashes with a backslash.
      */
     public String escapeIdentifier(String name) {
         char close = sqlQuoteIdentifier.charAt(sqlQuoteIdentifier.length() - 1);
-        return escape(name, close, close);
+        return escape(name, close, identifierQuoteEscape == BACKSLASH ? '\\' : close);
     }
 
     /**
@@ -216,7 +221,7 @@ public enum SqlDialect {
     }
 
     /**
-     * How a dialect escapes the quote character inside a string literal.
+     * How a dialect escapes a quote inside a string literal or quoted identifier.
      */
     enum QuoteEscape {
         /** {@code 'It''s'} */

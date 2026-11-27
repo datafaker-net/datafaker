@@ -284,7 +284,10 @@ class SqlTest {
             of(SqlDialect.POSTGRES, "s\"1", "t\"2", "a\"b", "INSERT INTO \"s\"\"1\".\"t\"\"2\" (\"a\"\"b\") VALUES ('x');"),
             of(SqlDialect.MYSQL, "s`1", "t`2", "a`b", "INSERT INTO `s``1`.`t``2` (`a``b`) VALUES ('x');"),
             of(SqlDialect.BIGQUERY, "s`1", "t`2", "a`b", "INSERT INTO `s\\`1`.`t\\`2` (`a\\`b`) VALUES ('x');"),
-            of(SqlDialect.BIGQUERY, "s\\1", "t\\2", "a\\b", "INSERT INTO s\\\\1.t\\\\2 (a\\\\b) VALUES ('x');")
+            of(SqlDialect.BIGQUERY, "s\\1", "t\\2", "a\\b", "INSERT INTO `s\\\\1`.`t\\\\2` (`a\\\\b`) VALUES ('x');"),
+            of(SqlDialect.CLICKHOUSE, "s`1", "t`2", "a`b", "INSERT INTO `s\\`1`.`t\\`2` (`a\\`b`) VALUES ('x');"),
+            of(SqlDialect.CLICKHOUSE, "S\\1", "T\\2", "A\\B", "INSERT INTO `S\\\\1`.`T\\\\2` (`A\\\\B`) VALUES ('x');"),
+            of(SqlDialect.MYSQL, "s1", "t2", "a`\\b", "INSERT INTO s1.t2 (`a``\\b`) VALUES ('x');")
         );
     }
 

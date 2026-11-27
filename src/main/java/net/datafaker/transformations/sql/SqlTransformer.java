@@ -64,7 +64,9 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private boolean isSqlQuoteIdentifierRequiredFor(String name) {
-        if (forceSqlQuoteIdentifierUsage) return true;
+        if (forceSqlQuoteIdentifierUsage || dialect != null && dialect.requiresQuotingForIdentifierEscape(name)) {
+            return true;
+        }
         for (int i = 0; i < name.length(); i++) {
             if (casing == Casing.TO_UPPER && Character.isLowerCase(name.charAt(i))
                 || casing == Casing.TO_LOWER && Character.isUpperCase(name.charAt(i))
@@ -292,16 +294,14 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private void appendNameToQuery(StringBuilder sb, @Nullable String name) {
         if (name == null || name.isEmpty()) return;
-        boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(name);
-
-        if (sqlIdentifierRequired) {
-            sb.append(openSqlIdentifier);
-        }
-        sb.append(dialect == null
-            ? SqlDialect.escape(name, closeSqlIdentifier, closeSqlIdentifier)
-            : dialect.escapeIdentifier(name));
-        if (sqlIdentifierRequired) {
-            sb.append(closeSqlIdentifier);
+        if (isSqlQuoteIdentifierRequiredFor(name)) {
+            sb.append(openSqlIdentifier)
+                .append(dialect == null
+                    ? SqlDialect.escape(name, closeSqlIdentifier, closeSqlIdentifier)
+                    : dialect.escapeIdentifier(name))
+                .append(closeSqlIdentifier);
+        } else {
+            sb.append(name);
         }
     }
 
