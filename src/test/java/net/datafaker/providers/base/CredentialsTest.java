@@ -13,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static net.datafaker.providers.base.Text.DEFAULT_SPECIAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -69,6 +70,16 @@ class CredentialsTest {
     @RepeatedTest(100)
     void testPasswordWithSpecificSizeAndUppercase() {
         assertThat(faker.credentials().password(8, 16, true)).hasSizeBetween(8, 16).matches("^[a-zA-Z0-9]+$");
+    }
+
+    @RepeatedTest(100)
+    void testPasswordWithUppercaseLowercaseDigitsAndSpecialCharacters() {
+        assertThat(faker.credentials().password(8, 16, true, true, true, true))
+            .matches("^(?=.*[a-z]).+$")
+            .matches("^(?=.*[A-Z]).+$")
+            .matches("^(?=.*[0-9]).+$")
+            .matches("^(?=.*[" + DEFAULT_SPECIAL + "]).+$")
+            .hasSizeBetween(8, 16);
     }
 
     @Test

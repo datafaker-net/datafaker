@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import static net.datafaker.providers.base.Text.DEFAULT_SPECIAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -141,6 +142,16 @@ class LoremTest extends BaseFakerTest {
     void testCharactersMinimumMaximumLengthIncludeUppercaseIncludeDigit() {
         assertThat(lorem.characters(1, 10, false, false)).matches("[a-zA-Z]{1,10}");
         assertThat(lorem.characters(2, 10, true, true)).matches("[a-zA-Z\\d]{1,10}");
+    }
+
+    @Test
+    void testCharactersCanRequireAllFourCharacterGroups() {
+        assertThat(lorem.characters(4, 4, true, true, true, true))
+            .hasSize(4)
+            .containsPattern("[a-z]")
+            .containsPattern("[A-Z]")
+            .containsPattern("[0-9]")
+            .containsPattern("[" + DEFAULT_SPECIAL + "]");
     }
 
     @Test
