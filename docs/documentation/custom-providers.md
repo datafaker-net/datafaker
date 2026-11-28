@@ -63,7 +63,7 @@ This will print something like the following:
 
 ### Weighted random selection
 
-> **Note**: Usage of weighted random selector is in the POC stage and is currently available only for custom hardcoded providers.
+> **Note**: Usage of weighted random selector is in the POC stage. Custom YAML providers also support the percentage syntax described below.
 
 Since version 2.4.2 of Datafaker it's possible to use a random selector based on weights, add a `WeightedRandomSelector` and weighted values to your provider:
 
@@ -153,6 +153,45 @@ en:
     insectsfromfile:
       bees: ['Bumblebee', 'Euglossine bee', 'Honeybee', 'Carpenter bee', 'Leaf-cutter bee', 'Mining bee']
 ```
+
+### Weighted YAML choices
+
+Datafaker 3.0 supports weighted choices in custom YAML loaded with `addPath` or `addUrl`. Save the following file as `weighted-insects.yml`.
+
+```yaml
+en:
+  faker:
+    insectsfromfile:
+      ants:
+        - 60%: "Driver ant"
+        - 40%: "#{other_ant}"
+      other_ant: ["Fire ant", "Harvester ant"]
+      domains:
+        - 90%: ".it"
+        - 10%: [".ee", ".lv", ".lt"]
+```
+
+Load the file and resolve its keys on the same Faker instance.
+
+```java
+import java.nio.file.Path;
+import java.util.Locale;
+import java.util.Random;
+
+import net.datafaker.Faker;
+
+Faker faker = new Faker(Locale.ENGLISH, new Random(42));
+faker.addPath(Locale.ENGLISH, Path.of("weighted-insects.yml"));
+
+String ant = faker.resolve("insectsfromfile.ants");
+String domain = faker.resolve("insectsfromfile.domains");
+```
+
+Each call samples a branch with the configured probability. If that branch contains a list, the call then picks one entry uniformly. In this example, `.it` has a 90% chance and each of the three domains in the second branch has a 10% ÷ 3 chance. `resolve` evaluates the selected template, including the local reference `#{other_ant}`. Provider references and slash-delimited regexes also work.
+
+Use one positive decimal percentage per entry, and make the percentages total exactly 100. A branch can contain a string template or a non-empty list of string templates. Numeric percentage keys such as `33.3%` start weighted syntax. A descriptive map key such as `margin%` is ordinary YAML. If a weighted list is invalid, the error identifies its key path and file.
+
+Use `resolve` for a sampled, evaluated string. `fetch` and `safeFetch` can also sample weighted choices. Use ordinary YAML lists with `Unique.fetchFromYaml`.
 
 ### Register provider
 

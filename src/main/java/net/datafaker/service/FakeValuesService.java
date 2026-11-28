@@ -161,6 +161,9 @@ public class FakeValuesService {
     public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
         final Object o = fetchObject(key, context);
+        if (o instanceof WeightedYamlValues weighted) {
+            return weighted.select(context.getRandomService());
+        }
         if (o instanceof List<?> list) {
             valuesArray = list;
             final int size = valuesArray.size();
@@ -219,6 +222,9 @@ public class FakeValuesService {
     private String asString(@Nullable Object o, FakerContext context, @Nullable String defaultIfNull) {
         String str;
         if (o == null) return defaultIfNull;
+        if (o instanceof WeightedYamlValues weighted) {
+            o = weighted.select(context.getRandomService());
+        }
         if (o instanceof List<?> list) {
             final List<String> values = (List<String>) list;
             final int size = values.size();
@@ -496,8 +502,15 @@ public class FakeValuesService {
         LocaleData data = localeData;
         List<SingletonLocale> chain = context.getLocaleChain();
         LocaleLookup lookup = data.lookup(chain);
-        return lookup.expressions.computeIfAbsent(key, ignored ->
-            asString(fetchObject(key, data, chain, lookup), context, null));
+        String cached = lookup.expressions.get(key);
+        if (cached != null) {
+            return cached;
+        }
+        Object value = fetchObject(key, data, chain, lookup);
+        if (value instanceof WeightedYamlValues) {
+            return asString(value, context, null);
+        }
+        return lookup.expressions.computeIfAbsent(key, ignored -> asString(value, context, null));
     }
 
     /**
