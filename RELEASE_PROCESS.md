@@ -37,6 +37,10 @@ Snapshot release notes (`docs/releases/{version}-SNAPSHOT.md`) are optional draf
 - GitHub Release creation permissions are required to trigger the workflow
 - All required secrets must be configured in the repository settings
 
+Both snapshot and release publishing use the Maven Wrapper. These workflows configure the `central` server
+with `https://central.sonatype.com` as an allowed credential origin. Maven 3.10 and newer use this setting
+to authenticate to Sonatype's publishing endpoint while keeping origin checks in place for other repositories.
+
 ## Verification
 
 After publishing a release:
