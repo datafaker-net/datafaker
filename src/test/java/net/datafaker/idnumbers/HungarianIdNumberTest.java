@@ -1,12 +1,34 @@
 package net.datafaker.idnumbers;
 
+import net.datafaker.providers.base.BaseFaker;
+import net.datafaker.providers.base.IdNumber.GenderRequest;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+
+import java.time.format.DateTimeFormatter;
 
 import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
 import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HungarianIdNumberTest {
+    private final BaseFaker faker = new BaseFaker();
+    private final HungarianIdNumber hungarianIdNumber = new HungarianIdNumber();
+
+    @RepeatedTest(10)
+    void validUsesRequestedAgeAndGender() {
+        PersonIdNumber female = hungarianIdNumber.generateValid(faker, new IdNumberRequest(1, 10, GenderRequest.FEMALE));
+        assertThat(female.gender()).isEqualTo(FEMALE);
+        assertThat(female.age()).isBetween(1, 10);
+        assertThat(female.idNumber()).startsWith("4" + DateTimeFormatter.ofPattern("yyMMdd").format(female.birthDate()));
+
+        PersonIdNumber male = hungarianIdNumber.generateValid(faker, new IdNumberRequest(30, 40, GenderRequest.MALE));
+        assertThat(male.gender()).isEqualTo(MALE);
+        assertThat(male.age()).isBetween(30, 40);
+        assertThat(male.idNumber()).startsWith(HungarianIdNumber.firstDigit(male.birthDate().getYear(), MALE) + DateTimeFormatter.ofPattern("yyMMdd").format(male.birthDate()));
+    }
 
     @Test
     void firstDigit() {

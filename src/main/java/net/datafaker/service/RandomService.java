@@ -3,7 +3,7 @@ package net.datafaker.service;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.random.RandomGenerator;
 
 import static java.util.Objects.requireNonNullElse;
@@ -11,21 +11,26 @@ import static java.util.Objects.requireNonNullElse;
 public class RandomService {
     private static final char[] HEX_UP = "0123456789ABCDEF".toCharArray();
     private static final char[] HEX_LOWER = "0123456789abcdef".toCharArray();
-    private static final Random SHARED_RANDOM = new Random();
+    private static final RandomGenerator DEFAULT_RANDOM = new RandomGenerator() {
+        @Override
+        public long nextLong() {
+            return ThreadLocalRandom.current().nextLong();
+        }
+    };
     private final RandomGenerator random;
 
     /**
-     * Uses a default shared random.
+     * Uses the default thread-local random generator.
      */
     public RandomService() {
-        this(SHARED_RANDOM);
+        this(DEFAULT_RANDOM);
     }
 
     /**
-     * @param random If null is passed in, a default Random is assigned
+     * @param random the generator to use, or null for the default thread-local generator
      */
     public RandomService(@Nullable RandomGenerator random) {
-        this.random = requireNonNullElse(random, SHARED_RANDOM);
+        this.random = requireNonNullElse(random, DEFAULT_RANDOM);
     }
 
     public int nextInt() {
@@ -167,7 +172,7 @@ public class RandomService {
 
     @Override
     public int hashCode() {
-        if (random == SHARED_RANDOM) return 1;
+        if (random == DEFAULT_RANDOM) return 1;
         return random.hashCode();
     }
 

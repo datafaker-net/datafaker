@@ -189,7 +189,7 @@ class PhoneNumberTest {
             locale("nb", "NO"),
             locale("no", "NO"),
             locale("da", "DK"),
-            locale("vi", "VI"),
+            locale("vi", "VN"),
             locale("fr", "CH"),
             locale("en", "IE")
         );

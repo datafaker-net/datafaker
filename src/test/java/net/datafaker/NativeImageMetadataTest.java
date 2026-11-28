@@ -1,17 +1,22 @@
 package net.datafaker;
 
+import net.datafaker.providers.base.AbstractProvider;
+import net.datafaker.providers.base.BaseFaker;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 class NativeImageMetadataTest {
     private static final String DEFAULT_METADATA =
@@ -46,11 +51,10 @@ class NativeImageMetadataTest {
                 .noneMatch(type -> TEST_DEPENDENCY_PREFIXES.stream().anyMatch(type::startsWith));
         reflectionTypes.stream()
                 .filter(type -> type.startsWith("net.datafaker."))
-                .map(type -> type.split("\\$", 2)[0])
                 .distinct()
-                .forEach(type -> assertThat(productionSourceFor(type))
-                        .as("production source for native-image reflection type %s", type)
-                        .exists());
+                .forEach(type -> assertThatCode(() -> Class.forName(type, false, Faker.class.getClassLoader()))
+                        .as("production native-image reflection type %s", type)
+                        .doesNotThrowAnyException());
 
         assertThat(entries(metadata, "reflection").toString())
                 .doesNotContain("net.bytebuddy.");
@@ -68,7 +72,27 @@ class NativeImageMetadataTest {
         return metadata.getOrDefault(category, List.of());
     }
 
-    private static Path productionSourceFor(String type) {
-        return Path.of("src/main/java", type.replace('.', '/') + ".java");
+    @Test
+    void packagedMetadataRegistersFakerAndProviderMethods() throws IOException {
+        List<Map<String, Object>> reflection;
+        try (InputStream input = Faker.class.getResourceAsStream(
+                "/META-INF/native-image/net.datafaker/datafaker/reflect-config.json")) {
+            assertThat(input).as("generated native-image reflection metadata").isNotNull();
+            reflection = new Yaml().load(input);
+        }
+
+        List<String> publicMethodTypes = reflection.stream()
+                .filter(entry -> Boolean.TRUE.equals(entry.get("allPublicMethods")))
+                .map(entry -> (String) entry.get("name"))
+                .toList();
+
+        assertThat(publicMethodTypes)
+                .contains(Faker.class.getName(), BaseFaker.class.getName())
+                .containsAll(Arrays.stream(Faker.class.getMethods())
+                        .map(Method::getReturnType)
+                        .filter(AbstractProvider.class::isAssignableFrom)
+                        .map(Class::getName)
+                        .distinct()
+                        .toList());
     }
 }

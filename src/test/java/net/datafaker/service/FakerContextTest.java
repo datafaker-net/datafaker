@@ -25,6 +25,15 @@ class FakerContextTest {
         assertThat(chain(new Locale("hu_HU"))).containsExactly(new Locale("hu", "HU"), new Locale("hu"), new Locale("", "HU"), ENGLISH);
     }
 
+    @Test
+    void setLocaleProvidesTheFallbackChainForANewLocale() {
+        FakerContext context = new FakerContext(ENGLISH, random);
+        Locale locale = new Locale("qaa", "XA");
+        context.setLocale(locale);
+
+        assertThat(context.getLocaleChain()).isEqualTo(context.localeChain(locale));
+    }
+
     @ParameterizedTest
     @MethodSource("supportedLanguagesAndCountries")
     void appendsDefaultCountryForGivenLanguage(String language, String country) {

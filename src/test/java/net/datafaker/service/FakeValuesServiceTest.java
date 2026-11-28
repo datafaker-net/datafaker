@@ -9,6 +9,7 @@ import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -124,6 +125,60 @@ class FakeValuesServiceTest {
 
         // then
         assertThat(actual).isEqualTo("Yo!");
+    }
+
+    @Test
+    void resolvesSameDirectiveAgainstDifferentCurrentObjects() {
+        assertThat(fakeValuesService.resolve("property.simpleResolution", new DummyService("first"), faker, context))
+            .isEqualTo("first");
+        assertThat(fakeValuesService.resolve("property.simpleResolution", new DummyService("second"), faker, context))
+            .isEqualTo("second");
+    }
+
+    @Test
+    void englishYamlRegistrationDoesNotLeakBetweenFakers(@TempDir Path tempDir) throws IOException {
+        Path addition = Files.writeString(tempDir.resolve("custom.yml"), """
+            en:
+              faker:
+                name:
+                  custom_value: [custom]
+            """);
+        Faker custom = new Faker(Locale.ENGLISH);
+        Faker defaults = new Faker(Locale.ENGLISH);
+        custom.addPath(Locale.ENGLISH, addition);
+
+        assertThat(custom.fakeValuesService().fetchString("name.custom_value", custom.getContext())).isEqualTo("custom");
+        assertThat(defaults.fakeValuesService().fetchString("name.custom_value", defaults.getContext())).isNull();
+    }
+
+    @Test
+    void customYamlReplacesWarmedLocaleFallbacks(@TempDir Path tempDir) throws IOException {
+        Faker german = new Faker(Locale.GERMANY);
+        FakeValuesService service = german.fakeValuesService();
+        FakerContext localeContext = german.getContext();
+        String key = "rick_and_morty.characters";
+        assertThat(german.rickAndMorty().character()).isNotBlank();
+        assertThat(service.resolve(key, null, null, () -> key, localeContext)).isNotBlank();
+
+        Path english = Files.writeString(tempDir.resolve("custom-en.yml"), """
+            en:
+              faker:
+                rick_and_morty:
+                  characters: [English override]
+            """);
+        german.addPath(Locale.ENGLISH, english);
+        assertThat(german.rickAndMorty().character()).isEqualTo("English override");
+        assertThat(service.resolve(key, null, null, () -> key, localeContext)).isEqualTo("English override");
+
+        Path local = Files.writeString(tempDir.resolve("custom-de.yml"), """
+            de:
+              faker:
+                rick_and_morty:
+                  characters: [German override]
+            """);
+        german.addPath(Locale.GERMANY, local);
+        assertThat(german.rickAndMorty().character()).isEqualTo("German override");
+        assertThat(service.resolve(key, null, null, () -> key, localeContext)).isEqualTo("German override");
     }
 
     @Test

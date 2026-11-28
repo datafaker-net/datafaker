@@ -16,6 +16,7 @@ class AviationTest extends BaseFakerTest {
     private static final Pattern FLIGHT_ICAO_CODE = Pattern.compile("[A-Z]{3}[0-9]+");
     private static final String AIRPORT_IATA_CODE = "[A-Z]{3}";
     private static final String AIRPORT_ICAO_CODE = "[A-Z]{4}";
+    private static final String NO_CYRILLIC_LETTERS = "\\P{IsCyrillic}+";
 
     private final Aviation aviation = faker.aviation();
 
@@ -79,12 +80,12 @@ class AviationTest extends BaseFakerTest {
             TestSpec.of(() -> aviation.airport(IATA), "aviation.airport_iata", AIRPORT_IATA_CODE),
             TestSpec.of(() -> aviation.airport(ICAO), "aviation.airport_icao", AIRPORT_ICAO_CODE),
             TestSpec.of(aviation::airportName, "aviation.airport_name"),
-            TestSpec.of(aviation::airplane, "aviation.aircraft.airplane"),
-            TestSpec.of(aviation::warplane, "aviation.aircraft.warplane"),
-            TestSpec.of(aviation::general, "aviation.aircraft.general"),
-            TestSpec.of(aviation::cargo, "aviation.aircraft.cargo"),
-            TestSpec.of(aviation::civilHelicopter, "aviation.aircraft.civil_helicopter"),
-            TestSpec.of(aviation::armyHelicopter, "aviation.aircraft.army_helicopter"),
+            TestSpec.of(aviation::airplane, "aviation.aircraft.airplane", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::warplane, "aviation.aircraft.warplane", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::general, "aviation.aircraft.general", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::cargo, "aviation.aircraft.cargo", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::civilHelicopter, "aviation.aircraft.civil_helicopter", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::armyHelicopter, "aviation.aircraft.army_helicopter", NO_CYRILLIC_LETTERS),
             TestSpec.of(aviation::METAR, "aviation.metar"),
             TestSpec.of(aviation::manufacturer, "aviation.manufacturer"),
             TestSpec.of(aviation::specialTypeDesignator, "aviation.aircraft_type_special_designator"),

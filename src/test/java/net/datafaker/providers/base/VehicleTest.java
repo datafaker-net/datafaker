@@ -1,10 +1,13 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.Faker;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -153,5 +156,25 @@ class VehicleTest {
         BaseFaker test = new BaseFaker(Locale.CANADA);
         assertThat(test.vehicle().licensePlate("MB")).matches(WORDS_MATCH);
         assertThat(test.vehicle().licensePlate("ON")).matches(WORDS_MATCH);
+    }
+
+    @Nested
+    class ModelsByMake extends ProviderListTest<BaseFaker> {
+        private static final String KEY = "vehicle.models_by_make";
+        private final BaseFaker baseFaker = new BaseFaker();
+
+        @Override
+        protected BaseFaker getFaker() {
+            return baseFaker;
+        }
+
+        @Override
+        protected Collection<TestSpec> providerListTest() {
+            // the makes come from the data, so a newly added make is checked without touching this test
+            Map<String, ?> modelsByMake = baseFaker.fakeValuesService().fetchObject(KEY, baseFaker.getContext());
+            return modelsByMake.keySet().stream()
+                .map(make -> TestSpec.of(() -> baseFaker.vehicle().model(make), KEY + "." + make))
+                .toList();
+        }
     }
 }

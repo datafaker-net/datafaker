@@ -3,8 +3,13 @@ package net.datafaker.internal.helper;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.unmodifiableMap;
+import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
 import static java.util.Objects.requireNonNullElse;
 
@@ -17,9 +22,7 @@ import static java.util.Objects.requireNonNullElse;
  * Since it is loaded only once per provider and after that is only read then
  * it should be ok and moreover it will allow to have non-blocking reads.
  *
- * In case for whatever reason there is a need to change this class,
- * please double-check jmh report before and after e.g.
- * {@code mvn clean package exec:exec -Dbenchmarks="DatafakerSimpleMethods" -Ddatafaker.version=2.2.3-SNAPSHOT}
+ * The supplier must create empty maps whose read operations do not modify them.
  */
 public class CopyOnWriteMap<K, V> implements Map<K, V> {
     private volatile Map<K, V> map;
@@ -61,7 +64,24 @@ public class CopyOnWriteMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public V put(K key, V value) {
+    public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+        requireNonNull(mappingFunction);
+        V value = map.get(key);
+        if (value != null) {
+            return value;
+        }
+        synchronized (this) {
+            return Map.super.computeIfAbsent(key, mappingFunction);
+        }
+    }
+
+    @Override
+    public synchronized V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+        return Map.super.merge(key, value, remappingFunction);
+    }
+
+    @Override
+    public synchronized V put(K key, V value) {
         requireNonNull(value, () -> "value is null for key " + key);
         Map<K, V> newMap = mapSupplier.get();
         newMap.putAll(map);
@@ -71,7 +91,7 @@ public class CopyOnWriteMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public V remove(Object key) {
+    public synchronized V remove(Object key) {
         Map<K, V> newMap = mapSupplier.get();
         newMap.putAll(map);
         final V result = newMap.remove(key);
@@ -80,7 +100,7 @@ public class CopyOnWriteMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
+    public synchronized void putAll(Map<? extends K, ? extends V> m) {
         Map<K, V> newMap = mapSupplier.get();
         newMap.putAll(map);
         newMap.putAll(m);
@@ -88,23 +108,23 @@ public class CopyOnWriteMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public void clear() {
+    public synchronized void clear() {
         map = mapSupplier.get();
     }
 
     @Override
     public Set<K> keySet() {
-        return map.keySet();
+        return unmodifiableSet(map.keySet());
     }
 
     @Override
     public Collection<V> values() {
-        return map.values();
+        return unmodifiableCollection(map.values());
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return map.entrySet();
+        return unmodifiableMap(map).entrySet();
     }
 
     @Override

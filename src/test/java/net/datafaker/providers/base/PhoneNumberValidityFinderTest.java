@@ -54,6 +54,14 @@ class PhoneNumberValidityFinderTest {
         assertThat(localFaker.phoneNumber().countryCodeIso2()).isEqualTo("IR");
     }
 
+    @Test
+    void testLanguageOnlyVietnameseLocaleUsesVietnam() {
+        BaseFaker localFaker = new BaseFaker(new Locale("vi"));
+
+        assertThat(localFaker.phoneNumber().countryCodeIso2()).isEqualTo("VN");
+        assertThat(localFaker.phoneNumber().cellPhoneInternational()).startsWith("+84");
+    }
+
     @ParameterizedTest
     @CsvSource({
         "en, US, English",
@@ -81,6 +89,7 @@ class PhoneNumberValidityFinderTest {
         "am, ET, Amharic → Ethiopia",
         "sw, TZ, Swahili → Tanzania",
         "af, ZA, Afrikaans → South Africa",
+        "vi, VN, Vietnamese → Vietnam",
     })
     void detectsCountryByLanguage(String language, String expectedCountry, String description) {
         BaseFaker localFaker = new BaseFaker(new Locale(language));

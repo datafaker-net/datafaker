@@ -1,9 +1,14 @@
 package net.datafaker.idnumbers;
 
 import net.datafaker.Faker;
+import net.datafaker.providers.base.IdNumber.GenderRequest;
+import net.datafaker.providers.base.IdNumber.IdNumberRequest;
+import net.datafaker.providers.base.PersonIdNumber;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import static net.datafaker.providers.base.PersonIdNumber.Gender.FEMALE;
+import static net.datafaker.providers.base.PersonIdNumber.Gender.MALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MoldovanIdNumberTest {
@@ -19,6 +24,15 @@ class MoldovanIdNumberTest {
         assertThat(pin)
             .as(() -> "Presumably valid PIN: '%s'".formatted(pin))
             .matches("\\d{13}");
+    }
+
+    @RepeatedTest(10)
+    void validUsesRequestedGender() {
+        PersonIdNumber female = generator.generateValid(faker, new IdNumberRequest(18, 65, GenderRequest.FEMALE));
+        assertThat(female.gender()).isEqualTo(FEMALE);
+
+        PersonIdNumber male = generator.generateValid(faker, new IdNumberRequest(18, 65, GenderRequest.MALE));
+        assertThat(male.gender()).isEqualTo(MALE);
     }
 
     @Test

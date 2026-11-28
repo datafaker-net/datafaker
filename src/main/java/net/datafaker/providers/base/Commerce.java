@@ -1,7 +1,10 @@
 package net.datafaker.providers.base;
 
+import org.jspecify.annotations.Nullable;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -9,11 +12,10 @@ import java.util.TreeSet;
  * @since 0.8.0
  */
 public class Commerce extends AbstractProvider<BaseProviders> {
-    private final DecimalFormatSymbols decimalFormatSymbols;
+    private volatile @Nullable PriceSymbols priceSymbols;
 
     protected Commerce(BaseProviders faker) {
         super(faker);
-        decimalFormatSymbols = new DecimalFormatSymbols(faker.getContext().getLocale());
     }
 
     public String department() {
@@ -60,7 +62,13 @@ public class Commerce extends AbstractProvider<BaseProviders> {
 
     public String price(double min, double max) {
         double price = min + (faker.random().nextDouble() * (max - min));
-        return new DecimalFormat("#0.00", decimalFormatSymbols).format(price);
+        Locale locale = faker.getContext().getLocale();
+        PriceSymbols symbols = priceSymbols;
+        if (symbols == null || !symbols.locale().equals(locale)) {
+            symbols = new PriceSymbols(locale, new DecimalFormatSymbols(locale));
+            priceSymbols = symbols;
+        }
+        return new DecimalFormat("#0.00", symbols.decimalFormatSymbols()).format(price);
     }
 
     public String promotionCode() {
@@ -71,5 +79,8 @@ public class Commerce extends AbstractProvider<BaseProviders> {
         return String.join(faker.resolve("commerce.promotion_code.adjective"),
             resolve("commerce.promotion_code.noun"),
             faker.number().digits(digits));
+    }
+
+    private record PriceSymbols(Locale locale, DecimalFormatSymbols decimalFormatSymbols) {
     }
 }

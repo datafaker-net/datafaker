@@ -37,11 +37,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.synchronizedMap;
 import static java.util.Locale.ROOT;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINE;
@@ -53,10 +56,10 @@ public class FakeValuesService {
     private static final char[] DIGITS = "0123456789".toCharArray();
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Logger LOG = Logger.getLogger(FakeValuesService.class.getName());
-    public static final Supplier<Map<String, Object>> MAP_STRING_OBJECT_SUPPLIER = () -> new CopyOnWriteMap<>(() -> new WeakHashMap<>());
-    public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> new CopyOnWriteMap<>(() -> new WeakHashMap<>());
+    public static final Supplier<Map<String, Object>> MAP_STRING_OBJECT_SUPPLIER = () -> synchronizedMap(new WeakHashMap<>());
+    public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> synchronizedMap(new WeakHashMap<>());
 
-    private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new CopyOnWriteMap<>(IdentityHashMap::new);
+    private volatile LocaleData localeData = new LocaleData(Map.of(), List.of());
     public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.getRequired(Locale.ENGLISH);
 
     private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new CopyOnWriteMap<>(IdentityHashMap::new);
@@ -64,25 +67,38 @@ public class FakeValuesService {
 
     private static final JsonTransformer<Object> JSON_TRANSFORMER = JsonTransformer.builder().build();
 
-    private final Map<String, RgxGen> expression2generex = new CopyOnWriteMap<>(WeakHashMap::new);
-    private final CopyOnWriteMap<SingletonLocale, Map<String, String>> key2Expression = new CopyOnWriteMap<>(IdentityHashMap::new);
-    private static final Map<String, String[]> ARGS_2_SPLITTED_ARGS = new CopyOnWriteMap<>(WeakHashMap::new);
+    // RgxGen initializes character set indexes on first use. Confine generators to the calling thread.
+    private static final ThreadLocal<CompiledRegex[]> REGEX_CACHE = ThreadLocal.withInitial(() -> new CompiledRegex[32]);
+    private static final int MAX_CACHED_REGEX_LENGTH = 1024;
 
-    private static final Map<String, String[]> KEY_2_SPLITTED_KEY = new CopyOnWriteMap<>(WeakHashMap::new);
+    private static final Map<String, String[]> ARGS_2_SPLITTED_ARGS = synchronizedMap(new WeakHashMap<>());
 
-    private final CopyOnWriteMap<SingletonLocale, Map<String, Object>> key2fetchedObject = new CopyOnWriteMap<>(IdentityHashMap::new);
+    private static final Map<String, String[]> KEY_2_SPLITTED_KEY = synchronizedMap(new WeakHashMap<>());
 
-    private static final Map<String, String> NAME_2_YAML = new CopyOnWriteMap<>(WeakHashMap::new);
 
-    private static final Map<String, String> REMOVED_UNDERSCORE = new CopyOnWriteMap<>(WeakHashMap::new);
+    private static final Map<String, String> NAME_2_YAML = synchronizedMap(new WeakHashMap<>());
+
+    private static final Map<String, String> REMOVED_UNDERSCORE = synchronizedMap(new WeakHashMap<>());
     private static final Map<Class<?>, Map<String, Map<String[], MethodAndCoercedArgs>>> MAP_OF_METHOD_AND_COERCED_ARGS = new CopyOnWriteMap<>(IdentityHashMap::new);
 
-    private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
+    // Share parsed syntax without retaining Faker instances or arbitrarily large templates.
+    private static final AtomicReferenceArray<SplitExpression> SPLIT_EXPRESSIONS = new AtomicReferenceArray<>(256);
+    private static final int MAX_CACHED_EXPRESSION_LENGTH = 1024;
 
-    private final Map<String, RegExpContext> regexp2SupplierMap = new CopyOnWriteMap<>(HashMap::new);
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
-        for (final SingletonLocale l : locales) {
-            fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
+        if (localeData.sources.keySet().containsAll(locales)) {
+            return;
+        }
+        synchronized (this) {
+            Map<SingletonLocale, FakeValuesInterface> current = localeData.sources;
+            if (!current.keySet().containsAll(locales)) {
+                Map<SingletonLocale, FakeValuesInterface> sources = new IdentityHashMap<>(current.size() + locales.size());
+                sources.putAll(current);
+                for (SingletonLocale locale : locales) {
+                    sources.computeIfAbsent(locale, this::getCachedFakeValue);
+                }
+                localeData = new LocaleData(sources, locales);
+            }
         }
     }
 
@@ -121,18 +137,21 @@ public class FakeValuesService {
      * @param url     url of a file with YAML structure
      * @throws IllegalArgumentException in case of invalid url
      */
-    public void addUrl(Locale locale, URL url) {
+    public synchronized void addUrl(Locale locale, URL url) {
         requireNonNull(locale, "locale is required");
         requireNonNull(url, "url should be an existing readable file");
         final FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(locale, url));
         final SingletonLocale sLocale = SingletonLocale.get(locale);
-        fakeValuesInterfaceMap.merge(sLocale, fakeValues,
+        LocaleData current = localeData;
+        Map<SingletonLocale, FakeValuesInterface> sources = new IdentityHashMap<>(current.sources);
+        sources.merge(sLocale, fakeValues,
             (prevValue, newValue) -> {
                 FakeValuesGrouping fvg = new FakeValuesGrouping();
                 fvg.add(prevValue);
                 fvg.add(newValue);
                 return fvg;
             });
+        localeData = new LocaleData(sources, current.primaryChain);
     }
 
     /**
@@ -194,9 +213,13 @@ public class FakeValuesService {
      * @return see above
      */
     @Nullable
-    @SuppressWarnings("unchecked")
     public String safeFetch(String key, FakerContext context, @Nullable String defaultIfNull) {
-        Object o = fetchObject(key, context);
+        return asString(fetchObject(key, context), context, defaultIfNull);
+    }
+
+    @Nullable
+    @SuppressWarnings("unchecked")
+    private String asString(@Nullable Object o, FakerContext context, @Nullable String defaultIfNull) {
         String str;
         if (o == null) return defaultIfNull;
         if (o instanceof WeightedYamlValues weighted) {
@@ -226,25 +249,20 @@ public class FakeValuesService {
     @Nullable
     @SuppressWarnings("unchecked")
     public <T> T fetchObject(String key, FakerContext context) {
-        Object result = null;
-        final List<SingletonLocale> localeChain = context.getLocaleChain();
-        final boolean hasMoreThanOneLocales = localeChain.size() > 1;
-        for (SingletonLocale sLocale : localeChain) {
-            // exclude default locale from cache checks
-            if (sLocale == DEFAULT_LOCALE && hasMoreThanOneLocales) {
-                continue;
-            }
-            Map<String, Object> stringObjectMap = key2fetchedObject.get(sLocale);
-            if (stringObjectMap != null && (result = stringObjectMap.get(key)) != null) {
-                return (T) result;
-            }
-        }
+        LocaleData data = localeData;
+        List<SingletonLocale> chain = context.getLocaleChain();
+        return (T) fetchObject(key, data, chain, data.lookup(chain));
+    }
 
+    @Nullable
+    private Object fetchObject(String key, LocaleData data, List<SingletonLocale> chain, LocaleLookup lookup) {
+        Object cached = lookup.values.get(key);
+        if (cached != null) {
+            return cached;
+        }
         String[] path = split(key);
-        SingletonLocale local2Add = null;
-        path[0] = path[0].toLowerCase(ROOT);
-        for (SingletonLocale sLocale : localeChain) {
-            Object currentValue = fakeValuesInterfaceMap.get(sLocale);
+        for (SingletonLocale locale : chain) {
+            Object currentValue = data.sources.get(locale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
                 if (currentValue instanceof Map<?, ?> map) {
@@ -253,23 +271,12 @@ public class FakeValuesService {
                     currentValue = ((FakeValuesInterface) currentValue).get(currentPath);
                 }
             }
-            result = currentValue;
-            if (result != null) {
-                local2Add = sLocale;
-                break;
+            if (currentValue != null) {
+                Object value = currentValue;
+                return lookup.values.computeIfAbsent(key, ignored -> value);
             }
         }
-        if (local2Add != null) {
-            Object valueToCache = result;
-            Object curResult = key2fetchedObject.getOrDefault(local2Add, Map.of()).get(key);
-            if (curResult != null) {
-                return (T) result; // Strange... Why return result, not curResult?
-            }
-            key2fetchedObject
-                .computeIfAbsent(local2Add, (__) -> MAP_STRING_OBJECT_SUPPLIER.get())
-                .computeIfAbsent(key, (__) -> valueToCache);
-        }
-        return (T) result;
+        return null;
     }
 
     private String[] split(String string) {
@@ -296,6 +303,7 @@ public class FakeValuesService {
                 }
             }
             result[j] = String.valueOf(chars, start, chars.length - start);
+            result[0] = result[0].toLowerCase(ROOT);
             return result;
         });
     }
@@ -363,8 +371,22 @@ public class FakeValuesService {
      * Generates a String that matches the given regular expression.
      */
     public String regexify(String regex, FakerContext context) {
-        RgxGen rgxGen = expression2generex.computeIfAbsent(regex, (__) -> RgxGen.parse(regex));
+        RgxGen rgxGen = compiledRegex(regex);
         return rgxGen.generate(context.getRandomService().getRandomInternal());
+    }
+
+    private static RgxGen compiledRegex(String regex) {
+        if (regex.length() > MAX_CACHED_REGEX_LENGTH) {
+            return RgxGen.parse(regex);
+        }
+        CompiledRegex[] cache = REGEX_CACHE.get();
+        int slot = Math.floorMod(regex.hashCode(), cache.length);
+        CompiledRegex compiled = cache[slot];
+        if (compiled == null || !regex.equals(compiled.regex())) {
+            compiled = new CompiledRegex(regex, RgxGen.parse(regex));
+            cache[slot] = compiled;
+        }
+        return compiled.generator();
     }
 
     /**
@@ -443,11 +465,19 @@ public class FakeValuesService {
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
     public String resolve(String key, Object current, BaseFaker root, FakerContext context) {
-        return resolve(key, current, root, () -> key + " resulted in null expression", context);
+        return resolveWithDefaultMessage(key, current, root, context);
     }
 
     public String resolve(String key, AbstractProvider<?> provider, FakerContext context) {
-        return resolve(key, provider, provider.getFaker(), () -> key + " resulted in null expression", context);
+        return resolveWithDefaultMessage(key, provider, provider.getFaker(), context);
+    }
+
+    private String resolveWithDefaultMessage(String key, Object current, @Nullable ProviderRegistration root, FakerContext context) {
+        String expression = fetchExpression(key, root, context);
+        if (expression == null) {
+            throw new IllegalArgumentException(key + " resulted in null expression");
+        }
+        return resolveExpression(expression, current, root, context);
     }
 
     /**
@@ -458,20 +488,22 @@ public class FakeValuesService {
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
     public String resolve(String key, Object current, @Nullable ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
-        String expression;
-        if (root == null) {
-            expression = key2Expression
-                .computeIfAbsent(context.getSingletonLocale(), (__) -> MAP_STRING_STRING_SUPPLIER.get())
-                .computeIfAbsent(key, (__) -> safeFetch(key, context, null));
-        } else {
-            expression = safeFetch(key, context, null);
-        }
-
+        String expression = fetchExpression(key, root, context);
         if (expression == null) {
             throw new IllegalArgumentException(exceptionMessage.get());
         }
-
         return resolveExpression(expression, current, root, context);
+    }
+
+    private @Nullable String fetchExpression(String key, @Nullable ProviderRegistration root, FakerContext context) {
+        if (root != null) {
+            return safeFetch(key, context, null);
+        }
+        LocaleData data = localeData;
+        List<SingletonLocale> chain = context.getLocaleChain();
+        LocaleLookup lookup = data.lookup(chain);
+        return lookup.expressions.computeIfAbsent(key, ignored ->
+            asString(fetchObject(key, data, chain, lookup), context, null));
     }
 
     /**
@@ -580,7 +612,10 @@ public class FakeValuesService {
         }
         final int expressionLength = expression.length();
         final String[] expressions = splitExpressions(expression, expressionLength);
-        final StringBuilder result = new StringBuilder(expressions.length * expressionLength);
+        if (expressions.length == 2 && expressions[0].isEmpty()) {
+            return resolveDirective(expressions[1], current, root, context);
+        }
+        final StringBuilder result = new StringBuilder(expressionLength);
         for (int i = 0; i < expressions.length; i++) {
             // odd are expressions, even are not expressions, just strings
             final String expr = expressions[i];
@@ -590,26 +625,31 @@ public class FakeValuesService {
                 }
                 continue;
             }
-            final RegExpContext cachedRegExpContext = regexp2SupplierMap.get(expr);
-            final Object resolved;
-            if (cachedRegExpContext != null && cachedRegExpContext.root() == root && cachedRegExpContext.context() == context) {
-                resolved = cachedRegExpContext.resolver().resolve();
-            } else {
-                int j = 0;
-                final int length = expr.length();
-                while (j < length && !Character.isWhitespace(expr.charAt(j))) j++;
-                String directive = expr.substring(0, j);
-                while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
-                final String arguments = j == length ? "" : expr.substring(j);
-                final String[] args = splitArguments(arguments);
-                resolved = resExp(directive, args, current, root, context, expr);
-            }
-            if (resolved == null) {
-                throw new RuntimeException("Unable to resolve #{" + expr + "} directive for FakerContext " + context + ".");
-            }
-            result.append(resolveExpression(Objects.toString(resolved), current, root, context));
+            result.append(resolveDirective(expr, current, root, context));
         }
         return result.toString();
+    }
+
+    private String resolveDirective(String expression, @Nullable Object current, @Nullable ProviderRegistration root, FakerContext context) {
+        SingletonLocale locale = context.getSingletonLocale();
+        Map<String, RegExpContext> resolvers = localeData.resolvers;
+        RegExpContext cached = resolvers.get(expression);
+        Object resolved;
+        if (cached != null && cached.current() == current && cached.root() == root && cached.context() == context && cached.locale() == locale) {
+            resolved = cached.resolver().resolve();
+        } else {
+            int j = 0;
+            int length = expression.length();
+            while (j < length && !Character.isWhitespace(expression.charAt(j))) j++;
+            String directive = expression.substring(0, j);
+            while (j < length && Character.isWhitespace(expression.charAt(j))) j++;
+            String arguments = j == length ? "" : expression.substring(j);
+            resolved = resExp(directive, splitArguments(arguments), current, root, context, locale, expression, resolvers);
+        }
+        if (resolved == null) {
+            throw new RuntimeException("Unable to resolve #{" + expression + "} directive for FakerContext " + context + ".");
+        }
+        return resolveExpression(Objects.toString(resolved), current, root, context);
     }
 
     private String[] splitArguments(String arguments) {
@@ -642,47 +682,61 @@ public class FakeValuesService {
     }
 
     private String[] splitExpressions(String expression, int length) {
-        return EXPRESSION_2_SPLITTED.computeIfAbsent(expression, (__) -> {
-            int cnt = 0;
-            for (int i = 0; i < length; i++) {
-                if (expression.charAt(i) == '}') {
-                    cnt++;
-                }
-            }
-            List<String> list = new ArrayList<>((cnt << 1) + 1);
-            boolean isExpression = false;
-            int start = 0;
-            int quoteCnt = 0;
-            for (int i = 0; i < length; i++) {
-                final char c = expression.charAt(i);
-                if (isExpression) {
-                    if (c == '}' && (quoteCnt & 1) == 0) {
-                        list.add(expression.substring(start, i));
-                        start = i + 1;
-                        isExpression = false;
-                    } else if (c == '\'') {
-                        quoteCnt++;
-                    }
-                } else if (i < length - 2 && c == '#' && expression.charAt(i + 1) == '{') {
-                    list.add(expression.substring(start, i));
-                    isExpression = true;
-                    start = i + 2;
-                    i++;
-                }
-            }
-            if (start < length) {
-                list.add(expression.substring(start));
-            }
-            return list.toArray(EMPTY_ARRAY);
-        });
+        if (length > MAX_CACHED_EXPRESSION_LENGTH) {
+            return parseExpressions(expression, length);
+        }
+
+        int slot = Math.floorMod(expression.hashCode(), SPLIT_EXPRESSIONS.length());
+        SplitExpression cached = SPLIT_EXPRESSIONS.get(slot);
+        if (cached != null && expression.equals(cached.expression())) {
+            return cached.parts();
+        }
+        String[] parts = parseExpressions(expression, length);
+        SPLIT_EXPRESSIONS.set(slot, new SplitExpression(expression, parts));
+        return parts;
     }
 
-    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, String expr) {
+    private static String[] parseExpressions(String expression, int length) {
+        int cnt = 0;
+        for (int i = 0; i < length; i++) {
+            if (expression.charAt(i) == '}') {
+                cnt++;
+            }
+        }
+        List<String> list = new ArrayList<>((cnt << 1) + 1);
+        boolean isExpression = false;
+        int start = 0;
+        int quoteCnt = 0;
+        for (int i = 0; i < length; i++) {
+            final char c = expression.charAt(i);
+            if (isExpression) {
+                if (c == '}' && (quoteCnt & 1) == 0) {
+                    list.add(expression.substring(start, i));
+                    start = i + 1;
+                    isExpression = false;
+                } else if (c == '\'') {
+                    quoteCnt++;
+                }
+            } else if (i < length - 2 && c == '#' && expression.charAt(i + 1) == '{') {
+                list.add(expression.substring(start, i));
+                isExpression = true;
+                start = i + 2;
+                i++;
+            }
+        }
+        if (start < length) {
+            list.add(expression.substring(start));
+        }
+        return list.toArray(EMPTY_ARRAY);
+    }
+
+    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context,
+                          SingletonLocale locale, String expr, Map<String, RegExpContext> resolvers) {
         Object res = resolveExpression(directive, args, current, root, context);
         LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, expr: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, expr, res));
         if (res instanceof CharSequence charSequence) {
             if (charSequence.isEmpty()) {
-                regexp2SupplierMap.put(expr, new RegExpContext(root, context, EMPTY_STRING));
+                resolvers.put(expr, new RegExpContext(current, root, context, locale, EMPTY_STRING));
             }
             return res;
         }
@@ -696,7 +750,7 @@ public class FakeValuesService {
                     if (value == null) {
                         it.remove();
                     } else {
-                        regexp2SupplierMap.put(expr, new RegExpContext(root, context, resolver));
+                        resolvers.put(expr, new RegExpContext(current, root, context, locale, resolver));
                         return value;
                     }
                 }
@@ -903,8 +957,8 @@ public class FakeValuesService {
         Class<?> clazz = object.getClass();
 
         MethodAndCoercedArgs accessor = MAP_OF_METHOD_AND_COERCED_ARGS
-            .computeIfAbsent(clazz, cl -> new CopyOnWriteMap<>(WeakHashMap::new))
-            .computeIfAbsent(methodName, mn -> new CopyOnWriteMap<>(WeakHashMap::new))
+            .computeIfAbsent(clazz, cl -> synchronizedMap(new WeakHashMap<>()))
+            .computeIfAbsent(methodName, mn -> synchronizedMap(new WeakHashMap<>()))
             .computeIfAbsent(args, (__) -> accessor(clazz, methodName, args));
         if (accessor == null) {
             LOG.fine(() -> "Can't find method on %s called %s.".formatted(object.getClass().getSimpleName(), methodName));
@@ -1144,7 +1198,41 @@ public class FakeValuesService {
         }
     }
 
-    private record RegExpContext(@Nullable ProviderRegistration root, FakerContext context, ValueResolver resolver) {
+    // A registration publishes its sources and fresh caches together. In-flight lookups can only update the old caches.
+    private static final class LocaleData {
+        private final Map<SingletonLocale, FakeValuesInterface> sources;
+        private final List<SingletonLocale> primaryChain;
+        private final LocaleLookup primaryLookup = new LocaleLookup();
+        private final Map<List<SingletonLocale>, LocaleLookup> lookups = new ConcurrentHashMap<>();
+        private final Map<String, RegExpContext> resolvers = new ConcurrentHashMap<>();
+
+        private LocaleData(Map<SingletonLocale, FakeValuesInterface> sources, List<SingletonLocale> primaryChain) {
+            this.sources = sources;
+            this.primaryChain = List.copyOf(primaryChain);
+        }
+
+        private LocaleLookup lookup(List<SingletonLocale> chain) {
+            if (chain == primaryChain || primaryChain.equals(chain)) {
+                return primaryLookup;
+            }
+            LocaleLookup result = lookups.get(chain);
+            return result == null ? lookups.computeIfAbsent(List.copyOf(chain), ignored -> new LocaleLookup()) : result;
+        }
+    }
+
+    private static final class LocaleLookup {
+        private final Map<String, Object> values = MAP_STRING_OBJECT_SUPPLIER.get();
+        private final Map<String, String> expressions = MAP_STRING_STRING_SUPPLIER.get();
+    }
+
+    private record RegExpContext(@Nullable Object current, @Nullable ProviderRegistration root, FakerContext context,
+                                 SingletonLocale locale, ValueResolver resolver) {
+    }
+
+    private record SplitExpression(String expression, String[] parts) {
+    }
+
+    private record CompiledRegex(String regex, RgxGen generator) {
     }
 
     private interface ValueResolver {

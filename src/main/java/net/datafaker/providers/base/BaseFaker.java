@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.annotations.FakeResolver;
+import net.datafaker.internal.helper.CopyOnWriteMap;
 import net.datafaker.sequence.FakeCollection;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.sequence.FakeStream;
@@ -23,7 +24,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static java.util.Collections.synchronizedMap;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Provides utility methods for generating fake strings, such as names, phone
@@ -35,7 +36,7 @@ public class BaseFaker implements BaseProviders {
     private static final Predicate<Class<?>> EVERY_PROVIDER_ALLOWED = t -> true;
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
-    private final Map<Class<?>, AbstractProvider<?>> providersCache = synchronizedMap(new IdentityHashMap<>());
+    private final Map<Class<?>, AbstractProvider<?>> providersCache = new CopyOnWriteMap<>(IdentityHashMap::new);
     private final Predicate<Class<?>> whiteListPredicate;
 
     public BaseFaker() {
@@ -74,56 +75,39 @@ public class BaseFaker implements BaseProviders {
         return context;
     }
 
+    /**
+     * Runs the callable with a temporary locale on the calling thread.
+     */
     public <T> T doWith(Callable<T> callable, Locale locale) {
-        final Locale current = context.getLocale();
-        T result;
-        try {
-            context.setCurrentLocale(locale);
-            fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
-            result = callable.call();
-            return result;
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            context.setCurrentLocale(current);
-            fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
-        }
+        return doWith(callable, requireNonNull(locale), null);
     }
 
+    /**
+     * Runs the callable with a temporary seeded random generator on the calling thread.
+     */
     public <T> T doWith(Callable<T> callable, long seed) {
-        final RandomService current = context.getRandomService();
-        T result;
-        try {
-            context.setRandomService(new RandomService(new Random(seed)));
-            result = callable.call();
-            return result;
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            context.setRandomService(current);
-        }
+        return doWith(callable, null, new RandomService(new Random(seed)));
     }
 
+    /**
+     * Runs the callable with a temporary locale and seeded random generator on the calling thread.
+     */
     public <T> T doWith(Callable<T> callable, Locale locale, long seed) {
-        final Locale currentLocale = context.getLocale();
-        final RandomService currentRandomService = context.getRandomService();
-        T result;
+        return doWith(callable, requireNonNull(locale), new RandomService(new Random(seed)));
+    }
+
+    private <T> T doWith(Callable<T> callable, @Nullable Locale locale, @Nullable RandomService random) {
         try {
-            context.setRandomService(new RandomService(new Random(seed)));
-            context.setCurrentLocale(locale);
-            result = callable.call();
-            return result;
+            return context.withOverrides(locale, random, () -> {
+                if (locale != null) {
+                    fakeValuesService.updateFakeValuesInterfaceMap(context.getLocaleChain());
+                }
+                return callable.call();
+            });
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            context.setRandomService(currentRandomService);
-            context.setCurrentLocale(currentLocale);
         }
     }
 
