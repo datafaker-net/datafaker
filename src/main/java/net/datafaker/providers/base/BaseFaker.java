@@ -1,6 +1,7 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.annotations.FakeResolver;
+import net.datafaker.internal.helper.CopyOnWriteMap;
 import net.datafaker.sequence.FakeCollection;
 import net.datafaker.sequence.FakeSequence;
 import net.datafaker.sequence.FakeStream;
@@ -23,8 +24,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static java.util.Collections.synchronizedMap;
-
 /**
  * Provides utility methods for generating fake strings, such as names, phone
  * numbers, addresses. generate random strings with given patterns
@@ -35,7 +34,7 @@ public class BaseFaker implements BaseProviders {
     private static final Predicate<Class<?>> EVERY_PROVIDER_ALLOWED = t -> true;
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
-    private final Map<Class<?>, AbstractProvider<?>> providersCache = synchronizedMap(new IdentityHashMap<>());
+    private final Map<Class<?>, AbstractProvider<?>> providersCache = new CopyOnWriteMap<>(IdentityHashMap::new);
     private final Predicate<Class<?>> whiteListPredicate;
 
     public BaseFaker() {

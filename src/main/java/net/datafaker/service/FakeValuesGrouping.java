@@ -5,7 +5,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 
@@ -31,10 +31,9 @@ public final class FakeValuesGrouping implements FakeValuesInterface {
     public void add(FakeValuesInterface fakeValue) {
         if (fakeValue instanceof FakeValues values) {
             values.getPaths().forEach(p ->
-            fakeValues.computeIfAbsent(p, key -> new HashSet<>())
-                .add(fakeValue));
+                fakeValues.computeIfAbsent(p, key -> new LinkedHashSet<>()).add(fakeValue));
         } else if (fakeValue instanceof FakeValuesGrouping grouping) {
-            fakeValues.putAll(grouping.fakeValues);
+            grouping.fakeValues.forEach((key, values) -> fakeValues.put(key, new LinkedHashSet<>(values)));
         } else {
             throw new RuntimeException(fakeValues.getClass().getName() + " not supported (please raise an issue)");
         }
@@ -45,14 +44,17 @@ public final class FakeValuesGrouping implements FakeValuesInterface {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Map<String, Object> get(String key) {
         Map<String, Object> result = null;
+        boolean merged = false;
         for (FakeValuesInterface fakeValues : fakeValues.getOrDefault(key, emptyList())) {
+            Map<String, Object> values = fakeValues.get(key);
             if (result == null) {
-                result = fakeValues.get(key);
-            } else {
-                Map<String, Object> newResult = fakeValues.get(key);
-                if (newResult != null) {
-                    result.putAll(newResult);
+                result = values;
+            } else if (values != null) {
+                if (!merged) {
+                    result = new HashMap<>(result);
+                    merged = true;
                 }
+                result.putAll(values);
             }
         }
         return result;

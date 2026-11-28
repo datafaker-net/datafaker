@@ -9,6 +9,7 @@ import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -124,6 +125,30 @@ class FakeValuesServiceTest {
 
         // then
         assertThat(actual).isEqualTo("Yo!");
+    }
+
+    @Test
+    void resolvesSameDirectiveAgainstDifferentCurrentObjects() {
+        assertThat(fakeValuesService.resolve("property.simpleResolution", new DummyService("first"), faker, context))
+            .isEqualTo("first");
+        assertThat(fakeValuesService.resolve("property.simpleResolution", new DummyService("second"), faker, context))
+            .isEqualTo("second");
+    }
+
+    @Test
+    void englishYamlRegistrationDoesNotLeakBetweenFakers(@TempDir Path tempDir) throws IOException {
+        Path addition = Files.writeString(tempDir.resolve("custom.yml"), """
+            en:
+              faker:
+                name:
+                  custom_value: [custom]
+            """);
+        Faker custom = new Faker(Locale.ENGLISH);
+        Faker defaults = new Faker(Locale.ENGLISH);
+        custom.addPath(Locale.ENGLISH, addition);
+
+        assertThat(custom.fakeValuesService().fetchString("name.custom_value", custom.getContext())).isEqualTo("custom");
+        assertThat(defaults.fakeValuesService().fetchString("name.custom_value", defaults.getContext())).isNull();
     }
 
     @Test
