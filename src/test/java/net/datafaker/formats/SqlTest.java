@@ -269,6 +269,68 @@ class SqlTest {
     }
 
     @ParameterizedTest
+    @MethodSource("identifierEscapeDialects")
+    void escapesClosingQuoteInIdentifiers(SqlDialect dialect, String schemaName, String tableName, String fieldName, String expected) {
+        Schema<String, String> schema = Schema.of(field(fieldName, () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .schemaName(schemaName).tableName(tableName).dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> identifierEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.MSSQL, "s]1", "t]2", "a]b[c", "INSERT INTO [s]]1].[t]]2] ([a]]b[c]) VALUES ('x');"),
+            of(SqlDialect.POSTGRES, "s\"1", "t\"2", "a\"b", "INSERT INTO \"s\"\"1\".\"t\"\"2\" (\"a\"\"b\") VALUES ('x');"),
+            of(SqlDialect.MYSQL, "s`1", "t`2", "a`b", "INSERT INTO `s``1`.`t``2` (`a``b`) VALUES ('x');"),
+            of(SqlDialect.BIGQUERY, "s`1", "t`2", "a`b", "INSERT INTO `s\\`1`.`t\\`2` (`a\\`b`) VALUES ('x');"),
+            of(SqlDialect.BIGQUERY, "s\\1", "t\\2", "a\\b", "INSERT INTO `s\\\\1`.`t\\\\2` (`a\\\\b`) VALUES ('x');"),
+            of(SqlDialect.CLICKHOUSE, "s`1", "t`2", "a`b", "INSERT INTO `s\\`1`.`t\\`2` (`a\\`b`) VALUES ('x');"),
+            of(SqlDialect.CLICKHOUSE, "S\\1", "T\\2", "A\\B", "INSERT INTO `S\\\\1`.`T\\\\2` (`A\\\\B`) VALUES ('x');"),
+            of(SqlDialect.MYSQL, "s1", "t2", "a`\\b", "INSERT INTO s1.t2 (`a``\\b`) VALUES ('x');")
+        );
+    }
+
+    @Test
+    void escapesClosingQuoteInIdentifiersWithoutDialectBrackets() {
+        Schema<String, String> schema = Schema.of(field("f", () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .sqlQuoteIdentifier("[]")
+            .schemaName("s]1")
+            .tableName("t]2")
+            .build();
+
+        assertThat(transformer.generate(schema, 1))
+            .isEqualTo("INSERT INTO [s]]1].[t]]2] ([f]) VALUES ('x');");
+    }
+
+    @Test
+    void escapesClosingQuoteInIdentifiersWithoutDialectDefaultQuotes() {
+        Schema<String, String> schema = Schema.of(field("a\"b", () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .schemaName("s\"1")
+            .tableName("t\"2")
+            .build();
+
+        assertThat(transformer.generate(schema, 1))
+            .isEqualTo("INSERT INTO \"s\"\"1\".\"t\"\"2\" (\"a\"\"b\") VALUES ('x');");
+    }
+
+    @Test
+    void oracleRejectsDoubleQuoteInIdentifier() {
+        Schema<String, String> schema = Schema.of(field("f", () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .schemaName("s\"1")
+            .tableName("t\"2")
+            .dialect(SqlDialect.ORACLE)
+            .build();
+
+        assertThatThrownBy(() -> transformer.generate(schema, 1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Oracle quoted identifiers cannot contain a double quote");
+    }
+
+    @ParameterizedTest
     @MethodSource("generateTestSchemaForMySQL")
     void simpleSqlTestForSqlTransformerMySQL(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
@@ -597,5 +659,78 @@ class SqlTest {
                    ('Cote d\\'Ivoire', 'Blood\\'s a Rover');""");
 
         assertThat(sql).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @MethodSource("quoteEscapeDialects")
+    void escapesQuoteInStringValues(SqlDialect dialect, String expectedValue) {
+        Schema<String, String> schema = Schema.of(field("lastName", () -> "O'Brien"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES (" + expectedValue + ");");
+    }
+
+    private static Stream<Arguments> quoteEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.POSTGRES, "'O''Brien'"),
+            of(SqlDialect.ORACLE, "'O''Brien'"),
+            of(SqlDialect.MSSQL, "'O''Brien'"),
+            of(SqlDialect.H2, "'O''Brien'"),
+            of(SqlDialect.MYSQL, "'O\\'Brien'"),
+            of(SqlDialect.MARIADB, "'O\\'Brien'"),
+            of(SqlDialect.BIGQUERY, "'O\\'Brien'"),
+            of(SqlDialect.CLICKHOUSE, "'O\\'Brien'"),
+            of(SqlDialect.INFOBRIGHT, "'O\\'Brien'"),
+            of(SqlDialect.SNOWFLAKE, "'O\\'Brien'"),
+            of(SqlDialect.SPARKSQL, "'O\\'Brien'")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("backslashEscapeDialects")
+    void escapesBackslashInStringValues(SqlDialect dialect, String expectedValue) {
+        Schema<String, String> schema = Schema.of(field("path", () -> "C:\\temp\\"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES (" + expectedValue + ");");
+    }
+
+    private static Stream<Arguments> backslashEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.POSTGRES, "'C:\\temp\\'"),
+            of(SqlDialect.MSSQL, "'C:\\temp\\'"),
+            of(SqlDialect.MYSQL, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.MARIADB, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.BIGQUERY, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.CLICKHOUSE, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.INFOBRIGHT, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.SNOWFLAKE, "'C:\\\\temp\\\\'"),
+            of(SqlDialect.SPARKSQL, "'C:\\\\temp\\\\'")
+        );
+    }
+
+    @Test
+    void escapesBackslashBeforeQuote() {
+        Schema<String, String> schema = Schema.of(field("text", () -> "a\\'b"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(SqlDialect.MYSQL).build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES ('a\\\\\\'b');");
+    }
+
+    @Test
+    void withoutDialectOnlyTheQuoteIsEscaped() {
+        Schema<String, String> schema = Schema.of(field("text", () -> "C:\\temp\\O'Brien"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().build();
+
+        assertThat(transformer.generate(schema, 1)).endsWith("VALUES ('C:\\temp\\O\\'Brien');");
+    }
+
+    @Test
+    void escapesSparkSqlFieldPrefix() {
+        Schema<String, String> schema = Schema.of(
+            compositeField("outer", new Field[]{field("it's", () -> "x"), field("a\\b", () -> "y")}));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder().dialect(SqlDialect.SPARKSQL).build();
+
+        assertThat(transformer.generate(schema, 1)).contains("'it\\'s', 'x'", "'a\\\\b', 'y'");
     }
 }

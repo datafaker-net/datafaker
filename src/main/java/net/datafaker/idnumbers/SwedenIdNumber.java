@@ -29,11 +29,6 @@ public class SwedenIdNumber implements IdNumberGenerator {
 
     private static final String[] VALID_PATTERNS = {"######-####", "######+####"};
 
-    @Deprecated
-    public String getValidSsn(BaseProviders f) {
-        return generateValid(f);
-    }
-
     @Override
     public PersonIdNumber generateValid(BaseProviders f, IdNumber.IdNumberRequest request) {
         LocalDate birthday = birthday(f, request);
@@ -51,14 +46,6 @@ public class SwedenIdNumber implements IdNumberGenerator {
 
     private String generateEndPart(BaseProviders f) {
         return "%03d".formatted(f.number().numberBetween(1, 1000));
-    }
-
-    /**
-     * @deprecated Use method {@link #generateInvalid(BaseProviders)} instead
-     */
-    @Deprecated
-    public String getInvalidSsn(BaseProviders f) {
-        return generateInvalid(f);
     }
 
     @Override

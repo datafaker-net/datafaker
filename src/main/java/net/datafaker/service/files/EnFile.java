@@ -85,6 +85,7 @@ public class EnFile {
         "crypto_coin.yml",
         "culture_series.yml",
         "currency.yml",
+        "database.yml",
         "dc_comics.yml",
         "dark_souls.yml",
         "death_note.yml",

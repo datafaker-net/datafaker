@@ -17,6 +17,12 @@ public class Stock extends AbstractProvider<BaseProviders> {
         return resolve("stock.symbol_nsdq");
     }
 
+    /**
+     * Ticker of a common stock listed on NYSE, e.g. {@code MMM} or {@code BRK.B}.
+     * <p>
+     * Source: NASDAQ Trader <a href="https://www.nasdaqtrader.com/dynamic/SymDir/otherlisted.txt">otherlisted.txt</a>
+     * (Exchange=N, ETF=N), snapshot of 2026-10-23.
+     */
     public String nyseSymbol() {
         return resolve("stock.symbol_nyse");
     }

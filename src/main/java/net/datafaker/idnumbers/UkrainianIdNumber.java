@@ -7,6 +7,7 @@ import net.datafaker.providers.base.PersonIdNumber;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static net.datafaker.idnumbers.Utils.birthday;
 import static net.datafaker.idnumbers.Utils.gender;
 import static net.datafaker.idnumbers.Utils.multiply;
 
@@ -37,7 +38,7 @@ public class UkrainianIdNumber implements IdNumberGenerator {
 
     @Override
     public PersonIdNumber generateValid(BaseProviders faker, IdNumber.IdNumberRequest request) {
-        LocalDate birthday = faker.timeAndDate().birthday();
+        LocalDate birthday = birthday(faker, request);
         String dob = DateTimeFormatter.ofPattern("yyyyMMdd").format(birthday);
         String numbers = faker.numerify("####");
         int checksum = multiply(dob + numbers, CHECKSUM_WEIGHTS) % 10;

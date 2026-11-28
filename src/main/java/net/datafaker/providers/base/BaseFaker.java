@@ -355,15 +355,6 @@ public class BaseFaker implements BaseProviders {
         }
 
     /**
-     * This method is not needed anymore, don't use it.
-     * @deprecated Use non-static method {@link BaseFaker#getProvider(Class, Function)} instead.
-     */
-    @Deprecated
-    public static <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(Class<AP> clazz, Function<PR, AP> valueSupplier, PR faker) {
-        return faker.getProvider(clazz, valueSupplier);
-    }
-
-    /**
      * @return builder to build {@code FakeCollection}
      */
     public <T> FakeSequence.Builder<T> collection() {

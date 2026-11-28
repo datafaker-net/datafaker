@@ -27,11 +27,6 @@ public class AmericanIdNumber implements IdNumberGenerator {
         .map(Pattern::compile)
         .toList();
 
-    @Deprecated
-    public String getValidSsn(BaseProviders f) {
-        return generateValid(f);
-    }
-
     @Override
     public String generateValid(BaseProviders f) {
         final String ssn = f.regexify("[0-8]\\d{2}-\\d{2}-\\d{4}");

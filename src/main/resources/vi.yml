@@ -3,45 +3,74 @@
 vi:
   faker:
     address:
-      city_root: ["Bắc Giang", "Bắc Kạn", "Bắc Ninh", "Cao Bằng", "Điện Biên", "Hà Giang", "Hà Nam", "Hà Tây",
-                  "Hải Dương", "TP Hải Phòng", "Hòa Bình", "Hưng Yên", "Lai Châu", "Lào Cai", "Lạng Sơn", "Nam Định",
-                  "Ninh Bình", "Phú Thọ", "Quảng Ninh", "Sơn La", "Thái Bình", "Thái Nguyên", "Tuyên Quang", "Vĩnh Phúc",
-                  "Yên Bái", "TP Đà Nẵng", "Bình Định", "Đắk Lắk", "Đắk Nông", "Gia Lai", "Hà Tĩnh", "Khánh Hòa", "Kon Tum",
-                  "Nghệ An", "Phú Yên", "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Trị", "Thanh Hóa", "Thừa Thiên Huế",
-                  "TP TP. Hồ Chí Minh", "An Giang", "Bà Rịa Vũng Tàu", "Bạc Liêu", "Bến Tre", "Bình Dương", "Bình Phước",
-                  "Bình Thuận", "Cà Mau", "TP Cần Thơ", "Đồng Nai", "Đồng Tháp", "Hậu Giang", "Kiên Giang", "Lâm Đồng",
-                  "Long An", "Ninh Thuận", "Sóc Trăng", "Tây Ninh", "Tiền Giang", "Trà Vinh", "Vĩnh Long"]
+      state: ["An Giang", "Bắc Ninh", "Cà Mau", "Cao Bằng", "Cần Thơ", "Đà Nẵng", "Đắk Lắk", "Điện Biên", "Đồng Nai",
+              "Đồng Tháp", "Gia Lai", "Hà Nội", "Hà Tĩnh", "Hải Phòng", "Thành phố Hồ Chí Minh", "Huế", "Hưng Yên",
+              "Khánh Hòa", "Lai Châu", "Lạng Sơn", "Lào Cai", "Lâm Đồng", "Nghệ An", "Ninh Bình", "Phú Thọ",
+              "Quảng Ngãi", "Quảng Ninh", "Quảng Trị", "Sơn La", "Tây Ninh", "Thái Nguyên", "Thanh Hóa", "Tuyên Quang",
+              "Vĩnh Long"]
       city:
-        - "#{city_root}"
-      county: ["Avon", "Bedfordshire", "Berkshire", "Borders", "Buckinghamshire", "Cambridgeshire", "Central",
-              "Cheshire", "Cleveland", "Clwyd", "Cornwall", "County Antrim", "County Armagh", "County Down",
-              "County Fermanagh", "County Londonderry", "County Tyrone", "Cumbria", "Derbyshire", "Devon",
-              "Dorset", "Dumfries and Galloway", "Durham", "Dyfed", "East Sussex", "Essex", "Fife", "Gloucestershire",
-              "Grampian", "Greater Manchester", "Gwent", "Gwynedd County", "Hampshire", "Herefordshire", "Hertfordshire",
-              "Highlands and Islands", "Humberside", "Isle of Wight", "Kent", "Lancashire", "Leicestershire", "Lincolnshire",
-              "Lothian", "Merseyside", "Mid Glamorgan", "Norfolk", "North Yorkshire", "Northamptonshire", "Northumberland",
-              "Nottinghamshire", "Oxfordshire", "Powys", "Rutland", "Shropshire", "Somerset", "South Glamorgan", "South Yorkshire",
-              "Staffordshire", "Strathclyde", "Suffolk", "Surrey", "Tayside", "Tyne and Wear", "Việt Nam", "Warwickshire",
-              "West Glamorgan", "West Midlands", "West Sussex", "West Yorkshire", "Wiltshire", "Worcestershire"]
+        - "#{state}"
+      city_name:
+        - "#{state}"
+      street_prefix: ["Đường", "Phố"]
+      street_root: ["Lê Lợi", "Trần Hưng Đạo", "Nguyễn Huệ", "Hai Bà Trưng", "Lý Thường Kiệt", "Lê Duẩn", "Hùng Vương",
+                    "Quang Trung", "Nguyễn Trãi", "Lê Lai", "Phan Chu Trinh", "Phan Bội Châu", "Nguyễn Du", "Trần Phú",
+                    "Điện Biên Phủ", "Lý Thái Tổ", "Ngô Quyền", "Đinh Tiên Hoàng", "Lê Thánh Tông", "Trần Quốc Toản",
+                    "Nguyễn Thị Minh Khai", "Võ Thị Sáu", "Nguyễn Văn Cừ", "Nguyễn Văn Linh", "Phạm Văn Đồng",
+                    "Võ Nguyên Giáp", "Tôn Đức Thắng", "Nguyễn Đình Chiểu", "Cách Mạng Tháng Tám", "Bà Triệu",
+                    "Lê Hồng Phong", "Hoàng Văn Thụ", "Trường Chinh", "Nguyễn Chí Thanh", "Lạc Long Quân", "Âu Cơ",
+                    "Chu Văn An", "Nguyễn Bỉnh Khiêm", "Lê Quý Đôn", "Nguyễn Thái Học", "Phạm Ngũ Lão", "Bạch Đằng",
+                    "Hàm Nghi", "Hoàng Diệu", "Nguyễn Công Trứ", "Trần Quang Khải", "Trần Nhật Duật", "Lý Tự Trọng",
+                    "Nam Kỳ Khởi Nghĩa", "Hoàng Hoa Thám", "Nguyễn Văn Trỗi", "Phan Đình Phùng", "Phan Đăng Lưu",
+                    "Xô Viết Nghệ Tĩnh", "Trần Khánh Dư", "Yết Kiêu", "Huỳnh Thúc Kháng", "Trần Cao Vân",
+                    "Nguyễn Trung Trực", "Trưng Nữ Vương", "Thống Nhất", "Độc Lập", "30 Tháng 4", "3 Tháng 2",
+                    "Cao Thắng", "Lê Đại Hành", "Mạc Đĩnh Chi", "Tô Hiến Thành", "Nguyễn Khuyến", "Kim Đồng"]
+      street_name:
+        - "#{street_root}"
+        - "#{street_prefix} #{street_root}"
+      building_number: ["Ø", "Ø#", "Ø##", "Ø#/Ø", "Ø##/Ø#"]
+      street_address:
+        - "#{building_number} #{street_name}"
+      secondary_address: ["Phòng Ø##", "Căn hộ Ø##"]
+      full_address:
+        - "#{street_address}, #{city}"
+        - "#{secondary_address}, #{street_address}, #{city}"
+      mail_box: ["Hộp thư Ø#", "Hộp thư Ø##"]
       default_country: ["Việt Nam"]
     name:
-      first_name: ["Phạm", "Nguyễn", "Trần", "Lê", "Lý", "Hoàng", "Phan", "Vũ", "Tăng",
-                   "Đặng", "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Đào", "Đoàn", "Vương",
-                   "Trịnh", "Đinh", "Lâm", "Phùng", "Mai", "Tô", "Trương", "Hà"]
-      last_name: ["Nam", "Trung", "Thanh", "Thị", "Văn", "Dương", "Tăng", "Quốc", "Như",
-                 "Phạm", "Nguyễn", "Trần", "Lê", "Lý", "Hoàng", "Phan", "Vũ",
-                 "Đặng", "Bùi", "Đỗ", "Hồ", "Ngô", "Đào", "Đoàn", "Vương",
-                 "Trịnh", "Đinh", "Lâm", "Phùng", "Mai", "Tô", "Trương", "Hà",
-                 "Vinh", "Nhung", "Hòa", "Tiến", "Tâm", "Bửu", "Loan", "Hiền", "Hải",
-                 "Vân", "Kha", "Minh", "Nhân", "Triệu", "Tuân", "Hữu", "Đức", "Phú", "Khoa",
-                 "Thắng", "Sơn", "Dung", "Tú", "Trinh", "Thảo", "Sa", "Kim", "Long", "Thi",
-                 "Cường", "Ngọc", "Sinh", "Khang", "Phong", "Thắm", "Thu", "Thủy", "Nhàn"]
+      last_name: ["Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng",
+                  "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Lý", "Đào", "Đoàn", "Vương", "Trịnh",
+                  "Đinh", "Lâm", "Phùng", "Mai", "Tô", "Trương", "Hà", "Tăng", "Cao", "Lương",
+                  "Châu", "Tạ", "Quách", "Lưu", "Thái", "Triệu", "Kiều", "Từ", "La", "Nghiêm"]
+      male_middle_name: ["Văn", "Đức", "Minh", "Hữu", "Quốc", "Công", "Thanh", "Xuân", "Đình", "Quang",
+                         "Gia", "Mạnh", "Bá", "Duy", "Ngọc", "Tiến", "Trọng"]
+      female_middle_name: ["Thị", "Ngọc", "Thu", "Thanh", "Minh", "Kim", "Bảo", "Diệu", "Khánh", "Thùy",
+                           "Hoài", "Mỹ", "Hồng", "Xuân", "Phương", "Bích"]
+      male_first_name: ["An", "Anh", "Bảo", "Bình", "Cường", "Dũng", "Đạt", "Đông", "Hải", "Hiếu",
+                        "Hòa", "Hùng", "Huy", "Khang", "Khánh", "Khoa", "Kiên", "Lâm", "Long", "Lộc",
+                        "Nam", "Nghĩa", "Nhân", "Phát", "Phong", "Phúc", "Quân", "Sơn", "Tài", "Thắng",
+                        "Thành", "Thịnh", "Toàn", "Trí", "Trung", "Tuấn", "Tùng", "Việt", "Vinh", "Vũ"]
+      female_first_name: ["An", "Anh", "Châu", "Chi", "Dung", "Duyên", "Giang", "Hà", "Hạnh", "Hằng",
+                          "Hiền", "Hoa", "Hương", "Huyền", "Lan", "Liên", "Linh", "Loan", "Ly", "Mai",
+                          "My", "Nga", "Ngân", "Nhàn", "Nhung", "Oanh", "Quyên", "Quỳnh", "Tâm", "Thảo",
+                          "Thắm", "Thủy", "Trang", "Trinh", "Uyên", "Vân", "Vy", "Yến"]
+      # The literal list also supplies unique values through Unique.fetchFromYaml.
+      first_name: ["An", "Anh", "Bảo", "Bình", "Cường", "Dũng", "Đạt", "Đông", "Hải", "Hiếu",
+                   "Hòa", "Hùng", "Huy", "Khang", "Khánh", "Khoa", "Kiên", "Lâm", "Long", "Lộc",
+                   "Nam", "Nghĩa", "Nhân", "Phát", "Phong", "Phúc", "Quân", "Sơn", "Tài", "Thắng",
+                   "Thành", "Thịnh", "Toàn", "Trí", "Trung", "Tuấn", "Tùng", "Việt", "Vinh", "Vũ",
+                   "Châu", "Chi", "Dung", "Duyên", "Giang", "Hà", "Hạnh", "Hằng", "Hiền", "Hoa",
+                   "Hương", "Huyền", "Lan", "Liên", "Linh", "Loan", "Ly", "Mai", "My", "Nga",
+                   "Ngân", "Nhàn", "Nhung", "Oanh", "Quyên", "Quỳnh", "Tâm", "Thảo", "Thắm", "Thủy",
+                   "Trang", "Trinh", "Uyên", "Vân", "Vy", "Yến"]
+      # Give names with a middle name two of the three slots.
       name:
-        - "#{first_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name}"
-        - "#{first_name} #{last_name} #{last_name} #{last_name}"
+        - "#{name_with_middle}"
+        - "#{name_with_middle}"
+        - "#{last_name} #{first_name}"
       name_with_middle:
-        - "#{first_name} #{last_name} #{last_name}"
+        - "#{last_name} #{male_middle_name} #{male_first_name}"
+        - "#{last_name} #{female_middle_name} #{female_first_name}"
 
     company:
       prefix: ["Công ty", "Cty TNHH", "Cty", "Cửa hàng", "Trung tâm", "Chi nhánh"]
@@ -57,3 +86,130 @@ vi:
               "bàn", "ghế", "tủ", "quần", "áo", "nón", "dép", "giày", "lỗi", "được", "ghét", "giết",
               "chết", "tôi", "bạn", "tui", "trời", "trăng", "mây", "gió", "máy", "hàng", "hóa",
               "leo", "núi", "bơi", "biển", "chìm", "xuồng", "nước", "ngọt", "ruộng", "đồng", "quê", "hương"]
+
+    color:
+      name: ["đỏ", "xanh lá cây", "xanh dương", "vàng", "tím", "xanh bạc hà", "xanh ngọc", "trắng", "đen", "cam",
+             "hồng", "xám", "nâu", "đỏ đô", "tím than", "xanh da trời", "hồng phấn", "be", "kem", "vàng chanh",
+             "xanh rêu", "xanh lam", "xanh lục", "chàm", "vàng kim", "bạc", "tím hoa cà", "hồng cánh sen", "xanh lơ",
+             "xanh nõn chuối", "đỏ tươi", "nâu đất", "trắng ngà"]
+
+    job:
+      field: ["Tiếp thị", "Công nghệ thông tin", "Kế toán", "Hành chính", "Quảng cáo", "Ngân hàng", "Dịch vụ cộng đồng",
+              "Xây dựng", "Tư vấn", "Thiết kế", "Giáo dục", "Nông nghiệp", "Hành chính công", "Y tế", "Khách sạn",
+              "Pháp chế", "Sản xuất", "Khai khoáng", "Bất động sản", "Bán lẻ", "Kinh doanh", "Nhân sự", "Logistics"]
+      seniority: ["cấp cao", "cao cấp", "chính", "khu vực", "toàn quốc", "toàn cầu", "quốc tế", "nội bộ", "tập sự",
+                  "sơ cấp", "trung cấp", "chiến lược", "cấp tỉnh"]
+      position: ["Giám sát", "Chuyên viên", "Nhân viên", "Trưởng phòng", "Phó phòng", "Quản lý", "Kỹ sư", "Chuyên gia",
+                 "Giám đốc", "Phó giám đốc", "Điều phối viên", "Quản trị viên", "Kiến trúc sư", "Chuyên viên phân tích",
+                 "Kỹ thuật viên", "Lập trình viên", "Tư vấn viên", "Trợ lý", "Trưởng nhóm", "Thực tập sinh", "Cán bộ"]
+      key_skills: ["Làm việc nhóm", "Giao tiếp", "Giải quyết vấn đề", "Lãnh đạo", "Tổ chức", "Làm việc dưới áp lực",
+                   "Tự tin", "Tự tạo động lực", "Xây dựng mối quan hệ", "Chủ động", "Học hỏi nhanh", "Am hiểu công nghệ",
+                   "Quản lý thời gian", "Tư duy phản biện", "Đàm phán", "Thuyết trình"]
+      employment_type: ["Toàn thời gian", "Bán thời gian", "Tạm thời", "Hợp đồng", "Thực tập", "Hưởng hoa hồng"]
+      education_level: ["Cao đẳng", "Cử nhân", "Kỹ sư", "Thạc sĩ", "Tiến sĩ"]
+      title:
+        - "#{position} #{field}"
+        - "#{position} #{field}"
+        - "#{position} #{field} #{seniority}"
+        - "#{position} #{field} #{seniority}"
+        - "#{position} #{seniority}"
+
+    food:
+      allergens: ["Trứng", "Sữa", "Mù tạt", "Đậu phộng", "Giáp xác và nhuyễn thể", "Cá", "Hạt mè", "Đậu nành", "Sulfit",
+                  "Các loại hạt có vỏ cứng", "Lúa mì"]
+      dish: ["Phở bò", "Phở gà", "Phở cuốn", "Bún chả", "Bún bò Huế", "Bún riêu cua", "Bún thịt nướng", "Bún đậu mắm tôm",
+             "Bún cá", "Bún mắm", "Bánh mì", "Bánh xèo", "Bánh cuốn", "Bánh canh", "Bánh khọt", "Bánh bèo", "Bánh căn",
+             "Bánh hỏi", "Bánh đa cua", "Bánh chưng", "Bánh tét", "Cơm tấm", "Cơm gà Hội An", "Cơm hến", "Cao lầu",
+             "Mì Quảng", "Hủ tiếu Nam Vang", "Hủ tiếu Mỹ Tho", "Miến lươn", "Gỏi cuốn", "Chả giò", "Nem rán", "Nem lụi",
+             "Bò bía", "Chả cá Lã Vọng", "Cá kho tộ", "Thịt kho tàu", "Canh chua cá lóc", "Lẩu mắm", "Bò kho",
+             "Bò lá lốt", "Gà luộc", "Xôi xéo", "Cháo lòng", "Cháo gà", "Gỏi ngó sen", "Ốc luộc", "Cơm rang dưa bò"]
+      ingredients: ["Gạo tẻ", "Gạo nếp", "Bánh phở", "Bún tươi", "Miến dong", "Bánh tráng", "Thịt bò", "Thịt heo",
+                    "Thịt ba chỉ", "Sườn heo", "Thịt gà", "Thịt vịt", "Tôm sú", "Cua đồng", "Mực", "Cá lóc", "Cá basa",
+                    "Nghêu", "Trứng gà", "Trứng vịt", "Đậu phụ", "Giò lụa", "Nước mắm", "Nước tương", "Mắm tôm",
+                    "Mắm ruốc", "Dầu ăn", "Mỡ hành", "Nước cốt dừa", "Đường thốt nốt", "Me chua", "Bột năng", "Bột gạo",
+                    "Mộc nhĩ", "Nấm hương", "Giá đỗ", "Đậu xanh", "Đậu phộng", "Hành phi"]
+      fruits: ["Xoài", "Chuối", "Dứa", "Đu đủ", "Thanh long", "Vải", "Nhãn", "Chôm chôm", "Măng cụt", "Sầu riêng", "Mít",
+               "Bưởi", "Cam", "Quýt", "Chanh dây", "Ổi", "Mận", "Hồng xiêm", "Vú sữa", "Mãng cầu", "Khế", "Dưa hấu",
+               "Bơ", "Táo", "Lê", "Nho", "Dừa", "Chanh"]
+      vegetables: ["Rau muống", "Cải ngọt", "Cải thìa", "Bắp cải", "Súp lơ", "Bông cải xanh", "Cà rốt", "Củ cải trắng",
+                   "Khoai lang", "Khoai tây", "Khoai môn", "Bí đỏ", "Bí đao", "Mướp", "Khổ qua", "Cà tím", "Cà chua",
+                   "Dưa leo", "Đậu bắp", "Đậu đũa", "Đậu cô ve", "Rau dền", "Mồng tơi", "Rau ngót", "Rau má", "Xà lách",
+                   "Hành tây", "Măng tre", "Ngô", "Ngó sen", "Su hào", "Su su"]
+      spices: ["Tiêu đen", "Ớt", "Tỏi", "Hành tím", "Gừng", "Riềng", "Sả", "Nghệ", "Quế", "Hồi", "Thảo quả", "Đinh hương",
+               "Ngò rí", "Ngò gai", "Rau răm", "Húng quế", "Tía tô", "Kinh giới", "Lá chanh", "Lá lốt", "Thì là",
+               "Hạt điều màu", "Ngũ vị hương", "Bột cà ri", "Muối", "Mè rang"]
+      measurements: ["thìa cà phê", "thìa canh", "chén", "bát", "cốc", "nhúm"]
+
+    book:
+      title: ["Truyện Kiều", "Số đỏ", "Giông tố", "Tắt đèn", "Lều chõng", "Chí Phèo", "Lão Hạc", "Sống mòn", "Vợ nhặt",
+              "Dế Mèn phiêu lưu ký", "Nỗi buồn chiến tranh", "Mắt biếc", "Tôi thấy hoa vàng trên cỏ xanh",
+              "Cho tôi xin một vé đi tuổi thơ", "Cánh đồng bất tận", "Thương nhớ mười hai", "Vang bóng một thời",
+              "Gió lạnh đầu mùa", "Hà Nội băm sáu phố phường", "Đất rừng phương Nam", "Bỉ vỏ", "Hồn bướm mơ tiên",
+              "Nửa chừng xuân", "Đoạn tuyệt", "Tuổi thơ dữ dội", "Bến không chồng", "Mùa lá rụng trong vườn",
+              "Thời xa vắng", "Tướng về hưu", "Chiếc thuyền ngoài xa", "Những ngôi sao xa xôi", "Rừng xà nu"]
+      author: ["Nguyễn Du", "Vũ Trọng Phụng", "Ngô Tất Tố", "Nam Cao", "Kim Lân", "Tô Hoài", "Bảo Ninh", "Nguyễn Nhật Ánh",
+               "Nguyễn Ngọc Tư", "Vũ Bằng", "Nguyễn Tuân", "Thạch Lam", "Đoàn Giỏi", "Nguyên Hồng", "Khái Hưng",
+               "Nhất Linh", "Phùng Quán", "Dương Hướng", "Ma Văn Kháng", "Lê Lựu", "Nguyễn Huy Thiệp", "Nguyễn Minh Châu",
+               "Lê Minh Khuê", "Nguyễn Trung Thành"]
+      publisher: ["Nhà xuất bản Kim Đồng", "Nhà xuất bản Trẻ", "Nhà xuất bản Văn học", "Nhà xuất bản Hội Nhà văn",
+                  "Nhà xuất bản Giáo dục Việt Nam", "Nhà xuất bản Tổng hợp Thành phố Hồ Chí Minh",
+                  "Nhà xuất bản Phụ nữ Việt Nam", "Nhà xuất bản Thế giới", "Nhà xuất bản Lao động", "Nhà xuất bản Dân trí",
+                  "Nhà xuất bản Thanh niên", "Nhà xuất bản Đại học Quốc gia Hà Nội", "Nhà xuất bản Hà Nội",
+                  "Nhà xuất bản Chính trị quốc gia Sự thật", "Nhà xuất bản Khoa học xã hội", "Nhà xuất bản Tri thức",
+                  "Nhã Nam", "Alpha Books", "Đông A", "Đinh Tị", "Thái Hà Books", "First News - Trí Việt"]
+      genre: ["Tiểu thuyết", "Truyện ngắn", "Thơ", "Tùy bút", "Bút ký", "Phóng sự", "Truyện cổ tích", "Truyện ngụ ngôn",
+              "Truyền thuyết", "Thần thoại", "Tiểu thuyết lịch sử", "Trinh thám", "Kinh dị", "Khoa học viễn tưởng",
+              "Giả tưởng", "Truyện cười", "Truyện tranh", "Hồi ký", "Tự truyện", "Ngôn tình", "Kiếm hiệp",
+              "Văn học thiếu nhi"]
+
+    university:
+      degree: ["Cao đẳng", "Cử nhân", "Thạc sĩ", "Tiến sĩ", "Sau tiến sĩ"]
+      prefix: ["Trường Đại học", "Học viện", "Trường Cao đẳng"]
+      suffix: ["Bách khoa", "Kinh tế", "Y", "Y Dược", "Dược", "Sư phạm", "Sư phạm Kỹ thuật", "Luật", "Ngoại ngữ",
+               "Ngoại thương", "Xây dựng", "Kiến trúc", "Giao thông Vận tải", "Nông Lâm", "Thủy lợi", "Khoa học Tự nhiên",
+               "Khoa học Xã hội và Nhân văn", "Công nghiệp", "Công nghệ", "Mỹ thuật", "Văn hóa", "Thể dục Thể thao",
+               "Tài chính", "Ngân hàng", "Hàng hải"]
+      place: ["Hà Nội", "Thành phố Hồ Chí Minh", "Đà Nẵng", "Huế", "Cần Thơ", "Hải Phòng", "Thái Nguyên", "Vinh",
+              "Quy Nhơn", "Nha Trang", "Đà Lạt", "Tây Nguyên", "Tây Bắc", "Đồng Tháp", "An Giang"]
+      name:
+        - "#{University.prefix} #{University.suffix} #{University.place}"
+        - "#{University.prefix} #{University.suffix}"
+
+    commerce:
+      department: ["Sách", "Phim", "Âm nhạc", "Trò chơi", "Điện tử", "Máy tính", "Nhà cửa", "Vườn", "Dụng cụ", "Tạp hóa",
+                   "Sức khỏe", "Làm đẹp", "Đồ chơi", "Trẻ em", "Mẹ và bé", "Quần áo", "Giày dép", "Trang sức", "Thể thao",
+                   "Dã ngoại", "Ô tô", "Công nghiệp"]
+      brand: ["Vinamilk", "Viettel", "VinFast", "Vinasoy", "Sabeco", "Habeco", "Vissan", "Bkav", "Masan", "Sunhouse",
+              "Kangaroo"]
+
+    gender:
+      types: ["Nữ", "Nam", "Phi nhị nguyên giới", "Vô giới", "Giới tính linh hoạt", "Song giới", "Đa giới"]
+      binary_types: ["Nữ", "Nam"]
+
+    weather:
+      description: ["Trời quang", "Nắng", "Trời trong", "Có lúc có mây", "Mây rải rác", "Nhiều mây", "Âm u", "Mưa rào",
+                    "Mưa", "Mưa phùn", "Dông", "Tuyết", "Mưa tuyết", "Mưa đá"]
+
+    compass:
+      cardinal:
+        word: ["bắc", "đông", "nam", "tây"]
+        abbreviation: ["B", "Đ", "N", "T"]
+      ordinal:
+        word: ["đông bắc", "đông nam", "tây nam", "tây bắc"]
+        abbreviation: ["ĐB", "ĐN", "TN", "TB"]
+      half-wind:
+        word: ["bắc đông bắc", "đông đông bắc", "đông đông nam", "nam đông nam", "nam tây nam", "tây tây nam",
+               "tây tây bắc", "bắc tây bắc"]
+        abbreviation: ["BĐB", "ĐĐB", "ĐĐN", "NĐN", "NTN", "TTN", "TTB", "BTB"]
+      direction:
+        - "#{Compass.cardinal.word}"
+        - "#{Compass.ordinal.word}"
+        - "#{Compass.half-wind.word}"
+      abbreviation:
+        - "#{Compass.cardinal.abbreviation}"
+        - "#{Compass.ordinal.abbreviation}"
+        - "#{Compass.half-wind.abbreviation}"
+      azimuth:
+        - "#{Compass.cardinal.azimuth}"
+        - "#{Compass.ordinal.azimuth}"
+        - "#{Compass.half-wind.azimuth}"

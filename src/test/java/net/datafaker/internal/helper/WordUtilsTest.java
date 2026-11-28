@@ -8,13 +8,17 @@ class WordUtilsTest {
 
     @Test
     void capitalizeWord() {
-        assertThat(WordUtils.capitalize("w")).isEqualTo("W");
-        assertThat(WordUtils.capitalize("W")).isEqualTo("W");
+        assertThat(WordUtils.capitalizeWord("hello, world")).isEqualTo("Hello, world");
+        assertThat(WordUtils.capitalizeWord("w")).isEqualTo("W");
+        assertThat(WordUtils.capitalizeWord("W")).isEqualTo("W");
 
-        assertThat(WordUtils.capitalize("word")).isEqualTo("Word");
-        assertThat(WordUtils.capitalize("Word")).isEqualTo("Word");
-        assertThat(WordUtils.capitalize("WORD")).isEqualTo("WORD");
-        assertThat(WordUtils.capitalize("wORD")).isEqualTo("WORD");
+        assertThat(WordUtils.capitalizeWord("word")).isEqualTo("Word");
+        assertThat(WordUtils.capitalizeWord("Word")).isEqualTo("Word");
+        assertThat(WordUtils.capitalizeWord("WORD")).isEqualTo("WORD");
+        assertThat(WordUtils.capitalizeWord("wORD")).isEqualTo("WORD");
+        assertThat(WordUtils.capitalizeWord("_word")).isEqualTo("_word");
+        assertThat(WordUtils.capitalizeWord("2word")).isEqualTo("2word");
+        assertThat(WordUtils.capitalizeWord("")).isEmpty();
     }
 
     @Test

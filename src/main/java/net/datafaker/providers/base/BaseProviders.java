@@ -151,23 +151,7 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(CultureSeries.class, CultureSeries::new);
     }
 
-    /**
-     * @deprecated Use {@link #money()} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    @SuppressWarnings("removal")
-    default Currency currency() {
-        return getProvider(Currency.class, Currency::new);
-    }
-
-    /**
-     * @deprecated Use {@link #timeAndDate()} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    @SuppressWarnings("removal")
-    default DateAndTime date() {
-        return getProvider(DateAndTime.class, DateAndTime::new);
-    }
+    default Database database() { return getProvider(Database.class, Database::new); }
 
     default DcComics dcComics() {
         return getProvider(DcComics.class, DcComics::new);

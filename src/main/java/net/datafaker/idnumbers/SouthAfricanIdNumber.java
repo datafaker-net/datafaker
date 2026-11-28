@@ -28,11 +28,6 @@ public class SouthAfricanIdNumber implements IdNumberGenerator {
     private static final String[] VALID_PATTERN = {"##########08#", "##########18#"};
     private static final String[] CODE_PATTERN = {"18", "08"};
 
-    @Deprecated
-    public String getValidSsn(BaseProviders faker) {
-        return generateValid(faker);
-    }
-
     /**
      * Generate a valid social security number on faker
      *
@@ -55,11 +50,6 @@ public class SouthAfricanIdNumber implements IdNumberGenerator {
             case MALE -> f.number().numberBetween(5000, 10_000);
         };
         return "%04d".formatted(number);
-    }
-
-    @Deprecated
-    public String getInValidSsn(BaseProviders f) {
-        return generateInvalid(f);
     }
 
     /**

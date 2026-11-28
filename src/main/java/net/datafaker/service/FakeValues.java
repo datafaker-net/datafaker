@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static net.datafaker.internal.helper.JavaNames.toJavaNames;
-import static net.datafaker.internal.helper.WordUtils.capitalizeWords;
+import static net.datafaker.internal.helper.WordUtils.capitalizeWord;
 
 public class FakeValues implements FakeValuesInterface {
     private static final Map<FakeValuesContext, FakeValues> FAKE_VALUES_MAP = new ConcurrentHashMap<>();
@@ -136,7 +136,7 @@ public class FakeValues implements FakeValuesInterface {
     }
 
     private static void rewriteList(List<Object> list, String providerKey) {
-        final String capitalizedProvider = capitalizeWords(providerKey);
+        final String capitalizedProvider = capitalizeWord(providerKey);
         for (int i = 0; i < list.size(); i++) {
             Object itemValue = list.get(i);
             if (!(itemValue instanceof String item)) {

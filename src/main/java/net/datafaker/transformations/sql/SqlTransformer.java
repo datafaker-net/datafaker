@@ -64,7 +64,9 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private boolean isSqlQuoteIdentifierRequiredFor(String name) {
-        if (forceSqlQuoteIdentifierUsage) return true;
+        if (forceSqlQuoteIdentifierUsage || dialect != null && dialect.requiresQuotingForIdentifierEscape(name)) {
+            return true;
+        }
         for (int i = 0; i < name.length(); i++) {
             if (casing == Casing.TO_UPPER && Character.isLowerCase(name.charAt(i))
                 || casing == Casing.TO_LOWER && Character.isUpperCase(name.charAt(i))
@@ -115,7 +117,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     dialect.getFieldPrefix(fields[i].getName());
 
                 if (!fieldPrefix.isEmpty() && !isRoot) {
-                    result.add(quote + dialect.getFieldPrefix(fields[i].getName()) + quote);
+                    result.add(quote + escapeStringLiteral(fieldPrefix) + quote);
                 }
             }
 
@@ -212,25 +214,21 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     + "[" + handleObjectInCollection(collection) + "]";
             } else {
                 String strValue = value.toString();
-                final int length = strValue.length();
                 final boolean quoteRequired = !(value instanceof Number) && !(value instanceof Boolean);
-                String res = handledObjectToString(length, strValue);
+                String res = escapeStringLiteral(strValue);
                 return quoteRequired ? quote + res + quote : res;
             }
         }
     }
 
-    private String handledObjectToString(int length, String strValue) {
-        StringBuilder builder = new StringBuilder(length);
-
-        for (int k = 0; k < length; k++) {
-            if (strValue.charAt(k) == quote) {
-                builder.append('\\').append(quote);
-            }else {
-                builder.append(strValue.charAt(k));
-            }
+    /**
+     * Without a dialect, the quote is prefixed with a backslash and backslashes are left alone.
+     */
+    private String escapeStringLiteral(String value) {
+        if (dialect != null) {
+            return dialect.escapeStringLiteral(value, quote);
         }
-        return builder.toString();
+        return value.replace(String.valueOf(quote), "\\" + quote);
     }
 
     private String handlePrimitivesInArray(Class<?> componentType, Object value) {
@@ -285,21 +283,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         appendNameToQuery(result, tableName);
         result.append(" (");
         for (int i = 0; i < fields.length; i++) {
-            final String fieldName = fields[i].getName();
-            final boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(fieldName);
-            if (sqlIdentifierRequired) {
-                result.append(openSqlIdentifier);
-            }
-            for (int j = 0; j < fieldName.length(); j++) {
-                if (openSqlIdentifier == fieldName.charAt(j)
-                        || closeSqlIdentifier == fieldName.charAt(j)) {
-                    result.append(openSqlIdentifier);
-                }
-                result.append(fieldName.charAt(j));
-            }
-            if (sqlIdentifierRequired) {
-                result.append(closeSqlIdentifier);
-            }
+            appendNameToQuery(result, fields[i].getName());
             if (i < fields.length - 1) {
                 result.append(", ");
             }
@@ -310,14 +294,14 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private void appendNameToQuery(StringBuilder sb, @Nullable String name) {
         if (name == null || name.isEmpty()) return;
-        boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(name);
-
-        if (sqlIdentifierRequired) {
-            sb.append(openSqlIdentifier);
-        }
-        sb.append(name);
-        if (sqlIdentifierRequired) {
-            sb.append(closeSqlIdentifier);
+        if (isSqlQuoteIdentifierRequiredFor(name)) {
+            sb.append(openSqlIdentifier)
+                .append(dialect == null
+                    ? SqlDialect.escape(name, closeSqlIdentifier, closeSqlIdentifier)
+                    : dialect.escapeIdentifier(name))
+                .append(closeSqlIdentifier);
+        } else {
+            sb.append(name);
         }
     }
 

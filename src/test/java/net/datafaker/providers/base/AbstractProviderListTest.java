@@ -53,7 +53,11 @@ public abstract class AbstractProviderListTest<T extends BaseFaker> {
             .as(() -> "Actual should not have empty entries. " + collection)
             .noneMatch(String::isBlank);
         if (!testSpec.regex().isEmpty()) {
-            assertThat(actual).matches(Pattern.compile(testSpec.regex()));
+            Pattern pattern = Pattern.compile(testSpec.regex());
+            assertThat(actual).matches(pattern);
+            assertThat(expected)
+                .as(() -> "All entries should match " + pattern + ". " + collection)
+                .allMatch(entry -> pattern.matcher(entry).matches());
         }
     }
 

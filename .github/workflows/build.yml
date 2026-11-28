@@ -23,7 +23,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java-version: [ 17, 21, 25, 26 ]
+        java-version: [ 17, 21, 25, 27 ]
         runs-on: [ ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest ]
     name: Jdk ${{ matrix.java-version }}, os ${{ matrix.runs-on }}
     runs-on: ${{ matrix.runs-on }}
@@ -33,7 +33,7 @@ jobs:
           # ratchetFrom needs history reachable to the base/before commit
           fetch-depth: 0
       - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v6.0.0
+        uses: actions/setup-java@v6.3.0
         with:
           java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
@@ -54,7 +54,7 @@ jobs:
         if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream }}
         run: ./mvnw $mvn_options exec:java -Dexec.mainClass="net.datafaker.script.ProvidersDocsGenerator" -Dexec.classpathScope=test -PnoGpg --file pom.xml
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v7.0.0
+        uses: codecov/codecov-action@v7.1.1
         if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

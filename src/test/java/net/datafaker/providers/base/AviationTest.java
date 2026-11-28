@@ -16,33 +16,24 @@ class AviationTest extends BaseFakerTest {
     private static final Pattern FLIGHT_ICAO_CODE = Pattern.compile("[A-Z]{3}[0-9]+");
     private static final String AIRPORT_IATA_CODE = "[A-Z]{3}";
     private static final String AIRPORT_ICAO_CODE = "[A-Z]{4}";
+    private static final String NO_CYRILLIC_LETTERS = "\\P{IsCyrillic}+";
 
     private final Aviation aviation = faker.aviation();
 
     @Test
-    @SuppressWarnings("deprecation")
     void flight_ICAO() {
         assertThat(aviation.flight(ICAO)).matches(FLIGHT_ICAO_CODE);
-        assertThat(aviation.flight("ICAO")).matches(FLIGHT_ICAO_CODE);
-        assertThat(aviation.flight("icao")).matches(FLIGHT_ICAO_CODE);
-        assertThat(aviation.flight("Icao")).matches(FLIGHT_ICAO_CODE);
-        assertThat(aviation.flight("IcaO")).matches(FLIGHT_ICAO_CODE);
     }
 
     @Test
-    @SuppressWarnings({"deprecation", "DataFlowIssue"})
     void flight_IATA() {
         assertThat(aviation.flight(IATA)).matches(FLIGHT_IATA_CODE);
-        assertThat(aviation.flight("IATA")).matches(FLIGHT_IATA_CODE);
-        assertThat(aviation.flight("iata")).matches(FLIGHT_IATA_CODE);
-        assertThat(aviation.flight("test")).matches(FLIGHT_IATA_CODE);
-        assertThat(aviation.flight((String) null)).matches(FLIGHT_IATA_CODE);
     }
 
     @Test
     @SuppressWarnings("DataFlowIssue")
     void flight_nullCodeNotAllowed() {
-        assertThatThrownBy(() -> aviation.flight((AviationCodeType) null))
+        assertThatThrownBy(() -> aviation.flight(null))
             .isInstanceOf(NullPointerException.class);
     }
 
@@ -89,12 +80,12 @@ class AviationTest extends BaseFakerTest {
             TestSpec.of(() -> aviation.airport(IATA), "aviation.airport_iata", AIRPORT_IATA_CODE),
             TestSpec.of(() -> aviation.airport(ICAO), "aviation.airport_icao", AIRPORT_ICAO_CODE),
             TestSpec.of(aviation::airportName, "aviation.airport_name"),
-            TestSpec.of(aviation::airplane, "aviation.aircraft.airplane"),
-            TestSpec.of(aviation::warplane, "aviation.aircraft.warplane"),
-            TestSpec.of(aviation::general, "aviation.aircraft.general"),
-            TestSpec.of(aviation::cargo, "aviation.aircraft.cargo"),
-            TestSpec.of(aviation::civilHelicopter, "aviation.aircraft.civil_helicopter"),
-            TestSpec.of(aviation::armyHelicopter, "aviation.aircraft.army_helicopter"),
+            TestSpec.of(aviation::airplane, "aviation.aircraft.airplane", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::warplane, "aviation.aircraft.warplane", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::general, "aviation.aircraft.general", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::cargo, "aviation.aircraft.cargo", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::civilHelicopter, "aviation.aircraft.civil_helicopter", NO_CYRILLIC_LETTERS),
+            TestSpec.of(aviation::armyHelicopter, "aviation.aircraft.army_helicopter", NO_CYRILLIC_LETTERS),
             TestSpec.of(aviation::METAR, "aviation.metar"),
             TestSpec.of(aviation::manufacturer, "aviation.manufacturer"),
             TestSpec.of(aviation::specialTypeDesignator, "aviation.aircraft_type_special_designator"),
