@@ -232,7 +232,7 @@ String json = transformer.generate(schema, 2);
 // [{"firstName": "Oleta", "lastName": "Toy"},
 // {"firstName": "Gerard", "lastName": "Windler"}]
 ```
-More complex examples and other formats like YAML, XML could be found at https://www.datafaker.net/documentation/formats/
+More complex examples and other formats like YAML, SQL and TOML can be found at https://www.datafaker.net/documentation/schemas/
 
 ### Unique Values
 
@@ -574,10 +574,6 @@ In the example above,
 RELATED PROJECTS
 ----------------
 
-* **Address formatting:** Pair Datafaker's `Address` provider with
-  [address-formatter-java](https://github.com/placemarkt/address-formatter-java)
-  to turn generated components into locale-aware postal addresses.
-  See [Related projects](https://www.datafaker.net/documentation/related-projects/) for examples.
 * **CLI generator:** [datafaker-gen](https://github.com/datafaker-net/datafaker-gen)
 * **Native image demo:** [datafaker-native-demo](https://github.com/datafaker-net/datafaker-native-demo)
 

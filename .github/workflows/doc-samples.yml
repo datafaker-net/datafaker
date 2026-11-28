@@ -1,0 +1,32 @@
+# Compiles and runs the Java, Kotlin and Groovy code samples in the documentation.
+# build.yml runs the same check, but it skips pull requests that only change docs, so this covers those.
+
+name: Documentation code samples
+
+on:
+  pull_request:
+    paths:
+      - 'docs/documentation/**'
+      - 'scripts/doc-samples/**'
+      - '.github/workflows/doc-samples.yml'
+    branches: [ main, 1.x ]
+
+jobs:
+  doc-samples:
+    name: Check documentation code samples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6.0.1
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Install Datafaker
+        run: ./mvnw --batch-mode -q -PnoGpg -DskipTests install
+      - id: version-extract
+        run: |
+          echo "version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+      - name: Check the documentation code samples
+        run: ./mvnw --batch-mode -f scripts/doc-samples/pom.xml verify -Ddatafaker.version=${{ steps.version-extract.outputs.version }}

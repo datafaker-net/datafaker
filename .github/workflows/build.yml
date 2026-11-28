@@ -62,6 +62,9 @@ jobs:
         if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
         run: |
           echo "release_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+      - name: Check the documentation code samples
+        if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
+        run: ./mvnw --batch-mode -f scripts/doc-samples/pom.xml verify -Ddatafaker.version=${{ steps.version-extract.outputs.release_version }}
       - name: 'Download downstream project'
         if: ${{ matrix.java-version == env.jdk_for_downstream && matrix.runs-on == env.os_for_downstream}}
         uses: actions/checkout@v7

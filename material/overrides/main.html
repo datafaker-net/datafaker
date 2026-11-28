@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 {% block announce %}
-  <a href="https://twitter.com/epragt">
-    For updates follow <strong>@epragt</strong> on
-    <span class="twemoji twitter">
-      {% include ".icons/fontawesome/brands/twitter.svg" %}
-    </span>
-    <strong>Twitter</strong>
+  <a href="{{ 'documentation/getting-started/' | url }}#snapshot-versions">
+    Datafaker 3.0 is in development. You can try {{ config.extra.datafaker.snapshot }} today.
   </a>
 {% endblock %}

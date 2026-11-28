@@ -32,6 +32,34 @@ Create a custom provider of data:
         }
     }
     ```
+
+=== "Kotlin"
+
+    ```kotlin
+    class Insect(faker: BaseProviders) : AbstractProvider<BaseProviders>(faker) {
+        fun nextInsectName(): String = INSECT_NAMES[faker.random().nextInt(INSECT_NAMES.size)]
+
+        companion object {
+            private val INSECT_NAMES = listOf("Ant", "Beetle", "Butterfly", "Wasp")
+        }
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    class Insect extends AbstractProvider<BaseProviders> {
+        private static final List<String> INSECT_NAMES = ["Ant", "Beetle", "Butterfly", "Wasp"]
+
+        Insect(BaseProviders faker) {
+            super(faker)
+        }
+
+        String nextInsectName() {
+            INSECT_NAMES[faker.random().nextInt(INSECT_NAMES.size())]
+        }
+    }
+    ```
  
 ### Register provider
 
@@ -47,6 +75,24 @@ Create your own custom faker, which extends `Faker`, and register the custom pro
     }
     ```
 
+=== "Kotlin"
+
+    ```kotlin
+    class MyCustomFaker : Faker() {
+        fun insect(): Insect = getProvider(Insect::class.java, ::Insect)
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    class MyCustomFaker extends Faker {
+        Insect insect() {
+            getProvider(Insect, Insect::new)
+        }
+    }
+    ```
+
 ### Usage
 
 To use the custom faker, you can do the following:
@@ -58,8 +104,24 @@ To use the custom faker, you can do the following:
     System.out.println(myFaker.insect().nextInsectName());
     ```
 
+=== "Kotlin"
+
+    ```kotlin
+    val myFaker = MyCustomFaker()
+    println(myFaker.insect().nextInsectName())
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def myFaker = new MyCustomFaker()
+    println myFaker.insect().nextInsectName()
+    ```
+
 This will print something like the following:
 `Wasp`
+
+<!-- doc-samples: new scope -->
 
 ### Weighted random selection
 
@@ -89,6 +151,76 @@ Since version 2.4.2 of Datafaker it's possible to use a random selector based on
     }
     ```
 
+=== "Kotlin"
+
+    ```kotlin
+    class Insect(faker: BaseProviders) : AbstractProvider<BaseProviders>(faker) {
+        fun weightedInsectName(): String = selector.select(WEIGHTED_INSECTS)
+
+        companion object {
+            private val selector = WeightedRandomSelector(Random())
+
+            private val WEIGHTED_INSECTS: List<Map<String, Any>> = listOf(
+                mapOf("value" to "Driver ant", "weight" to 6.0),
+                mapOf("value" to "Fire ant", "weight" to 3.0),
+                mapOf("value" to "Harvester ant", "weight" to 1.0)
+            )
+        }
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    class Insect extends AbstractProvider<BaseProviders> {
+        private static final WeightedRandomSelector selector = new WeightedRandomSelector(new Random())
+
+        private static final List<Map<String, Object>> WEIGHTED_INSECTS = [
+            [value: "Driver ant", weight: 6.0d],
+            [value: "Fire ant", weight: 3.0d],
+            [value: "Harvester ant", weight: 1.0d]
+        ]
+
+        Insect(BaseProviders faker) {
+            super(faker)
+        }
+
+        String weightedInsectName() {
+            selector.select(WEIGHTED_INSECTS)
+        }
+    }
+    ```
+
+Register it in your custom faker in the same way:
+
+=== "Java"
+
+    ```java
+    public static class MyCustomFaker extends Faker {
+        public Insect insect() {
+            return getProvider(Insect.class, Insect::new);
+        }
+    }
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    class MyCustomFaker : Faker() {
+        fun insect(): Insect = getProvider(Insect::class.java, ::Insect)
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    class MyCustomFaker extends Faker {
+        Insect insect() {
+            getProvider(Insect, Insect::new)
+        }
+    }
+    ```
+
 Then call the weighted method on your custom faker:
 
 === "Java"
@@ -98,8 +230,24 @@ Then call the weighted method on your custom faker:
     System.out.println(myFaker.insect().weightedInsectName());
     ```
 
+=== "Kotlin"
+
+    ```kotlin
+    val myFaker = MyCustomFaker()
+    println(myFaker.insect().weightedInsectName())
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def myFaker = new MyCustomFaker()
+    println myFaker.insect().weightedInsectName()
+    ```
+
 This will return a random insect name but based on the provided weights.
 `Driver ant`
+
+<!-- doc-samples: new scope -->
 
 ## Custom provider using YAML file
 
@@ -136,6 +284,47 @@ First, create the custom provider which loads the data from a file:
     }
     ```
 
+=== "Kotlin"
+
+    ```kotlin
+    class InsectFromFile(faker: BaseProviders) : AbstractProvider<BaseProviders>(faker) {
+        init {
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"))
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"))
+        }
+
+        fun ant(): String = resolve("$KEY.ants")
+
+        fun bee(): String = resolve("$KEY.bees")
+
+        companion object {
+            private const val KEY = "insectsfromfile"
+        }
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    class InsectFromFile extends AbstractProvider<BaseProviders> {
+        private static final String KEY = "insectsfromfile"
+
+        InsectFromFile(BaseProviders faker) {
+            super(faker)
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/ants.yml"))
+            faker.addPath(Locale.ENGLISH, Paths.get("src/test/bees.yml"))
+        }
+
+        String ant() {
+            resolve("${KEY}.ants")
+        }
+
+        String bee() {
+            resolve("${KEY}.bees")
+        }
+    }
+    ```
+
 The `ants.yml` would look like the following:
 
 ```yaml
@@ -168,6 +357,24 @@ Registering the provider would happen like this:
     }
     ```
 
+=== "Kotlin"
+
+    ```kotlin
+    class MyCustomFaker : Faker() {
+        fun insectFromFile(): InsectFromFile = getProvider(InsectFromFile::class.java, ::InsectFromFile)
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    class MyCustomFaker extends Faker {
+        InsectFromFile insectFromFile() {
+            getProvider(InsectFromFile, InsectFromFile::new)
+        }
+    }
+    ```
+
 ### Usage
 
 To use the custom faker, you can do the following:
@@ -177,6 +384,20 @@ To use the custom faker, you can do the following:
     ```java
     MyCustomFaker myFaker = new MyCustomFaker();
     System.out.println(myFaker.insectFromFile().ant());
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    val myFaker = MyCustomFaker()
+    println(myFaker.insectFromFile().ant())
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def myFaker = new MyCustomFaker()
+    println myFaker.insectFromFile().ant()
     ```
 
 This will print something like the following: 
