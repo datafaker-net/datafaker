@@ -1,5 +1,20 @@
 # Advanced password and arbitrary string generation
 
+## Require lowercase letters
+
+Datafaker 3.0 adds an `includeLowercase` argument to `text().text()` and `credentials().password()`. The flags specify uppercase letters, special symbols, digits, and lowercase letters in that order. Each enabled flag requires at least one character from its category. Lowercase letters are eligible in either setting.
+
+```java
+Faker faker = new Faker();
+
+String password = faker.credentials().password(12, 16, true, false, true, true);
+String text = faker.text().text(12, 16, true, false, true, true);
+```
+
+Both calls produce 12 to 16 characters and require uppercase letters, digits, and lowercase letters. Use the builder below to require more than one character from a category or to define custom character sets.
+
+## Set character counts and symbol sets
+
 Starting 1.7.0 there is `Text` provider which allows to generate arbitrary strings with advanced rules.
 Now it allows to specify different set of symbols which should be contained and minimum amount of symbols per such set.
 

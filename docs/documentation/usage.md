@@ -34,7 +34,7 @@ To use Datafaker with a different locale, you can supply one in the constructor 
 === "Java"
 
     ```java
-    Faker faker = new Faker(new Locale("nl"));
+    Faker faker = new Faker(Locale.forLanguageTag("nl"));
 
     String name = faker.name().fullName(); // Chelan Klijnsma
     ```
@@ -42,7 +42,7 @@ To use Datafaker with a different locale, you can supply one in the constructor 
 === "Kotlin"
 
     ```kotlin
-    val faker = Faker(Locale("nl"))
+    val faker = Faker(Locale.forLanguageTag("nl"))
 
     val name = faker.name().fullName() // Chelan Klijnsma
     ```
@@ -62,13 +62,14 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
 === "Java"
 
     ```java 
-    Faker faker1 = new Faker(new Locale("nl"));
-    Faker faker2 = new Faker(new Locale("ar"));
-
-    List<Faker> fakers = Arrays.asList(faker1, faker2);
+    List<Faker> fakers = List.of(
+        new Faker(Locale.forLanguageTag("nl")),
+        new Faker(Locale.forLanguageTag("ar"))
+    );
+    Random chooser = new Random();
 
     for (int i = 0; i < 10; i++) {
-        Faker randomFaker = new Faker().selection().oneOf(fakers);
+        Faker randomFaker = fakers.get(chooser.nextInt(fakers.size()));
         System.out.println(randomFaker.address().fullAddress());
     }
     ```
@@ -76,23 +77,20 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
 === "Kotlin"
 
     ```kotlin
-    val faker1 = Faker(Locale("nl"))
-    val faker2 = Faker(Locale("ar"))
-
-    val fakers = listOf(faker1, faker2)
+    val fakers = listOf(
+        Faker(Locale.forLanguageTag("nl")),
+        Faker(Locale.forLanguageTag("ar"))
+    )
 
     repeat(10) {
-        val randomFaker = Faker().selection().oneOf(fakers)
+        val randomFaker = fakers.random()
         println(randomFaker.address().fullAddress())
     }
     ```
 
 ## Repeatable random results
 
-To generate a more predictable random result, it's possible to provide a seed value to the Faker. 
-
-When providing a seed, the instantiation of Fake objects will always happen in a predictable way,
-which can be handy for generating results multiple times.
+Use the same seed, locale, Datafaker version, and sequence of calls to reproduce the random choices. For time-based generators, also supply a fixed reference time where the API provides one. Upgrades can change provider data and therefore the generated values.
 
 === "Java"
 
@@ -106,18 +104,42 @@ which can be handy for generating results multiple times.
     val faker = Faker(Random(0))
     ```
 
-## Random Java enum values
+To supply a Java `RandomGenerator`, wrap it in a `RandomService`.
 
-To get a random value from a Java `enum` you can employ the `Selection.oneOf()` method.
+```java
+import java.util.Locale;
+import java.util.SplittableRandom;
 
-The following example assumes you want to retrieve a random value from the `Day` enum.
+import net.datafaker.Faker;
+import net.datafaker.service.RandomService;
 
-=== "Java"
+Faker faker = new Faker(Locale.ENGLISH, new RandomService(new SplittableRandom(42)));
+```
 
-    ```java
-    enum Day {
-        MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
-    }
+## Temporary locale and seed
 
-    faker.selection().oneOf(Day.class);
-    ```
+In Datafaker 3.0, `doWith` applies temporary settings on the calling thread and restores the enclosing settings when the callback exits, even if it throws. Overlapping calls on a shared Faker each get their own settings.
+
+```java
+Faker faker = new Faker(Locale.US, new Random(42));
+
+String frenchCity = faker.doWith(faker.address()::city, Locale.FRANCE);
+String repeatableName = faker.doWith(faker.name()::firstName, 7L);
+String repeatableFrenchCity = faker.doWith(faker.address()::city, Locale.FRANCE, 7L);
+```
+
+A locale-only call uses the current random stream. A seed-only call uses the current locale. Nested calls restore the outer callback's settings when they return.
+
+## Random selection
+
+In Datafaker 3.0, use `selection().oneOf()` to choose from an array, collection, or Java enum. Use `setOf()` to choose distinct elements from an array or varargs.
+
+```java
+DayOfWeek day = faker.selection().oneOf(DayOfWeek.class);
+String color = faker.selection().oneOf(List.of("red", "green", "blue"));
+Set<String> pair = faker.selection().setOf(2, "red", "green", "blue");
+```
+
+If the requested set size exceeds the number of distinct options, `setOf()` returns all distinct options.
+
+In Datafaker 2.7, use `faker.options().option(DayOfWeek.class)` for enums and `faker.options().subset(2, ...)` for distinct elements.

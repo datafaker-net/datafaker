@@ -188,6 +188,8 @@ Dialect could be specified during `SQLTransformer` build e.g:
 
 Dialect also handles SQL quote identifiers, quotes and other SQL dialect specifics.
 
+In Datafaker 3.0, pass raw names to `schemaName()`, `tableName()`, and schema fields. The dialect quotes identifiers and escapes embedded closing quotes. For example, a PostgreSQL field named `order"code` becomes `"order""code"`. Oracle rejects identifiers containing a double quote.
+
 An example of batch mode:
 
 === "Java"
@@ -398,10 +400,12 @@ When building JavaObjectTransformer you should provide a class to be used as a t
 === "Java"
 
     ```java
+    import java.time.LocalDate;
+
     public static class Person {
        private String firstName;
        private String lastName;
-       private Date birthDate;
+       private LocalDate birthDate;
        private int id;
     }
     ```
@@ -409,10 +413,12 @@ When building JavaObjectTransformer you should provide a class to be used as a t
 === "Kotlin"
 
     ```kotlin
+    import java.time.LocalDate
+
     data class Person(
         var firstName: String,
         var lastName: String,
-        var birthDate: Date,
+        var birthDate: LocalDate,
         var id: Int
     )
     ```
@@ -426,7 +432,7 @@ Then you should provide a schema for the class.
     Schema<Object, ?> schema = Schema.of(
         field("firstName", () -> faker.name().firstName()),
         field("lastName", () -> faker.name().lastName()),
-        field("birthDate", () -> faker.date().birthday()),
+        field("birthDate", () -> faker.timeAndDate().birthday()),
         field("id", () -> faker.number().positive()));
 
     System.out.println(jTransformer.apply(Person.class, schema));
@@ -439,13 +445,30 @@ Then you should provide a schema for the class.
     val schema: Schema<Any, Any> = Schema.of(
         field("firstName", Supplier { faker.name().firstName() }),
         field("lastName", Supplier { faker.name().lastName() }),
-        field("birthDate", Supplier { faker.date().birthday() }),
+        field("birthDate", Supplier { faker.timeAndDate().birthday() }),
         field("id", Supplier { faker.number().positive() }))
 
     println(jTransformer.apply(Person::class.java, schema))
     ```
 
 will generate object with fields populated with random values based on specified suppliers.
+
+### Java records
+
+Use a public record and provide a field for each component in the canonical constructor's order. To transform existing records in Datafaker 3.0, pass them to `generate(inputs, schema)`. Each field function receives the input record, and the transformer returns a new record for each input in the same order.
+
+```java
+public record Customer(String name, int score) {}
+
+Schema<Object, ?> schema = Schema.of(
+    field("name", input -> ((Customer) input).name()),
+    field("score", input -> ((Customer) input).score() + 1)
+);
+
+var transformer = new JavaObjectTransformer();
+var updated = transformer.generate(List.of(new Customer("Alice", 10)), schema);
+// [Customer[name=Alice, score=11]]
+```
 
 ### Populating Java object with predefined schema
 
@@ -516,7 +539,7 @@ Then you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Clas
     val person = faker.populate(Person::class.java)
     ```
 
-Or you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Class<T>, net.datafaker.schema.Schema<java.lang.Object, ?>)` to populate object with custom schema.
+Use `faker.populate(Person.class, schema)` to supply a custom schema.
 
 === "Java"
 

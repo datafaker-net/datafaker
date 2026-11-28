@@ -117,6 +117,7 @@ nav:
   - Home: index.md
   - Documentation:
     - Getting started: documentation/getting-started.md
+    - Upgrading to 3.0: documentation/upgrade-3.0.md
     - Basic usage: documentation/usage.md
     - Data providers:
       - All providers: documentation/providers.md
@@ -129,6 +130,7 @@ nav:
       - Formats: documentation/formats.md
       - Transformation schemas: documentation/schemas.md
       - Unique values: documentation/unique-values.md
+      - GraalVM Native Image: documentation/native-image.md
     - Related projects: documentation/related-projects.md
     - Performance:
       - Datafaker 1.4.0: documentation/performance140.md
