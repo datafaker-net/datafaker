@@ -306,8 +306,27 @@
  * Homepage
  * =================================================================== */
 
-.df-home ~ .md-main {
+/* The homepage has no Markdown content. Hide the empty content area and the
+ * sidebars where they show inline, but keep .md-main itself: on narrow screens
+ * it holds the primary sidebar, which is the navigation drawer. */
+.df-home ~ .md-main .md-main__inner {
+  margin: 0;
+}
+
+.df-home ~ .md-main .md-content {
   display: none;
+}
+
+@media screen and (min-width: 60em) {
+  .df-home ~ .md-main .md-sidebar--secondary {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 76.25em) {
+  .df-home ~ .md-main .md-sidebar--primary {
+    display: none;
+  }
 }
 
 .df-home ~ .md-footer .md-footer__inner {
