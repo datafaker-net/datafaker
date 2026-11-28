@@ -1,12 +1,14 @@
 package net.datafaker.service;
 
 import net.datafaker.internal.helper.SingletonLocale;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -44,7 +46,9 @@ public class FakerContext {
 
     private volatile SingletonLocale sLocale;
     private volatile RandomService randomService;
-
+    private @Nullable ThreadLocal<ScopedSettings> scopes;
+    // Publish the scope storage and keep ordinary generation off the thread-local path.
+    private volatile int activeScopes;
 
     /**
      * Resolves YAML file using the most specific path first based on language and country code.
@@ -68,29 +72,98 @@ public class FakerContext {
     }
 
     public final synchronized void setLocale(Locale locale) {
-        this.sLocale = singletonLocale(locale);
+        setSingletonLocale(singletonLocale(locale));
     }
 
     public void setRandomService(RandomService randomService) {
-        this.randomService = randomService;
+        ScopedSettings settings = currentScope();
+        if (settings == null) {
+            this.randomService = randomService;
+        } else {
+            settings.randomService = randomService;
+        }
     }
 
     public Locale getLocale() {
-        return sLocale.getLocale();
+        return currentLocale().getLocale();
     }
 
     public SingletonLocale getSingletonLocale() {
-        return sLocale;
+        return currentLocale();
     }
 
     public RandomService getRandomService() {
-        return randomService;
+        return currentRandomService();
     }
 
     public List<SingletonLocale> getLocaleChain() {
-        SingletonLocale locale = sLocale;
+        SingletonLocale locale = currentLocale();
         List<SingletonLocale> chain = LOCALE_2_LOCALES_CHAIN.get(locale);
         return chain == null ? calculateLocaleChain(locale) : chain;
+    }
+
+    /**
+     * Runs the action with temporary settings on the calling thread. Passing null for a setting
+     * inherits its current value. Nested calls restore the enclosing settings on exit.
+     */
+    public final <T> T withOverrides(@Nullable Locale locale, @Nullable RandomService random, Callable<T> action) throws Exception {
+        ThreadLocal<ScopedSettings> storage = beginScope();
+        ScopedSettings previous = storage.get();
+        try {
+            ScopedSettings settings = previous == null
+                ? new ScopedSettings(sLocale, randomService)
+                : new ScopedSettings(previous.locale, previous.randomService);
+            storage.set(settings);
+            if (random != null) {
+                setRandomService(random);
+            }
+            if (locale != null) {
+                setCurrentLocale(locale);
+            }
+            return action.call();
+        } finally {
+            if (previous == null) {
+                storage.remove();
+            } else {
+                storage.set(previous);
+            }
+            endScope();
+        }
+    }
+
+    private synchronized ThreadLocal<ScopedSettings> beginScope() {
+        if (scopes == null) {
+            scopes = new ThreadLocal<>();
+        }
+        activeScopes++;
+        return scopes;
+    }
+
+    private synchronized void endScope() {
+        activeScopes--;
+    }
+
+    private @Nullable ScopedSettings currentScope() {
+        return activeScopes == 0 ? null : requireNonNull(scopes).get();
+    }
+
+    private SingletonLocale currentLocale() {
+        ScopedSettings settings = currentScope();
+        return settings == null ? sLocale : settings.locale;
+    }
+
+    private RandomService currentRandomService() {
+        ScopedSettings settings = currentScope();
+        return settings == null ? randomService : settings.randomService;
+    }
+
+    private void setSingletonLocale(SingletonLocale locale) {
+        ScopedSettings settings = currentScope();
+        if (settings == null) {
+            sLocale = locale;
+        } else {
+            settings.locale = locale;
+        }
     }
 
     /**
@@ -120,7 +193,7 @@ public class FakerContext {
     public final synchronized void setCurrentLocale(Locale locale) {
         requireNonNull(locale);
         SingletonLocale normalized = normalizeLocale(singletonLocale(locale));
-        this.sLocale = normalized;
+        setSingletonLocale(normalized);
         if (!LOCALE_2_LOCALES_CHAIN.containsKey(normalized)) {
             LOCALE_2_LOCALES_CHAIN.putIfAbsent(normalized, List.copyOf(localeChain()));
         }
@@ -142,7 +215,7 @@ public class FakerContext {
     }
 
     protected List<SingletonLocale> localeChain() {
-        return calculateLocaleChain(sLocale);
+        return calculateLocaleChain(currentLocale());
     }
 
     private List<SingletonLocale> calculateLocaleChain(SingletonLocale locale) {
@@ -174,23 +247,31 @@ public class FakerContext {
 
         FakerContext that = (FakerContext) o;
 
-        if (!Objects.equals(sLocale, that.sLocale)) return false;
-        return Objects.equals(randomService, that.randomService);
+        if (!Objects.equals(currentLocale(), that.currentLocale())) return false;
+        return Objects.equals(currentRandomService(), that.currentRandomService());
     }
 
     @Override
     public int hashCode() {
-        int result = sLocale != null ? sLocale.hashCode() : 0;
-        result = 31 * result + (randomService != null ? randomService.hashCode() : 0);
-        return result;
+        return 31 * Objects.hashCode(currentLocale()) + Objects.hashCode(currentRandomService());
     }
 
     @Override
     public String toString() {
-        return "FakerContext{%s, %s}".formatted(sLocale, randomService);
+        return "FakerContext{%s, %s}".formatted(currentLocale(), currentRandomService());
     }
 
     private static SingletonLocale singletonLocale(Locale locale) {
         return requireNonNull(SingletonLocale.get(locale), () -> "Unsupported locale " + locale);
+    }
+
+    private static final class ScopedSettings {
+        private SingletonLocale locale;
+        private RandomService randomService;
+
+        private ScopedSettings(SingletonLocale locale, RandomService randomService) {
+            this.locale = locale;
+            this.randomService = randomService;
+        }
     }
 }
