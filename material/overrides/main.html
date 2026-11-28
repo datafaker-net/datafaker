@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block announce %}
-  <a href="{{ 'documentation/getting-started/' | url }}#snapshot-versions">
-    Datafaker 3.0 is in development. You can try {{ config.extra.datafaker.snapshot }} today.
+  {% set version = config.extra.datafaker.version %}
+  <a href="{{ ('releases/' ~ version ~ '/') | url }}">
+    Datafaker {{ version }} is available. Read the release notes.
   </a>
 {% endblock %}
