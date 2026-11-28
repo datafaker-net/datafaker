@@ -72,7 +72,7 @@ class PhoneNumberGenerator {
 
     private static Phonemetadata.PhoneMetadata getPhoneMetadata(String countryCodeIso2) {
         try {
-            Method method = libPhoneNumber.getClass().getDeclaredMethod("getMetadataForRegion", String.class);
+            Method method = PhoneNumberUtil.class.getDeclaredMethod("getMetadataForRegion", String.class);
             method.setAccessible(true);
             Phonemetadata.PhoneMetadata metadata = (Phonemetadata.PhoneMetadata) method.invoke(libPhoneNumber, countryCodeIso2);
             return requireNonNull(metadata, () -> "Unsupported country code: %s".formatted(countryCodeIso2));
