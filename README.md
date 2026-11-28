@@ -7,7 +7,7 @@
 
 This library is a modern fork of [java-faker](https://github.com/DiUS/java-faker) with up to date libraries and several newly added Fake Generators.
 
-Datafaker 2.x has Java 17 as the minimum requirement.
+Datafaker 2.x and 3.x require Java 17 or later.
 
 *If Java 17 is not an option for you, you can choose to use Datafaker 1.x. Datafaker 1.x is built on Java 8, but this version is no longer maintained. We recommend all users to upgrade to Datafaker 2.x.*
 
@@ -45,6 +45,8 @@ dependencies {
 You can also use the snapshot version (`3.0.0-SNAPSHOT`), which automatically gets published
 after every push to the main branch of this repository. Binary repository URL for snapshots download is
 `https://central.sonatype.com/repository/maven-snapshots/`.
+
+See the [3.0 upgrade guide](docs/documentation/upgrade-3.0.md) for API changes and new providers.
 
 ### Get started
 
@@ -110,7 +112,7 @@ faker.expression("#{templatify 'test','t','q','@'}"); // @esq
 faker.expression("#{examplify 'test'}"); // ghjk
 faker.expression("#{regexify '[a-z]{4,10}'}"); // wbevoa
 faker.expression("#{options.option '23','2','5','$','%','*'}"); // *
-faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}"); // 61 327 08:11:45
+faker.expression("#{timeAndDate.birthday 'uuuu-MM-dd'}"); // 1961-11-23
 faker.expression("#{csv '1','name_column','#{Name.first_name}','last_name_column','#{Name.last_name}'}");
 // "name_column","last_name_column"
 // "Sabrina","Kihn"
@@ -582,7 +584,7 @@ RELATED PROJECTS
 NATIVE IMAGE
 ------------
 
-Datafaker ships GraalVM Native Image metadata for its built-in providers. The Maven build generates reflection
+Datafaker 3.0 ships generated GraalVM Native Image metadata for its built-in providers. The Maven build generates reflection
 metadata for provider methods and registers the resources in the runtime classpath. New providers and resources are
 picked up during packaging. Use `faker.addPath()` or `faker.addUrl()` to load custom locale data in a native image.
 Applications using custom providers or reflectively transforming their own classes may need to supply metadata for
@@ -599,7 +601,7 @@ For additional metadata discovered by the GraalVM tracing agent, run `./scripts/
 with GraalVM for JDK 25 and `jq`. The script filters test entries and validates the result before updating the
 checked-in metadata.
 
-An example usage of this can be found here: https://github.com/datafaker-net/datafaker-native-demo
+See the [Native Image guide](docs/documentation/native-image.md) for application setup and custom providers.
 
 LICENSE
 -------

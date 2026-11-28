@@ -1,40 +1,38 @@
 # Date formats
 
-Since 1.2.0 Datafaker supports specifying of date formats for dates and timestamps.
+Use `faker.timeAndDate()` for dates and timestamps. `birthday()` returns a `LocalDate`, and `past()` and `future()` return an `Instant`. The overloads that accept a format pattern return a string.
 
-
-=== "Java"
+=== "Datafaker 3.0"
 
     ```java
+    import java.time.temporal.ChronoUnit;
+    import net.datafaker.Faker;
+
     Faker faker = new Faker();
-    System.out.println(faker.timeAndDate().future(1, ChronoUnit.HOURS, "yyyy MM.dd mm:hh:ss"));
-    System.out.println(faker.timeAndDate().past(1, ChronoUnit.HOURS, "yyyy-MM-dd mm:hh:ss"));
-    System.out.println(faker.timeAndDate().birthday(1, 99, "yyyy/MM/dd"));
+    String future = faker.timeAndDate().future(1, ChronoUnit.HOURS, "uuuu-MM-dd HH:mm:ss");
+    String birthday = faker.timeAndDate().birthday(18, 65, "uuuu/MM/dd");
     ```
 
-This feature could also be used in expressions like:
-
-=== "Java"
+=== "Datafaker 2.7"
 
     ```java
-    faker.expression("#{date.past '15','SECONDS','dd/MM/yyyy hh:mm:ss'}");
+    import java.util.concurrent.TimeUnit;
+    import net.datafaker.Faker;
+
+    Faker faker = new Faker();
+    String future = faker.timeAndDate().future(1, TimeUnit.HOURS, "uuuu-MM-dd HH:mm:ss");
+    String birthday = faker.timeAndDate().birthday(18, 65, "uuuu/MM/dd");
     ```
 
-List of available time units:
+Use a date-only pattern for a birthday. Timestamp methods also support time-of-day fields such as `HH:mm:ss`.
 
-| Name    | Time unit   | Since |
-|---------|-------------|-------|
-| NANO    | NANOSECOND  | 1.2.0 |
-| NANOS   | NANOSECOND  | 1.2.0 |
-| MICRO   | MICROSECOND | 1.2.0 |
-| MICROS  | MICROSECOND | 1.2.0 |
-| MILLI   | MILLISECOND | 1.2.0 |
-| MILLIS  | MILLISECOND | 1.2.0 |
-| SECOND  | SECOND      | 1.2.0 |
-| SECONDS | SECOND      | 1.2.0 |
-| MINUTE  | MINUTE      | 1.2.0 |
-| MINUTES | MINUTE      | 1.2.0 |
-| HOUR    | HOUR        | 1.2.0 |
-| HOURS   | HOUR        | 1.2.0 |
-| DAY     | DAY         | 1.2.0 |
-| DAYS    | DAY         | 1.2.0 |
+For repeatable timestamps, use a seeded Faker and pass a fixed `Instant` to an overload that takes a reference time.
+
+The same provider is available in [expressions](expressions.md).
+
+```java
+faker.expression("#{timeAndDate.birthday 'uuuu-MM-dd'}");
+faker.expression("#{timeAndDate.past '15','SECONDS','uuuu-MM-dd HH:mm:ss'}");
+```
+
+Three common units for relative timestamps are `SECONDS`, `MINUTES`, and `HOURS`. Use `ChronoUnit` in Java code targeting Datafaker 3.0.
