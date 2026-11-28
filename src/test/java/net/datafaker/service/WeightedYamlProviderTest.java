@@ -55,6 +55,27 @@ class WeightedYamlProviderTest {
     }
 
     @Test
+    void resolvingWithoutARootSamplesEachTime() {
+        BaseFaker faker = custom(new Random(1) {
+            private int draws;
+
+            @Override
+            public double nextDouble() {
+                return draws++ % 2 == 0 ? 0.25 : 0.75;
+            }
+        });
+        faker.addUrl(Locale.ENGLISH, getClass().getResource("/weighted-custom.yml"));
+        FakeValuesService service = faker.fakeValuesService();
+        FakerContext context = faker.getContext();
+        String key = "weighted_custom.strings";
+        assertThat(List.of(
+            service.resolve(key, null, null, () -> key, context),
+            service.resolve(key, null, null, () -> key, context),
+            service.resolve(key, null, null, () -> key, context)
+        )).containsExactly("first", "second", "first");
+    }
+
+    @Test
     void customSourcesAndRandomServicesAreIsolated() throws IOException {
         Path a = directory.resolve("a.yml");
         Path b = directory.resolve("b.yml");
@@ -87,6 +108,26 @@ class WeightedYamlProviderTest {
         assertThat(faker.resolve("weighted_custom.sibling")).isEqualTo("ordinary sibling");
         Object original = faker.fakeValuesService().fetchObject("weighted_custom.original", faker.getContext());
         assertThat(original).isEqualTo(Map.of(1, "one", 2, List.of("two", "deux")));
+    }
+
+    @Test
+    void preservesOrdinaryMapListsWithPercentSuffixKeys() throws IOException {
+        Path file = directory.resolve("percent-labels.yml");
+        Files.writeString(file, """
+            en:
+              faker:
+                weighted_custom:
+                  labels:
+                  - 'margin%': 'gross'
+                  value:
+                  - 100%: 'weighted value'
+            """);
+        BaseFaker faker = custom(new Random(1));
+        faker.addPath(Locale.ENGLISH, file);
+
+        Object labels = faker.fakeValuesService().fetchObject("weighted_custom.labels", faker.getContext());
+        assertThat(labels).isEqualTo(List.of(Map.of("margin%", "gross")));
+        assertThat(faker.resolve("weighted_custom.value")).isEqualTo("weighted value");
     }
 
     @Test

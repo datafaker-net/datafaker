@@ -502,8 +502,15 @@ public class FakeValuesService {
         LocaleData data = localeData;
         List<SingletonLocale> chain = context.getLocaleChain();
         LocaleLookup lookup = data.lookup(chain);
-        return lookup.expressions.computeIfAbsent(key, ignored ->
-            asString(fetchObject(key, data, chain, lookup), context, null));
+        String cached = lookup.expressions.get(key);
+        if (cached != null) {
+            return cached;
+        }
+        Object value = fetchObject(key, data, chain, lookup);
+        if (value instanceof WeightedYamlValues) {
+            return asString(value, context, null);
+        }
+        return lookup.expressions.computeIfAbsent(key, ignored -> asString(value, context, null));
     }
 
     /**

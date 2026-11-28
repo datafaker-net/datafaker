@@ -7,9 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 /** A custom YAML choice, parsed once but sampled using the current Faker's random service. */
 final class WeightedYamlValues {
+    private static final Pattern DECIMAL_PERCENTAGE = Pattern.compile("[0-9]+(?:\\.[0-9]+)?%");
+    // Recognize malformed numeric weights so that they still receive a validation error.
+    private static final Pattern PERCENTAGE_CANDIDATE =
+        Pattern.compile("[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+|NaN|Infinity)\\s*%");
+
     private final double[] cumulativeWeights;
     private final Object[] choices;
 
@@ -22,7 +28,7 @@ final class WeightedYamlValues {
     static WeightedYamlValues from(List<?> values, UnaryOperator<String> qualify) {
         // Ordinary lists (including lists of maps) retain their existing meaning.
         boolean weighted = values.stream().anyMatch(value -> value instanceof Map<?, ?> map
-            && map.keySet().stream().anyMatch(key -> key instanceof String s && s.endsWith("%")));
+            && map.keySet().stream().anyMatch(key -> key instanceof String s && PERCENTAGE_CANDIDATE.matcher(s).matches()));
         if (!weighted) return null;
 
         double[] cumulativeWeights = new double[values.size()];
@@ -35,7 +41,7 @@ final class WeightedYamlValues {
                 throw invalid("each entry must be a single percentage-to-value mapping");
             }
             var entry = map.entrySet().iterator().next();
-            if (!(entry.getKey() instanceof String key) || !key.matches("[0-9]+(?:\\.[0-9]+)?%")) {
+            if (!(entry.getKey() instanceof String key) || !DECIMAL_PERCENTAGE.matcher(key).matches()) {
                 throw invalid("percentage keys must be decimal strings such as '60%'");
             }
             BigDecimal percentage = new BigDecimal(key.substring(0, key.length() - 1));
