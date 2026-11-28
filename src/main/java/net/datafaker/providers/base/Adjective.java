@@ -1,9 +1,10 @@
 package net.datafaker.providers.base;
 
 /**
- * A generator for adjectives.
+ * Provides adjectives from locale-specific positive and negative lists.
+ * Use {@link Word#adjective()} to sample the general adjective vocabulary.
  *
- * @since 2.6.0
+ * @since 3.0.0
  */
 public class Adjective extends AbstractProvider<BaseProviders> {
 
@@ -29,6 +30,6 @@ public class Adjective extends AbstractProvider<BaseProviders> {
      * Generates a random adjective (positive or negative).
      */
     public String any() {
-        return faker.options().option("adjective.positive", "adjective.negative");
+        return faker.random().nextBoolean() ? positive() : negative();
     }
 }

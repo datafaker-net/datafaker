@@ -1,10 +1,15 @@
 package net.datafaker.providers.base;
 
-import org.junit.jupiter.api.RepeatedTest;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class AdjectiveTest extends BaseFakerTest {
 
@@ -18,18 +23,21 @@ class AdjectiveTest extends BaseFakerTest {
         );
     }
 
-    @RepeatedTest(10)
-    void any() {
-        assertThat(adjective.any()).isNotNull().isNotEmpty();
-    }
+    @ParameterizedTest
+    @ValueSource(strings = {"en", "tr"})
+    void anySamplesBothSentimentLists(String languageTag) {
+        BaseFaker localizedFaker = new BaseFaker(Locale.forLanguageTag(languageTag), new Random(42));
+        List<String> positive = localizedFaker.fakeValuesService()
+            .fetchObject("adjective.positive", localizedFaker.getContext());
+        List<String> negative = localizedFaker.fakeValuesService()
+            .fetchObject("adjective.negative", localizedFaker.getContext());
 
-    @RepeatedTest(10)
-    void positive() {
-        assertThat(adjective.positive()).isNotNull().isNotEmpty();
-    }
+        Adjective localizedAdjective = localizedFaker.adjective();
+        List<String> generated = Stream.generate(localizedAdjective::any).limit(20).toList();
 
-    @RepeatedTest(10)
-    void negative() {
-        assertThat(adjective.negative()).isNotNull().isNotEmpty();
+        assertThat(generated)
+            .allMatch(value -> positive.contains(value) || negative.contains(value))
+            .anyMatch(value -> positive.contains(value) && !negative.contains(value))
+            .anyMatch(value -> negative.contains(value) && !positive.contains(value));
     }
 }
