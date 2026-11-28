@@ -1,6 +1,7 @@
 package net.datafaker.sequence;
 
 import net.datafaker.service.RandomService;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,9 +17,9 @@ public class FakeCollection<T> extends FakeSequence<T> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<T> get() {
+    public List<@Nullable T> get() {
         int size = randomService.nextInt(minLength, maxLength);
-        List<T> result = new ArrayList<>(size);
+        List<@Nullable T> result = new ArrayList<>(size);
         while (result.size() < size) {
             result.add(singleton());
         }
@@ -26,7 +27,7 @@ public class FakeCollection<T> extends FakeSequence<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<@Nullable T> iterator() {
         return get().iterator();
     }
 

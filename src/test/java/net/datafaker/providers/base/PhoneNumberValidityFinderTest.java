@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Locale;
@@ -44,6 +45,58 @@ class PhoneNumberValidityFinderTest {
 
         Phonenumber.PhoneNumber parsedNumber = util.parse(phoneNumber, region);
         assertThat(util.isValidNumber(parsedNumber)).isTrue();
+    }
+
+    @Test
+    void testLanguageOnlyPersianLocaleUsesIran() {
+        BaseFaker localFaker = new BaseFaker(new Locale("fa"));
+
+        assertThat(localFaker.phoneNumber().countryCodeIso2()).isEqualTo("IR");
+    }
+
+    @Test
+    void testLanguageOnlyVietnameseLocaleUsesVietnam() {
+        BaseFaker localFaker = new BaseFaker(new Locale("vi"));
+
+        assertThat(localFaker.phoneNumber().countryCodeIso2()).isEqualTo("VN");
+        assertThat(localFaker.phoneNumber().cellPhoneInternational()).startsWith("+84");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "en, US, English",
+        "hy, AM, Armenian → Armenia",
+        "uk, UA, Ukranian → Ukraine",
+        "ja, JP, Japanese → Japan",
+        "fa, IR, Persian (Farsi) → Iran",
+        "ka, GE, Georgia",
+        "sq, AL, Albanian → Albania",
+        "cs, CZ, Czech",
+        "be, BY, Belarusian",
+        "he, IL, Hebrew → Israel",
+        "ta, IN, Tamil → India",
+        "et, EE, Estonian → Estonia",
+        "el, GR, Greek → Greece",
+        "eu, ES, Basque → Spain",
+        "ca, ES, Catalan → Spain",
+        "cy, GB, Welsh → United Kingdom",
+        "ga, IE, Irish/Gaelic → Ireland",
+        "is, IS, Icelandic → Iceland",
+        "bs, BA, Bosnian → Bosnia & Herzegovina",
+        "ar, SA, Arabic → Saudi Arabia",
+        "hi, IN, Hindi → India",
+        "zh, CN, Chinese → China",
+        "am, ET, Amharic → Ethiopia",
+        "sw, TZ, Swahili → Tanzania",
+        "af, ZA, Afrikaans → South Africa",
+        "vi, VN, Vietnamese → Vietnam",
+    })
+    void detectsCountryByLanguage(String language, String expectedCountry, String description) {
+        BaseFaker localFaker = new BaseFaker(new Locale(language));
+
+        assertThat(localFaker.phoneNumber().countryCodeIso2())
+            .as(description)
+            .isEqualTo(expectedCountry);
     }
 
     @ParameterizedTest

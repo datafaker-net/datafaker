@@ -5,7 +5,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,7 +23,7 @@ public class NoDuplicatesInYmlTest {
     @ParameterizedTest
     @MethodSource("ymlFiles")
     void noDuplicatesInArrays(Path file) {
-        try (InputStream in = newInputStream(file)) {
+        try (var in = newInputStream(file)) {
             Object ymlContent = new Yaml().load(in);
             var errors = findDuplicates(ymlContent);
             assertThat(errors)
@@ -64,7 +63,7 @@ public class NoDuplicatesInYmlTest {
             }
         } else if (node instanceof List<?> list) {
             Set<Object> seen = new HashSet<>();
-            for (Object value : list) {
+            for (var value : list) {
                 if (!seen.add(value) && !areDuplicatesAllowed(path)) {
                     errors.computeIfAbsent(path, k -> new HashSet<>()).add(value);
                 }

@@ -15,7 +15,7 @@ public class Address extends AbstractProvider<BaseProviders> {
     }
 
     public String streetAddressNumber() {
-        return String.valueOf(faker.random().nextInt(1000));
+        return String.valueOf(faker.random().nextInt(1, 1000));
     }
 
     public String streetAddress() {
@@ -23,7 +23,7 @@ public class Address extends AbstractProvider<BaseProviders> {
     }
 
     public String streetAddress(boolean includeSecondary) {
-        String streetAddress = resolve("address.street_address");
+        String streetAddress = streetAddress();
         if (includeSecondary) {
             streetAddress = streetAddress + " " + secondaryAddress();
         }

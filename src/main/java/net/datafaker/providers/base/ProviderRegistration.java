@@ -3,6 +3,7 @@ package net.datafaker.providers.base;
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
+import org.jspecify.annotations.Nullable;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -16,6 +17,7 @@ public interface ProviderRegistration {
 
     FakerContext getContext();
 
+    @Nullable
     default <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(String simpleClassName) {
         return ObjectMethods.executeMethodByReturnType(this, simpleClassName);
     }
@@ -154,8 +156,17 @@ public interface ProviderRegistration {
 
     FakeValuesService fakeValuesService();
 
+    /**
+     * @deprecated Use {@link #selection()} instead
+     */
+    @SuppressWarnings("removal")
+    @Deprecated(since = "3.0.0", forRemoval = true)
     default Options options() {
         return getProvider(Options.class, Options::new);
+    }
+
+    default Selection selection() {
+        return getProvider(Selection.class, Selection::new);
     }
 
     void addPath(Locale locale, Path path);

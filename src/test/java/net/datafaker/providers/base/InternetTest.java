@@ -8,18 +8,18 @@ import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
+import java.net.InetAddress;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.lang.Integer.parseInt;
 import static net.datafaker.providers.base.Internet.PortRange.RegisteredPorts;
@@ -28,7 +28,6 @@ import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -36,44 +35,14 @@ import static org.mockito.Mockito.when;
 class InternetTest {
 
     public static final Pattern IPV6_HOST_ADDRESS = Pattern.compile("[0-9a-fA-F]{1,4}(:([0-9a-fA-F]{1,4})){1,7}");
+    // RFC 1123 compliant hostname patterns (used in our new/modified domain tests)
+    private static final Pattern RFC_1123_LABEL = Pattern.compile("^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$");
+    private static final Pattern RFC_1123_DOMAIN = Pattern.compile("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$");
     private final Faker faker = new Faker();
-
-    @RepeatedTest(10)
-    @SuppressWarnings("removal")
-    void testUsername() {
-        assertThat(faker.internet().username()).matches("^(\\w+)\\.(\\w+)$");
-    }
 
     @RepeatedTest(10)
     void emailSubject() {
         assertThat(faker.internet().emailSubject()).isNotBlank();
-    }
-
-    @ParameterizedTest
-    @MethodSource("userNameWithSpacesProvider")
-    @SuppressWarnings("removal")
-    void testUsernameWithSpaces(String firstName, String lastName, String expected) {
-        Locale locale = new Locale("TR");
-        Name name = mock();
-        doReturn(firstName).when(name).firstName();
-        doReturn(lastName).when(name).lastName();
-
-        BaseFaker mockedFaker = new BaseFaker(locale) {
-            @Override
-            public Name name() {
-                return name;
-            }
-        };
-
-        assertThat(mockedFaker.internet().username())
-            .isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> userNameWithSpacesProvider() {
-        return Stream.of(
-            Arguments.of("Jin Quan", "D'Artagnan", "jinquan.dartagnan"),
-            Arguments.of("Ivan Ivanov", "Другой Язык", "ıvanıvanov.другойязык")
-        );
     }
 
     @Test
@@ -83,9 +52,8 @@ class InternetTest {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void testEmailAddressWithNameParameter() {
-        String username = faker.internet().username();
+        String username = faker.credentials().username();
         String emailAddress = faker.internet().emailAddress(username);
         assertThat(emailAddress).startsWith(username + "@");
         assertThat(EmailValidator.getInstance().isValid(emailAddress)).isTrue();
@@ -130,9 +98,9 @@ class InternetTest {
 
         when(spyedFaker.fakeValuesService()).thenReturn(mockedFakeValuesService);
         when(mockedFakeValuesService.fetchObject("name.prefix", spyedFaker.getContext()))
-            .thenReturn(Collections.emptySet());
+            .thenReturn(Set.of());
         when(mockedFakeValuesService.fetchObject("name.suffix", spyedFaker.getContext()))
-            .thenReturn(Collections.emptySet());
+            .thenReturn(Set.of());
 
         String emailAddress = spyedFaker.internet().emailAddress("John McClane");
         assertThat(emailAddress).startsWith("john.mcclane@");
@@ -193,8 +161,52 @@ class InternetTest {
     }
 
     @Test
+    void testEmailAddressKeepsDStrokeAsDInTheLocalPart() {
+        assertThat(faker.internet().safeEmailAddress("Đinh Dung")).startsWith("dinh.dung@");
+        assertThat(faker.internet().emailAddress("Nguyễn Văn Đức")).startsWith("nguyen.duc@");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "Paweł Łukasiewicz, pawel.lukasiewicz",
+        "Søren Kierkegaard, soren.kierkegaard",
+        "Jürgen Großmann, jurgen.grossmann",
+        "Æsa Bjørnæs, aesa.bjornaes",
+        "Œdipe Cœur, oedipe.coeur",
+        "Þóra Ðórsdóttir, thora.dorsdottir",
+        "Ħamrun Ŧest, hamrun.test",
+        "Işık Ilgaz, isik.ilgaz",
+        "Marceŀla Coŀlell, marcella.collell",
+        "Ĳsbrand Ĳzerman, ijsbrand.ijzerman",
+    })
+    void testEmailAddressTransliteratesLettersNotDecomposedByNfd(String name, String expectedLocalPart) {
+        assertThat(faker.internet().safeEmailAddress(name)).startsWith(expectedLocalPart + "@");
+    }
+
+    @Test
+    void testEmailAddressLowercasesIndependentlyOfTurkishLocale() {
+        Faker trFaker = new Faker(new Locale("tr"));
+        assertThat(trFaker.internet().safeEmailAddress("Işık Ilgaz")).startsWith("isik.ilgaz@");
+        assertThat(trFaker.internet().safeEmailAddress("İsmail İbrahim")).startsWith("ismail.ibrahim@");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "Mr., mr",
+        "Mr. Jr., mr.jr",
+    })
+    void testEmailAddressFromNameThatIsOnlyPrefixOrSuffix(String name, String expectedLocalPart) {
+        assertThat(faker.internet().safeEmailAddress(name)).startsWith(expectedLocalPart + "@");
+    }
+
+    @Test
     void testWebdomain() {
-        assertThat(faker.internet().webdomain()).matches("www\\.[\\w-]+\\.\\w+");
+        // RFC 1123 compliant: www.<label>.<suffix>
+        // Each label (including suffix labels) is [a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?
+        String webdomain = faker.internet().webdomain();
+        assertThat(webdomain).matches("^www\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$");
+        // Also verify it can be used in a URL
+        assertDoesNotThrow(() -> new URL("https://" + webdomain + "/"));
     }
 
     @RepeatedTest(10)
@@ -213,12 +225,14 @@ class InternetTest {
 
     @Test
     void testDomainName() {
-        assertThat(faker.internet().domainName()).matches("[a-z]+\\.\\w{2,4}");
+        // RFC 1123 compliant: each label is [a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?
+        assertThat(faker.internet().domainName()).matches(RFC_1123_DOMAIN);
     }
 
     @Test
     void testDomainWord() {
-        assertThat(faker.internet().domainWord()).matches("[a-z]+");
+        // RFC 1123 compliant label: [a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?
+        assertThat(faker.internet().domainWord()).matches(RFC_1123_LABEL);
     }
 
     @Test
@@ -235,47 +249,6 @@ class InternetTest {
     @Test
     void testHttpMethod() {
         assertThat(faker.internet().httpMethod()).isNotEmpty();
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPassword() {
-        assertThat(faker.internet().password()).matches("[a-z\\d]{8,16}");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordWithFixedLength() {
-        String password = new BaseFaker().internet().password(32, 32, true, true, true);
-        assertThat(password).hasSize(32);
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordIncludeDigit() {
-        assertThat(faker.internet().password()).matches("[a-z\\d]{8,16}");
-        assertThat(faker.internet().password(false)).matches("[a-z]{8,16}");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordMinLengthMaxLength() {
-        assertThat(faker.internet().password(10, 25)).matches("[a-z\\d]{10,25}");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordMinLengthMaxLengthIncludeUpperCase() {
-        assertThat(faker.internet().password(1, 2, false)).matches("[a-z\\d]{1,2}");
-        assertThat(faker.internet().password(10, 25, true)).matches("[a-zA-Z\\d]{10,25}");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordMinLengthMaxLengthIncludeUpperCaseIncludeSpecial() {
-        assertThat(faker.internet().password(10, 25, false, false)).matches("[a-z\\d]{10,25}");
-        assertThat(faker.internet().password(10, 25, false, true)).matches("[a-z\\d!@#$%^&*]{10,25}");
-        assertThat(faker.internet().password(10, 25, true, true)).matches("[a-zA-Z\\d!@#$%^&*]{10,25}");
     }
 
     @RepeatedTest(10)
@@ -311,30 +284,6 @@ class InternetTest {
         assertThatThrownBy(() -> faker.internet().port(65535, 65536))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Port number 65536 cannot be greater than 65535");
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void shouldGenerateAPasswordWithMinAndMaxLength() {
-        List<String> results = new ArrayList<>();
-        for (int i = 0; i < 300; i++) {
-            results.add(faker.internet().password(1, 10));
-        }
-
-        final List<String> min = results.stream().filter(x -> x.length() == 1).toList();
-        final List<String> max = results.stream().filter(x -> x.length() == 10).toList();
-
-        assertThat(min.size()).isPositive();
-        assertThat(max.size()).isPositive();
-    }
-
-    @Test
-    @SuppressWarnings("removal")
-    void testPasswordMinLengthMaxLengthIncludeUpperCaseIncludeSpecialIncludeDigit() {
-        assertThat(faker.internet().password(10, 25, false, false, false)).matches("[a-z]{10,25}");
-        assertThat(faker.internet().password(10, 25, false, true, true)).matches("[a-z\\d!@#$%^&*]{10,25}");
-        assertThat(faker.internet().password(10, 25, true, true, false)).matches("[a-zA-Z!@#$%^&*]{10,25}");
-        assertThat(faker.internet().password(10, 25, true, true, true)).matches("[a-zA-Z\\d!@#$%^&*]{10,25}");
     }
 
     private Condition<String> getCharacterCondition(char c, int expectedCnt) {
@@ -403,17 +352,14 @@ class InternetTest {
     @Test
     void testPrivateIpV4Address() {
         String tenDot = "^10\\..+";
-        String oneTwoSeven = "^127\\..+";
-        String oneSixNine = "^169\\.254\\..+";
         String oneNineTwo = "^192\\.168\\..+";
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..+";
 
         for (int i = 0; i < 1000; i++) {
-            String addr = faker.internet().getPrivateIpV4Address().getHostAddress();
-            assertThat(addr).is(anyOf(
+            InetAddress address = faker.internet().getPrivateIpV4Address();
+            assertThat(address.isSiteLocalAddress()).as(address.toString()).isTrue();
+            assertThat(address.getHostAddress()).is(anyOf(
                 new Condition<>(s -> s.matches(tenDot), "tenDot"),
-                new Condition<>(s -> s.matches(oneTwoSeven), "oneTwoSeven"),
-                new Condition<>(s -> s.matches(oneSixNine), "oneSixNine"),
                 new Condition<>(s -> s.matches(oneNineTwo), "oneNineTwo"),
                 new Condition<>(s -> s.matches(oneSevenTwo), "oneSevenTwo")
             ));
@@ -422,11 +368,12 @@ class InternetTest {
 
     @Test
     void testPublicIpV4Address() {
-        String tenDot = "^10\\.";
-        String oneTwoSeven = "^127\\.";
-        String oneSixNine = "^169\\.254";
-        String oneNineTwo = "^192\\.168\\.";
-        String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\.";
+        // doesNotMatch() needs the whole address to match, so every pattern ends with .*
+        String tenDot = "^10\\..*";
+        String oneTwoSeven = "^127\\..*";
+        String oneSixNine = "^169\\.254\\..*";
+        String oneNineTwo = "^192\\.168\\..*";
+        String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..*";
 
         for (int i = 0; i < 1000; i++) {
             String addr = faker.internet().getPublicIpV4Address().getHostAddress();
@@ -436,6 +383,48 @@ class InternetTest {
                 .doesNotMatch(oneNineTwo)
                 .doesNotMatch(oneSevenTwo);
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "10.0.0.1, true",
+        "127.0.0.1, true",
+        "169.254.1.1, true",
+        "169.253.1.1, false",
+        "172.15.0.1, false",
+        "172.16.0.1, true",
+        "172.31.255.255, true",
+        "172.32.0.1, false",
+        "192.168.1.1, true",
+        "192.167.1.1, false",
+        "0.0.0.0, true",
+        "0.1.2.3, true",
+        "1.0.0.1, false",
+        "100.63.255.255, false",
+        "100.64.0.1, true",
+        "100.127.255.255, true",
+        "100.128.0.1, false",
+        "192.0.0.1, true",
+        "192.0.1.1, false",
+        "192.0.2.1, true",
+        "192.0.3.1, false",
+        "198.17.255.255, false",
+        "198.18.0.1, true",
+        "198.19.255.255, true",
+        "198.20.0.1, false",
+        "198.51.100.1, true",
+        "198.51.101.1, false",
+        "203.0.113.1, true",
+        "203.0.114.1, false",
+        "223.255.255.255, false",
+        "224.0.0.1, true",
+        "239.255.255.255, true",
+        "240.0.0.1, true",
+        "255.255.255.255, true",
+        "8.8.8.8, false"
+    })
+    void testIsLocalOrReservedIpV4(String ip, boolean expected) throws Exception {
+        assertThat(Internet.isLocalOrReservedIpV4(InetAddress.getByName(ip))).isEqualTo(expected);
     }
 
     @Test
@@ -522,7 +511,7 @@ class InternetTest {
     @Test
     void testUserAgent() {
         Internet.UserAgent[] agents = Internet.UserAgent.values();
-        for (Internet.UserAgent agent : agents) {
+        for (var agent : agents) {
             assertThat(faker.internet().userAgent(agent)).isNotEmpty();
         }
 
@@ -533,7 +522,7 @@ class InternetTest {
     @Test
     void testBotUserAgent() {
         Internet.BotUserAgent[] agents = Internet.BotUserAgent.values();
-        for (Internet.BotUserAgent agent : agents) {
+        for (var agent : agents) {
             assertThat(faker.internet().botUserAgent(agent)).isNotEmpty();
         }
 
@@ -544,5 +533,71 @@ class InternetTest {
     @Test
     void testSlugWithNull() {
         assertThat(faker.internet().slug(null, "_")).isNotNull();
+    }
+
+    @RepeatedTest(10)
+    void testDomainWordCanBeUsedInUrl() {
+        String domainWord = faker.internet().domainWord();
+        assertDoesNotThrow(() -> new URL("https://" + domainWord + ".com/"));
+    }
+
+    @RepeatedTest(10)
+    void testDomainNameCanBeUsedInUrl() {
+        String domainName = faker.internet().domainName();
+        assertDoesNotThrow(() -> new URL("https://" + domainName + "/"));
+    }
+
+    @RepeatedTest(10)
+    void testDomainNameCanBeUsedInUri() {
+        String domainName = faker.internet().domainName();
+        assertDoesNotThrow(() -> new URI("https://" + domainName + "/"));
+    }
+
+    @Test
+    void testWebdomainCanBeUsedInUrl() {
+        String webdomain = faker.internet().webdomain();
+        assertDoesNotThrow(() -> new URL("https://" + webdomain + "/"));
+    }
+
+    @Test
+    void testWebdomainCanBeUsedInUri() {
+        String webdomain = faker.internet().webdomain();
+        assertDoesNotThrow(() -> new URI("https://" + webdomain + "/"));
+    }
+
+    @RepeatedTest(10)
+    void testHebrewIDNs() {
+        // Regression test for bidirectional language handling (PR #1757)
+        final BaseFaker f = new BaseFaker(new Locale("he"));
+        String domainName = f.internet().domainName();
+        assertThat(domainName).isNotEmpty();
+        // Should be ASCII/punycode, not raw Hebrew characters
+        assertThat(domainName).matches(RFC_1123_DOMAIN);
+        // Must be usable in URL
+        assertDoesNotThrow(() -> new URL("https://" + domainName + "/"));
+    }
+
+    @RepeatedTest(10)
+    void testCyrillicIDNs() {
+        // Regression test for Cyrillic locale (PR #1757)
+        final BaseFaker f = new BaseFaker(new Locale("bg"));
+        String domainName = f.internet().domainName();
+        assertThat(domainName).isNotEmpty();
+        // Should be ASCII/punycode, not raw Cyrillic
+        assertThat(domainName).matches(RFC_1123_DOMAIN);
+        // Must be usable in URL
+        assertDoesNotThrow(() -> new URL("https://" + domainName + "/"));
+    }
+
+    @RepeatedTest(10)
+    void testCJKIDNs() {
+        // Test that CJK characters are properly converted to punycode
+        final BaseFaker f = new BaseFaker(new Locale("ja"));
+        String domainName = f.internet().domainName();
+        assertThat(domainName).isNotEmpty();
+        // Should be ASCII (punycode or latin chars), no raw Unicode
+        assertThat(domainName).matches(RFC_1123_DOMAIN);
+        // Must be usable in URL
+        assertDoesNotThrow(() -> new URL("https://" + domainName + "/"));
     }
 }

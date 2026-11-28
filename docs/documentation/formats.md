@@ -1,4 +1,4 @@
-# Formats (This is DEPRECATED functionality! Please have a look at Transformation Schemas instead)
+# Formats (This is DEPRECATED functionality! Please have a look at Transformation schemas instead)
 
 Since version 1.2.0 of Datafaker it's possible to export generated data to a file format of your choice.
 
@@ -15,14 +15,14 @@ attributes using randomly generated data in the following way:
 
 === "Java"
 
-    ``` java
+    ```java
     public static void main(String[] args) {
         Faker faker = new Faker();
 
         Collection<Xml.XmlNode> address = faker.<Xml.XmlNode>collection()
                 .suppliers(() -> new Xml.XmlNode("address",
                         map(entry("country", faker.address().country()),
-                                entry("city", faker.address().city()), entry("streetAddress", faker.address().streetAddress())), Collections.emptyList()))
+                                entry("city", faker.address().city()), entry("streetAddress", faker.address().streetAddress())), List.of()))
                 .maxLen(3).build().get();
 
         Collection<Xml.XmlNode> persons = faker.<Xml.XmlNode>collection()
@@ -87,7 +87,7 @@ In case you only want to generate XML elements, without any attributes, that pos
 
 === "Java"
 
-    ``` java
+    ```java
     Faker faker = new Faker();
     Collection<Xml.XmlNode> address = faker.<Xml.XmlNode>collection()
             .suppliers(() -> new Xml.XmlNode("address",

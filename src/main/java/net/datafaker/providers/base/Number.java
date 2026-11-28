@@ -101,16 +101,6 @@ public class Number extends AbstractProvider<BaseProviders> {
 
     /**
      * @param numberOfDigits the number of digits the generated value should have
-     * @param strict         NOT USED
-     * @deprecated use {@link #randomNumber(int)} instead
-     */
-    @Deprecated
-    public long randomNumber(int numberOfDigits, boolean strict) {
-        return randomNumber(numberOfDigits);
-    }
-
-    /**
-     * @param numberOfDigits the number of digits the generated value should have
      */
     public long randomNumber(int numberOfDigits) {
         if (numberOfDigits <= 0) {

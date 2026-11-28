@@ -1,12 +1,12 @@
 package net.datafaker.transformations;
 
 import net.datafaker.sequence.FakeSequence;
+import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -25,15 +25,17 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public String apply(IN input, Schema<IN, ?> schema) {
+    public String apply(@Nullable IN input, Schema<IN, ?> schema) {
         Field<?, ?>[] fields = schema.getFields();
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         for (int i = 0; i < fields.length; i++) {
             value2String((fields[i].getName()), sb);
             sb.append(": ");
-            if (fields[i] instanceof CompositeField) {
-                sb.append(apply(input, (CompositeField) fields[i], i));
+            if (fields[i] instanceof CompositeField compositeField) {
+                sb.append(apply(input, compositeField, i));
+            } else if (fields[i] instanceof SimpleField simpleField) {
+                applyValue(input, sb, simpleField.transform(input));
             } else {
                 applyValue(input, sb, ((SimpleField) fields[i]).transform(input));
             }
@@ -52,7 +54,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
-        Iterator<IN> iterator = input.iterator();
+        var iterator = input.iterator();
         while (iterator.hasNext()) {
             data.add(apply(iterator.next(), schema) + (commaBetweenObjects && iterator.hasNext() ? "," : ""));
         }
@@ -88,9 +90,9 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         return ",";
     }
 
-    private void applyValue(IN input, StringBuilder sb, Object value) {
-        if (value instanceof Collection<?>) {
-            sb.append(generate(input, (Collection) value));
+    private void applyValue(@Nullable IN input, StringBuilder sb, @Nullable Object value) {
+        if (value instanceof Collection<?> collection) {
+            sb.append(generate(input, (Collection<Object>) collection));
         } else if (value != null && value.getClass().isArray()) {
             sb.append(generate(input, Arrays.asList((Object[]) value)));
         } else {
@@ -98,7 +100,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private String generate(IN input, Collection<Object> collection) {
+    private String generate(@Nullable IN input, Collection<Object> collection) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         int i = 0;
@@ -107,8 +109,8 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
                 sb.append(", ");
             }
             i++;
-            if (value instanceof CompositeField<?, ?>) {
-                sb.append(apply(input, ((CompositeField) value)));
+            if (value instanceof CompositeField compositeField) {
+                sb.append(apply(input, compositeField));
             } else {
                 applyValue(input, sb, value);
             }
@@ -117,15 +119,17 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         return sb.toString();
     }
 
-    private static void value2String(Object value, StringBuilder sb) {
+    private static void value2String(@Nullable Object value, StringBuilder sb) {
         if (value == null) {
             sb.append("null");
         } else if (value instanceof Integer
                 || value instanceof Long
                 || value instanceof Short
+                || value instanceof Byte
                 || value instanceof BigInteger
                 || value instanceof Boolean
-                || value instanceof Double
+                || value instanceof Double doubleValue && Double.isFinite(doubleValue)
+                || (value instanceof Float floatValue && Float.isFinite(floatValue))
                 || value instanceof BigDecimal) {
             sb.append(value);
         } else {

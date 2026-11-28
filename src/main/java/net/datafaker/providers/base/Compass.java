@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * @since 1.7.0
  */
@@ -18,6 +20,7 @@ public class Compass extends AbstractProvider<BaseProviders> {
         }
     }
 
+    @Nullable
     private CompassPoint compassPoint;
 
     protected Compass(BaseProviders faker) {

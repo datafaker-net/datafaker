@@ -7,7 +7,7 @@ constructor.
 
 === "Java"
 
-    ``` java
+    ```java
     import net.datafaker.Faker;
     
     Faker faker = new Faker();
@@ -17,7 +17,7 @@ constructor.
 
 === "Kotlin"
 
-    ```
+    ```kotlin
     import net.datafaker.Faker
     
     val faker = Faker()
@@ -29,11 +29,11 @@ This will instantiate a Faker using the English locale.
 
 ## Different locale
 
-To use Datafaker with a different locale, you can supply on in the constructor as such:
+To use Datafaker with a different locale, you can supply one in the constructor as such:
 
 === "Java"
 
-    ``` java
+    ```java
     Faker faker = new Faker(new Locale("nl"));
 
     String name = faker.name().fullName(); // Chelan Klijnsma
@@ -41,7 +41,7 @@ To use Datafaker with a different locale, you can supply on in the constructor a
 
 === "Kotlin"
 
-    ``` kotlin
+    ```kotlin
     val faker = Faker(Locale("nl"))
 
     val name = faker.name().fullName() // Chelan Klijnsma
@@ -59,31 +59,30 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
 1 hoog Gritlaan 52, Margiesmeer, OK 1083 VE
 ```
 
-
 === "Java"
 
-    ``` java 
+    ```java 
     Faker faker1 = new Faker(new Locale("nl"));
     Faker faker2 = new Faker(new Locale("ar"));
 
     List<Faker> fakers = Arrays.asList(faker1, faker2);
 
     for (int i = 0; i < 10; i++) {
-        Faker randomFaker = new Faker().options().nextElement(fakers);
+        Faker randomFaker = new Faker().selection().oneOf(fakers);
         System.out.println(randomFaker.address().fullAddress());
     }
     ```
 
 === "Kotlin"
 
-    ``` kotlin
+    ```kotlin
     val faker1 = Faker(Locale("nl"))
     val faker2 = Faker(Locale("ar"))
 
     val fakers = listOf(faker1, faker2)
 
     repeat(10) {
-        val randomFaker = Faker().options().nextElement(fakers)
+        val randomFaker = Faker().selection().oneOf(fakers)
         println(randomFaker.address().fullAddress())
     }
     ```
@@ -97,19 +96,19 @@ which can be handy for generating results multiple times.
 
 === "Java"
 
-    ``` java
+    ```java
     Faker faker = new Faker(new Random(0));
     ```
 
 === "Kotlin"
 
-    ``` kotlin
+    ```kotlin
     val faker = Faker(Random(0))
     ```
 
 ## Random Java enum values
 
-To get a random value from a Java `enum` you can employ the `Options.option()` method.
+To get a random value from a Java `enum` you can employ the `Selection.oneOf()` method.
 
 The following example assumes you want to retrieve a random value from the `Day` enum.
 
@@ -120,6 +119,5 @@ The following example assumes you want to retrieve a random value from the `Day`
         MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
     }
 
-    private final Options opt = faker.options();
-    opt.option(Day.class);
+    faker.selection().oneOf(Day.class);
     ```

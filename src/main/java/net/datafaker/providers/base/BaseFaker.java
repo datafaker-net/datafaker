@@ -8,6 +8,7 @@ import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
 import net.datafaker.service.RandomService;
 import net.datafaker.transformations.Schema;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -22,6 +23,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import static java.util.Collections.synchronizedMap;
+
 /**
  * Provides utility methods for generating fake strings, such as names, phone
  * numbers, addresses. generate random strings with given patterns
@@ -32,7 +35,7 @@ public class BaseFaker implements BaseProviders {
     private static final Predicate<Class<?>> EVERY_PROVIDER_ALLOWED = t -> true;
     private final FakerContext context;
     private final FakeValuesService fakeValuesService;
-    private final Map<Class<?>, AbstractProvider<?>> providersCache = new IdentityHashMap<>();
+    private final Map<Class<?>, AbstractProvider<?>> providersCache = synchronizedMap(new IdentityHashMap<>());
     private final Predicate<Class<?>> whiteListPredicate;
 
     public BaseFaker() {
@@ -47,7 +50,7 @@ public class BaseFaker implements BaseProviders {
         this(Locale.ENGLISH, random);
     }
 
-    public BaseFaker(Locale locale, Random random) {
+    public BaseFaker(Locale locale, @Nullable Random random) {
         this(locale, new RandomService(random));
     }
 
@@ -59,7 +62,7 @@ public class BaseFaker implements BaseProviders {
         this(fakeValuesService, context, EVERY_PROVIDER_ALLOWED);
     }
 
-    public BaseFaker(FakeValuesService fakeValuesService, FakerContext context, Predicate<Class<?>> whiteListPredicate) {
+    public BaseFaker(FakeValuesService fakeValuesService, FakerContext context, @Nullable Predicate<Class<?>> whiteListPredicate) {
         this.fakeValuesService = fakeValuesService;
         this.context = context;
         this.whiteListPredicate = whiteListPredicate == null ? EVERY_PROVIDER_ALLOWED : whiteListPredicate;
@@ -352,15 +355,6 @@ public class BaseFaker implements BaseProviders {
         }
 
     /**
-     * This method is not needed anymore, don't use it.
-     * @deprecated Use non-static method {@link BaseFaker#getProvider(Class, Function)} instead.
-     */
-    @Deprecated
-    public static <PR extends ProviderRegistration, AP extends AbstractProvider<PR>> AP getProvider(Class<AP> clazz, Function<PR, AP> valueSupplier, PR faker) {
-        return faker.getProvider(clazz, valueSupplier);
-    }
-
-    /**
      * @return builder to build {@code FakeCollection}
      */
     public <T> FakeSequence.Builder<T> collection() {
@@ -430,7 +424,8 @@ public class BaseFaker implements BaseProviders {
         return (B) this;
     }
 
-    public static Method getMethod(AbstractProvider<?> ap, String methodName) {
+    @Nullable
+    public static Method getMethod(@Nullable AbstractProvider<?> ap, String methodName) {
         return ap == null ? null : ObjectMethods.getMethodByName(ap, methodName);
     }
 

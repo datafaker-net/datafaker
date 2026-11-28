@@ -19,6 +19,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -154,6 +155,8 @@ class FakerTest {
 
     @Test
     void expression() {
+        assertThat(faker.expression("#{id_number.valid}")).matches("\\d{3}-\\d{2}-\\d{4}");
+        assertThat(faker.expression("#{id_number.invalid}")).matches("\\d{3}-\\d{2}-\\d{4}");
         assertThat(faker.expression("#{options.option 'a','b','c','d'}")).matches("([abcd])");
         assertThat(faker.expression("#{options.option 'single'}")).isEqualTo("single");
         assertThat(faker.expression("#{options.option '12','345','89','54321'}")).matches("(12|345|89|54321)");
@@ -168,10 +171,14 @@ class FakerTest {
         assertThat(faker.expression("#{number.number_between '1','10.0'}")).matches("[1-9](\\.[0-9]+)?");
         assertThat(faker.expression("#{number.number_between '1.0','10'}")).matches("[1-9](\\.[0-9]+)?");
         assertThat(faker.expression("#{color.name}")).matches("[a-z\\s]+");
-        assertThat(faker.expression("#{date.past '15','SECONDS','dd/MM/yyyy hh:mm:ss'}"))
+        assertThat(faker.expression("#{timeAndDate.past '15','SECONDS','dd/MM/yyyy hh:mm:ss'}"))
             .matches("[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}");
-        assertThat(faker.expression("#{date.birthday 'yy DDD hh:mm:ss'}"))
-            .matches("[0-9]{2} [0-9]{3} [0-9]{2}:[0-9]{2}:[0-9]{2}");
+        assertThat(faker.expression("#{timeAndDate.birthday 'yy DDD MM'}"))
+            .matches("[0-9]{2} [0-9]{3} [0-9]{2}");
+        assertThat(LocalDate.parse(faker.expression("#{timeAndDate.birthday 'yyyy-MM-dd'}")).getYear()).isBetween(
+            LocalDate.now().getYear() - 66, // DEFAULT_MAX_AGE = 65,
+            LocalDate.now().getYear() - 17  // DEFAULT_MIN_AGE = 18
+        );
     }
 
     @Test
@@ -372,7 +379,7 @@ class FakerTest {
                      IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
-            for (Method m : methods) {
+            for (var m : methods) {
                 final var set = new HashSet<>();
                 try {
                     int currentSize = 0;

@@ -155,23 +155,7 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(CultureSeries.class, CultureSeries::new);
     }
 
-    /**
-     * @deprecated Use {@link #money()} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    @SuppressWarnings("removal")
-    default Currency currency() {
-        return getProvider(Currency.class, Currency::new);
-    }
-
-    /**
-     * @deprecated Use {@link #timeAndDate()} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    @SuppressWarnings("removal")
-    default DateAndTime date() {
-        return getProvider(DateAndTime.class, DateAndTime::new);
-    }
+    default Database database() { return getProvider(Database.class, Database::new); }
 
     default DcComics dcComics() {
         return getProvider(DcComics.class, DcComics::new);
@@ -213,6 +197,10 @@ public interface BaseProviders extends ProviderRegistration {
         return getProvider(ElectricalComponents.class, ElectricalComponents::new);
     }
 
+    default Emergency emergency() {
+        return getProvider(Emergency.class, Emergency::new);
+    }
+
     default Emoji emoji() {
         return getProvider(Emoji.class, Emoji::new);
     }
@@ -235,6 +223,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default FinancialTerms financialTerms() {
         return getProvider(FinancialTerms.class, FinancialTerms::new);
+    }
+
+    default Fingerprint fingerprint() {
+        return getProvider(Fingerprint.class, Fingerprint::new);
     }
 
     default FunnyName funnyName() {
@@ -279,6 +271,10 @@ public interface BaseProviders extends ProviderRegistration {
 
     default House house() {
         return getProvider(House.class, House::new);
+    }
+
+    default Http http() {
+        return getProvider(Http.class, Http::new);
     }
 
     default IdNumber idNumber() {

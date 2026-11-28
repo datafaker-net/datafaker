@@ -4,7 +4,12 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.doReturn;
 
+import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import java.util.Collection;
 import java.util.regex.Pattern;
@@ -50,5 +55,39 @@ class CompanyTest extends BaseFakerTest {
     @RepeatedTest(10)
     void testUrl() {
         assertThat(company.url()).matches(URL_PATTERN);
+    }
+
+    @Test
+    void testDomainNameIsValidLabel() {
+        String domainName = company.domainName();
+        // Should be a valid RFC 1123 label: [a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?
+        assertThat(domainName).matches("^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$");
+    }
+
+    @RepeatedTest(10)
+    void testUrlCanBeUsedAsHttpsUrl() {
+        String url = company.url();
+        assertDoesNotThrow(() -> new URL("https://" + url + "/"));
+    }
+
+    @RepeatedTest(10)
+    void testUrlCanBeUsedAsURI() {
+        String url = company.url();
+        assertDoesNotThrow(() -> new URI("https://" + url + "/"));
+    }
+
+    @Test
+    void testDomainNameWithAmpersand() {
+        // Edge case from https://github.com/datafaker-net/datafaker/pull/1757
+        // Company names with & should be sanitized to valid hostnames
+        // Mock the company to ensure the name contains '&'
+        Company mockedCompany = spy(company);
+        doReturn("Acme & Co").when(mockedCompany).name();
+
+        String domainName = mockedCompany.domainName();
+        assertThat(domainName).isNotEmpty();
+        assertThat(domainName).matches("^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$");
+        // Verify that ampersand was stripped (result should be valid)
+        assertThat(domainName).doesNotContain("&");
     }
 }

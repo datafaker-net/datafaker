@@ -1,6 +1,6 @@
 package net.datafaker.providers.base;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -13,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static net.datafaker.providers.base.Text.DEFAULT_SPECIAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -27,7 +28,6 @@ class CredentialsTest {
 
     @ParameterizedTest
     @MethodSource("userNameWithSpacesProvider")
-    @SuppressWarnings("removal")
     void testUsernameWithSpaces(String firstName, String lastName, String expected) {
         Locale locale = new Locale("TR");
         Name name = mock();
@@ -41,7 +41,7 @@ class CredentialsTest {
             }
         };
 
-        assertThat(mockedFaker.internet().username())
+        assertThat(mockedFaker.credentials().username())
             .isEqualTo(expected);
     }
 
@@ -70,6 +70,30 @@ class CredentialsTest {
     @RepeatedTest(100)
     void testPasswordWithSpecificSizeAndUppercase() {
         assertThat(faker.credentials().password(8, 16, true)).hasSizeBetween(8, 16).matches("^[a-zA-Z0-9]+$");
+    }
+
+    @RepeatedTest(100)
+    void testPasswordWithUppercaseLowercaseDigitsAndSpecialCharacters() {
+        assertThat(faker.credentials().password(8, 16, true, true, true, true))
+            .matches("^(?=.*[a-z]).+$")
+            .matches("^(?=.*[A-Z]).+$")
+            .matches("^(?=.*[0-9]).+$")
+            .matches("^(?=.*[" + DEFAULT_SPECIAL + "]).+$")
+            .hasSizeBetween(8, 16);
+    }
+
+    @Test
+    void shouldGenerateAPasswordWithMinAndMaxLength() {
+        List<String> allPasswords = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            allPasswords.add(faker.credentials().password(1, 10));
+        }
+
+        final List<String> min = allPasswords.stream().filter(x -> x.length() == 1).toList();
+        final List<String> max = allPasswords.stream().filter(x -> x.length() == 10).toList();
+
+        assertThat(min).as(() -> "No password of length 1: " + allPasswords).isNotEmpty();
+        assertThat(max).as(() -> "No password of length 10: " + allPasswords).isNotEmpty();
     }
 
     @Test
@@ -132,7 +156,7 @@ class CredentialsTest {
         final List<String> list = (obj instanceof List<?> l
                 && l.stream().allMatch(String.class::isInstance))
                         ? l.stream().map(String.class::cast).toList()
-                        : Collections.emptyList();
+                        : List.of();
 
         assertThat(faker.credentials().weakPassword()).isIn(list);
     }

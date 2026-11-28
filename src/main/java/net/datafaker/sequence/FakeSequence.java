@@ -1,7 +1,9 @@
 package net.datafaker.sequence;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.service.RandomService;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -27,6 +29,7 @@ public abstract class FakeSequence<T> implements Iterable<T> {
         return false;
     }
 
+    @Nullable
     public T singleton() {
         if (nullRate == 0d || randomService.nextDouble() >= nullRate) {
             return suppliers.get(randomService.nextInt(suppliers.size())).get();
@@ -39,7 +42,7 @@ public abstract class FakeSequence<T> implements Iterable<T> {
         protected int minLength = -1;
         protected int maxLength = -1;
         protected double nullRate = 0d;
-        protected BaseProviders faker;
+        protected @Nullable BaseProviders faker;
 
         protected Builder() {
             suppliers = new ArrayList<>();
@@ -64,6 +67,7 @@ public abstract class FakeSequence<T> implements Iterable<T> {
             return this;
         }
 
+        @CanIgnoreReturnValue
         public FakeSequence.Builder<T> maxLen(int maxLength) {
             this.maxLength = maxLength;
             return this;

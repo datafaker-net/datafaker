@@ -53,7 +53,7 @@ public class Sip extends AbstractProvider<BaseProviders> {
      * @return an RTP UDP 5 digit port int, e.g. 40002.
      */
     public int rtpPort() {
-        return faker.options().option(portPool);
+        return faker.selection().oneOf(portPool);
     }
 
     /**

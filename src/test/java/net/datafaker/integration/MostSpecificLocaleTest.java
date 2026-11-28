@@ -2,6 +2,7 @@ package net.datafaker.integration;
 
 import net.datafaker.service.FakeValuesService;
 import net.datafaker.service.FakerContext;
+import net.datafaker.service.RandomService;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class MostSpecificLocaleTest {
 
-    private final FakerContext en = new FakerContext(new Locale("en"), null);
-    private final FakerContext en_US = new FakerContext(new Locale("en", "US"), null);
+    private final FakerContext en = new FakerContext(new Locale("en"), new RandomService());
+    private final FakerContext en_US = new FakerContext(new Locale("en", "US"), new RandomService());
 
     @Test
     void resolvesTheMostSpecificLocale() {

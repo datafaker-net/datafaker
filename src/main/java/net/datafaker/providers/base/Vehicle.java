@@ -1,6 +1,8 @@
 package net.datafaker.providers.base;
 
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -119,13 +121,13 @@ public class Vehicle extends AbstractProvider<BaseProviders> {
         return faker.bothify(faker.resolve("vehicle.license_plate")).toUpperCase(Locale.ROOT);
     }
 
+    @Nullable
     public String licensePlate(String stateAbbreviation) {
-
-        if ("".equals(stateAbbreviation)) {
+        if (stateAbbreviation.isEmpty()) {
             return null;
         }
 
         String licensePlatesByState = resolve("vehicle.license_plate_by_state." + stateAbbreviation);
-        return licensePlatesByState == null ? null : faker.bothify(licensePlatesByState).toUpperCase(Locale.ROOT);
+        return faker.bothify(licensePlatesByState).toUpperCase(Locale.ROOT);
     }
 }

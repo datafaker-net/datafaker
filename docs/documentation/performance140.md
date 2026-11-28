@@ -3,7 +3,7 @@
 This page is trying to go through some performance metrics and see how better/worse Datafaker is in compare with Java
 Faker and other similar projects.
 
-## Hardware & Software
+## Hardware & software
 
 All the tests are done with help of JMH at Fedora 36 for different JDKs (mentioned in tables below).
 The laptop has 32Gb of RAM, AMD Ryzen 7 PRO 5850U with Radeon Graphics.
@@ -35,9 +35,9 @@ So, it looks like the only test which were done is checking `Faker.name().name()
 
 Ok, let's start with the similar test here. Similar, because we are going to use JMH which was not used in their test.
 If applicable we try to execute same tests we did for previous section. So let's start with the original test from
-Kotlin Faker
+Kotlin Faker.
 
-### Original Kotlin Faker Test
+### Original Kotlin Faker test
 
 (for different libs there should be different classes, for more details look in the code):
 `net.datafaker.benchmark.kotlinfakerbenchmark`
@@ -65,7 +65,7 @@ jdk18 Datafaker is about 20% faster. JFairy and Java Faker are far behind.
 ### Initialization
 
 It's worth to measure since initially during initialization of Faker object it requires to
-initialise all the providers objects and read all the yaml files for providers.
+initialize all the providers objects and read all the yaml files for providers.
 
 Tests for initialization could be found at `net.datafaker.benchmark.initialization`
 Initialization:
@@ -89,7 +89,7 @@ Initialization:
 
 Performance of simple method calls like `fullname`, `firstname`, `address`.
 
-Tests could be found at `net.datafaker.benchmark.simplemethods`
+Tests could be found at `net.datafaker.benchmark.simplemethods`.
 
 #### Firstname:
 
@@ -263,7 +263,7 @@ Since only Datafaker and Java Faker support method invocations, there are only t
 | Java Faker | openjdk-18.0.1.0.10-1.rolling.fc36.x86_64  | thrpt | 10  | 207.275 ± 3.522   | ops/ms |
 
 Similar example as previous, however there are 3 methods. Besides, cache of parsed methods there was also added cache
-for parsed args.
+for parsed arguments.
 
 | Project    | Java Version                               | Mode  | Cnt | Score            | Units  |
 |:-----------|:-------------------------------------------|:------|:----|:-----------------|:-------|
@@ -277,7 +277,7 @@ for parsed args.
 It makes sense to keep in mind that these tests do not cover all possible use cases and could be considered only as a
 starting point for analysis.
 
-## More Fun
+## More fun
 
 There is an [issue](https://github.com/DiUS/java-faker/issues/663) in Java Faker about generation of 100M of objects.
 Of course, the task could be solved with concurrent generation in multiple threads.
@@ -286,5 +286,5 @@ However, here it is interesting how much a 1 thread application can generated in
 The code below for Datafaker generates a bit more than 170M objects for 1 hour.
 The same code for Java Faker generates about 38M for 1 hour, meaning on average, Datafaker is about 4x faster than Javafaker.
 
-Kotlin Faker does not support setting of birthday and blood. Without these 2 params it generates about 90M for 1 hour.
+Kotlin Faker does not support setting of birthday and blood. Without these 2 parameters it generates about 90M for 1 hour.
 `net.datafaker.benchmark.generate_one_hour`

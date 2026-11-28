@@ -7,6 +7,7 @@ import net.datafaker.transformations.Field;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
 import net.datafaker.transformations.Transformer;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,20 +35,20 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private final char openSqlIdentifier;
     private final char closeSqlIdentifier;
     private final String tableName;
-    private final String schemaName;
+    private final @Nullable String schemaName;
 
     private final boolean withBatchMode;
     private final int batchSize;
     private final Case keywordCase;
     private final boolean forceSqlQuoteIdentifierUsage;
 
-    private final SqlDialect dialect;
+    private final @Nullable SqlDialect dialect;
 
     public static <IN> SqlTransformer.SqlTransformerBuilder<IN> builder() {
         return new SqlTransformer.SqlTransformerBuilder<>();
     }
 
-    private SqlTransformer(String schemaName, String tableName, char quote, SqlDialect dialect, String sqlIdentifier,
+    private SqlTransformer(String schemaName, String tableName, char quote, @Nullable SqlDialect dialect, String sqlIdentifier,
                            Casing casing, boolean withBatchMode, int batchSize, Case keywordCase, boolean forceSqlQuoteIdentifierUsage) {
         this.schemaName = schemaName;
         this.quote = quote;
@@ -63,7 +64,9 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     private boolean isSqlQuoteIdentifierRequiredFor(String name) {
-        if (forceSqlQuoteIdentifierUsage) return true;
+        if (forceSqlQuoteIdentifierUsage || dialect != null && dialect.requiresQuotingForIdentifierEscape(name)) {
+            return true;
+        }
         for (int i = 0; i < name.length(); i++) {
             if (casing == Casing.TO_UPPER && Character.isLowerCase(name.charAt(i))
                 || casing == Casing.TO_LOWER && Character.isUpperCase(name.charAt(i))
@@ -77,12 +80,12 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     }
 
     @Override
-    public CharSequence apply(IN input, Schema<IN, ?> schema) {
+    public CharSequence apply(@Nullable IN input, Schema<IN, ?> schema) {
         return apply(input, schema, 0);
     }
 
     @Override
-    public CharSequence apply(IN input, Schema<IN, ?> schema, long rowId) {
+    public CharSequence apply(@Nullable IN input, Schema<IN, ?> schema, long rowId) {
         //noinspection unchecked
         Field<?, ? extends CharSequence>[] fields = (Field<?, ? extends CharSequence>[]) schema.getFields();
         if (fields.length == 0) {
@@ -105,7 +108,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private String addValues(IN input, Field<?, ?>[] fields, Boolean isRoot) {
+    private String addValues(@Nullable IN input, Field<?, ?>[] fields, Boolean isRoot) {
         StringJoiner result = new StringJoiner(", ");
         for (int i = 0; i < fields.length; i++) {
 
@@ -114,13 +117,13 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     dialect.getFieldPrefix(fields[i].getName());
 
                 if (!fieldPrefix.isEmpty() && !isRoot) {
-                    result.add(quote + dialect.getFieldPrefix(fields[i].getName()) + quote);
+                    result.add(quote + escapeStringLiteral(fieldPrefix) + quote);
                 }
             }
 
-            if (fields[i] instanceof SimpleField) {
+            if (fields[i] instanceof SimpleField<?, ?> simpleField) {
                 //noinspection unchecked
-                Object value = ((SimpleField<Object, ?>) fields[i]).transform(input);
+                Object value = ((SimpleField<Object, ?>) simpleField).transform(input);
                 Class<?> clazz = value == null ? null : value.getClass();
                 if (value == null
                     || value instanceof Number
@@ -181,7 +184,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
     private String handleObjectInMap(Map<?, ?> map) {
         StringBuilder result = new StringBuilder();
         int i = 0;
-        for (Map.Entry<?, ?> entry : map.entrySet()) {
+        for (var entry : map.entrySet()) {
             result.append(handleObject(entry.getKey()));
             result.append(", ");
             result.append(handleObject(entry.getValue()));
@@ -194,7 +197,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return result.toString();
     }
 
-    private String handleObject(Object value) {
+    private String handleObject(@Nullable Object value) {
         if (value == null) {
             return NULL.getValue(keywordCase);
         } else {
@@ -211,25 +214,21 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
                     + "[" + handleObjectInCollection(collection) + "]";
             } else {
                 String strValue = value.toString();
-                final int length = strValue.length();
                 final boolean quoteRequired = !(value instanceof Number) && !(value instanceof Boolean);
-                String res = handledObjectToString(length, strValue);
+                String res = escapeStringLiteral(strValue);
                 return quoteRequired ? quote + res + quote : res;
             }
         }
     }
 
-    private String handledObjectToString(int length, String strValue) {
-        StringBuilder builder = new StringBuilder(length);
-
-        for (int k = 0; k < length; k++) {
-            if (strValue.charAt(k) == quote) {
-                builder.append('\\').append(quote);
-            }else {
-                builder.append(strValue.charAt(k));
-            }
+    /**
+     * Without a dialect, the quote is prefixed with a backslash and backslashes are left alone.
+     */
+    private String escapeStringLiteral(String value) {
+        if (dialect != null) {
+            return dialect.escapeStringLiteral(value, quote);
         }
-        return builder.toString();
+        return value.replace(String.valueOf(quote), "\\" + quote);
     }
 
     private String handlePrimitivesInArray(Class<?> componentType, Object value) {
@@ -284,21 +283,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         appendNameToQuery(result, tableName);
         result.append(" (");
         for (int i = 0; i < fields.length; i++) {
-            final String fieldName = fields[i].getName();
-            final boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(fieldName);
-            if (sqlIdentifierRequired) {
-                result.append(openSqlIdentifier);
-            }
-            for (int j = 0; j < fieldName.length(); j++) {
-                if (openSqlIdentifier == fieldName.charAt(j)
-                        || closeSqlIdentifier == fieldName.charAt(j)) {
-                    result.append(openSqlIdentifier);
-                }
-                result.append(fieldName.charAt(j));
-            }
-            if (sqlIdentifierRequired) {
-                result.append(closeSqlIdentifier);
-            }
+            appendNameToQuery(result, fields[i].getName());
             if (i < fields.length - 1) {
                 result.append(", ");
             }
@@ -307,16 +292,16 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         return result.toString();
     }
 
-    private void appendNameToQuery(StringBuilder sb, String name) {
+    private void appendNameToQuery(StringBuilder sb, @Nullable String name) {
         if (name == null || name.isEmpty()) return;
-        boolean sqlIdentifierRequired = isSqlQuoteIdentifierRequiredFor(name);
-
-        if (sqlIdentifierRequired) {
-            sb.append(openSqlIdentifier);
-        }
-        sb.append(name);
-        if (sqlIdentifierRequired) {
-            sb.append(closeSqlIdentifier);
+        if (isSqlQuoteIdentifierRequiredFor(name)) {
+            sb.append(openSqlIdentifier)
+                .append(dialect == null
+                    ? SqlDialect.escape(name, closeSqlIdentifier, closeSqlIdentifier)
+                    : dialect.escapeIdentifier(name))
+                .append(closeSqlIdentifier);
+        } else {
+            sb.append(name);
         }
     }
 
@@ -375,7 +360,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         throw new UnsupportedOperationException("Not supported for SQL transformer. Use generate or generateStream instead to create SQL statements.");
     }
 
-    private String generateBatchModeStatements(Schema<IN, ?> schema, List<IN> inputs, int limit) {
+    private String generateBatchModeStatements(Schema<IN, ?> schema, @Nullable List<IN> inputs, int limit) {
         StringBuilder sb = new StringBuilder();
         limit = inputs != null ? Math.min(limit, inputs.size()) : limit;
         for (int i = 0; i < limit; i++) {
@@ -432,7 +417,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private String generateSeparatedStatements(Schema<IN, ?> schema, List<IN> inputs, int limit) {
+    private String generateSeparatedStatements(Schema<IN, ?> schema, @Nullable List<IN> inputs, int limit) {
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
         limit = inputs != null ? Math.min(limit, inputs.size()) : limit;
         for (int i = 0; i < limit; i++) {
@@ -452,9 +437,7 @@ public class SqlTransformer<IN> implements Transformer<IN, CharSequence> {
         private int batchSize = -1; // no limit
         private Case keywordCase = Case.UPPERCASE;
         private boolean forceSqlQuoteIdentifierUsage = false;
-
-
-        private SqlDialect dialect;
+        private @Nullable SqlDialect dialect;
 
         public SqlTransformerBuilder<IN> dialect(SqlDialect dialect) {
             this.dialect = dialect;

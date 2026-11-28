@@ -1,20 +1,26 @@
 package net.datafaker.service;
 
 import net.datafaker.internal.helper.LazyEvaluated;
+import org.jspecify.annotations.Nullable;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyMap;
 import static net.datafaker.internal.helper.JavaNames.toJavaNames;
+import static net.datafaker.internal.helper.WordUtils.capitalizeWord;
 
 public class FakeValues implements FakeValuesInterface {
     private static final Map<FakeValuesContext, FakeValues> FAKE_VALUES_MAP = new ConcurrentHashMap<>();
@@ -29,18 +35,22 @@ public class FakeValues implements FakeValuesInterface {
         return FAKE_VALUES_MAP.computeIfAbsent(fakeValuesContext, FakeValues::new);
     }
 
+    @Nullable
     @Override
     public Map<String, Object> get(String key) {
         return getMap(values.get(), key);
     }
 
+    @Nullable
     private Map<String, Object> loadFromUrl() {
         final URL url = fakeValuesContext.getUrl();
         if (url == null) {
             return null;
         }
-        try (InputStream stream = url.openStream()) {
-            return readFromStream(stream);
+        try (var stream = url.openStream()) {
+            Map<String, Object> result = readFromStream(stream);
+            enrichMapWithJavaNames(result);
+            return result;
         } catch (IOException e) {
             throw new RuntimeException("Failed to read fake values from %s".formatted(url), e);
         }
@@ -52,25 +62,25 @@ public class FakeValues implements FakeValuesInterface {
 
         final Locale locale = fakeValuesContext.getLocale();
         final String fileName = fakeValuesContext.getFilename();
-        final String[] paths = fileName.isEmpty()
-            ? new String[] {"/" + locale.getLanguage() + ".yml"}
-            : new String[] {
-                "/" + locale.getLanguage() + "/" + fileName,
-                "/" + fileName + ".yml",
-                "/" + locale.getLanguage() + ".yml"};
+        final String languagePath = "/" + locale.getLanguage() + ".yml";
+        final String[] paths;
+        if (fileName.isEmpty()) {
+            paths = new String[] {languagePath};
+        } else if (fileName.endsWith(".yml")) {
+            paths = new String[] {"/" + locale.getLanguage() + "/" + fileName, languagePath};
+        } else {
+            paths = new String[] {"/" + fileName + ".yml", languagePath};
+        }
 
+        boolean nativeImage = "runtime".equals(System.getProperty("org.graalvm.nativeimage.imagecode"));
         for (String path : paths) {
-            try (InputStream stream = getClass().getResourceAsStream(path)) {
-                if (stream != null) {
-                    result = readFromStream(stream);
-                    enrichMapWithJavaNames(result);
-                } else {
-                    try (InputStream stream2 = getClass().getClassLoader().getResourceAsStream(path)) {
-                        result = readFromStream(stream2);
-                        enrichMapWithJavaNames(result);
-                    }
-                }
-
+            // An absent locale override is normal. Strict Native Image treats unknown paths as missing metadata.
+            if (nativeImage && !NativeYamlResources.PATHS.contains(path.substring(1))) {
+                continue;
+            }
+            try (var stream = getClass().getResourceAsStream(path)) {
+                result = readFromStream(stream);
+                enrichMapWithJavaNames(result);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to read fake values from %s".formatted(path), e);
             }
@@ -78,20 +88,38 @@ public class FakeValues implements FakeValuesInterface {
                 return result;
             }
         }
-        return emptyMap();
+        return Map.of();
     }
 
-    private void enrichMapWithJavaNames(Map<String, Object> result) {
+    private static class NativeYamlResources {
+        private static final Set<String> PATHS = readIndex();
+
+        private static Set<String> readIndex() {
+            try (var stream = FakeValues.class.getResourceAsStream("/META-INF/datafaker/locale-resources.txt")) {
+                if (stream == null) {
+                    throw new IllegalStateException("Missing packaged Datafaker locale resource index");
+                }
+                try (var reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+                    return reader.lines().collect(Collectors.toUnmodifiableSet());
+                }
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to read the packaged Datafaker locale resource index", e);
+            }
+        }
+    }
+
+    private void enrichMapWithJavaNames(@Nullable Map<String, Object> result) {
         if (result != null) {
             Map<String, Object> map = null;
-            for (Map.Entry<String, Object> entry : result.entrySet()) {
+            for (var entry : result.entrySet()) {
                 final String key = entry.getKey();
                 Object value = entry.getValue();
-                if (entry.getValue() instanceof Map) {
+                if (value instanceof Map<?, ?> rawMap) {
                     @SuppressWarnings("unchecked")
-                    Map<String, Object> entryMap = (Map<String, Object>) entry.getValue();
+                    Map<String, Object> entryMap = (Map<String, Object>) rawMap;
+                    prefixUnqualifiedExpressions(entryMap, key);
                     Map<String, Object> nestedMap = new HashMap<>(entryMap.size());
-                    for (Map.Entry<String, Object> e: entryMap.entrySet()) {
+                    for (var e : entryMap.entrySet()) {
                         nestedMap.put(toJavaNames(e.getKey(), true), e.getValue());
                     }
                     entryMap.putAll(nestedMap);
@@ -110,7 +138,70 @@ public class FakeValues implements FakeValuesInterface {
         }
     }
 
-    private Map<String, Object> readFromStream(InputStream stream) {
+    /**
+     * Rewrites unqualified expressions like {@code #{first_name}} inside string lists under a
+     * provider section into qualified ones like {@code #{Name.firstName}}. The provider name comes
+     * from the top-level YAML key (e.g. {@code name}, {@code address}). Doing this once at load
+     * time avoids racy in-place mutation of cached lists during concurrent fetches.
+     */
+    static void prefixUnqualifiedExpressions(Object node, String providerKey) {
+        if (node instanceof Map<?, ?> nested) {
+            for (Object v : nested.values()) {
+                prefixUnqualifiedExpressions(v, providerKey);
+            }
+        } else if (node instanceof List<?> rawList) {
+            @SuppressWarnings("unchecked")
+            List<Object> list = (List<Object>) rawList;
+            rewriteList(list, providerKey);
+        }
+    }
+
+    private static void rewriteList(List<Object> list, String providerKey) {
+        final String capitalizedProvider = capitalizeWord(providerKey);
+        for (int i = 0; i < list.size(); i++) {
+            Object itemValue = list.get(i);
+            if (!(itemValue instanceof String item)) {
+                break;
+            }
+            final int itemLength = item.length();
+            if (itemLength < 2) {
+                break;
+            }
+            int j = 0;
+            StringBuilder sb = null;
+            int start = 0;
+            while (j < itemLength) {
+                char c;
+                while (j < itemLength - 2 && !(item.charAt(j) == '#' && item.charAt(j + 1) == '{')) {
+                    j++;
+                }
+                int startWord = j + 2;
+                boolean letterOrDigitOnly = true;
+                j = startWord;
+                while (j < itemLength && (c = item.charAt(j)) != '}') {
+                    letterOrDigitOnly &= Character.isLetter(c) || Character.isDigit(c) || c == '_';
+                    j++;
+                }
+                if (start < itemLength && startWord < itemLength && letterOrDigitOnly) {
+                    if (sb == null) {
+                        sb = new StringBuilder();
+                    }
+                    sb.append(item, start, startWord);
+                    sb.append(capitalizedProvider).append(".").append(toJavaNames(item.substring(startWord, j), true)).append("}");
+                    start = j + 1;
+                }
+            }
+            if (sb != null) {
+                if (start < itemLength) {
+                    sb.append(item, start, itemLength);
+                }
+                list.set(i, sb.toString());
+            }
+        }
+    }
+
+    @Nullable
+    private Map<String, Object> readFromStream(@Nullable InputStream stream) {
         if (stream == null) return null;
         final Map<String, Object> valuesMap = new Yaml().loadAs(stream, Map.class);
         Map<String, Object> localeBased = getMap(valuesMap, fakeValuesContext.getLocale().getLanguage());
@@ -120,18 +211,21 @@ public class FakeValues implements FakeValuesInterface {
         return getMap(localeBased, "faker");
     }
 
+    @Nullable
     @SuppressWarnings("unchecked")
     private static Map<String, Object> getMap(Map<String, Object> map, String key) {
         return (Map<String, Object>) map.get(key);
     }
 
+    @Nullable
     Set<String> getPaths() {
         return fakeValuesContext.getPath() != null ?
             Set.of(fakeValuesContext.getPath()) :
             keysOf(values.get());
     }
 
-    private static Set<String> keysOf(Map<String, ?> map) {
+    @Nullable
+    private static Set<String> keysOf(@Nullable Map<String, ?> map) {
         return map == null || map.isEmpty() ? null : map.keySet();
     }
 

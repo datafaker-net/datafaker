@@ -23,6 +23,10 @@ public interface EntertainmentProviders extends ProviderRegistration {
         return getProvider(BigBangTheory.class, BigBangTheory::new);
     }
 
+    default Bluey bluey() {
+        return getProvider(Bluey.class, Bluey::new);
+    }
+
     default Boardgame boardgame() {
         return getProvider(Boardgame.class, Boardgame::new);
     }
@@ -53,6 +57,10 @@ public interface EntertainmentProviders extends ProviderRegistration {
 
     default CowboyBebop cowboyBebop() {
         return getProvider(CowboyBebop.class, CowboyBebop::new);
+    }
+
+    default DeathNote deathNote() {
+        return getProvider(DeathNote.class, DeathNote::new);
     }
 
     default Departed departed() {

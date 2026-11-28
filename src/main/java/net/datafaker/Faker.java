@@ -1,7 +1,6 @@
 package net.datafaker;
 
 import net.datafaker.providers.base.BaseFaker;
-import net.datafaker.providers.base.BaseProviders;
 import net.datafaker.providers.entertainment.EntertainmentProviders;
 import net.datafaker.providers.food.FoodProviders;
 import net.datafaker.providers.healthcare.HealthcareProviders;
@@ -15,7 +14,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.function.Predicate;
 
-public class Faker extends BaseFaker implements BaseProviders, SportProviders, FoodProviders, EntertainmentProviders, VideoGameProviders, HealthcareProviders {
+public class Faker extends BaseFaker implements SportProviders, FoodProviders, EntertainmentProviders, VideoGameProviders, HealthcareProviders {
     public Faker() {
     }
 

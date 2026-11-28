@@ -7,13 +7,14 @@ import java.util.Set;
 import java.util.StringJoiner;
 
 import net.datafaker.sequence.FakeSequence;
+import org.jspecify.annotations.Nullable;
 
 public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private static final String INDENTATION = "  ";
 
     @Override
-    public CharSequence apply(IN input, Schema<IN, ?> schema) {
+    public CharSequence apply(@Nullable IN input, Schema<IN, ?> schema) {
         Field<IN, ?>[] fields = schema.getFields();
 
         if (fields.length == 0) {
@@ -30,7 +31,7 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
         }
 
         StringJoiner data = new StringJoiner(LINE_SEPARATOR);
-        for (IN in : input) {
+        for (var in : input) {
             data.add(apply(in, schema));
         }
 
@@ -59,7 +60,7 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
         return "";
     }
 
-    private String apply(final StringBuilder sb, final IN input, final Field<IN, ?>[] fields, final String offset) {
+    private String apply(final StringBuilder sb, @Nullable IN input, final Field<IN, ?>[] fields, final String offset) {
         Set<String> keys = new HashSet<>();
         for (Field<IN, ?> field : fields) {
             String key = field.getName().trim();
@@ -88,14 +89,14 @@ public class YamlTransformer<IN> implements Transformer<IN, CharSequence> {
             sb.append(System.lineSeparator());
         }
     }
-    private void value2String(Object value, StringBuilder sb, String offset) {
-        if (value instanceof Schema) {
-            Field<IN, ?>[] fields = ((Schema<IN, ?>) value).getFields();
+    private void value2String(@Nullable Object value, StringBuilder sb, String offset) {
+        if (value instanceof Schema schemaValue) {
+            Field<IN, ?>[] fields = schemaValue.getFields();
             apply(sb, null, fields, offset);
-        } else if (value instanceof Collection) {
+        } else if (value instanceof Collection<?> collection) {
             sb.append(System.lineSeparator());
             offset += INDENTATION;
-            addCollection(sb, (Collection) value, offset);
+            addCollection(sb, (Collection<Object>) collection, offset);
         } else if (value != null && value.getClass().isArray()) {
             sb.append(System.lineSeparator());
             offset += INDENTATION;

@@ -1,7 +1,12 @@
 package net.datafaker.providers.base;
 
+import org.jspecify.annotations.Nullable;
+
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import static java.util.logging.Level.WARNING;
 
 /**
  * Generates credentials such as usernames, uids and passwords.
@@ -12,6 +17,7 @@ public class Credentials extends AbstractProvider<BaseProviders> {
 
     public static final int MIN_PASSWORD_LENGTH = 8;
     public static final int MAX_PASSWORD_LENGTH = 16;
+    private static final Logger log = Logger.getLogger(Credentials.class.getName());
 
     protected Credentials(BaseProviders faker) {
         super(faker);
@@ -106,8 +112,7 @@ public class Credentials extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * Generates a password with lowercase letters and optionally uppercase letters, numbers and 
-     * special characters and with min and max length defined by the user.
+     * Generates a random password within the given length range. Lowercase letters are always eligible.
      *
      * @param minimumLength    the minimum length of the password
      * @param maximumLength    the maximum length of the password
@@ -118,6 +123,22 @@ public class Credentials extends AbstractProvider<BaseProviders> {
      */
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
         return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
+    }
+
+    /**
+     * Generates a random password within the given length range. Lowercase letters are always eligible.
+     * Each flag set to {@code true} requires at least one character from its group.
+     *
+     * @param minimumLength    the minimum length of the password
+     * @param maximumLength    the maximum length of the password
+     * @param includeUppercase if true, the password will contain at least one uppercase letter
+     * @param includeSpecial   if true, the password will contain at least one special character
+     * @param includeDigit     if true, the password will contain at least one digit
+     * @param includeLowercase if true, the password will contain at least one lowercase letter
+     * @return A randomly generated password
+     */
+    public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit, boolean includeLowercase) {
+        return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit, includeLowercase);
     }
 
     /**
@@ -138,12 +159,11 @@ public class Credentials extends AbstractProvider<BaseProviders> {
 
     /**
      * Generates a user ID based on the regex pattern defined in the resource file.
-     * If the regex is null or invalid, it returns null.
      *
-     * @return A randomly generated user ID based on the regex or null if the regex is null or invalid
+     * @return A randomly generated user ID
      */
     public String userId() {
-        return userId(resolve("credentials.uid_pattern"));
+        return faker.regexify(resolve("credentials.uid_pattern"));
     }
 
     /**
@@ -153,7 +173,8 @@ public class Credentials extends AbstractProvider<BaseProviders> {
      * @param regex The regex pattern to generate the user ID
      * @return A randomly generated user ID based on the regex or null if the regex is null or invalid
      */
-    public String userId(String regex) {
+    @Nullable
+    public String userId(@Nullable String regex) {
         if(regex == null) {
             return null;
         }
@@ -161,6 +182,7 @@ public class Credentials extends AbstractProvider<BaseProviders> {
         try {
             Pattern.compile(regex);
         } catch (PatternSyntaxException e) {
+            log.log(WARNING, e, () -> "Invalid regex pattern: " + regex);
             return null;
         }
 

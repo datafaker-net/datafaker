@@ -11,6 +11,10 @@ public interface FoodProviders extends ProviderRegistration {
         return getProvider(Beer.class, Beer::new);
     }
 
+    default Cheese cheese() {
+        return getProvider(Cheese.class, Cheese::new);
+    }
+
     default Coffee coffee() {
         return getProvider(Coffee.class, Coffee::new);
     }

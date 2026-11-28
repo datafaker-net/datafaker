@@ -10,20 +10,39 @@ repo_url: https://github.com/datafaker-net/datafaker
 edit_uri: "edit/main/docs"
 
 # Copyright
-copyright: Copyright &copy; 2016 - 2025 Erik Pragt
+copyright: Copyright &copy; 2016 - 2026 Erik Pragt
 
 theme:
   name: material
   custom_dir: material
+  favicon: assets/images/favicon.png
   language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
   features:
     - content.code.annotate
+    - content.code.copy
+    - content.action.edit
     # - content.tabs.link
     # - header.autohide
     # - navigation.expand
     - navigation.indexes
     # - navigation.instant
-    - navigation.sections
+    - navigation.footer
+    # - navigation.sections  # disabled: prevents collapsible 2.x/1.x release groups in Material 9
     - navigation.tabs
     # - navigation.tabs.sticky
     - navigation.top
@@ -32,6 +51,9 @@ theme:
     - search.share
     - search.suggest
     # - toc.integrate
+
+extra_css:
+  - stylesheets/extra.css
 
 # Extensions
 markdown_extensions:
@@ -73,15 +95,22 @@ markdown_extensions:
 
 plugins:
   - search
+  - allscreenshots-og-screenshot
   - macros
   - minify:
       minify_html: true
 
+# Files to exclude from the built site
+exclude_docs: |
+  releases/.RELEASE-template.md
+  releases/.SNAPSHOT-template.md
+  releases/*-SNAPSHOT.md
+
 # Customization
 extra:
   datafaker:
-    version: 2.5.2
-    snapshot: 2.5.3-SNAPSHOT
+    version: 2.7.0
+    snapshot: 3.0.0-SNAPSHOT
 
 # Page tree
 nav:
@@ -89,7 +118,7 @@ nav:
   - Documentation:
     - Getting started: documentation/getting-started.md
     - Basic usage: documentation/usage.md
-    - Data Providers:
+    - Data providers:
       - All providers: documentation/providers.md
       - Custom providers: documentation/custom-providers.md
     - Advanced usage:
@@ -100,10 +129,11 @@ nav:
       - Formats: documentation/formats.md
       - Transformation schemas: documentation/schemas.md
       - Unique values: documentation/unique-values.md
+    - Related projects: documentation/related-projects.md
     - Performance:
       - Datafaker 1.4.0: documentation/performance140.md
       - Datafaker 1.7.0: documentation/performance170.md
-    - Javadoc: 'https://s01.oss.sonatype.org/service/local/repositories/releases/archive/net/datafaker/datafaker/2.5.2/datafaker-2.5.2-javadoc.jar/!/index.html'
+    - Javadoc: 'https://javadoc.io/doc/net.datafaker/datafaker/latest/index.html'
     - Contributing: documentation/contributing.md
     - First time contributor: documentation/first-time-contributor.md
     - License: documentation/license.md
@@ -111,34 +141,38 @@ nav:
 #      - Changes: changelog/index.md
 #      - How to upgrade: upgrade.md
   - Releases:
-    - 2.6.0-SNAPSHOT: releases/2.6.0-SNAPSHOT.md
-    - 2.5.3: releases/2.5.3.md
-    - 2.5.2: releases/2.5.2.md
-    - 2.5.1: releases/2.5.1.md
-    - 2.5.0: releases/2.5.0.md
-    - 2.4.4: releases/2.4.4.md
-    - 2.4.3: releases/2.4.3.md
-    - 2.4.2: releases/2.4.2.md
-    - 2.4.1: releases/2.4.1.md
-    - 2.4.0: releases/2.4.0.md
-    - 2.3.1: releases/2.3.1.md
-    - 2.3.0: releases/2.3.0.md
-    - 2.2.2: releases/2.2.2.md
-    - 2.2.1: releases/2.2.1.md
-    - 2.2.0: releases/2.2.0.md
-    - 2.1.0: releases/2.1.0.md
-    - 2.0.2: releases/2.0.2.md
-    - 2.0.1: releases/2.0.1.md
-    - 2.0.0: releases/2.0.0.md
-    - 1.9.0: releases/1.9.0.md
-    - 1.8.0: releases/1.8.0.md
-    - 1.7.0: releases/1.7.0.md
-    - 1.6.0: releases/1.6.0.md
-    - 1.5.0: releases/1.5.0.md
-    - 1.4.0: releases/1.4.0.md
-    - 1.3.0: releases/1.3.0.md
-    - 1.2.0: releases/1.2.0.md
-    - 1.1.0: releases/1.1.0.md
-    - 1.0.0: releases/1.0.0.md
-    - 0.9.0: releases/0.9.0.md
+    - 2.7.0: releases/2.7.0.md
+    - 2.x:
+      - 2.6.0: releases/2.6.0.md
+      - 2.5.4: releases/2.5.4.md
+      - 2.5.3: releases/2.5.3.md
+      - 2.5.2: releases/2.5.2.md
+      - 2.5.1: releases/2.5.1.md
+      - 2.5.0: releases/2.5.0.md
+      - 2.4.4: releases/2.4.4.md
+      - 2.4.3: releases/2.4.3.md
+      - 2.4.2: releases/2.4.2.md
+      - 2.4.1: releases/2.4.1.md
+      - 2.4.0: releases/2.4.0.md
+      - 2.3.1: releases/2.3.1.md
+      - 2.3.0: releases/2.3.0.md
+      - 2.2.2: releases/2.2.2.md
+      - 2.2.1: releases/2.2.1.md
+      - 2.2.0: releases/2.2.0.md
+      - 2.1.0: releases/2.1.0.md
+      - 2.0.2: releases/2.0.2.md
+      - 2.0.1: releases/2.0.1.md
+      - 2.0.0: releases/2.0.0.md
+    - 1.x:
+      - 1.9.0: releases/1.9.0.md
+      - 1.8.0: releases/1.8.0.md
+      - 1.7.0: releases/1.7.0.md
+      - 1.6.0: releases/1.6.0.md
+      - 1.5.0: releases/1.5.0.md
+      - 1.4.0: releases/1.4.0.md
+      - 1.3.0: releases/1.3.0.md
+      - 1.2.0: releases/1.2.0.md
+      - 1.1.0: releases/1.1.0.md
+      - 1.0.0: releases/1.0.0.md
+      - 0.9.0: releases/0.9.0.md
   - In the news: in-the-media/links.md

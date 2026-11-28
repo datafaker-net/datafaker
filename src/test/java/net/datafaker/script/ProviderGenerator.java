@@ -44,7 +44,7 @@ class ProviderGenerator {
 
         System.out.println(files.length + " files");
 
-        for (File file : filesToProcess) {
+        for (var file : filesToProcess) {
             final Map<String, Object> valuesMap = new Yaml().loadAs(new FileReader(file), Map.class);
 
             Map<String, Object> en = (Map<String, Object>) valuesMap.get("en");
@@ -101,7 +101,7 @@ class ProviderGenerator {
         System.out.println("    }");
         System.out.println();
 
-        for (String string : strings) {
+        for (var string : strings) {
             String methodName = StringUtils.uncapitalize(toJavaConvention(string));
 
             System.out.println("    public String " + methodName + "() {\n" +
@@ -127,7 +127,7 @@ class ProviderGenerator {
         System.out.println("class " + className + "Test extends " + providerType.getTestSuperclassSimpleName() + " {");
         System.out.println();
 
-        for (String string : strings) {
+        for (var string : strings) {
             String testMethodName = StringUtils.uncapitalize(toJavaConvention(string));
 
             System.out.println("    @" + Test.class.getSimpleName());

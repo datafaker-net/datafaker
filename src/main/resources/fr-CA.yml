@@ -8,7 +8,7 @@ fr-CA:
       street_name:
         - "#{street_suffix}"
       street_address:
-        - " #{street_name} #{building_number}"
+        - "#{street_name} #{building_number}"
       default_country: [Canada]
 
     company:

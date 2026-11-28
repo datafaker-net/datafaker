@@ -72,18 +72,6 @@ public class Name extends AbstractProvider<BaseProviders> {
 
     /**
      * Returns a random male 'given' name.
-     * @deprecated Use {@link #maleFirstName()} instead.
-     *
-     * @return a male 'given' name
-     */
-    @Deprecated(since = "2.4.3", forRemoval = true)
-    @SuppressWarnings("SpellCheckingInspection")
-    public String malefirstName() {
-        return maleFirstName();
-    }
-
-    /**
-     * Returns a random male 'given' name.
      *
      * @return a male 'given' name
      */
@@ -135,25 +123,5 @@ public class Name extends AbstractProvider<BaseProviders> {
             resolve("name.title.level"),
             resolve("name.title.job")
         );
-    }
-
-    /**
-     * A lowercase username composed of the first_name and last_name joined with a '.'. Some examples are:
-     * <ul>
-     *     <li>(template) {@link #firstName()}.{@link #lastName()}</li>
-     *     <li>jim.jones</li>
-     *     <li>jason.leigh</li>
-     *     <li>tracy.jordan</li>
-     * </ul>
-     *
-     * @deprecated Use {@link Credentials#username()} instead.
-     * @return a random two part username.
-     * @see Name#firstName()
-     * @see Name#lastName()
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    @SuppressWarnings("removal")
-    public String username() {
-        return faker.credentials().username();
     }
 }

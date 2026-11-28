@@ -13,7 +13,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Base64;
 import java.util.regex.Pattern;
 
@@ -54,7 +53,7 @@ public class ImageAssert extends AbstractAssert<ImageAssert, ImageData> {
     private ImageAssert verifyImage(ImageData image, int width, int height) {
         String content = RE.matcher(image.url()).replaceFirst("$1");
         byte[] bytes = Base64.getDecoder().decode(content);
-        try (InputStream in = new ByteArrayInputStream(bytes)) {
+        try (var in = new ByteArrayInputStream(bytes)) {
             BufferedImage i = ImageIO.read(in);
             assertThat(i.getWidth()).isEqualTo(width);
             assertThat(i.getHeight()).isEqualTo(height);

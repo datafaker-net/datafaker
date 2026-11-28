@@ -14,9 +14,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static net.datafaker.TestStrings.lines;
 import static net.datafaker.transformations.Field.compositeField;
 import static net.datafaker.transformations.Field.field;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,7 +75,10 @@ class XmlTest {
                     compositeField("root",
                         new Field[]{field("attribute1", () -> "value1"), field("attribute2", () -> "value2"),
                             field(null, () -> List.of(field("child", () -> "value")))})),
-                "<root attribute1=\"value1\" attribute2=\"value2\">" + System.lineSeparator() + "    <child>value</child>" + System.lineSeparator() + "</root>"),
+                lines("""
+                    <root attribute1="value1" attribute2="value2">
+                        <child>value</child>
+                    </root>""")),
             of(Schema.of(field("root", () -> "<> value\"")), "<root>&lt;&gt; value&quot;</root>")
         );
     }
@@ -120,12 +123,12 @@ class XmlTest {
                         () -> List.of(
                             field("firstname", () -> faker.name().firstName()),
                             field("lastname", () -> faker.name().lastName()),
-                            field("addresses", () -> address.get().collect(Collectors.toList())))))
+                            field("addresses", () -> address.get().toList()))))
                 .maxLen(3).build();
 
 
         XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
-        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().collect(Collectors.toList()))), 1).toString();
+        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().toList())), 1).toString();
         assertThat(xml).isNotEmpty();
         int numberOfLines = getNumberOfLines(xml);
         assertThat(numberOfLines).isEqualTo(65);
@@ -151,11 +154,11 @@ class XmlTest {
                         new Field[]{
                             field("firstname", () -> faker.name().firstName()),
                             field("lastname", () -> faker.name().lastName()),
-                            field(null, () -> List.of(field("addresses", () -> address.get().collect(Collectors.toList()))))}))
+                            field(null, () -> List.of(field("addresses", () -> address.get().toList())))}))
                 .maxLen(3).build();
 
         XmlTransformer<Object> xmlTransformer = new XmlTransformer.XmlTransformerBuilder<>().pretty(true).build();
-        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().collect(Collectors.toList()))), 1).toString();
+        String xml = xmlTransformer.generate(Schema.of(field("persons", () -> persons.get().toList())), 1).toString();
         assertThat(xml).isNotEmpty();
         int numberOfLines = getNumberOfLines(xml);
         assertThat(numberOfLines).isEqualTo(23);

@@ -4,7 +4,7 @@
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
     <packaging>jar</packaging>
-    <version>2.6.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <name>Datafaker</name>
     <description>
         This library is an improved fork of JavaFaker (as well as Ruby's stympy/faker gem and Perl's Data::Faker
@@ -24,41 +24,51 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <additionalparam>-Xdoclint:none</additionalparam>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
 
-        <assertj-core.version>3.27.6</assertj-core.version>
-        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <tomlj.version>2.2.0</tomlj.version>
+        <assertj-core.version>3.27.7</assertj-core.version>
+        <commons-lang3.version>3.22.0</commons-lang3.version>
         <commons-text.version>1.15.0</commons-text.version>
-        <commons-validator.version>1.10.1</commons-validator.version>
+        <commons-validator.version>1.11.0</commons-validator.version>
         <rgxgen.version>3.1</rgxgen.version>
         <google.javaformat.version>1.17.0</google.javaformat.version>
-        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.16</jacoco-maven-plugin.version>
         <jbanking.version>4.3.0</jbanking.version>
-        <junit.version>6.0.1</junit.version>
-        <libphonenumber.version>9.0.20</libphonenumber.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-        <maven-enforcer-plugin.version>3.6.2</maven-enforcer-plugin.version>
-        <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
+        <junit.version>6.1.3</junit.version>
+        <libphonenumber.version>9.0.44</libphonenumber.version>
+        <jspecify.version>1.0.1</jspecify.version>
+        <error_prone.version>2.53.0</error_prone.version>
+
+        <releaseJavaVersion>17</releaseJavaVersion>
+        <buildJavaVersion>17</buildJavaVersion>
+
+        <exec-maven-plugin.version>3.6.3</exec-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.12.0</central-publishing-maven-plugin.version>
+        <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
+        <maven-enforcer-plugin.version>3.7.0</maven-enforcer-plugin.version>
+        <maven-failsafe-plugin.version>3.6.1</maven-failsafe-plugin.version>
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
         <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
-        <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
+        <maven-shade-plugin.version>3.6.2</maven-shade-plugin.version>
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
-        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-        <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
-        <mockito-core.version>5.20.0</mockito-core.version>
+        <maven-surefire-plugin.version>3.6.1</maven-surefire-plugin.version>
+        <maven-jar-plugin.version>3.5.1</maven-jar-plugin.version>
+        <moditect-maven-plugin.version>1.3.0.Final</moditect-maven-plugin.version>
+        <mockito-core.version>5.24.0</mockito-core.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
+        <versions-maven-plugin.version>2.25.3</versions-maven-plugin.version>
         <reflections.version>0.10.2</reflections.version>
-        <slf4j.version>2.0.17</slf4j.version>
-        <javaparser.version>3.27.1</javaparser.version>
-        <snakeyaml.version>2.5</snakeyaml.version>
-        <spotless-maven-plugin.version>3.1.0</spotless-maven-plugin.version>
+        <slf4j.version>2.0.20</slf4j.version>
+        <javaparser.version>3.28.2</javaparser.version>
+        <snakeyaml.version>2.7</snakeyaml.version>
+        <spotless-maven-plugin.version>3.12.0</spotless-maven-plugin.version>
+        <!-- Empty means scan all, non empty value will be passed from CI -->
+        <spotless.ratchetFrom></spotless.ratchetFrom>
         <!-- Run tests in Turkish to make sure that they don't depend on
                          locale. Turkish is a notoriously tricky locale. -->
         <surefire.argline>@{argLine} -Duser.language=TR -Duser.country=tr</surefire.argline>
-        <kotlin.version>2.2.21</kotlin.version>
+        <kotlin.version>2.4.21</kotlin.version>
     </properties>
     <licenses>
         <license>
@@ -89,7 +99,27 @@
             <version>${libphonenumber.version}</version>
         </dependency>
 
+        <!-- Annotations for nullability etc. -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <version>${jspecify.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.errorprone</groupId>
+            <artifactId>error_prone_annotations</artifactId>
+            <version>${error_prone.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.tomlj</groupId>
+            <artifactId>tomlj</artifactId>
+            <version>${tomlj.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -188,6 +218,9 @@
         </dependency>
     </dependencies>
     <build>
+
+        <defaultGoal>clean verify</defaultGoal>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -195,8 +228,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
+                        <release>${releaseJavaVersion}</release>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -212,13 +244,28 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions-maven-plugin.version}</version>
+                    <configuration>
+                        <ruleSet>
+                            <ignoreVersions>
+                                <ignoreVersion>
+                                    <type>regex</type>
+                                    <version>.*(?i)(alpha|beta|rc|cr|preview|milestone|[mb][0-9]+).*</version>
+                                </ignoreVersion>
+                            </ignoreVersions>
+                        </ruleSet>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.9.0</version>
+                <version>${central-publishing-maven-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
@@ -238,10 +285,51 @@
                         </goals>
                         <configuration>
                             <rules>
+                                <requireMavenVersion>
+                                    <!-- https://maven.apache.org/docs/history.html -->
+                                    <version>[3.9,)</version>
+                                </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>${maven.compiler.source}</version>
+                                    <version>[${buildJavaVersion},)</version>
                                 </requireJavaVersion>
+                                <requirePluginVersions>
+                                    <message>Best practice is to always define Maven plugin versions</message>
+                                    <banTimestamps>true</banTimestamps>
+
+                                    <unCheckedPluginList>
+                                        org.apache.maven.plugins:maven-clean-plugin,
+                                        org.apache.maven.plugins:maven-dependency-plugin,
+                                        org.apache.maven.plugins:maven-deploy-plugin,
+                                        org.apache.maven.plugins:maven-install-plugin,
+                                        org.apache.maven.plugins:maven-resources-plugin,
+                                        org.apache.maven.plugins:maven-site-plugin
+                                    </unCheckedPluginList>
+                                </requirePluginVersions>
                             </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-native-image-metadata</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${java.home}/bin/java</executable>
+                            <classpathScope>runtime</classpathScope>
+                            <arguments>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>${project.basedir}/scripts/GenerateNativeImageMetadata.java</argument>
+                                <argument>${project.build.outputDirectory}</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>
@@ -269,6 +357,11 @@
                             </yamlFeatures>
                         </jackson>
                     </yaml>
+                    <upToDateChecking>
+                        <enabled>true</enabled>
+                        <indexFile>${project.basedir}/.spotless-index-file</indexFile>
+                    </upToDateChecking>
+                    <ratchetFrom>${spotless.ratchetFrom}</ratchetFrom>
                 </configuration>
                 <executions>
                     <execution>
@@ -353,7 +446,7 @@
             <plugin>
                 <groupId>org.moditect</groupId>
                 <artifactId>moditect-maven-plugin</artifactId>
-                <version>1.3.0.Final</version>
+                <version>${moditect-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>add-module-infos</id>
@@ -501,7 +594,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>${maven.compiler.target}</jvmTarget>
+                    <jvmTarget>${releaseJavaVersion}</jvmTarget>
                 </configuration>
             </plugin>
             <plugin>
@@ -536,6 +629,17 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>nativeMetadata</id>
+            <properties>
+                <native.image.agent.additional.filter></native.image.agent.additional.filter>
+                <surefire.argline>
+                    @{argLine} -Duser.language=TR -Duser.country=tr
+                    -Dnative.image.metadata.generation=true
+                    -agentlib:native-image-agent=caller-filter-file=${project.basedir}/src/test/resources/native-image-agent-filter.json,access-filter-file=${project.basedir}/src/test/resources/native-image-agent-filter.json${native.image.agent.additional.filter},config-output-dir=${project.build.directory}/native-image-agent
+                </surefire.argline>
+            </properties>
+        </profile>
         <profile>
             <id>noGpg</id>
             <build>

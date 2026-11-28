@@ -6,6 +6,7 @@ import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.App;
 import net.datafaker.providers.base.BaseFaker;
 import net.datafaker.providers.base.Name;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -74,7 +75,7 @@ class FakerIntegrationTest {
         }
     }
 
-    private Faker init(Locale locale, Random random) {
+    private Faker init(@Nullable Locale locale, @Nullable Random random) {
         if (locale != null && random != null) {
             return new Faker(locale, random);
         } else if (locale != null) {
@@ -88,12 +89,12 @@ class FakerIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("dataParameters")
-    void testAllFakerMethodsThatReturnStrings(Locale locale, Random random) throws Exception {
+    void testAllFakerMethodsThatReturnStrings(@Nullable Locale locale, @Nullable Random random) throws Exception {
         log.fine(() -> "  (%s, %s)".formatted(locale, random));
         final Faker faker = init(locale, random);
 
         Method[] methods = faker.getClass().getMethods();
-        for (Method provider : methods) {
+        for (var provider : methods) {
             if (AbstractProvider.class.isAssignableFrom(provider.getReturnType()) && provider.getParameterCount() == 0) {
                 log.fine(() -> "    (%s), method: %s.%s()".formatted(locale, provider.getDeclaringClass().getSimpleName(), provider.getName()));
 
@@ -111,7 +112,7 @@ class FakerIntegrationTest {
             withReturnType(String.class),
             withParametersCount(0));
 
-        for (Method method : methodsThatReturnStrings) {
+        for (var method : methodsThatReturnStrings) {
             if (isExcepted(provider, method, locale)) {
                 continue;
             }
@@ -169,7 +170,7 @@ class FakerIntegrationTest {
         arguments.add(Arguments.of(null, null));
 
         String[] ymlFiles = requireNonNull(new File("./src/main/resources").list());
-        for (String ymlFileName : ymlFiles) {
+        for (var ymlFileName : ymlFiles) {
             if (ymlFileName.endsWith(".yml") && !ymlFileName.startsWith("_")) {
                 String locale = substringBefore(ymlFileName, ".").replace("-", "_");
                 arguments.add(Arguments.of(new Locale(locale), null));

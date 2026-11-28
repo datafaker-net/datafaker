@@ -1,0 +1,19 @@
+{
+  "rules": [
+    {"excludeClasses": "com.intellij.**"},
+    {"excludeClasses": "net.bytebuddy.**"},
+    {"excludeClasses": "org.assertj.**"},
+    {"excludeClasses": "org.apache.maven.**"},
+    {"excludeClasses": "org.junit.**"},
+    {"excludeClasses": "org.mockito.**"},
+    {"excludeClasses": "org.opentest4j.**"},
+    {"excludeClasses": "org.slf4j.simple.**"},
+    {"excludeClasses": "net.datafaker.annotations.dto.**"},
+    {"excludeClasses": "net.datafaker.script.**"}
+  ],
+  "regexRules": [
+    {"includeClasses": ".*"},
+    {"excludeClasses": "net\\.datafaker\\..*Test(?:\\$.*)?"},
+    {"excludeClasses": "net\\.datafaker\\.(?:LogFormatter|TestSetupExtension|ThreadLocalLogHandler)"}
+  ]
+}

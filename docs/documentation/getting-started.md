@@ -12,7 +12,7 @@ Datafaker can be included in your project using most dependency management tools
 
 === "Maven"
 
-    ``` sh
+    ```sh
     <dependency>
         <groupId>net.datafaker</groupId>
         <artifactId>datafaker</artifactId>
@@ -22,7 +22,7 @@ Datafaker can be included in your project using most dependency management tools
 
 === "Gradle (Groovy)"
 
-    ``` sh
+    ```sh
     dependencies {
         implementation 'net.datafaker:datafaker:{{ datafaker.version }}'
     }
@@ -30,7 +30,7 @@ Datafaker can be included in your project using most dependency management tools
 
 === "Gradle (Kotlin)"
 
-    ``` sh
+    ```sh
     dependencies {
         implementation("net.datafaker:datafaker:{{ datafaker.version }}")
     }
@@ -38,10 +38,9 @@ Datafaker can be included in your project using most dependency management tools
 
 === "Ivy"
 
-    ``` sh
+    ```sh
     <dependency org="net.datafaker" name="datafaker" rev="{{ datafaker.version }}"/>
     ```
-
 
 ### Snapshot versions
 
@@ -50,7 +49,7 @@ by including the Sonatype snapshot repository in your configuration.
 
 A Gradle example can be found below:
 
-``` sh
+```sh
 repositories {
     mavenCentral()
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots")
@@ -67,7 +66,7 @@ To use Datafaker to generate fake data, you can use the following code as an exa
 
 === "Java"
 
-    ``` java
+    ```java
     import net.datafaker.Faker;
     
     Faker faker = new Faker();
@@ -81,7 +80,7 @@ To use Datafaker to generate fake data, you can use the following code as an exa
 
 === "Kotlin"
 
-    ```
+    ```kotlin
     import net.datafaker.Faker
     
     val faker = Faker()

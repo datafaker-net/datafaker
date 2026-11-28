@@ -1,10 +1,17 @@
-{#-
-  This file was automatically generated - do not edit
--#}
 {% extends "overrides/main.html" %}
 {% block tabs %}
   {{ super() }}
-  <style>.md-header{position:initial}.md-main__inner{margin:0}.md-content{display:none}@media screen and (min-width:60em){.md-sidebar--secondary{display:none}}@media screen and (min-width:76.25em){.md-sidebar--primary{display:none}}</style>
+  <style>
+    .md-header { position: initial; }
+    .md-main__inner { margin: 0; }
+    .md-content { display: none; }
+    @media screen and (min-width: 60em) {
+      .md-sidebar--secondary { display: none; }
+    }
+    @media screen and (min-width: 76.25em) {
+      .md-sidebar--primary { display: none; }
+    }
+  </style>
   <section class="mdx-container">
     <div class="md-grid md-typeset">
       <div class="mdx-hero">
@@ -21,6 +28,9 @@
       </div>
     </div>
   </section>
+  <div class="mdx-attribution">
+    <p>Social images for Datafaker are generated using <a href="https://allscreenshots.com">Allscreenshots.com</a></p>
+  </div>
 {% endblock %}
 {% block content %}{% endblock %}
 {% block footer %}{% endblock %}

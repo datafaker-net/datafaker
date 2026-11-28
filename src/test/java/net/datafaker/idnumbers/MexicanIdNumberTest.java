@@ -22,19 +22,7 @@ class MexicanIdNumberTest {
     }
 
     @RepeatedTest(100)
-    @SuppressWarnings("deprecation")
-    void validEsMXSsn() {
-        assertThat(idNumber.validEsMXSsn()).matches(REGEX);
-    }
-
-    @RepeatedTest(100)
     void invalid() {
         assertThat(idNumber.invalid()).matches(REGEX);
-    }
-
-    @RepeatedTest(100)
-    @SuppressWarnings("deprecation")
-    void invalidEsMXSsn() {
-        assertThat(idNumber.invalidEsMXSsn()).matches(REGEX);
     }
 }

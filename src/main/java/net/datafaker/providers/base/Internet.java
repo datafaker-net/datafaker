@@ -1,7 +1,9 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.internal.helper.FakerIDN;
+import net.datafaker.internal.helper.HostnameHelper;
 import net.datafaker.service.RandomService;
+import org.jspecify.annotations.Nullable;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -10,8 +12,9 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.text.Normalizer;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -26,25 +29,6 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
     protected Internet(BaseProviders faker) {
         super(faker);
-    }
-
-    /**
-     * A lowercase username composed of the first_name and last_name joined with a '.'. Some examples are:
-     * <ul>
-     *     <li>(template) {@link Name#firstName()}.{@link Name#lastName()}</li>
-     *     <li>jim.jones</li>
-     *     <li>jason.leigh</li>
-     *     <li>tracy.jordan</li>
-     * </ul>
-     *
-     * @return a random two part username.
-     * @see Name#firstName()
-     * @see Name#lastName()
-     * @deprecated Since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#username()} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String username() {
-        return faker.credentials().username();
     }
 
     public String emailAddress() {
@@ -97,7 +81,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     private String emailAddress(String localPart, String domain) {
-        return String.join("", stripAccents(localPart), "@", domain);
+        return localPart + "@" + domain;
     }
 
     public String emailSubject() {
@@ -107,14 +91,53 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public static final Pattern DIACRITICS_AND_FRIENDS
         = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
+    /**
+     * Latin letters that NFD does not decompose into a base letter plus combining marks,
+     * mapped to their usual ASCII transliteration.
+     */
+    private static final Map<Character, String> NON_DECOMPOSABLE_LETTERS = Map.ofEntries(
+        Map.entry('Đ', "D"), Map.entry('đ', "d"),
+        Map.entry('Ð', "D"), Map.entry('ð', "d"),
+        Map.entry('Ł', "L"), Map.entry('ł', "l"),
+        Map.entry('Ŀ', "L"), Map.entry('ŀ', "l"),
+        Map.entry('Ø', "O"), Map.entry('ø', "o"),
+        Map.entry('Ħ', "H"), Map.entry('ħ', "h"),
+        Map.entry('Ŧ', "T"), Map.entry('ŧ', "t"),
+        Map.entry('ı', "i"),
+        Map.entry('ß', "ss"), Map.entry('ẞ', "SS"),
+        Map.entry('Æ', "AE"), Map.entry('æ', "ae"),
+        Map.entry('Œ', "OE"), Map.entry('œ', "oe"),
+        Map.entry('Þ', "TH"), Map.entry('þ', "th"),
+        Map.entry('Ĳ', "IJ"), Map.entry('ĳ', "ij")
+    );
+
     private String stripAccents(String input) {
-        // strip accents from input
         String str = Normalizer.normalize(input, Normalizer.Form.NFD);
         str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
-        return str;
+        return replaceNonDecomposableLetters(str);
+    }
+
+    private static String replaceNonDecomposableLetters(String input) {
+        StringBuilder result = null;
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            String replacement = c < 0x80 ? null : NON_DECOMPOSABLE_LETTERS.get(c);
+            if (replacement != null && result == null) {
+                result = new StringBuilder(input.length() + 4).append(input, 0, i);
+            }
+            if (result != null) {
+                if (replacement != null) {
+                    result.append(replacement);
+                } else {
+                    result.append(c);
+                }
+            }
+        }
+        return result == null ? input : result.toString();
     }
 
     private static final Pattern LOCALPART = Pattern.compile("[^a-z0-9\\.]");
+    private static final Pattern REPEATED_DOTS = Pattern.compile("\\.{2,}");
 
     /**
      * Converts a name to a local part (the part before the '@') of an email
@@ -129,14 +152,15 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @since 2.5.0
      */
     private String toLocalPart(String name) {
-        String[] parts = stripAccents(name).split(" ");
+        String asciiName = stripAccents(name);
+        String[] parts = asciiName.split(" ");
 
         Object prefixObj = faker.fakeValuesService().fetchObject("name.prefix", faker.getContext());
         final List<String> prefixList = (prefixObj instanceof List<?> list
                 && list.stream().allMatch(String.class::isInstance))
                         ? list.stream().map(String.class::cast).toList()
-                        : Collections.emptyList();
-        if (prefixList.contains(parts[0])) {
+                        : List.of();
+        if (parts.length > 0 && prefixList.contains(parts[0])) {
             parts = Arrays.copyOfRange(parts, 1, parts.length);
         }
 
@@ -144,35 +168,77 @@ public class Internet extends AbstractProvider<BaseProviders> {
         final List<String> suffixList = (suffixObj instanceof List<?> list
                 && list.stream().allMatch(String.class::isInstance))
                         ? list.stream().map(String.class::cast).toList()
-                        : Collections.emptyList();
-        if (suffixList.contains(parts[parts.length - 1])) {
+                        : List.of();
+        if (parts.length > 0 && suffixList.contains(parts[parts.length - 1])) {
             parts = Arrays.copyOfRange(parts, 0, parts.length - 1);
         }
 
+        String localPart;
         if (parts.length == 0) {
-            return LOCALPART.matcher(name.toLowerCase(faker.getContext().getLocale())).replaceAll("");
+            localPart = toAsciiLowerCase(asciiName);
+        } else if (parts.length == 1) {
+            localPart = toAsciiLowerCase(parts[0]);
+        } else {
+            localPart = toAsciiLowerCase(parts[0]) + "." + toAsciiLowerCase(parts[parts.length - 1]);
         }
-
-        if (parts.length == 1) {
-            return LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll("");
-        }
-
-        return String.join(".",
-            LOCALPART.matcher(parts[0].toLowerCase(faker.getContext().getLocale())).replaceAll(""),
-            LOCALPART.matcher(parts[parts.length - 1].toLowerCase(faker.getContext().getLocale())).replaceAll(""));
+        return trimDots(REPEATED_DOTS.matcher(localPart).replaceAll("."));
     }
 
+    /**
+     * Lower-cases with {@link Locale#ROOT}: the input is already transliterated to ASCII, and a locale such as
+     * Turkish would turn {@code I} into the non-ASCII dotless {@code ı}, which {@link #LOCALPART} then drops.
+     */
+    private static String toAsciiLowerCase(String word) {
+        return LOCALPART.matcher(word.toLowerCase(Locale.ROOT)).replaceAll("");
+    }
+
+    private static String trimDots(String localPart) {
+        int start = 0;
+        int end = localPart.length();
+        while (start < end && localPart.charAt(start) == '.') start++;
+        while (end > start && localPart.charAt(end - 1) == '.') end--;
+        return localPart.substring(start, end);
+    }
+
+    /**
+     * Returns a domain name with a word and a suffix.
+     * <p>
+     * The domain word is created by sanitizing a name according to RFC 1123
+     * (Letter-Digit-Hyphen rules). The result is always a valid ASCII hostname.
+     *
+     * @return a valid ASCII domain name
+     * @since 0.8.0
+     */
     public String domainName() {
         return domainWord() + "." + domainSuffix();
     }
 
+    /**
+     * Returns a domain word (label without suffix).
+     * <p>
+     * The word is created by sanitizing a last name according to RFC 1123
+     * (Letter-Digit-Hyphen rules). The result is always a valid ASCII hostname label.
+     *
+     * @return a valid ASCII domain label
+     * @since 0.8.0
+     */
     public String domainWord() {
-        return FakerIDN.toASCII(
-            faker.name().lastName().toLowerCase(faker.getContext().getLocale()).replace("'", ""));
+        String lastName = faker.name().lastName().toLowerCase(faker.getContext().getLocale()).replace("'", "");
+        return HostnameHelper.toAsciiHostnameLabel(lastName, faker.getContext().getLocale());
     }
 
+    /**
+     * Returns a domain suffix (TLD).
+     * <p>
+     * The suffix is sanitized according to RFC 1123 to ensure it is ASCII-compatible.
+     * For non-ASCII locales, the suffix is converted to ASCII via the hostname sanitizer.
+     *
+     * @return a domain suffix (ASCII)
+     * @since 0.8.0
+     */
     public String domainSuffix() {
-        return resolve("internet.domain_suffix");
+        String suffix = resolve("internet.domain_suffix");
+        return HostnameHelper.toAsciiHostname(suffix, faker.getContext().getLocale());
     }
 
     /**
@@ -202,7 +268,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @since 2.0.0
      */
     public String url(boolean schemeChoice, boolean portChoice, boolean pathChoice, boolean fileChoice, boolean paramsChoice, boolean anchorChoice) {
-        String scheme = schemeChoice ? faker.options().nextElement(HTTP_SCHEMES) : "https://";
+        String scheme = schemeChoice ? faker.selection().oneOf(HTTP_SCHEMES) : "https://";
         String port = portChoice ? (":" + port()) : "";
         String path = pathChoice ? ("/" + slug(faker.lorem().words(2), "/")) : "/";
         String file = fileChoice ? faker.lorem().words(1).get(0) : "";
@@ -213,18 +279,25 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
     /**
      * Returns a web domain.
+     * <p>
+     * The domain is created by combining a first name and domain word, both sanitized
+     * according to RFC 1123 (Letter-Digit-Hyphen rules). The result is always a valid
+     * ASCII hostname.
      *
      * @return a web domain in the form "www.example.com"
      * @since 2.0.0
      */
     public String webdomain() {
+        String firstName = faker.name().firstName().toLowerCase(
+            faker.getContext().getLocale()).replace("'", "");
+        String firstNameLabel = HostnameHelper.toAsciiHostnameLabel(firstName, faker.getContext().getLocale());
+        String combinedLabel = firstNameLabel + "-" + domainWord();
+        // Sanitize the combined label to handle cases where concatenation might create issues
+        String sanitized = HostnameHelper.toAsciiHostnameLabel(combinedLabel, faker.getContext().getLocale());
+
         return String.join("",
             "www", ".",
-            FakerIDN.toASCII(
-                faker.name().firstName().toLowerCase(
-                    faker.getContext().getLocale()).replace("'", "") + "-" +
-                    domainWord()
-            ),
+            sanitized,
             ".",
             domainSuffix()
         );
@@ -249,54 +322,6 @@ public class Internet extends AbstractProvider<BaseProviders> {
 
     public String httpMethod() {
         return resolve("internet.http_method");
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password()} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password() {
-        return password(8, 16);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(boolean)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(boolean includeDigit) {
-        return password(8, 16, false, false, includeDigit);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(int minimumLength, int maximumLength) {
-        return password(minimumLength, maximumLength, false);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(int minimumLength, int maximumLength, boolean includeUppercase) {
-        return password(minimumLength, maximumLength, includeUppercase, false);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial) {
-        return password(minimumLength, maximumLength, includeUppercase, includeSpecial, true);
-    }
-
-    /**
-     * @deprecated since 2.5.0. Use {@link net.datafaker.providers.base.Credentials#password(int, int, boolean, boolean, boolean)} instead.
-     */
-    @Deprecated(since = "2.5.0", forRemoval = true)
-    public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
-        return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
 
     /**
@@ -339,7 +364,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @param prefix a prefix to put on the front of the address
      * @return a correctly formatted MAC address
      */
-    public String macAddress(String prefix) {
+    public String macAddress(@Nullable String prefix) {
         final String tmp = (prefix == null) ? "" : prefix;
         final int prefixLength = tmp.trim().isEmpty()
             ? 0
@@ -394,10 +419,10 @@ public class Internet extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * @return a private IPV4 address
+     * @return a private IPV4 address (RFC 1918: 10/8, 172.16/12 or 192.168/16)
      */
     public InetAddress getPrivateIpV4Address() {
-        final Byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
+        final Byte[] PRIVATE_FIRST_OCTET = {10, (byte) 192, (byte) 172};
         final Byte[] PRIVATE_SECOND_OCTET_172 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 
         final RandomService r = faker.random();
@@ -409,7 +434,6 @@ public class Internet extends AbstractProvider<BaseProviders> {
         switch (first) {
             case (byte) 172 -> second = random(PRIVATE_SECOND_OCTET_172);
             case (byte) 192 -> second = (byte) 168;
-            case (byte) 169 -> second = (byte) 254;
         }
         return inet4Address(first, second, third, fourth);
     }
@@ -427,17 +451,35 @@ public class Internet extends AbstractProvider<BaseProviders> {
     public InetAddress getPublicIpV4Address() {
         final RandomService r = faker.random();
 
-        final byte[] PRIVATE_FIRST_OCTET = {10, 127, (byte) 169, (byte) 192, (byte) 172};
+        InetAddress address;
+        do {
+            address = inet4Address((byte) r.nextInt(256), (byte) r.nextInt(256), (byte) r.nextInt(256), (byte) r.nextInt(256));
+        } while (isLocalOrReservedIpV4(address));
+        return address;
+    }
 
-        byte first = (byte) r.nextInt(256),
-            second = (byte) r.nextInt(256),
-            third = (byte) r.nextInt(256),
-            fourth = (byte) r.nextInt(256);
-
-        while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
-            first = (byte) r.nextInt(256);
+    /**
+     * True for IPv4 addresses that are not globally routable:
+     * private (10/8, 172.16/12, 192.168/16), loopback (127/8), link-local (169.254/16),
+     * "this network" (0/8), shared address space (100.64/10), IETF protocol assignments (192.0.0/24),
+     * documentation (192.0.2/24, 198.51.100/24, 203.0.113/24), benchmarking (198.18/15),
+     * multicast (224/4), reserved (240/4) and broadcast (255.255.255.255).
+     */
+    static boolean isLocalOrReservedIpV4(InetAddress address) {
+        if (address.isSiteLocalAddress() || address.isLoopbackAddress() || address.isLinkLocalAddress()) {
+            return true;
         }
-        return inet4Address(first, second, third, fourth);
+        byte[] bytes = address.getAddress();
+        int first = bytes[0] & 0xFF;
+        int second = bytes[1] & 0xFF;
+        int third = bytes[2] & 0xFF;
+        return first == 0
+            || first >= 224
+            || (first == 100 && (second & 0xC0) == 64)
+            || (first == 192 && second == 0 && (third == 0 || third == 2))
+            || (first == 198 && (second == 18 || second == 19))
+            || (first == 198 && second == 51 && third == 100)
+            || (first == 203 && second == 0 && third == 113);
     }
 
     /**
@@ -498,7 +540,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
      * @param glueOrNull  if null, "_"
      * @return a slug string combining wordsOrNull with glueOrNull (ex. x_y)
      */
-    public String slug(List<String> wordsOrNull, String glueOrNull) {
+    public String slug(@Nullable List<String> wordsOrNull, @Nullable String glueOrNull) {
         final String glue = glueOrNull == null
             ? "_"
             : glueOrNull;
@@ -575,7 +617,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         return src[faker.random().nextInt(src.length)];
     }
 
-    public String userAgent(UserAgent userAgent) {
+    public String userAgent(@Nullable UserAgent userAgent) {
         UserAgent agent = userAgent;
 
         if (agent == null) {
@@ -618,7 +660,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         }
     }
 
-    public String botUserAgent(BotUserAgent vendor) {
+    public String botUserAgent(@Nullable BotUserAgent vendor) {
         BotUserAgent agent = vendor;
 
         if (agent == null) {
@@ -648,9 +690,7 @@ public class Internet extends AbstractProvider<BaseProviders> {
         }
 
         private static BotUserAgent any(BaseProviders faker) {
-            BotUserAgent[] agents = BotUserAgent.values();
-            int randomIndex = (int) (faker.random().nextDouble() * agents.length);
-            return agents[randomIndex];
+            return faker.selection().oneOf(BotUserAgent.class);
         }
 
         @Override

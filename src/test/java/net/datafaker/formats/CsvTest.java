@@ -116,12 +116,11 @@ class CsvTest {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void testCsvWithDifferentObjectsFunction() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
-            field("Password", integer -> faker.internet().password(integer, integer))
+            field("Password", integer -> faker.credentials().password(integer, integer))
         );
         CsvTransformer<Integer> transformer =
             CsvTransformer.<Integer>builder().header(true).separator(",").build();
@@ -144,12 +143,11 @@ class CsvTest {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void testCsvWithDifferentObjectsFunctionStream() {
         BaseFaker faker = new BaseFaker(new Random(10L));
         Schema<Integer, ?> schema = Schema.of(
             field("Number", integer -> integer),
-            field("Password", integer -> faker.internet().password(integer, integer))
+            field("Password", integer -> faker.credentials().password(integer, integer))
         );
         CsvTransformer<Integer> transformer =
             CsvTransformer.<Integer>builder().header(true).separator(",").build();
@@ -322,7 +320,7 @@ class CsvTest {
                 .header(false).separator(" : ")
                 .build()
                 .generate(schema, 1))
-            .isInstanceOf(IllegalArgumentException.class)
+            .isInstanceOf(NullPointerException.class)
             .hasMessageContaining("Input could be null only if suppliers are defined");
     }
 }

@@ -10,9 +10,10 @@ class BarcodeTest {
 
     @Test
     void type() {
-        assertThat(faker.barcode().type()).matches("(Code(128|39|93))|([EJ])AN(-\\d{1,2})*|Codabar|UCC|UPC(-([AE]))*|IS([BS])N|ITF|" +
-            "Ames\\sCode|NW-7|Monarch|Code\\s2\\sof\\s7|Rationalized|ANSI/AIM BC3-1995|USD-4|" +
-            "GS1 Databar|MSI Plessey");
+        assertThat(faker.barcode().type()).matches("""
+            (Code(128|39|93))|([EJ])AN(-\\d{1,2})*|Codabar|UCC|UPC(-([AE]))*|IS([BS])N|ITF|\
+            Ames\\sCode|NW-7|Monarch|Code\\s2\\sof\\s7|Rationalized|ANSI/AIM BC3-1995|USD-4|\
+            GS1 Databar|MSI Plessey""");
     }
 
     private static boolean isBarcodeValid(long barcode) {

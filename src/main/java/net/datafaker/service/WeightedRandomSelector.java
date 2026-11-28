@@ -1,11 +1,15 @@
 package net.datafaker.service;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+
+import static java.util.Objects.requireNonNullElseGet;
 
 /**
  * A utility class for selecting a random element from a list based on assigned weights.
@@ -14,14 +18,13 @@ public record WeightedRandomSelector(Random random) {
     private static final String WEIGHT_KEY = "weight";
     private static final String VALUE_KEY = "value";
 
-    public WeightedRandomSelector(Random random) {
-        this.random = random != null ? random : new Random();
+    public WeightedRandomSelector(@Nullable Random random) {
+        this.random = requireNonNullElseGet(random, () -> new Random());
     }
 
     /**
      * Returns a weighted random element from the given list, where each element is represented as a Map
      * containing a weight and the corresponding value.
-     * <p>
      *
      * @param items A list of maps, where each map contains:
      *              - weight: A Double representing the weight of the element, influencing its selection probability.
@@ -46,6 +49,7 @@ public record WeightedRandomSelector(Random random) {
         return selectWeightedElement(randomValue, cumulativeWeights, values);
     }
 
+    @SuppressWarnings("ConstantValue")
     private static void validateItemsList(List<Map<String, Object>> items) {
         if (items == null) {
             throw new IllegalArgumentException("Input list cannot be null");
@@ -69,6 +73,7 @@ public record WeightedRandomSelector(Random random) {
         }
     }
 
+    @SuppressWarnings("ConstantValue")
     private static void validateItem(Map<String, Object> item) {
         if (item == null) {
             throw new IllegalArgumentException("Item cannot be null");
@@ -83,6 +88,7 @@ public record WeightedRandomSelector(Random random) {
         validateWeight(item.get(WEIGHT_KEY));
     }
 
+    @SuppressWarnings("ConstantValue")
     private static void validateValue(Object valueObj) {
         if (valueObj == null) {
             throw new IllegalArgumentException("Value cannot be null");
@@ -123,6 +129,7 @@ public record WeightedRandomSelector(Random random) {
         return cumulativeWeights;
     }
 
+    @SuppressWarnings("unchecked")
     static <T> T selectWeightedElement(double randomValue, double[] cumulativeWeights, Object[] values) {
         int index = Arrays.binarySearch(cumulativeWeights, randomValue);
         index = (index < 0) ? -index - 1 : index;

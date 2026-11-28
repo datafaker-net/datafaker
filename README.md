@@ -1,7 +1,7 @@
 
 # Datafaker
 
-[![Maven Status](https://maven-badges.herokuapp.com/maven-central/net.datafaker/datafaker/badge.svg?style=flat)](http://mvnrepository.com/artifact/net.datafaker/datafaker)
+[![Maven Status](https://img.shields.io/maven-central/v/net.datafaker/datafaker?label=Maven%20Status)](http://mvnrepository.com/artifact/net.datafaker/datafaker)
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![codecov](https://codecov.io/gh/datafaker-net/datafaker/branch/main/graph/badge.svg?token=FJ6EXMUTFD)](https://codecov.io/gh/datafaker-net/datafaker)
 
@@ -29,7 +29,7 @@ In the pom.xml, add the following fragment to the `dependencies` section:
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>2.5.3</version>
+    <version>2.7.0</version>
 </dependency>
 ```
 
@@ -37,12 +37,12 @@ For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:2.5.3'
+    implementation 'net.datafaker:datafaker:2.7.0'
 }
 
 ```
 
-You can also use the snapshot version (`2.6.0-SNAPSHOT`), which automatically gets published
+You can also use the snapshot version (`3.0.0-SNAPSHOT`), which automatically gets published
 after every push to the main branch of this repository. Binary repository URL for snapshots download is
 `https://central.sonatype.com/repository/maven-snapshots/`.
 
@@ -81,7 +81,7 @@ jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
 or JShell w/[JBang](https://www.jbang.dev/)
 ```
 # can be run anywhere, no project root/download needed.
-jbang -i net.datafaker:datafaker:2.5.3
+jbang -i net.datafaker:datafaker:2.7.0
 ```
 
 ```
@@ -163,22 +163,22 @@ Schema<Name, String> fromScratch =
         field("lastname", () -> faker.name().lastName()));
 System.out.println(transformer.generate(fromScratch, 2));
 // POSSIBLE OUTPUT
-// "first_name" ; "last_name"
-// "Kimberely" ; "Considine"
-// "Mariela" ; "Krajcik"
+// "firstName","lastname"
+// "Kimberely","Considine"
+// "Mariela","Krajcik"
 // ----------------------
 // Schema for transformations
 Schema<Name, String> schemaForTransformations =
     Schema.of(field("firstName", Name::firstName),
         field("lastname", Name::lastName));
-// Here we pass a collection of Name objects and extract first and lastnames from each element
+// Here we pass a collection of Name objects and extract first and last names from each element
 System.out.println(
     transformer.generate(
         faker.collection(faker::name).maxLen(2).generate(), schemaForTransformations));
 // POSSIBLE OUTPUT
-// "first_name" ; "last_name"
-// "Kimberely" ; "Considine"
-// "Mariela" ; "Krajcik"
+// "firstName","lastname"
+// "Kimberely","Considine"
+// "Mariela","Krajcik"
 ```
 
 #### JShell
@@ -208,7 +208,7 @@ jshell> Schema fromScratch =
 fromScratch ==> net.datafaker.transformations.Schema@306a30c7
 
 jshell> CsvTransformer<Name> transformer =
-   ...>     CsvTransformer.<Name>builder().header(false).separator(",").build();
+   ...>     CsvTransformer.<Name>builder().header(true).separator(",").build();
 transformer ==> net.datafaker.transformations.CsvTransformer@506c589e
 
 jshell> System.out.println(transformer.generate(fromScratch, 2));
@@ -299,6 +299,7 @@ The list below is not complete and shows only a part of available providers. To 
 * CPF ([Brazilian individual taxpayer registry identification](https://en.wikipedia.org/wiki/CPF_number))
 * Camera
 * Cat
+* Cheese
 * Chuck Norris
 * Clash of Clans
 * Code
@@ -315,6 +316,7 @@ The list below is not complete and shows only a part of available providers. To 
 * Cricket
 * Crypto
 * Currency
+* Database
 * Date and Time
 * DC Comics
 * Demographic
@@ -345,6 +347,7 @@ The list below is not complete and shows only a part of available providers. To 
 * File
 * Final Space
 * Finance
+* Fingerprint
 * Food
 * Formula 1 (:racing_car:)
 * Friends
@@ -437,8 +440,9 @@ The list below is not complete and shows only a part of available providers. To 
 * Slack Emoji
 * Soul Knight
 * Space
-* StarCraft
-* StarTrek
+* Star Craft
+* Star Trek
+* Star Wars
 * Stock
 * Studio Ghibli
 * Subscription
@@ -446,8 +450,15 @@ The list below is not complete and shows only a part of available providers. To 
 * Superhero
 * Tea
 * Team
+* The Expanse
 * The IT Crowd
+* The Kingkiller Chronicle
+* The Matrix
+* The Room
+* The Thick Of It
+* The Venture Bros
 * Time
+* Tormenta
 * Touhou
 * Tron
 * Twin Peaks
@@ -465,28 +476,28 @@ Usage with Locales
 -----
 
 ```java
-Faker faker = new Faker(new Locale("lang", "COUNTRY"));
+Faker faker = new Faker(Locale.of("lang", "COUNTRY"));
 ```
 
 For example:
 
 ```java
-String californiaZipCode = new Faker(new Locale("en", "US")).address().zipCodeByState("CA");
-String albanianIdNumber = new Faker(new Locale("sq", "AL")).idNumber().valid();
-String moldovanPhone = new Faker(new Locale("ru", "MD")).phoneNumber().cellPhone();
+String californiaZipCode = new Faker(Locale.of("en", "US")).address().zipCodeByState("CA");
+String albanianIdNumber = new Faker(Locale.of("sq", "AL")).idNumber().valid();
+String moldovanPhone = new Faker(Locale.of("ru", "MD")).phoneNumber().cellPhone();
 ```
 
 Note that most of the data depends on language,
 but some data depends purely on country (personal ID and phone numbers).
 In the example above,
 * "en", "sq", "ru" are language codes (English, Albanian and Russian), and
-* "US", "AL", "MD" are country codes (USA, Albanian and Moldova)
+* "US", "AL", "MD" are country codes (USA, Albania and Moldova)
 
 <details>
 <summary>Supported Locales</summary>
 
 -----
-* ar (Armenian)
+* ar (Arabic)
 * be_BY (Belarusian)
 * bg_BG (Bulgarian)
 * ca_CA (Canada)
@@ -558,23 +569,38 @@ In the example above,
 * zh-TW (language: Chinese, country: Taiwan)
 </details>
 
+RELATED PROJECTS
+----------------
+
+* **Address formatting:** Pair Datafaker's `Address` provider with
+  [address-formatter-java](https://github.com/placemarkt/address-formatter-java)
+  to turn generated components into locale-aware postal addresses.
+  See [Related projects](https://www.datafaker.net/documentation/related-projects/) for examples.
+* **CLI generator:** [datafaker-gen](https://github.com/datafaker-net/datafaker-gen)
+* **Native image demo:** [datafaker-native-demo](https://github.com/datafaker-net/datafaker-native-demo)
+
 NATIVE IMAGE
 ------------
 
-Since version 2.4.1, Datafaker provides **experimental** native-image support.
-This is done by providing a `reachability-metadata.json` file in the META-INF directory.
+Datafaker ships GraalVM Native Image metadata for its built-in providers. The Maven build generates reflection
+metadata for provider methods and registers the resources in the runtime classpath. New providers and resources are
+picked up during packaging. Use `faker.addPath()` or `faker.addUrl()` to load custom locale data in a native image.
+Applications using custom providers or reflectively transforming their own classes may need to supply metadata for
+those classes.
 
-This file is currently created manually by running all the unit tests, and having an agent collect tracing info:
+CI builds a native executable from the packaged Datafaker JAR and runs it on GraalVM for JDK 21 and 25.
+To run the check locally, set `JAVA_HOME` to a GraalVM installation with `native-image`.
 
+```sh
+./scripts/test-native-image.sh
 ```
--agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image
-```
 
-Future enhancements should automate and improve this process, but if you encounter any unexpected behaviour,
-feel free to report an issue.
+For additional metadata discovered by the GraalVM tracing agent, run `./scripts/update-native-image-metadata.sh`
+with GraalVM for JDK 25 and `jq`. The script filters test entries and validates the result before updating the
+checked-in metadata.
 
 An example usage of this can be found here: https://github.com/datafaker-net/datafaker-native-demo
 
 LICENSE
 -------
-Copyright (c) 2025 Datafaker.net See the LICENSE file for license rights and limitations.
+Copyright (c) 2026 Datafaker.net See the LICENSE file for license rights and limitations.

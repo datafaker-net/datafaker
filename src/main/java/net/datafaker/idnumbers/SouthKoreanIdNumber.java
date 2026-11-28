@@ -23,11 +23,6 @@ public class SouthKoreanIdNumber implements IdNumberGenerator {
         return "KR";
     }
 
-    @Deprecated
-    public String getValidRrn(BaseProviders f) {
-        return generateValid(f);
-    }
-
     @Override
     public PersonIdNumber generateValid(BaseProviders f, IdNumberRequest request) {
         StringBuilder patternBuilder = new StringBuilder();

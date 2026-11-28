@@ -16,33 +16,34 @@ jobs:
           RELEASE_VERSION=${GITHUB_REF#refs/tags/}
           echo "Extracted version: $RELEASE_VERSION"
           # Validate semver format (MAJOR.MINOR.PATCH)
-          echo "$RELEASE_VERSION" | grep -P '^2\.[0-9]+\.[0-9]+$'
+          echo "$RELEASE_VERSION" | grep -P '^[0-9]+\.[0-9]+\.[0-9]+$'
           echo "release_version=$RELEASE_VERSION" >> $GITHUB_OUTPUT
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up JDK 17
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6.3.0
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
       
       - name: Set projects Maven version to GitHub Release version
-        run: mvn versions:set "-DnewVersion=${{ steps.get_version.outputs.release_version }}"
+        run: ./mvnw versions:set "-DnewVersion=${{ steps.get_version.outputs.release_version }}"
       
       - name: Deploy to Maven Central Repository
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6.3.0
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
           server-id: central
+          mvn-server-repository-origins: 'central:https://central.sonatype.com'
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
       
       - name: Publish to the Maven Central Repository
-        run: mvn --batch-mode clean deploy
+        run: ./mvnw --batch-mode clean deploy
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}

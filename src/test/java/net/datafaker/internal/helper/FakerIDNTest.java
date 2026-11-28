@@ -3,7 +3,6 @@ package net.datafaker.internal.helper;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class FakerIDNTest {
 
@@ -13,9 +12,11 @@ class FakerIDNTest {
     }
 
     @Test
-    void toASCIIResultIsEmptyException() { // http://Ⱥbby.com
-        assertThatThrownBy(() -> FakerIDN.toASCII("Ⱥ"))
-            .isInstanceOf(RuntimeException.class);
+    void toASCIIResultIsEmptyFallback() {
+        // Even with un-convertible characters, should return a valid label, not throw
+        String result = FakerIDN.toASCII("Ⱥ");
+        assertThat(result).isNotEmpty();
+        assertThat(result).matches("^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$");
     }
 
 }

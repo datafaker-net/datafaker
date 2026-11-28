@@ -11,6 +11,8 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.util.regex.Pattern;
 
+import static java.util.concurrent.TimeUnit.DAYS;
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,8 +20,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class TimeTest {
 
     private static final Pattern RE_TIME_BETWEEN = Pattern.compile("[0-2][0-9]:[0-5][0-9]:[0-5][0-9]");
-    private static final long NANOSECONDS_IN_DAY = 24L * 60 * 60 * 1000 * 1000_000L;
-    private static final long NANOSECONDS_IN_MINUTE = 60 * 1000 * 1000_000L;
+    private static final long SECONDS_IN_DAY = DAYS.toSeconds(1);
+    private static final long SECONDS_IN_MINUTE = MINUTES.toSeconds(1);
     private final Faker faker = new Faker();
 
     @Test
@@ -97,14 +99,15 @@ public class TimeTest {
     @RepeatedTest(10)
     void testBetweenWithMask() {
         String pattern = "HH:mm:ss";
-        LocalTime now = LocalTime.ofNanoOfDay((long) (Math.random() * (NANOSECONDS_IN_DAY - NANOSECONDS_IN_MINUTE - 1)));
+        long moment = faker.random().nextLong(0, SECONDS_IN_DAY - SECONDS_IN_MINUTE);
+        LocalTime now = LocalTime.ofSecondOfDay(moment);
         LocalTime then = now.plusMinutes(1);
 
         String result = faker.time().between(now, then, pattern);
         assertThat(result).matches(RE_TIME_BETWEEN);
         TemporalAccessor timeBetween = DateTimeFormatter.ofPattern(pattern).parse(result);
-        assertThat(timeBetween.query(LocalTime::from)).isAfter(now.minusSeconds(1));
-        assertThat(timeBetween.query(LocalTime::from)).isBefore(then.plusSeconds(1));
+        assertThat(timeBetween.query(LocalTime::from)).isAfterOrEqualTo(now);
+        assertThat(timeBetween.query(LocalTime::from)).isBeforeOrEqualTo(then);
     }
 
     @Test

@@ -12,7 +12,7 @@ public class FinancialTerms extends AbstractProvider<BaseProviders> {
     }
 
     public String noun() {
-        return noun(faker.options().option(FinancialTerms.Category.class));
+        return noun(faker.selection().oneOf(FinancialTerms.Category.class));
     }
 
     public String noun(Category category) {
@@ -20,7 +20,7 @@ public class FinancialTerms extends AbstractProvider<BaseProviders> {
     }
 
     public String verb() {
-        return verb(faker.options().option(FinancialTerms.Category.class));
+        return verb(faker.selection().oneOf(FinancialTerms.Category.class));
     }
 
     public String verb(Category category) {
@@ -28,7 +28,7 @@ public class FinancialTerms extends AbstractProvider<BaseProviders> {
     }
 
     public String adjective() {
-        return adjective(faker.options().option(FinancialTerms.Category.class));
+        return adjective(faker.selection().oneOf(FinancialTerms.Category.class));
     }
 
     public String adjective(Category category) {

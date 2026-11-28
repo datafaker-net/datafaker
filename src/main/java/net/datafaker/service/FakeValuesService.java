@@ -3,7 +3,6 @@ package net.datafaker.service;
 import com.github.curiousoddman.rgxgen.RgxGen;
 import net.datafaker.internal.helper.CopyOnWriteMap;
 import net.datafaker.internal.helper.SingletonLocale;
-import net.datafaker.internal.helper.WordUtils;
 import net.datafaker.providers.base.AbstractProvider;
 import net.datafaker.providers.base.Address;
 import net.datafaker.providers.base.BaseFaker;
@@ -15,6 +14,7 @@ import net.datafaker.transformations.Field;
 import net.datafaker.transformations.JsonTransformer;
 import net.datafaker.transformations.Schema;
 import net.datafaker.transformations.SimpleField;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -32,7 +32,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -43,13 +42,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
 import static java.util.Locale.ROOT;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.SEVERE;
-import static net.datafaker.internal.helper.JavaNames.toJavaNames;
 import static net.datafaker.transformations.Field.field;
 
 public class FakeValuesService {
@@ -61,7 +57,7 @@ public class FakeValuesService {
     public static final Supplier<Map<String, String>> MAP_STRING_STRING_SUPPLIER = () -> new CopyOnWriteMap<>(() -> new WeakHashMap<>());
 
     private final Map<SingletonLocale, FakeValuesInterface> fakeValuesInterfaceMap = new CopyOnWriteMap<>(IdentityHashMap::new);
-    public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.get(Locale.ENGLISH);
+    public static final SingletonLocale DEFAULT_LOCALE = SingletonLocale.getRequired(Locale.ENGLISH);
 
     private static final Map<Class<?>, Map<String, Collection<Method>>> CLASS_2_METHODS_CACHE = new CopyOnWriteMap<>(IdentityHashMap::new);
     private static final Map<Class<?>, Constructor<?>> CLASS_2_CONSTRUCTOR_CACHE = new CopyOnWriteMap<>(IdentityHashMap::new);
@@ -83,7 +79,7 @@ public class FakeValuesService {
 
     private static final Map<String, String[]> EXPRESSION_2_SPLITTED = new CopyOnWriteMap<>(WeakHashMap::new);
 
-    private final Map<RegExpContext, ValueResolver> REGEXP2SUPPLIER_MAP = new CopyOnWriteMap<>(HashMap::new);
+    private final Map<String, RegExpContext> regexp2SupplierMap = new CopyOnWriteMap<>(HashMap::new);
     public void updateFakeValuesInterfaceMap(List<SingletonLocale> locales) {
         for (final SingletonLocale l : locales) {
             fakeValuesInterfaceMap.computeIfAbsent(l, this::getCachedFakeValue);
@@ -107,6 +103,7 @@ public class FakeValuesService {
      */
     public void addPath(Locale locale, Path path) {
         requireNonNull(locale);
+        //noinspection ConstantValue
         if (path == null || Files.notExists(path) || Files.isDirectory(path) || !Files.isReadable(path)) {
             throw new IllegalArgumentException("Path should be an existing readable file: \"%s\"".formatted(path));
         }
@@ -125,10 +122,8 @@ public class FakeValuesService {
      * @throws IllegalArgumentException in case of invalid url
      */
     public void addUrl(Locale locale, URL url) {
-        requireNonNull(locale);
-        if (url == null) {
-            throw new IllegalArgumentException("url should be an existing readable file");
-        }
+        requireNonNull(locale, "locale is required");
+        requireNonNull(url, "url should be an existing readable file");
         final FakeValues fakeValues = FakeValues.of(FakeValuesContext.of(locale, url));
         final SingletonLocale sLocale = SingletonLocale.get(locale);
         fakeValuesInterfaceMap.merge(sLocale, fakeValues,
@@ -143,11 +138,12 @@ public class FakeValuesService {
     /**
      * Fetch a random value from an array item specified by the key
      */
+    @Nullable
     public Object fetch(String key, FakerContext context) {
         List<?> valuesArray = null;
         final Object o = fetchObject(key, context);
-        if (o instanceof List) {
-            valuesArray = (List<?>) o;
+        if (o instanceof List<?> list) {
+            valuesArray = list;
             final int size = valuesArray.size();
             if (size == 0) {
                 return null;
@@ -163,27 +159,18 @@ public class FakeValuesService {
     /**
      * Same as {@link #fetch(String, FakerContext)} but casts the result to a String
      */
+    @Nullable
     public String fetchString(String key, FakerContext context) {
         return (String) fetch(key, context);
     }
 
-    private class SafeFetchResolver implements ValueResolver {
-        private final String simpleDirective;
-        private final FakerContext context;
+    private record SafeFetchResolver(FakeValuesService service, String simpleDirective, FakerContext context)
+        implements ValueResolver {
 
-        private SafeFetchResolver(String simpleDirective, FakerContext context) {
-            this.simpleDirective = simpleDirective;
-            this.context = context;
-        }
-
+        @Nullable
         @Override
         public Object resolve() {
-            return safeFetch(simpleDirective, context, null);
-        }
-
-        @Override
-        public String toString() {
-            return "%s[simpleDirective=%s, context=%s]".formatted(getClass().getSimpleName(), simpleDirective, context);
+            return service.safeFetch(simpleDirective, context, null);
         }
     }
 
@@ -203,13 +190,14 @@ public class FakeValuesService {
      * @param defaultIfNull the value to return if the fetched value is null
      * @return see above
      */
+    @Nullable
     @SuppressWarnings("unchecked")
-    public String safeFetch(String key, FakerContext context, String defaultIfNull) {
+    public String safeFetch(String key, FakerContext context, @Nullable String defaultIfNull) {
         Object o = fetchObject(key, context);
         String str;
         if (o == null) return defaultIfNull;
-        if (o instanceof List) {
-            final List<String> values = (List<String>) o;
+        if (o instanceof List<?> list) {
+            final List<String> values = (List<String>) list;
             final int size = values.size();
             return switch (size) {
                 case 0 -> defaultIfNull;
@@ -229,6 +217,7 @@ public class FakeValuesService {
      * @param key key contains path to an object. Path segment is separated by
      *            dot. E.g. name.first_name
      */
+    @Nullable
     @SuppressWarnings("unchecked")
     public <T> T fetchObject(String key, FakerContext context) {
         Object result = null;
@@ -252,8 +241,8 @@ public class FakeValuesService {
             Object currentValue = fakeValuesInterfaceMap.get(sLocale);
             for (int p = 0; currentValue != null && p < path.length; p++) {
                 String currentPath = path[p];
-                if (currentValue instanceof Map) {
-                    currentValue = ((Map<?, ?>) currentValue).get(currentPath);
+                if (currentValue instanceof Map<?, ?> map) {
+                    currentValue = map.get(currentPath);
                 } else {
                     currentValue = ((FakeValuesInterface) currentValue).get(currentPath);
                 }
@@ -266,53 +255,13 @@ public class FakeValuesService {
         }
         if (local2Add != null) {
             Object valueToCache = result;
-            Object curResult = key2fetchedObject.getOrDefault(local2Add, emptyMap()).get(key);
+            Object curResult = key2fetchedObject.getOrDefault(local2Add, Map.of()).get(key);
             if (curResult != null) {
                 return (T) result; // Strange... Why return result, not curResult?
             }
             key2fetchedObject
                 .computeIfAbsent(local2Add, (__) -> MAP_STRING_OBJECT_SUPPLIER.get())
                 .computeIfAbsent(key, (__) -> valueToCache);
-        }
-        if (result instanceof List list) {
-            for (int i = 0; i < list.size(); i++) {
-                Object item = list.get(i);
-                if (!(item instanceof String itemStr)) {
-                    break;
-                }
-                final int itemStrLength = itemStr.length();
-                if (itemStrLength < 2) {
-                    break;
-                }
-                int j = 0;
-                StringBuilder sb = null;
-                int start = 0;
-                while (j < itemStrLength) {
-                    char c;
-                    while (j < itemStrLength - 2 && ((itemStr.charAt(j)) != '#' || itemStr.charAt(j + 1) != '{')) j++;
-                    int startWord = j + 2;
-                    boolean letterOrDigitOnly = true;
-                    j = startWord;
-                    while (j < itemStrLength && (c = itemStr.charAt(j)) != '}') {
-                        letterOrDigitOnly &= Character.isLetter(c) || Character.isDigit(c) || c == '_';
-                        j++;
-                    }
-                    if (start < itemStrLength&&  startWord < itemStrLength && letterOrDigitOnly) {
-                        if (sb == null) {
-                            sb = new StringBuilder();
-                        }
-                        sb.append(itemStr, start, startWord);
-                        sb.append(WordUtils.capitalize(path[0])).append(".").append(toJavaNames(itemStr.substring(startWord, j), true)).append("}");
-                        start = j + 1;
-                    }
-                }
-                if (sb != null) {
-                    if (start < itemStrLength) {
-                        sb.append(itemStr, start, itemStrLength);
-                    }
-                    list.set(i, sb.toString());
-                }
-            }
         }
         return (T) result;
     }
@@ -502,7 +451,7 @@ public class FakeValuesService {
      * <p>
      * #{Person.hello_someone} will result in a method call to person.helloSomeone();
      */
-    public String resolve(String key, Object current, final ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
+    public String resolve(String key, Object current, @Nullable ProviderRegistration root, Supplier<String> exceptionMessage, FakerContext context) {
         String expression;
         if (root == null) {
             expression = key2Expression
@@ -513,7 +462,7 @@ public class FakeValuesService {
         }
 
         if (expression == null) {
-            throw new RuntimeException(exceptionMessage.get());
+            throw new IllegalArgumentException(exceptionMessage.get());
         }
 
         return resolveExpression(expression, current, root, context);
@@ -618,7 +567,7 @@ public class FakeValuesService {
      * Recursive templates are supported.  if "#{x}" resolves to "#{Address.streetName}" then "#{x}" resolves to
      * {@link BaseFaker#address()}'s {@link Address#streetName()}.
      */
-    protected String resolveExpression(String expression, Object current, ProviderRegistration root, FakerContext context) {
+    protected String resolveExpression(String expression, @Nullable Object current, @Nullable ProviderRegistration root, FakerContext context) {
         // indexOf(<String>) is faster than indexOf(<char>) since it has jvm intrinsic
         if (!expression.contains("}")) {
             return expression;
@@ -635,11 +584,10 @@ public class FakeValuesService {
                 }
                 continue;
             }
-            final RegExpContext regExpContext = new RegExpContext(expr, root, context);
-            final ValueResolver val = REGEXP2SUPPLIER_MAP.get(regExpContext);
+            final RegExpContext cachedRegExpContext = regexp2SupplierMap.get(expr);
             final Object resolved;
-            if (val != null) {
-                resolved = val.resolve();
+            if (cachedRegExpContext != null && cachedRegExpContext.root() == root && cachedRegExpContext.context() == context) {
+                resolved = cachedRegExpContext.resolver().resolve();
             } else {
                 int j = 0;
                 final int length = expr.length();
@@ -648,7 +596,7 @@ public class FakeValuesService {
                 while (j < length && Character.isWhitespace(expr.charAt(j))) j++;
                 final String arguments = j == length ? "" : expr.substring(j);
                 final String[] args = splitArguments(arguments);
-                resolved = resExp(directive, args, current, root, context, regExpContext);
+                resolved = resExp(directive, args, current, root, context, expr);
             }
             if (resolved == null) {
                 throw new RuntimeException("Unable to resolve #{" + expr + "} directive for FakerContext " + context + ".");
@@ -723,17 +671,17 @@ public class FakeValuesService {
         });
     }
 
-    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, RegExpContext regExpContext) {
+    private Object resExp(String directive, String[] args, Object current, ProviderRegistration root, FakerContext context, String expr) {
         Object res = resolveExpression(directive, args, current, root, context);
-        LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, regExpContext: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, regExpContext, res));
-        if (res instanceof CharSequence) {
-            if (((CharSequence) res).isEmpty()) {
-                REGEXP2SUPPLIER_MAP.put(regExpContext, EMPTY_STRING);
+        LOG.fine(() -> "resExp(%s [%s]) current: %s, root: %s, context: %s, expr: %s -> res: %s".formatted(directive, Arrays.toString(args), current, root, context, expr, res));
+        if (res instanceof CharSequence charSequence) {
+            if (charSequence.isEmpty()) {
+                regexp2SupplierMap.put(expr, new RegExpContext(root, context, EMPTY_STRING));
             }
             return res;
         }
-        if (res instanceof List) {
-            Iterator<ValueResolver> it = ((List<ValueResolver>) res).iterator();
+        if (res instanceof List<?> list) {
+            var it = ((List<ValueResolver>) list).iterator();
             while (it.hasNext()) {
                 Object valueResolver = it.next();
                 Object value;
@@ -742,7 +690,7 @@ public class FakeValuesService {
                     if (value == null) {
                         it.remove();
                     } else {
-                        REGEXP2SUPPLIER_MAP.put(regExpContext, resolver);
+                        regexp2SupplierMap.put(expr, new RegExpContext(root, context, resolver));
                         return value;
                     }
                 }
@@ -772,8 +720,8 @@ public class FakeValuesService {
             // resolve method references on CURRENT object like #{number_between '1','10'} on Number or
             // #{ssn_valid} on IdNumber
             if (dotIndex == -1) {
-                if (current instanceof AbstractProvider) {
-                    final Method method = BaseFaker.getMethod((AbstractProvider<?>) current, directive);
+                if (current instanceof AbstractProvider<?> provider) {
+                    final Method method = BaseFaker.getMethod(provider, directive);
                     if (method != null) {
                         res.add(new MethodResolver(method, current, args));
                         return res;
@@ -800,7 +748,7 @@ public class FakeValuesService {
         // car.wheel will be looked up in the YAML file.
         // It's only "simple" if there aren't args
         if (args.length == 0) {
-            res.add(new SafeFetchResolver(simpleDirective, context));
+            res.add(new SafeFetchResolver(this, simpleDirective, context));
         }
 
         // resolve method references on faker object like #{regexify '[a-z]'}
@@ -820,7 +768,7 @@ public class FakeValuesService {
         // class.method_name (lowercase)
         if (dotIndex >= 0) {
             final String key = javaNameToYamlName(simpleDirective);
-            res.add(new SafeFetchResolver(key, context));
+            res.add(new SafeFetchResolver(this, key, context));
         }
 
         return res;
@@ -965,10 +913,10 @@ public class FakeValuesService {
         LOG.fine(() -> "Find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
         String name = removeUnderscoreChars(accessorName);
 
-        Map<String, Collection<Method>> classMethodsMap = CLASS_2_METHODS_CACHE.computeIfAbsent(clazz, (__) -> {
+        var classMethodsMap = CLASS_2_METHODS_CACHE.computeIfAbsent(clazz, (__) -> {
             Method[] classMethods = clazz.getMethods();
             Map<String, Collection<Method>> methodMap =
-                classMethods.length == 0 ? emptyMap() : new HashMap<>(classMethods.length);
+                classMethods.length == 0 ? Map.of() : new HashMap<>(classMethods.length);
             for (Method m : classMethods) {
                 String key = m.getName().toLowerCase(ROOT);
                 methodMap.computeIfAbsent(key, k -> new ArrayList<>()).add(m);
@@ -977,9 +925,9 @@ public class FakeValuesService {
             return methodMap;
         });
 
-        Collection<Method> methods = classMethodsMap.getOrDefault(name, emptyList());
-        if (methods == null) {
-            LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), null));
+        Collection<Method> methods = classMethodsMap.getOrDefault(name, List.of());
+        if (methods.isEmpty()) {
+            LOG.fine(() -> "Didn't find accessor named %s on %s with args %s".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args)));
             return null;
         }
         LOG.fine(() -> "Found accessor named %s on %s in cache: %s".formatted(accessorName, clazz.getSimpleName(), methods));
@@ -998,7 +946,7 @@ public class FakeValuesService {
         if (mostRestrictive != null) {
             return new MethodAndCoercedArgs(mostRestrictive, coercedArgumentsForMostRestrictive);
         }
-        LOG.fine(() -> "Didn't accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
+        LOG.fine(() -> "Didn't find accessor named %s on %s with args %s (methods=%s)".formatted(accessorName, clazz.getSimpleName(), Arrays.toString(args), methods));
         return null;
     }
 
@@ -1190,14 +1138,16 @@ public class FakeValuesService {
         }
     }
 
-    private record RegExpContext(String exp, ProviderRegistration root, FakerContext context) {
+    private record RegExpContext(@Nullable ProviderRegistration root, FakerContext context, ValueResolver resolver) {
     }
 
     private interface ValueResolver {
+        @Nullable
         Object resolve();
     }
 
-    private record ConstantResolver(String value) implements ValueResolver {
+    private record ConstantResolver(@Nullable String value) implements ValueResolver {
+        @Nullable
         @Override
         public Object resolve() {
             return value;

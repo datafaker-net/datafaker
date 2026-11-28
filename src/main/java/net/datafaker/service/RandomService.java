@@ -1,8 +1,12 @@
 package net.datafaker.service;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Objects;
 import java.util.Random;
 import java.util.random.RandomGenerator;
+
+import static java.util.Objects.requireNonNullElse;
 
 public class RandomService {
     private static final char[] HEX_UP = "0123456789ABCDEF".toCharArray();
@@ -20,11 +24,10 @@ public class RandomService {
     /**
      * @param random If null is passed in, a default Random is assigned
      */
-    public RandomService(RandomGenerator random) {
-        this.random = random != null ? random : SHARED_RANDOM;
+    public RandomService(@Nullable RandomGenerator random) {
+        this.random = requireNonNullElse(random, SHARED_RANDOM);
     }
 
-    @SuppressWarnings("unused")
     public int nextInt() {
         return random.nextInt();
     }
@@ -33,11 +36,14 @@ public class RandomService {
         return random.nextInt(maxExclusive);
     }
 
-    public Integer nextInt(int minInclusive, int maxInclusive) {
+    /**
+     * Returns a random integer between {@code minInclusive} and {@code maxInclusive}, including both bounds.
+     */
+    public int nextInt(int minInclusive, int maxInclusive) {
         if (minInclusive > maxInclusive)
             throw new IllegalArgumentException("Min (%s) > Max (%s)".formatted(minInclusive, maxInclusive));
-        if (maxInclusive + 1 < 0)
-            return (int) nextLong(minInclusive, maxInclusive);
+        if (maxInclusive == Integer.MAX_VALUE)
+            return (int) random.nextLong(minInclusive, (long) maxInclusive + 1);
 
         return random.nextInt(minInclusive, maxInclusive + 1);
     }
@@ -117,6 +123,10 @@ public class RandomService {
         return randomBytes;
     }
 
+    /**
+     * @deprecated Use {@link net.datafaker.providers.base.Selection#oneOf(Class) faker.selection().oneOf(Enum)} instead
+     */
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public <T extends Enum<T>> T nextEnum(Class<T> klass) {
         T[] enumConstants = klass.getEnumConstants();
         return enumConstants[nextInt(enumConstants.length)];
@@ -158,7 +168,7 @@ public class RandomService {
     @Override
     public int hashCode() {
         if (random == SHARED_RANDOM) return 1;
-        return random != null ? random.hashCode() : 0;
+        return random.hashCode();
     }
 
     @Override

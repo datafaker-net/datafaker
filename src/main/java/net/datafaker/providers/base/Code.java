@@ -1,5 +1,7 @@
 package net.datafaker.providers.base;
 
+import net.datafaker.internal.helper.LuhnCheckDigit;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +34,7 @@ public class Code extends AbstractProvider<BaseProviders> {
      * @return a GS1 code for an ISBN13, currently is only 978 and 979
      */
     public String isbnGs1() {
-        return faker.options().option("978", "979");
+        return faker.selection().oneOf("978", "979");
     }
 
     /**
@@ -46,7 +48,7 @@ public class Code extends AbstractProvider<BaseProviders> {
      * @return an ISBN group number
      */
     public String isbnGroup() {
-        return faker.options().option("0", "1");
+        return faker.selection().oneOf("0", "1");
     }
 
     /**
@@ -156,34 +158,22 @@ public class Code extends AbstractProvider<BaseProviders> {
         int len = str.length;
 
         // Fill in the first two values of the string based with the specified prefix.
-        String arr = faker.options().option(REPORTING_BODY_IDENTIFIERS);
+        String arr = faker.selection().oneOf(REPORTING_BODY_IDENTIFIERS);
         str[0] = arr.charAt(0);
         str[1] = arr.charAt(1);
 
-        // Fill all the remaining numbers except for the last one with random values.
+        int[] baseDigits = new int[len - 1];
+        baseDigits[0] = Character.getNumericValue(str[0]);
+        baseDigits[1] = Character.getNumericValue(str[1]);
+
         for (int i = 2; i < len - 1; i++) {
-            str[i] = Character.forDigit(faker.number().numberBetween(0, 9), 10);
+            int randomDigit = faker.number().numberBetween(0, 9);
+            str[i] = Character.forDigit(randomDigit, 10);
+            baseDigits[i] = randomDigit;
         }
 
-        // Calculate the Luhn checksum of the values thus far
-        int lenOffset = (len + 1) % 2;
-        int sum = 0;
-        for (int i = 0; i < len - 1; i++) {
-            if ((i + lenOffset) % 2 != 0) {
-                int t = Character.getNumericValue(str[i]) << 1;
-
-                if (t > 9) {
-                    t -= 9;
-                }
-
-                sum += t;
-            } else {
-                sum += Character.getNumericValue(str[i]);
-            }
-        }
-
-        // Choose the last digit so that it causes the entire string to pass the checksum.
-        str[len - 1] = Character.forDigit(((10 - (sum % 10)) % 10), 10);
+        int checkDigit = LuhnCheckDigit.calculate(baseDigits);
+        str[len - 1] = Character.forDigit(checkDigit, 10);
 
         return new String(str);
     }

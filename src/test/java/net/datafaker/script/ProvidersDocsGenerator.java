@@ -5,6 +5,7 @@ import com.github.javaparser.ast.comments.CommentsCollection;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.google.common.base.Strings;
 import net.datafaker.providers.base.AbstractProvider;
+import org.jspecify.annotations.Nullable;
 import org.reflections.Reflections;
 
 import java.io.BufferedWriter;
@@ -40,14 +41,15 @@ public class ProvidersDocsGenerator {
     private final Set<Class<?>> subTypes = new TreeSet<>(providersComparatorBySimpleName);
 
     // Exclude non-providers from generation
-    private static final Set<String> providersToExcludeFromGeneration = Set.of("CustomFakerTest", "InsectFromFile", "Insect");
+    private static final Set<String> providersToExcludeFromGeneration =
+        Set.of("CustomFakerTest", "InsectFromFile", "Insect", "GizmoCustomTestFaker", "WidgetCustomTestFaker");
 
     private final Set<String> fakersWithoutSinceTag = new HashSet<>();
 
     public static void main(String[] args) {
         ProvidersDocsGenerator providersDocsGenerator = new ProvidersDocsGenerator();
         providersDocsGenerator.initSubtypes();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DESTINATION_PLACE_OF_PROVIDERS_FILE))) {
+        try (var writer = new BufferedWriter(new FileWriter(DESTINATION_PLACE_OF_PROVIDERS_FILE))) {
             providersDocsGenerator.constructHeaderInProvidersFile(writer);
             providersDocsGenerator.generateProvidersDocs(writer);
             writer.flush();
@@ -66,7 +68,7 @@ public class ProvidersDocsGenerator {
     }
 
     void generateProvidersDocs(BufferedWriter writer) throws IOException {
-        for (Class<?> clazz : subTypes) {
+        for (var clazz : subTypes) {
             String groupName = extractGroupName(clazz);
             String comment = extractCommentFromJavadoc("src/main/java/net/datafaker/providers/" + groupName + "/" + clazz.getSimpleName() + ".java");
             writer.write(Column.generateRow(' ', clazz.getSimpleName(), comment, formatGroupName(groupName)));
@@ -74,7 +76,7 @@ public class ProvidersDocsGenerator {
         System.out.println("Providers without '@since' tag: " + fakersWithoutSinceTag);
     }
 
-    private String extractGroupName(Class<?> clazz) {
+    private static String extractGroupName(Class<?> clazz) {
         // `packageName` should be such format: net.datafaker.providers.<groupName> (e.g. base, sport, movie)
         String packageName = clazz.getPackage().getName();
         // And just splitting by '.' we're getting groupName (e.g. base, sport, movie)
@@ -142,13 +144,16 @@ public class ProvidersDocsGenerator {
     private String providersPerVersionTable() {
         Map<String, Integer> providersPerVersion = extractProvidersPerVersion();
 
-        StringBuilder sb = new StringBuilder()
-            .append("\nNumber of providers per Datafaker version\n")
-            .append("\n| Version | Number of new providers | Total number of providers |")
-            .append("\n|---------|-------------------------|---------------------------|\n");
+        StringBuilder sb = new StringBuilder("""
+            
+            Number of providers per Datafaker version:
+            
+            | Version | Number of new providers | Total number of providers |
+            |---------|-------------------------|---------------------------|
+            """);
 
         int cumulativeCountOfProvidersPerVersion = 0;
-        for (Map.Entry<String, Integer> entry : providersPerVersion.entrySet()) {
+        for (var entry : providersPerVersion.entrySet()) {
             cumulativeCountOfProvidersPerVersion += entry.getValue();
             sb.append("| ").append(entry.getKey()).append(" | ")
                 .append(entry.getValue().toString()).append(" | ")
@@ -166,7 +171,7 @@ public class ProvidersDocsGenerator {
     private Map<String, Integer> extractProvidersPerVersion() {
         Map<String, Integer> providersPerVersion = new TreeMap<>(Comparator.naturalOrder());
 
-        for (Class<?> clazz : subTypes) {
+        for (var clazz : subTypes) {
             String groupName = extractGroupName(clazz);
             String comment = extractCommentFromJavadoc("src/main/java/net/datafaker/providers/" + groupName + "/" + clazz.getSimpleName() + ".java");
             String sinceTag = Column.SINCE.getValue(comment);
@@ -180,7 +185,7 @@ public class ProvidersDocsGenerator {
         return providersPerVersion;
     }
 
-    private String formatGroupName(String groupName) {
+    private static String formatGroupName(String groupName) {
         return Character.toUpperCase(groupName.charAt(0)) + groupName.substring(1);
     }
 
@@ -191,10 +196,10 @@ public class ProvidersDocsGenerator {
         SINCE("Since", 7, Pattern.compile("@since\\s+\\d\\.\\d+\\.\\d"), comment -> comment.group().substring("@since".length()).trim());
         private final String columnName;
         private final int length;
-        private final Pattern pattern2extract;
-        private final Function<Matcher, String> extractor;
+        private final @Nullable Pattern pattern2extract;
+        private final @Nullable Function<Matcher, String> extractor;
 
-        Column(String columnName, int length, Pattern pattern2extract, Function<Matcher, String> extractor) {
+        Column(String columnName, int length, @Nullable Pattern pattern2extract, @Nullable Function<Matcher, String> extractor) {
             this.columnName = columnName;
             this.length = length;
             this.pattern2extract = pattern2extract;
@@ -274,13 +279,14 @@ public class ProvidersDocsGenerator {
     }
 
     private enum TextBlock {
-        HEADER("# Fake Data Providers\n"),
+        HEADER("# Fake data providers\n"),
         GROUP_DESCRIPTIONS("""
 
             #### Provider groups:
             - Base (Providers of everyday data)
             - Entertainment (Providers for movies, shows, books)
             - Food (Providers for different types of food)
+            - Healthcare (Providers for different types of disease, medication, procedure, etc)
             - Sport (Providers for different types of sport)
             - Videogame (Video game providers)
             """);

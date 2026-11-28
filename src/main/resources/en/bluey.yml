@@ -1,0 +1,24 @@
+en:
+  faker:
+    bluey:
+      characters:
+      - "Bluey Heeler"
+      - "Bingo Heeler"
+      - "Muffin Heeler"
+      - "Socks Heeler"
+      - "Coco"
+      - "Snickers"
+      - "Mackenzie"
+      - "Bandit Heeler"
+      - "Chilli Heeler"
+      locations:
+      - "Heeler House"
+      - "Playground"
+      - "Park"
+      - "Beach"
+      quotes:
+      - "This is trifficult!"
+      - "For real life?"
+      - "Biscuits!"
+      - "We'll see how we go."
+      - "It's a good thing you're tough."

@@ -1,12 +1,12 @@
 package net.datafaker.providers.base;
 
 import net.datafaker.service.RandomService;
+import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -26,26 +26,6 @@ public class Twitter extends AbstractProvider<BaseProviders> {
      */
     protected Twitter(BaseProviders faker) {
         super(faker);
-    }
-
-    /**
-     * Used to fake a new Twitter Date.
-     *
-     * @param forward     to determined if the returned date is later (or before) the given date.
-     * @param base        the base date given as a start point.
-     * @param constraints used to constrain the returned date range.
-     * @return a new date later (or before) the base date with respect to the constraint (no later/earlier than the constraint).
-     * @deprecated better to use TimeAndDate for more flexibility
-     */
-    @Deprecated(since = "2.3.0", forRemoval = true)
-    public Date createdTime(boolean forward, Date base, Date constraints) {
-        final RandomService random = faker.random();
-        final long time = base.getTime();
-        if (forward) {
-            return new Date(time + (long) (random.nextDouble() * (constraints.getTime() - time)));
-        } else {
-            return new Date(time - (long) (random.nextDouble() * (time - constraints.getTime())));
-        }
     }
 
     /**
@@ -100,7 +80,7 @@ public class Twitter extends AbstractProvider<BaseProviders> {
      * @param wordMaxLength     each word should be in range of the word max length.
      * @return a new fake text for the Twitter.
      */
-    public String text(String[] keywords, int sentenceMaxLength, int wordMaxLength) {
+    public String text(String @Nullable [] keywords, int sentenceMaxLength, int wordMaxLength) {
         if (wordMaxLength <= 2) {
             LOGGER.warning("Word length less than 2 is dangerous. Exceptions can be raised.");
         }

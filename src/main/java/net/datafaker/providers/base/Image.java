@@ -150,7 +150,7 @@ public class Image extends AbstractProvider<BaseProviders> {
         }
         graphics.dispose();
 
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+        try (var baos = new ByteArrayOutputStream()) {
             ImageIO.write(bufferedImage, imageType.name(), baos);
             byte[] imageBytes = baos.toByteArray();
             return "data:" + imageType.mimeType + ";base64," + Base64.getEncoder().encodeToString(imageBytes);
