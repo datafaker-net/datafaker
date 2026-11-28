@@ -133,6 +133,7 @@ nav:
       - GraalVM Native Image: documentation/native-image.md
     - Related projects: documentation/related-projects.md
     - Performance:
+      - JVM faker comparison: documentation/performance-jvm-fakers.md
       - Datafaker 1.4.0: documentation/performance140.md
       - Datafaker 1.7.0: documentation/performance170.md
     - Javadoc: 'https://javadoc.io/doc/net.datafaker/datafaker/latest/index.html'
