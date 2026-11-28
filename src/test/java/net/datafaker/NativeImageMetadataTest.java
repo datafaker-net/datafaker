@@ -1,19 +1,22 @@
 package net.datafaker;
 
+import net.datafaker.providers.base.AbstractProvider;
+import net.datafaker.providers.base.BaseFaker;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 class NativeImageMetadataTest {
     private static final String DEFAULT_METADATA =
@@ -27,35 +30,31 @@ class NativeImageMetadataTest {
             "org.mockito.",
             "org.opentest4j.",
             "org.slf4j.simple.");
-    /**
-     * Inner types of {@link net.datafaker.service.FakeValuesService} used for expression resolution.
-     * The tracing agent never records them because they are not accessed reflectively on a regular
-     * JVM, but native images still need them registered (see issue #1737).
-     */
-    private static final List<String> EXPRESSION_RESOLUTION_TYPES = List.of(
-            "net.datafaker.service.FakeValuesService$ConstantResolver",
-            "net.datafaker.service.FakeValuesService$MethodAndCoercedArgs",
-            "net.datafaker.service.FakeValuesService$MethodAndCoercedArgsResolver",
-            "net.datafaker.service.FakeValuesService$MethodResolver",
-            "net.datafaker.service.FakeValuesService$RegExpContext",
-            "net.datafaker.service.FakeValuesService$SafeFetchResolver",
-            "net.datafaker.service.FakeValuesService$ValueResolver");
 
     @Test
     void metadataContainsProductionEntriesOnly() throws IOException {
-        Map<String, List<Map<String, Object>>> metadata = loadMetadata();
+        Assumptions.assumeFalse(Boolean.getBoolean("native.image.metadata.generation"));
 
-        Set<String> reflectionTypes = reflectionTypes(metadata);
+        Path metadataFile = Path.of(System.getProperty("native.image.metadata", DEFAULT_METADATA));
+        Map<String, List<Map<String, Object>>> metadata;
+        try (InputStream input = Files.newInputStream(metadataFile)) {
+            metadata = new Yaml().load(input);
+        }
+
+        List<String> reflectionTypes = entries(metadata, "reflection").stream()
+                .map(entry -> entry.get("type"))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .toList();
 
         assertThat(reflectionTypes)
                 .noneMatch(type -> TEST_DEPENDENCY_PREFIXES.stream().anyMatch(type::startsWith));
         reflectionTypes.stream()
                 .filter(type -> type.startsWith("net.datafaker."))
-                .map(type -> type.split("\\$", 2)[0])
                 .distinct()
-                .forEach(type -> assertThat(productionSourceFor(type))
-                        .as("production source for native-image reflection type %s", type)
-                        .exists());
+                .forEach(type -> assertThatCode(() -> Class.forName(type, false, Faker.class.getClassLoader()))
+                        .as("production native-image reflection type %s", type)
+                        .doesNotThrowAnyException());
 
         assertThat(entries(metadata, "reflection").toString())
                 .doesNotContain("net.bytebuddy.");
@@ -68,44 +67,32 @@ class NativeImageMetadataTest {
                 .doesNotContain("com.intellij", "net.bytebuddy", "org.assertj", "org.junit", "org.mockito");
     }
 
-    @Test
-    void metadataRegistersExpressionResolutionTypes() throws IOException {
-        Map<String, List<Map<String, Object>>> metadata = loadMetadata();
-
-        assertThat(reflectionTypes(metadata))
-                .containsAll(EXPRESSION_RESOLUTION_TYPES);
-
-        assertThat(entries(metadata, "reflection"))
-                .filteredOn(entry -> EXPRESSION_RESOLUTION_TYPES.contains(entry.get("type")))
-                .allSatisfy(entry -> assertThat(entry)
-                        .containsEntry("allDeclaredConstructors", true)
-                        .containsEntry("allDeclaredMethods", true)
-                        .containsEntry("allDeclaredFields", true));
-    }
-
-    private static Map<String, List<Map<String, Object>>> loadMetadata() throws IOException {
-        Assumptions.assumeFalse(Boolean.getBoolean("native.image.metadata.generation"));
-
-        Path metadataFile = Path.of(System.getProperty("native.image.metadata", DEFAULT_METADATA));
-        try (InputStream input = Files.newInputStream(metadataFile)) {
-            return new Yaml().load(input);
-        }
-    }
-
-    private static Set<String> reflectionTypes(Map<String, List<Map<String, Object>>> metadata) {
-        return entries(metadata, "reflection").stream()
-                .map(entry -> entry.get("type"))
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .collect(Collectors.toSet());
-    }
-
     private static List<Map<String, Object>> entries(
             Map<String, List<Map<String, Object>>> metadata, String category) {
         return metadata.getOrDefault(category, List.of());
     }
 
-    private static Path productionSourceFor(String type) {
-        return Path.of("src/main/java", type.replace('.', '/') + ".java");
+    @Test
+    void packagedMetadataRegistersFakerAndProviderMethods() throws IOException {
+        List<Map<String, Object>> reflection;
+        try (InputStream input = Faker.class.getResourceAsStream(
+                "/META-INF/native-image/net.datafaker/datafaker/reflect-config.json")) {
+            assertThat(input).as("generated native-image reflection metadata").isNotNull();
+            reflection = new Yaml().load(input);
+        }
+
+        List<String> publicMethodTypes = reflection.stream()
+                .filter(entry -> Boolean.TRUE.equals(entry.get("allPublicMethods")))
+                .map(entry -> (String) entry.get("name"))
+                .toList();
+
+        assertThat(publicMethodTypes)
+                .contains(Faker.class.getName(), BaseFaker.class.getName())
+                .containsAll(Arrays.stream(Faker.class.getMethods())
+                        .map(Method::getReturnType)
+                        .filter(AbstractProvider.class::isAssignableFrom)
+                        .map(Class::getName)
+                        .distinct()
+                        .toList());
     }
 }

@@ -5,9 +5,6 @@ set -euo pipefail
 project_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 generated_filter="$project_dir/target/native-image-test-classes-filter.json"
 generated_metadata="$project_dir/target/native-image-agent/reachability-metadata.json"
-runtime_classpath="$project_dir/target/native-image-runtime-classpath.txt"
-runtime_resources="$project_dir/target/native-image-runtime-resources.json"
-manual_metadata="$project_dir/scripts/reachability-metadata-manual.json"
 published_metadata="$project_dir/src/main/resources/META-INF/native-image/reachability-metadata.json"
 
 if [[ -z "${JAVA_HOME:-}" || ! -x "$JAVA_HOME/bin/native-image" ]]; then
@@ -22,10 +19,6 @@ fi
 cd "$project_dir"
 
 ./mvnw clean test-compile
-./mvnw org.apache.maven.plugins:maven-dependency-plugin:3.7.0:build-classpath \
-    -DincludeScope=runtime \
-    -Dmdep.outputFile="$runtime_classpath"
-
 printf '{\n  "rules": [\n' > "$generated_filter"
 first_rule=true
 while IFS= read -r class_file; do
@@ -50,48 +43,12 @@ if [[ ! -f "$generated_metadata" ]]; then
     exit 1
 fi
 
-{
-    find "$project_dir/src/main/resources" -type f ! -path "$published_metadata" \
-        | sed "s|$project_dir/src/main/resources/||"
-    tr ':' '\n' < "$runtime_classpath" | while IFS= read -r dependency || [[ -n "$dependency" ]]; do
-        "$JAVA_HOME/bin/jar" tf "$dependency" | sed \
-            -e '/\/$/d' \
-            -e '/\.class$/d' \
-            -e '\|^META-INF/native-image/|d' \
-            -e '\|^META-INF/MANIFEST.MF$|d' \
-            -e '/\.DSA$/d' \
-            -e '/\.RSA$/d' \
-            -e '/\.SF$/d'
-    done
-} | sort -u | jq --raw-input . | jq --slurp . > "$runtime_resources"
-
-jq --slurpfile runtimeResources "$runtime_resources" '
-    .resources = (
-        [(.resources // [])[] | select(has("module"))]
-        + [$runtimeResources[0][] | {glob: .}]
-        | unique_by([.module // "", .glob])
-    )
+# The Maven build supplies classpath resources. Preserve traced resources from JDK modules.
+jq '
+    .resources = [(.resources // [])[] | select(has("module"))]
     | with_entries(select(.value | type != "array" or length > 0))
 ' "$generated_metadata" > "$generated_metadata.tmp"
 mv "$generated_metadata.tmp" "$generated_metadata"
-
-# The tracing agent only records types that are actually accessed reflectively while the
-# tests run on a regular JVM. Entries in the manual metadata file are merged in so types that
-# still have to be reflectively reachable in a native image (see #1737) are not lost on update.
-if [[ -f "$manual_metadata" ]]; then
-    jq --slurpfile manual "$manual_metadata" '
-        . as $generated
-        | reduce ($manual[0] | keys_unsorted[]) as $category ($generated;
-            .[$category] = (
-                [$manual[0][$category][], ($generated[$category] // [])[]]
-                | unique_by(.type // .glob // .bundle // .name // tostring)
-            )
-        )
-        | if has("reflection") then .reflection |= sort_by(.type) else . end
-        | with_entries(select(.value | type != "array" or length > 0))
-    ' "$generated_metadata" > "$generated_metadata.tmp"
-    mv "$generated_metadata.tmp" "$generated_metadata"
-fi
 
 ./mvnw -PnoGpg -Djacoco.skip=true -Dtest=NativeImageMetadataTest \
     -Dnative.image.metadata="$generated_metadata" test
