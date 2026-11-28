@@ -269,6 +269,68 @@ class SqlTest {
     }
 
     @ParameterizedTest
+    @MethodSource("identifierEscapeDialects")
+    void escapesClosingQuoteInIdentifiers(SqlDialect dialect, String schemaName, String tableName, String fieldName, String expected) {
+        Schema<String, String> schema = Schema.of(field(fieldName, () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .schemaName(schemaName).tableName(tableName).dialect(dialect).build();
+
+        assertThat(transformer.generate(schema, 1)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> identifierEscapeDialects() {
+        return Stream.of(
+            of(SqlDialect.MSSQL, "s]1", "t]2", "a]b[c", "INSERT INTO [s]]1].[t]]2] ([a]]b[c]) VALUES ('x');"),
+            of(SqlDialect.POSTGRES, "s\"1", "t\"2", "a\"b", "INSERT INTO \"s\"\"1\".\"t\"\"2\" (\"a\"\"b\") VALUES ('x');"),
+            of(SqlDialect.MYSQL, "s`1", "t`2", "a`b", "INSERT INTO `s``1`.`t``2` (`a``b`) VALUES ('x');"),
+            of(SqlDialect.BIGQUERY, "s`1", "t`2", "a`b", "INSERT INTO `s\\`1`.`t\\`2` (`a\\`b`) VALUES ('x');"),
+            of(SqlDialect.BIGQUERY, "s\\1", "t\\2", "a\\b", "INSERT INTO `s\\\\1`.`t\\\\2` (`a\\\\b`) VALUES ('x');"),
+            of(SqlDialect.CLICKHOUSE, "s`1", "t`2", "a`b", "INSERT INTO `s\\`1`.`t\\`2` (`a\\`b`) VALUES ('x');"),
+            of(SqlDialect.CLICKHOUSE, "S\\1", "T\\2", "A\\B", "INSERT INTO `S\\\\1`.`T\\\\2` (`A\\\\B`) VALUES ('x');"),
+            of(SqlDialect.MYSQL, "s1", "t2", "a`\\b", "INSERT INTO s1.t2 (`a``\\b`) VALUES ('x');")
+        );
+    }
+
+    @Test
+    void escapesClosingQuoteInIdentifiersWithoutDialectBrackets() {
+        Schema<String, String> schema = Schema.of(field("f", () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .sqlQuoteIdentifier("[]")
+            .schemaName("s]1")
+            .tableName("t]2")
+            .build();
+
+        assertThat(transformer.generate(schema, 1))
+            .isEqualTo("INSERT INTO [s]]1].[t]]2] ([f]) VALUES ('x');");
+    }
+
+    @Test
+    void escapesClosingQuoteInIdentifiersWithoutDialectDefaultQuotes() {
+        Schema<String, String> schema = Schema.of(field("a\"b", () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .schemaName("s\"1")
+            .tableName("t\"2")
+            .build();
+
+        assertThat(transformer.generate(schema, 1))
+            .isEqualTo("INSERT INTO \"s\"\"1\".\"t\"\"2\" (\"a\"\"b\") VALUES ('x');");
+    }
+
+    @Test
+    void oracleRejectsDoubleQuoteInIdentifier() {
+        Schema<String, String> schema = Schema.of(field("f", () -> "x"));
+        SqlTransformer<String> transformer = SqlTransformer.<String>builder()
+            .schemaName("s\"1")
+            .tableName("t\"2")
+            .dialect(SqlDialect.ORACLE)
+            .build();
+
+        assertThatThrownBy(() -> transformer.generate(schema, 1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Oracle quoted identifiers cannot contain a double quote");
+    }
+
+    @ParameterizedTest
     @MethodSource("generateTestSchemaForMySQL")
     void simpleSqlTestForSqlTransformerMySQL(Schema<String, String> schema, String tableSchemaName, String expected) {
         SqlTransformer<String> transformer =
