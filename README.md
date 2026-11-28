@@ -584,8 +584,9 @@ NATIVE IMAGE
 
 Datafaker ships GraalVM Native Image metadata for its built-in providers. The Maven build generates reflection
 metadata for provider methods and registers the resources in the runtime classpath. New providers and resources are
-picked up during packaging. Applications using custom providers or reflectively transforming their own classes may
-need to supply metadata for those classes.
+picked up during packaging. Use `faker.addPath()` or `faker.addUrl()` to load custom locale data in a native image.
+Applications using custom providers or reflectively transforming their own classes may need to supply metadata for
+those classes.
 
 CI builds a native executable from the packaged Datafaker JAR and runs it on GraalVM for JDK 21 and 25.
 To run the check locally, set `JAVA_HOME` to a GraalVM installation with `native-image`.

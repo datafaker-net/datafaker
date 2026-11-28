@@ -24,16 +24,13 @@ public class GenerateNativeImageMetadata {
         Files.createDirectories(metadata);
         // Native Image for JDK 21 reads the separate reflection and resource files.
         Files.writeString(metadata.resolve("reflect-config.json"), reflectionConfig(classes));
-        Files.writeString(metadata.resolve("resource-config.json"), resourceConfig(classes));
-        // Exact reachability checking must also allow lookups for absent locale overrides.
-        Files.writeString(metadata.resolve("reachability-metadata.json"), """
-            {
-              "resources": [
-                {"glob": "*.yml"},
-                {"glob": "en/*.yml"}
-              ]
-            }
-            """);
+        Set<String> resources = runtimeResources(classes);
+        String localeIndex = "META-INF/datafaker/locale-resources.txt";
+        Path index = classes.resolve(localeIndex);
+        Files.createDirectories(index.getParent());
+        Files.write(index, resources.stream().filter(name -> name.endsWith(".yml")).toList());
+        resources.add(localeIndex);
+        Files.writeString(metadata.resolve("resource-config.json"), resourceConfig(resources));
     }
 
     private static String reflectionConfig(Path classes) throws IOException, ClassNotFoundException {
@@ -85,7 +82,7 @@ public class GenerateNativeImageMetadata {
         return flagsByType.computeIfAbsent(type.getTypeName(), key -> new TreeSet<>());
     }
 
-    private static String resourceConfig(Path classes) throws IOException {
+    private static Set<String> runtimeResources(Path classes) throws IOException {
         Set<String> resources = new TreeSet<>();
         try (var files = Files.walk(classes)) {
             files.filter(Files::isRegularFile)
@@ -102,6 +99,10 @@ public class GenerateNativeImageMetadata {
             }
         }
 
+        return resources;
+    }
+
+    private static String resourceConfig(Set<String> resources) {
         return resources.stream()
             .map(name -> "    {\"pattern\": " + json(Pattern.quote(name)) + "}")
             .collect(Collectors.joining(",\n", "{\"resources\": {\"includes\": [\n", "\n]}}\n"));

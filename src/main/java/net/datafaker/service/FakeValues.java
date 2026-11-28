@@ -4,9 +4,12 @@ import net.datafaker.internal.helper.LazyEvaluated;
 import org.jspecify.annotations.Nullable;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -14,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static net.datafaker.internal.helper.JavaNames.toJavaNames;
 import static net.datafaker.internal.helper.WordUtils.capitalizeWord;
@@ -68,7 +72,12 @@ public class FakeValues implements FakeValuesInterface {
             paths = new String[] {"/" + fileName + ".yml", languagePath};
         }
 
+        boolean nativeImage = "runtime".equals(System.getProperty("org.graalvm.nativeimage.imagecode"));
         for (String path : paths) {
+            // An absent locale override is normal. Strict Native Image treats unknown paths as missing metadata.
+            if (nativeImage && !NativeYamlResources.PATHS.contains(path.substring(1))) {
+                continue;
+            }
             try (var stream = getClass().getResourceAsStream(path)) {
                 result = readFromStream(stream);
                 enrichMapWithJavaNames(result);
@@ -80,6 +89,23 @@ public class FakeValues implements FakeValuesInterface {
             }
         }
         return Map.of();
+    }
+
+    private static class NativeYamlResources {
+        private static final Set<String> PATHS = readIndex();
+
+        private static Set<String> readIndex() {
+            try (var stream = FakeValues.class.getResourceAsStream("/META-INF/datafaker/locale-resources.txt")) {
+                if (stream == null) {
+                    throw new IllegalStateException("Missing packaged Datafaker locale resource index");
+                }
+                try (var reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+                    return reader.lines().collect(Collectors.toUnmodifiableSet());
+                }
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to read the packaged Datafaker locale resource index", e);
+            }
+        }
     }
 
     private void enrichMapWithJavaNames(@Nullable Map<String, Object> result) {
