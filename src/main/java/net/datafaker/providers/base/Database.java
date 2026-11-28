@@ -3,6 +3,11 @@ package net.datafaker.providers.base;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Provides database metadata, including vendors, JDBC connection details and SQL types.
+ *
+ * @since 3.0.0
+ */
 public class Database extends AbstractProvider<BaseProviders> {
 
     private static final String DATABASES = "database.databases";

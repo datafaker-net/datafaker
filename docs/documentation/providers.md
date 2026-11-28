@@ -12,34 +12,36 @@ Number of providers per Datafaker version:
 
 | Version | Number of new providers | Total number of providers |
 |---------|-------------------------|---------------------------|
-| 0.8.0 | 94 | 94 |
-| 0.9.0 | 12 | 106 |
-| 1.0.0 | 4 | 110 |
-| 1.1.0 | 2 | 112 |
-| 1.2.0 | 7 | 119 |
-| 1.3.0 | 9 | 128 |
-| 1.4.0 | 15 | 143 |
-| 1.5.0 | 22 | 165 |
-| 1.6.0 | 10 | 175 |
-| 1.7.0 | 21 | 196 |
-| 1.8.0 | 34 | 230 |
-| 2.0.0 | 3 | 233 |
-| 2.0.2 | 1 | 234 |
-| 2.0.3 | 1 | 235 |
-| 2.1.0 | 1 | 236 |
-| 2.2.0 | 2 | 238 |
-| 2.3.0 | 9 | 247 |
-| 2.4.0 | 3 | 250 |
-| 2.4.4 | 2 | 252 |
-| 2.5.0 | 1 | 253 |
-| 2.5.3 | 3 | 256 |
-| 2.6.0 | 7 | 263 |
+| 0.8.0 | 92 | 92 |
+| 0.9.0 | 12 | 104 |
+| 1.0.0 | 4 | 108 |
+| 1.1.0 | 2 | 110 |
+| 1.2.0 | 7 | 117 |
+| 1.3.0 | 9 | 126 |
+| 1.4.0 | 15 | 141 |
+| 1.5.0 | 22 | 163 |
+| 1.6.0 | 10 | 173 |
+| 1.7.0 | 21 | 194 |
+| 1.8.0 | 34 | 228 |
+| 2.0.0 | 3 | 231 |
+| 2.0.2 | 1 | 232 |
+| 2.0.3 | 1 | 233 |
+| 2.1.0 | 1 | 234 |
+| 2.2.0 | 2 | 236 |
+| 2.3.0 | 9 | 245 |
+| 2.4.0 | 3 | 248 |
+| 2.4.4 | 2 | 250 |
+| 2.5.0 | 1 | 251 |
+| 2.5.3 | 3 | 254 |
+| 2.6.0 | 7 | 261 |
+| 3.0.0 | 3 | 264 |
 
-Datafaker comes with a total of 263 data providers:
+Datafaker comes with a total of 264 data providers:
 
 | Name                                                                                        | Description                                                                                                                        | Group                                            | Since |
 |---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|-------|
 |[Address](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Address.html)|                                                                                                                                    | Base                                             | 0.8.0 |
+|[Adjective](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Adjective.html)| Provides adjectives from locale-specific positive and negative lists.                                                              | Base                                             | 3.0.0 |
 |[Ancient](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Ancient.html)|                                                                                                                                    | Base                                             | 0.8.0 |
 |[Animal](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Animal.html)|                                                                                                                                    | Base                                             | 0.8.0 |
 |[App](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/App.html)|                                                                                                                                    | Base                                             | 0.8.0 |
@@ -101,8 +103,8 @@ Datafaker comes with a total of 263 data providers:
 |[Cricket](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/sport/Cricket.html)|                                                                                                                                    | Sport                                            | 1.7.0 |
 |[Crypto Coin](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/CryptoCoin.html)|                                                                                                                                    | Base                                             | 1.3.0 |
 |[Culture Series](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/CultureSeries.html)| The Culture series is a science fiction series written by Scottish author Iain M. Banks and released from 1987 through to 2012.    | Base                                             | 1.7.0 |
-|[Currency](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Currency.html)|                                                                                                                                    | Base                                             | 0.8.0 |
 |[Dark Souls](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/videogame/DarkSouls.html)|Dark Souls is a series of action role-playing games created by Hidetaka Miyazaki of FromSoftware and published by Bandai Namco Entertainment.| Videogame                                        | 1.5.0 |
+|[Database](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Database.html)| Provides database metadata, including vendors, JDBC connection details and SQL types.                                              | Base                                             | 3.0.0 |
 |[Dc Comics](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/DcComics.html)|                                                                                                                                    | Base                                             | 1.5.0 |
 |[Death Note](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/DeathNote.html)| Death Note is a Japanese manga series written by Tsugumi Ohba and illustrated by Takeshi Obata.                                    | Entertainment                                    | 2.6.0 |
 |[Demographic](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Demographic.html)|                                                                                                                                    | Base                                             | 0.8.0 |
@@ -240,6 +242,7 @@ Datafaker comes with a total of 263 data providers:
 |[Ru Paul Drag Race](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/RuPaulDragRace.html)| RuPaul's Drag Race is a reality competition series produced by World of Wonder for the Logo TV Network.                            | Entertainment                                    | 1.0.0 |
 |[Science](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Science.html)|                                                                                                                                    | Base                                             | 0.8.0 |
 |[Seinfeld](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/Seinfeld.html)| Seinfeld is an American sitcom television series created by Larry David and Jerry Seinfeld.                                        | Entertainment                                    | 1.4.0 |
+|[Selection](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Selection.html)| Provides utility methods for selecting an element from an array, collection or enum.                                               | Base                                             | 3.0.0 |
 |[Severance](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/Severance.html)| Severance is an American science fiction psychological thriller television series                                                  | Entertainment                                    | 2.4.4 |
 |[Shakespeare](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/base/Shakespeare.html)|                                                                                                                                    | Base                                             | 0.8.0 |
 |[Show](https://javadoc.io/doc/net.datafaker/datafaker/latest/net/datafaker/providers/entertainment/Show.html)|                                                                                                                                    | Entertainment                                    | 1.8.0 |

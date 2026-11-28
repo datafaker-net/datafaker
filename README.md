@@ -9,7 +9,7 @@ This library is a modern fork of [java-faker](https://github.com/DiUS/java-faker
 
 Datafaker 2.x and 3.x require Java 17 or later.
 
-*If Java 17 is not an option for you, you can choose to use Datafaker 1.x. Datafaker 1.x is built on Java 8, but this version is no longer maintained. We recommend all users to upgrade to Datafaker 2.x.*
+*If Java 17 is not an option for you, you can choose to use Datafaker 1.x. Datafaker 1.x is built on Java 8, but this version is no longer maintained. We recommend upgrading to Datafaker 2.x or later.*
 
 This library generates fake data, similar to other fake data generators, such as:
 
@@ -29,7 +29,7 @@ In the pom.xml, add the following fragment to the `dependencies` section:
 <dependency>
     <groupId>net.datafaker</groupId>
     <artifactId>datafaker</artifactId>
-    <version>2.7.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
@@ -37,12 +37,12 @@ For Gradle users, add the following to your build.gradle file.
 
 ```groovy
 dependencies {
-    implementation 'net.datafaker:datafaker:2.7.0'
+    implementation 'net.datafaker:datafaker:3.0.0'
 }
 
 ```
 
-You can also use the snapshot version (`3.0.0-SNAPSHOT`), which automatically gets published
+You can also use the snapshot version (`3.1.0-SNAPSHOT`), which automatically gets published
 after every push to the main branch of this repository. Binary repository URL for snapshots download is
 `https://central.sonatype.com/repository/maven-snapshots/`.
 
@@ -83,7 +83,7 @@ jshell --class-path $(ls -d target/*.jar | tr '\n' ':')
 or JShell w/[JBang](https://www.jbang.dev/)
 ```
 # can be run anywhere, no project root/download needed.
-jbang -i net.datafaker:datafaker:2.7.0
+jbang -i net.datafaker:datafaker:3.0.0
 ```
 
 ```
