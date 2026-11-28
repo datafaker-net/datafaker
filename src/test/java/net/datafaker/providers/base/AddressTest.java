@@ -387,6 +387,21 @@ class AddressTest {
     }
 
     @Nested
+    class IndonesianAddress {
+        // the four provinces created in 2022 (UU 14, 15, 16 and 29 of 2022)
+        private static final List<String> NEW_PROVINCES = List.of(
+            "Papua Barat Daya", "Papua Pegunungan", "Papua Selatan", "Papua Tengah");
+
+        @ParameterizedTest
+        @ValueSource(strings = {"id", "id-ID"})
+        void provinceListsAllThirtyEightProvinces(String languageTag) {
+            BaseFaker idFaker = new BaseFaker(Locale.forLanguageTag(languageTag));
+            List<String> provinces = idFaker.fakeValuesService().fetchObject("address.province", idFaker.getContext());
+            assertThat(provinces).hasSize(38).doesNotHaveDuplicates().containsAll(NEW_PROVINCES);
+        }
+    }
+
+    @Nested
     class VietnameseAddress {
         private final BaseFaker viFaker = new BaseFaker(new Locale("vi"));
 
