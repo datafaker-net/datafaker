@@ -4,30 +4,32 @@ import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static java.util.Collections.synchronizedMap;
 import static java.util.stream.Collectors.toMap;
 
 public class ObjectMethods {
-    private static final Map<Class<?>, Map<String, Method>> METHODS_BY_NAME = synchronizedMap(new IdentityHashMap<>());
-    private static final Map<Class<?>, Map<String, Method>> METHODS_BY_RETURN_TYPE = synchronizedMap(new IdentityHashMap<>());
     private static final Set<String> IGNORED_METHODS = Set.of("equals", "hashCode", "toString", "Builder", "stream");
 
-    private static synchronized Map<String, Method> scanMethodsByName(Class<?> clazz) {
-        return Stream.of(clazz.getMethods())
-            .filter(ObjectMethods::isUseful)
-            .collect(toMap(Method::getName, method -> method));
-    }
+    private static final ClassValue<Map<String, Method>> METHODS_BY_NAME = new ClassValue<>() {
+        @Override
+        protected Map<String, Method> computeValue(Class<?> type) {
+            return Stream.of(type.getMethods())
+                .filter(ObjectMethods::isUseful)
+                .collect(toMap(Method::getName, method -> method));
+        }
+    };
 
-    private static synchronized Map<String, Method> scanMethodsByReturnType(Class<?> clazz) {
-        return Stream.of(clazz.getMethods())
-            .filter(ObjectMethods::isUseful)
-            .collect(toMap(method -> method.getReturnType().getSimpleName(), method -> method, ObjectMethods::chooseFirstByAlphabet));
-    }
+    private static final ClassValue<Map<String, Method>> METHODS_BY_RETURN_TYPE = new ClassValue<>() {
+        @Override
+        protected Map<String, Method> computeValue(Class<?> type) {
+            return Stream.of(type.getMethods())
+                .filter(ObjectMethods::isUseful)
+                .collect(toMap(method -> method.getReturnType().getSimpleName(), method -> method, ObjectMethods::chooseFirstByAlphabet));
+        }
+    };
 
     private static Method chooseFirstByAlphabet(Method m1, Method m2) {
         return m1.getName().compareTo(m2.getName()) < 0 ? m1 : m2;
@@ -44,12 +46,12 @@ public class ObjectMethods {
     }
 
     public static Method getMethodByName(Object object, String methodName) {
-        return METHODS_BY_NAME.computeIfAbsent(object.getClass(), ObjectMethods::scanMethodsByName).get(methodName);
+        return METHODS_BY_NAME.get(object.getClass()).get(methodName);
     }
 
     @Nullable
     private static Method getMethodByReturnType(Object object, String returnTypeSimpleName) {
-        return METHODS_BY_RETURN_TYPE.computeIfAbsent(object.getClass(), ObjectMethods::scanMethodsByReturnType).get(returnTypeSimpleName);
+        return METHODS_BY_RETURN_TYPE.get(object.getClass()).get(returnTypeSimpleName);
     }
 
     @SuppressWarnings("unchecked")

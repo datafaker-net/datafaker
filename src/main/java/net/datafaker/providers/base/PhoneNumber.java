@@ -14,26 +14,24 @@ import static java.util.Locale.ROOT;
  * @since 0.8.0
  */
 public class PhoneNumber extends AbstractProvider<BaseProviders> {
-    private final String countryCodeIso2;
     private final PhoneNumberGenerator generator;
 
     protected PhoneNumber(BaseProviders faker) {
         super(faker);
-        this.countryCodeIso2 = countryCodeIso2(faker.getContext().getLocale());
         this.generator = new PhoneNumberGenerator(faker.fakeValuesService(), faker.getContext());
     }
 
     @Deterministic
     String countryCodeIso2() {
-        return countryCodeIso2;
+        return countryCodeIso2(faker.getContext().getLocale());
     }
 
     public String cellPhone() {
-        return generator.randomPhoneNumber(countryCodeIso2, MOBILE, NATIONAL);
+        return generator.randomPhoneNumber(countryCodeIso2(), MOBILE, NATIONAL);
     }
 
     public String cellPhoneInternational() {
-        return generator.randomPhoneNumber(countryCodeIso2, MOBILE, INTERNATIONAL);
+        return generator.randomPhoneNumber(countryCodeIso2(), MOBILE, INTERNATIONAL);
     }
 
     /**
@@ -46,11 +44,11 @@ public class PhoneNumber extends AbstractProvider<BaseProviders> {
     }
 
     public String phoneNumberInternational() {
-        return generator.randomPhoneNumber(countryCodeIso2, FIXED_LINE, INTERNATIONAL);
+        return generator.randomPhoneNumber(countryCodeIso2(), FIXED_LINE, INTERNATIONAL);
     }
 
     public String phoneNumberNational() {
-        return generator.randomPhoneNumber(countryCodeIso2, FIXED_LINE, NATIONAL);
+        return generator.randomPhoneNumber(countryCodeIso2(), FIXED_LINE, NATIONAL);
     }
 
     public String extension() {
