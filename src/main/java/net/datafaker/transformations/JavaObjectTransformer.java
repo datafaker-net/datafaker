@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.RecordComponent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +22,32 @@ import java.util.stream.Stream;
 import static java.util.Collections.synchronizedMap;
 
 public class JavaObjectTransformer implements Transformer<Object, Object> {
-    private static final Map<Schema<Object, ?>, Consumer<Object>> SCHEMA2CONSUMER = synchronizedMap(new IdentityHashMap<>());
-    private static final Map<Class<?>, Constructor<?>> CLASS2CONSTRUCTOR = synchronizedMap(new IdentityHashMap<>());
+    private static final ClassValue<ConstructionPlan> PLANS = new ClassValue<>() {
+        @Override
+        protected ConstructionPlan computeValue(Class<?> type) {
+            if (type.isRecord()) {
+                Class<?>[] componentTypes = Arrays.stream(type.getRecordComponents())
+                    .map(RecordComponent::getType)
+                    .toArray(Class<?>[]::new);
+                try {
+                    return new ConstructionPlan(type.getDeclaredConstructor(componentTypes), null);
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException("Failed to initialize class " + type.getName(), e);
+                }
+            }
+
+            Constructor<?>[] constructors = type.getConstructors();
+            for (Constructor<?> constructor : constructors) {
+                if (constructor.getParameterCount() == 0) {
+                    return new ConstructionPlan(constructor, synchronizedMap(new IdentityHashMap<>()));
+                }
+            }
+            if (constructors.length == 0) {
+                throw new RuntimeException("Failed to initialize class " + type.getName() + ", no appropriate public constructor found");
+            }
+            return new ConstructionPlan(constructors[0], null);
+        }
+    };
 
     private Optional<Object> sourceClazz = Optional.empty();
 
@@ -39,68 +62,40 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
             result = input;
         }
 
-        if (clazz.isRecord()) {
-            Constructor<?> recordConstructor = CLASS2CONSTRUCTOR.get(clazz);
-            if (recordConstructor == null) {
-                Class<?>[] componentTypes = Arrays.stream(clazz.getRecordComponents())
-                    .map(RecordComponent::getType)
-                    .toArray(Class<?>[]::new);
-
-                try {
-                    recordConstructor = clazz.getDeclaredConstructor(componentTypes);
-                    CLASS2CONSTRUCTOR.put(clazz, recordConstructor);
-                } catch (NoSuchMethodException e) {
-                    throw new RuntimeException("Failed to initialize class " + clazz.getName(), e);
-                }
-            }
-
-            result = getObject(schema, result, recordConstructor);
-        } else if (!hasParameterlessPublicConstructor(clazz)) {
-            Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> getAnyPublicConstructor(c).orElse(null));
-
-            if (primaryConstructor == null) {
-                throw new RuntimeException("Failed to initialize class " + clazz.getName() + ", no appropriate public constructor found");
-            }
-
-            result = getObject(schema, result, primaryConstructor);
-        } else {
-            if (result == null) {
-                try {
-                    Constructor<?> primaryConstructor = CLASS2CONSTRUCTOR.computeIfAbsent(clazz, c -> getParameterlessPublicConstructor(c).orElse(null));
-                    if (primaryConstructor != null) {
-                        result = primaryConstructor.newInstance();
-                    } else {
-                        throw new RuntimeException("Failed to locate a parameterless public constructor for class " + clazz.getName());
-                    }
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            Consumer<Object> consumer = SCHEMA2CONSUMER.get(schema);
-            if (consumer == null) {
-                final net.datafaker.transformations.Field<Object, ?>[] fields = schema.getFields();
-                final Map<String, Field> name2ClassField = Stream.of(clazz.getDeclaredFields()).collect(
-                    Collectors.toMap(Field::getName, Function.identity()));
-                final Field[] rFields = new Field[fields.length];
-                for (int i = 0; i < fields.length; i++) {
-                    rFields[i] = name2ClassField.get(fields[i].getName());
-                    rFields[i].setAccessible(true);
-                }
-                consumer = classObject -> {
-                    for (int i = 0; i < fields.length; i++) {
-                        try {
-                            rFields[i].set(classObject, fields[i].transform(classObject));
-                        } catch (IllegalAccessException e) {
-                            throw new RuntimeException("Failed to transform field " + fields[i], e);
-                        }
-                    }
-                };
-                SCHEMA2CONSUMER.put(schema, consumer);
-            }
-            consumer.accept(result);
+        ConstructionPlan plan = PLANS.get(clazz);
+        Map<Schema<Object, ?>, Consumer<Object>> fieldWriters = plan.fieldWriters();
+        if (fieldWriters == null) {
+            return getObject(schema, result, plan.constructor());
         }
+        if (result == null) {
+            try {
+                result = plan.constructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        fieldWriters.computeIfAbsent(schema, key -> fieldWriter(clazz, key)).accept(result);
         return result;
+    }
+
+    private static Consumer<Object> fieldWriter(Class<?> type, Schema<Object, ?> schema) {
+        net.datafaker.transformations.Field<Object, ?>[] fields = schema.getFields();
+        Map<String, Field> declaredFields = Stream.of(type.getDeclaredFields())
+            .collect(Collectors.toMap(Field::getName, Function.identity()));
+        Field[] targets = new Field[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            targets[i] = declaredFields.get(fields[i].getName());
+            targets[i].setAccessible(true);
+        }
+        return target -> {
+            for (int i = 0; i < fields.length; i++) {
+                try {
+                    targets[i].set(target, fields[i].transform(target));
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Failed to transform field " + fields[i], e);
+                }
+            }
+        };
     }
 
     @Override
@@ -172,20 +167,7 @@ public class JavaObjectTransformer implements Transformer<Object, Object> {
         }
     }
 
-    private boolean hasParameterlessPublicConstructor(Class<?> clazz) {
-        return getParameterlessPublicConstructor(clazz).isPresent();
-    }
-
-    private Optional<Constructor<?>> getParameterlessPublicConstructor(Class<?> clazz) {
-        return Arrays.stream(clazz.getConstructors())
-            .filter(constructor -> constructor.getParameterCount() == 0)
-            .filter(constructor -> Modifier.isPublic(constructor.getModifiers()))
-            .findFirst();
-    }
-
-    private Optional<Constructor<?>> getAnyPublicConstructor(Class<?> clazz) {
-        return Arrays.stream(clazz.getConstructors())
-            .filter(constructor -> Modifier.isPublic(constructor.getModifiers()))
-            .findFirst();
+    private record ConstructionPlan(Constructor<?> constructor,
+                                    @Nullable Map<Schema<Object, ?>, Consumer<Object>> fieldWriters) {
     }
 }

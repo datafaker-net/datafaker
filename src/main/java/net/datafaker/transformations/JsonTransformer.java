@@ -7,13 +7,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
-import java.util.StringJoiner;
 
 public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
 
-    private static final Map<Character, String> ESCAPING_MAP = createEscapeMap();
-    private static final char[] WRAPPERS = "[]".toCharArray();
+    private static final String[] ESCAPES = createEscapes();
     private final boolean commaBetweenObjects;
 
     private JsonTransformer(boolean commaBetweenObjects) {
@@ -26,14 +23,19 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public String apply(@Nullable IN input, Schema<IN, ?> schema) {
-        Field<?, ?>[] fields = schema.getFields();
         StringBuilder sb = new StringBuilder();
-        sb.append("{");
+        appendObject(sb, input, schema);
+        return sb.toString();
+    }
+
+    private void appendObject(StringBuilder sb, @Nullable IN input, Schema<IN, ?> schema) {
+        Field<?, ?>[] fields = schema.getFields();
+        sb.append('{');
         for (int i = 0; i < fields.length; i++) {
-            value2String((fields[i].getName()), sb);
+            value2String(fields[i].getName(), sb);
             sb.append(": ");
             if (fields[i] instanceof CompositeField compositeField) {
-                sb.append(apply(input, compositeField, i));
+                appendObject(sb, input, compositeField);
             } else if (fields[i] instanceof SimpleField simpleField) {
                 applyValue(input, sb, simpleField.transform(input));
             } else {
@@ -43,8 +45,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
                 sb.append(", ");
             }
         }
-        sb.append("}");
-        return sb.toString();
+        sb.append('}');
     }
 
     @Override
@@ -53,26 +54,39 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
             throw new IllegalArgumentException("The sequence should be finite of size: " + fakeSequence);
         }
 
-        StringJoiner data = new StringJoiner(LINE_SEPARATOR);
         var iterator = input.iterator();
-        while (iterator.hasNext()) {
-            data.add(apply(iterator.next(), schema) + (commaBetweenObjects && iterator.hasNext() ? "," : ""));
+        if (!iterator.hasNext()) {
+            return "";
         }
-
-        return data.length() > 1 ? WRAPPERS[0] + LINE_SEPARATOR + data + LINE_SEPARATOR + WRAPPERS[1] : data.toString();
+        StringBuilder sb = new StringBuilder().append('[').append(LINE_SEPARATOR);
+        appendObject(sb, iterator.next(), schema);
+        while (iterator.hasNext()) {
+            if (commaBetweenObjects) {
+                sb.append(',');
+            }
+            sb.append(LINE_SEPARATOR);
+            appendObject(sb, iterator.next(), schema);
+        }
+        return sb.append(LINE_SEPARATOR).append(']').toString();
     }
 
     @Override
     public String generate(Schema<IN, ?> schema, int limit) {
         StringBuilder sb = new StringBuilder();
+        if (limit > 1) {
+            sb.append('[').append(LINE_SEPARATOR);
+        }
         for (int i = 0; i < limit; i++) {
-            sb.append(apply(null, schema, i));
+            appendObject(sb, null, schema);
             if (commaBetweenObjects && i < limit - 1) {
                 sb.append(",").append(LINE_SEPARATOR);
             }
         }
 
-        return limit > 1 ? WRAPPERS[0] + LINE_SEPARATOR + sb + LINE_SEPARATOR + WRAPPERS[1] : sb.toString();
+        if (limit > 1) {
+            sb.append(LINE_SEPARATOR).append(']');
+        }
+        return sb.toString();
     }
 
     @Override
@@ -92,17 +106,16 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
 
     private void applyValue(@Nullable IN input, StringBuilder sb, @Nullable Object value) {
         if (value instanceof Collection<?> collection) {
-            sb.append(generate(input, (Collection<Object>) collection));
+            appendArray(sb, input, collection);
         } else if (value != null && value.getClass().isArray()) {
-            sb.append(generate(input, Arrays.asList((Object[]) value)));
+            appendArray(sb, input, Arrays.asList((Object[]) value));
         } else {
             value2String(value, sb);
         }
     }
 
-    private String generate(@Nullable IN input, Collection<Object> collection) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
+    private void appendArray(StringBuilder sb, @Nullable IN input, Collection<?> collection) {
+        sb.append('[');
         int i = 0;
         for (Object value : collection) {
             if (i > 0) {
@@ -110,13 +123,12 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
             }
             i++;
             if (value instanceof CompositeField compositeField) {
-                sb.append(apply(input, compositeField));
+                appendObject(sb, input, compositeField);
             } else {
                 applyValue(input, sb, value);
             }
         }
-        sb.append("]");
-        return sb.toString();
+        sb.append(']');
     }
 
     private static void value2String(@Nullable Object value, StringBuilder sb) {
@@ -142,7 +154,7 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
             final int length = val.length();
             for (int i = 0; i < length; i++) {
                 final char c = val.charAt(i);
-                final String escapedValue = ESCAPING_MAP.get(c);
+                final String escapedValue = c < ESCAPES.length ? ESCAPES[c] : null;
                 if (escapedValue != null) {
                     sb.append(val, start, i).append(escapedValue);
                     start = i + 1;
@@ -155,52 +167,21 @@ public class JsonTransformer<IN> implements Transformer<IN, CharSequence> {
         }
     }
 
-    private static Map<Character, String> createEscapeMap() {
-        return Map.ofEntries(Map.entry('\\', "\\\\"),
-            Map.entry('\"', "\\\""),
-            Map.entry('\b', "\\b"),
-            Map.entry('\f', "\\f"),
-            Map.entry('\n', "\\n"),
-            Map.entry('\r', "\\r"),
-            Map.entry('\t', "\\t"),
-            Map.entry('/', "\\/"),
-            Map.entry('\u0000', "\\u0000"),
-            Map.entry('\u0001', "\\u0001"),
-            Map.entry('\u0002', "\\u0002"),
-            Map.entry('\u0003', "\\u0003"),
-            Map.entry('\u0004', "\\u0004"),
-            Map.entry('\u0005', "\\u0005"),
-            Map.entry('\u0006', "\\u0006"),
-            Map.entry('\u0007', "\\u0007"),
-            // map.put('\u0008', "\\u0008");
-            // covered by map.put('\b', "\\b");
-            // map.put('\u0009', "\\u0009");
-            // covered by map.put('\t', "\\t");
-            // map.put((char) 10, "\\u000A");
-            // covered by map.put('\n', "\\n");
-            Map.entry('\u000B', "\\u000B"),
-            // map.put('\u000C', "\\u000C");
-            // covered by map.put('\f', "\\f");
-            // map.put((char) 13, "\\u000D");
-            // covered by map.put('\r', "\\r");
-            Map.entry('\u000E', "\\u000E"),
-            Map.entry('\u000F', "\\u000F"),
-            Map.entry('\u0010', "\\u0010"),
-            Map.entry('\u0011', "\\u0011"),
-            Map.entry('\u0012', "\\u0012"),
-            Map.entry('\u0013', "\\u0013"),
-            Map.entry('\u0014', "\\u0014"),
-            Map.entry('\u0015', "\\u0015"),
-            Map.entry('\u0016', "\\u0016"),
-            Map.entry('\u0017', "\\u0017"),
-            Map.entry('\u0018', "\\u0018"),
-            Map.entry('\u0019', "\\u0019"),
-            Map.entry('\u001A', "\\u001A"),
-            Map.entry('\u001B', "\\u001B"),
-            Map.entry('\u001C', "\\u001C"),
-            Map.entry('\u001D', "\\u001D"),
-            Map.entry('\u001E', "\\u001E"),
-            Map.entry('\u001F', "\\u001F"));
+    private static String[] createEscapes() {
+        String[] escapes = new String[128];
+        String hex = "0123456789ABCDEF";
+        for (int i = 0; i < 32; i++) {
+            escapes[i] = "\\u00" + hex.charAt(i >>> 4) + hex.charAt(i & 15);
+        }
+        escapes['\\'] = "\\\\";
+        escapes['"'] = "\\\"";
+        escapes['\b'] = "\\b";
+        escapes['\f'] = "\\f";
+        escapes['\n'] = "\\n";
+        escapes['\r'] = "\\r";
+        escapes['\t'] = "\\t";
+        escapes['/'] = "\\/";
+        return escapes;
     }
 
     public static class JsonTransformerBuilder<IN> {
