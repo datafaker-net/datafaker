@@ -56,6 +56,25 @@ public class Lorem extends AbstractProvider<BaseProviders> {
         return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit);
     }
 
+    /**
+     * Generates random text with the same character rules as
+     * {@link Text#text(int, int, boolean, boolean, boolean, boolean)}.
+     *
+     * @param minimumLength the minimum length (inclusive)
+     * @param maximumLength the maximum length (inclusive)
+     * @param includeUppercase whether to require an uppercase letter
+     * @param includeSpecial whether to require a special symbol
+     * @param includeDigit whether to require a digit
+     * @param includeLowercase whether to require a lowercase letter
+     * @return random text within the given length range
+     * @throws IllegalArgumentException if {@code minimumLength > maximumLength}
+     * @throws IllegalArgumentException if {@code maximumLength} is too short for the required characters
+     */
+    public String characters(int minimumLength, int maximumLength,
+                             boolean includeUppercase, boolean includeSpecial, boolean includeDigit, boolean includeLowercase) {
+        return faker.text().text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit, includeLowercase);
+    }
+
     public String characters(int fixedNumberOfCharacters, boolean includeUppercase, boolean includeDigit) {
         return characters(fixedNumberOfCharacters, includeUppercase, false, includeDigit);
     }

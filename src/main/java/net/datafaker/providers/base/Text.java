@@ -3,7 +3,7 @@ package net.datafaker.providers.base;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Generates random text in a flexible way.
@@ -12,7 +12,7 @@ import java.util.WeakHashMap;
  */
 public class Text extends AbstractProvider<BaseProviders> {
 
-    private final Map<TextConfigPojo, TextRuleConfig> configMap = new WeakHashMap<>();
+    private static final Map<TextOptions, TextRuleConfig> STANDARD_CONFIGS = new ConcurrentHashMap<>();
 
     public Character character() {
         return text(1, 1, true).charAt(0);
@@ -67,45 +67,66 @@ public class Text extends AbstractProvider<BaseProviders> {
     }
 
     /**
-     * For example, expression {@code text(5, 15, true, false, true} generates a random string of length 5 to 15
-     * containing at least one upper case letter and at least one digit.
+     * Uses {@link #text(int, int, boolean, boolean, boolean, boolean)} with {@code includeLowercase} set to {@code false}.
      *
-     * @param minimumLength The generated text will not be shorter than this length
-     * @param maximumLength The generated text will not be longer than this length
-     * @param includeUppercase is at least one uppercase letter required
-     * @param includeSpecial  is at least one special symbol required
-     * @param includeDigit  is at least one digit required
-     * @return a random string withing given length interval
-     * @see Text#DEFAULT_SPECIAL
+     * @param minimumLength the minimum length (inclusive)
+     * @param maximumLength the maximum length (inclusive)
+     * @param includeUppercase whether to require an uppercase letter
+     * @param includeSpecial whether to require a special symbol
+     * @param includeDigit whether to require a digit
+     * @return random text within the given length range
      * @throws IllegalArgumentException if {@code minimumLength > maximumLength}
-     * @throws IllegalArgumentException if {@code maximumLength} is not enough to include the required symbols (upper case letter, special char, digit)
+     * @throws IllegalArgumentException if {@code maximumLength} is too short for the required characters
      */
     public String text(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) {
+        return text(minimumLength, maximumLength, includeUppercase, includeSpecial, includeDigit, false);
+    }
+
+    /**
+     * Generates random text within the given length range. Lowercase letters are always eligible.
+     * Each flag set to {@code true} requires at least one character from its group.
+     * For example, {@code text(5, 15, true, false, true, true)} requires an uppercase letter, a digit, and a lowercase letter.
+     *
+     * @param minimumLength the minimum length (inclusive)
+     * @param maximumLength the maximum length (inclusive)
+     * @param includeUppercase whether to require an uppercase letter
+     * @param includeSpecial whether to require a special symbol
+     * @param includeDigit whether to require a digit
+     * @param includeLowercase whether to require a lowercase letter
+     * @return random text within the given length range
+     * @see Text#DEFAULT_SPECIAL
+     * @throws IllegalArgumentException if {@code minimumLength > maximumLength}
+     * @throws IllegalArgumentException if {@code maximumLength} is too short for the required characters
+     *     (uppercase letters, special symbols, digits, or lowercase letters)
+     */
+    public String text(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial, boolean includeDigit, boolean includeLowercase) {
         if (minimumLength > maximumLength) {
             throw new IllegalArgumentException("Min length (%s) should not be greater than max length (%s)".formatted(
                 minimumLength, maximumLength));
         }
 
-        final int minLength = Math.max(minimumLength, min(includeUppercase) + min(includeSpecial) + min(includeDigit));
+        TextOptions options = new TextOptions(includeUppercase, includeSpecial, includeDigit, includeLowercase);
+        TextRuleConfig rules = STANDARD_CONFIGS.computeIfAbsent(options, Text::standardConfig);
+        int minLength = Math.max(minimumLength, rules.getNumberOfRequiredSymbols());
         if (minLength > maximumLength) {
             throw new IllegalArgumentException("Minimum number of required characters (%s) should not be greater than max length (%s)".formatted(
                 minLength, maximumLength));
         }
 
-        final int len = faker.number().numberBetween(minLength, maximumLength + 1);
-        TextConfigPojo pojo = new TextConfigPojo(len, includeUppercase, includeSpecial, includeDigit);
-        Text.TextRuleConfig config = configMap.computeIfAbsent(pojo, (x) -> {
-            TextSymbolsBuilder builder =
-                TextSymbolsBuilder.builder()
-                    .with(Text.EN_LOWERCASE);
-            if (includeUppercase) builder = builder.with(Text.EN_UPPERCASE, 1);
-            if (includeSpecial) builder = builder.with(Text.DEFAULT_SPECIAL, 1);
-            if (includeDigit) builder = builder.with(Text.DIGITS, 1);
+        int length = faker.number().numberBetween(minLength, maximumLength + 1);
+        return text(new TextRuleConfig(length, rules));
+    }
 
-            return builder.len(len).throwIfLengthSmall(true).build();
-        });
-
-        return text(config);
+    private static TextRuleConfig standardConfig(TextOptions options) {
+        int requiredLowercase = min(options.includeLowercase());
+        int requiredUppercase = min(options.includeUppercase());
+        int requiredSpecial = min(options.includeSpecial());
+        int requiredDigit = min(options.includeDigit());
+        TextSymbolsBuilder builder = TextSymbolsBuilder.builder().with(EN_LOWERCASE, requiredLowercase);
+        if (options.includeUppercase()) builder.with(EN_UPPERCASE, requiredUppercase);
+        if (options.includeSpecial()) builder.with(DEFAULT_SPECIAL, requiredSpecial);
+        if (options.includeDigit()) builder.with(DIGITS, requiredDigit);
+        return builder.len(requiredLowercase + requiredUppercase + requiredSpecial + requiredDigit).build();
     }
 
     private static int min(boolean requireSomeKindOfSymbols) {
@@ -142,6 +163,13 @@ public class Text extends AbstractProvider<BaseProviders> {
                 required[i] = entry.getValue();
                 i++;
             }
+        }
+
+        private TextRuleConfig(int fixedNumberOfCharacters, TextRuleConfig rules) {
+            this.fixedNumberOfCharacters = fixedNumberOfCharacters;
+            this.numberOfRequiredSymbols = rules.numberOfRequiredSymbols;
+            this.textKeys = rules.textKeys;
+            this.required = rules.required;
         }
 
         public int getFixedNumberOfCharacters() {
@@ -302,5 +330,5 @@ public class Text extends AbstractProvider<BaseProviders> {
         return String.valueOf(buffer);
     }
 
-    private record TextConfigPojo(int length, boolean includeUppercase, boolean includeSpecial, boolean includeDigit) { }
+    private record TextOptions(boolean includeUppercase, boolean includeSpecial, boolean includeDigit, boolean includeLowercase) { }
 }
