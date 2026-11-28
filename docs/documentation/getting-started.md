@@ -110,4 +110,18 @@ To use Datafaker to generate fake data, you can use the following code as an exa
     val streetAddress = faker.address().streetAddress() // 60018 Sawayn Brooks Suite 449
     ```
 
+=== "Groovy"
+
+    ```groovy
+    import net.datafaker.Faker
+
+    def faker = new Faker()
+
+    def name = faker.name().fullName() // Miss Samanta Schmidt
+    def firstName = faker.name().firstName() // Emory
+    def lastName = faker.name().lastName() // Barton
+
+    def streetAddress = faker.address().streetAddress() // 60018 Sawayn Brooks Suite 449
+    ```
+
 See [all providers](providers.md) for available generators and [basic usage](usage.md) for locales and seeded generation.

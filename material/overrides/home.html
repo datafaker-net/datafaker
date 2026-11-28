@@ -1,36 +1,265 @@
 {% extends "overrides/main.html" %}
+{% set df = config.extra.datafaker %}
 {% block tabs %}
   {{ super() }}
-  <style>
-    .md-header { position: initial; }
-    .md-main__inner { margin: 0; }
-    .md-content { display: none; }
-    @media screen and (min-width: 60em) {
-      .md-sidebar--secondary { display: none; }
-    }
-    @media screen and (min-width: 76.25em) {
-      .md-sidebar--primary { display: none; }
-    }
-  </style>
-  <section class="mdx-container">
-    <div class="md-grid md-typeset">
-      <div class="mdx-hero">
-        <div class="mdx-hero__image">
-          <img src="assets/images/illustration.png" alt="" width="1659" height="1200" draggable="false">
+  <div class="df-home" id="df-home">
+
+    <section class="df-hero">
+      <div class="md-grid df-hero__grid">
+        <div class="df-hero__intro">
+          <h1 class="df-hero__title">Fake data for Java and Kotlin</h1>
+          <p class="df-hero__lead">
+            Datafaker is a library that generates realistic test data, such as
+            names, addresses, phone numbers and IBANs. It has over 260
+            providers and supports more than 70 locales.
+          </p>
+
+          <div class="df-install" data-install-root>
+            <div class="df-install__bar">
+              <div class="df-segmented" role="group" aria-label="Build tool">
+                <button type="button" data-install="maven" aria-pressed="true">Maven</button>
+                <button type="button" data-install="gradle" aria-pressed="false">Gradle</button>
+                <button type="button" data-install="kotlin" aria-pressed="false">Gradle (Kotlin)</button>
+              </div>
+              <button type="button" class="df-install__copy" data-install-copy>Copy</button>
+            </div>
+<pre class="df-install__code" data-install-snippet="maven"><code>&lt;dependency&gt;
+    &lt;groupId&gt;net.datafaker&lt;/groupId&gt;
+    &lt;artifactId&gt;datafaker&lt;/artifactId&gt;
+    &lt;version&gt;{{ df.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<pre class="df-install__code" data-install-snippet="gradle" hidden><code>implementation 'net.datafaker:datafaker:{{ df.version }}'</code></pre>
+<pre class="df-install__code" data-install-snippet="kotlin" hidden><code>implementation("net.datafaker:datafaker:{{ df.version }}")</code></pre>
+          </div>
+
+          <div class="df-hero__actions">
+            <a class="df-button df-button--primary" href="{{ 'documentation/getting-started/' | url }}">Get started</a>
+            <a class="df-button" href="{{ 'documentation/providers/' | url }}">Browse providers</a>
+          </div>
+          <p class="df-hero__meta">
+            Version {{ df.version }} on Maven Central. Requires Java 17 or later.
+            Apache 2.0 licensed.
+          </p>
         </div>
-        <div class="mdx-hero__content">
-          <h1>Generating fake data has never been easier</h1>
-          <p>{{ config.site_description }}. Get started in minutes.</p>
-          <a href="{{ page.next_page.url | url }}" title="{{ page.next_page.title | e }}" class="md-button md-button--primary">
-            Quick start
-          </a>
+
+        <div class="df-demo" data-demo>
+          <div class="df-demo__toolbar">
+            <div class="df-segmented df-segmented--locales" role="group" aria-label="Locale">
+              <button type="button" data-locale="en-US" aria-pressed="true">en-US</button>
+              <button type="button" data-locale="nl-NL" aria-pressed="false">nl-NL</button>
+              <button type="button" data-locale="de-DE" aria-pressed="false">de-DE</button>
+              <button type="button" data-locale="fr-FR" aria-pressed="false">fr-FR</button>
+              <button type="button" data-locale="es-ES" aria-pressed="false">es-ES</button>
+              <button type="button" data-locale="pt-BR" aria-pressed="false">pt-BR</button>
+            </div>
+            <button type="button" class="df-demo__generate" data-demo-generate>Generate</button>
+          </div>
+<pre class="df-demo__code"><code><span class="t">Faker</span> faker = <span data-demo-ctor>new Faker()</span>;
+
+faker.name().fullName();
+faker.internet().emailAddress();
+faker.address().city();
+faker.phoneNumber().phoneNumber();</code></pre>
+          <div class="df-demo__output">
+            <table>
+              <caption class="df-visually-hidden">Sample output for the selected locale</caption>
+              <thead>
+                <tr><th scope="col">fullName()</th><th scope="col">emailAddress()</th><th scope="col">city()</th><th scope="col">phoneNumber()</th></tr>
+              </thead>
+              <tbody data-demo-rows aria-live="polite"></tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-  <div class="mdx-attribution">
-    <p>Social images for Datafaker are generated using <a href="https://allscreenshots.com">Allscreenshots.com</a></p>
+    </section>
+
+    <section class="df-section" aria-labelledby="df-providers-title">
+      <div class="md-grid">
+        <div class="df-section__head">
+          <h2 id="df-providers-title">Providers</h2>
+          <p>
+            Each provider is a method on <code>Faker</code>. Providers are
+            grouped by subject. Some examples:
+          </p>
+        </div>
+
+        <div class="df-groups">
+          <div class="df-group">
+            <h3>Base <span>130+ providers</span></h3>
+            <dl>
+              <dt>finance().iban()</dt><dd>SE7924318490613391528664</dd>
+              <dt>internet().ipV4Address()</dt><dd>193.16.183.152</dd>
+              <dt>job().title()</dt><dd>Human Community-Services Manager</dd>
+              <dt>book().title()</dt><dd>Far From the Madding Crowd</dd>
+            </dl>
+          </div>
+          <div class="df-group">
+            <h3>Entertainment <span>75+ providers</span></h3>
+            <dl>
+              <dt>lordOfTheRings().character()</dt><dd>Elrond</dd>
+              <dt>starTrek().character()</dt><dd>Charles Tucker III</dd>
+              <dt>pokemon().name()</dt><dd>Kabuto</dd>
+              <dt>movie().quote()</dt><dd>Toto, I've got a feeling we're not in Kansas anymore.</dd>
+            </dl>
+          </div>
+          <div class="df-group">
+            <h3>Food</h3>
+            <dl>
+              <dt>food().dish()</dt><dd>Chicken Milanese</dd>
+              <dt>beer().name()</dt><dd>Chimay Grande Réserve</dd>
+              <dt>dessert().variety()</dt><dd>Coffee Cake</dd>
+            </dl>
+          </div>
+          <div class="df-group">
+            <h3>Healthcare</h3>
+            <dl>
+              <dt>disease().anyDisease()</dt><dd>septicemia</dd>
+              <dt>medication().drugName()</dt><dd>MSIR</dd>
+            </dl>
+          </div>
+          <div class="df-group">
+            <h3>Sport</h3>
+            <dl>
+              <dt>football().teams()</dt><dd>AS Roma</dd>
+              <dt>formula1().driver()</dt><dd>George Russell</dd>
+              <dt>basketball().players()</dt><dd>Anthony Davis</dd>
+            </dl>
+          </div>
+          <div class="df-group">
+            <h3>Video games <span>30+ providers</span></h3>
+            <dl>
+              <dt>zelda().character()</dt><dd>Liana</dd>
+              <dt>eldenRing().location()</dt><dd>Liurnia Of The Lakes</dd>
+              <dt>minecraft().itemName()</dt><dd>Wither Skeleton Skull</dd>
+            </dl>
+          </div>
+        </div>
+
+        <p class="df-section__more">
+          <a href="{{ 'documentation/providers/' | url }}">See all providers</a> or
+          <a href="{{ 'documentation/custom-providers/' | url }}">write your own</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="df-section df-section--tinted" aria-labelledby="df-features-title">
+      <div class="md-grid">
+        <div class="df-section__head">
+          <h2 id="df-features-title">Features</h2>
+        </div>
+
+        <div class="df-features" data-feature-tabs>
+          <div class="df-features__list" role="tablist" aria-label="Features" aria-orientation="vertical">
+            <button type="button" role="tab" id="df-tab-export" aria-controls="df-panel-export" aria-selected="true">
+              <strong>Export to SQL, JSON or CSV</strong>
+              <span>Define a schema and generate SQL inserts, JSON, CSV, YAML or XML.</span>
+            </button>
+            <button type="button" role="tab" id="df-tab-seed" aria-controls="df-panel-seed" aria-selected="false" tabindex="-1">
+              <strong>Repeatable output</strong>
+              <span>A seeded <code>Random</code> gives the same values on every run.</span>
+            </button>
+            <button type="button" role="tab" id="df-tab-expr" aria-controls="df-panel-expr" aria-selected="false" tabindex="-1">
+              <strong>Expressions</strong>
+              <span>Templates that combine text and provider values.</span>
+            </button>
+            <button type="button" role="tab" id="df-tab-coll" aria-controls="df-panel-coll" aria-selected="false" tabindex="-1">
+              <strong>Collections and streams</strong>
+              <span>Lists and streams of generated values.</span>
+            </button>
+            <button type="button" role="tab" id="df-tab-unique" aria-controls="df-panel-unique" aria-selected="false" tabindex="-1">
+              <strong>Unique values</strong>
+              <span>Values that are not repeated for a given key.</span>
+            </button>
+          </div>
+
+          <div class="df-features__panels">
+            <div role="tabpanel" id="df-panel-export" aria-labelledby="df-tab-export" tabindex="0">
+<pre><code><span class="t">Schema</span>&lt;<span class="t">String</span>, <span class="t">String</span>&gt; schema = <span class="t">Schema</span>.of(
+    field(<span class="s">"name"</span>, () -&gt; faker.name().fullName()),
+    field(<span class="s">"email"</span>, () -&gt; faker.internet().emailAddress()));
+
+<span class="t">SqlTransformer</span>&lt;<span class="t">String</span>&gt; sql = <span class="k">new</span> <span class="t">SqlTransformer.SqlTransformerBuilder</span>&lt;<span class="t">String</span>&gt;()
+    .tableName(<span class="s">"users"</span>)
+    .dialect(<span class="t">SqlDialect</span>.POSTGRES)
+    .batch(<span class="n">3</span>)
+    .build();
+
+sql.generate(schema, <span class="n">3</span>);</code></pre>
+<pre class="df-output"><code>INSERT INTO "users" ("name", "email")
+VALUES ('Jacob Gibson', 'adena.bayer@yahoo.com'),
+       ('Ariel Reynolds DDS', 'yvone.gutkowski@gmail.com'),
+       ('Marquis Brakus', 'santos.wiza@yahoo.com');</code></pre>
+              <a class="df-features__link" href="{{ 'documentation/schemas/' | url }}">Read about schemas and transformers</a>
+            </div>
+
+            <div role="tabpanel" id="df-panel-seed" aria-labelledby="df-tab-seed" tabindex="0" hidden>
+<pre><code><span class="t">Faker</span> first = <span class="k">new</span> <span class="t">Faker</span>(<span class="k">new</span> <span class="t">Random</span>(<span class="n">42</span>));
+<span class="t">Faker</span> second = <span class="k">new</span> <span class="t">Faker</span>(<span class="k">new</span> <span class="t">Random</span>(<span class="n">42</span>));
+
+first.name().fullName();
+second.name().fullName();</code></pre>
+<pre class="df-output"><code>Garnet VonRueden
+Garnet VonRueden</code></pre>
+              <a class="df-features__link" href="{{ 'documentation/usage/' | url }}">Read about basic usage</a>
+            </div>
+
+            <div role="tabpanel" id="df-panel-expr" aria-labelledby="df-tab-expr" tabindex="0" hidden>
+<pre><code>faker.expression(<span class="s">"#{Name.first_name} lives in #{Address.city}"</span>);
+faker.expression(<span class="s">"#{bothify '??-####', 'true'}"</span>);</code></pre>
+<pre class="df-output"><code>Pamelia lives in East Anhaven
+OI-3047</code></pre>
+              <a class="df-features__link" href="{{ 'documentation/expressions/' | url }}">Read about expressions</a>
+            </div>
+
+            <div role="tabpanel" id="df-panel-coll" aria-labelledby="df-tab-coll" tabindex="0" hidden>
+<pre><code><span class="t">List</span>&lt;<span class="t">String</span>&gt; names = faker.collection(() -&gt; faker.name().firstName())
+    .len(<span class="n">4</span>)
+    .generate();</code></pre>
+<pre class="df-output"><code>[Reda, Nigel, Wilford, Buck]</code></pre>
+              <a class="df-features__link" href="{{ 'documentation/sequences/' | url }}">Read about collections and streams</a>
+            </div>
+
+            <div role="tabpanel" id="df-panel-unique" aria-labelledby="df-tab-unique" tabindex="0" hidden>
+<pre><code>faker.unique().fetchFromYaml(<span class="s">"music.instruments"</span>);
+faker.unique().fetchFromYaml(<span class="s">"music.instruments"</span>);
+faker.unique().fetchFromYaml(<span class="s">"music.instruments"</span>);</code></pre>
+<pre class="df-output"><code>Cello
+Ukelele
+Xylophone</code></pre>
+              <a class="df-features__link" href="{{ 'documentation/unique-values/' | url }}">Read about unique values</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="df-section" aria-labelledby="df-next-title">
+      <div class="md-grid df-next">
+        <h2 id="df-next-title" class="df-visually-hidden">Where to go next</h2>
+        <a class="df-next__item" href="{{ 'documentation/getting-started/' | url }}">
+          <strong>Getting started</strong>
+          <span>Installation and first steps.</span>
+        </a>
+        <a class="df-next__item" href="https://javadoc.io/doc/net.datafaker/datafaker/latest/index.html">
+          <strong>Javadoc</strong>
+          <span>API reference for all providers.</span>
+        </a>
+        <a class="df-next__item" href="{{ ('releases/' ~ df.version ~ '/') | url }}">
+          <strong>Release notes</strong>
+          <span>What changed in {{ df.version }} and earlier versions.</span>
+        </a>
+        <a class="df-next__item" href="{{ config.repo_url }}">
+          <strong>Source on GitHub</strong>
+          <span>Issues, source code and contributing.</span>
+        </a>
+      </div>
+      <p class="md-grid df-attribution">
+        Social images for this site are generated with
+        <a href="https://allscreenshots.com">Allscreenshots</a>.
+      </p>
+    </section>
+
   </div>
+  <script src="{{ 'javascripts/home.js' | url }}" defer></script>
 {% endblock %}
 {% block content %}{% endblock %}
-{% block footer %}{% endblock %}

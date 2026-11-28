@@ -17,8 +17,9 @@ The release process is now driven by GitHub Releases:
 The automated workflow will then:
 1. Extract the version from the tag
 2. Update the Maven project version
-3. Build and deploy to Maven Central
-4. Generate a changelog and add it to the release notes
+3. Compile and run every Java, Kotlin and Groovy code sample in `docs/documentation` (see below); the release stops if one fails
+4. Build and deploy to Maven Central
+5. Generate a changelog and add it to the release notes
 
 Followed by a separate job which will:
 1. Create a PR to update the pom.xml to the next SNAPSHOT version
@@ -30,6 +31,22 @@ Followed by a separate job which will:
      * `docs/documentation/providers.md`
 
 Snapshot release notes (`docs/releases/{version}-SNAPSHOT.md`) are optional draft pads between releases: excluded from the site and not linked in the Releases nav. The post-release workflow deletes `docs/releases/{released}-SNAPSHOT.md` when that version ships, then creates a fresh `docs/releases/{next}-SNAPSHOT.md` from the template. Stable releases appear at the top of the nav; older releases roll into `{major}.x` sections (e.g. `3.x`, `2.x`).
+
+## Checking the documentation code samples
+
+The project in `scripts/doc-samples` extracts every code sample from `docs/documentation`, compiles them with the Java, Kotlin and Groovy compilers, and runs them against a Datafaker jar. To check them before a release, run this from the repository root:
+
+```sh
+./mvnw -B -PnoGpg -DskipTests install
+./mvnw -B -f scripts/doc-samples/pom.xml verify
+```
+
+Each sample is printed with `OK` or `FAIL` and its location, e.g. `FAIL Kotlin schemas.md:120`. A few rules for the samples:
+
+- Every tab group needs a `Java`, a `Kotlin` and a `Groovy` tab, otherwise the check fails.
+- Samples on the same page share their declarations, so a class defined in one sample can be used in the next one. If a page defines the same class twice, put `<!-- doc-samples: new scope -->` before the second definition.
+- Samples may use `faker`, `schema`, `transformer`, `separator`, `limit` and `tableSchemaName` without declaring them; the generated code defines them.
+- Relative paths resolve from the repository root, so a sample can load `src/test/ants.yml`.
 
 ## Requirements
 

@@ -23,21 +23,59 @@ The Options provider is deprecated in 3.0. In Java or Kotlin, use `faker.selecti
 
 ## New providers and generators
 
-```java
-Faker faker = new Faker();
+=== "Java"
 
-String positive = faker.adjective().positive();
-String negative = faker.adjective().negative();
-String either = faker.adjective().any();
+    ```java
+    Faker faker = new Faker();
 
-String vendor = "PostgreSQL";
-int port = faker.database().port(vendor);
-String jdbcUrl = faker.database().jdbcUrl(vendor, "localhost", "example");
-String sqlType = faker.database().sqlType();
+    String positive = faker.adjective().positive();
+    String negative = faker.adjective().negative();
+    String either = faker.adjective().any();
 
-String isin = faker.stock().isin();
-String spanishId = new Faker(Locale.forLanguageTag("es-ES")).idNumber().valid();
-```
+    String vendor = "PostgreSQL";
+    int port = faker.database().port(vendor);
+    String jdbcUrl = faker.database().jdbcUrl(vendor, "localhost", "example");
+    String sqlType = faker.database().sqlType();
+
+    String isin = faker.stock().isin();
+    String spanishId = new Faker(Locale.forLanguageTag("es-ES")).idNumber().valid();
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    val faker = Faker()
+
+    val positive = faker.adjective().positive()
+    val negative = faker.adjective().negative()
+    val either = faker.adjective().any()
+
+    val vendor = "PostgreSQL"
+    val port = faker.database().port(vendor)
+    val jdbcUrl = faker.database().jdbcUrl(vendor, "localhost", "example")
+    val sqlType = faker.database().sqlType()
+
+    val isin = faker.stock().isin()
+    val spanishId = Faker(Locale.forLanguageTag("es-ES")).idNumber().valid()
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def faker = new Faker()
+
+    def positive = faker.adjective().positive()
+    def negative = faker.adjective().negative()
+    def either = faker.adjective().any()
+
+    def vendor = "PostgreSQL"
+    def port = faker.database().port(vendor)
+    def jdbcUrl = faker.database().jdbcUrl(vendor, "localhost", "example")
+    def sqlType = faker.database().sqlType()
+
+    def isin = faker.stock().isin()
+    def spanishId = new Faker(Locale.forLanguageTag("es-ES")).idNumber().valid()
+    ```
 
 - `adjective()` samples positive or negative adjectives. `any()` chooses either category with equal probability. Use `word().adjective()` for the general vocabulary.
 - `database()` supplies sample database metadata such as vendor names, ports, driver classes, JDBC URLs, SQL types, and constraints. Reuse the same vendor for related values.

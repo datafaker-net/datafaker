@@ -29,7 +29,12 @@ jobs:
       
       - name: Set projects Maven version to GitHub Release version
         run: ./mvnw versions:set "-DnewVersion=${{ steps.get_version.outputs.release_version }}"
-      
+
+      - name: Check the documentation code samples
+        run: |
+          ./mvnw --batch-mode -PnoGpg -DskipTests install
+          ./mvnw --batch-mode -f scripts/doc-samples/pom.xml verify "-Ddatafaker.version=${{ steps.get_version.outputs.release_version }}"
+
       - name: Deploy to Maven Central Repository
         uses: actions/setup-java@v6.3.0
         with:

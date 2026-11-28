@@ -46,6 +46,18 @@ Example of schema definition:
     )
     ```
 
+=== "Groovy"
+
+    ```groovy
+    def faker = new BaseFaker()
+
+    // Write closures without arguments as { -> ... }, so Groovy picks the Supplier version of field()
+    Schema<String, String> schema = Schema.of(
+        field("first_name", { -> faker.name().firstName() }),
+        field("last_name", { -> faker.name().lastName() }),
+        field("address", { -> faker.address().streetAddress() }))
+    ```
+
 It is also supported nested(composite) fields e.g.:
 
 === "Java"
@@ -59,6 +71,12 @@ It is also supported nested(composite) fields e.g.:
 
     ```kotlin
     Schema.of(compositeField("key", arrayOf(field("key", Supplier { "value" }))))
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    Schema.of(compositeField("key", [field("key", { -> "value" })] as Field[]))
     ```
 
 ## CSV transformation
@@ -78,6 +96,12 @@ CSV transformer could be build with help of `CsvTransformer.CsvTransformerBuilde
     val transformer = CsvTransformer.builder<String>().header(true).separator(separator).build()
     ```
 
+=== "Groovy"
+
+    ```groovy
+    def transformer = CsvTransformer.builder().header(true).separator(separator).build()
+    ```
+
 The following can be configured:
 
 * the separator and quotes could be specified with `separator()` and `quote()`
@@ -95,6 +119,12 @@ To generate data based on a schema just call `generate` against `schema`:
 
     ```kotlin
     val csv = transformer.generate(schema, limit)
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def csv = transformer.generate(schema, limit)
     ```
 
 Also it's possible to use schemas to transform existing data. E.g. there is a collection of `Name` objects 
@@ -125,6 +155,20 @@ and we are going to build csv of first and last names based on this collection:
     val csv = transformer.generate(
         faker.collection<Name>().suppliers(Supplier { faker.name() }).maxLen(limit).build(), schema
     )
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def faker = new BaseFaker()
+
+    Schema<Name, String> schema =
+        Schema.of(field("firstName", { Name name -> name.firstName() }), field("lastname", { Name name -> name.lastName() }))
+
+    def transformer = CsvTransformer.builder().header(false).separator(" : ").build()
+    def csv = transformer.generate(
+        faker.collection().suppliers({ faker.name() }).maxLen(limit).build(),
+        schema)
     ```
 
 ## JSON transformation
@@ -159,6 +203,20 @@ Example of JSON generation:
     val json = transformer.generate(schema, 2)
     ```
 
+=== "Groovy"
+
+    ```groovy
+    def faker = new BaseFaker()
+
+    def schema = Schema.of(
+        field("Text", { -> faker.name().firstName() }),
+        field("Bool", { -> faker.bool().bool() })
+    )
+
+    def transformer = JsonTransformer.builder().build()
+    def json = transformer.generate(schema, 2)
+    ```
+
 To use composite fields it should be defined on `Schema` level and nothing more.
 
 ## SQL transformation
@@ -183,6 +241,13 @@ Dialect could be specified during `SQLTransformer` build e.g:
 
     ```kotlin
     val transformer = SqlTransformer.SqlTransformerBuilder<String>()
+        .schemaName(tableSchemaName).dialect(SqlDialect.ORACLE).build()
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def transformer = new SqlTransformer.SqlTransformerBuilder()
         .schemaName(tableSchemaName).dialect(SqlDialect.ORACLE).build()
     ```
 
@@ -222,6 +287,21 @@ An example of batch mode:
             .dialect(SqlDialect.POSTGRES)
             .build()
         val output = transformer.generate(schema, 10)
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def faker = new Faker()
+    def schema = Schema.of(
+        field("firstName", { -> faker.name().firstName() }),
+        field("lastName", { -> faker.name().lastName() }))
+    def transformer = new SqlTransformer.SqlTransformerBuilder()
+        .batch(5)
+        .tableName("MY_TABLE")
+        .dialect(SqlDialect.POSTGRES)
+        .build()
+    def output = transformer.generate(schema, 10)
     ```
 
 will generate 2 `INSERT` each containing 5 rows e.g.
@@ -264,6 +344,12 @@ e.g.
     val schema: Schema<String, IntArray> = Schema.of(field("ints", Supplier { intArrayOf(1, 2, 3) }))
     ```
 
+=== "Groovy"
+
+    ```groovy
+    Schema.of(field("ints", { -> [1, 2, 3] as int[] }))
+    ```
+
 will lead to
 
 ```
@@ -279,7 +365,13 @@ INSERT INTO "MyTable" ("ints") VALUES (ARRAY[1, 2, 3]);
 === "Kotlin"
 
     ```kotlin
-    val schema: Schema<String, Set<String>> = Schema.of(field("names_multiset", Supplier { Set.of("hello") } ))
+    val schema: Schema<String, Set<String>> = Schema.of(field("names_multiset", Supplier { setOf("hello") }))
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    Schema.of(field("names_multiset", { -> Set.of("hello") }))
     ```
 
 will lead to
@@ -300,6 +392,12 @@ INSERT INTO "MyTable" ("names_multiset") VALUES (MULTISET['hello']);
     Schema.of(compositeField("row", arrayOf(field("name", Supplier { "2" }))))
     ```
 
+=== "Groovy"
+
+    ```groovy
+    Schema.of(compositeField("row", [field("name", { -> "2" })] as Field[]))
+    ```
+
 will lead to
 
 ```
@@ -314,7 +412,7 @@ Spark dialect doesn't support batch inserts. The dialect will throw an exception
 The following schema:
 
 === "Java"
-    
+
     ```java
     Schema.of(
         field("string", () -> "string"),
@@ -332,6 +430,17 @@ The following schema:
         field("array", Supplier { intArrayOf(1, 2, 3) }),
         field("map", Supplier { mapOf("key" to "value") }),
         compositeField("struct", arrayOf(field("name", Supplier { "2" })))
+    )
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    Schema.of(
+        field("string", { -> "string" }),
+        field("array", { -> [1, 2, 3] as int[] }),
+        field("map", { -> [key: "value"] }),
+        compositeField("struct", [field("name", { -> "2" })] as Field[])
     )
     ```
 
@@ -370,6 +479,52 @@ The following is an example on how to use it:
     );
 
     System.out.println(transformer.generate(schema, 1));
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    val faker = BaseFaker()
+
+    val transformer = YamlTransformer<Any>()
+    val schema: Schema<Any, Any> = Schema.of(
+        field("name", Supplier { faker.name().firstName() }),
+        field("lastname", Supplier { faker.name().lastName() }),
+        field("phones", Supplier { Schema.of<Any, Any>(
+            field("worknumbers", Supplier { List(2) { faker.phoneNumber().phoneNumber() } }),
+            field("cellphones", Supplier { List(3) { faker.phoneNumber().cellPhone() } })
+        ) }),
+        field("address", Supplier { Schema.of<Any, Any>(
+            field("city", Supplier { faker.address().city() }),
+            field("country", Supplier { faker.address().country() }),
+            field("streetAddress", Supplier { faker.address().streetAddress() })
+        ) })
+    )
+
+    println(transformer.generate(schema, 1))
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def faker = new BaseFaker()
+
+    def transformer = new YamlTransformer()
+    def schema = Schema.of(
+        field("name", { -> faker.name().firstName() }),
+        field("lastname", { -> faker.name().lastName() }),
+        field("phones", { -> Schema.of(
+            field("worknumbers", { -> (1..2).collect { faker.phoneNumber().phoneNumber() } }),
+            field("cellphones", { -> (1..3).collect { faker.phoneNumber().cellPhone() } })
+        ) }),
+        field("address", { -> Schema.of(
+            field("city", { -> faker.address().city() }),
+            field("country", { -> faker.address().country() }),
+            field("streetAddress", { -> faker.address().streetAddress() })
+        ) })
+    )
+
+    println transformer.generate(schema, 1)
     ```
 
 will generate YAML with nested fields:
@@ -423,6 +578,17 @@ When building JavaObjectTransformer you should provide a class to be used as a t
     )
     ```
 
+=== "Groovy"
+
+    ```groovy
+    class Person {
+        String firstName
+        String lastName
+        LocalDate birthDate
+        int id
+    }
+    ```
+
 Then you should provide a schema for the class.
 
 === "Java"
@@ -451,24 +617,72 @@ Then you should provide a schema for the class.
     println(jTransformer.apply(Person::class.java, schema))
     ```
 
+=== "Groovy"
+
+    ```groovy
+    def jTransformer = new JavaObjectTransformer()
+    def schema = Schema.of(
+        field("firstName", { -> faker.name().firstName() }),
+        field("lastName", { -> faker.name().lastName() }),
+        field("birthDate", { -> faker.timeAndDate().birthday() }),
+        field("id", { -> faker.number().positive() }))
+
+    println jTransformer.apply(Person, schema)
+    ```
+
 will generate object with fields populated with random values based on specified suppliers.
 
 ### Java records
 
 Use a public record and provide a field for each component in the canonical constructor's order. To transform existing records in Datafaker 3.0, pass them to `generate(inputs, schema)`. Each field function receives the input record, and the transformer returns a new record for each input in the same order.
 
-```java
-public record Customer(String name, int score) {}
+=== "Java"
 
-Schema<Object, ?> schema = Schema.of(
-    field("name", input -> ((Customer) input).name()),
-    field("score", input -> ((Customer) input).score() + 1)
-);
+    ```java
+    public record Customer(String name, int score) {}
 
-var transformer = new JavaObjectTransformer();
-var updated = transformer.generate(List.of(new Customer("Alice", 10)), schema);
-// [Customer[name=Alice, score=11]]
-```
+    Schema<Object, ?> schema = Schema.of(
+        field("name", input -> ((Customer) input).name()),
+        field("score", input -> ((Customer) input).score() + 1)
+    );
+
+    var transformer = new JavaObjectTransformer();
+    var updated = transformer.generate(List.of(new Customer("Alice", 10)), schema);
+    // [Customer[name=Alice, score=11]]
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    @JvmRecord
+    data class Customer(val name: String, val score: Int)
+
+    val schema: Schema<Any, Any> = Schema.of(
+        field("name", Function { input: Any -> (input as Customer).name }),
+        field("score", Function { input: Any -> (input as Customer).score + 1 })
+    )
+
+    val transformer = JavaObjectTransformer()
+    val updated = transformer.generate(listOf<Any>(Customer("Alice", 10)), schema)
+    // [Customer[name=Alice, score=11]]
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    record Customer(String name, int score) {}
+
+    def schema = Schema.of(
+        field("name", { Object input -> (input as Customer).name() } as Function),
+        field("score", { Object input -> (input as Customer).score() + 1 } as Function)
+    )
+
+    def transformer = new JavaObjectTransformer()
+    def updated = transformer.generate([new Customer("Alice", 10)], schema)
+    // [Customer[name=Alice, score=11]]
+    ```
+
+<!-- doc-samples: new scope -->
 
 ### Populating Java object with predefined schema
 
@@ -493,6 +707,15 @@ Schema should be declared as a static method with return type `Schema<Object, ?>
     }
     ```
 
+=== "Groovy"
+
+    ```groovy
+    static Schema<Object, ?> defaultSchema() {
+        def faker = new Faker(Locale.forLanguageTag("fr-en"), new RandomService(new Random(1)))
+        Schema.of(field("name", { -> faker.name().fullName() }))
+    }
+    ```
+
 Then you should provide a class to be used as a template for generated objects. Class should be annotated with `@FakeForSchema` annotation with path to the schema method as a value.
 
 > **Note**: If default schema and class template are in the same class, you can omit full path to the method and use only method name.
@@ -502,14 +725,14 @@ Then you should provide a class to be used as a template for generated objects. 
     ```java
     @FakeForSchema("net.datafaker.annotations.FakeAnnotationTest#defaultSchema")
     public class Person {
-        private String fullName;
-    
-        public String getFullName() {
-            return fullName;
+        private String name;
+
+        public String getName() {
+            return name;
         }
-    
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
     ```
@@ -519,8 +742,17 @@ Then you should provide a class to be used as a template for generated objects. 
     ```kotlin
     @FakeForSchema("net.datafaker.annotations.FakeAnnotationTest#defaultSchema")
     data class Person(
-        var fullName: String
+        var name: String
     )
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    @FakeForSchema("net.datafaker.annotations.FakeAnnotationTest#defaultSchema")
+    class Person {
+        String name
+    }
     ```
 
 Then you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Class<T>)` to populate object with default predefined schema.
@@ -529,14 +761,20 @@ Then you can use `net.datafaker.providers.base.BaseFaker.populate(java.lang.Clas
 
     ```java
     BaseFaker faker = new BaseFaker();
-    Person person = faker.populate(Person.class);
+    Person person = BaseFaker.populate(Person.class);
     ```
 
 === "Kotlin"
 
     ```kotlin
     val faker = BaseFaker()
-    val person = faker.populate(Person::class.java)
+    val person = BaseFaker.populate(Person::class.java)
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def person = BaseFaker.populate(Person)
     ```
 
 Use `faker.populate(Person.class, schema)` to supply a custom schema.
@@ -545,14 +783,21 @@ Use `faker.populate(Person.class, schema)` to supply a custom schema.
 
     ```java
     BaseFaker faker = new BaseFaker();
-    Person person = faker.populate(Person.class, Schema.of(field("name", () -> faker.superhero().name())));
+    Person person = BaseFaker.populate(Person.class, Schema.of(field("name", () -> faker.superhero().name())));
     ```
 
 === "Kotlin"
 
     ```kotlin
     val faker = BaseFaker()
-    val person = faker.populate(Person::class.java, Schema.of(field("name", Supplier { faker.superhero().name() })))
+    val person = BaseFaker.populate(Person::class.java, Schema.of(field("name", Supplier { faker.superhero().name() })))
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def faker = new BaseFaker()
+    def person = BaseFaker.populate(Person, Schema.of(field("name", { -> faker.superhero().name() })))
     ```
 
 ## TOML transformation
@@ -584,6 +829,52 @@ The following is an example on how to use it:
     );
 
     System.out.println(transformer.generate(schema, 1));
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    val faker = BaseFaker()
+
+    val transformer = TomlTransformer<Any>()
+    val schema: Schema<Any, Any> = Schema.of(
+        field("name", Supplier { faker.name().firstName() }),
+        field("lastname", Supplier { faker.name().lastName() }),
+        field("phones", Supplier { Schema.of<Any, Any>(
+            field("worknumbers", Supplier { List(2) { faker.phoneNumber().phoneNumber() } }),
+            field("cellphones", Supplier { List(3) { faker.phoneNumber().cellPhone() } })
+        ) }),
+        field("address", Supplier { Schema.of<Any, Any>(
+            field("city", Supplier { faker.address().city() }),
+            field("country", Supplier { faker.address().country() }),
+            field("streetAddress", Supplier { faker.address().streetAddress() })
+        ) })
+    )
+
+    println(transformer.generate(schema, 1))
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def faker = new BaseFaker()
+
+    def transformer = new TomlTransformer()
+    def schema = Schema.of(
+        field("name", { -> faker.name().firstName() }),
+        field("lastname", { -> faker.name().lastName() }),
+        field("phones", { -> Schema.of(
+            field("worknumbers", { -> (1..2).collect { faker.phoneNumber().phoneNumber() } }),
+            field("cellphones", { -> (1..3).collect { faker.phoneNumber().cellPhone() } })
+        ) }),
+        field("address", { -> Schema.of(
+            field("city", { -> faker.address().city() }),
+            field("country", { -> faker.address().country() }),
+            field("streetAddress", { -> faker.address().streetAddress() })
+        ) })
+    )
+
+    println transformer.generate(schema, 1)
     ```
 
 will generate TOML with nested fields:

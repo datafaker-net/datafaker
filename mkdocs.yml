@@ -10,33 +10,37 @@ repo_url: https://github.com/datafaker-net/datafaker
 edit_uri: "edit/main/docs"
 
 # Copyright
-copyright: Copyright &copy; 2016 - 2026 Erik Pragt
+copyright: Copyright &copy; 2016 - 2026 The Datafaker team
 
 theme:
   name: material
   custom_dir: material
-  favicon: assets/images/favicon.png
+  favicon: assets/images/logo.svg
+  logo: assets/images/logo.svg
   language: en
+  font:
+    text: IBM Plex Sans
+    code: JetBrains Mono
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: custom
+      accent: custom
       toggle:
-        icon: material/brightness-4
+        icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: custom
+      accent: custom
       toggle:
-        icon: material/brightness-7
+        icon: material/weather-sunny
         name: Switch to light mode
   features:
     - content.code.annotate
     - content.code.copy
     - content.action.edit
-    # - content.tabs.link
+    - content.tabs.link
     # - header.autohide
     # - navigation.expand
     - navigation.indexes
@@ -108,6 +112,13 @@ exclude_docs: |
 
 # Customization
 extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/datafaker-net/datafaker
+      name: Datafaker on GitHub
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/epragt
+      name: Erik Pragt on X
   datafaker:
     version: 2.7.0
     snapshot: 3.0.0-SNAPSHOT
@@ -127,7 +138,6 @@ nav:
       - Date format: documentation/date-format.md
       - Advanced password generation: documentation/password.md
       - Expressions: documentation/expressions.md
-      - Formats: documentation/formats.md
       - Transformation schemas: documentation/schemas.md
       - Unique values: documentation/unique-values.md
       - GraalVM Native Image: documentation/native-image.md

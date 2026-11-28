@@ -4,12 +4,32 @@
 
 Datafaker 3.0 adds an `includeLowercase` argument to `text().text()` and `credentials().password()`. The flags specify uppercase letters, special symbols, digits, and lowercase letters in that order. Each enabled flag requires at least one character from its category. Lowercase letters are eligible in either setting.
 
-```java
-Faker faker = new Faker();
+=== "Java"
 
-String password = faker.credentials().password(12, 16, true, false, true, true);
-String text = faker.text().text(12, 16, true, false, true, true);
-```
+    ```java
+    Faker faker = new Faker();
+
+    String password = faker.credentials().password(12, 16, true, false, true, true);
+    String text = faker.text().text(12, 16, true, false, true, true);
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    val faker = Faker()
+
+    val password = faker.credentials().password(12, 16, true, false, true, true)
+    val text = faker.text().text(12, 16, true, false, true, true)
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def faker = new Faker()
+
+    def password = faker.credentials().password(12, 16, true, false, true, true)
+    def text = faker.text().text(12, 16, true, false, true, true)
+    ```
 
 Both calls produce 12 to 16 characters and require uppercase letters, digits, and lowercase letters. Use the builder below to require more than one character from a category or to define custom character sets.
 
@@ -23,25 +43,74 @@ Imagine there is a need to generate a password with length 8 and containing mini
 === "Java"
 
     ```java
-         var faker = new Faker();
-         String password = faker.text().text(Text.TextSymbolsBuilder.builder()
-                             .len(8)
-                             .with(EN_UPPERCASE, 2)
-                             .with(DIGITS, 3).build());
+    var faker = new Faker();
+    String password = faker.text().text(Text.TextSymbolsBuilder.builder()
+        .len(8)
+        .with(EN_UPPERCASE, 2)
+        .with(DIGITS, 3).build());
     ```
+
+=== "Kotlin"
+
+    ```kotlin
+    val faker = Faker()
+    val password = faker.text().text(Text.TextSymbolsBuilder.builder()
+        .len(8)
+        .with(EN_UPPERCASE, 2)
+        .with(DIGITS, 3).build())
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def faker = new Faker()
+    String password = faker.text().text(Text.TextSymbolsBuilder.builder()
+        .len(8)
+        .with(EN_UPPERCASE, 2)
+        .with(DIGITS, 3).build())
+    ```
+
 It also allows to use custom symbol sets. For example this will generate a string with length between 8 and 10. 
 The string will contain min 3 lower case symbols from ru locale and minimum 5 symbols from the defined string `customSpecialSymbols`.
 
 === "Java"
 
     ```java
-          final String ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-          final String customSpecialSymbols = "!@#$%^*;'][{}";
-          final int ruCnt = 3;
-          final int specSmbCnt = 5;
-          final Text.TextRuleConfig config = Text.TextSymbolsBuilder.builder()
-              .len(faker.number().numberBetween(ruCnt + specSmbCnt, Math.max(ruCnt + specSmbCnt, 10)))
-              .with(ruLowerCase, ruCnt)
-              .with(customSpecialSymbols, specSmbCnt).build();
-          final String text = faker.text().text(config);
+    final String ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    final String customSpecialSymbols = "!@#$%^*;'][{}";
+    final int ruCnt = 3;
+    final int specSmbCnt = 5;
+    final Text.TextRuleConfig config = Text.TextSymbolsBuilder.builder()
+        .len(faker.number().numberBetween(ruCnt + specSmbCnt, Math.max(ruCnt + specSmbCnt, 10)))
+        .with(ruLowerCase, ruCnt)
+        .with(customSpecialSymbols, specSmbCnt).build();
+    final String text = faker.text().text(config);
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    val ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+    val customSpecialSymbols = "!@#$%^*;'][{}"
+    val ruCnt = 3
+    val specSmbCnt = 5
+    val config = Text.TextSymbolsBuilder.builder()
+        .len(faker.number().numberBetween(ruCnt + specSmbCnt, maxOf(ruCnt + specSmbCnt, 10)))
+        .with(ruLowerCase, ruCnt)
+        .with(customSpecialSymbols, specSmbCnt).build()
+    val text = faker.text().text(config)
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def ruLowerCase = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+    def customSpecialSymbols = '!@#$%^*;\'][{}'
+    def ruCnt = 3
+    def specSmbCnt = 5
+    def config = Text.TextSymbolsBuilder.builder()
+        .len(faker.number().numberBetween(ruCnt + specSmbCnt, Math.max(ruCnt + specSmbCnt, 10)))
+        .with(ruLowerCase, ruCnt)
+        .with(customSpecialSymbols, specSmbCnt).build()
+    def text = faker.text().text(config)
     ```

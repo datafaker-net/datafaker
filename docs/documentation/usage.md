@@ -25,6 +25,16 @@ constructor.
     val name = faker.name().fullName() // Miss Samanta Schmidt
     ```
 
+=== "Groovy"
+
+    ```groovy
+    import net.datafaker.Faker
+
+    def faker = new Faker()
+
+    def name = faker.name().fullName() // Miss Samanta Schmidt
+    ```
+
 This will instantiate a Faker using the English locale. 
 
 ## Different locale
@@ -47,6 +57,14 @@ To use Datafaker with a different locale, you can supply one in the constructor 
     val name = faker.name().fullName() // Chelan Klijnsma
     ```
 
+=== "Groovy"
+
+    ```groovy
+    def faker = new Faker(Locale.forLanguageTag("nl"))
+
+    def name = faker.name().fullName() // Chelan Klijnsma
+    ```
+
 ## Multiple locales
 
 In case you want to mix locales, the easiest way to do so is to create a Faker per locale, 
@@ -61,7 +79,7 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
 
 === "Java"
 
-    ```java 
+    ```java
     List<Faker> fakers = List.of(
         new Faker(Locale.forLanguageTag("nl")),
         new Faker(Locale.forLanguageTag("ar"))
@@ -88,6 +106,21 @@ Schlangenlaan 461a, Oost Jessamyingen, WV 8234 ZX
     }
     ```
 
+=== "Groovy"
+
+    ```groovy
+    def fakers = [
+        new Faker(Locale.forLanguageTag("nl")),
+        new Faker(Locale.forLanguageTag("ar"))
+    ]
+    def chooser = new Random()
+
+    10.times {
+        def randomFaker = fakers[chooser.nextInt(fakers.size())]
+        println randomFaker.address().fullAddress()
+    }
+    ```
+
 ## Repeatable random results
 
 Use the same seed, locale, Datafaker version, and sequence of calls to reproduce the random choices. For time-based generators, also supply a fixed reference time where the API provides one. Upgrades can change provider data and therefore the generated values.
@@ -104,29 +137,82 @@ Use the same seed, locale, Datafaker version, and sequence of calls to reproduce
     val faker = Faker(Random(0))
     ```
 
+=== "Groovy"
+
+    ```groovy
+    def faker = new Faker(new Random(0))
+    ```
+
 To supply a Java `RandomGenerator`, wrap it in a `RandomService`.
 
-```java
-import java.util.Locale;
-import java.util.SplittableRandom;
+=== "Java"
 
-import net.datafaker.Faker;
-import net.datafaker.service.RandomService;
+    ```java
+    import java.util.Locale;
+    import java.util.SplittableRandom;
 
-Faker faker = new Faker(Locale.ENGLISH, new RandomService(new SplittableRandom(42)));
-```
+    import net.datafaker.Faker;
+    import net.datafaker.service.RandomService;
+
+    Faker faker = new Faker(Locale.ENGLISH, new RandomService(new SplittableRandom(42)));
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    import java.util.Locale
+    import java.util.SplittableRandom
+
+    import net.datafaker.Faker
+    import net.datafaker.service.RandomService
+
+    val faker = Faker(Locale.ENGLISH, RandomService(SplittableRandom(42)))
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    import java.util.SplittableRandom
+
+    import net.datafaker.Faker
+    import net.datafaker.service.RandomService
+
+    def faker = new Faker(Locale.ENGLISH, new RandomService(new SplittableRandom(42)))
+    ```
 
 ## Temporary locale and seed
 
 In Datafaker 3.0, `doWith` applies temporary settings on the calling thread and restores the enclosing settings when the callback exits, even if it throws. Overlapping calls on a shared Faker each get their own settings.
 
-```java
-Faker faker = new Faker(Locale.US, new Random(42));
+=== "Java"
 
-String frenchCity = faker.doWith(faker.address()::city, Locale.FRANCE);
-String repeatableName = faker.doWith(faker.name()::firstName, 7L);
-String repeatableFrenchCity = faker.doWith(faker.address()::city, Locale.FRANCE, 7L);
-```
+    ```java
+    Faker faker = new Faker(Locale.US, new Random(42));
+
+    String frenchCity = faker.doWith(faker.address()::city, Locale.FRANCE);
+    String repeatableName = faker.doWith(faker.name()::firstName, 7L);
+    String repeatableFrenchCity = faker.doWith(faker.address()::city, Locale.FRANCE, 7L);
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    val faker = Faker(Locale.US, Random(42))
+
+    val frenchCity = faker.doWith({ faker.address().city() }, Locale.FRANCE)
+    val repeatableName = faker.doWith({ faker.name().firstName() }, 7L)
+    val repeatableFrenchCity = faker.doWith({ faker.address().city() }, Locale.FRANCE, 7L)
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    def faker = new Faker(Locale.US, new Random(42))
+
+    def frenchCity = faker.doWith({ faker.address().city() }, Locale.FRANCE)
+    def repeatableName = faker.doWith({ faker.name().firstName() }, 7L)
+    def repeatableFrenchCity = faker.doWith({ faker.address().city() }, Locale.FRANCE, 7L)
+    ```
 
 A locale-only call uses the current random stream. A seed-only call uses the current locale. Nested calls restore the outer callback's settings when they return.
 
@@ -134,11 +220,29 @@ A locale-only call uses the current random stream. A seed-only call uses the cur
 
 In Datafaker 3.0, use `selection().oneOf()` to choose from an array, collection, or Java enum. Use `setOf()` to choose distinct elements from an array or varargs.
 
-```java
-DayOfWeek day = faker.selection().oneOf(DayOfWeek.class);
-String color = faker.selection().oneOf(List.of("red", "green", "blue"));
-Set<String> pair = faker.selection().setOf(2, "red", "green", "blue");
-```
+=== "Java"
+
+    ```java
+    DayOfWeek day = faker.selection().oneOf(DayOfWeek.class);
+    String color = faker.selection().oneOf(List.of("red", "green", "blue"));
+    Set<String> pair = faker.selection().setOf(2, "red", "green", "blue");
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    val day: DayOfWeek = faker.selection().oneOf(DayOfWeek::class.java)
+    val color: String = faker.selection().oneOf(listOf("red", "green", "blue"))
+    val pair: Set<String> = faker.selection().setOf(2, "red", "green", "blue")
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    DayOfWeek day = faker.selection().oneOf(DayOfWeek)
+    String color = faker.selection().oneOf(["red", "green", "blue"])
+    Set<String> pair = faker.selection().setOf(2, "red", "green", "blue")
+    ```
 
 If the requested set size exceeds the number of distinct options, `setOf()` returns all distinct options.
 
