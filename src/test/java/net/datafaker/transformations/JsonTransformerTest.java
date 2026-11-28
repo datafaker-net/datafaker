@@ -15,6 +15,17 @@ class JsonTransformerTest{
     private final Faker faker = new Faker();
 
     @Test
+    void preservesEscapingInBothBatchEntryPoints() {
+        JsonTransformer<Object> transformer = JsonTransformer.builder().build();
+        Schema<Object, ?> schema = Schema.of(field("value", () -> List.of("\u001f東京/\n\"")));
+        String row = "{\"value\": [\"\\u001F東京\\/\\n\\\"\"]}";
+        String expected = String.join(System.lineSeparator(), "[", row + ",", row, "]");
+
+        assertThat(transformer.generate(schema, 2)).isEqualTo(expected);
+        assertThat(transformer.generate(List.of(1, 2), schema)).isEqualTo(expected);
+    }
+
+    @Test
     void numericValuesAreRepresentedAsNumbersInJson() {
         Schema<Object, ?> schema = Schema.of(
             field("int", () -> 67),

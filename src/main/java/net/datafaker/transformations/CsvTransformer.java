@@ -23,8 +23,13 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
 
     @Override
     public CharSequence apply(IN input, Schema<IN, ?> schema) {
-        Field<IN, ?>[] fields = schema.getFields();
         StringBuilder sb = new StringBuilder();
+        appendRow(sb, input, schema);
+        return sb.toString();
+    }
+
+    private void appendRow(StringBuilder sb, @Nullable IN input, Schema<IN, ?> schema) {
+        Field<IN, ?>[] fields = schema.getFields();
         for (int i = 0; i < fields.length; i++) {
             //noinspection unchecked
             SimpleField<Object, ?> f = (SimpleField<Object, ?>) fields[i];
@@ -33,7 +38,6 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
                 sb.append(separator);
             }
         }
-        return sb.toString();
     }
 
     @Override
@@ -49,7 +53,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
         boolean hasNext = iterator.hasNext();
         while (hasNext) {
             IN in = iterator.next();
-            sb.append(apply(in, schema));
+            appendRow(sb, in, schema);
             hasNext = iterator.hasNext();
             if (hasNext) {
                 sb.append(LINE_SEPARATOR);
@@ -101,7 +105,7 @@ public class CsvTransformer<IN> implements Transformer<IN, CharSequence> {
         StringBuilder sb = new StringBuilder();
         generateHeader(schema, sb, true);
         for (int i = 0; i < limit; i++) {
-            sb.append(apply(null, schema, i));
+            appendRow(sb, null, schema);
             if (i < limit - 1) {
                 sb.append(LINE_SEPARATOR);
             }

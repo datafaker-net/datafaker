@@ -152,6 +152,36 @@ class FakeValuesServiceTest {
     }
 
     @Test
+    void customYamlReplacesWarmedLocaleFallbacks(@TempDir Path tempDir) throws IOException {
+        Faker german = new Faker(Locale.GERMANY);
+        FakeValuesService service = german.fakeValuesService();
+        FakerContext localeContext = german.getContext();
+        String key = "rick_and_morty.characters";
+        assertThat(german.rickAndMorty().character()).isNotBlank();
+        assertThat(service.resolve(key, null, null, () -> key, localeContext)).isNotBlank();
+
+        Path english = Files.writeString(tempDir.resolve("custom-en.yml"), """
+            en:
+              faker:
+                rick_and_morty:
+                  characters: [English override]
+            """);
+        german.addPath(Locale.ENGLISH, english);
+        assertThat(german.rickAndMorty().character()).isEqualTo("English override");
+        assertThat(service.resolve(key, null, null, () -> key, localeContext)).isEqualTo("English override");
+
+        Path local = Files.writeString(tempDir.resolve("custom-de.yml"), """
+            de:
+              faker:
+                rick_and_morty:
+                  characters: [German override]
+            """);
+        german.addPath(Locale.GERMANY, local);
+        assertThat(german.rickAndMorty().character()).isEqualTo("German override");
+        assertThat(service.resolve(key, null, null, () -> key, localeContext)).isEqualTo("German override");
+    }
+
+    @Test
     void resolveKeyToPropertyWithAList() {
         // property.resolutionWithList -> #{hello}
         // #{hello} -> DummyService.hello

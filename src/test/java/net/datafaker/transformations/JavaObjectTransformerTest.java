@@ -32,6 +32,10 @@ public class JavaObjectTransformerTest {
         }
     }
 
+    public static class Contact {
+        private String firstName;
+    }
+
     public record Client(String firstName, String lastName, String phoneNumber, Instant registrationDate, int id) { }
 
     public record User(String firstName, String lastName) { }
@@ -119,6 +123,18 @@ public class JavaObjectTransformerTest {
         assertThat(original.firstName).isEqualTo("Alice");
         assertThat(original.lastName).isEqualTo("Smith");
         assertThat(original.id).isEqualTo(42);
+    }
+
+    @Test
+    void reusesOneSchemaAcrossDifferentMutableClasses() {
+        var transformer = new JavaObjectTransformer();
+        Schema<Object, ?> schema = Schema.of(field("firstName", () -> "Alice"));
+
+        assertThat(transformer.generate(List.of(Person.class, Contact.class, Person.class), schema))
+            .satisfiesExactly(
+                value -> assertThat(((Person) value).firstName).isEqualTo("Alice"),
+                value -> assertThat(((Contact) value).firstName).isEqualTo("Alice"),
+                value -> assertThat(((Person) value).firstName).isEqualTo("Alice"));
     }
 
     @Test
