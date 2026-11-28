@@ -19,7 +19,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <datafaker.version>3.0.0-SNAPSHOT</datafaker.version>
+        <datafaker.version>3.1.0-SNAPSHOT</datafaker.version>
         <releaseJavaVersion>17</releaseJavaVersion>
         <kotlin.version>2.4.21</kotlin.version>
         <groovy.version>5.0.3</groovy.version>

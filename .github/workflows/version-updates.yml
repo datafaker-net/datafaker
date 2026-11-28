@@ -45,10 +45,12 @@ jobs:
         NEXT_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
         echo $NEXT_VERSION
         # Replace version in README.md
-        sed -i -E 's/([>:])2\.[0-9]+\.[0-9]+/\1'"$RELEASED_VERSION"'/g' README.md
+        sed -i -E 's/(<version>|net\.datafaker:datafaker:)[0-9]+\.[0-9]+\.[0-9]+/\1'"$RELEASED_VERSION"'/g' README.md
         # Replace snapshot version in README.md
         sed -i -E 's/[0-9]+\.[0-9]+\.[0-9]+-SNAPSHOT/'"$NEXT_VERSION"-SNAPSHOT'/g' README.md
         git add README.md
+        sed -i -E 's|<datafaker.version>[^<]+</datafaker.version>|<datafaker.version>'"$NEXT_VERSION"'-SNAPSHOT</datafaker.version>|' scripts/doc-samples/pom.xml
+        git add scripts/doc-samples/pom.xml
 
         # Generate Providers Documentation
         echo "Generating providers documentation..."
@@ -78,7 +80,9 @@ jobs:
         fi
         RELEASE_BODY_FILE=$(mktemp)
         echo "$RELEASE_BODY" > "$RELEASE_BODY_FILE"
-        ./mvnw test-compile exec:java \
+        # The provider generator already compiled these classes. Running the lifecycle
+        # again would pass exec.args to the native-image metadata generator as well.
+        ./mvnw exec:java \
           -Dexec.mainClass="net.datafaker.script.ReleaseNotesGenerator" \
           -Dexec.classpathScope=test \
           -Dexec.args="${RELEASED_VERSION} ${TODAY} docs/releases/.RELEASE-template.md ${RELEASE_MD} ${RELEASE_BODY_FILE}" \
@@ -106,7 +110,7 @@ jobs:
         # Update mkdocs.yml version metadata and Releases navigation
         sed -i '/datafaker:/,/^[^ ]/{s/^\( *version: \).*/\1'"$RELEASED_VERSION"'/}' mkdocs.yml
         sed -i '/datafaker:/,/^[^ ]/{s/^\( *snapshot: \).*/\1'"${NEXT_VERSION}-SNAPSHOT"'/}' mkdocs.yml
-        ./mvnw test-compile exec:java \
+        ./mvnw exec:java \
           -Dexec.mainClass="net.datafaker.script.MkdocsReleaseNavUpdater" \
           -Dexec.classpathScope=test \
           -Dexec.args="${RELEASED_VERSION} ${NEXT_VERSION}-SNAPSHOT mkdocs.yml" \

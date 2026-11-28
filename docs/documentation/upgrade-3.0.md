@@ -1,6 +1,6 @@
 # Upgrading to Datafaker 3.0
 
-This guide covers the 3.0 development build. See [snapshot installation](getting-started.md#snapshot-versions) to try it. Datafaker 3.0 requires Java 17 or later.
+Update your dependency to `3.0.0` using the [installation instructions](getting-started.md#installation). Datafaker 3.0 requires Java 17 or later.
 
 ## Replace removed APIs
 
