@@ -27,6 +27,7 @@ public class EnFile {
 
     private static final List<EnFile> FILES = Stream.of(
         "address.yml",
+        "adjective.yml",
         "ancient.yml",
         "animal.yml",
         "app.yml",
