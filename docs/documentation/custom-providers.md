@@ -42,7 +42,7 @@ Create your own custom faker, which extends `Faker`, and register the custom pro
     ```java
     public static class MyCustomFaker extends Faker {
         public Insect insect() {
-            return getProvider(Insect.class, Insect::new, this);
+            return getProvider(Insect.class, Insect::new);
         }
     }
     ```
@@ -156,7 +156,7 @@ en:
 
 ### Weighted YAML choices
 
-Custom files loaded with `addPath` or `addUrl` can use a list of percentage-key mappings:
+Datafaker 3.0 supports weighted choices in custom YAML loaded with `addPath` or `addUrl`. Save the following file as `weighted-insects.yml`.
 
 ```yaml
 en:
@@ -171,13 +171,27 @@ en:
         - 10%: [".ee", ".lv", ".lt"]
 ```
 
-Each entry must have exactly one decimal percentage key (quoting is optional) and a string template or a non-empty list of string templates. Percentages must be finite, positive and total exactly 100 (decimal fractions such as `33.3%` are supported). Mixing weighted entries with ordinary entries, or nesting weighted choices inside a branch, is not supported.
+Load the file and resolve its keys on the same Faker instance.
 
-Selection uses the current Faker's random service to choose a branch, then a list entry uniformly; templates support local and provider references and slash-delimited regexes, and percentages describe probabilities rather than guaranteed sample counts.
+```java
+import java.nio.file.Path;
+import java.util.Locale;
+import java.util.Random;
 
-This syntax applies only to custom files; ordinary values, bundled locale data, and the Java weighted-selection API retain their existing behavior.
+import net.datafaker.Faker;
 
-Weighted keys are intended for `resolve`, `fetch` and `safeFetch`: `fetchObject` returns an internal representation, and `Unique.fetchFromYaml` does not support them.
+Faker faker = new Faker(Locale.ENGLISH, new Random(42));
+faker.addPath(Locale.ENGLISH, Path.of("weighted-insects.yml"));
+
+String ant = faker.resolve("insectsfromfile.ants");
+String domain = faker.resolve("insectsfromfile.domains");
+```
+
+Each call samples a branch with the configured probability. If that branch contains a list, the call then picks one entry uniformly. In this example, `.it` has a 90% chance and each of the three domains in the second branch has a 10% ÷ 3 chance. `resolve` evaluates the selected template, including the local reference `#{other_ant}`. Provider references and slash-delimited regexes also work.
+
+Use one positive decimal percentage per entry, and make the percentages total exactly 100. A branch can contain a string template or a non-empty list of string templates. Numeric percentage keys such as `33.3%` start weighted syntax. A descriptive map key such as `margin%` is ordinary YAML. If a weighted list is invalid, the error identifies its key path and file.
+
+Use `resolve` for a sampled, evaluated string. `fetch` and `safeFetch` can also sample weighted choices. Use ordinary YAML lists with `Unique.fetchFromYaml`.
 
 ### Register provider
 
@@ -188,7 +202,7 @@ Registering the provider would happen like this:
     ```java
     public static class MyCustomFaker extends Faker {
         public InsectFromFile insectFromFile() {
-            return getProvider(InsectFromFile.class, InsectFromFile::new, this);
+            return getProvider(InsectFromFile.class, InsectFromFile::new);
         }
     }
     ```
