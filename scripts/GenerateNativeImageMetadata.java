@@ -25,6 +25,15 @@ public class GenerateNativeImageMetadata {
         // Native Image for JDK 21 reads the separate reflection and resource files.
         Files.writeString(metadata.resolve("reflect-config.json"), reflectionConfig(classes));
         Files.writeString(metadata.resolve("resource-config.json"), resourceConfig(classes));
+        // Exact reachability checking must also allow lookups for absent locale overrides.
+        Files.writeString(metadata.resolve("reachability-metadata.json"), """
+            {
+              "resources": [
+                {"glob": "*.yml"},
+                {"glob": "en/*.yml"}
+              ]
+            }
+            """);
     }
 
     private static String reflectionConfig(Path classes) throws IOException, ClassNotFoundException {

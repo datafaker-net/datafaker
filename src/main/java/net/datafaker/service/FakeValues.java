@@ -58,25 +58,20 @@ public class FakeValues implements FakeValuesInterface {
 
         final Locale locale = fakeValuesContext.getLocale();
         final String fileName = fakeValuesContext.getFilename();
-        final String[] paths = fileName.isEmpty()
-            ? new String[] {"/" + locale.getLanguage() + ".yml"}
-            : new String[] {
-                "/" + locale.getLanguage() + "/" + fileName,
-                "/" + fileName + ".yml",
-                "/" + locale.getLanguage() + ".yml"};
+        final String languagePath = "/" + locale.getLanguage() + ".yml";
+        final String[] paths;
+        if (fileName.isEmpty()) {
+            paths = new String[] {languagePath};
+        } else if (fileName.endsWith(".yml")) {
+            paths = new String[] {"/" + locale.getLanguage() + "/" + fileName, languagePath};
+        } else {
+            paths = new String[] {"/" + fileName + ".yml", languagePath};
+        }
 
         for (String path : paths) {
             try (var stream = getClass().getResourceAsStream(path)) {
-                if (stream != null) {
-                    result = readFromStream(stream);
-                    enrichMapWithJavaNames(result);
-                } else {
-                    try (var stream2 = getClass().getClassLoader().getResourceAsStream(path)) {
-                        result = readFromStream(stream2);
-                        enrichMapWithJavaNames(result);
-                    }
-                }
-
+                result = readFromStream(stream);
+                enrichMapWithJavaNames(result);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to read fake values from %s".formatted(path), e);
             }
